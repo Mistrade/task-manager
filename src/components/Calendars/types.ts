@@ -1,34 +1,30 @@
-import dayjs from 'dayjs'
 import React from 'react'
 
 export interface DatePickerProps {
 
 }
 
-export type CalendarRenderOption = 'full-size' | 'input-mode'
-
 export interface CalendarProps {
   current: CalendarCurrentData,
-  renderOption: CalendarRenderOption,
   disabledOptions?: CalendarDisabledOptions
 }
 
 export interface GlobalTaskListProps {
-  addTasks?: ( task?: CalendarTaskItem ) => void
+  onAddTask?: ( date: CalendarItem ) => void
 }
 
 export interface FullSizeCalendarProps extends GlobalTaskListProps {
   list: CalendarList
-  renderOption: CalendarRenderOption
   current: CalendarCurrentData,
   tasksList?: CalendarTaskList
+  onSelectTask?: ( data: TaskTileClickArguments ) => any
 }
 
 export interface CalendarCellProps extends GlobalTaskListProps {
   value: CalendarItem,
-  renderOption?: CalendarRenderOption,
   tasks?: CalendarTaskList,
   renderTaskCount?: number
+  onSelectTask?: ( data: TaskTileClickArguments ) => any
 }
 
 export interface TaskTileListProps {
@@ -57,7 +53,7 @@ export interface TaskTileClickArguments {
 export type CalendarList = Array<CalendarItem>
 
 export interface CalendarItem {
-  value: dayjs.Dayjs,
+  value: Date,
   meta: CalendarItemMetaData
 }
 
@@ -75,12 +71,12 @@ export interface CalendarCurrentData {
 }
 
 export interface CalendarDisabledOptions {
-  min?: dayjs.Dayjs,
-  max?: dayjs.Dayjs,
+  min?: Date,
+  max?: Date,
   includeMin?: boolean,
   includeMax?: boolean,
   excludeWeekends?: boolean,
-  disableDates?: Array<dayjs.Dayjs>
+  disableDates?: Array<Date>
 }
 
 export interface CalendarCellDateProps {
@@ -90,14 +86,39 @@ export interface CalendarCellDateProps {
 
 export type CalendarPriorityKeys = 'veryLow' | 'low' | 'medium' | 'high' | 'veryHigh'
 
+export type UUID = string
+
 export interface CalendarTaskItem {
-  id: string,
+  id: UUID,
+  createdAt: Date,
+  linkedFrom?: UUID,
   title: string,
   description: string,
   priority: CalendarPriorityKeys,
-  time: dayjs.Dayjs,
-  isCompleted?: boolean
+  time: Date,
+  isCompleted?: boolean,
+  members: TaskMembersListType
 }
+
+
+export type SocialNetworkKeys = 'vk' | 'instagram' | 'facebook' | 'whatsApp' | 'viber' | 'telegram'
+export type TaskMemberSocialNetworkItem = {
+  networkName: SocialNetworkKeys,
+  link: string,
+}
+export type GenderKeys = 'man' | 'woman'
+export type TaskMemberItemType = {
+  id: UUID,
+  name: string,
+  surname: string,
+  gender: GenderKeys,
+  patronymic?: string,
+  phoneNumber?: string,
+  email?: string,
+  socialNetworks: Array<TaskMemberSocialNetworkItem>
+}
+export type TaskMembersListType = Array<TaskMemberItemType>
+
 
 export type CustomObject<T = any> = { [key in string]: T }
 export type PartialCustomObject<T = any> = Partial<{ [key in string]: T }>
@@ -107,5 +128,25 @@ export type TaskYear = CustomObject<TaskMonth>
 export type TaskMonth = CustomObject<TaskDate>
 export type TaskDate = CalendarTaskList
 
-
 export type CalendarTaskList = Array<CalendarTaskItem>
+
+export type SelectTaskItem = Omit<TaskTileClickArguments, 'event'>
+
+export interface TaskInformerProps {
+  taskItem: SelectTaskItem | null
+}
+
+export type TaskInformerMainProps = {
+  taskItem: SelectTaskItem
+}
+
+export interface TaskInfoModalProps {
+  selectedTask: SelectTaskItem | null,
+  onClose: () => void
+}
+
+export interface AddTaskModalProps {
+  date: CalendarItem | null,
+  onClose?: () => void,
+  onComplete?: () => void
+}

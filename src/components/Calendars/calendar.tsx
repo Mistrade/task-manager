@@ -1,9 +1,17 @@
 import {
-  CalendarCurrentData,
+  AddTaskModalProps,
+  CalendarCurrentData, CalendarItem,
   CalendarList,
   CalendarProps,
-  CalendarTaskList, CustomObject,
-  FullSizeCalendarProps, PartialCustomObject, TaskDate, TaskMonth, TaskStorage, TaskYear
+  CalendarTaskList,
+  CustomObject,
+  FullSizeCalendarProps,
+  PartialCustomObject, SelectTaskItem,
+  TaskDate, TaskInfoModalProps,
+  TaskMonth,
+  TaskStorage,
+  TaskTileClickArguments,
+  TaskYear
 } from './types'
 import { FC, useEffect, useMemo, useState } from 'react'
 import { getPickerDates } from '../../common/dayjs'
@@ -12,640 +20,328 @@ import {
   CalendarDesktopContainer,
   CalendarTitle
 } from './calendar.styled'
-import { CalendarCell } from './cell'
-import { MonthList } from '../../common/constants'
+import { CalendarCell, TaskTileText } from './cell'
+import { DATE_RENDER_FORMAT, defaultColor, MonthList, WeekDaysList } from '../../common/constants'
 import dayjs from 'dayjs'
+import { Modal, ModalBody, ModalFooter, ModalHeader } from '../Modal/modal'
+import { TaskInformer } from './TaskInformer/taskInformer'
+import { StyledButton } from '../Buttons/buttons.styled'
+import { ModalProps } from '../Modal/types'
+import Weekday from 'dayjs/plugin/weekday'
+import { FlexBlock } from '../LayoutComponents/flexBlock'
+import { getTaskListOfDay } from '../../common/functions'
 
 export let defaultTasksList: CalendarTaskList = [
   {
-    title: 'Купить хлеб',
-    description: 'Какое-то описание дела',
-    priority: 'medium',
-    time: dayjs( new Date( 2022, 4, 31, 18, 30 ) ),
-    id: '1'
-  },
-  {
-    title: 'Купить молоко',
-    description: 'Какое-то описание дела',
-    priority: 'medium',
-    time: dayjs( new Date( 2022, 4, 28, 18, 30 ) ),
-    id: '1'
-  },
-  {
-    title: 'Купить машину',
-    description: 'Какое-то описание дела',
-    priority: 'high',
-    time: dayjs( new Date( 2022, 4, 11, 18, 30 ) ),
     id: '1',
-    isCompleted: true
-  },
-  {
-    title: 'Купить ноутбук',
-    description: 'Какое-то описание дела',
-    priority: 'veryLow',
-    time: dayjs( new Date( 2022, 4, 17, 18, 30 ) ),
-    id: '1'
-  },
-  {
-    title: 'Купить подарок',
-    description: 'Какое-то описание дела',
-    priority: 'low',
-    time: dayjs( new Date( 2022, 4, 14, 18, 30 ) ),
-    id: '1'
-  },
-  {
-    title: 'Сходить в Халил',
-    description: 'Какое-то описание дела',
+    title: 'Завершить написание модального окна',
+    description: 'Необходимо завершить работу с модальным окном, чтобы информация по заданию выводилась корректно.',
+    createdAt: new Date( 2022, 5, 1, 12, 20 ),
     priority: 'veryHigh',
-    time: dayjs( new Date( 2022, 4, 1, 18, 30 ) ),
-    id: '1'
-  },
-  {
-    title: 'Заправить машину',
-    description: 'Какое-то описание дела',
-    priority: 'medium',
-    time: dayjs( new Date( 2022, 4, 22, 18, 30 ) ),
-    id: '1'
-  },
-  {
-    title: 'Написать календарь',
-    description: 'Какое-то описание дела',
-    priority: 'medium',
-    time: dayjs( new Date( 2022, 4, 21, 18, 30 ) ),
-    id: '1'
-  },
-  {
-    title: 'Протестировать календарь',
-    description: 'Какое-то описание дела',
-    priority: 'medium',
-    time: dayjs( new Date( 2022, 4, 9, 18, 30 ) ),
-    id: '1'
-  },
-  {
-    title: 'Получить зарплату',
-    description: 'Какое-то описание дела',
-    priority: 'medium',
-    time: dayjs( new Date( 2022, 4, 14, 18, 30 ) ),
-    id: '1'
-  },
-  {
-    title: 'Купить телефон',
-    description: 'Какое-то описание дела',
-    priority: 'medium',
-    time: dayjs( new Date( 2022, 4, 17, 18, 30 ) ),
-    id: '1'
-  },
-  {//
-    title: 'Купить хлеб 2',
-    description: 'Какое-то описание дела',
-    priority: 'medium',
-    time: dayjs( new Date( 2022, 4, 1, 18, 30 ) ),
-    id: '1'
-  },
-  {
-    title: 'Купить молоко',
-    description: 'Какое-то описание дела',
-    priority: 'medium',
-    time: dayjs( new Date( 2022, 4, 2, 18, 30 ) ),
-    id: '1'
-  },
-  {
-    title: 'Купить машину',
-    description: 'Какое-то описание дела',
-    priority: 'medium',
-    time: dayjs( new Date( 2022, 4, 3, 18, 30 ) ),
-    id: '1'
-  },
-  {
-    title: 'Купить ноутбук',
-    description: 'Какое-то описание дела',
-    priority: 'medium',
-    time: dayjs( new Date( 2022, 4, 4, 18, 30 ) ),
-    id: '1'
-  },
-  {
-    title: 'Купить подарок',
-    description: 'Какое-то описание дела',
-    priority: 'medium',
-    time: dayjs( new Date( 2022, 4, 5, 18, 30 ) ),
-    id: '1'
-  },
-  {
-    title: 'Сходить в Халил',
-    description: 'Какое-то описание дела',
-    priority: 'medium',
-    time: dayjs( new Date( 2022, 4, 6, 18, 30 ) ),
-    id: '1'
-  },
-  {
-    title: 'Заправить машину',
-    description: 'Какое-то описание дела',
-    priority: 'medium',
-    time: dayjs( new Date( 2022, 4, 7, 18, 30 ) ),
-    id: '1'
-  },
-  {
-    title: 'Написать календарь',
-    description: 'Какое-то описание дела',
-    priority: 'medium',
-    time: dayjs( new Date( 2022, 4, 8, 18, 30 ) ),
-    id: '1'
-  },
-  {
-    title: 'Протестировать календарь',
-    description: 'Какое-то описание дела',
-    priority: 'medium',
-    time: dayjs( new Date( 2022, 4, 9, 18, 30 ) ),
-    id: '1'
-  },
-  {
-    title: 'Получить зарплату',
-    description: 'Какое-то описание дела',
-    priority: 'medium',
-    time: dayjs( new Date( 2022, 4, 10, 18, 30 ) ),
-    id: '1'
-  },
-  {
-    title: 'Купить телефон',
-    description: 'Какое-то описание дела',
-    priority: 'medium',
-    time: dayjs( new Date( 2022, 4, 11, 18, 30 ) ),
-    id: '1'
-  },
-  {//
-    title: 'Купить хлеб 2',
-    description: 'Какое-то описание дела',
-    priority: 'medium',
-    time: dayjs( new Date( 2022, 4, 12, 18, 30 ) ),
-    id: '1'
-  },
-  {
-    title: 'Купить молоко',
-    description: 'Какое-то описание дела',
-    priority: 'medium',
-    time: dayjs( new Date( 2022, 4, 13, 18, 30 ) ),
-    id: '1'
-  },
-  {
-    title: 'Купить машину',
-    description: 'Какое-то описание дела',
-    priority: 'medium',
-    time: dayjs( new Date( 2022, 4, 14, 18, 30 ) ),
-    id: '1'
-  },
-  {
-    title: 'Купить ноутбук',
-    description: 'Какое-то описание дела',
-    priority: 'medium',
-    time: dayjs( new Date( 2022, 4, 15, 18, 30 ) ),
-    id: '1'
-  },
-  {
-    title: 'Купить подарок',
-    description: 'Какое-то описание дела',
-    priority: 'medium',
-    time: dayjs( new Date( 2022, 4, 16, 18, 30 ) ),
-    id: '1'
-  },
-  {
-    title: 'Сходить в Халил',
-    description: 'Какое-то описание дела',
-    priority: 'medium',
-    time: dayjs( new Date( 2022, 4, 17, 18, 30 ) ),
-    id: '1'
-  },
-  {
-    title: 'Заправить машину',
-    description: 'Какое-то описание дела',
-    priority: 'medium',
-    time: dayjs( new Date( 2022, 4, 17, 18, 30 ) ),
-    id: '1'
-  },
-  {
-    title: 'Написать календарь',
-    description: 'Какое-то описание дела',
-    priority: 'medium',
-    time: dayjs( new Date( 2022, 4, 18, 18, 30 ) ),
-    id: '1'
-  },
-  {
-    title: 'Протестировать календарь',
-    description: 'Какое-то описание дела',
-    priority: 'medium',
-    time: dayjs( new Date( 2022, 4, 19, 18, 30 ) ),
-    id: '1'
-  },
-  {
-    title: 'Получить зарплату',
-    description: 'Какое-то описание дела',
-    priority: 'medium',
-    time: dayjs( new Date( 2022, 4, 20, 18, 30 ) ),
-    id: '1'
-  },
-  {
-    title: 'Купить телефон',
-    description: 'Какое-то описание дела',
-    priority: 'medium',
-    time: dayjs( new Date( 2022, 4, 21, 18, 30 ) ),
-    id: '1'
-  },
-  {
-    title: 'Получить зарплату',
-    description: 'Какое-то описание дела',
-    priority: 'medium',
-    time: dayjs( new Date( 2022, 4, 22, 18, 30 ) ),
-    id: '1'
-  },
-  {
-    title: 'Купить телефон',
-    description: 'Какое-то описание дела',
-    priority: 'medium',
-    time: dayjs( new Date( 2022, 4, 23, 18, 30 ) ),
-    id: '1'
-  },
-  {
-    title: 'Купить телефон',
-    description: 'Какое-то описание дела',
-    priority: 'medium',
-    time: dayjs( new Date( 2022, 4, 24, 18, 30 ) ),
-    id: '1'
-  },
-  {
-    title: 'Получить зарплату',
-    description: 'Какое-то описание дела',
-    priority: 'medium',
-    time: dayjs( new Date( 2022, 4, 25, 18, 30 ) ),
-    id: '1'
-  },
-  {
-    title: 'Купить телефон',
-    description: 'Какое-то описание дела',
-    priority: 'medium',
-    time: dayjs( new Date( 2022, 4, 26, 18, 30 ) ),
-    id: '1'
-  },
-  {
-    title: 'Купить телефон',
-    description: 'Какое-то описание дела',
-    priority: 'medium',
-    time: dayjs( new Date( 2022, 4, 27, 18, 30 ) ),
-    id: '1'
-  },
-  {
-    title: 'Получить зарплату',
-    description: 'Какое-то описание дела',
-    priority: 'medium',
-    time: dayjs( new Date( 2022, 4, 28, 18, 30 ) ),
-    id: '1'
-  },
-  {
-    title: 'Купить телефон',
-    description: 'Какое-то описание дела',
-    priority: 'medium',
-    time: dayjs( new Date( 2022, 4, 29, 18, 30 ) ),
-    id: '1'
-  },
-  {
-    title: 'Купить телефон',
-    description: 'Какое-то описание дела',
-    priority: 'medium',
-    time: dayjs( new Date( 2022, 4, 30, 18, 30 ) ),
-    id: '1'
-  },
-  {
-    title: 'Получить зарплату',
-    description: 'Какое-то описание дела',
-    priority: 'medium',
-    time: dayjs( new Date( 2022, 4, 31, 18, 30 ) ),
-    id: '1'
-  },
-  {
-    title: 'Купить телефон',
-    description: 'Какое-то описание дела',
-    priority: 'medium',
-    time: dayjs( new Date( 2022, 4, 32, 18, 30 ) ),
-    id: '1'
-  },
-  {
-    title: 'Купить хлеб',
-    description: 'Какое-то описание дела',
-    priority: 'medium',
-    time: dayjs( new Date( 2022, 4, 31, 18, 30 ) ),
-    id: '1'
-  },
-  {
-    title: 'Купить молоко',
-    description: 'Какое-то описание дела',
-    priority: 'medium',
-    time: dayjs( new Date( 2022, 4, 28, 18, 30 ) ),
-    id: '1'
-  },
-  {
-    title: 'Купить машину',
-    description: 'Какое-то описание дела',
-    priority: 'medium',
-    time: dayjs( new Date( 2022, 4, 11, 18, 30 ) ),
-    id: '1'
-  },
-  {
-    title: 'Купить ноутбук',
-    description: 'Какое-то описание дела',
-    priority: 'medium',
-    time: dayjs( new Date( 2022, 4, 17, 18, 30 ) ),
-    id: '1'
-  },
-  {
-    title: 'Купить подарок',
-    description: 'Какое-то описание дела',
-    priority: 'medium',
-    time: dayjs( new Date( 2022, 4, 14, 18, 30 ) ),
-    id: '1'
-  },
-  {
-    title: 'Сходить в Халил',
-    description: 'Какое-то описание дела',
-    priority: 'medium',
-    time: dayjs( new Date( 2022, 4, 1, 18, 30 ) ),
-    id: '1'
-  },
-  {
-    title: 'Заправить машину',
-    description: 'Какое-то описание дела',
-    priority: 'medium',
-    time: dayjs( new Date( 2022, 4, 22, 18, 30 ) ),
-    id: '1'
-  },
-  {
-    title: 'Написать календарь',
-    description: 'Какое-то описание дела',
-    priority: 'medium',
-    time: dayjs( new Date( 2022, 4, 21, 18, 30 ) ),
-    id: '1'
-  },
-  {
-    title: 'Протестировать календарь',
-    description: 'Какое-то описание дела',
-    priority: 'medium',
-    time: dayjs( new Date( 2022, 4, 9, 18, 30 ) ),
-    id: '1'
-  },
-  {
-    title: 'Получить зарплату',
-    description: 'Какое-то описание дела',
-    priority: 'medium',
-    time: dayjs( new Date( 2022, 4, 14, 18, 30 ) ),
-    id: '1'
-  },
-  {
-    title: 'Купить телефон',
-    description: 'Какое-то описание дела',
-    priority: 'medium',
-    time: dayjs( new Date( 2022, 4, 17, 18, 30 ) ),
-    id: '1'
-  },
-  {//
-    title: 'Купить хлеб 2',
-    description: 'Какое-то описание дела',
-    priority: 'medium',
-    time: dayjs( new Date( 2022, 4, 1, 18, 30 ) ),
-    id: '1'
-  },
-  {
-    title: 'Купить молоко',
-    description: 'Какое-то описание дела',
-    priority: 'medium',
-    time: dayjs( new Date( 2022, 4, 2, 18, 30 ) ),
-    id: '1'
-  },
-  {
-    title: 'Купить машину',
-    description: 'Какое-то описание дела',
-    priority: 'medium',
-    time: dayjs( new Date( 2022, 4, 3, 18, 30 ) ),
-    id: '1'
-  },
-  {
-    title: 'Купить ноутбук',
-    description: 'Какое-то описание дела',
-    priority: 'medium',
-    time: dayjs( new Date( 2022, 4, 4, 18, 30 ) ),
-    id: '1'
-  },
-  {
-    title: 'Купить подарок',
-    description: 'Какое-то описание дела',
-    priority: 'medium',
-    time: dayjs( new Date( 2022, 4, 5, 18, 30 ) ),
-    id: '1'
-  },
-  {
-    title: 'Сходить в Халил',
-    description: 'Какое-то описание дела',
-    priority: 'medium',
-    time: dayjs( new Date( 2022, 4, 6, 18, 30 ) ),
-    id: '1'
-  },
-  {
-    title: 'Заправить машину',
-    description: 'Какое-то описание дела',
-    priority: 'medium',
-    time: dayjs( new Date( 2022, 4, 7, 18, 30 ) ),
-    id: '1'
-  },
-  {
-    title: 'Написать календарь',
-    description: 'Какое-то описание дела',
-    priority: 'medium',
-    time: dayjs( new Date( 2022, 4, 8, 18, 30 ) ),
-    id: '1'
-  },
-  {
-    title: 'Протестировать календарь',
-    description: 'Какое-то описание дела',
-    priority: 'medium',
-    time: dayjs( new Date( 2022, 4, 9, 18, 30 ) ),
-    id: '1'
-  },
-  {
-    title: 'Получить зарплату',
-    description: 'Какое-то описание дела',
-    priority: 'medium',
-    time: dayjs( new Date( 2022, 4, 10, 18, 30 ) ),
-    id: '1'
-  },
-  {
-    title: 'Купить телефон',
-    description: 'Какое-то описание дела',
-    priority: 'medium',
-    time: dayjs( new Date( 2022, 4, 11, 18, 30 ) ),
-    id: '1'
-  },
-  {//
-    title: 'Купить хлеб 2',
-    description: 'Какое-то описание дела',
-    priority: 'medium',
-    time: dayjs( new Date( 2022, 4, 12, 18, 30 ) ),
-    id: '1'
-  },
-  {
-    title: 'Купить молоко',
-    description: 'Какое-то описание дела',
-    priority: 'medium',
-    time: dayjs( new Date( 2022, 4, 13, 18, 30 ) ),
-    id: '1'
-  },
-  {
-    title: 'Купить машину',
-    description: 'Какое-то описание дела',
-    priority: 'medium',
-    time: dayjs( new Date( 2022, 4, 14, 18, 30 ) ),
-    id: '1'
-  },
-  {
-    title: 'Купить ноутбук',
-    description: 'Какое-то описание дела',
-    priority: 'medium',
-    time: dayjs( new Date( 2022, 4, 15, 18, 30 ) ),
-    id: '1'
-  },
-  {
-    title: 'Купить подарок',
-    description: 'Какое-то описание дела',
-    priority: 'medium',
-    time: dayjs( new Date( 2022, 4, 16, 18, 30 ) ),
-    id: '1'
-  },
-  {
-    title: 'Сходить в Халил',
-    description: 'Какое-то описание дела',
-    priority: 'medium',
-    time: dayjs( new Date( 2022, 4, 17, 18, 30 ) ),
-    id: '1'
-  },
-  {
-    title: 'Заправить машину',
-    description: 'Какое-то описание дела',
-    priority: 'medium',
-    time: dayjs( new Date( 2022, 4, 17, 18, 30 ) ),
-    id: '1'
-  },
-  {
-    title: 'Написать календарь',
-    description: 'Какое-то описание дела',
-    priority: 'medium',
-    time: dayjs( new Date( 2022, 4, 18, 18, 30 ) ),
-    id: '1'
-  },
-  {
-    title: 'Протестировать календарь',
-    description: 'Какое-то описание дела',
-    priority: 'medium',
-    time: dayjs( new Date( 2022, 4, 19, 18, 30 ) ),
-    id: '1'
-  },
-  {
-    title: 'Получить зарплату',
-    description: 'Какое-то описание дела',
-    priority: 'medium',
-    time: dayjs( new Date( 2022, 4, 20, 18, 30 ) ),
-    id: '1'
-  },
-  {
-    title: 'Купить телефон',
-    description: 'Какое-то описание дела',
-    priority: 'medium',
-    time: dayjs( new Date( 2022, 4, 21, 18, 30 ) ),
-    id: '1'
-  },
-  {
-    title: 'Получить зарплату',
-    description: 'Какое-то описание дела',
-    priority: 'medium',
-    time: dayjs( new Date( 2022, 4, 22, 18, 30 ) ),
-    id: '1'
-  },
-  {
-    title: 'Купить телефон',
-    description: 'Какое-то описание дела',
-    priority: 'medium',
-    time: dayjs( new Date( 2022, 4, 23, 18, 30 ) ),
-    id: '1'
-  },
-  {
-    title: 'Купить телефон',
-    description: 'Какое-то описание дела',
-    priority: 'medium',
-    time: dayjs( new Date( 2022, 4, 24, 18, 30 ) ),
-    id: '1'
-  },
-  {
-    title: 'Получить зарплату',
-    description: 'Какое-то описание дела',
-    priority: 'medium',
-    time: dayjs( new Date( 2022, 4, 25, 18, 30 ) ),
-    id: '1'
-  },
-  {
-    title: 'Купить телефон',
-    description: 'Какое-то описание дела',
-    priority: 'medium',
-    time: dayjs( new Date( 2022, 4, 26, 18, 30 ) ),
-    id: '1'
-  },
-  {
-    title: 'Купить телефон',
-    description: 'Какое-то описание дела',
-    priority: 'medium',
-    time: dayjs( new Date( 2022, 4, 27, 18, 30 ) ),
-    id: '1'
-  },
-  {
-    title: 'Получить зарплату',
-    description: 'Какое-то описание дела',
-    priority: 'medium',
-    time: dayjs( new Date( 2022, 4, 28, 18, 30 ) ),
-    id: '1'
-  },
-  {
-    title: 'Купить телефон',
-    description: 'Какое-то описание дела',
-    priority: 'medium',
-    time: dayjs( new Date( 2022, 4, 29, 18, 30 ) ),
-    id: '1'
-  },
-  {
-    title: 'Купить телефон',
-    description: 'Какое-то описание дела',
-    priority: 'medium',
-    time: dayjs( new Date( 2022, 4, 30, 18, 30 ) ),
-    id: '1'
-  },
-  {
-    title: 'Получить зарплату',
-    description: 'Какое-то описание дела',
-    priority: 'medium',
-    time: dayjs( new Date( 2022, 4, 31, 18, 30 ) ),
-    id: '1'
-  },
-  {
-    title: 'Купить телефон',
-    description: 'Какое-то описание дела',
-    priority: 'medium',
-    time: dayjs( new Date( 2022, 4, 32, 18, 30 ) ),
-    id: '1'
+    time: dayjs( new Date( 2022, 5, 1, 12, 20 ) ).add( 3, 'day' ).toDate(),
+    members: [
+      {
+        name: 'Владос',
+        surname: 'Валеев',
+        patronymic: 'Ринатович',
+        id: '1',
+        gender: 'man',
+        socialNetworks: [
+          {
+            networkName: 'vk',
+            link: 'https://vk.com/yudakov2014'
+          }
+        ]
+      }
+    ]
+  },
+  {
+    id: '2',
+    title: 'Проконтролировать акции в БКС',
+    description: 'Необходимо проконтролировать акции в БКС, так как сильно меняются котировки. Возможно, будет шанс докупиться',
+    createdAt: new Date(),
+    priority: 'veryHigh',
+    time: dayjs( new Date( 2022, 5, 1, 20, 50 ) ).toDate(),
+    members: [
+      {
+        name: 'Владос',
+        surname: 'Валеев',
+        patronymic: 'Ринатович',
+        id: '1',
+        gender: 'man',
+        socialNetworks: [
+          {
+            networkName: 'vk',
+            link: 'https://vk.com/yudakov2014'
+          }
+        ]
+      },
+      {
+        name: 'Лизок',
+        surname: 'Жукова',
+        patronymic: 'Юрьевна',
+        id: '2',
+        gender: 'woman',
+        socialNetworks: [
+          {
+            networkName: 'vk',
+            link: 'https://vk.com/yudakov2014'
+          }
+        ]
+      },
+      {
+        name: 'Владос',
+        surname: 'Валеев',
+        patronymic: 'Ринатович',
+        id: '1',
+        gender: 'man',
+        socialNetworks: [
+          {
+            networkName: 'vk',
+            link: 'https://vk.com/yudakov2014'
+          }
+        ]
+      },
+      {
+        name: 'Лизок',
+        surname: 'Жукова',
+        patronymic: 'Юрьевна',
+        id: '2',
+        gender: 'woman',
+        socialNetworks: [
+          {
+            networkName: 'vk',
+            link: 'https://vk.com/yudakov2014'
+          }
+        ]
+      },
+      {
+        name: 'Владос',
+        surname: 'Валеев',
+        patronymic: 'Ринатович',
+        id: '1',
+        gender: 'man',
+        socialNetworks: [
+          {
+            networkName: 'vk',
+            link: 'https://vk.com/yudakov2014'
+          }
+        ]
+      },
+      {
+        name: 'Лизок',
+        surname: 'Жукова',
+        patronymic: 'Юрьевна',
+        id: '2',
+        gender: 'woman',
+        socialNetworks: [
+          {
+            networkName: 'vk',
+            link: 'https://vk.com/yudakov2014'
+          }
+        ]
+      }, {
+        name: 'Владос',
+        surname: 'Валеев',
+        patronymic: 'Ринатович',
+        id: '1',
+        gender: 'man',
+        socialNetworks: [
+          {
+            networkName: 'vk',
+            link: 'https://vk.com/yudakov2014'
+          }
+        ]
+      },
+      {
+        name: 'Лизок',
+        surname: 'Жукова',
+        patronymic: 'Юрьевна',
+        id: '2',
+        gender: 'woman',
+        socialNetworks: [
+          {
+            networkName: 'vk',
+            link: 'https://vk.com/yudakov2014'
+          }
+        ]
+      },
+      {
+        name: 'Владос',
+        surname: 'Валеев',
+        patronymic: 'Ринатович',
+        id: '1',
+        gender: 'man',
+        socialNetworks: [
+          {
+            networkName: 'vk',
+            link: 'https://vk.com/yudakov2014'
+          }
+        ]
+      },
+      {
+        name: 'Лизок',
+        surname: 'Жукова',
+        patronymic: 'Юрьевна',
+        id: '2',
+        gender: 'woman',
+        socialNetworks: [
+          {
+            networkName: 'vk',
+            link: 'https://vk.com/yudakov2014'
+          }
+        ]
+      },
+      {
+        name: 'Владос',
+        surname: 'Валеев',
+        patronymic: 'Ринатович',
+        id: '1',
+        gender: 'man',
+        socialNetworks: [
+          {
+            networkName: 'vk',
+            link: 'https://vk.com/yudakov2014'
+          }
+        ]
+      },
+      {
+        name: 'Лизок',
+        surname: 'Жукова',
+        patronymic: 'Юрьевна',
+        id: '2',
+        gender: 'woman',
+        socialNetworks: [
+          {
+            networkName: 'vk',
+            link: 'https://vk.com/yudakov2014'
+          }
+        ]
+      }, {
+        name: 'Владос',
+        surname: 'Валеев',
+        patronymic: 'Ринатович',
+        id: '1',
+        gender: 'man',
+        socialNetworks: [
+          {
+            networkName: 'vk',
+            link: 'https://vk.com/yudakov2014'
+          }
+        ]
+      },
+      {
+        name: 'Лизок',
+        surname: 'Жукова',
+        patronymic: 'Юрьевна',
+        id: '2',
+        gender: 'woman',
+        socialNetworks: [
+          {
+            networkName: 'vk',
+            link: 'https://vk.com/yudakov2014'
+          }
+        ]
+      },
+      {
+        name: 'Владос',
+        surname: 'Валеев',
+        patronymic: 'Ринатович',
+        id: '1',
+        gender: 'man',
+        socialNetworks: [
+          {
+            networkName: 'vk',
+            link: 'https://vk.com/yudakov2014'
+          }
+        ]
+      },
+      {
+        name: 'Лизок',
+        surname: 'Жукова',
+        patronymic: 'Юрьевна',
+        id: '2',
+        gender: 'woman',
+        socialNetworks: [
+          {
+            networkName: 'vk',
+            link: 'https://vk.com/yudakov2014'
+          }
+        ]
+      },
+      {
+        name: 'Владос',
+        surname: 'Валеев',
+        patronymic: 'Ринатович',
+        id: '1',
+        gender: 'man',
+        socialNetworks: [
+          {
+            networkName: 'vk',
+            link: 'https://vk.com/yudakov2014'
+          }
+        ]
+      },
+      {
+        name: 'Лизок',
+        surname: 'Жукова',
+        patronymic: 'Юрьевна',
+        id: '2',
+        gender: 'woman',
+        socialNetworks: [
+          {
+            networkName: 'vk',
+            link: 'https://vk.com/yudakov2014'
+          }
+        ]
+      }
+    ]
+  },
+  {
+    id: '3',
+    title: 'Проконтролировать акции в БКС',
+    description: 'Необходимо проконтролировать акции в БКС, так как сильно меняются котировки. Возможно, будет шанс докупиться',
+    createdAt: new Date(),
+    priority: 'veryHigh',
+    time: dayjs( new Date( 2022, 5, 1, 20, 50 ) ).toDate(),
+    members: [
+      {
+        name: 'Владос',
+        surname: 'Валеев',
+        patronymic: 'Ринатович',
+        id: '1',
+        gender: 'man',
+        socialNetworks: [
+          {
+            networkName: 'vk',
+            link: 'https://vk.com/yudakov2014'
+          }
+        ]
+      },
+      {
+        name: 'Лизок',
+        surname: 'Жукова',
+        patronymic: 'Юрьевна',
+        id: '2',
+        gender: 'woman',
+        socialNetworks: [
+          {
+            networkName: 'vk',
+            link: 'https://vk.com/yudakov2014'
+          }
+        ]
+      }
+    ]
   }
 ]
-console.log( 'всего задач: ', defaultTasksList.length )
 
 const getTask = ( { year, month }: CalendarCurrentData, tasks: CalendarTaskList ): TaskStorage => {
-  console.log( 'Перезапуск' )
-  const start = new Date()
   const r: TaskStorage = {}
 
   tasks.forEach( ( task ) => {
-    const y = task.time.year()
-    const m = task.time.month()
-    const d = task.time.date()
+    const y: number = dayjs( task.time ).year()
+    const m: number = dayjs( task.time ).month()
+    const d: number = dayjs( task.time ).date()
 
     const currentYear: TaskYear = r[ y ] || {}
     const currentMonth: TaskMonth = currentYear[ m ] || {}
@@ -657,24 +353,21 @@ const getTask = ( { year, month }: CalendarCurrentData, tasks: CalendarTaskList 
     r[ y ] = currentYear
   } )
 
-  const end = new Date()
-  console.log( `Время затраченное на упаковку списка задач из ${tasks?.length} элементов: ${end.getTime() - start.getTime()}мс.` )
   return r || {}
 }
 
 const FullSizeCalendar: FC<FullSizeCalendarProps> = ( {
                                                         list,
-                                                        renderOption,
                                                         current,
                                                         tasksList,
-                                                        addTasks
+                                                        onAddTask,
+                                                        onSelectTask
                                                       } ) => {
-  const title = useMemo( () => {
+  const title: string = useMemo( () => {
     return `${MonthList[ current.month ]} ${current.year}г.`
   }, [current] )
 
-  const taskList = useMemo( () => {
-    console.log( 'useMemo' )
+  const taskList: TaskStorage = useMemo( () => {
     return !!tasksList?.length ? getTask( current, tasksList ) : {}
   }, [current, tasksList] )
 
@@ -683,29 +376,104 @@ const FullSizeCalendar: FC<FullSizeCalendarProps> = ( {
       <CalendarTitle>
         {title}
       </CalendarTitle>
+
       <CalendarDateListContainer>
-        {list.map( item => {
-          const year = taskList[ item.value.year() ] || {}
-          const month = year[ item.value.month() ] || {}
-          const day = month[ item.value.date() ] || []
-          return (
-            <CalendarCell
-              key={item.value.toDate().toString()}
-              addTasks={addTasks}
-              value={item}
-              tasks={day || []}
-              renderOption={renderOption}
-            />
-          )
-        } )}
+        {WeekDaysList.map( day => (
+          <FlexBlock
+            justify={'center'}
+            width={'100%'}
+            p={'12px 0px'}
+            borderBottom={`1px solid ${defaultColor}`}
+          >
+            {day}
+          </FlexBlock>
+        ) )}
+        {list.map( item => (
+          <CalendarCell
+            key={item.value.toString()}
+            onAddTask={onAddTask}
+            value={item}
+            tasks={getTaskListOfDay( item, taskList )}
+            onSelectTask={onSelectTask}
+          />
+        ) )}
       </CalendarDateListContainer>
     </CalendarDesktopContainer>
   )
 }
 
+
+const TaskInfoModal: FC<TaskInfoModalProps> = ( { selectedTask, onClose } ) => {
+  return (
+    <Modal
+      isView={!!selectedTask}
+      onClose={() => onClose()}
+    >
+      <ModalHeader>
+        <TaskTileText maxWidth={'100%'} fs={'18px'} data-title={selectedTask?.taskInfo.title}>
+          {selectedTask?.taskInfo.title}
+        </TaskTileText>
+      </ModalHeader>
+      <ModalBody>
+        <TaskInformer taskItem={selectedTask}/>
+      </ModalBody>
+      <ModalFooter>
+        <div style={{
+          display: 'flex',
+          justifyContent: 'flex-end',
+          alignItems: 'center',
+          width: '100%'
+        }}>
+
+          <StyledButton>
+            Ок
+          </StyledButton>
+          <StyledButton
+            onClick={() => onClose()}
+            fillColor={'#fff'}
+            textColor={defaultColor}
+          >
+            Закрыть
+          </StyledButton>
+        </div>
+      </ModalFooter>
+    </Modal>
+  )
+}
+
+const AddTaskModal: FC<AddTaskModalProps> = ( { date, onClose, onComplete } ) => {
+  return (
+    <Modal
+      isView={!!date}
+      onClose={onClose}
+    >
+      <ModalHeader>
+        <TaskTileText maxWidth={'100%'} fs={'18px'}>
+          Добавить задание на {dayjs( date?.value ).format( DATE_RENDER_FORMAT )}
+        </TaskTileText>
+      </ModalHeader>
+      <ModalBody>
+      </ModalBody>
+      <ModalFooter>
+        <FlexBlock justify={'flex-end'} align={'center'} width={'100%'}>
+          <StyledButton onClick={() => onComplete && onComplete()}>
+            Ок
+          </StyledButton>
+          <StyledButton
+            onClick={() => onClose && onClose()}
+            fillColor={'#fff'}
+            textColor={defaultColor}
+          >
+            Закрыть
+          </StyledButton>
+        </FlexBlock>
+      </ModalFooter>
+    </Modal>
+  )
+}
+
 export const Calendar: FC<CalendarProps> = ( {
                                                current,
-                                               renderOption = 'full-size',
                                                disabledOptions = {}
                                              } ) => {
   const calendarList: CalendarList = useMemo( () => {
@@ -713,43 +481,34 @@ export const Calendar: FC<CalendarProps> = ( {
   }, [current] )
 
   const [tasksList, setTasksList] = useState( defaultTasksList )
+  const [selectedTask, setSelectedTask] = useState<SelectTaskItem | null>( null )
+  const [addTaskDate, setAddTaskDate] = useState<CalendarItem | null>( null )
 
-  useEffect( () => {
-    console.log( 'tasksList был изменен' )
-  }, [tasksList] )
-
-  if( renderOption === 'full-size' ) {
-    return (
-      <>
-        <FullSizeCalendar
-          current={current}
-          list={calendarList}
-          renderOption={renderOption}
-          tasksList={tasksList}
-          addTasks={( task ) => setTasksList( prev => {
-            // console.log( 'Получено задание на добавление: ', task )
-            // console.log( 'Длина предыдущего списка', prev.length )
-
-            const newArr = [...prev]
-            if( task ) {
-              newArr.push( task )
-            }
-
-            // console.log( 'Длина обновленного списка', prev.length )
-            return newArr
-          } )}
-        />
-      </>
-    )
+  const onSelectTask: FullSizeCalendarProps['onSelectTask'] = ( data ) => {
+    setSelectedTask( { ...data } )
   }
 
-  if( renderOption === 'input-mode' ) {
-    return (
-      <>
-
-      </>
-    )
+  const onAddTask: FullSizeCalendarProps['onAddTask'] = ( date ) => {
+    setAddTaskDate( date )
   }
 
-  return <>Некорректное значение в prop: "renderOption"</>
+  return (
+    <FlexBlock position={'relative'}>
+      <FullSizeCalendar
+        current={current}
+        list={calendarList}
+        tasksList={tasksList}
+        onAddTask={onAddTask}
+        onSelectTask={onSelectTask}
+      />
+      <AddTaskModal
+        date={addTaskDate}
+        onClose={() => setAddTaskDate( null )}
+      />
+      <TaskInfoModal
+        selectedTask={selectedTask}
+        onClose={() => setSelectedTask( null )}
+      />
+    </FlexBlock>
+  )
 }

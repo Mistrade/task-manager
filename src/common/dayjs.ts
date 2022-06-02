@@ -114,13 +114,13 @@ const checkIsDisabledDate = ( currentDate: dayjs.Dayjs, options: CalendarDisable
   let result = false
 
   if( min ) {
-    result = includeMin ? min.isAfter( currentDate, 'day' ) : min.isSameOrAfter( currentDate, 'day' )
+    result = includeMin ? dayjs( min ).isAfter( currentDate, 'day' ) : dayjs( min ).isSameOrAfter( currentDate, 'day' )
     if( result ) return true
   }
 
   if( max ) {
     // console.log( 'max from: ', max )
-    result = includeMax ? max.isBefore( currentDate, 'day' ) : max.isSameOrBefore( currentDate, 'day' )
+    result = includeMax ? dayjs( max ).isBefore( currentDate, 'day' ) : dayjs( max ).isSameOrBefore( currentDate, 'day' )
     if( result ) return true
   }
 
@@ -160,7 +160,7 @@ const generateDateArray: GenerateDateArrayFn = ( current, {
 
   while (iterationDate.isBetween( startDate, endDate, 'day', '[]' )) {
     array.push( {
-      value: iterationDate,
+      value: iterationDate.toDate(),
       meta: {
         isToday: iterationDate.isToday(),
         isTomorrow: iterationDate.isTomorrow(),

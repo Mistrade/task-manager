@@ -10,11 +10,14 @@ import {
 } from './types'
 import { addNull } from '../../common/functions'
 import { defaultTasksList } from './calendar'
-
-const disabledColor = 'rgba(30,30,30,.1)'
-const defaultColor = 'rgba(30,30,30,.30)'
-const currentColor = 'rgba(100,149,237,.9)'
-const hoverColor = 'rgba(100,149,237,.35)'
+import {
+  currentColor,
+  defaultColor,
+  disabledColor,
+  hoverColor,
+  priorityColors
+} from '../../common/constants'
+import dayjs from 'dayjs'
 
 interface CellComponentProps {
   disabled?: boolean,
@@ -152,12 +155,13 @@ const TaskTile = styled( 'div' )<CellComponentProps & { withFill?: boolean }>`
   }
 `
 
-const TaskTileText = styled( 'span' )<{ isCompleted?: boolean }>`
+export const TaskTileText = styled( 'span' )<{ isCompleted?: boolean, maxWidth?: string, fs?: string }>`
   & {
-    font-size: 12px;
+    display: block;
+    font-size: ${props => props.fs || '12px'};
     line-height: 1;
     width: 100%;
-    max-width: 70%;
+    max-width: ${props => props.maxWidth || '70%'};
     white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis;
@@ -202,38 +206,15 @@ const Indicator = styled( 'span' )<{ color: string }>`
   }
 `
 
-const priorityColors: { [key in CalendarPriorityKeys]: string } = {
-  veryLow: defaultColor,
-  low: 'lightblue',
-  medium: currentColor,
-  high: 'orange',
-  veryHigh: 'red'
-}
 
 export const CalendarCell: FC<CalendarCellProps> = ( {
                                                        value,
-                                                       renderOption,
                                                        tasks = [],
-                                                       addTasks,
-                                                       renderTaskCount
+                                                       onAddTask,
+                                                       renderTaskCount,
+                                                       onSelectTask
                                                      } ) => {
   const [isHover, setIsHover] = useState( false )
-
-  const clickHandler = async () => {
-
-    if( addTasks ) {
-      const r = Math.floor( Math.random() * defaultTasksList.length )
-      const el = { ...defaultTasksList[ r ] }
-
-      if( el.time ) {
-        el.time = value.value
-      }
-
-      console.log( 'Элемент на добавление', el )
-      await addTasks( el )
-    }
-
-  }
 
   return (
     <CellContainer
@@ -245,19 +226,19 @@ export const CalendarCell: FC<CalendarCellProps> = ( {
         onMouseLeave={() => setIsHover( false )}
       >
         {isHover && (
-          <AddTask onClick={clickHandler}>&#x0002B;</AddTask>
+          <AddTask onClick={() => onAddTask && onAddTask( value )}>&#x0002B;</AddTask>
         )}
         <CalendarDate
           disabled={value.meta.isDisabled}
           isCurrent={value.meta.isCurrent}
         >
-          {!isHover && addNull( value.value.date() )}
+          {!isHover && addNull( dayjs( value.value ).date() )}
         </CalendarDate>
       </CalendarDateContainer>
       <TaskTileList
         tasks={tasks}
         date={value}
-        onSelect={( data ) => console.log( data )}
+        onSelect={onSelectTask}
       />
     </CellContainer>
   )
@@ -313,10 +294,10 @@ export const TaskTileItem: FC<TaskTileItemProps> = ( { taskInfo, onSelect, date 
     >
       <TaskTilePriorityIndicator priority={taskInfo.priority} isCompleted={!!taskInfo.isCompleted}/>
       <TaskTileText isCompleted={!!taskInfo.isCompleted}>
-        {taskInfo.title + ' ' + taskInfo.title}
+        {taskInfo.title}
       </TaskTileText>
       <TaskTimeValue>
-        {addNull( taskInfo.time.hour() )}:{addNull( taskInfo.time.minute() )}
+        {addNull( dayjs( taskInfo.time ).hour() )}:{addNull( dayjs( taskInfo.time ).minute() )}
       </TaskTimeValue>
     </TaskTile>
   )
