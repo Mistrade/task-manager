@@ -1,8 +1,13 @@
 import {
-  CalendarItem, CalendarTaskList,
+  CalendarCurrentData,
+  CalendarItem,
+  CalendarTaskList,
   SelectTaskItem,
+  TaskDate,
+  TaskMonth,
   TaskStorage,
-  TaskTileClickArguments
+  TaskTileClickArguments,
+  TaskYear
 } from '../components/Calendars/types'
 import dayjs from 'dayjs'
 
@@ -35,4 +40,27 @@ export const getTaskListOfDay = ( day: CalendarItem, storage: TaskStorage ): Cal
   const d = m[ dayjs( day.value ).date() ] || []
 
   return d
+}
+export const getTaskStorage = ( {
+                                  year,
+                                  month
+                                }: CalendarCurrentData, tasks: CalendarTaskList ): TaskStorage => {
+  const r: TaskStorage = {}
+
+  tasks.forEach( ( task ) => {
+    const y: number = dayjs( task.time ).year()
+    const m: number = dayjs( task.time ).month()
+    const d: number = dayjs( task.time ).date()
+
+    const currentYear: TaskYear = r[ y ] || {}
+    const currentMonth: TaskMonth = currentYear[ m ] || {}
+    const currentDate: TaskDate = currentMonth[ d ] || []
+    currentDate.push( task )
+
+    currentMonth[ d ] = currentDate
+    currentYear[ m ] = currentMonth
+    r[ y ] = currentYear
+  } )
+
+  return r || {}
 }

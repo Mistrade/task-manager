@@ -1,4 +1,4 @@
-import { FC, ReactNode } from 'react'
+import { FC, memo, ReactNode } from 'react'
 import {
   GenderKeys,
   SelectTaskItem,
@@ -11,7 +11,7 @@ import dayjs from 'dayjs'
 import { currentColor, DATE_RENDER_FORMAT, defaultColor } from '../../../common/constants'
 import { Female, Male } from '../../Icons/icons'
 import { checkTaskStatus } from '../../../common/functions'
-import { FlexBlock } from '../../LayoutComponents/flexBlock'
+import { FlexBlock, FlexBlockProps } from '../../LayoutComponents/flexBlock'
 
 const FlexColumn = styled( 'div' )`
   & {
@@ -81,41 +81,29 @@ const TaskMemberListContainer = styled( FlexColumn )`
   }
 `
 
-const TaskMemberItemContainer = styled( 'div' )`
-  & {
-    padding: 12px 6px;
-    border: 1px solid black;
-    display: flex;
-    justify-content: flex-start;
-    align-items: center;
-    flex-direction: row;
-    width: 100%
-  }
-
-  &:not(:last-child) {
-    margin-bottom: 4px;
-  }
-`
-
-const TaskMemberItemIconContainer = styled( 'div' )`
-  & {
-    margin-right: 6px;
-    display: flex;
-    align-items: center;
-  }
-`
+const TaskMemberItemContainer: FC<FlexBlockProps> = memo( ( props ) => {
+  return <FlexBlock
+    {...props}
+    p={'12px 6px'}
+    border={'1px solid black'}
+    justify={'start'}
+    align={'center'}
+    direction={'row'}
+    width={'100%'}
+    borderRadius={4}
+    additionalCss={css`
+      &:not(:last-child) {
+        margin-bottom: 4px;
+      }
+    `}
+  />
+} )
 
 const TaskMemberItemNameContainer = styled( 'div' )`
   & {
     font-size: 16px;
     flex-grow: 1;
     text-align: left;
-  }
-`
-
-const TaskInformerMainContainer = styled( FlexRowStart )`
-  & {
-    width: fit-content;
   }
 `
 
@@ -129,15 +117,6 @@ const TaskInformerDataList = styled( FlexRowStart )`
 
   &:not(:last-child) {
     margin-right: 32px;
-  }
-`
-
-const TaskInformerNotFoundContainer = styled( 'div' )`
-  & {
-    display: flex;
-    height: 100%;
-    justify-content: center;
-    align-items: center;
   }
 `
 
@@ -168,11 +147,11 @@ const TaskMemberList: FC<{ members: TaskMembersListType }> = ( { members } ) => 
         title={'Участники:'}
         value={members.length.toString()}
       />
-      <FlexColumn>
+      <FlexBlock justify={'flex-start'} align={'flex-start'} direction={'column'} width={'100%'}>
         {members.map( ( member ) => (
           <TaskMemberItem member={member}/>
         ) )}
-      </FlexColumn>
+      </FlexBlock>
     </TaskMemberListContainer>
   )
 }
@@ -180,11 +159,11 @@ const TaskMemberList: FC<{ members: TaskMembersListType }> = ( { members } ) => 
 const TaskMemberItem: FC<{ member: TaskMemberItemType }> = ( { member } ) => {
   return (
     <TaskMemberItemContainer>
-      <TaskMemberItemIconContainer>
+      <FlexBlock mr={6} align={'center'}>
         {member.gender === 'woman' ? (
           <Female size={20} color={'#000'}/>
         ) : <Male size={20} color={'#000'}/>}
-      </TaskMemberItemIconContainer>
+      </FlexBlock>
       <TaskMemberItemNameContainer>
         {`${member.surname} ${member.name}`}
       </TaskMemberItemNameContainer>
@@ -194,7 +173,7 @@ const TaskMemberItem: FC<{ member: TaskMemberItemType }> = ( { member } ) => {
 
 const TaskInformerMain: FC<TaskInformerMainProps> = ( { taskItem } ) => {
   return (
-    <TaskInformerMainContainer>
+    <FlexBlock width={'fit-content'}>
       <TaskInformerDataList>
         <TaskInfoText
           title={'Создано:'}
@@ -217,7 +196,7 @@ const TaskInformerMain: FC<TaskInformerMainProps> = ( { taskItem } ) => {
       <TaskInformerDataList>
         <TaskMemberList members={taskItem.taskInfo.members}/>
       </TaskInformerDataList>
-    </TaskInformerMainContainer>
+    </FlexBlock>
   )
 }
 

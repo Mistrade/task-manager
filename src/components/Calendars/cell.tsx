@@ -9,10 +9,9 @@ import {
   TaskTilePriorityIndicatorProps
 } from './types'
 import { addNull } from '../../common/functions'
-import { defaultTasksList } from './calendar'
 import {
   currentColor,
-  defaultColor,
+  defaultColor, defaultTasksList,
   disabledColor,
   hoverColor,
   priorityColors

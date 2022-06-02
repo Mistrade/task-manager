@@ -1,19 +1,14 @@
 import {
   AddTaskModalProps,
-  CalendarCurrentData, CalendarItem,
+  CalendarItem,
   CalendarList,
   CalendarProps,
-  CalendarTaskList,
-  CustomObject,
   FullSizeCalendarProps,
-  PartialCustomObject, SelectTaskItem,
-  TaskDate, TaskInfoModalProps,
-  TaskMonth,
-  TaskStorage,
-  TaskTileClickArguments,
-  TaskYear
+  SelectTaskItem,
+  TaskInfoModalProps,
+  TaskStorage
 } from './types'
-import { FC, useEffect, useMemo, useState } from 'react'
+import { FC, useMemo, useState } from 'react'
 import { getPickerDates } from '../../common/dayjs'
 import {
   CalendarDateListContainer,
@@ -21,340 +16,19 @@ import {
   CalendarTitle
 } from './calendar.styled'
 import { CalendarCell, TaskTileText } from './cell'
-import { DATE_RENDER_FORMAT, defaultColor, MonthList, WeekDaysList } from '../../common/constants'
+import {
+  DATE_RENDER_FORMAT,
+  defaultColor,
+  defaultTasksList,
+  MonthList,
+  WeekDaysList
+} from '../../common/constants'
 import dayjs from 'dayjs'
 import { Modal, ModalBody, ModalFooter, ModalHeader } from '../Modal/modal'
 import { TaskInformer } from './TaskInformer/taskInformer'
 import { StyledButton } from '../Buttons/buttons.styled'
-import { ModalProps } from '../Modal/types'
-import Weekday from 'dayjs/plugin/weekday'
 import { FlexBlock } from '../LayoutComponents/flexBlock'
-import { getTaskListOfDay } from '../../common/functions'
-
-export let defaultTasksList: CalendarTaskList = [
-  {
-    id: '1',
-    title: 'Завершить написание модального окна',
-    description: 'Необходимо завершить работу с модальным окном, чтобы информация по заданию выводилась корректно.',
-    createdAt: new Date( 2022, 5, 1, 12, 20 ),
-    priority: 'veryHigh',
-    time: dayjs( new Date( 2022, 5, 1, 12, 20 ) ).add( 3, 'day' ).toDate(),
-    members: [
-      {
-        name: 'Владос',
-        surname: 'Валеев',
-        patronymic: 'Ринатович',
-        id: '1',
-        gender: 'man',
-        socialNetworks: [
-          {
-            networkName: 'vk',
-            link: 'https://vk.com/yudakov2014'
-          }
-        ]
-      }
-    ]
-  },
-  {
-    id: '2',
-    title: 'Проконтролировать акции в БКС',
-    description: 'Необходимо проконтролировать акции в БКС, так как сильно меняются котировки. Возможно, будет шанс докупиться',
-    createdAt: new Date(),
-    priority: 'veryHigh',
-    time: dayjs( new Date( 2022, 5, 1, 20, 50 ) ).toDate(),
-    members: [
-      {
-        name: 'Владос',
-        surname: 'Валеев',
-        patronymic: 'Ринатович',
-        id: '1',
-        gender: 'man',
-        socialNetworks: [
-          {
-            networkName: 'vk',
-            link: 'https://vk.com/yudakov2014'
-          }
-        ]
-      },
-      {
-        name: 'Лизок',
-        surname: 'Жукова',
-        patronymic: 'Юрьевна',
-        id: '2',
-        gender: 'woman',
-        socialNetworks: [
-          {
-            networkName: 'vk',
-            link: 'https://vk.com/yudakov2014'
-          }
-        ]
-      },
-      {
-        name: 'Владос',
-        surname: 'Валеев',
-        patronymic: 'Ринатович',
-        id: '1',
-        gender: 'man',
-        socialNetworks: [
-          {
-            networkName: 'vk',
-            link: 'https://vk.com/yudakov2014'
-          }
-        ]
-      },
-      {
-        name: 'Лизок',
-        surname: 'Жукова',
-        patronymic: 'Юрьевна',
-        id: '2',
-        gender: 'woman',
-        socialNetworks: [
-          {
-            networkName: 'vk',
-            link: 'https://vk.com/yudakov2014'
-          }
-        ]
-      },
-      {
-        name: 'Владос',
-        surname: 'Валеев',
-        patronymic: 'Ринатович',
-        id: '1',
-        gender: 'man',
-        socialNetworks: [
-          {
-            networkName: 'vk',
-            link: 'https://vk.com/yudakov2014'
-          }
-        ]
-      },
-      {
-        name: 'Лизок',
-        surname: 'Жукова',
-        patronymic: 'Юрьевна',
-        id: '2',
-        gender: 'woman',
-        socialNetworks: [
-          {
-            networkName: 'vk',
-            link: 'https://vk.com/yudakov2014'
-          }
-        ]
-      }, {
-        name: 'Владос',
-        surname: 'Валеев',
-        patronymic: 'Ринатович',
-        id: '1',
-        gender: 'man',
-        socialNetworks: [
-          {
-            networkName: 'vk',
-            link: 'https://vk.com/yudakov2014'
-          }
-        ]
-      },
-      {
-        name: 'Лизок',
-        surname: 'Жукова',
-        patronymic: 'Юрьевна',
-        id: '2',
-        gender: 'woman',
-        socialNetworks: [
-          {
-            networkName: 'vk',
-            link: 'https://vk.com/yudakov2014'
-          }
-        ]
-      },
-      {
-        name: 'Владос',
-        surname: 'Валеев',
-        patronymic: 'Ринатович',
-        id: '1',
-        gender: 'man',
-        socialNetworks: [
-          {
-            networkName: 'vk',
-            link: 'https://vk.com/yudakov2014'
-          }
-        ]
-      },
-      {
-        name: 'Лизок',
-        surname: 'Жукова',
-        patronymic: 'Юрьевна',
-        id: '2',
-        gender: 'woman',
-        socialNetworks: [
-          {
-            networkName: 'vk',
-            link: 'https://vk.com/yudakov2014'
-          }
-        ]
-      },
-      {
-        name: 'Владос',
-        surname: 'Валеев',
-        patronymic: 'Ринатович',
-        id: '1',
-        gender: 'man',
-        socialNetworks: [
-          {
-            networkName: 'vk',
-            link: 'https://vk.com/yudakov2014'
-          }
-        ]
-      },
-      {
-        name: 'Лизок',
-        surname: 'Жукова',
-        patronymic: 'Юрьевна',
-        id: '2',
-        gender: 'woman',
-        socialNetworks: [
-          {
-            networkName: 'vk',
-            link: 'https://vk.com/yudakov2014'
-          }
-        ]
-      }, {
-        name: 'Владос',
-        surname: 'Валеев',
-        patronymic: 'Ринатович',
-        id: '1',
-        gender: 'man',
-        socialNetworks: [
-          {
-            networkName: 'vk',
-            link: 'https://vk.com/yudakov2014'
-          }
-        ]
-      },
-      {
-        name: 'Лизок',
-        surname: 'Жукова',
-        patronymic: 'Юрьевна',
-        id: '2',
-        gender: 'woman',
-        socialNetworks: [
-          {
-            networkName: 'vk',
-            link: 'https://vk.com/yudakov2014'
-          }
-        ]
-      },
-      {
-        name: 'Владос',
-        surname: 'Валеев',
-        patronymic: 'Ринатович',
-        id: '1',
-        gender: 'man',
-        socialNetworks: [
-          {
-            networkName: 'vk',
-            link: 'https://vk.com/yudakov2014'
-          }
-        ]
-      },
-      {
-        name: 'Лизок',
-        surname: 'Жукова',
-        patronymic: 'Юрьевна',
-        id: '2',
-        gender: 'woman',
-        socialNetworks: [
-          {
-            networkName: 'vk',
-            link: 'https://vk.com/yudakov2014'
-          }
-        ]
-      },
-      {
-        name: 'Владос',
-        surname: 'Валеев',
-        patronymic: 'Ринатович',
-        id: '1',
-        gender: 'man',
-        socialNetworks: [
-          {
-            networkName: 'vk',
-            link: 'https://vk.com/yudakov2014'
-          }
-        ]
-      },
-      {
-        name: 'Лизок',
-        surname: 'Жукова',
-        patronymic: 'Юрьевна',
-        id: '2',
-        gender: 'woman',
-        socialNetworks: [
-          {
-            networkName: 'vk',
-            link: 'https://vk.com/yudakov2014'
-          }
-        ]
-      }
-    ]
-  },
-  {
-    id: '3',
-    title: 'Проконтролировать акции в БКС',
-    description: 'Необходимо проконтролировать акции в БКС, так как сильно меняются котировки. Возможно, будет шанс докупиться',
-    createdAt: new Date(),
-    priority: 'veryHigh',
-    time: dayjs( new Date( 2022, 5, 1, 20, 50 ) ).toDate(),
-    members: [
-      {
-        name: 'Владос',
-        surname: 'Валеев',
-        patronymic: 'Ринатович',
-        id: '1',
-        gender: 'man',
-        socialNetworks: [
-          {
-            networkName: 'vk',
-            link: 'https://vk.com/yudakov2014'
-          }
-        ]
-      },
-      {
-        name: 'Лизок',
-        surname: 'Жукова',
-        patronymic: 'Юрьевна',
-        id: '2',
-        gender: 'woman',
-        socialNetworks: [
-          {
-            networkName: 'vk',
-            link: 'https://vk.com/yudakov2014'
-          }
-        ]
-      }
-    ]
-  }
-]
-
-const getTask = ( { year, month }: CalendarCurrentData, tasks: CalendarTaskList ): TaskStorage => {
-  const r: TaskStorage = {}
-
-  tasks.forEach( ( task ) => {
-    const y: number = dayjs( task.time ).year()
-    const m: number = dayjs( task.time ).month()
-    const d: number = dayjs( task.time ).date()
-
-    const currentYear: TaskYear = r[ y ] || {}
-    const currentMonth: TaskMonth = currentYear[ m ] || {}
-    const currentDate: TaskDate = currentMonth[ d ] || []
-    currentDate.push( task )
-
-    currentMonth[ d ] = currentDate
-    currentYear[ m ] = currentMonth
-    r[ y ] = currentYear
-  } )
-
-  return r || {}
-}
+import { getTaskListOfDay, getTaskStorage } from '../../common/functions'
 
 const FullSizeCalendar: FC<FullSizeCalendarProps> = ( {
                                                         list,
@@ -368,7 +42,7 @@ const FullSizeCalendar: FC<FullSizeCalendarProps> = ( {
   }, [current] )
 
   const taskList: TaskStorage = useMemo( () => {
-    return !!tasksList?.length ? getTask( current, tasksList ) : {}
+    return !!tasksList?.length ? getTaskStorage( current, tasksList ) : {}
   }, [current, tasksList] )
 
   return (
@@ -418,13 +92,7 @@ const TaskInfoModal: FC<TaskInfoModalProps> = ( { selectedTask, onClose } ) => {
         <TaskInformer taskItem={selectedTask}/>
       </ModalBody>
       <ModalFooter>
-        <div style={{
-          display: 'flex',
-          justifyContent: 'flex-end',
-          alignItems: 'center',
-          width: '100%'
-        }}>
-
+        <FlexBlock justify={'end'} align={'center'} width={'100%'}>
           <StyledButton>
             Ок
           </StyledButton>
@@ -435,7 +103,7 @@ const TaskInfoModal: FC<TaskInfoModalProps> = ( { selectedTask, onClose } ) => {
           >
             Закрыть
           </StyledButton>
-        </div>
+        </FlexBlock>
       </ModalFooter>
     </Modal>
   )

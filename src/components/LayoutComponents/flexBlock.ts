@@ -1,6 +1,7 @@
 import styled, { css, CSSProperties, FlattenSimpleInterpolation } from 'styled-components'
+import { ReactNode } from 'react'
 
-export type BlockProps =
+export type FlexBlockProps =
   MarginProps
   & PaddingProps
   & FlexProps
@@ -8,8 +9,14 @@ export type BlockProps =
   & HeightProps
   & FormalizationProps
   & PositionProps
+  & CustomStyles
+  & ChildrenProps
 
 type UnitsType = string | number
+
+interface ChildrenProps {
+  children?: ReactNode
+}
 
 interface WidthProps {
   width?: UnitsType,
@@ -37,6 +44,9 @@ interface FormalizationProps {
   borderBottom?: CSSProperties['borderBottom'],
   borderLeft?: CSSProperties['borderLeft'],
   borderRadius?: CSSProperties['borderRadius'],
+  overflow?: CSSProperties['overflow'],
+  overflowY?: CSSProperties['overflowY'],
+  overflowX?: CSSProperties['overflowX']
 }
 
 interface FlexProps {
@@ -64,6 +74,10 @@ interface PaddingProps {
   pb?: UnitsType,
   pl?: UnitsType,
   p?: UnitsType
+}
+
+interface CustomStyles {
+  additionalCss?: FlattenSimpleInterpolation
 }
 
 type CustomMixin<T> = ( _: T ) => FlattenSimpleInterpolation
@@ -122,13 +136,16 @@ const formalization: CustomMixin<FormalizationProps> = ( _ ) => css`
   ${_.borderBottom ? css`border-bottom: ${_.borderBottom};` : ''}
   ${_.borderLeft ? css`border-left: ${_.borderLeft};` : ''}
   ${_.borderRadius ? css`border-radius: ${pxToCssValue( _.borderRadius )};` : ''}
+  ${_.overflow ? css`overflow: ${_.overflow};` : ''}
+  ${_.overflowX ? css`overflow-x: ${_.overflowX};` : ''}
+  ${_.overflowY ? css`overflow-y: ${_.overflowY};` : ''}
 `
 
 const position: CustomMixin<PositionProps> = ( _ ) => css`
   ${_.position ? css`position: ${_.position};` : ''}
 `
 
-export const FlexBlock = styled( 'div' )<BlockProps>`
+export const FlexBlock = styled( 'div' )<FlexBlockProps>`
   & {
     display: flex;
     ${_ => position( _ )}
@@ -138,5 +155,6 @@ export const FlexBlock = styled( 'div' )<BlockProps>`
     ${_ => widths( _ )}
     ${_ => heights( _ )}
     ${_ => formalization( _ )}
+    ${_ => _.additionalCss ? _.additionalCss : ''}
   }
 `
