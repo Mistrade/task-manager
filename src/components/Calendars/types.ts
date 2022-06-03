@@ -5,20 +5,26 @@ export interface DatePickerProps {
 }
 
 export interface CalendarProps {
-  current: CalendarCurrentData,
-  disabledOptions?: CalendarDisabledOptions
+  initialCurrent: CalendarCurrentData,
+  disabledOptions?: CalendarDisabledOptions,
+  renderWeekPattern?: RenderWeekPattern
 }
 
 export interface GlobalTaskListProps {
-  onAddTask?: ( date: CalendarItem ) => void
+  onAddTask?: OnAddTaskFnType
 }
 
-export interface FullSizeCalendarProps extends GlobalTaskListProps {
+export interface CalendarBodyProps extends GlobalTaskListProps {
+  onChangeCurrent?: ( date: Date ) => void,
   list: CalendarList
   current: CalendarCurrentData,
   tasksList?: CalendarTaskList
-  onSelectTask?: ( data: TaskTileClickArguments ) => any
+  onSelectTask?: ( data: TaskTileClickArguments ) => any,
+  renderWeekPattern?: RenderWeekPattern
 }
+
+export type CalendarBodyTitleProps = Pick<CalendarBodyProps, 'current' | 'onChangeCurrent' | 'renderWeekPattern'>
+export type WeekListProps = Pick<CalendarBodyProps, 'renderWeekPattern'>
 
 export interface CalendarCellProps extends GlobalTaskListProps {
   value: CalendarItem,
@@ -43,6 +49,8 @@ export interface TaskTilePriorityIndicatorProps {
   priority: CalendarPriorityKeys,
   isCompleted: boolean
 }
+
+export type RenderWeekPattern = 'short' | 'full' | 'none'
 
 export interface TaskTileClickArguments {
   date: CalendarItem,
@@ -150,3 +158,9 @@ export interface AddTaskModalProps {
   onClose?: () => void,
   onComplete?: () => void
 }
+
+export type OnAddTaskFnType = ( date: CalendarItem ) => void
+export type OnChangeCurrentFnType = ( date: Date ) => void
+export type OnSelectTaskFnType = ( data: TaskTileClickArguments ) => any
+export type AddTaskDateType = CalendarItem | null
+export type SelectedTaskType = SelectTaskItem | null

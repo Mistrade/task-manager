@@ -11,11 +11,17 @@ export type FlexBlockProps =
   & PositionProps
   & CustomStyles
   & ChildrenProps
+  & EventsMap
+
 
 type UnitsType = string | number
 
 interface ChildrenProps {
   children?: ReactNode
+}
+
+interface EventsMap {
+  onClick?: <T>( data: T ) => void
 }
 
 interface WidthProps {
@@ -46,7 +52,8 @@ interface FormalizationProps {
   borderRadius?: CSSProperties['borderRadius'],
   overflow?: CSSProperties['overflow'],
   overflowY?: CSSProperties['overflowY'],
-  overflowX?: CSSProperties['overflowX']
+  overflowX?: CSSProperties['overflowX'],
+  transform?: CSSProperties['transform'],
 }
 
 interface FlexProps {
@@ -139,6 +146,7 @@ const formalization: CustomMixin<FormalizationProps> = ( _ ) => css`
   ${_.overflow ? css`overflow: ${_.overflow};` : ''}
   ${_.overflowX ? css`overflow-x: ${_.overflowX};` : ''}
   ${_.overflowY ? css`overflow-y: ${_.overflowY};` : ''}
+  ${_.transform ? css`transform: ${_.transform};` : ''}
 `
 
 const position: CustomMixin<PositionProps> = ( _ ) => css`

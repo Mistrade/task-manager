@@ -1,15 +1,13 @@
 import {
   AddTaskModalProps,
-  CalendarItem,
-  CalendarList,
+  CalendarBodyProps,
+  CalendarBodyTitleProps,
   CalendarProps,
-  FullSizeCalendarProps,
-  SelectTaskItem,
   TaskInfoModalProps,
-  TaskStorage
+  TaskStorage,
+  WeekListProps
 } from './types'
-import { FC, useMemo, useState } from 'react'
-import { getPickerDates } from '../../common/dayjs'
+import { FC, useCallback, useMemo } from 'react'
 import {
   CalendarDateListContainer,
   CalendarDesktopContainer,
@@ -19,39 +17,102 @@ import { CalendarCell, TaskTileText } from './cell'
 import {
   DATE_RENDER_FORMAT,
   defaultColor,
-  defaultTasksList,
   MonthList,
-  WeekDaysList
+  WeekDaysList,
+  WeekDaysShortList
 } from '../../common/constants'
 import dayjs from 'dayjs'
 import { Modal, ModalBody, ModalFooter, ModalHeader } from '../Modal/modal'
 import { TaskInformer } from './TaskInformer/taskInformer'
 import { StyledButton } from '../Buttons/buttons.styled'
 import { FlexBlock } from '../LayoutComponents/flexBlock'
-import { getTaskListOfDay, getTaskStorage } from '../../common/functions'
+import { changeCurrentHandler, getTaskListOfDay, getTaskStorage } from '../../common/functions'
+import { Arrow, DoubleArrow } from '../Icons/icons'
+import { HoverElementMixin } from '../../common/cssMixins'
+import { ChangeCurrentPattern } from '../../common/commonTypes'
+import { useCalendar } from '../hooks/useCalendar'
 
-const FullSizeCalendar: FC<FullSizeCalendarProps> = ( {
-                                                        list,
-                                                        current,
-                                                        tasksList,
-                                                        onAddTask,
-                                                        onSelectTask
-                                                      } ) => {
+const CalendarBodyTitle: FC<CalendarBodyTitleProps> = ( {
+                                                          current,
+                                                          onChangeCurrent,
+                                                          renderWeekPattern
+                                                        } ) => {
   const title: string = useMemo( () => {
     return `${MonthList[ current.month ]} ${current.year}г.`
   }, [current] )
 
-  const taskList: TaskStorage = useMemo( () => {
-    return !!tasksList?.length ? getTaskStorage( current, tasksList ) : {}
-  }, [current, tasksList] )
+  const onChangeCurrentHandler = useCallback( ( pattern: ChangeCurrentPattern = 'today' ) => {
+    if( onChangeCurrent ) {
+      onChangeCurrent( changeCurrentHandler( current, pattern ) )
+    }
+  }, [current] )
 
   return (
-    <CalendarDesktopContainer>
-      <CalendarTitle>
-        {title}
-      </CalendarTitle>
-
+    <FlexBlock
+      direction={'column'}
+      width={'100%'}
+      pb={8}
+      pt={8}
+      bgColor={'#fff'}
+      position={'sticky'}
+      style={{ top: 0, left: 0, zIndex: 10 }}
+    >
+      <FlexBlock
+        width={'100%'}
+        justify={'space-between'}
+        align={'center'}
+        mb={8}
+      >
+        <FlexBlock justify={'flex-start'} align={'center'}>
+          <CalendarTitle>
+            {title}
+          </CalendarTitle>
+        </FlexBlock>
+        <FlexBlock justify={'flex-end'} align={'center'}>
+          <DoubleArrow
+            onClick={() => onChangeCurrentHandler( '-year' )}
+            size={20}
+            transform={'rotate(180deg)'}
+            mr={6}
+          />
+          <Arrow
+            onClick={() => onChangeCurrentHandler( '-month' )}
+            size={20}
+            transform={'rotate(180deg)'}
+            mr={6}
+          />
+          <FlexBlock
+            mr={6}
+            p={'6px 16px'}
+            border={`1px solid ${defaultColor}`}
+            borderRadius={4}
+            additionalCss={HoverElementMixin}
+            onClick={() => onChangeCurrentHandler( 'today' )}
+          >
+            Сегодня
+          </FlexBlock>
+          <Arrow
+            mr={6}
+            size={20}
+            onClick={() => onChangeCurrentHandler( '+month' )}
+          />
+          <DoubleArrow
+            size={20}
+            onClick={() => onChangeCurrentHandler( '+year' )}
+          />
+        </FlexBlock>
+      </FlexBlock>
       <CalendarDateListContainer>
+        <WeekList renderWeekPattern={renderWeekPattern}/>
+      </CalendarDateListContainer>
+    </FlexBlock>
+  )
+}
+
+const WeekList: FC<WeekListProps> = ( { renderWeekPattern } ) => {
+  if( renderWeekPattern === 'full' ) {
+    return (
+      <>
         {WeekDaysList.map( day => (
           <FlexBlock
             justify={'center'}
@@ -62,6 +123,53 @@ const FullSizeCalendar: FC<FullSizeCalendarProps> = ( {
             {day}
           </FlexBlock>
         ) )}
+      </>
+    )
+  }
+
+  if( renderWeekPattern === 'short' ) {
+    return (
+      <>
+        {WeekDaysShortList.map( day => (
+          <FlexBlock
+            justify={'center'}
+            width={'100%'}
+            p={'12px 0px'}
+            borderBottom={`1px solid ${defaultColor}`}
+          >
+            {day}
+          </FlexBlock>
+        ) )}
+      </>
+    )
+  }
+
+  return <></>
+}
+
+const CalendarBody: FC<CalendarBodyProps> = ( {
+                                                list,
+                                                current,
+                                                tasksList,
+                                                onAddTask,
+                                                onSelectTask,
+                                                onChangeCurrent,
+                                                renderWeekPattern
+                                              } ) => {
+  const taskList: TaskStorage = useMemo( () => {
+    return !!tasksList?.length ? getTaskStorage( current, tasksList ) : {}
+  }, [current, tasksList] )
+
+  return (
+    <CalendarDesktopContainer>
+      <CalendarBodyTitle
+        current={current}
+        onChangeCurrent={onChangeCurrent}
+        renderWeekPattern={renderWeekPattern}
+      />
+
+      <CalendarDateListContainer>
+        {/*<WeekList renderWeekPattern={renderWeekPattern}/>*/}
         {list.map( item => (
           <CalendarCell
             key={item.value.toString()}
@@ -141,41 +249,34 @@ const AddTaskModal: FC<AddTaskModalProps> = ( { date, onClose, onComplete } ) =>
 }
 
 export const Calendar: FC<CalendarProps> = ( {
-                                               current,
-                                               disabledOptions = {}
+                                               initialCurrent,
+                                               disabledOptions = {},
+                                               renderWeekPattern = 'full'
                                              } ) => {
-  const calendarList: CalendarList = useMemo( () => {
-    return getPickerDates( current, disabledOptions )
-  }, [current] )
-
-  const [tasksList, setTasksList] = useState( defaultTasksList )
-  const [selectedTask, setSelectedTask] = useState<SelectTaskItem | null>( null )
-  const [addTaskDate, setAddTaskDate] = useState<CalendarItem | null>( null )
-
-  const onSelectTask: FullSizeCalendarProps['onSelectTask'] = ( data ) => {
-    setSelectedTask( { ...data } )
-  }
-
-  const onAddTask: FullSizeCalendarProps['onAddTask'] = ( date ) => {
-    setAddTaskDate( date )
-  }
+  const calendar = useCalendar( {
+    initialCurrent,
+    disabledOptions,
+    renderWeekPattern
+  } )
 
   return (
     <FlexBlock position={'relative'}>
-      <FullSizeCalendar
-        current={current}
-        list={calendarList}
-        tasksList={tasksList}
-        onAddTask={onAddTask}
-        onSelectTask={onSelectTask}
+      <CalendarBody
+        onChangeCurrent={calendar.onChangeCurrent}
+        renderWeekPattern={renderWeekPattern}
+        current={calendar.current}
+        list={calendar.calendarList}
+        tasksList={calendar.tasksList}
+        onAddTask={calendar.onAddTask}
+        onSelectTask={calendar.onSelectTask}
       />
       <AddTaskModal
-        date={addTaskDate}
-        onClose={() => setAddTaskDate( null )}
+        date={calendar.addTaskDate}
+        onClose={() => calendar.setAddTaskDate( null )}
       />
       <TaskInfoModal
-        selectedTask={selectedTask}
-        onClose={() => setSelectedTask( null )}
+        selectedTask={calendar.selectedTask}
+        onClose={() => calendar.setSelectedTask( null )}
       />
     </FlexBlock>
   )

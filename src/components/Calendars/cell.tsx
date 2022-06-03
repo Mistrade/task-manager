@@ -17,6 +17,7 @@ import {
   priorityColors
 } from '../../common/constants'
 import dayjs from 'dayjs'
+import { FlexBlock } from '../LayoutComponents/flexBlock'
 
 interface CellComponentProps {
   disabled?: boolean,
@@ -160,7 +161,7 @@ export const TaskTileText = styled( 'span' )<{ isCompleted?: boolean, maxWidth?:
     font-size: ${props => props.fs || '12px'};
     line-height: 1;
     width: 100%;
-    max-width: ${props => props.maxWidth || '70%'};
+    max-width: ${props => props.maxWidth || '80%'};
     white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis;
@@ -186,7 +187,7 @@ const TaskTileContainer = styled( 'div' )`
     display: flex;
     flex-direction: column;
     width: 100%;
-    max-height: 130px;
+    //max-height: 30vh;
     overflow: scroll;
     scroll-behavior: unset;
     transition: all .3s ease;
@@ -201,7 +202,7 @@ const Indicator = styled( 'span' )<{ color: string }>`
     border-radius: 50%;
     background-color: ${props => props.color || defaultColor};
     box-shadow: 0px 0px 2px 2px ${props => props.color || defaultColor};
-    margin-right: 8px;
+    margin-right: 6px;
   }
 `
 
@@ -244,11 +245,11 @@ export const CalendarCell: FC<CalendarCellProps> = ( {
 }
 
 export const TaskTileList: FC<TaskTileListProps> = ( { tasks = [], date, onSelect } ) => {
-
+  const length = 5
   if( !!tasks?.length ) {
     return (
       <TaskTileContainer>
-        {tasks.map( ( item, index ) => (
+        {tasks.slice( 0, 5 ).map( ( item, index ) => (
           <TaskTileItem
             key={item.title + index}
             taskInfo={item}
@@ -256,6 +257,13 @@ export const TaskTileList: FC<TaskTileListProps> = ( { tasks = [], date, onSelec
             onSelect={onSelect}
           />
         ) )}
+        {tasks.length > length && (
+          <FlexBlock width={'100%'} justify={'center'} align={'center'} mt={6} mb={6}>
+            <TaskTileText style={{ textAlign: 'center' }}>
+              и еще {tasks.length - length}
+            </TaskTileText>
+          </FlexBlock>
+        )}
       </TaskTileContainer>
     )
   }

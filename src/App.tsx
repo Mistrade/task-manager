@@ -3,6 +3,7 @@ import './App.css'
 import { createGlobalStyle, css } from 'styled-components'
 import './common/dayjs'
 import { Calendar } from './components/Calendars/calendar'
+import { FlexBlock } from './components/LayoutComponents/flexBlock'
 
 const GlobalStyled = createGlobalStyle( {}, css`
   * {
@@ -26,23 +27,26 @@ function App() {
           display: 'flex',
           justifyContent: 'flex-end',
           width: '100%',
-          height: '100%'
-          // overflow: 'scroll',
-          // paddingLeft: 12,
-          // paddingRight: 12
+          height: '100vh'
         }}
       >
-        <div style={{ width: '60%', position: 'relative', height: '100%' }}>
-
+        <div style={{ width: '100%', position: 'relative', height: '100%' }}>
           <Calendar
-            current={{
+            initialCurrent={{
               month: 5,
               year: 2022
             }}
             disabledOptions={{
               excludeWeekends: false
             }}
+            renderWeekPattern={'full'}
           />
+          <FlexBlock height={600}/>
+          <FlexBlock height={600}/>
+          <FlexBlock height={600}/>
+          <FlexBlock height={600}/>
+          <FlexBlock height={600}/>
+
         </div>
       </div>
     </div>

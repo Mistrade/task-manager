@@ -10,6 +10,7 @@ import {
   TaskYear
 } from '../components/Calendars/types'
 import dayjs from 'dayjs'
+import { ChangeCurrentFnType, ChangeCurrentPattern } from './commonTypes'
 
 export const addNull = ( value: number ): string => value < 10 ? `0${value}` : value.toString()
 
@@ -63,4 +64,27 @@ export const getTaskStorage = ( {
   } )
 
   return r || {}
+}
+
+export const changeCurrentHandler: ChangeCurrentFnType = ( current, pattern = 'today' ) => {
+  const oldCurrent = dayjs( new Date( current.year, current.month, 1 ) )
+  let newCurrentDate = oldCurrent.toDate()
+  switch (pattern) {
+    case '+month':
+      newCurrentDate = oldCurrent.add( 1, 'month' ).toDate()
+      break
+    case '+year':
+      newCurrentDate = oldCurrent.add( 1, 'year' ).toDate()
+      break
+    case '-month':
+      newCurrentDate = oldCurrent.subtract( 1, 'month' ).toDate()
+      break
+    case '-year':
+      newCurrentDate = oldCurrent.subtract( 1, 'year' ).toDate()
+      break
+    case 'today':
+      newCurrentDate = dayjs().toDate()
+      break
+  }
+  return newCurrentDate
 }

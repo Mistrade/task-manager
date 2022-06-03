@@ -1,4 +1,6 @@
-import { FC } from 'react'
+import { FC, HTMLProps } from 'react'
+import { defaultColor } from '../../common/constants'
+import { FlexBlock, FlexBlockProps } from '../LayoutComponents/flexBlock'
 
 interface IconProps {
   size?: number,
@@ -63,5 +65,55 @@ export const SadSmile: FC<IconProps> = ( { size = 100, color = 'darkorange' } ) 
         />
       </g>
     </svg>
+  )
+}
+
+export const DoubleArrow: FC<IconProps & FlexBlockProps> = ( {
+                                                               size = 24,
+                                                               color = defaultColor,
+                                                               ...props
+                                                             } ) => {
+  return (
+    <FlexBlock {...props} align={'center'} justify={'center'}>
+      <svg
+        xmlns="http://www.w3.org/2000/svg"
+        aria-hidden="true"
+        role="img"
+        width={size}
+        height={size}
+        preserveAspectRatio="xMidYMid meet"
+        viewBox="0 0 1024 1024"
+      >
+        <path
+          fill={color}
+          d="M452.864 149.312a29.12 29.12 0 0 1 41.728.064L826.24 489.664a32 32 0 0 1 0 44.672L494.592 874.624a29.12 29.12 0 0 1-41.728 0a30.592 30.592 0 0 1 0-42.752L764.736 512L452.864 192a30.592 30.592 0 0 1 0-42.688zm-256 0a29.12 29.12 0 0 1 41.728.064L570.24 489.664a32 32 0 0 1 0 44.672L238.592 874.624a29.12 29.12 0 0 1-41.728 0a30.592 30.592 0 0 1 0-42.752L508.736 512L196.864 192a30.592 30.592 0 0 1 0-42.688z"
+        />
+      </svg>
+    </FlexBlock>
+  )
+}
+
+export const Arrow: FC<IconProps & FlexBlockProps> = ( {
+                                                         size = 24,
+                                                         color = defaultColor,
+                                                         ...props
+                                                       } ) => {
+  return (
+    <FlexBlock {...props} align={'center'} justify={'center'}>
+      <svg
+        xmlns="http://www.w3.org/2000/svg"
+        aria-hidden="true"
+        role="img"
+        width={size}
+        height={size}
+        preserveAspectRatio="xMidYMid meet"
+        viewBox="0 0 1024 1024"
+      >
+        <path
+          fill={color}
+          d="M340.864 149.312a30.592 30.592 0 0 0 0 42.752L652.736 512L340.864 831.872a30.592 30.592 0 0 0 0 42.752a29.12 29.12 0 0 0 41.728 0L714.24 534.336a32 32 0 0 0 0-44.672L382.592 149.376a29.12 29.12 0 0 0-41.728 0z"
+        />
+      </svg>
+    </FlexBlock>
   )
 }
