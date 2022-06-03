@@ -1,13 +1,13 @@
 import {
   AddTaskModalProps,
   CalendarBodyProps,
-  CalendarBodyTitleProps,
+  CalendarBodyTitleProps, CalendarList,
   CalendarProps,
   TaskInfoModalProps,
   TaskStorage,
   WeekListProps
 } from './types'
-import { FC, useCallback, useMemo } from 'react'
+import { FC, useCallback, useEffect, useMemo } from 'react'
 import {
   CalendarDateListContainer,
   CalendarDesktopContainer,
@@ -16,7 +16,7 @@ import {
 import { CalendarCell, TaskTileText } from './cell'
 import {
   DATE_RENDER_FORMAT,
-  defaultColor,
+  defaultColor, disabledColor,
   MonthList,
   WeekDaysList,
   WeekDaysShortList
@@ -31,6 +31,7 @@ import { Arrow, DoubleArrow } from '../Icons/icons'
 import { HoverElementMixin } from '../../common/cssMixins'
 import { ChangeCurrentPattern } from '../../common/commonTypes'
 import { useCalendar } from '../hooks/useCalendar'
+import styled from 'styled-components'
 
 const CalendarBodyTitle: FC<CalendarBodyTitleProps> = ( {
                                                           current,
@@ -147,6 +148,40 @@ const WeekList: FC<WeekListProps> = ( { renderWeekPattern } ) => {
   return <></>
 }
 
+const WeekContainer = styled( 'div' )`
+  position: relative;
+  grid-column-start: 1;
+  grid-column-end: 8;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: flex-start;
+`
+
+const DaysContainer = styled( 'div' )`
+  display: grid;
+  grid-template-columns: repeat(7, minmax(220px, 1fr));
+  grid-column-gap: 4px;
+  width: 100%;
+`
+
+const WeekOfYearTitle = styled( 'h3' )`
+  & {
+    font-size: 20px;
+    width: 100%;
+    text-align: left;
+    margin-bottom: 4px;
+    margin-top: 0;
+    padding-left: 8px;
+    color: ${disabledColor};
+    background-color: #fff;
+    z-index: 9;
+    position: sticky;
+    top: 0;
+    left: 0
+  }
+`
+
 const CalendarBody: FC<CalendarBodyProps> = ( {
                                                 list,
                                                 current,
@@ -169,15 +204,24 @@ const CalendarBody: FC<CalendarBodyProps> = ( {
       />
 
       <CalendarDateListContainer>
-        {/*<WeekList renderWeekPattern={renderWeekPattern}/>*/}
         {list.map( item => (
-          <CalendarCell
-            key={item.value.toString()}
-            onAddTask={onAddTask}
-            value={item}
-            tasks={getTaskListOfDay( item, taskList )}
-            onSelectTask={onSelectTask}
-          />
+          <WeekContainer>
+            <WeekOfYearTitle>
+              {item.weekOfYear}
+            </WeekOfYearTitle>
+            <DaysContainer>
+
+              {item.days.map( day => (
+                <CalendarCell
+                  key={day.value.toString()}
+                  onAddTask={onAddTask}
+                  value={day}
+                  tasks={getTaskListOfDay( day, taskList )}
+                  onSelectTask={onSelectTask}
+                />
+              ) )}
+            </DaysContainer>
+          </WeekContainer>
         ) )}
       </CalendarDateListContainer>
     </CalendarDesktopContainer>
@@ -258,6 +302,7 @@ export const Calendar: FC<CalendarProps> = ( {
     disabledOptions,
     renderWeekPattern
   } )
+
 
   return (
     <FlexBlock position={'relative'}>

@@ -22,10 +22,10 @@ export const CalendarDateListContainer = styled( 'div' )`
     width: 100%;
     height: 100%;
     display: grid;
-    grid-template-columns: repeat(7, minmax(220px, 1fr));
     grid-template-rows: repeat(auto-fill, 1fr);
+    grid-template-columns: repeat(7, minmax(220px, 1fr));
     grid-column-gap: 4px;
-    grid-row-gap: 8px;
+    grid-row-gap: 16px;
   }
 `
 

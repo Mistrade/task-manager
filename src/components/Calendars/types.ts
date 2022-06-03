@@ -16,7 +16,7 @@ export interface GlobalTaskListProps {
 
 export interface CalendarBodyProps extends GlobalTaskListProps {
   onChangeCurrent?: ( date: Date ) => void,
-  list: CalendarList
+  list: CalendarWeekList
   current: CalendarCurrentData,
   tasksList?: CalendarTaskList
   onSelectTask?: ( data: TaskTileClickArguments ) => any,
@@ -59,6 +59,11 @@ export interface TaskTileClickArguments {
 }
 
 export type CalendarList = Array<CalendarItem>
+export type CalendarWeekList = Array<WeekItem>
+export type WeekItem = {
+  weekOfYear: number,
+  days: Array<CalendarItem>
+}
 
 export interface CalendarItem {
   value: Date,

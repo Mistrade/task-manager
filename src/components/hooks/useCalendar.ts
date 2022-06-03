@@ -4,7 +4,7 @@ import {
   CalendarItem,
   CalendarList,
   CalendarProps,
-  CalendarTaskList,
+  CalendarTaskList, CalendarWeekList,
   OnAddTaskFnType,
   OnChangeCurrentFnType,
   OnSelectTaskFnType,
@@ -18,7 +18,7 @@ import { defaultTasksList } from '../../common/constants'
 
 interface Returned {
   current: CalendarCurrentData,
-  calendarList: CalendarList,
+  calendarList: CalendarWeekList,
   tasksList: CalendarTaskList,
   setTasksList: React.Dispatch<React.SetStateAction<CalendarTaskList>>,
   selectedTask: SelectedTaskType,
@@ -39,7 +39,7 @@ export const useCalendar: UseCalendarType = ( {
                                               } ) => {
   const [current, setCurrent] = useState<CalendarCurrentData>( initialCurrent )
 
-  const calendarList: CalendarList = useMemo( () => {
+  const calendarList: CalendarWeekList = useMemo( () => {
     return getPickerDates( current, disabledOptions )
   }, [current] )
 

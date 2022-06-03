@@ -6,10 +6,12 @@ import isSameOrAfter from 'dayjs/plugin/isSameOrAfter'
 import isSameOrBefore from 'dayjs/plugin/isSameOrBefore'
 import isTomorrow from 'dayjs/plugin/isTomorrow'
 import isYesterday from 'dayjs/plugin/isYesterday'
+import weekOfYear from 'dayjs/plugin/weekOfYear'
+import updateLocale from 'dayjs/plugin/updateLocale'
 import {
   CalendarCurrentData,
-  CalendarDisabledOptions,
-  CalendarList
+  CalendarDisabledOptions, CalendarItem,
+  CalendarList, CalendarWeekList, WeekItem
 } from '../components/Calendars/types'
 
 const customLocale: Partial<ILocale> = {
@@ -70,20 +72,29 @@ dayjs.extend( isYesterday )
 dayjs.extend( Weekday )
 dayjs.extend( isSameOrAfter )
 dayjs.extend( isSameOrBefore )
+dayjs.extend( weekOfYear )
+dayjs.extend( updateLocale )
+
+dayjs.updateLocale( 'en', {
+  weekStart: 1,
+  yearStart: 4
+} )
 
 interface CurrentData {
   month: number,
   year: number
 }
 
-interface CheckStartDateFnResult {
-  startDate: dayjs.Dayjs,
-  endDate: dayjs.Dayjs
+type CheckDatesScopeFn = ( current: CurrentData ) => DateScopeType | null
+type GenerateDateArrayFn = ( current: CalendarCurrentData, options: DateScopeType, disabledOptions: CalendarDisabledOptions ) => CalendarWeekList
+type GetPickerDatesProps = ( current: CurrentData, disabledOptions: CalendarDisabledOptions ) => CalendarWeekList
+
+export interface DateScopeType {
+  startDate: Date,
+  count: number
 }
 
-type CheckStartDateFn = ( current: CurrentData ) => CheckStartDateFnResult | null
-
-const checkStartAndEndDate: CheckStartDateFn = ( { month, year } ) => {
+const getDatesScope: CheckDatesScopeFn = ( { month, year } ) => {
   if( isNaN( month ) || isNaN( year ) ) {
     return null
   }
@@ -92,12 +103,11 @@ const checkStartAndEndDate: CheckStartDateFn = ( { month, year } ) => {
   const firstDayOfWeek = firstDayOfMonth.day()
   const neededPrevDays = firstDayOfWeek === 0 ? 6 : firstDayOfWeek - 1
 
-  const startDate = neededPrevDays > 0 ? firstDayOfMonth.subtract( neededPrevDays, 'day' ) : firstDayOfMonth
-  const endDate = startDate.add( 41, 'day' )
+  const startDate = neededPrevDays > 0 ? firstDayOfMonth.subtract( neededPrevDays, 'day' ).toDate() : firstDayOfMonth.toDate()
 
   return {
     startDate,
-    endDate
+    count: 42
   }
 }
 
@@ -119,7 +129,6 @@ const checkIsDisabledDate = ( currentDate: dayjs.Dayjs, options: CalendarDisable
   }
 
   if( max ) {
-    // console.log( 'max from: ', max )
     result = includeMax ? dayjs( max ).isBefore( currentDate, 'day' ) : dayjs( max ).isSameOrBefore( currentDate, 'day' )
     if( result ) return true
   }
@@ -149,42 +158,45 @@ const checkIsCurrent = ( current: CalendarCurrentData, date: dayjs.Dayjs ): bool
   return dateMonth === month && dateYear === year
 }
 
-type GenerateDateArrayFn = ( current: CalendarCurrentData, scope: CheckStartDateFnResult, disabledOptions: CalendarDisabledOptions ) => CalendarList
 
-const generateDateArray: GenerateDateArrayFn = ( current, {
-  startDate,
-  endDate
-}, disabledOptions ) => {
-  const array: CalendarList = []
-  let iterationDate = startDate
+const generateDateArray: GenerateDateArrayFn = ( current, scope, disabledOptions ) => {
+  const arr: CalendarWeekList = []
+  const weekCount = Math.ceil( scope.count / 7 )
+  let iterationDate = dayjs( scope.startDate )
 
-  while (iterationDate.isBetween( startDate, endDate, 'day', '[]' )) {
-    array.push( {
-      value: iterationDate.toDate(),
-      meta: {
-        isToday: iterationDate.isToday(),
-        isTomorrow: iterationDate.isTomorrow(),
-        isYesterday: iterationDate.isYesterday(),
-        isDisabled: checkIsDisabledDate( iterationDate, disabledOptions ),
-        isCurrent: checkIsCurrent( current, iterationDate )
-      }
+  for (let i = 0; i < weekCount; i++) {
+    const weekArr: CalendarList = []
+    const weekday = iterationDate.weekday()
+    const iterations = weekday === 7 ? 0 : 6 - weekday
+    const weekOfYear = iterationDate.week()
+    console.log( iterationDate )
+
+    for (let d = 0; d <= iterations; d++) {
+      weekArr.push( {
+        value: iterationDate.toDate(),
+        meta: {
+          isToday: iterationDate.isToday(),
+          isTomorrow: iterationDate.isTomorrow(),
+          isYesterday: iterationDate.isYesterday(),
+          isDisabled: checkIsDisabledDate( iterationDate, disabledOptions ),
+          isCurrent: checkIsCurrent( current, iterationDate )
+        }
+      } )
+
+      iterationDate = iterationDate.add( 1, 'day' )
+    }
+
+    arr.push( {
+      weekOfYear,
+      days: weekArr
     } )
 
-    iterationDate = iterationDate.add( 1, 'day' )
   }
 
-  return array
+  return arr
 }
 
-
-type GetPickerDatesProps = ( current: CurrentData, disabledOptions: CalendarDisabledOptions ) => CalendarList
-
 export const getPickerDates: GetPickerDatesProps = ( current, disabledOptions ) => {
-  const dateScope = checkStartAndEndDate( current )
-
-  if( dateScope ) {
-    return generateDateArray( current, dateScope, disabledOptions )
-  }
-
-  return []
+  const dateScope = getDatesScope( current )
+  return dateScope ? generateDateArray( current, dateScope, disabledOptions ) : []
 }

@@ -14,9 +14,10 @@ export const WeekDaysShortList = [
 ]
 
 export const disabledColor = 'rgba(30,30,30,.1)'
-export const defaultColor = 'rgba(30,30,30,.30)'
+export const defaultColor = 'rgba(30,30,30,.45)'
 export const currentColor = 'rgba(100,149,237,.9)'
 export const hoverColor = 'rgba(100,149,237,.35)'
+export const todayID = 'calendar-today'
 
 export const priorityColors: { [key in CalendarPriorityKeys]: string } = {
   veryLow: defaultColor,
@@ -336,7 +337,7 @@ export let defaultTasksList: CalendarTaskList = [
         ]
       }
     ]
-  },{
+  }, {
     id: '1',
     title: 'Завершить написание модального окна',
     description: 'Необходимо завершить работу с модальным окном, чтобы информация по заданию выводилась корректно.',
@@ -636,7 +637,7 @@ export let defaultTasksList: CalendarTaskList = [
         ]
       }
     ]
-  },{
+  }, {
     id: '1',
     title: 'Завершить написание модального окна',
     description: 'Необходимо завершить работу с модальным окном, чтобы информация по заданию выводилась корректно.',
@@ -936,7 +937,7 @@ export let defaultTasksList: CalendarTaskList = [
         ]
       }
     ]
-  },{
+  }, {
     id: '1',
     title: 'Завершить написание модального окна',
     description: 'Необходимо завершить работу с модальным окном, чтобы информация по заданию выводилась корректно.',
@@ -1236,7 +1237,7 @@ export let defaultTasksList: CalendarTaskList = [
         ]
       }
     ]
-  },{
+  }, {
     id: '1',
     title: 'Завершить написание модального окна',
     description: 'Необходимо завершить работу с модальным окном, чтобы информация по заданию выводилась корректно.',
@@ -1536,7 +1537,7 @@ export let defaultTasksList: CalendarTaskList = [
         ]
       }
     ]
-  },{
+  }, {
     id: '1',
     title: 'Завершить написание модального окна',
     description: 'Необходимо завершить работу с модальным окном, чтобы информация по заданию выводилась корректно.',
@@ -1836,7 +1837,7 @@ export let defaultTasksList: CalendarTaskList = [
         ]
       }
     ]
-  },{
+  }, {
     id: '1',
     title: 'Завершить написание модального окна',
     description: 'Необходимо завершить работу с модальным окном, чтобы информация по заданию выводилась корректно.',
@@ -2136,7 +2137,7 @@ export let defaultTasksList: CalendarTaskList = [
         ]
       }
     ]
-  },{
+  }, {
     id: '1',
     title: 'Завершить написание модального окна',
     description: 'Необходимо завершить работу с модальным окном, чтобы информация по заданию выводилась корректно.',
@@ -2436,7 +2437,7 @@ export let defaultTasksList: CalendarTaskList = [
         ]
       }
     ]
-  },{
+  }, {
     id: '1',
     title: 'Завершить написание модального окна',
     description: 'Необходимо завершить работу с модальным окном, чтобы информация по заданию выводилась корректно.',
@@ -2736,7 +2737,7 @@ export let defaultTasksList: CalendarTaskList = [
         ]
       }
     ]
-  },{
+  }, {
     id: '1',
     title: 'Завершить написание модального окна',
     description: 'Необходимо завершить работу с модальным окном, чтобы информация по заданию выводилась корректно.',
@@ -3036,7 +3037,7 @@ export let defaultTasksList: CalendarTaskList = [
         ]
       }
     ]
-  },{
+  }, {
     id: '1',
     title: 'Завершить написание модального окна',
     description: 'Необходимо завершить работу с модальным окном, чтобы информация по заданию выводилась корректно.',
@@ -3336,7 +3337,7 @@ export let defaultTasksList: CalendarTaskList = [
         ]
       }
     ]
-  },{
+  }, {
     id: '1',
     title: 'Завершить написание модального окна',
     description: 'Необходимо завершить работу с модальным окном, чтобы информация по заданию выводилась корректно.',
@@ -3636,7 +3637,7 @@ export let defaultTasksList: CalendarTaskList = [
         ]
       }
     ]
-  },{
+  }, {
     id: '1',
     title: 'Завершить написание модального окна',
     description: 'Необходимо завершить работу с модальным окном, чтобы информация по заданию выводилась корректно.',
@@ -3936,7 +3937,7 @@ export let defaultTasksList: CalendarTaskList = [
         ]
       }
     ]
-  },{
+  }, {
     id: '1',
     title: 'Завершить написание модального окна',
     description: 'Необходимо завершить работу с модальным окном, чтобы информация по заданию выводилась корректно.',
@@ -4236,7 +4237,7 @@ export let defaultTasksList: CalendarTaskList = [
         ]
       }
     ]
-  },{
+  }, {
     id: '1',
     title: 'Завершить написание модального окна',
     description: 'Необходимо завершить работу с модальным окном, чтобы информация по заданию выводилась корректно.',
@@ -4536,7 +4537,7 @@ export let defaultTasksList: CalendarTaskList = [
         ]
       }
     ]
-  },{
+  }, {
     id: '1',
     title: 'Завершить написание модального окна',
     description: 'Необходимо завершить работу с модальным окном, чтобы информация по заданию выводилась корректно.',
@@ -4836,5 +4837,5 @@ export let defaultTasksList: CalendarTaskList = [
         ]
       }
     ]
-  },
+  }
 ]

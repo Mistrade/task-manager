@@ -4,6 +4,7 @@ import { createGlobalStyle, css } from 'styled-components'
 import './common/dayjs'
 import { Calendar } from './components/Calendars/calendar'
 import { FlexBlock } from './components/LayoutComponents/flexBlock'
+import dayjs from 'dayjs'
 
 const GlobalStyled = createGlobalStyle( {}, css`
   * {
@@ -17,6 +18,7 @@ function App() {
 
   useEffect( () => {
     document.title = 'Онлайн планировщик дел'
+    console.log( dayjs().week() )
   }, [] )
 
   return (
@@ -33,8 +35,8 @@ function App() {
         <div style={{ width: '100%', position: 'relative', height: '100%' }}>
           <Calendar
             initialCurrent={{
-              month: 5,
-              year: 2022
+              month: new Date().getMonth(),
+              year: new Date().getFullYear()
             }}
             disabledOptions={{
               excludeWeekends: false
