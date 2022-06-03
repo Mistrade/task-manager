@@ -23,6 +23,7 @@ interface CellComponentProps {
   disabled?: boolean,
   isCurrent?: boolean,
   isHover?: boolean
+  isToday?: boolean
 }
 
 const CalendarDateContainer = styled( 'div' )`
@@ -40,14 +41,15 @@ const CalendarDateContainer = styled( 'div' )`
 const CalendarDate = styled( 'span' )<CellComponentProps>`
   & {
     display: flex;
-    flex: 1 0 50%;
     justify-content: center;
     align-items: center;
     font-size: 24px;
     border-radius: 50%;
-    width: 24px;
-    height: 24px;
-    color: ${props => props.disabled ? disabledColor : defaultColor};
+    width: 40px;
+    height: 40px;
+    margin-right: 4px;
+    background-color: ${props => props.isToday ? 'rgba(255,117,66, 1)' : ''};
+    color: ${props => props.disabled ? disabledColor : props.isToday ? '#fff' : defaultColor};
     transition: all .3s ease-in;
   }
 
@@ -75,7 +77,7 @@ const CellContainer = styled( 'div' )<CellComponentProps>`
     border-radius: 4px;
     box-shadow: none;
     border: 1px solid ${defaultColor};
-    transition: all .3s ease-in;
+    //transition: all .3s ease-in;
     opacity: .2;
   }
 
@@ -122,9 +124,6 @@ const addTaskAnimation = keyframes( {
 
 const AddTask = styled( 'div' )`
   & {
-    position: absolute;
-    top: 0;
-    left: 0;
     font-size: 32px;
     display: flex;
     line-height: 1;
@@ -221,20 +220,28 @@ export const CalendarCell: FC<CalendarCellProps> = ( {
       disabled={value.meta.isDisabled}
       isCurrent={value.meta.isCurrent}
     >
-      <CalendarDateContainer
+      <FlexBlock
+        position={'relative'}
+        width={'100%'}
+        height={50}
+        justify={'flex-end'}
+        wrap={'nowrap'}
+        align={'center'}
         onMouseEnter={() => value.meta.isCurrent && !value.meta.isDisabled && setIsHover( true )}
         onMouseLeave={() => setIsHover( false )}
       >
-        {isHover && (
+        {isHover ? (
           <AddTask onClick={() => onAddTask && onAddTask( value )}>&#x0002B;</AddTask>
+        ) : (
+          <CalendarDate
+            isToday={value.meta.isToday}
+            disabled={value.meta.isDisabled}
+            isCurrent={value.meta.isCurrent}
+          >
+            {addNull( dayjs( value.value ).date() )}
+          </CalendarDate>
         )}
-        <CalendarDate
-          disabled={value.meta.isDisabled}
-          isCurrent={value.meta.isCurrent}
-        >
-          {!isHover && addNull( dayjs( value.value ).date() )}
-        </CalendarDate>
-      </CalendarDateContainer>
+      </FlexBlock>
       <TaskTileList
         tasks={tasks}
         date={value}
