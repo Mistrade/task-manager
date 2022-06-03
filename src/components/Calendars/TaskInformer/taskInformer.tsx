@@ -9,7 +9,7 @@ import {
 import styled, { css, CSSProperties } from 'styled-components'
 import dayjs from 'dayjs'
 import { currentColor, DATE_RENDER_FORMAT, defaultColor } from '../../../common/constants'
-import { Female, Male } from '../../Icons/icons'
+import { Female, Male, SadSmile } from '../../Icons/icons'
 import { checkTaskStatus } from '../../../common/functions'
 import { FlexBlock, FlexBlockProps } from '../../LayoutComponents/flexBlock'
 
@@ -200,14 +200,32 @@ const TaskInformerMain: FC<TaskInformerMainProps> = ( { taskItem } ) => {
   )
 }
 
-export const TaskInformer: FC<TaskInformerProps> = ( { taskItem } ) => {
-  if( !taskItem ) {
-    return (
-      <FlexBlock height={'100%'} justify={'center'} align={'center'}>
-        Не удалось загрузить информацию по заданию.
-      </FlexBlock>
-    )
-  }
+const TaskInfoNotFound: FC = () => (
+  <FlexBlock
+    height={'100%'}
+    width={'100%'}
+    justify={'center'}
+    align={'center'}
+    wrap={'wrap'}
+    p={'24px 0'}
+  >
+    <FlexBlock
+      width={'100%'}
+      justify={'center'}
+      align={'center'}
+      mb={24}
+    >
+      <SadSmile color={'darkorange'}/>
+    </FlexBlock>
+    <FlexBlock
+      width={'100%'}
+      justify={'center'}
+    >
+      К сожалению, не удалось загрузить информацию по данному заданию.
+    </FlexBlock>
+  </FlexBlock>
+)
 
-  return <TaskInformerMain taskItem={taskItem}/>
+export const TaskInformer: FC<TaskInformerProps> = ( { taskItem } ) => {
+  return !taskItem ? <TaskInfoNotFound/> : <TaskInformerMain taskItem={taskItem}/>
 }
