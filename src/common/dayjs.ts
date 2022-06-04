@@ -11,7 +11,7 @@ import updateLocale from 'dayjs/plugin/updateLocale'
 import {
   CalendarCurrentData,
   CalendarDisabledOptions, CalendarItem,
-  CalendarList, CalendarWeekList, WeekItem
+  CalendarList, CalendarMode, CalendarWeekList, WeekItem
 } from '../components/Calendars/types'
 
 const customLocale: Partial<ILocale> = {
@@ -85,29 +85,38 @@ interface CurrentData {
   year: number
 }
 
-type CheckDatesScopeFn = ( current: CurrentData ) => DateScopeType | null
-type GenerateDateArrayFn = ( current: CalendarCurrentData, options: DateScopeType, disabledOptions: CalendarDisabledOptions ) => CalendarWeekList
-type GetPickerDatesProps = ( current: CurrentData, disabledOptions: CalendarDisabledOptions ) => CalendarWeekList
+type CheckDatesScopeFn = ( current: CalendarMode ) => DateScopeType | null
+type GenerateDateArrayFn = ( current: CalendarMode, options: DateScopeType, disabledOptions: CalendarDisabledOptions ) => CalendarWeekList
+type GetPickerDatesProps = ( current: CalendarMode, disabledOptions: CalendarDisabledOptions ) => CalendarWeekList
 
 export interface DateScopeType {
   startDate: Date,
   count: number
 }
 
-const getDatesScope: CheckDatesScopeFn = ( { month, year } ) => {
-  if( isNaN( month ) || isNaN( year ) ) {
-    return null
+const getDatesScope: CheckDatesScopeFn = ( current ) => {
+  let startDate: Date = dayjs().toDate()
+  let count: number = 0
+
+  if( current.layout === 'month' ) {
+    const firstDayOfMonth = dayjs( new Date( current.year, current.month, 1 ) )
+    const firstDayOfWeek = firstDayOfMonth.day()
+    const neededPrevDays = firstDayOfWeek === 0 ? 6 : firstDayOfWeek - 1
+    startDate = neededPrevDays > 0 ? firstDayOfMonth.subtract( neededPrevDays, 'day' ).toDate() : firstDayOfMonth.toDate()
+    count = 42
   }
 
-  const firstDayOfMonth = dayjs( new Date( year, month, 1 ) )
-  const firstDayOfWeek = firstDayOfMonth.day()
-  const neededPrevDays = firstDayOfWeek === 0 ? 6 : firstDayOfWeek - 1
+  if( current.layout === 'week' ) {
+    const first = dayjs().set( 'year', current.year ).week( current.week )
+    const neededPrevDays = first.day() === 0 ? 6 : first.day() - 1
+    count = 7
+    startDate = neededPrevDays > 0 ? first.subtract( neededPrevDays, 'day' ).toDate() : first.toDate()
+  }
 
-  const startDate = neededPrevDays > 0 ? firstDayOfMonth.subtract( neededPrevDays, 'day' ).toDate() : firstDayOfMonth.toDate()
 
   return {
     startDate,
-    count: 42
+    count
   }
 }
 
@@ -117,7 +126,7 @@ const checkIsDisabledDate = ( currentDate: dayjs.Dayjs, options: CalendarDisable
     includeMin = false,
     max,
     includeMax = false,
-    excludeWeekends = true,
+    excludeWeekends = false,
     disableDates = []
   } = options
 
@@ -150,14 +159,34 @@ const checkIsDisabledDate = ( currentDate: dayjs.Dayjs, options: CalendarDisable
   return result
 }
 
-const checkIsCurrent = ( current: CalendarCurrentData, date: dayjs.Dayjs ): boolean => {
-  const { month, year } = current
-  const dateMonth = date.month()
-  const dateYear = date.year()
+const checkIsCurrent = ( current: CalendarMode, date: dayjs.Dayjs ): boolean => {
+  if( current.layout === 'month' ) {
+    const { month, year } = current
+    const dateMonth = date.month()
+    const dateYear = date.year()
 
-  return dateMonth === month && dateYear === year
+    return dateMonth === month && dateYear === year
+  }
+
+  if( current.layout === 'week' ) {
+    return true
+  }
+
+  return true
 }
 
+export const packageDate = ( date: Date, current: CalendarMode, disabledOptions?: CalendarDisabledOptions ): CalendarItem => {
+  return {
+    value: dayjs( date ).toDate(),
+    meta: {
+      isToday: dayjs( date ).isToday(),
+      isTomorrow: dayjs( date ).isTomorrow(),
+      isYesterday: dayjs( date ).isYesterday(),
+      isDisabled: checkIsDisabledDate( dayjs( date ), disabledOptions || {} ),
+      isCurrent: checkIsCurrent( current, dayjs( date ) )
+    }
+  }
+}
 
 const generateDateArray: GenerateDateArrayFn = ( current, scope, disabledOptions ) => {
   const arr: CalendarWeekList = []
@@ -169,19 +198,9 @@ const generateDateArray: GenerateDateArrayFn = ( current, scope, disabledOptions
     const weekday = iterationDate.weekday()
     const iterations = weekday === 7 ? 0 : 6 - weekday
     const weekOfYear = iterationDate.week()
-    console.log( iterationDate )
 
     for (let d = 0; d <= iterations; d++) {
-      weekArr.push( {
-        value: iterationDate.toDate(),
-        meta: {
-          isToday: iterationDate.isToday(),
-          isTomorrow: iterationDate.isTomorrow(),
-          isYesterday: iterationDate.isYesterday(),
-          isDisabled: checkIsDisabledDate( iterationDate, disabledOptions ),
-          isCurrent: checkIsCurrent( current, iterationDate )
-        }
-      } )
+      weekArr.push( packageDate( iterationDate.toDate(), current, disabledOptions ) )
 
       iterationDate = iterationDate.add( 1, 'day' )
     }

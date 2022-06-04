@@ -1,17 +1,17 @@
 import {
   AddTaskModalProps,
-  CalendarBodyProps,
+  MonthCalendarProps,
   CalendarBodyTitleProps, CalendarList,
   CalendarProps,
   TaskInfoModalProps,
   TaskStorage,
-  WeekListProps
+  WeekListProps, CalendarMode, WeekItem, DayCalendarProps, CalendarItem
 } from './types'
 import { FC, useCallback, useEffect, useMemo } from 'react'
 import {
   CalendarDateListContainer,
   CalendarDesktopContainer,
-  CalendarTitle
+  CalendarTitle, SwitchCalendarMode
 } from './calendar.styled'
 import { CalendarCell, TaskTileText } from './cell'
 import {
@@ -26,12 +26,23 @@ import { Modal, ModalBody, ModalFooter, ModalHeader } from '../Modal/modal'
 import { TaskInformer } from './TaskInformer/taskInformer'
 import { StyledButton } from '../Buttons/buttons.styled'
 import { FlexBlock } from '../LayoutComponents/flexBlock'
-import { changeCurrentHandler, getTaskListOfDay, getTaskStorage } from '../../common/functions'
+import {
+  changeDayCurrentHandler,
+  changeMonthCurrentHandler,
+  changeWeekCurrentHandler,
+  getTaskListOfDay,
+  getTaskStorage
+} from '../../common/functions'
 import { Arrow, DoubleArrow } from '../Icons/icons'
 import { HoverElementMixin } from '../../common/cssMixins'
-import { ChangeCurrentPattern } from '../../common/commonTypes'
+import {
+  ChangeCurrentPattern,
+  ChangeMonthCurrentPattern,
+  ShortChangeCurrentPattern
+} from '../../common/commonTypes'
 import { useCalendar } from '../hooks/useCalendar'
 import styled from 'styled-components'
+import { packageDate } from '../../common/dayjs'
 
 const CalendarBodyTitle: FC<CalendarBodyTitleProps> = ( {
                                                           current,
@@ -39,12 +50,34 @@ const CalendarBodyTitle: FC<CalendarBodyTitleProps> = ( {
                                                           renderWeekPattern
                                                         } ) => {
   const title: string = useMemo( () => {
-    return `${MonthList[ current.month ]} ${current.year}г.`
+    switch (current.layout) {
+      case 'month':
+        return `${MonthList[ current.month ]} ${current.year}г.`
+      case 'week':
+        return `Неделя ${current.week}, ${MonthList[ dayjs().set( 'year', current.year ).week( current.week ).month() ]} ${current.year}г.`
+      case 'day':
+        const day = dayjs( current.date )
+        return `${WeekDaysList[ day.weekday() ]}, ${day.format( 'DD-MM-YYYY' )}г.`
+    }
+    return `Еще не учтено: ${current.layout}`
   }, [current] )
 
-  const onChangeCurrentHandler = useCallback( ( pattern: ChangeCurrentPattern = 'today' ) => {
+  const onChangeCurrentHandler = useCallback( ( pattern: ShortChangeCurrentPattern = 'today' ) => {
     if( onChangeCurrent ) {
-      onChangeCurrent( changeCurrentHandler( current, pattern ) )
+      switch (current.layout) {
+        case 'month':
+          return onChangeCurrent( changeMonthCurrentHandler( current, pattern ), current.layout )
+        case 'week':
+          return onChangeCurrent( changeWeekCurrentHandler( current, pattern ), current.layout )
+        case 'day':
+          return onChangeCurrent( changeDayCurrentHandler( current, pattern ), current.layout )
+      }
+    }
+  }, [current] )
+
+  const onChangeCurrentLayoutHandler = useCallback( ( newLayout: CalendarMode['layout'] ) => {
+    if( onChangeCurrent ) {
+      return onChangeCurrent( dayjs().toDate(), newLayout )
     }
   }, [current] )
 
@@ -64,87 +97,106 @@ const CalendarBodyTitle: FC<CalendarBodyTitleProps> = ( {
         align={'center'}
         mb={8}
       >
-        <FlexBlock justify={'flex-start'} align={'center'}>
+        <FlexBlock flex={'1 0 33.3%'} justify={'flex-start'} align={'center'}>
           <CalendarTitle>
             {title}
           </CalendarTitle>
         </FlexBlock>
-        <FlexBlock justify={'flex-end'} align={'center'}>
+        <FlexBlock flex={'1 0 33.3%'} justify={'center'} align={'center'}>
+          <SwitchCalendarMode
+            isSelected={current.layout === 'day'}
+            onClick={() => onChangeCurrentLayoutHandler( 'day' )}
+          >
+            День
+          </SwitchCalendarMode>
+          <SwitchCalendarMode
+            onClick={() => onChangeCurrentLayoutHandler( 'week' )}
+            isSelected={current.layout === 'week'}
+          >
+            Неделя
+          </SwitchCalendarMode>
+          <SwitchCalendarMode
+            onClick={() => onChangeCurrentLayoutHandler( 'month' )}
+            isSelected={current.layout === 'month'}
+          >
+            Месяц
+          </SwitchCalendarMode>
+          <SwitchCalendarMode isSelected={current.layout === 'year'}>
+            Год
+          </SwitchCalendarMode>
+        </FlexBlock>
+        <FlexBlock flex={'1 0 33.3%'} justify={'flex-end'} align={'center'}>
           <DoubleArrow
-            onClick={() => onChangeCurrentHandler( '-year' )}
+            onClick={() => onChangeCurrentHandler( '--' )}
             size={20}
             transform={'rotate(180deg)'}
             mr={6}
           />
           <Arrow
-            onClick={() => onChangeCurrentHandler( '-month' )}
+            onClick={() => onChangeCurrentHandler( '-' )}
             size={20}
             transform={'rotate(180deg)'}
             mr={6}
           />
-          <FlexBlock
-            mr={6}
-            p={'6px 16px'}
-            border={`1px solid ${defaultColor}`}
-            borderRadius={4}
-            additionalCss={HoverElementMixin}
+          <SwitchCalendarMode
             onClick={() => onChangeCurrentHandler( 'today' )}
           >
             Сегодня
-          </FlexBlock>
+          </SwitchCalendarMode>
           <Arrow
             mr={6}
             size={20}
-            onClick={() => onChangeCurrentHandler( '+month' )}
+            onClick={() => onChangeCurrentHandler( '+' )}
           />
           <DoubleArrow
             size={20}
-            onClick={() => onChangeCurrentHandler( '+year' )}
+            onClick={() => onChangeCurrentHandler( '++' )}
           />
         </FlexBlock>
       </FlexBlock>
-      <CalendarDateListContainer>
-        <WeekList renderWeekPattern={renderWeekPattern}/>
-      </CalendarDateListContainer>
+      <WeekList renderWeekPattern={renderWeekPattern} current={current}/>
     </FlexBlock>
   )
 }
 
-const WeekList: FC<WeekListProps> = ( { renderWeekPattern } ) => {
-  if( renderWeekPattern === 'full' ) {
-    return (
-      <>
-        {WeekDaysList.map( day => (
-          <FlexBlock
-            justify={'center'}
-            width={'100%'}
-            p={'12px 0px'}
-            borderBottom={`1px solid ${defaultColor}`}
-          >
-            {day}
-          </FlexBlock>
-        ) )}
-      </>
-    )
-  }
+const WeekList: FC<WeekListProps> = ( { renderWeekPattern, current } ) => {
+  if( current.layout === 'week' || current.layout === 'month' ) {
+    if( renderWeekPattern === 'full' ) {
+      return (
+        <CalendarDateListContainer>
+          {WeekDaysList.map( day => (
+            <FlexBlock
+              justify={'center'}
+              width={'100%'}
+              p={'12px 0px'}
+              borderBottom={`1px solid ${defaultColor}`}
+            >
+              {day}
+            </FlexBlock>
+          ) )}
+        </CalendarDateListContainer>
+      )
+    }
 
-  if( renderWeekPattern === 'short' ) {
-    return (
-      <>
-        {WeekDaysShortList.map( day => (
-          <FlexBlock
-            justify={'center'}
-            width={'100%'}
-            p={'12px 0px'}
-            borderBottom={`1px solid ${defaultColor}`}
-          >
-            {day}
-          </FlexBlock>
-        ) )}
-      </>
-    )
-  }
+    if( renderWeekPattern === 'short' ) {
+      return (
+        <CalendarDateListContainer>
+          {WeekDaysShortList.map( day => (
+            <FlexBlock
+              justify={'center'}
+              width={'100%'}
+              p={'12px 0px'}
+              borderBottom={`1px solid ${defaultColor}`}
+            >
+              {day}
+            </FlexBlock>
+          ) )}
+        </CalendarDateListContainer>
+      )
+    }
 
+    return <></>
+  }
   return <></>
 }
 
@@ -170,7 +222,7 @@ const WeekOfYearTitle = styled( 'h3' )`
     font-size: 20px;
     width: 100%;
     text-align: left;
-    margin-bottom: 4px;
+    margin-bottom: 8px;
     margin-top: 0;
     padding-left: 8px;
     color: ${disabledColor};
@@ -178,45 +230,83 @@ const WeekOfYearTitle = styled( 'h3' )`
     z-index: 9;
     position: sticky;
     top: 0;
-    left: 0
+    left: 0;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: all .3s ease-in-out;
+  }
+
+  &:hover {
+    background-color: ${disabledColor};
+    color: ${defaultColor};
   }
 `
 
-const CalendarBody: FC<CalendarBodyProps> = ( {
-                                                list,
-                                                current,
-                                                tasksList,
-                                                onAddTask,
-                                                onSelectTask,
-                                                onChangeCurrent,
-                                                renderWeekPattern
-                                              } ) => {
-  const taskList: TaskStorage = useMemo( () => {
-    return !!tasksList?.length ? getTaskStorage( current, tasksList ) : {}
-  }, [current, tasksList] )
+const DayCalendar: FC<DayCalendarProps> = ( {
+                                              current,
+                                              onChangeCurrent,
+                                              renderWeekPattern,
+                                              taskStorage,
+                                              onSelectTask,
+                                              onAddTask,
+                                              renderTaskCount
+                                            } ) => {
+  const day: CalendarItem = useMemo( () => {
+    return packageDate( current.date, current )
+  }, [current.date] )
+
+  return (
+    <FlexBlock justify={'flex-start'} align={'stretch'} wrap={'nowrap'} width={'100%'}>
+      <FlexBlock flex={'1 0 60%'}>
+        <CalendarCell
+          value={day}
+          renderTaskCount={renderTaskCount}
+          tasks={taskStorage ? getTaskListOfDay( day, taskStorage ) : []}
+        />
+      </FlexBlock>
+      <FlexBlock flex={'1 0 40%'}>
+        А тут настройки
+      </FlexBlock>
+    </FlexBlock>
+  )
+}
+
+const MonthCalendar: FC<MonthCalendarProps> = ( {
+                                                  list,
+                                                  current,
+                                                  onAddTask,
+                                                  onSelectTask,
+                                                  onChangeCurrent,
+                                                  renderTaskCount,
+                                                  taskStorage
+                                                } ) => {
+
+  const onSelectWeek = ( item: WeekItem ) => {
+    if( current.layout === 'month' && onChangeCurrent ) {
+      onChangeCurrent( dayjs().set( 'year', current.year ).week( item.weekOfYear ).toDate(), 'week' )
+    }
+  }
 
   return (
     <CalendarDesktopContainer>
-      <CalendarBodyTitle
-        current={current}
-        onChangeCurrent={onChangeCurrent}
-        renderWeekPattern={renderWeekPattern}
-      />
-
       <CalendarDateListContainer>
         {list.map( item => (
           <WeekContainer>
-            <WeekOfYearTitle>
-              {item.weekOfYear}
-            </WeekOfYearTitle>
+            {current.layout === 'month' && (
+              <WeekOfYearTitle
+                onClick={() => onSelectWeek( item )}
+              >
+                {item.weekOfYear}
+              </WeekOfYearTitle>
+            )}
             <DaysContainer>
-
               {item.days.map( day => (
                 <CalendarCell
+                  renderTaskCount={renderTaskCount}
                   key={day.value.toString()}
                   onAddTask={onAddTask}
                   value={day}
-                  tasks={getTaskListOfDay( day, taskList )}
+                  tasks={taskStorage ? getTaskListOfDay( day, taskStorage ) : []}
                   onSelectTask={onSelectTask}
                 />
               ) )}
@@ -303,18 +393,51 @@ export const Calendar: FC<CalendarProps> = ( {
     renderWeekPattern
   } )
 
+  const taskStorage: TaskStorage = useMemo( () => {
+    return getTaskStorage( calendar.tasksList )
+  }, [calendar.tasksList] )
+
 
   return (
-    <FlexBlock position={'relative'}>
-      <CalendarBody
+    <FlexBlock position={'relative'} align={'flex-start'} direction={'column'}>
+      <CalendarBodyTitle
+        current={calendar.current}
         onChangeCurrent={calendar.onChangeCurrent}
         renderWeekPattern={renderWeekPattern}
-        current={calendar.current}
-        list={calendar.calendarList}
-        tasksList={calendar.tasksList}
-        onAddTask={calendar.onAddTask}
-        onSelectTask={calendar.onSelectTask}
       />
+      {calendar.current.layout === 'month' ? (
+        <>
+          <MonthCalendar
+            onChangeCurrent={calendar.onChangeCurrent}
+            renderWeekPattern={renderWeekPattern}
+            renderTaskCount={5}
+            current={calendar.current}
+            list={calendar.calendarList}
+            taskStorage={taskStorage}
+            onAddTask={calendar.onAddTask}
+            onSelectTask={calendar.onSelectTask}
+          />
+        </>
+      ) : calendar.current.layout === 'week' ? (
+        <>
+          <MonthCalendar
+            onChangeCurrent={calendar.onChangeCurrent}
+            renderWeekPattern={renderWeekPattern}
+            current={calendar.current}
+            list={calendar.calendarList}
+            renderTaskCount={'all'}
+            taskStorage={taskStorage}
+            onAddTask={calendar.onAddTask}
+            onSelectTask={calendar.onSelectTask}
+          />
+        </>
+      ) : calendar.current.layout === 'day' ? (
+        <DayCalendar
+          current={calendar.current}
+          taskStorage={taskStorage}
+          renderTaskCount={'all'}
+        />
+      ) : <></>}
       <AddTaskModal
         date={calendar.addTaskDate}
         onClose={() => calendar.setAddTaskDate( null )}

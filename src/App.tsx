@@ -18,7 +18,6 @@ function App() {
 
   useEffect( () => {
     document.title = 'Онлайн планировщик дел'
-    console.log( dayjs().week() )
   }, [] )
 
   return (
@@ -35,13 +34,12 @@ function App() {
         <div style={{ width: '100%', position: 'relative', height: '100%' }}>
           <Calendar
             initialCurrent={{
-              month: new Date().getMonth(),
+              layout: 'week',
+              week: dayjs().week(),
               year: new Date().getFullYear()
             }}
-            disabledOptions={{
-              excludeWeekends: false
-            }}
-            renderWeekPattern={'full'}
+            disabledOptions={{}}
+            renderWeekPattern={'short'}
           />
           <FlexBlock height={600}/>
           <FlexBlock height={600}/>

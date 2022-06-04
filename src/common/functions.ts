@@ -10,7 +10,12 @@ import {
   TaskYear
 } from '../components/Calendars/types'
 import dayjs from 'dayjs'
-import { ChangeCurrentFnType, ChangeCurrentPattern } from './commonTypes'
+import {
+  ChangeCurrentFnType, ChangeDayCurrentFn,
+  ChangeMonthCurrentFn,
+  ChangeMonthCurrentPattern,
+  ChangeWeekCurrentFn
+} from './commonTypes'
 
 export const addNull = ( value: number ): string => value < 10 ? `0${value}` : value.toString()
 
@@ -42,10 +47,7 @@ export const getTaskListOfDay = ( day: CalendarItem, storage: TaskStorage ): Cal
 
   return d
 }
-export const getTaskStorage = ( {
-                                  year,
-                                  month
-                                }: CalendarCurrentData, tasks: CalendarTaskList ): TaskStorage => {
+export const getTaskStorage = ( tasks: CalendarTaskList ): TaskStorage => {
   const r: TaskStorage = {}
 
   tasks.forEach( ( task ) => {
@@ -66,20 +68,20 @@ export const getTaskStorage = ( {
   return r || {}
 }
 
-export const changeCurrentHandler: ChangeCurrentFnType = ( current, pattern = 'today' ) => {
+export const changeMonthCurrentHandler: ChangeMonthCurrentFn = ( current, pattern = 'today' ) => {
   const oldCurrent = dayjs( new Date( current.year, current.month, 1 ) )
   let newCurrentDate = oldCurrent.toDate()
   switch (pattern) {
-    case '+month':
+    case '+':
       newCurrentDate = oldCurrent.add( 1, 'month' ).toDate()
       break
-    case '+year':
+    case '++':
       newCurrentDate = oldCurrent.add( 1, 'year' ).toDate()
       break
-    case '-month':
+    case '-':
       newCurrentDate = oldCurrent.subtract( 1, 'month' ).toDate()
       break
-    case '-year':
+    case '--':
       newCurrentDate = oldCurrent.subtract( 1, 'year' ).toDate()
       break
     case 'today':
@@ -87,4 +89,38 @@ export const changeCurrentHandler: ChangeCurrentFnType = ( current, pattern = 't
       break
   }
   return newCurrentDate
+}
+
+export const changeWeekCurrentHandler: ChangeWeekCurrentFn = ( current, pattern = 'today' ) => {
+  const oldCurrent = dayjs().set( 'year', current.year ).week( current.week )
+
+  switch (pattern) {
+    case '+':
+      return oldCurrent.add( 1, 'week' ).toDate()
+    case '-':
+      return oldCurrent.subtract( 1, 'week' ).toDate()
+    case 'today':
+      return dayjs().toDate()
+    case '++':
+      return oldCurrent.add( 1, 'month' ).toDate()
+    case '--':
+      return oldCurrent.subtract( 1, 'month' ).toDate()
+  }
+}
+
+export const changeDayCurrentHandler: ChangeDayCurrentFn = ( current, pattern = 'today' ) => {
+  const oldCurrent = dayjs( current.date )
+
+  switch (pattern) {
+    case '+':
+      return oldCurrent.add( 1, 'day' ).toDate()
+    case '-':
+      return oldCurrent.subtract( 1, 'day' ).toDate()
+    case 'today':
+      return dayjs().toDate()
+    case '++':
+      return oldCurrent.add( 1, 'week' ).toDate()
+    case '--':
+      return oldCurrent.subtract( 1, 'week' ).toDate()
+  }
 }

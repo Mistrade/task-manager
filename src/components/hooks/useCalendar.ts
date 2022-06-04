@@ -2,7 +2,7 @@ import {
   AddTaskDateType,
   CalendarCurrentData,
   CalendarItem,
-  CalendarList,
+  CalendarList, CalendarMode,
   CalendarProps,
   CalendarTaskList, CalendarWeekList,
   OnAddTaskFnType,
@@ -12,12 +12,13 @@ import {
   SelectTaskItem,
   TaskTileClickArguments
 } from '../Calendars/types'
-import React, { useCallback, useMemo, useState } from 'react'
+import React, { useCallback, useEffect, useMemo, useState } from 'react'
 import { getPickerDates } from '../../common/dayjs'
 import { defaultTasksList } from '../../common/constants'
+import dayjs from 'dayjs'
 
 interface Returned {
-  current: CalendarCurrentData,
+  current: CalendarMode,
   calendarList: CalendarWeekList,
   tasksList: CalendarTaskList,
   setTasksList: React.Dispatch<React.SetStateAction<CalendarTaskList>>,
@@ -37,12 +38,16 @@ export const useCalendar: UseCalendarType = ( {
                                                 renderWeekPattern,
                                                 disabledOptions = {}
                                               } ) => {
-  const [current, setCurrent] = useState<CalendarCurrentData>( initialCurrent )
 
+  const [current, setCurrent] = useState<CalendarMode>( initialCurrent )
+
+  //TODO перенести CalendarList в компонент MonthCalendar
   const calendarList: CalendarWeekList = useMemo( () => {
     return getPickerDates( current, disabledOptions )
   }, [current] )
 
+
+  //TODO переделать tasksList на тип TaskStorage
   const [tasksList, setTasksList] = useState<CalendarTaskList>( defaultTasksList )
   const [selectedTask, setSelectedTask] = useState<SelectedTaskType>( null )
   const [addTaskDate, setAddTaskDate] = useState<AddTaskDateType>( null )
@@ -55,11 +60,26 @@ export const useCalendar: UseCalendarType = ( {
     setAddTaskDate( date )
   }, [setAddTaskDate] )
 
-  const onChangeCurrent: OnChangeCurrentFnType = useCallback( ( date ) => {
-    setCurrent( {
-      month: date.getMonth(),
-      year: date.getFullYear()
-    } )
+  const onChangeCurrent: OnChangeCurrentFnType = useCallback( ( date, layout ) => {
+    switch (layout) {
+      case 'month':
+        return setCurrent( {
+          layout,
+          month: date.getMonth(),
+          year: date.getFullYear()
+        } )
+      case 'week':
+        return setCurrent( {
+          layout,
+          week: dayjs( date ).week(),
+          year: date.getFullYear()
+        } )
+      case 'day':
+        return setCurrent( {
+          layout,
+          date
+        } )
+    }
   }, [setCurrent] )
 
   return {

@@ -215,6 +215,9 @@ export const CalendarCell: FC<CalendarCellProps> = ( {
                                                      } ) => {
   const [isHover, setIsHover] = useState( false )
 
+  console.log( tasks )
+
+
   return (
     <CellContainer
       disabled={value.meta.isDisabled}
@@ -246,17 +249,26 @@ export const CalendarCell: FC<CalendarCellProps> = ( {
         tasks={tasks}
         date={value}
         onSelect={onSelectTask}
+        renderTaskCount={renderTaskCount}
       />
     </CellContainer>
   )
 }
 
-export const TaskTileList: FC<TaskTileListProps> = ( { tasks = [], date, onSelect } ) => {
-  const length = 5
+export const TaskTileList: FC<TaskTileListProps> = ( {
+                                                       tasks = [],
+                                                       date,
+                                                       onSelect,
+                                                       renderTaskCount = 'all'
+                                                     } ) => {
+  const length = useMemo( () => {
+    return renderTaskCount !== 'all' ? renderTaskCount : tasks?.length || 5
+  }, [renderTaskCount] )
+
   if( !!tasks?.length ) {
     return (
       <TaskTileContainer>
-        {tasks.slice( 0, 5 ).map( ( item, index ) => (
+        {tasks.slice( 0, length ).map( ( item, index ) => (
           <TaskTileItem
             key={item.title + index}
             taskInfo={item}
