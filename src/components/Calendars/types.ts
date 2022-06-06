@@ -64,7 +64,7 @@ export type RenderWeekPattern = 'short' | 'full' | 'none'
 export interface TaskTileClickArguments {
   date: CalendarItem,
   taskInfo: CalendarTaskItem,
-  event: React.MouseEvent<HTMLDivElement>
+  event?: React.MouseEvent<HTMLDivElement>
 }
 
 export type CalendarList = Array<CalendarItem>
@@ -118,6 +118,7 @@ export interface CalendarTaskItem {
   description: string,
   priority: CalendarPriorityKeys,
   time: Date,
+  timeEnd: Date,
   isCompleted?: boolean,
   members: TaskMembersListType
 }

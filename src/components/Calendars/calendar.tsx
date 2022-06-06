@@ -1,22 +1,28 @@
 import {
   AddTaskModalProps,
-  MonthCalendarProps,
-  CalendarBodyTitleProps, CalendarList,
+  CalendarBodyTitleProps,
+  CalendarItem,
+  CalendarMode,
   CalendarProps,
+  DayCalendarProps,
+  MonthCalendarProps,
   TaskInfoModalProps,
   TaskStorage,
-  WeekListProps, CalendarMode, WeekItem, DayCalendarProps, CalendarItem
+  WeekItem,
+  WeekListProps
 } from './types'
-import { FC, useCallback, useEffect, useMemo } from 'react'
+import { FC, useCallback, useMemo } from 'react'
 import {
   CalendarDateListContainer,
   CalendarDesktopContainer,
-  CalendarTitle, SwitchCalendarMode
+  CalendarTitle,
+  SwitchCalendarMode
 } from './calendar.styled'
-import { CalendarCell, TaskTileText } from './cell'
+import { CalendarCell, DayTimeFrame, TaskTileText } from './cell'
 import {
   DATE_RENDER_FORMAT,
-  defaultColor, disabledColor,
+  defaultColor,
+  disabledColor,
   MonthList,
   WeekDaysList,
   WeekDaysShortList
@@ -34,15 +40,12 @@ import {
   getTaskStorage
 } from '../../common/functions'
 import { Arrow, DoubleArrow } from '../Icons/icons'
-import { HoverElementMixin } from '../../common/cssMixins'
-import {
-  ChangeCurrentPattern,
-  ChangeMonthCurrentPattern,
-  ShortChangeCurrentPattern
-} from '../../common/commonTypes'
+import { ShortChangeCurrentPattern } from '../../common/commonTypes'
 import { useCalendar } from '../hooks/useCalendar'
 import styled from 'styled-components'
-import { packageDate } from '../../common/dayjs'
+import { packageDate, sortTask } from '../../common/dayjs'
+import { DayTaskList } from './DayCalendar/DayTaskList'
+import { DaySettingsPanel } from './DayCalendar/DaySettingsPanel'
 
 const CalendarBodyTitle: FC<CalendarBodyTitleProps> = ( {
                                                           current,
@@ -57,7 +60,7 @@ const CalendarBodyTitle: FC<CalendarBodyTitleProps> = ( {
         return `Неделя ${current.week}, ${MonthList[ dayjs().set( 'year', current.year ).week( current.week ).month() ]} ${current.year}г.`
       case 'day':
         const day = dayjs( current.date )
-        return `${WeekDaysList[ day.weekday() ]}, ${day.format( 'DD-MM-YYYY' )}г.`
+        return `${WeekDaysList[ day.weekday() ]}, ${day.format( `DD ${MonthList[ day.month() ]} YYYY` )}г.`
     }
     return `Еще не учтено: ${current.layout}`
   }, [current] )
@@ -88,8 +91,6 @@ const CalendarBodyTitle: FC<CalendarBodyTitleProps> = ( {
       pb={8}
       pt={8}
       bgColor={'#fff'}
-      position={'sticky'}
-      style={{ top: 0, left: 0, zIndex: 10 }}
     >
       <FlexBlock
         width={'100%'}
@@ -256,16 +257,29 @@ const DayCalendar: FC<DayCalendarProps> = ( {
   }, [current.date] )
 
   return (
-    <FlexBlock justify={'flex-start'} align={'stretch'} wrap={'nowrap'} width={'100%'}>
-      <FlexBlock flex={'1 0 60%'}>
-        <CalendarCell
-          value={day}
-          renderTaskCount={renderTaskCount}
-          tasks={taskStorage ? getTaskListOfDay( day, taskStorage ) : []}
+    <FlexBlock
+      className={'day--calendar'}
+      justify={'flex-start'}
+      align={'stretch'}
+      wrap={'nowrap'}
+      width={'100%'}
+      grow={10}
+      mt={24}
+    >
+      <FlexBlock flex={'1 0 calc(50% - 16px)'} height={'100%'} mr={16}>
+        <DayTaskList
+          day={day}
+          onSelectTask={onSelectTask}
+          current={current}
+          taskList={taskStorage ? sortTask( getTaskListOfDay( day, taskStorage ) ) : []}
         />
       </FlexBlock>
-      <FlexBlock flex={'1 0 40%'}>
-        А тут настройки
+      <FlexBlock flex={'1 0 calc(50% - 16px)'} ml={16}>
+        <DaySettingsPanel
+          current={current}
+          date={day}
+          onSelectDate={( data ) => onChangeCurrent && onChangeCurrent( data.value, 'day' )}
+        />
       </FlexBlock>
     </FlexBlock>
   )
@@ -399,40 +413,38 @@ export const Calendar: FC<CalendarProps> = ( {
 
 
   return (
-    <FlexBlock position={'relative'} align={'flex-start'} direction={'column'}>
+    <FlexBlock position={'relative'} align={'flex-start'} direction={'column'} grow={3}>
       <CalendarBodyTitle
         current={calendar.current}
         onChangeCurrent={calendar.onChangeCurrent}
         renderWeekPattern={renderWeekPattern}
       />
       {calendar.current.layout === 'month' ? (
-        <>
-          <MonthCalendar
-            onChangeCurrent={calendar.onChangeCurrent}
-            renderWeekPattern={renderWeekPattern}
-            renderTaskCount={5}
-            current={calendar.current}
-            list={calendar.calendarList}
-            taskStorage={taskStorage}
-            onAddTask={calendar.onAddTask}
-            onSelectTask={calendar.onSelectTask}
-          />
-        </>
+        <MonthCalendar
+          onChangeCurrent={calendar.onChangeCurrent}
+          renderWeekPattern={renderWeekPattern}
+          renderTaskCount={5}
+          current={calendar.current}
+          list={calendar.calendarList}
+          taskStorage={taskStorage}
+          onAddTask={calendar.onAddTask}
+          onSelectTask={calendar.onSelectTask}
+        />
       ) : calendar.current.layout === 'week' ? (
-        <>
-          <MonthCalendar
-            onChangeCurrent={calendar.onChangeCurrent}
-            renderWeekPattern={renderWeekPattern}
-            current={calendar.current}
-            list={calendar.calendarList}
-            renderTaskCount={'all'}
-            taskStorage={taskStorage}
-            onAddTask={calendar.onAddTask}
-            onSelectTask={calendar.onSelectTask}
-          />
-        </>
+        <MonthCalendar
+          onChangeCurrent={calendar.onChangeCurrent}
+          renderWeekPattern={renderWeekPattern}
+          current={calendar.current}
+          list={calendar.calendarList}
+          renderTaskCount={'all'}
+          taskStorage={taskStorage}
+          onAddTask={calendar.onAddTask}
+          onSelectTask={calendar.onSelectTask}
+        />
       ) : calendar.current.layout === 'day' ? (
         <DayCalendar
+          onSelectTask={calendar.onSelectTask}
+          onChangeCurrent={calendar.onChangeCurrent}
           current={calendar.current}
           taskStorage={taskStorage}
           renderTaskCount={'all'}

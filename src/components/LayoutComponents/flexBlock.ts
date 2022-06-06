@@ -11,10 +11,9 @@ export type FlexBlockProps =
   & PositionProps
   & CustomStyles
   & ChildrenProps
-  & EventsMap
 
 
-type UnitsType = string | number
+export type UnitsType = string | number
 
 interface ChildrenProps {
   children?: ReactNode
@@ -24,23 +23,23 @@ interface EventsMap {
   onClick?: <T>( data: T ) => void
 }
 
-interface WidthProps {
+export interface WidthProps {
   width?: UnitsType,
   maxWidth?: UnitsType,
   minWidth?: UnitsType
 }
 
-interface PositionProps {
+export interface PositionProps {
   position?: CSSProperties['position']
 }
 
-interface HeightProps {
+export interface HeightProps {
   height?: UnitsType,
   maxHeight?: UnitsType,
   minHeight?: UnitsType
 }
 
-interface FormalizationProps {
+export interface FormalizationProps {
   opacity?: CSSProperties['opacity'],
   bgColor?: CSSProperties['backgroundColor'],
   animation?: CSSProperties['animation'],
@@ -56,7 +55,7 @@ interface FormalizationProps {
   transform?: CSSProperties['transform'],
 }
 
-interface FlexProps {
+export interface FlexProps {
   align?: CSSProperties['alignItems'],
   justify?: CSSProperties['justifyContent'],
   wrap?: CSSProperties['flexWrap'],
@@ -67,7 +66,7 @@ interface FlexProps {
   flex?: CSSProperties['flex'],
 }
 
-interface MarginProps {
+export interface MarginProps {
   mt?: UnitsType,
   mr?: UnitsType,
   mb?: UnitsType,
@@ -75,7 +74,7 @@ interface MarginProps {
   m?: UnitsType
 }
 
-interface PaddingProps {
+export interface PaddingProps {
   pt?: UnitsType,
   pr?: UnitsType,
   pb?: UnitsType,
@@ -83,13 +82,13 @@ interface PaddingProps {
   p?: UnitsType
 }
 
-interface CustomStyles {
+export interface CustomStyles {
   additionalCss?: FlattenSimpleInterpolation
 }
 
-type CustomMixin<T> = ( _: T ) => FlattenSimpleInterpolation
+export type CustomMixin<T> = ( _: T ) => FlattenSimpleInterpolation
 
-const pxToCssValue = ( value: UnitsType ) => {
+export const pxToCssValue = ( value: UnitsType ) => {
   return typeof value === 'string' ? value : `${value}px`
 }
 

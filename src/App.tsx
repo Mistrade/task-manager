@@ -31,22 +31,21 @@ function App() {
           height: '100vh'
         }}
       >
-        <div style={{ width: '100%', position: 'relative', height: '100%' }}>
+        <div style={{
+          width: '100%',
+          position: 'relative',
+          height: 800,
+          display: 'flex',
+          flexDirection: 'column'
+        }}>
           <Calendar
             initialCurrent={{
-              layout: 'week',
-              week: dayjs().week(),
-              year: new Date().getFullYear()
+              layout: 'day',
+              date: new Date( 2022, 5, 1 )
             }}
             disabledOptions={{}}
-            renderWeekPattern={'short'}
+            renderWeekPattern={'full'}
           />
-          <FlexBlock height={600}/>
-          <FlexBlock height={600}/>
-          <FlexBlock height={600}/>
-          <FlexBlock height={600}/>
-          <FlexBlock height={600}/>
-
         </div>
       </div>
     </div>

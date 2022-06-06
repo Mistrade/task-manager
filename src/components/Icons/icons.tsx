@@ -4,7 +4,8 @@ import { FlexBlock, FlexBlockProps } from '../LayoutComponents/flexBlock'
 
 interface IconProps {
   size?: number,
-  color?: string
+  color?: string,
+  onClick?: (e: React.MouseEvent<HTMLDivElement>) => void
 }
 
 export const Male: FC<IconProps> = ( { size = 20, color = '#000' } ) => {

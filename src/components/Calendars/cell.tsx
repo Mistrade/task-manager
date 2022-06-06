@@ -1,9 +1,9 @@
 import styled, { css, keyframes } from 'styled-components'
-import React, { FC, useMemo, useState } from 'react'
+import React, { FC, useMemo, useRef, useState } from 'react'
 import {
-  CalendarCellProps,
+  CalendarCellProps, CalendarItem,
   CalendarPriorityKeys,
-  CalendarTaskItem,
+  CalendarTaskItem, CalendarTaskList,
   TaskTileItemProps,
   TaskTileListProps,
   TaskTilePriorityIndicatorProps
@@ -18,6 +18,7 @@ import {
 } from '../../common/constants'
 import dayjs from 'dayjs'
 import { FlexBlock } from '../LayoutComponents/flexBlock'
+import { searchIntersections, sortTask } from '../../common/dayjs'
 
 interface CellComponentProps {
   disabled?: boolean,
@@ -38,7 +39,7 @@ const CalendarDateContainer = styled( 'div' )`
   }
 `
 
-const CalendarDate = styled( 'span' )<CellComponentProps>`
+export const CalendarDate = styled( 'span' )<CellComponentProps>`
   & {
     display: flex;
     justify-content: center;
@@ -64,7 +65,7 @@ const CalendarDate = styled( 'span' )<CellComponentProps>`
   }}
 `
 
-const CellContainer = styled( 'div' )<CellComponentProps>`
+export const CellContainer = styled( 'div' )<CellComponentProps>`
   & {
     position: relative;
     width: 100%;
@@ -151,6 +152,7 @@ const TaskTile = styled( 'div' )<CellComponentProps & { withFill?: boolean }>`
     justify-content: flex-start;
     align-items: center;
     flex-wrap: nowrap;
+    cursor: pointer;
   }
 `
 
@@ -160,7 +162,7 @@ export const TaskTileText = styled( 'span' )<{ isCompleted?: boolean, maxWidth?:
     font-size: ${props => props.fs || '12px'};
     line-height: 1;
     width: 100%;
-    max-width: ${props => props.maxWidth || '80%'};
+    flex: 1 1 auto;
     white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis;
@@ -173,11 +175,14 @@ const TaskTimeValue = styled( 'span' )`
   & {
     font-size: 12px;
     line-height: 1;
+    display: flex;
+    flex: 1 0 auto;
+    flex-grow: 1;
+    justify-content: flex-end;
     white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis;
     text-align: right;
-    display: block;
   }
 `
 
@@ -196,6 +201,7 @@ const TaskTileContainer = styled( 'div' )`
 const Indicator = styled( 'span' )<{ color: string }>`
   & {
     display: block;
+    flex-shrink: 0;
     width: 5px;
     height: 5px;
     border-radius: 50%;
@@ -214,9 +220,6 @@ export const CalendarCell: FC<CalendarCellProps> = ( {
                                                        onSelectTask
                                                      } ) => {
   const [isHover, setIsHover] = useState( false )
-
-  console.log( tasks )
-
 
   return (
     <CellContainer
@@ -263,12 +266,12 @@ export const TaskTileList: FC<TaskTileListProps> = ( {
                                                      } ) => {
   const length = useMemo( () => {
     return renderTaskCount !== 'all' ? renderTaskCount : tasks?.length || 5
-  }, [renderTaskCount] )
+  }, [renderTaskCount, tasks] )
 
   if( !!tasks?.length ) {
     return (
       <TaskTileContainer>
-        {tasks.slice( 0, length ).map( ( item, index ) => (
+        {tasks.slice( 0, length + 1 ).map( ( item, index ) => (
           <TaskTileItem
             key={item.title + index}
             taskInfo={item}
@@ -323,8 +326,230 @@ export const TaskTileItem: FC<TaskTileItemProps> = ( { taskInfo, onSelect, date 
         {taskInfo.title}
       </TaskTileText>
       <TaskTimeValue>
-        {addNull( dayjs( taskInfo.time ).hour() )}:{addNull( dayjs( taskInfo.time ).minute() )}
+        {addNull( dayjs( taskInfo.time ).hour() )}:{addNull( dayjs( taskInfo.time ).minute() )} UTC+{dayjs( taskInfo.time ).utcOffset() / 60}
       </TaskTimeValue>
     </TaskTile>
+  )
+}
+
+export const DayTimeFrame: FC<{ taskList: CalendarTaskList }> = ( { taskList } ) => {
+  const arr = [
+    '01:00',
+    '02:00',
+    '03:00',
+    '04:00',
+    '05:00',
+    '06:00',
+    '07:00',
+    '08:00',
+    '09:00',
+    '10:00',
+    '11:00',
+    '12:00',
+    '13:00',
+    '14:00',
+    '15:00',
+    '16:00',
+    '17:00',
+    '18:00',
+    '19:00',
+    '20:00',
+    '21:00',
+    '22:00',
+    '23:00',
+    '00:00'
+  ]
+
+  const taskContainerRef = useRef<HTMLDivElement | null>( null )
+  return (
+    <FlexBlock
+      direction={'row'}
+      align={'flex-start'}
+      justify={'flex-start'}
+      width={'100%'}
+      height={800}
+      overflow={'scroll'}
+      style={{ scrollBehavior: 'unset' }}
+    >
+      <FlexBlock direction={'column'} width={'100%'} align={'flex-start'}>
+        00:00
+        <FlexBlock direction={'row'} pb={5} width={'100%'}>
+          <FlexBlock direction={'column'} width={100}>
+            {arr.map( ( time, index ) => (
+              <FlexBlock width={'100%'}>
+
+                <FlexBlock
+                  height={60}
+                  align={'flex-end'}
+                  justify={'flex-start'}
+                  width={100}
+                  position={'relative'}
+                  borderRight={'1px solid black'}
+                  borderBottom={'1px solid black'}
+                  borderTop={index === 0 ? '1px solid black' : ''}
+                  pb={5}
+                >
+                  <FlexBlock position={'absolute'} width={'80%'} justify={'flex-end'}
+                             align={'center'} bgColor={'#fff'}
+                             pr={10}
+                             style={{ bottom: -10, left: 0 }}>
+                    {time}
+                  </FlexBlock>
+                </FlexBlock>
+              </FlexBlock>
+            ) )}
+          </FlexBlock>
+          <FlexBlock direction={'column'} width={'100%'} position={'relative'}>
+            {arr.map( ( time, index ) => (
+              <FlexBlock width={'100%'}>
+                <FlexBlock
+                  height={60}
+                  align={'flex-end'}
+                  justify={'center'}
+                  width={'100%'}
+                  borderBottom={'1px solid black'}
+                  borderTop={index === 0 ? '1px solid black' : ''}
+                />
+              </FlexBlock>
+            ) )}
+
+            <FlexBlock
+              direction={'column'}
+              width={'100%'}
+              position={'absolute'}
+              height={'100%'}
+              style={{ top: 0, left: 0 }}
+              ref={taskContainerRef}
+            >
+
+              {taskList.map( ( item, index ) => {
+                // const els = item.intersectionCount + 1
+                // const left = item.renderPriority === 1 ? 0 : ( ( item.renderPriority - 1 ) / els ) * 100
+                // const width = 100 / ( item.intersectionCount + 1 )
+
+
+                const isEarlyStart = ( item: CalendarTaskItem, intersections: CalendarTaskList ) => {
+                  const start = dayjs( item.time )
+                  // const end = dayjs( item.timeEnd )
+                  return intersections.every( ( intersection ) => {
+                    const s = dayjs( intersection.time )
+                    return start.isBefore( s, 'minute' )
+                  } )
+                }
+
+                const isEarlyEnd = ( item: CalendarTaskItem, intersections: CalendarTaskList ) => {
+                  const end = dayjs( item.timeEnd )
+                  return intersections.every(
+                    ( intersection ) => {
+                      const e = dayjs( intersection.timeEnd )
+                      return end.isBefore( e, 'minute' )
+                    }
+                  )
+                }
+
+                const isSomeoneAfterStart = ( item: CalendarTaskItem, intersections: CalendarTaskList ) => {
+                  const start = dayjs( item.timeEnd )
+                  return intersections.some( () => {
+
+                  } )
+                }
+
+                let priority = 0
+                let width = 33.33
+
+
+                const duration = dayjs.duration( dayjs( item.timeEnd ).diff( item.time ) ).asMinutes()
+                const intersections = taskList.filter( ( intItem ) => {
+                  if( intItem.id !== item.id ) {
+                    const s = dayjs( intItem.time )
+                    const e = dayjs( intItem.timeEnd )
+                    return dayjs( item.time ).isBetween( s, e, 'minutes', '[]' )
+                      || dayjs( item.timeEnd ).isBetween( s, e, 'minutes', '[]' )
+                  }
+                  return false
+                } )
+
+                console.log( isEarlyStart( item, intersections ) )
+                console.log( isEarlyEnd( item, intersections ) )
+
+                const earlyS = isEarlyStart( item, intersections )
+                const earlyE = isEarlyEnd( item, intersections )
+                if( earlyS ) {
+                  priority = 1
+                } else {
+                  priority = 2
+                }
+
+
+                // const max = Math.max( ...intersections )
+                // let step = max > 0 ? max + 1 : 1
+                //
+                // let left = ( 100 - ( 100 / intersections.length ) )
+                // let width = 100
+                // if( left <= 0 && step > 1 ) {
+                //   left = 16.67
+                // }
+                //
+                // if( left === 50 && step > 2 ) {
+                //   left = 33.33
+                // }
+                //
+                // if( left < 75 && step > 3 ) {
+                //   left = 50
+                // }
+                //
+                // if( left === 75 && step > 4 ) {
+                //   left = 70
+                // }
+                //
+                // if( left < 0 ) {
+                //   left = 0
+                // }
+                //
+                // if( left > 0 && step === 2 ) {
+                //   width = 100 - left
+                // }
+                //
+                // console.log( left, step, intersections )
+                //
+                //
+                // objArr.push( { ...item, step } )
+
+                return (
+                  <FlexBlock
+                    position={'absolute'}
+                    style={{
+                      top: dayjs( item.time ).minute() + dayjs( item.time ).hour() * 60,
+                      left: `${( priority - 1 ) * 10}%`,
+                      zIndex: priority,
+                      opacity: 1
+                    }}
+                    width={`${width}%`}
+                    border={'1px solid #fff'}
+                    bgColor={'cornflowerblue'}
+                    borderRadius={4}
+                    additionalCss={css`
+                      white-space: nowrap;
+                      overflow: hidden;
+                      text-overflow: ellipsis;
+                    `}
+                    height={duration}
+                    p={4}
+                  >
+                  <span
+                    style={{
+                      color: '#fff',
+                      paddingRight: 6
+                    }}>{addNull( dayjs( item.time ).hour() )}:{addNull( dayjs( item.time ).minute() )}</span>{item.title}
+                  </FlexBlock>
+                )
+              } )}
+            </FlexBlock>
+
+          </FlexBlock>
+        </FlexBlock>
+      </FlexBlock>
+
+    </FlexBlock>
   )
 }
