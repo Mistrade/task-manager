@@ -9,12 +9,7 @@ import isYesterday from 'dayjs/plugin/isYesterday'
 import weekOfYear from 'dayjs/plugin/weekOfYear'
 import updateLocale from 'dayjs/plugin/updateLocale'
 import duration from 'dayjs/plugin/duration'
-import {
-  CalendarCurrentData,
-  CalendarDisabledOptions, CalendarItem,
-  CalendarList, CalendarMode, CalendarTaskItem, CalendarTaskList, CalendarWeekList, WeekItem
-} from '../components/Calendars/types'
-import { defaultTasksList } from './constants'
+import { CalendarTaskItem, CalendarTaskList } from '../components/Calendars/types'
 
 const customLocale: Partial<ILocale> = {
   name: 'ru',
@@ -83,143 +78,6 @@ dayjs.updateLocale( 'en', {
   yearStart: 4
 } )
 
-interface CurrentData {
-  month: number,
-  year: number
-}
-
-type CheckDatesScopeFn = ( current: CalendarMode ) => DateScopeType | null
-type GenerateDateArrayFn = ( current: CalendarMode, options: DateScopeType, disabledOptions: CalendarDisabledOptions ) => CalendarWeekList
-type GetPickerDatesProps = ( current: CalendarMode, disabledOptions: CalendarDisabledOptions ) => CalendarWeekList
-
-export interface DateScopeType {
-  startDate: Date,
-  count: number
-}
-
-const getDatesScope: CheckDatesScopeFn = ( current ) => {
-  let startDate: Date = dayjs().toDate()
-  let count: number = 0
-
-  if( current.layout === 'month' ) {
-    const firstDayOfMonth = dayjs( new Date( current.year, current.month, 1 ) )
-    const firstDayOfWeek = firstDayOfMonth.day()
-    const neededPrevDays = firstDayOfWeek === 0 ? 6 : firstDayOfWeek - 1
-    startDate = neededPrevDays > 0 ? firstDayOfMonth.subtract( neededPrevDays, 'day' ).toDate() : firstDayOfMonth.toDate()
-    count = 42
-  }
-
-  if( current.layout === 'week' ) {
-    const first = dayjs().set( 'year', current.year ).week( current.week )
-    const neededPrevDays = first.day() === 0 ? 6 : first.day() - 1
-    count = 7
-    startDate = neededPrevDays > 0 ? first.subtract( neededPrevDays, 'day' ).toDate() : first.toDate()
-  }
-
-
-  return {
-    startDate,
-    count
-  }
-}
-
-const checkIsDisabledDate = ( currentDate: dayjs.Dayjs, options: CalendarDisabledOptions ): boolean => {
-  const {
-    min,
-    includeMin = false,
-    max,
-    includeMax = false,
-    excludeWeekends = false,
-    disableDates = []
-  } = options
-
-  let result = false
-
-  if( min ) {
-    result = includeMin ? dayjs( min ).isAfter( currentDate, 'day' ) : dayjs( min ).isSameOrAfter( currentDate, 'day' )
-    if( result ) return true
-  }
-
-  if( max ) {
-    result = includeMax ? dayjs( max ).isBefore( currentDate, 'day' ) : dayjs( max ).isSameOrBefore( currentDate, 'day' )
-    if( result ) return true
-  }
-
-  if( excludeWeekends ) {
-    const weekDay = currentDate.day()
-    result = weekDay === 6 || weekDay === 0
-    if( result ) return true
-  }
-
-  if( !!disableDates.length ) {
-    result = disableDates.some(
-      ( value ) => currentDate.isSame( value, 'day' )
-    )
-
-    if( result ) return true
-  }
-
-  return result
-}
-
-const checkIsCurrent = ( current: CalendarMode, date: dayjs.Dayjs ): boolean => {
-  if( current.layout === 'month' ) {
-    const { month, year } = current
-    const dateMonth = date.month()
-    const dateYear = date.year()
-
-    return dateMonth === month && dateYear === year
-  }
-
-  if( current.layout === 'week' ) {
-    return true
-  }
-
-  return true
-}
-
-export const packageDate = ( date: Date, current: CalendarMode, disabledOptions?: CalendarDisabledOptions ): CalendarItem => {
-  return {
-    value: dayjs( date ).toDate(),
-    meta: {
-      isToday: dayjs( date ).isToday(),
-      isTomorrow: dayjs( date ).isTomorrow(),
-      isYesterday: dayjs( date ).isYesterday(),
-      isDisabled: checkIsDisabledDate( dayjs( date ), disabledOptions || {} ),
-      isCurrent: checkIsCurrent( current, dayjs( date ) )
-    }
-  }
-}
-
-const generateDateArray: GenerateDateArrayFn = ( current, scope, disabledOptions ) => {
-  const arr: CalendarWeekList = []
-  const weekCount = Math.ceil( scope.count / 7 )
-  let iterationDate = dayjs( scope.startDate )
-
-  for (let i = 0; i < weekCount; i++) {
-    const weekArr: CalendarList = []
-    const weekday = iterationDate.weekday()
-    const iterations = weekday === 7 ? 0 : 6 - weekday
-    const weekOfYear = iterationDate.week()
-
-    for (let d = 0; d <= iterations; d++) {
-      weekArr.push(
-        packageDate( iterationDate.toDate(), current, disabledOptions )
-      )
-
-      iterationDate = iterationDate.add( 1, 'day' )
-    }
-
-    arr.push( {
-      weekOfYear,
-      days: weekArr
-    } )
-
-  }
-
-  return arr
-}
-
 export const searchIntersections = ( taskList: CalendarTaskList ): Array<CalendarTaskItem & { intersectionCount: number, renderPriority: number }> => {
   const tasksList: Array<CalendarTaskItem & { intersectionCount?: number, renderPriority?: number }> = [...taskList]
   const period = 60
@@ -265,10 +123,6 @@ export const searchIntersections = ( taskList: CalendarTaskList ): Array<Calenda
   return result
 }
 
-export const findSlotsIntersection = ( events: CalendarTaskList ) => {
-
-}
-
 export const sortTask = ( initialList: CalendarTaskList ): CalendarTaskList => {
   if( !!initialList.length ) {
     initialList.sort( ( prev, cur ) => {
@@ -285,9 +139,4 @@ export const sortTask = ( initialList: CalendarTaskList ): CalendarTaskList => {
   }
 
   return initialList
-}
-
-export const getPickerDates: GetPickerDatesProps = ( current, disabledOptions ) => {
-  const dateScope = getDatesScope( current )
-  return dateScope ? generateDateArray( current, dateScope, disabledOptions ) : []
 }

@@ -14,15 +14,15 @@ import {
   ChangeCurrentFnType, ChangeDayCurrentFn,
   ChangeMonthCurrentFn,
   ChangeMonthCurrentPattern,
-  ChangeWeekCurrentFn
+  ChangeWeekCurrentFn, ChangeYearCurrentFn
 } from './commonTypes'
 
 export const addNull = ( value: number ): string => value < 10 ? `0${value}` : value.toString()
 
 export const generateTaskInformerObject = ( taskItem: TaskTileClickArguments ) => {
   const { taskInfo, date, event } = taskItem
-
 }
+
 
 export const checkTaskStatus = ( taskItem: SelectTaskItem ): string => {
   if( taskItem.taskInfo.isCompleted ) {
@@ -68,6 +68,32 @@ export const getTaskStorage = ( tasks: CalendarTaskList ): TaskStorage => {
   return r || {}
 }
 
+export const changeYearCurrentHandler: ChangeYearCurrentFn = ( current, pattern ) => {
+  const { year, layout } = current
+  const old = dayjs( new Date( year, 0, 1 ) )
+  let newCurrent = old.toDate()
+
+  switch (pattern) {
+    case '+':
+      newCurrent = old.add( 1, 'year' ).toDate()
+      break
+    case '++':
+      newCurrent = old.add( 2, 'year' ).toDate()
+      break
+    case '-':
+      newCurrent = old.subtract( 1, 'year' ).toDate()
+      break
+    case '--':
+      newCurrent = old.subtract( 2, 'year' ).toDate()
+      break
+    case 'today':
+      newCurrent = dayjs().toDate()
+      break
+  }
+
+  return newCurrent
+}
+
 export const changeMonthCurrentHandler: ChangeMonthCurrentFn = ( current, pattern = 'today' ) => {
   const oldCurrent = dayjs( new Date( current.year, current.month, 1 ) )
   let newCurrentDate = oldCurrent.toDate()
@@ -92,7 +118,7 @@ export const changeMonthCurrentHandler: ChangeMonthCurrentFn = ( current, patter
 }
 
 export const changeWeekCurrentHandler: ChangeWeekCurrentFn = ( current, pattern = 'today' ) => {
-  const oldCurrent = dayjs().set( 'year', current.year ).week( current.week )
+  const oldCurrent = dayjs( current.aroundDate )
 
   switch (pattern) {
     case '+':

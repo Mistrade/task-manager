@@ -15,19 +15,30 @@ export interface GlobalTaskListProps {
   renderTaskCount?: RenderTaskCountType
 }
 
+export interface YearCalendarProps {
+  yearItem: YearItem,
+  taskStorage?: TaskStorage,
+  current: CalendarCurrentYear,
+  onChangeCurrent?: OnChangeCurrentFnType
+}
+
 export interface MonthCalendarProps extends GlobalTaskListProps {
   onChangeCurrent?: OnChangeCurrentFnType
-  list: CalendarWeekList
+  monthItem: MonthItem,
   current: CalendarMode,
   onSelectTask?: ( data: TaskTileClickArguments ) => any,
   renderWeekPattern?: RenderWeekPattern,
   taskStorage?: TaskStorage
 }
 
+export interface WeekCalendarProps extends Omit<MonthCalendarProps, 'monthItem' | 'renderWeekPattern'> {
+  weekItem: WeekItem
+}
+
 export interface DayCalendarProps extends GlobalTaskListProps {
   onChangeCurrent?: OnChangeCurrentFnType,
   current: CalendarCurrentDay,
-  onSelectTask?: (data: TaskTileClickArguments) => any,
+  onSelectTask?: ( data: TaskTileClickArguments ) => any,
   renderWeekPattern?: RenderWeekPattern,
   taskStorage?: TaskStorage
 }
@@ -71,7 +82,26 @@ export type CalendarList = Array<CalendarItem>
 export type CalendarWeekList = Array<WeekItem>
 export type WeekItem = {
   weekOfYear: number,
+  month: number,
+  year: number,
   days: Array<CalendarItem>
+}
+
+export type MonthItem = {
+  monthOfYear: number,
+  year: number,
+  weeks: Array<WeekItem>
+}
+
+export type CalendarCurrentContext = {
+  year: number,
+  month: number,
+  week?: number
+}
+
+export type YearItem = {
+  year: number,
+  months: Array<MonthItem>
 }
 
 export interface CalendarItem {
@@ -187,8 +217,7 @@ export interface CalendarCurrentMonth {
 
 export interface CalendarCurrentWeek {
   layout: 'week',
-  week: number,
-  year: number
+  aroundDate: Date,
 }
 
 export interface CalendarCurrentDay {

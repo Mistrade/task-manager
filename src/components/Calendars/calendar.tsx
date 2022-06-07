@@ -5,13 +5,13 @@ import {
   CalendarMode,
   CalendarProps,
   DayCalendarProps,
-  MonthCalendarProps,
+  MonthCalendarProps, MonthItem,
   TaskInfoModalProps,
-  TaskStorage,
+  TaskStorage, WeekCalendarProps,
   WeekItem,
-  WeekListProps
+  WeekListProps, YearItem
 } from './types'
-import { FC, useCallback, useMemo } from 'react'
+import { FC, useCallback, useEffect, useMemo, useState } from 'react'
 import {
   CalendarDateListContainer,
   CalendarDesktopContainer,
@@ -35,7 +35,7 @@ import { FlexBlock } from '../LayoutComponents/flexBlock'
 import {
   changeDayCurrentHandler,
   changeMonthCurrentHandler,
-  changeWeekCurrentHandler,
+  changeWeekCurrentHandler, changeYearCurrentHandler,
   getTaskListOfDay,
   getTaskStorage
 } from '../../common/functions'
@@ -43,9 +43,14 @@ import { Arrow, DoubleArrow } from '../Icons/icons'
 import { ShortChangeCurrentPattern } from '../../common/commonTypes'
 import { useCalendar } from '../hooks/useCalendar'
 import styled from 'styled-components'
-import { packageDate, sortTask } from '../../common/dayjs'
+import {
+  sortTask
+} from '../../common/dayjs'
 import { DayTaskList } from './DayCalendar/DayTaskList'
 import { DaySettingsPanel } from './DayCalendar/DaySettingsPanel'
+import { dateToCalendarItem } from '../../common/calendarSupport/generators'
+import { getMonthDays, getWeekDays, getYearDays } from '../../common/calendarSupport/getters'
+import { YearCalendar } from './YearCalendar/YearCalendar'
 
 const CalendarBodyTitle: FC<CalendarBodyTitleProps> = ( {
                                                           current,
@@ -57,17 +62,21 @@ const CalendarBodyTitle: FC<CalendarBodyTitleProps> = ( {
       case 'month':
         return `${MonthList[ current.month ]} ${current.year}г.`
       case 'week':
-        return `Неделя ${current.week}, ${MonthList[ dayjs().set( 'year', current.year ).week( current.week ).month() ]} ${current.year}г.`
+        const d = dayjs( current.aroundDate )
+        return `Неделя ${d.week()}, ${MonthList[ dayjs().set( 'year', d.year() ).week( d.week() ).month() ]} ${d.year()}г.`
       case 'day':
         const day = dayjs( current.date )
         return `${WeekDaysList[ day.weekday() ]}, ${day.format( `DD ${MonthList[ day.month() ]} YYYY` )}г.`
+      case 'year':
+        return `Календарь на ${current.year} г.`
     }
-    return `Еще не учтено: ${current.layout}`
   }, [current] )
 
   const onChangeCurrentHandler = useCallback( ( pattern: ShortChangeCurrentPattern = 'today' ) => {
     if( onChangeCurrent ) {
       switch (current.layout) {
+        case 'year':
+          return onChangeCurrent( changeYearCurrentHandler( current, pattern ), current.layout )
         case 'month':
           return onChangeCurrent( changeMonthCurrentHandler( current, pattern ), current.layout )
         case 'week':
@@ -98,12 +107,12 @@ const CalendarBodyTitle: FC<CalendarBodyTitleProps> = ( {
         align={'center'}
         mb={8}
       >
-        <FlexBlock flex={'1 0 33.3%'} justify={'flex-start'} align={'center'}>
+        <FlexBlock flex={'0 0 33.3%'} justify={'flex-start'} align={'center'}>
           <CalendarTitle>
             {title}
           </CalendarTitle>
         </FlexBlock>
-        <FlexBlock flex={'1 0 33.3%'} justify={'center'} align={'center'}>
+        <FlexBlock flex={'1 1 33.3%'} justify={'center'} align={'center'}>
           <SwitchCalendarMode
             isSelected={current.layout === 'day'}
             onClick={() => onChangeCurrentLayoutHandler( 'day' )}
@@ -122,7 +131,10 @@ const CalendarBodyTitle: FC<CalendarBodyTitleProps> = ( {
           >
             Месяц
           </SwitchCalendarMode>
-          <SwitchCalendarMode isSelected={current.layout === 'year'}>
+          <SwitchCalendarMode
+            isSelected={current.layout === 'year'}
+            onClick={() => onChangeCurrentLayoutHandler( 'year' )}
+          >
             Год
           </SwitchCalendarMode>
         </FlexBlock>
@@ -253,7 +265,10 @@ const DayCalendar: FC<DayCalendarProps> = ( {
                                               renderTaskCount
                                             } ) => {
   const day: CalendarItem = useMemo( () => {
-    return packageDate( current.date, current )
+    return dateToCalendarItem( current.date, {
+      month: current.date.getMonth(),
+      year: current.date.getFullYear()
+    } )
   }, [current.date] )
 
   return (
@@ -285,15 +300,15 @@ const DayCalendar: FC<DayCalendarProps> = ( {
   )
 }
 
-const MonthCalendar: FC<MonthCalendarProps> = ( {
-                                                  list,
-                                                  current,
-                                                  onAddTask,
-                                                  onSelectTask,
-                                                  onChangeCurrent,
-                                                  renderTaskCount,
-                                                  taskStorage
-                                                } ) => {
+const WeeKCalendar: FC<WeekCalendarProps> = ( {
+                                                weekItem,
+                                                renderTaskCount,
+                                                taskStorage,
+                                                onSelectTask,
+                                                onAddTask,
+                                                onChangeCurrent,
+                                                current
+                                              } ) => {
 
   const onSelectWeek = ( item: WeekItem ) => {
     if( current.layout === 'month' && onChangeCurrent ) {
@@ -302,30 +317,53 @@ const MonthCalendar: FC<MonthCalendarProps> = ( {
   }
 
   return (
+    <WeekContainer>
+      {current.layout === 'month' && (
+        <WeekOfYearTitle
+          onClick={() => onSelectWeek( weekItem )}
+        >
+          {weekItem.weekOfYear}
+        </WeekOfYearTitle>
+      )}
+      <DaysContainer>
+        {weekItem.days.map( ( day ) => (
+          <CalendarCell
+            renderTaskCount={renderTaskCount}
+            key={day.value.toString()}
+            onAddTask={onAddTask}
+            value={day}
+            tasks={taskStorage ? getTaskListOfDay( day, taskStorage ) : []}
+            onSelectTask={onSelectTask}
+          />
+        ) )}
+      </DaysContainer>
+    </WeekContainer>
+  )
+}
+
+const MonthCalendar: FC<MonthCalendarProps> = ( {
+                                                  monthItem,
+                                                  current,
+                                                  onAddTask,
+                                                  onSelectTask,
+                                                  onChangeCurrent,
+                                                  renderTaskCount,
+                                                  taskStorage
+                                                } ) => {
+
+  return (
     <CalendarDesktopContainer>
       <CalendarDateListContainer>
-        {list.map( item => (
-          <WeekContainer>
-            {current.layout === 'month' && (
-              <WeekOfYearTitle
-                onClick={() => onSelectWeek( item )}
-              >
-                {item.weekOfYear}
-              </WeekOfYearTitle>
-            )}
-            <DaysContainer>
-              {item.days.map( day => (
-                <CalendarCell
-                  renderTaskCount={renderTaskCount}
-                  key={day.value.toString()}
-                  onAddTask={onAddTask}
-                  value={day}
-                  tasks={taskStorage ? getTaskListOfDay( day, taskStorage ) : []}
-                  onSelectTask={onSelectTask}
-                />
-              ) )}
-            </DaysContainer>
-          </WeekContainer>
+        {monthItem.weeks.map( ( week ) => (
+          <WeeKCalendar
+            weekItem={week}
+            current={current}
+            onChangeCurrent={onChangeCurrent}
+            onSelectTask={onSelectTask}
+            renderTaskCount={renderTaskCount}
+            onAddTask={onAddTask}
+            taskStorage={taskStorage}
+          />
         ) )}
       </CalendarDateListContainer>
     </CalendarDesktopContainer>
@@ -411,6 +449,78 @@ export const Calendar: FC<CalendarProps> = ( {
     return getTaskStorage( calendar.tasksList )
   }, [calendar.tasksList] )
 
+  const [yearItem, setYearItem] = useState<YearItem>( {
+    year: -1,
+    months: []
+  } )
+  const [monthItem, setMonthItem] = useState<MonthItem>( {
+    monthOfYear: -1,
+    year: -1,
+    weeks: []
+  } )
+  const [weekItem, setWeekItem] = useState<WeekItem>( {
+    weekOfYear: -1,
+    month: -1,
+    year: -1,
+    days: []
+  } )
+
+
+  useEffect( () => {
+    changeCurrentObserver( calendar.current )
+  }, [calendar.current] )
+
+  const changeCurrentObserver = ( current: CalendarMode ) => {
+    const { layout } = current
+
+    if( layout === 'year' ) {
+      setYearItem( prev => {
+        const prevYear = prev.year
+
+        if( current.year !== prevYear ) {
+          return getYearDays( current, { useOtherDays: false } )
+        }
+
+        return prev
+      } )
+    }
+
+    if( layout === 'month' ) {
+      setMonthItem( prev => {
+        const prevMonth = prev.monthOfYear
+        const prevYear = prev.year
+
+        if( prevMonth !== current.month || prevYear !== current.year ) {
+          return getMonthDays( current, { useOtherDays: true } )
+        }
+
+        return prev
+      } )
+    }
+
+    if( layout === 'week' ) {
+      setWeekItem( prev => {
+        const { aroundDate } = current
+        const curDate = dayjs( aroundDate )
+        const c = {
+          y: curDate.year(),
+          m: curDate.month(),
+          w: curDate.week()
+        }
+
+        if( prev.year !== c.y || prev.month !== c.m || prev.weekOfYear !== c.w ) {
+          return getWeekDays(
+            current,
+            { year: c.y, month: c.m },
+            { useOtherDays: true }
+          )
+        }
+
+        return prev
+      } )
+    }
+  }
+
 
   return (
     <FlexBlock position={'relative'} align={'flex-start'} direction={'column'} grow={3}>
@@ -419,23 +529,28 @@ export const Calendar: FC<CalendarProps> = ( {
         onChangeCurrent={calendar.onChangeCurrent}
         renderWeekPattern={renderWeekPattern}
       />
-      {calendar.current.layout === 'month' ? (
+      {calendar.current.layout === 'year' ? (
+        <YearCalendar
+          yearItem={yearItem}
+          current={calendar.current}
+          onChangeCurrent={calendar.onChangeCurrent}
+        />
+      ) : calendar.current.layout === 'month' ? (
         <MonthCalendar
           onChangeCurrent={calendar.onChangeCurrent}
           renderWeekPattern={renderWeekPattern}
           renderTaskCount={5}
           current={calendar.current}
-          list={calendar.calendarList}
+          monthItem={monthItem}
           taskStorage={taskStorage}
           onAddTask={calendar.onAddTask}
           onSelectTask={calendar.onSelectTask}
         />
       ) : calendar.current.layout === 'week' ? (
-        <MonthCalendar
+        <WeeKCalendar
           onChangeCurrent={calendar.onChangeCurrent}
-          renderWeekPattern={renderWeekPattern}
           current={calendar.current}
-          list={calendar.calendarList}
+          weekItem={weekItem}
           renderTaskCount={'all'}
           taskStorage={taskStorage}
           onAddTask={calendar.onAddTask}

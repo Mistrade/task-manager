@@ -1,5 +1,6 @@
 import { CalendarPriorityKeys, CalendarTaskList } from '../components/Calendars/types'
 import dayjs from 'dayjs'
+import { sortTask } from './dayjs'
 
 export const MonthList = [
   'Январь', 'Февраль', 'Март', 'Апрель', 'Май', 'Июнь', 'Июль', 'Август', 'Сентябрь', 'Октябрь', 'Ноябрь', 'Декабрь'
@@ -17,6 +18,7 @@ export const disabledColor = 'rgba(30,30,30,.1)'
 export const defaultColor = 'rgba(30,30,30,.45)'
 export const currentColor = 'rgba(100,149,237,.9)'
 export const hoverColor = 'rgba(100,149,237,.35)'
+export const darkColor = 'rgba(0, 0, 0, .6)'
 export const todayID = 'calendar-today'
 
 export const priorityColors: { [key in CalendarPriorityKeys]: string } = {

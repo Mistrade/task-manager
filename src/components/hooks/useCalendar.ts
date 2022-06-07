@@ -13,13 +13,12 @@ import {
   TaskTileClickArguments
 } from '../Calendars/types'
 import React, { useCallback, useEffect, useMemo, useState } from 'react'
-import { getPickerDates } from '../../common/dayjs'
 import { defaultTasksList } from '../../common/constants'
 import dayjs from 'dayjs'
+import { getMonthDays } from '../../common/calendarSupport/getters'
 
 interface Returned {
   current: CalendarMode,
-  calendarList: CalendarWeekList,
   tasksList: CalendarTaskList,
   setTasksList: React.Dispatch<React.SetStateAction<CalendarTaskList>>,
   selectedTask: SelectedTaskType,
@@ -42,10 +41,6 @@ export const useCalendar: UseCalendarType = ( {
   const [current, setCurrent] = useState<CalendarMode>( initialCurrent )
 
   //TODO перенести CalendarList в компонент MonthCalendar
-  const calendarList: CalendarWeekList = useMemo( () => {
-    return getPickerDates( current, disabledOptions )
-  }, [current] )
-
 
   //TODO переделать tasksList на тип TaskStorage
   const [tasksList, setTasksList] = useState<CalendarTaskList>( defaultTasksList )
@@ -71,20 +66,23 @@ export const useCalendar: UseCalendarType = ( {
       case 'week':
         return setCurrent( {
           layout,
-          week: dayjs( date ).week(),
-          year: date.getFullYear()
+          aroundDate: date
         } )
       case 'day':
         return setCurrent( {
           layout,
           date
         } )
+      case 'year':
+        return setCurrent( {
+          layout: 'year',
+          year: date.getFullYear()
+        } )
     }
   }, [setCurrent] )
 
   return {
     current,
-    calendarList,
     tasksList,
     setTasksList,
     selectedTask,

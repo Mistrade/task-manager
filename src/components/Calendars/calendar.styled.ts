@@ -58,6 +58,11 @@ export const CalendarTitle = styled( 'h2' )`
     color: rgba(15, 15, 15, .6);
     margin-top: 0;
     margin-bottom: 0;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    text-align: left;
+    flex-shrink: 0;
   }
 `
 
