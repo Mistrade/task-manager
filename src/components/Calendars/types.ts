@@ -50,7 +50,8 @@ export type RenderTaskCountType = number | 'all'
 export interface CalendarCellProps extends GlobalTaskListProps {
   value: CalendarItem,
   tasks?: CalendarTaskList,
-  onSelectTask?: ( data: TaskTileClickArguments ) => any
+  onSelectTask?: ( data: TaskTileClickArguments ) => any,
+  onClickToDate?: ( date: CalendarItem ) => void
 }
 
 export interface TaskTileListProps extends GlobalTaskListProps {

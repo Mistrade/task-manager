@@ -1,8 +1,8 @@
-import { FC } from 'react'
-import { FlexBlock } from '../../LayoutComponents/flexBlock'
+import { FC, useMemo } from 'react'
+import { FlexBlock } from '../../LayoutComponents/FlexBlock'
 import { disabledColor } from '../../../common/constants'
 import { OnSelectDateFromCalendarFn, SmallMonthCalendar } from '../DatePicker/SmallMonthCalendar'
-import { CalendarCurrentDay, CalendarItem } from '../types'
+import { CalendarCurrentDay, CalendarCurrentMonth, CalendarItem } from '../types'
 import { getMonthDays } from '../../../common/calendarSupport/getters'
 
 interface DaySettingsPanelProps {
@@ -17,6 +17,17 @@ export const DaySettingsPanel: FC<DaySettingsPanelProps> = ( {
                                                                onSelectDate
                                                              } ) => {
 
+  const monthInfo = useMemo( () => {
+    const monthItemCurrent: CalendarCurrentMonth = {
+      layout: 'month',
+      month: current.date.getMonth(),
+      year: current.date.getFullYear()
+    }
+    return {
+      monthItem: getMonthDays( monthItemCurrent, { useOtherDays: true } ),
+      monthCurrent: monthItemCurrent
+    }
+  }, [current.date] )
 
   return (
     <FlexBlock
@@ -28,19 +39,11 @@ export const DaySettingsPanel: FC<DaySettingsPanelProps> = ( {
       width={'100%'}
     >
       <SmallMonthCalendar
-        monthItem={getMonthDays( {
-          layout: 'month',
-          month: current.date.getMonth(),
-          year: current.date.getFullYear()
-        }, { useOtherDays: true } )}
+        monthItem={monthInfo.monthItem}
         cellSize={25}
         date={date?.value}
         onSelectDate={onSelectDate}
-        current={{
-          layout: 'month',
-          month: current.date.getMonth(),
-          year: current.date.getFullYear()
-        }}
+        current={monthInfo.monthCurrent}
       />
     </FlexBlock>
   )

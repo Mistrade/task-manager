@@ -2,8 +2,8 @@ import React, { useEffect } from 'react'
 import './App.css'
 import { createGlobalStyle, css } from 'styled-components'
 import './common/dayjs'
-import { Calendar } from './components/Calendars/calendar'
-import { FlexBlock } from './components/LayoutComponents/flexBlock'
+import { Calendar } from './components/Calendars/Сalendar'
+import { FlexBlock } from './components/LayoutComponents/FlexBlock'
 import dayjs from 'dayjs'
 
 const GlobalStyled = createGlobalStyle( {}, css`
@@ -32,7 +32,7 @@ function App() {
         }}
       >
         <div style={{
-          width: '100%',
+          width: '80%',
           position: 'relative',
           height: 800,
           display: 'flex',

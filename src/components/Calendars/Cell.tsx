@@ -17,7 +17,7 @@ import {
   priorityColors
 } from '../../common/constants'
 import dayjs from 'dayjs'
-import { FlexBlock } from '../LayoutComponents/flexBlock'
+import { FlexBlock } from '../LayoutComponents/FlexBlock'
 import { searchIntersections, sortTask } from '../../common/dayjs'
 
 interface CellComponentProps {
@@ -217,9 +217,9 @@ export const CalendarCell: FC<CalendarCellProps> = ( {
                                                        tasks = [],
                                                        onAddTask,
                                                        renderTaskCount,
-                                                       onSelectTask
+                                                       onSelectTask,
+                                                       onClickToDate
                                                      } ) => {
-  const [isHover, setIsHover] = useState( false )
 
   return (
     <CellContainer
@@ -233,20 +233,15 @@ export const CalendarCell: FC<CalendarCellProps> = ( {
         justify={'flex-end'}
         wrap={'nowrap'}
         align={'center'}
-        onMouseEnter={() => value.meta.isCurrent && !value.meta.isDisabled && setIsHover( true )}
-        onMouseLeave={() => setIsHover( false )}
+        onClick={() => onClickToDate && onClickToDate( value )}
       >
-        {isHover ? (
-          <AddTask onClick={() => onAddTask && onAddTask( value )}>&#x0002B;</AddTask>
-        ) : (
-          <CalendarDate
-            isToday={value.meta.isToday}
-            disabled={value.meta.isDisabled}
-            isCurrent={value.meta.isCurrent}
-          >
-            {addNull( dayjs( value.value ).date() )}
-          </CalendarDate>
-        )}
+        <CalendarDate
+          isToday={value.meta.isToday}
+          disabled={value.meta.isDisabled}
+          isCurrent={value.meta.isCurrent}
+        >
+          {addNull( dayjs( value.value ).date() )}
+        </CalendarDate>
       </FlexBlock>
       <TaskTileList
         tasks={tasks}

@@ -2,7 +2,7 @@ import { FC } from 'react'
 import { YearCalendarProps } from '../types'
 import { SmallMonthCalendar } from '../DatePicker/SmallMonthCalendar'
 import styled from 'styled-components'
-import { FlexBlock } from '../../LayoutComponents/flexBlock'
+import { FlexBlock } from '../../LayoutComponents/FlexBlock'
 import { currentColor, MonthList } from '../../../common/constants'
 
 const YearGrid = styled( 'div' )`
@@ -29,7 +29,7 @@ export const YearCalendar: FC<YearCalendarProps> = ( {
           return (
             <FlexBlock>
               <SmallMonthCalendar
-                title={
+                title={(
                   <FlexBlock
                     justify={'flex-start'}
                     width={'100%'}
@@ -42,10 +42,11 @@ export const YearCalendar: FC<YearCalendarProps> = ( {
                   >
                     {MonthList[ monthItem.monthOfYear ]?.toLowerCase()}
                   </FlexBlock>
-                }
+                )}
                 onSelectDate={( data ) => {
                   onChangeCurrent && onChangeCurrent( data.value, 'day' )
                 }}
+                onSelectWeek={( current ) => onChangeCurrent && onChangeCurrent( current.aroundDate, 'week' )}
                 monthItem={monthItem}
                 current={{
                   layout: 'month',

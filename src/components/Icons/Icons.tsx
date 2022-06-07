@@ -1,6 +1,6 @@
 import React, { FC, HTMLProps } from 'react'
 import { defaultColor } from '../../common/constants'
-import { FlexBlock, FlexBlockProps } from '../LayoutComponents/flexBlock'
+import { FlexBlock, FlexBlockProps } from '../LayoutComponents/FlexBlock'
 
 interface IconProps {
   size?: number,

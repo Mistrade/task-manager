@@ -24,7 +24,7 @@ export const CalendarDateListContainer = styled( 'div' )`
     height: 100%;
     display: grid;
     grid-template-rows: repeat(auto-fill, 1fr);
-    grid-template-columns: repeat(7, minmax(220px, 1fr));
+    grid-template-columns: repeat(7, minmax(80px, 1fr));
     grid-column-gap: 4px;
     grid-row-gap: 16px;
   }

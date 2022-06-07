@@ -4,7 +4,7 @@ import {
   ModalLayout, StyledModalBodyContainer,
   StyledModalFooterContainer,
   StyledModalHeaderContainer
-} from './modal.styled'
+} from './Modal.styled'
 import { ModalProps } from './types'
 
 export const Modal: FC<ModalProps> = ( {

@@ -9,9 +9,9 @@ import {
 import styled, { css, CSSProperties } from 'styled-components'
 import dayjs from 'dayjs'
 import { currentColor, DATE_RENDER_FORMAT, defaultColor } from '../../../common/constants'
-import { Female, Male, SadSmile } from '../../Icons/icons'
+import { Female, Male, SadSmile } from '../../Icons/Icons'
 import { checkTaskStatus } from '../../../common/functions'
-import { FlexBlock, FlexBlockProps } from '../../LayoutComponents/flexBlock'
+import { FlexBlock, FlexBlockProps } from '../../LayoutComponents/FlexBlock'
 
 const FlexColumn = styled( 'div' )`
   & {
