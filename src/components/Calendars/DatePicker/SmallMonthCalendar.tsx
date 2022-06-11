@@ -1,25 +1,27 @@
-import { FC, ReactNode, useMemo } from 'react'
+import { FC, ReactNode } from 'react'
 import {
   CalendarCurrentMonth,
   CalendarCurrentWeek,
   CalendarDisabledOptions,
   CalendarItem,
-  MonthItem, WeekItem
+  MonthItem,
+  TaskStorage,
+  WeekItem
 } from '../types'
 import styled, { css } from 'styled-components'
 import {
   currentColor,
   darkColor,
   defaultColor,
-  disabledColor, MonthList,
+  disabledColor, hoverColor,
+  MonthList,
   WeekDaysShortList
 } from '../../../common/constants'
 import { FlexBlock, pxToCssValue, UnitsType } from '../../LayoutComponents/FlexBlock'
-import { addNull } from '../../../common/functions'
+import { addNull, getTaskListOfDay } from '../../../common/functions'
 import { CalendarDate } from '../Cell'
-import dayjs, { UnitType } from 'dayjs'
+import dayjs from 'dayjs'
 import { getHumanizeWeekDay } from '../../../common/calendarSupport/other'
-import { getMonthDays } from '../../../common/calendarSupport/getters'
 
 interface SmallCalendarProps extends Pick<StyledProps, 'cellSize'> {
   current: CalendarCurrentMonth,
@@ -29,7 +31,8 @@ interface SmallCalendarProps extends Pick<StyledProps, 'cellSize'> {
   disabledOptions?: CalendarDisabledOptions,
   monthItem: MonthItem,
   title?: ReactNode,
-  onSelectWeek?: ( current: CalendarCurrentWeek ) => void
+  onSelectWeek?: ( current: CalendarCurrentWeek ) => void,
+  taskStorage?: TaskStorage
 }
 
 interface StyledProps {
@@ -82,7 +85,8 @@ const DateItem = styled( CalendarDate )`
     width: 100%;
     height: 100%;
     margin: 0px;
-    font-size: 14px;
+    font-size: 15px;
+    font-weight: 500;
     color: ${( {
                  isCurrent,
                  isToday
@@ -157,7 +161,8 @@ export const SmallMonthCalendar: FC<SmallCalendarProps> = ( {
                                                               onSelectDate,
                                                               renderNotCurrent = true,
                                                               title,
-                                                              onSelectWeek
+                                                              onSelectWeek,
+                                                              taskStorage
                                                             } ) => {
 
   const onClickToWeekCountItem = ( weekItem: WeekItem ) => {
@@ -179,6 +184,7 @@ export const SmallMonthCalendar: FC<SmallCalendarProps> = ( {
         <Grid cellSize={cellSize} rows={monthItem.weeks.length + 1}>
           <div/>
           <WeekDaysLayout
+            //Компонент отображающий дни недели
             cellSize={cellSize}
             rows={0}
           />
@@ -192,27 +198,35 @@ export const SmallMonthCalendar: FC<SmallCalendarProps> = ( {
           />
           {monthItem.weeks.map( ( week, weekIndex ) => (
             <>
-              {week.days.map( ( weekDay ) => (
-                <FlexBlock
-                  justify={'center'}
-                  align={'center'}
-                  width={'100%'}
-                  height={'100%'}
-                  onClick={() => onSelectDate && onSelectDate( weekDay )}
-                  style={{ cursor: 'pointer' }}
-                  additionalCss={css`
-                    grid-column: ${getHumanizeWeekDay( weekDay.value ) + 1};
-                    grid-row: ${weekIndex + 2};
-                  `}
-                >
-                  <DateItem
-                    isCurrent={weekDay.meta.isCurrent}
-                    isToday={dayjs( weekDay.value ).isSame( date, 'day' ) || false}
-                  >
-                    {addNull( weekDay.value.getDate() )}
-                  </DateItem>
-                </FlexBlock>
-              ) )}
+              {week.days.map( ( weekDay ) => {
+                  //Вынести логику в отдельный компонент
+                  const taskCount = taskStorage ? getTaskListOfDay( weekDay, taskStorage ).length : 0
+
+                  return (
+                    <FlexBlock
+                      justify={'center'}
+                      align={'center'}
+                      width={'100%'}
+                      height={'100%'}
+                      onClick={() => onSelectDate && onSelectDate( weekDay )}
+                      style={{ cursor: 'pointer' }}
+                      bgColor={`${taskCount > 0 && !weekDay.meta.isToday ? hoverColor : ''}`}
+                      borderRadius={4}
+                      additionalCss={css`
+                        grid-column: ${getHumanizeWeekDay( weekDay.value ) + 1};
+                        grid-row: ${weekIndex + 2};
+                      `}
+                    >
+                      <DateItem
+                        isCurrent={weekDay.meta.isCurrent}
+                        isToday={dayjs( weekDay.value ).isSame( date, 'day' ) || false}
+                      >
+                        {addNull( weekDay.value.getDate() )}
+                      </DateItem>
+                    </FlexBlock>
+                  )
+                }
+              )}
             </>
           ) )}
         </Grid>

@@ -43,6 +43,7 @@ export const DayCalendar: FC<DayCalendarProps> = ( {
       </FlexBlock>
       <FlexBlock flex={'1 0 calc(50% - 16px)'} ml={16}>
         <DaySettingsPanel
+          taskStorage={taskStorage}
           current={current}
           date={day}
           onSelectDate={( data ) => onChangeCurrent && onChangeCurrent( data.value, 'day' )}

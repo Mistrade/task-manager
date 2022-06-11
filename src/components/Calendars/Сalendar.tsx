@@ -1,7 +1,6 @@
 import { CalendarMode, CalendarProps, MonthItem, TaskStorage, WeekItem, YearItem } from './types'
 import { FC, useEffect, useMemo, useState } from 'react'
 import dayjs from 'dayjs'
-import { FlexBlock } from '../LayoutComponents/FlexBlock'
 import { getTaskStorage } from '../../common/functions'
 import { useCalendar } from '../hooks/useCalendar'
 import { getMonthDays, getWeekDays, getYearDays } from '../../common/calendarSupport/getters'
@@ -12,6 +11,7 @@ import { MonthCalendar } from './MonthCalendar/MonthCalendar'
 import { CalendarHeader } from './CalendarHeader'
 import { TaskInfoModal } from './CalendarModals/TaskInfoModal'
 import { AddTaskModal } from './CalendarModals/AddTaskModal'
+import { FlexBlock } from '../LayoutComponents/FlexBlock'
 
 export const Calendar: FC<CalendarProps> = ( {
                                                initialCurrent,
@@ -111,6 +111,7 @@ export const Calendar: FC<CalendarProps> = ( {
         <YearCalendar
           yearItem={yearItem}
           current={calendar.current}
+          taskStorage={taskStorage}
           onChangeCurrent={calendar.onChangeCurrent}
         />
       ) : calendar.current.layout === 'month' ? (

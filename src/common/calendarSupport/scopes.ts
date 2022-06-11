@@ -25,15 +25,12 @@ export const getMonthScope = ( current: CalendarCurrentMonth, options?: DateScop
     const neededPrevDays = firstDayOfWeek === 0 ? 6 : firstDayOfWeek - 1
     const startDate = neededPrevDays > 0 ? firstDayOfMonth.subtract( neededPrevDays, 'day' ).toDate() : firstDayOfMonth.toDate()
     const count = Math.ceil( 41 / 7 )
-    console.log( 'я тут ', count )
     return {
       startDate,
       count
     }
   }
   const lastDate = firstDayOfMonth.add( firstDayOfMonth.daysInMonth() - 1, 'day' )
-  console.log( 'dates: ', firstDayOfMonth.toDate(), lastDate.toDate() )
-
   const count = lastDate.week() - ( firstDayOfMonth.week() - 1 )
 
   return {

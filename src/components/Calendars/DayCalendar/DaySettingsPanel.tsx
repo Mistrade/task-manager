@@ -2,19 +2,21 @@ import { FC, useMemo } from 'react'
 import { FlexBlock } from '../../LayoutComponents/FlexBlock'
 import { disabledColor } from '../../../common/constants'
 import { OnSelectDateFromCalendarFn, SmallMonthCalendar } from '../DatePicker/SmallMonthCalendar'
-import { CalendarCurrentDay, CalendarCurrentMonth, CalendarItem } from '../types'
+import { CalendarCurrentDay, CalendarCurrentMonth, CalendarItem, TaskStorage } from '../types'
 import { getMonthDays } from '../../../common/calendarSupport/getters'
 
 interface DaySettingsPanelProps {
   current: CalendarCurrentDay,
   date?: CalendarItem,
-  onSelectDate?: OnSelectDateFromCalendarFn
+  onSelectDate?: OnSelectDateFromCalendarFn,
+  taskStorage?: TaskStorage
 }
 
 export const DaySettingsPanel: FC<DaySettingsPanelProps> = ( {
                                                                current,
                                                                date,
-                                                               onSelectDate
+                                                               onSelectDate,
+                                                               taskStorage
                                                              } ) => {
 
   const monthInfo = useMemo( () => {
@@ -41,6 +43,7 @@ export const DaySettingsPanel: FC<DaySettingsPanelProps> = ( {
       <SmallMonthCalendar
         monthItem={monthInfo.monthItem}
         cellSize={25}
+        taskStorage={taskStorage}
         date={date?.value}
         onSelectDate={onSelectDate}
         current={monthInfo.monthCurrent}

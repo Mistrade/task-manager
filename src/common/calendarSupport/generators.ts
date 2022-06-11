@@ -60,11 +60,7 @@ export const generateDateOfWeekArray = ( current: CalendarCurrentWeek, scope: Da
 }
 export const generateDateOfMonthArray = ( current: CalendarCurrentMonth, scope: DateScopeType, options?: DateScopeOptions ): MonthItem => {
   let d = dayjs( scope.startDate )
-  let e = d.add( scope.count, 'week' ).subtract( 1, 'day' )
-
   let week = scope.count
-
-  console.log( 'week count', week )
   const weekList: Array<WeekItem> = []
 
   while (week > 0) {

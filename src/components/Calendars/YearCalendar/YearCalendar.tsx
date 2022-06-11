@@ -19,7 +19,8 @@ const YearGrid = styled( 'div' )`
 export const YearCalendar: FC<YearCalendarProps> = ( {
                                                        yearItem,
                                                        taskStorage,
-                                                       onChangeCurrent
+                                                       onChangeCurrent,
+                                                       current
                                                      } ) => {
 
   return (
@@ -29,6 +30,7 @@ export const YearCalendar: FC<YearCalendarProps> = ( {
           return (
             <FlexBlock>
               <SmallMonthCalendar
+                taskStorage={taskStorage}
                 title={(
                   <FlexBlock
                     justify={'flex-start'}
