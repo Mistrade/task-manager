@@ -1,4 +1,6 @@
 import React from 'react'
+import { ShortChangeCurrentPattern } from '../../common/commonTypes'
+import { OnSelectDateFromCalendarFn } from './DatePicker/SmallMonthCalendar'
 
 export interface DatePickerProps {
 
@@ -7,7 +9,8 @@ export interface DatePickerProps {
 export interface CalendarProps {
   initialCurrent: CalendarMode,
   disabledOptions?: CalendarDisabledOptions,
-  renderWeekPattern?: RenderWeekPattern
+  renderWeekPattern?: RenderWeekPattern,
+  taskList?: CalendarTaskList
 }
 
 export interface GlobalTaskListProps {
@@ -43,8 +46,8 @@ export interface DayCalendarProps extends GlobalTaskListProps {
   taskStorage?: TaskStorage
 }
 
-export type CalendarBodyTitleProps = Pick<MonthCalendarProps, 'current' | 'onChangeCurrent' | 'renderWeekPattern'>
-export type WeekListProps = Pick<MonthCalendarProps, 'renderWeekPattern' | 'current'>
+export type CalendarHeaderProps = Pick<MonthCalendarProps, 'current' | 'onChangeCurrent' | 'renderWeekPattern'>
+export type CalendarHeaderWeekListProps = Pick<MonthCalendarProps, 'renderWeekPattern' | 'current'>
 export type RenderTaskCountType = number | 'all'
 
 export interface CalendarCellProps extends GlobalTaskListProps {
@@ -70,6 +73,38 @@ export interface TaskTilePriorityIndicatorProps {
   priority: CalendarPriorityKeys,
   isCompleted: boolean
 }
+
+export interface CalendarHeaderSwitchersProps {
+  current: CalendarMode,
+  onChange: ( newLayout: CalendarMode['layout'] ) => void
+}
+
+export interface CalendarTodaySwitchersProps {
+  onChange: ( pattern: ShortChangeCurrentPattern ) => void
+}
+
+export interface DaySettingsPanelProps {
+  current: CalendarCurrentDay,
+  date?: CalendarItem,
+  onSelectDate?: OnSelectDateFromCalendarFn,
+  taskStorage?: TaskStorage
+}
+
+export interface SmallCalendarDayItemProps {
+  onSelectDate?: ( date: CalendarItem ) => void,
+  date: CalendarItem,
+  weekIndex: number,
+  taskStorage?: TaskStorage,
+  currentDate?: Date
+}
+
+export interface SmallMonthCalendarWeekItemProps {
+  monthItem: MonthItem,
+  onSelectDate?: ( date: CalendarItem ) => void,
+  taskStorage?: TaskStorage,
+  currentDate?: Date
+}
+
 
 export type RenderWeekPattern = 'short' | 'full' | 'none'
 

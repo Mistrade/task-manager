@@ -18,6 +18,7 @@ export const MonthCalendar: FC<MonthCalendarProps> = ( {
       <CalendarDateListContainer>
         {monthItem.weeks.map( ( week ) => (
           <WeeKCalendar
+            key={`monthCalendarWeek_year_${monthItem.year}_month_${monthItem.monthOfYear}_week_${week.weekOfYear}`}
             weekItem={week}
             current={current}
             onChangeCurrent={onChangeCurrent}

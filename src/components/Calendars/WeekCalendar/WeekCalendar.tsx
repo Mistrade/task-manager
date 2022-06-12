@@ -1,5 +1,5 @@
-import { FC } from 'react'
-import { WeekCalendarProps, WeekItem } from '../types'
+import { FC, useCallback } from 'react'
+import { CalendarItem, WeekCalendarProps, WeekItem } from '../types'
 import dayjs from 'dayjs'
 import { CalendarCell } from '../Cell'
 import { getTaskListOfDay } from '../../../common/functions'
@@ -59,11 +59,15 @@ export const WeeKCalendar: FC<WeekCalendarProps> = ( {
                                                        current
                                                      } ) => {
 
-  const onSelectWeek = ( item: WeekItem ) => {
+  const onSelectWeek = useCallback( ( item: WeekItem ) => {
     if( current.layout === 'month' && onChangeCurrent ) {
       onChangeCurrent( dayjs().set( 'year', current.year ).week( item.weekOfYear ).toDate(), 'week' )
     }
-  }
+  }, [onChangeCurrent, current.layout] )
+
+  const onClickToDate = useCallback( ( date: CalendarItem ) => {
+    onChangeCurrent && onChangeCurrent( date.value, 'day' )
+  }, [onChangeCurrent] )
 
   return (
     <WeekContainer>
@@ -78,10 +82,10 @@ export const WeeKCalendar: FC<WeekCalendarProps> = ( {
         {weekItem.days.map( ( day ) => (
           <CalendarCell
             renderTaskCount={renderTaskCount}
-            key={day.value.toString()}
+            key={`date_year_${weekItem.year}_month_${weekItem.month}_${day.value.getDate()}`}
             onAddTask={onAddTask}
             value={day}
-            onClickToDate={( date ) => onChangeCurrent && onChangeCurrent( date.value, 'day' )}
+            onClickToDate={onClickToDate}
             tasks={taskStorage ? getTaskListOfDay( day, taskStorage ) : []}
             onSelectTask={onSelectTask}
           />

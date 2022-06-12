@@ -1,6 +1,11 @@
 import {
   CalendarCurrentData,
+  CalendarCurrentDay,
+  CalendarCurrentMonth,
+  CalendarCurrentWeek,
+  CalendarCurrentYear,
   CalendarItem,
+  CalendarMode,
   CalendarTaskList,
   SelectTaskItem,
   TaskDate,
@@ -14,8 +19,9 @@ import {
   ChangeCurrentFnType, ChangeDayCurrentFn,
   ChangeMonthCurrentFn,
   ChangeMonthCurrentPattern,
-  ChangeWeekCurrentFn, ChangeYearCurrentFn
+  ChangeWeekCurrentFn, ChangeYearCurrentFn, ShortChangeCurrentPattern
 } from './commonTypes'
+import { MonthList, WeekDaysList } from './constants'
 
 export const addNull = ( value: number ): string => value < 10 ? `0${value}` : value.toString()
 
@@ -148,5 +154,69 @@ export const changeDayCurrentHandler: ChangeDayCurrentFn = ( current, pattern = 
       return oldCurrent.add( 1, 'week' ).toDate()
     case '--':
       return oldCurrent.subtract( 1, 'week' ).toDate()
+  }
+}
+
+const getMonthCalendarTitle = ( current: CalendarCurrentMonth, withTodayMonth?: boolean ): string => {
+  const { year, month } = current
+  const m = MonthList[ month ]
+  const today = dayjs()
+
+  const todayTitle = withTodayMonth && today.year() === year && month === today.month() ? '( Сегодня )' : ''
+  return `${m}/${year} г. ${todayTitle}`.trim()
+}
+
+const getWeekCalendarTitle = ( current: CalendarCurrentWeek ): string => {
+  const { aroundDate } = current
+  const d = dayjs( aroundDate )
+  const w = d.week()
+
+  const m: CalendarCurrentMonth = {
+    layout: 'month',
+    year: d.year(),
+    month: d.month()
+  }
+  return `Неделя ${w}, ${getMonthCalendarTitle( m, false )}`
+}
+
+const getYearCalendarTitle = ( current: CalendarCurrentYear ) => {
+  const { year } = current
+  return `Календарь ${year}г.`
+}
+
+const getDayCalendarTitle = ( current: CalendarCurrentDay ) => {
+  const { date } = current
+  const d = dayjs( date )
+  const dayOfWeek = WeekDaysList[ d.weekday() ]
+  const m = MonthList[ d.month() ]
+  const format = `DD ${m} YYYY г.`
+  return `${dayOfWeek}, ${d.format( format )}`
+}
+
+export const getCalendarTitle = ( current: CalendarMode ) => {
+  switch (current.layout) {
+    case 'month':
+      return getMonthCalendarTitle( current, false )
+    case 'week':
+      return getWeekCalendarTitle( current )
+    case 'day':
+      return getDayCalendarTitle( current )
+    case 'year':
+      return getYearCalendarTitle( current )
+  }
+}
+
+export const changeCurrentModeHandler = ( current: CalendarMode, pattern: ShortChangeCurrentPattern ) => {
+  const {layout} = current
+
+  switch (layout){
+    case 'day':
+      return changeDayCurrentHandler(current, pattern)
+    case 'week':
+      return changeWeekCurrentHandler(current, pattern)
+    case 'month':
+      return changeMonthCurrentHandler(current, pattern)
+    case 'year':
+      return changeYearCurrentHandler(current, pattern)
   }
 }

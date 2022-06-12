@@ -28,7 +28,9 @@ export const YearCalendar: FC<YearCalendarProps> = ( {
       <YearGrid>
         {yearItem.months.map( ( monthItem ) => {
           return (
-            <FlexBlock>
+            <FlexBlock
+              key={`monthItem_year_${monthItem.year}_month_${monthItem.monthOfYear}`}
+            >
               <SmallMonthCalendar
                 taskStorage={taskStorage}
                 title={(

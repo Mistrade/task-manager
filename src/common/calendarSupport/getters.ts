@@ -20,7 +20,6 @@ export const getWeekDays = ( current: CalendarCurrentWeek, context: CalendarCurr
 }
 export const getMonthDays = ( current: CalendarCurrentMonth, options?: DateScopeOptions ): MonthItem => {
   const dateScope = getMonthScope( current, options )
-  console.log( 'monthScope: ', dateScope, options )
   return generateDateOfMonthArray( current, dateScope, options )
 }
 export const getYearDays = ( current: CalendarCurrentYear, options?: DateScopeOptions ): YearItem => {

@@ -5,6 +5,7 @@ import './common/dayjs'
 import { Calendar } from './components/Calendars/Сalendar'
 import { FlexBlock } from './components/LayoutComponents/FlexBlock'
 import dayjs from 'dayjs'
+import { defaultTasksList } from './common/constants'
 
 const GlobalStyled = createGlobalStyle( {}, css`
   * {
@@ -39,6 +40,7 @@ function App() {
           flexDirection: 'column'
         }}>
           <Calendar
+            taskList={defaultTasksList}
             initialCurrent={{
               layout: 'day',
               date: new Date( 2022, 5, 1 )

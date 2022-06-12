@@ -2,15 +2,15 @@ import { FC, useMemo } from 'react'
 import { FlexBlock } from '../../LayoutComponents/FlexBlock'
 import { disabledColor } from '../../../common/constants'
 import { OnSelectDateFromCalendarFn, SmallMonthCalendar } from '../DatePicker/SmallMonthCalendar'
-import { CalendarCurrentDay, CalendarCurrentMonth, CalendarItem, TaskStorage } from '../types'
+import {
+  CalendarCurrentDay,
+  CalendarCurrentMonth,
+  CalendarItem,
+  DaySettingsPanelProps,
+  TaskStorage
+} from '../types'
 import { getMonthDays } from '../../../common/calendarSupport/getters'
 
-interface DaySettingsPanelProps {
-  current: CalendarCurrentDay,
-  date?: CalendarItem,
-  onSelectDate?: OnSelectDateFromCalendarFn,
-  taskStorage?: TaskStorage
-}
 
 export const DaySettingsPanel: FC<DaySettingsPanelProps> = ( {
                                                                current,
@@ -20,6 +20,7 @@ export const DaySettingsPanel: FC<DaySettingsPanelProps> = ( {
                                                              } ) => {
 
   const monthInfo = useMemo( () => {
+    //TODO Месяц пересчитывается при изменении каждого дня, надо добавить проверки на изменения месяца/года, прежде чем выполнять формирование календаря
     const monthItemCurrent: CalendarCurrentMonth = {
       layout: 'month',
       month: current.date.getMonth(),
@@ -44,7 +45,7 @@ export const DaySettingsPanel: FC<DaySettingsPanelProps> = ( {
         monthItem={monthInfo.monthItem}
         cellSize={25}
         taskStorage={taskStorage}
-        date={date?.value}
+        currentDate={date?.value}
         onSelectDate={onSelectDate}
         current={monthInfo.monthCurrent}
       />

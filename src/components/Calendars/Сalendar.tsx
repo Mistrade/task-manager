@@ -1,5 +1,5 @@
 import { CalendarMode, CalendarProps, MonthItem, TaskStorage, WeekItem, YearItem } from './types'
-import { FC, useEffect, useMemo, useState } from 'react'
+import { FC, useCallback, useEffect, useMemo, useState } from 'react'
 import dayjs from 'dayjs'
 import { getTaskStorage } from '../../common/functions'
 import { useCalendar } from '../hooks/useCalendar'
@@ -8,7 +8,7 @@ import { YearCalendar } from './YearCalendar/YearCalendar'
 import { WeeKCalendar } from './WeekCalendar/WeekCalendar'
 import { DayCalendar } from './DayCalendar/DayCalendar'
 import { MonthCalendar } from './MonthCalendar/MonthCalendar'
-import { CalendarHeader } from './CalendarHeader'
+import { CalendarHeader } from './Header/CalendarHeader'
 import { TaskInfoModal } from './CalendarModals/TaskInfoModal'
 import { AddTaskModal } from './CalendarModals/AddTaskModal'
 import { FlexBlock } from '../LayoutComponents/FlexBlock'
@@ -16,17 +16,15 @@ import { FlexBlock } from '../LayoutComponents/FlexBlock'
 export const Calendar: FC<CalendarProps> = ( {
                                                initialCurrent,
                                                disabledOptions = {},
-                                               renderWeekPattern = 'full'
+                                               renderWeekPattern = 'full',
+                                               taskList
                                              } ) => {
-  const calendar = useCalendar( {
-    initialCurrent,
-    disabledOptions,
-    renderWeekPattern
-  } )
+  const calendar = useCalendar( initialCurrent )
 
-  const taskStorage: TaskStorage = useMemo( () => {
-    return getTaskStorage( calendar.tasksList )
-  }, [calendar.tasksList] )
+  const taskStorage: TaskStorage | undefined = useMemo( () => {
+    console.log( 'taskStorage' )
+    return taskList ? getTaskStorage( taskList ) : undefined
+  }, [taskList] )
 
   const [yearItem, setYearItem] = useState<YearItem>( {
     year: -1,
@@ -49,7 +47,7 @@ export const Calendar: FC<CalendarProps> = ( {
     changeCurrentObserver( calendar.current )
   }, [calendar.current] )
 
-  const changeCurrentObserver = ( current: CalendarMode ) => {
+  const changeCurrentObserver = useCallback( ( current: CalendarMode ) => {
     const { layout } = current
 
     if( layout === 'year' ) {
@@ -57,7 +55,7 @@ export const Calendar: FC<CalendarProps> = ( {
         const prevYear = prev.year
 
         if( current.year !== prevYear ) {
-          return getYearDays( current, { useOtherDays: false } )
+          return getYearDays( current, { useOtherDays: false, disabled: disabledOptions } )
         }
 
         return prev
@@ -70,7 +68,7 @@ export const Calendar: FC<CalendarProps> = ( {
         const prevYear = prev.year
 
         if( prevMonth !== current.month || prevYear !== current.year ) {
-          return getMonthDays( current, { useOtherDays: true } )
+          return getMonthDays( current, { useOtherDays: true, disabled: disabledOptions } )
         }
 
         return prev
@@ -91,14 +89,14 @@ export const Calendar: FC<CalendarProps> = ( {
           return getWeekDays(
             current,
             { year: c.y, month: c.m },
-            { useOtherDays: true }
+            { useOtherDays: true, disabled: disabledOptions }
           )
         }
 
         return prev
       } )
     }
-  }
+  }, [calendar.current] )
 
   return (
     <FlexBlock position={'relative'} align={'flex-start'} direction={'column'} grow={3}>

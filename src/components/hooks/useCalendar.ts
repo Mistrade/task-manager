@@ -1,26 +1,16 @@
 import {
   AddTaskDateType,
-  CalendarCurrentData,
-  CalendarItem,
-  CalendarList, CalendarMode,
+  CalendarMode,
   CalendarProps,
-  CalendarTaskList, CalendarWeekList,
   OnAddTaskFnType,
   OnChangeCurrentFnType,
   OnSelectTaskFnType,
-  SelectedTaskType,
-  SelectTaskItem,
-  TaskTileClickArguments
+  SelectedTaskType
 } from '../Calendars/types'
-import React, { useCallback, useEffect, useMemo, useState } from 'react'
-import { defaultTasksList } from '../../common/constants'
-import dayjs from 'dayjs'
-import { getMonthDays } from '../../common/calendarSupport/getters'
+import React, { useCallback, useState } from 'react'
 
 interface Returned {
   current: CalendarMode,
-  tasksList: CalendarTaskList,
-  setTasksList: React.Dispatch<React.SetStateAction<CalendarTaskList>>,
   selectedTask: SelectedTaskType,
   setSelectedTask: React.Dispatch<React.SetStateAction<SelectedTaskType>>,
   addTaskDate: AddTaskDateType,
@@ -30,20 +20,13 @@ interface Returned {
   onChangeCurrent: OnChangeCurrentFnType
 }
 
-export type UseCalendarType = ( data: CalendarProps ) => Returned
+export type UseCalendarType = ( initialCurrent: CalendarMode ) => Returned
 
-export const useCalendar: UseCalendarType = ( {
-                                                initialCurrent,
-                                                renderWeekPattern,
-                                                disabledOptions = {}
-                                              } ) => {
+export const useCalendar: UseCalendarType = ( props ) => {
 
-  const [current, setCurrent] = useState<CalendarMode>( initialCurrent )
-
-  //TODO перенести CalendarList в компонент MonthCalendar
+  const [current, setCurrent] = useState<CalendarMode>( props )
 
   //TODO переделать tasksList на тип TaskStorage
-  const [tasksList, setTasksList] = useState<CalendarTaskList>( defaultTasksList )
   const [selectedTask, setSelectedTask] = useState<SelectedTaskType>( null )
   const [addTaskDate, setAddTaskDate] = useState<AddTaskDateType>( null )
 
@@ -83,8 +66,6 @@ export const useCalendar: UseCalendarType = ( {
 
   return {
     current,
-    tasksList,
-    setTasksList,
     selectedTask,
     setSelectedTask,
     addTaskDate,

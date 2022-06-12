@@ -79,25 +79,26 @@ export const CellContainer = styled( 'div' )<CellComponentProps>`
     box-shadow: none;
     border: 1px solid ${defaultColor};
     //transition: all .3s ease-in;
-    opacity: .2;
+    //opacity: .2;
+    transition: all .3s ease-in-out;
   }
 
   ${( { isCurrent, disabled } ) => {
-    if( isCurrent ) {
-      return css`
+    return css`
+      ${isCurrent && css`
         & {
           border: 1px solid ${currentColor};
           opacity: 1;
         }
+      `}
 
-        ${!disabled && css`
-          &:hover {
-            cursor: pointer;
-            box-shadow: 0 0 8px 4px ${disabledColor};
-          }
-        `}
-      `
-    }
+      ${!disabled && css`
+        &:hover {
+          cursor: pointer;
+          box-shadow: 0 0 8px 4px ${disabledColor};
+        }
+      `}
+    `
   }}
 
   ${( { disabled } ) => {

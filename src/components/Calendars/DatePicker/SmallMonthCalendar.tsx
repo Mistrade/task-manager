@@ -1,4 +1,4 @@
-import { FC, ReactNode } from 'react'
+import { FC, ReactNode, useCallback } from 'react'
 import {
   CalendarCurrentMonth,
   CalendarCurrentWeek,
@@ -22,10 +22,13 @@ import { addNull, getTaskListOfDay } from '../../../common/functions'
 import { CalendarDate } from '../Cell'
 import dayjs from 'dayjs'
 import { getHumanizeWeekDay } from '../../../common/calendarSupport/other'
+import { DateItem } from './DatePicker.styled'
+import { SmallDayItem } from './SmallDayItem'
+import { SmallWeekItem } from './SmallWeekItem'
 
 interface SmallCalendarProps extends Pick<StyledProps, 'cellSize'> {
   current: CalendarCurrentMonth,
-  date?: Date,
+  currentDate?: Date,
   onSelectDate?: OnSelectDateFromCalendarFn,
   renderNotCurrent?: boolean,
   disabledOptions?: CalendarDisabledOptions,
@@ -80,19 +83,6 @@ const WeekGrid = styled( 'div' )<StyledProps>`
   position: relative;
 `
 
-const DateItem = styled( CalendarDate )`
-  & {
-    width: 100%;
-    height: 100%;
-    margin: 0px;
-    font-size: 15px;
-    font-weight: 500;
-    color: ${( {
-                 isCurrent,
-                 isToday
-               } ) => isToday ? '#fff' : isCurrent ? darkColor : disabledColor} !important;
-  }
-`
 
 const WeekCountHoverMixin = css`
   background-color: transparent;
@@ -157,7 +147,7 @@ export const SmallMonthCalendar: FC<SmallCalendarProps> = ( {
                                                               monthItem,
                                                               cellSize,
                                                               current,
-                                                              date,
+                                                              currentDate,
                                                               onSelectDate,
                                                               renderNotCurrent = true,
                                                               title,
@@ -165,12 +155,12 @@ export const SmallMonthCalendar: FC<SmallCalendarProps> = ( {
                                                               taskStorage
                                                             } ) => {
 
-  const onClickToWeekCountItem = ( weekItem: WeekItem ) => {
+  const onClickToWeekCountItem = useCallback( ( weekItem: WeekItem ) => {
     onSelectWeek && onSelectWeek( {
       layout: 'week',
       aroundDate: dayjs().set( 'year', weekItem.year ).set( 'month', weekItem.month ).week( weekItem.weekOfYear ).toDate()
     } )
-  }
+  }, [onSelectWeek] )
 
   return (
     <FlexBlock
@@ -196,39 +186,13 @@ export const SmallMonthCalendar: FC<SmallCalendarProps> = ( {
             onClickToItem={onClickToWeekCountItem}
             cellSize={cellSize}
           />
-          {monthItem.weeks.map( ( week, weekIndex ) => (
-            <>
-              {week.days.map( ( weekDay ) => {
-                  //Вынести логику в отдельный компонент
-                  const taskCount = taskStorage ? getTaskListOfDay( weekDay, taskStorage ).length : 0
-
-                  return (
-                    <FlexBlock
-                      justify={'center'}
-                      align={'center'}
-                      width={'100%'}
-                      height={'100%'}
-                      onClick={() => onSelectDate && onSelectDate( weekDay )}
-                      style={{ cursor: 'pointer' }}
-                      bgColor={`${taskCount > 0 && !weekDay.meta.isToday ? hoverColor : ''}`}
-                      borderRadius={4}
-                      additionalCss={css`
-                        grid-column: ${getHumanizeWeekDay( weekDay.value ) + 1};
-                        grid-row: ${weekIndex + 2};
-                      `}
-                    >
-                      <DateItem
-                        isCurrent={weekDay.meta.isCurrent}
-                        isToday={dayjs( weekDay.value ).isSame( date, 'day' ) || false}
-                      >
-                        {addNull( weekDay.value.getDate() )}
-                      </DateItem>
-                    </FlexBlock>
-                  )
-                }
-              )}
-            </>
-          ) )}
+          <SmallWeekItem
+            //Компонент отображающий даты по неделям
+            currentDate={currentDate}
+            monthItem={monthItem}
+            onSelectDate={onSelectDate}
+            taskStorage={taskStorage}
+          />
         </Grid>
       </FlexBlock>
 
