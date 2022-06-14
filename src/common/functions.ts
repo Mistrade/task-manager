@@ -3,16 +3,16 @@ import {
   CalendarCurrentDay,
   CalendarCurrentMonth,
   CalendarCurrentWeek,
-  CalendarCurrentYear,
+  CalendarCurrentYear, CalendarDisabledOptions,
   CalendarItem,
   CalendarMode,
-  CalendarTaskList,
+  CalendarTaskList, DateItem, MonthItem,
   SelectTaskItem,
   TaskDate,
   TaskMonth,
   TaskStorage,
   TaskTileClickArguments,
-  TaskYear
+  TaskYear, WeekItem, YearItem
 } from '../components/Calendars/types'
 import dayjs from 'dayjs'
 import {
@@ -22,6 +22,7 @@ import {
   ChangeWeekCurrentFn, ChangeYearCurrentFn, ShortChangeCurrentPattern
 } from './commonTypes'
 import { MonthList, WeekDaysList } from './constants'
+import { getMonthDays, getWeekDays, getYearDays } from './calendarSupport/getters'
 
 export const addNull = ( value: number ): string => value < 10 ? `0${value}` : value.toString()
 
@@ -207,16 +208,93 @@ export const getCalendarTitle = ( current: CalendarMode ) => {
 }
 
 export const changeCurrentModeHandler = ( current: CalendarMode, pattern: ShortChangeCurrentPattern ) => {
-  const {layout} = current
+  const { layout } = current
 
-  switch (layout){
+  switch (layout) {
     case 'day':
-      return changeDayCurrentHandler(current, pattern)
+      return changeDayCurrentHandler( current, pattern )
     case 'week':
-      return changeWeekCurrentHandler(current, pattern)
+      return changeWeekCurrentHandler( current, pattern )
     case 'month':
-      return changeMonthCurrentHandler(current, pattern)
+      return changeMonthCurrentHandler( current, pattern )
     case 'year':
-      return changeYearCurrentHandler(current, pattern)
+      return changeYearCurrentHandler( current, pattern )
+  }
+}
+
+export const CurrentObserver = {
+  year( prev: YearItem, current: CalendarCurrentYear, disabledOptions?: CalendarDisabledOptions ): YearItem {
+    const { year: prevYear } = prev
+
+    if( current.year !== prevYear ) {
+      console.log( 'year handler has been started' )
+      return getYearDays( current, { useOtherDays: false, disabled: disabledOptions } )
+    }
+
+    return prev
+  },
+  month( prev: MonthItem, current: CalendarCurrentMonth, disabledOptions?: CalendarDisabledOptions ): MonthItem {
+    const prevMonth = prev.monthOfYear
+    const prevYear = prev.year
+
+    if( prevMonth !== current.month || prevYear !== current.year ) {
+      console.log( 'month handler has been started' )
+      return getMonthDays( current, { useOtherDays: true, disabled: disabledOptions } )
+    }
+
+    return prev
+  },
+  week( prev: WeekItem, current: CalendarCurrentWeek, disabledOptions?: CalendarDisabledOptions ): WeekItem {
+    const { aroundDate } = current
+    const curDate = dayjs( aroundDate )
+    const c = {
+      y: curDate.year(),
+      m: curDate.month(),
+      w: curDate.week()
+    }
+
+    if( prev.year !== c.y || prev.month !== c.m || prev.weekOfYear !== c.w ) {
+      console.log( 'week handler has been started' )
+      return getWeekDays(
+        current,
+        { year: c.y, month: c.m },
+        { useOtherDays: true, disabled: disabledOptions }
+      )
+    }
+
+    return prev
+  },
+  date( prev: DateItem, current: CalendarCurrentDay, disabledOptions?: CalendarDisabledOptions ): DateItem {
+
+
+    const prevDate = dayjs( prev.current.date )
+    const currentDate = dayjs( current.date )
+
+    const hasSettingPanelInfo = prev.settingPanel.monthItem.monthOfYear >= 0
+
+    if( prevDate.isSame( currentDate, 'month' ) && hasSettingPanelInfo ) {
+      return {
+        ...prev,
+        current
+      }
+    }
+
+    console.log( 'date handler has been started' )
+
+    const monthItemCurrent: CalendarCurrentMonth = {
+      layout: 'month',
+      month: current.date.getMonth(),
+      year: current.date.getFullYear()
+    }
+    return {
+      current,
+      settingPanel: {
+        monthItem: getMonthDays( monthItemCurrent, {
+          useOtherDays: true,
+          disabled: disabledOptions
+        } ),
+        monthCurrent: monthItemCurrent
+      }
+    }
   }
 }

@@ -6,9 +6,10 @@ import { DayTaskList } from './DayTaskList'
 import { sortTask } from '../../../common/dayjs'
 import { getTaskListOfDay } from '../../../common/functions'
 import { DaySettingsPanel } from './DaySettingsPanel'
+import { css } from 'styled-components'
 
 export const DayCalendar: FC<DayCalendarProps> = ( {
-                                                     current,
+                                                     dateItem,
                                                      onChangeCurrent,
                                                      renderWeekPattern,
                                                      taskStorage,
@@ -17,37 +18,42 @@ export const DayCalendar: FC<DayCalendarProps> = ( {
                                                      renderTaskCount
                                                    } ) => {
   const day: CalendarItem = useMemo( () => {
-    return dateToCalendarItem( current.date, {
-      month: current.date.getMonth(),
-      year: current.date.getFullYear()
+    return dateToCalendarItem( dateItem.current.date, {
+      month: dateItem.current.date.getMonth(),
+      year: dateItem.current.date.getFullYear()
     } )
-  }, [current.date] )
+  }, [dateItem.current.date] )
 
   return (
-    <FlexBlock
-      className={'day--calendar'}
-      justify={'flex-start'}
-      align={'stretch'}
-      wrap={'nowrap'}
-      width={'100%'}
-      grow={10}
-      mt={24}
-    >
-      <FlexBlock flex={'1 0 calc(50% - 16px)'} height={'100%'} mr={16}>
-        <DayTaskList
-          day={day}
-          onSelectTask={onSelectTask}
-          current={current}
-          taskList={taskStorage ? sortTask( getTaskListOfDay( day, taskStorage ) ) : []}
-        />
-      </FlexBlock>
-      <FlexBlock flex={'1 0 calc(50% - 16px)'} ml={16}>
-        <DaySettingsPanel
-          taskStorage={taskStorage}
-          current={current}
-          date={day}
-          onSelectDate={( data ) => onChangeCurrent && onChangeCurrent( data.value, 'day' )}
-        />
+    <FlexBlock position={'relative'} width={'100%'} direction={'column'}>
+      <FlexBlock
+        className={'day--calendar'}
+        justify={'flex-start'}
+        align={'stretch'}
+        wrap={'nowrap'}
+        position={'relative'}
+        width={'100%'}
+        grow={10}
+        pt={6}
+        additionalCss={css`gap: 20px`}
+      >
+        <FlexBlock grow={0} shrink={0} maxWidth={'25%'} height={'100%'}>
+          <DaySettingsPanel
+            taskStorage={taskStorage}
+            dateItem={dateItem}
+            date={day}
+            onSelectDate={( data ) => onChangeCurrent && onChangeCurrent( data.value, 'day' )}
+          />
+        </FlexBlock>
+        <FlexBlock width={'100%'} height={'100%'}>
+          <DayTaskList
+            day={day}
+            onSelectTask={onSelectTask}
+            current={dateItem.current}
+            taskList={taskStorage ? sortTask( getTaskListOfDay( day, taskStorage ) ) : []}
+          />
+        </FlexBlock>
+
       </FlexBlock>
     </FlexBlock>
   )

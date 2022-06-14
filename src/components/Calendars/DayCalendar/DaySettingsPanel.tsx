@@ -1,6 +1,6 @@
-import { FC, useMemo } from 'react'
+import { FC, useEffect, useMemo } from 'react'
 import { FlexBlock } from '../../LayoutComponents/FlexBlock'
-import { disabledColor } from '../../../common/constants'
+import { defaultColor, disabledColor } from '../../../common/constants'
 import { OnSelectDateFromCalendarFn, SmallMonthCalendar } from '../DatePicker/SmallMonthCalendar'
 import {
   CalendarCurrentDay,
@@ -10,45 +10,66 @@ import {
   TaskStorage
 } from '../types'
 import { getMonthDays } from '../../../common/calendarSupport/getters'
+import { css } from 'styled-components'
+import { Button } from '../../Buttons/Buttons.styled'
+import { SmallCalendarMonthTitle } from '../DatePicker/SmallCalendarMonthTitle'
 
 
 export const DaySettingsPanel: FC<DaySettingsPanelProps> = ( {
-                                                               current,
+                                                               dateItem,
                                                                date,
                                                                onSelectDate,
                                                                taskStorage
                                                              } ) => {
-
-  const monthInfo = useMemo( () => {
-    //TODO Месяц пересчитывается при изменении каждого дня, надо добавить проверки на изменения месяца/года, прежде чем выполнять формирование календаря
-    const monthItemCurrent: CalendarCurrentMonth = {
-      layout: 'month',
-      month: current.date.getMonth(),
-      year: current.date.getFullYear()
-    }
-    return {
-      monthItem: getMonthDays( monthItemCurrent, { useOtherDays: true } ),
-      monthCurrent: monthItemCurrent
-    }
-  }, [current.date] )
+  function getTimeZone() {
+    const v = /\((.*)\)/.exec( new Date().toString() )
+    return v ? v[ 1 ] : ''
+  }
 
   return (
     <FlexBlock
       borderRadius={4}
-      bgColor={disabledColor}
       direction={'column'}
-      grow={3}
-      p={12}
-      width={'100%'}
+      grow={0}
+      pr={24}
+      align={'flex-end'}
+      borderRight={`1px solid ${disabledColor}`}
+      position={'relative'}
     >
+      <FlexBlock
+        width={'100%'}
+        pb={24}
+        justify={'flex-end'}
+        bgColor={'#fff'}
+        position={'sticky'}
+        additionalCss={css`
+          top: 0;
+          left: 0;
+          z-index: 1;
+        `}
+      >
+        <Button>
+          Добавить событие
+        </Button>
+      </FlexBlock>
       <SmallMonthCalendar
-        monthItem={monthInfo.monthItem}
+        monthItem={dateItem.settingPanel.monthItem}
         cellSize={25}
+        title={
+          <SmallCalendarMonthTitle
+            monthItem={dateItem.settingPanel.monthItem}
+          />
+        }
         taskStorage={taskStorage}
         currentDate={date?.value}
         onSelectDate={onSelectDate}
-        current={monthInfo.monthCurrent}
+        current={dateItem.settingPanel.monthCurrent}
       />
+      <FlexBlock mt={24} justify={'flex-end'} width={'100%'}>
+        <p style={{ textAlign: 'right' }}>
+          {getTimeZone()}
+        </p>
+      </FlexBlock>
     </FlexBlock>
   )
 }

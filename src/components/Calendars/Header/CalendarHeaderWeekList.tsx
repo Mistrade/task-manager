@@ -4,13 +4,17 @@ import { CalendarDateListContainer } from '../Calendar.styled'
 import { defaultColor, WeekDaysList, WeekDaysShortList } from '../../../common/constants'
 import { FlexBlock } from '../../LayoutComponents/FlexBlock'
 
-export const CalendarHeaderWeekList: FC<CalendarHeaderWeekListProps> = ( { renderWeekPattern, current } ) => {
+export const CalendarHeaderWeekList: FC<CalendarHeaderWeekListProps> = ( {
+                                                                           renderWeekPattern,
+                                                                           current
+                                                                         } ) => {
   if( current.layout === 'week' || current.layout === 'month' ) {
     if( renderWeekPattern === 'full' ) {
       return (
         <CalendarDateListContainer>
           {WeekDaysList.map( day => (
             <FlexBlock
+              key={day}
               justify={'center'}
               width={'100%'}
               p={'12px 0px'}
@@ -28,6 +32,7 @@ export const CalendarHeaderWeekList: FC<CalendarHeaderWeekListProps> = ( { rende
         <CalendarDateListContainer>
           {WeekDaysShortList.map( day => (
             <FlexBlock
+              key={day + '_short'}
               justify={'center'}
               width={'100%'}
               p={'12px 0px'}

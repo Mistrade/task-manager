@@ -22,23 +22,10 @@ function App() {
   }, [] )
 
   return (
-    <div className="App" style={{ padding: 20 }}>
+    <div style={{ padding: 5 }}>
       <GlobalStyled/>
-      <div
-        style={{
-          display: 'flex',
-          justifyContent: 'flex-end',
-          width: '100%',
-          height: '100vh'
-        }}
-      >
-        <div style={{
-          width: '80%',
-          position: 'relative',
-          height: 800,
-          display: 'flex',
-          flexDirection: 'column'
-        }}>
+      <FlexBlock width={'100%'} justify={'flex-end'}>
+        <FlexBlock width={'80%'}>
           <Calendar
             taskList={defaultTasksList}
             initialCurrent={{
@@ -48,8 +35,8 @@ function App() {
             disabledOptions={{}}
             renderWeekPattern={'full'}
           />
-        </div>
-      </div>
+        </FlexBlock>
+      </FlexBlock>
     </div>
   )
 }

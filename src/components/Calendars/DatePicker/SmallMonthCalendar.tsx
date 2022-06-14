@@ -1,4 +1,4 @@
-import { FC, ReactNode, useCallback } from 'react'
+import { FC, ReactNode, useCallback, useEffect } from 'react'
 import {
   CalendarCurrentMonth,
   CalendarCurrentWeek,
@@ -109,6 +109,7 @@ const WeekCountLayout: FC<WeekCountLayoutProps> = ( {
     <WeekGrid cellSize={cellSize} rows={rows}>
       {weekItemList.map( ( week ) => (
         <FlexBlock
+          key={`weekCount_${week.weekOfYear}`}
           justify={'center'}
           align={'center'}
           width={'100%'}
@@ -130,6 +131,7 @@ const WeekDaysLayout: FC<WeekDaysLayoutProps> = ( { cellSize, rows } ) => {
     <WeekDayGrid cellSize={cellSize} rows={rows}>
       {WeekDaysShortList.map( item => (
         <FlexBlock
+          key={`weekDay_${item}_short`}
           justify={'center'}
           align={'center'}
           width={'100%'}
@@ -167,7 +169,7 @@ export const SmallMonthCalendar: FC<SmallCalendarProps> = ( {
       justify={'center'}
       align={'center'}
     >
-      <FlexBlock direction={'column'}>
+      <FlexBlock direction={'column'} position={'relative'}>
 
         {title || ( <h2>{MonthList[ monthItem.monthOfYear ]}</h2> )}
 

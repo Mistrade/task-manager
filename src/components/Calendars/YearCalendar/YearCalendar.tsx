@@ -1,15 +1,16 @@
 import { FC } from 'react'
 import { YearCalendarProps } from '../types'
 import { SmallMonthCalendar } from '../DatePicker/SmallMonthCalendar'
-import styled from 'styled-components'
+import styled, { css } from 'styled-components'
 import { FlexBlock } from '../../LayoutComponents/FlexBlock'
 import { currentColor, MonthList } from '../../../common/constants'
+import { SmallCalendarMonthTitle } from '../DatePicker/SmallCalendarMonthTitle'
 
 const YearGrid = styled( 'div' )`
   display: grid;
   grid-template-columns: repeat(4, minmax(20px, 1fr));
   grid-gap: 20px;
-  grid-template-rows: 250px 250px 250px;
+  grid-template-rows: 230px 230px 230px;
   justify-content: flex-start;
   align-items: flex-start;
   width: 100%;
@@ -35,21 +36,22 @@ export const YearCalendar: FC<YearCalendarProps> = ( {
                 taskStorage={taskStorage}
                 title={(
                   <FlexBlock
-                    justify={'flex-start'}
                     width={'100%'}
-                    pl={28}
-                    style={{ color: currentColor, fontSize: 18, cursor: 'pointer' }}
-                    mb={8}
-                    onClick={() => {
-                      onChangeCurrent && onChangeCurrent( new Date( monthItem.year, monthItem.monthOfYear, 1 ), 'month' )
-                    }}
+                    position={'sticky'}
+                    bgColor={'#fff'}
+                    additionalCss={css`
+                      z-index: 1;
+                      top: 0;
+                      left: 0;
+                    `}
                   >
-                    {MonthList[ monthItem.monthOfYear ]?.toLowerCase()}
+                    <SmallCalendarMonthTitle
+                      monthItem={monthItem}
+                      onClick={( data ) => onChangeCurrent && onChangeCurrent( new Date( data.year, data.monthOfYear, 1 ), 'month' )}
+                    />
                   </FlexBlock>
                 )}
-                onSelectDate={( data ) => {
-                  onChangeCurrent && onChangeCurrent( data.value, 'day' )
-                }}
+                onSelectDate={( data ) => onChangeCurrent && onChangeCurrent( data.value, 'day' )}
                 onSelectWeek={( current ) => onChangeCurrent && onChangeCurrent( current.aroundDate, 'week' )}
                 monthItem={monthItem}
                 current={{

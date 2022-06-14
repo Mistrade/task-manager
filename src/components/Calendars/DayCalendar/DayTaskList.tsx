@@ -9,8 +9,16 @@ import {
 } from '../types'
 import { TaskTilePriorityIndicator } from '../Cell'
 import dayjs from 'dayjs'
-import { DATE_HOURS_FORMAT, defaultColor, disabledColor } from '../../../common/constants'
-import { css } from 'styled-components'
+import {
+  currentColor,
+  DATE_HOURS_FORMAT,
+  defaultColor,
+  disabledColor, hoverColor
+} from '../../../common/constants'
+import styled, { css } from 'styled-components'
+import { NotFoundIcon } from '../../Icons/Icons'
+import { Button } from '../../Buttons/Buttons.styled'
+import { StyledFindInput } from '../../Input/Input.styled'
 
 interface DayTaskListProps {
   day: CalendarItem
@@ -42,23 +50,89 @@ const TileMixin = css`
   }
 `
 
+const NotFoundTitle = styled( 'h2' )`
+  & {
+    font-size: 24px;
+    color: ${defaultColor};
+    font-weight: 500;
+    text-align: center;
+    width: 100%;
+    margin-bottom: 24px;
+  }
+`
+
+export const NotFoundTask: FC = () => {
+  return (
+    <FlexBlock
+      height={400}
+      minWidth={300}
+      maxWidth={'100%'}
+      direction={'column'}
+      align={'center'}
+      justify={'flex-start'}
+    >
+      <FlexBlock mb={12}>
+        <NotFoundIcon/>
+      </FlexBlock>
+      <NotFoundTitle>Событий, назначенных на текущую дату,<br/> не найдено</NotFoundTitle>
+      <Button>
+        Добавить событие
+      </Button>
+    </FlexBlock>
+  )
+}
+
 export const DayTaskList: FC<DayTaskListProps> = ( { current, taskList, onSelectTask, day } ) => {
 
   return (
-    <FlexBlock direction={'column'} width={'100%'} height={'100%'} grow={10}>
+    <FlexBlock
+      direction={'column'}
+      width={'100%'}
+      height={'100%'}
+      grow={10}
+      minHeight={650}
+      maxHeight={800}
+      pr={8}
+    >
       {!!taskList.length
-        ? taskList.map( ( task, index ) => (
-          <DayTaskItem
-            key={task.createdAt.toString() + index}
-            taskInfo={task}
-            day={day}
-            tabIndex={index + 1}
-            onSelectTask={onSelectTask}
-          /> ) )
+        ? (
+          <>
+            <FlexBlock
+              pb={24}
+              ml={-8}
+              pl={8}
+              mr={-8}
+              pr={8}
+              justify={'flex-start'}
+              wrap={'nowrap'}
+              bgColor={'#fff'}
+              width={'calc(100% + 16px)'}
+              additionalCss={css`gap: 12px;
+                top: 0;
+                left: 0;
+                z-index: 1
+              `}
+              position={'sticky'}
+            >
+              <StyledFindInput placeholder={'Название события'}/>
+              <StyledFindInput placeholder={'Начало события'}/>
+              <StyledFindInput placeholder={'Конец события'}/>
+              <StyledFindInput placeholder={'Статус'}/>
+
+            </FlexBlock>
+
+            {taskList.map( ( task, index ) => (
+              <DayTaskItem
+                key={task.createdAt.toString() + index}
+                taskInfo={task}
+                day={day}
+                tabIndex={index + 1}
+                onSelectTask={onSelectTask}
+              /> ) )}
+          </>
+        )
         : (
-          <FlexBlock>
-            На этот день, заданий не запланировано.
-          </FlexBlock>
+          <NotFoundTask/>
         )}
     </FlexBlock>
   )
@@ -96,11 +170,13 @@ export const DayTaskItem: FC<DayTaskItemProps> = ( { taskInfo, tabIndex, onSelec
       borderRadius={4}
       role={'button'}
       tabIndex={tabIndex}
-      bgColor={disabledColor}
+      bgColor={hoverColor}
       onKeyPress={keyPressHandler}
       onClick={clickHandler}
-      additionalCss={TileMixin}
-      p={'6px 12px'}
+      additionalCss={css`
+        ${TileMixin};
+      `}
+      p={'8px 12px'}
     >
       <FlexBlock shrink={0}>
         <TaskTilePriorityIndicator
@@ -108,7 +184,7 @@ export const DayTaskItem: FC<DayTaskItemProps> = ( { taskInfo, tabIndex, onSelec
           isCompleted={!!taskInfo.isCompleted}
         />
       </FlexBlock>
-      <FlexBlock flex={'1 0 15%'} shrink={0} minWidth={170} pl={8} mr={16}>
+      <FlexBlock shrink={0} minWidth={170} pl={8} mr={16}>
         <span>
           {start}
         </span>

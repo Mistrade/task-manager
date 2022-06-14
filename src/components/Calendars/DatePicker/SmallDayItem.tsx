@@ -1,13 +1,12 @@
-import { FC, memo, useMemo } from 'react'
+import { FC, useMemo } from 'react'
 import { hoverColor } from '../../../common/constants'
 import { css } from 'styled-components'
 import { getHumanizeWeekDay } from '../../../common/calendarSupport/other'
 import dayjs from 'dayjs'
 import { addNull, getTaskListOfDay } from '../../../common/functions'
 import { FlexBlock } from '../../LayoutComponents/FlexBlock'
-import { CalendarItem, SmallCalendarDayItemProps, TaskStorage } from '../types'
+import { SmallCalendarDayItemProps } from '../types'
 import { DateItem } from './DatePicker.styled'
-
 
 
 export const SmallDayItem: FC<SmallCalendarDayItemProps> = ( {

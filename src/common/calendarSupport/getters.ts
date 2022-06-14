@@ -19,10 +19,18 @@ export const getWeekDays = ( current: CalendarCurrentWeek, context: CalendarCurr
   return generateDateOfWeekArray( current, dateScope, context, options )
 }
 export const getMonthDays = ( current: CalendarCurrentMonth, options?: DateScopeOptions ): MonthItem => {
+  const start = new Date()
   const dateScope = getMonthScope( current, options )
-  return generateDateOfMonthArray( current, dateScope, options )
+  const result = generateDateOfMonthArray( current, dateScope, options )
+  const end = new Date()
+  console.log( end.getTime() - start.getTime() )
+  return result
 }
 export const getYearDays = ( current: CalendarCurrentYear, options?: DateScopeOptions ): YearItem => {
+  const start = new Date()
   const dateScope = getYearScope( current, options )
-  return generateDateOfYearArray( current, dateScope, options )
+  const result = generateDateOfYearArray( current, dateScope, options )
+  const end = new Date()
+  console.log( 'year getter: ', end.getTime() - start.getTime() )
+  return result
 }

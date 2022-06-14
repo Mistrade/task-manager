@@ -11,10 +11,10 @@ import { CalendarHeaderWeekList } from './CalendarHeaderWeekList'
 
 
 export const CalendarHeader: FC<CalendarHeaderProps> = ( {
-                                                              current,
-                                                              onChangeCurrent,
-                                                              renderWeekPattern
-                                                            } ) => {
+                                                           current,
+                                                           onChangeCurrent,
+                                                           renderWeekPattern
+                                                         } ) => {
   const title: string = useMemo( () => {
     return getCalendarTitle( current )
   }, [current] )
@@ -24,13 +24,16 @@ export const CalendarHeader: FC<CalendarHeaderProps> = ( {
   }, [current, onChangeCurrent] )
 
   const onChangeCurrentLayoutHandler = useCallback( ( newLayout: CalendarMode['layout'] ) => {
-    onChangeCurrent && onChangeCurrent( dayjs().toDate(), newLayout )
+    onChangeCurrent && onChangeCurrent( new Date(), newLayout )
   }, [current, onChangeCurrent] )
 
   return (
     <FlexBlock
+      className={'Calendar__header'}
       direction={'column'}
       width={'100%'}
+      maxHeight={120}
+      minHeight={70}
       pb={8}
       pt={8}
       bgColor={'#fff'}

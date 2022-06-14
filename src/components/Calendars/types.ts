@@ -40,10 +40,10 @@ export interface WeekCalendarProps extends Omit<MonthCalendarProps, 'monthItem' 
 
 export interface DayCalendarProps extends GlobalTaskListProps {
   onChangeCurrent?: OnChangeCurrentFnType,
-  current: CalendarCurrentDay,
+  dateItem: DateItem,
   onSelectTask?: ( data: TaskTileClickArguments ) => any,
   renderWeekPattern?: RenderWeekPattern,
-  taskStorage?: TaskStorage
+  taskStorage?: TaskStorage,
 }
 
 export type CalendarHeaderProps = Pick<MonthCalendarProps, 'current' | 'onChangeCurrent' | 'renderWeekPattern'>
@@ -84,7 +84,7 @@ export interface CalendarTodaySwitchersProps {
 }
 
 export interface DaySettingsPanelProps {
-  current: CalendarCurrentDay,
+  dateItem: DateItem,
   date?: CalendarItem,
   onSelectDate?: OnSelectDateFromCalendarFn,
   taskStorage?: TaskStorage
@@ -105,6 +105,10 @@ export interface SmallMonthCalendarWeekItemProps {
   currentDate?: Date
 }
 
+export interface SmallCalendarMonthTitleProps {
+  monthItem: MonthItem,
+  onClick?: ( monthItem: MonthItem ) => void
+}
 
 export type RenderWeekPattern = 'short' | 'full' | 'none'
 
@@ -266,6 +270,17 @@ export type CalendarMode =
   | CalendarCurrentMonth
   | CalendarCurrentWeek
   | CalendarCurrentDay
+
+export interface DateItem {
+  current: CalendarCurrentDay,
+  settingPanel: DateSettingPanelOptions
+}
+
+export interface DateSettingPanelOptions {
+  monthItem: MonthItem,
+  monthCurrent: CalendarCurrentMonth
+}
+
 
 export type OnAddTaskFnType = ( date: CalendarItem ) => void
 export type OnChangeCurrentFnType = ( date: Date, layout: CalendarMode['layout'] ) => void

@@ -25,8 +25,6 @@ export type UseCalendarType = ( initialCurrent: CalendarMode ) => Returned
 export const useCalendar: UseCalendarType = ( props ) => {
 
   const [current, setCurrent] = useState<CalendarMode>( props )
-
-  //TODO переделать tasksList на тип TaskStorage
   const [selectedTask, setSelectedTask] = useState<SelectedTaskType>( null )
   const [addTaskDate, setAddTaskDate] = useState<AddTaskDateType>( null )
 

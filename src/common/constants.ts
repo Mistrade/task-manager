@@ -1,4 +1,9 @@
-import { CalendarPriorityKeys, CalendarTaskList } from '../components/Calendars/types'
+import {
+  CalendarPriorityKeys,
+  CalendarTaskList,
+  DateItem,
+  MonthItem, WeekItem, YearItem
+} from '../components/Calendars/types'
 import dayjs from 'dayjs'
 import { sortTask } from './dayjs'
 
@@ -454,5 +459,1277 @@ export let defaultTasksList: CalendarTaskList = [
         ]
       }
     ]
-  }
+  },{
+    id: '1',
+    title: 'Завершить написание модального окна',
+    description: 'Необходимо завершить работу с модальным окном, чтобы информация по заданию выводилась корректно.',
+    createdAt: new Date( 2022, 5, 1, 12, 20 ),
+    priority: 'veryHigh',
+    time: dayjs( new Date( 2022, 5, 1, 12, 20 ) ).toDate(),
+    timeEnd: dayjs( new Date( 2022, 5, 1, 12, 20 ) ).add( 30, 'minute' ).toDate(),
+    members: [
+      {
+        name: 'Владос',
+        surname: 'Валеев',
+        patronymic: 'Ринатович',
+        id: '1',
+        gender: 'man',
+        socialNetworks: [
+          {
+            networkName: 'vk',
+            link: 'https://vk.com/yudakov2014'
+          }
+        ]
+      }
+    ]
+  },
+  {
+    id: '2',
+    title: 'Проконтролировать акции в БКС',
+    description: 'Необходимо проконтролировать акции в БКС, так как сильно меняются котировки. Возможно, будет шанс докупиться',
+    createdAt: new Date(),
+    priority: 'veryHigh',
+    time: dayjs( new Date( 2022, 5, 1, 20, 50 ) ).toDate(),
+    timeEnd: dayjs( new Date( 2022, 5, 1, 20, 50 ) ).add( 1, 'hour' ).add( 30, 'minute' ).toDate(),
+    members: [
+      {
+        name: 'Владос',
+        surname: 'Валеев',
+        patronymic: 'Ринатович',
+        id: '1',
+        gender: 'man',
+        socialNetworks: [
+          {
+            networkName: 'vk',
+            link: 'https://vk.com/yudakov2014'
+          }
+        ]
+      },
+      {
+        name: 'Лизок',
+        surname: 'Жукова',
+        patronymic: 'Юрьевна',
+        id: '2',
+        gender: 'woman',
+        socialNetworks: [
+          {
+            networkName: 'vk',
+            link: 'https://vk.com/yudakov2014'
+          }
+        ]
+      },
+      {
+        name: 'Владос',
+        surname: 'Валеев',
+        patronymic: 'Ринатович',
+        id: '1',
+        gender: 'man',
+        socialNetworks: [
+          {
+            networkName: 'vk',
+            link: 'https://vk.com/yudakov2014'
+          }
+        ]
+      },
+      {
+        name: 'Лизок',
+        surname: 'Жукова',
+        patronymic: 'Юрьевна',
+        id: '2',
+        gender: 'woman',
+        socialNetworks: [
+          {
+            networkName: 'vk',
+            link: 'https://vk.com/yudakov2014'
+          }
+        ]
+      },
+      {
+        name: 'Владос',
+        surname: 'Валеев',
+        patronymic: 'Ринатович',
+        id: '1',
+        gender: 'man',
+        socialNetworks: [
+          {
+            networkName: 'vk',
+            link: 'https://vk.com/yudakov2014'
+          }
+        ]
+      },
+      {
+        name: 'Лизок',
+        surname: 'Жукова',
+        patronymic: 'Юрьевна',
+        id: '2',
+        gender: 'woman',
+        socialNetworks: [
+          {
+            networkName: 'vk',
+            link: 'https://vk.com/yudakov2014'
+          }
+        ]
+      }, {
+        name: 'Владос',
+        surname: 'Валеев',
+        patronymic: 'Ринатович',
+        id: '1',
+        gender: 'man',
+        socialNetworks: [
+          {
+            networkName: 'vk',
+            link: 'https://vk.com/yudakov2014'
+          }
+        ]
+      },
+      {
+        name: 'Лизок',
+        surname: 'Жукова',
+        patronymic: 'Юрьевна',
+        id: '2',
+        gender: 'woman',
+        socialNetworks: [
+          {
+            networkName: 'vk',
+            link: 'https://vk.com/yudakov2014'
+          }
+        ]
+      },
+      {
+        name: 'Владос',
+        surname: 'Валеев',
+        patronymic: 'Ринатович',
+        id: '1',
+        gender: 'man',
+        socialNetworks: [
+          {
+            networkName: 'vk',
+            link: 'https://vk.com/yudakov2014'
+          }
+        ]
+      },
+      {
+        name: 'Лизок',
+        surname: 'Жукова',
+        patronymic: 'Юрьевна',
+        id: '2',
+        gender: 'woman',
+        socialNetworks: [
+          {
+            networkName: 'vk',
+            link: 'https://vk.com/yudakov2014'
+          }
+        ]
+      },
+      {
+        name: 'Владос',
+        surname: 'Валеев',
+        patronymic: 'Ринатович',
+        id: '1',
+        gender: 'man',
+        socialNetworks: [
+          {
+            networkName: 'vk',
+            link: 'https://vk.com/yudakov2014'
+          }
+        ]
+      },
+      {
+        name: 'Лизок',
+        surname: 'Жукова',
+        patronymic: 'Юрьевна',
+        id: '2',
+        gender: 'woman',
+        socialNetworks: [
+          {
+            networkName: 'vk',
+            link: 'https://vk.com/yudakov2014'
+          }
+        ]
+      }, {
+        name: 'Владос',
+        surname: 'Валеев',
+        patronymic: 'Ринатович',
+        id: '1',
+        gender: 'man',
+        socialNetworks: [
+          {
+            networkName: 'vk',
+            link: 'https://vk.com/yudakov2014'
+          }
+        ]
+      },
+      {
+        name: 'Лизок',
+        surname: 'Жукова',
+        patronymic: 'Юрьевна',
+        id: '2',
+        gender: 'woman',
+        socialNetworks: [
+          {
+            networkName: 'vk',
+            link: 'https://vk.com/yudakov2014'
+          }
+        ]
+      },
+      {
+        name: 'Владос',
+        surname: 'Валеев',
+        patronymic: 'Ринатович',
+        id: '1',
+        gender: 'man',
+        socialNetworks: [
+          {
+            networkName: 'vk',
+            link: 'https://vk.com/yudakov2014'
+          }
+        ]
+      },
+      {
+        name: 'Лизок',
+        surname: 'Жукова',
+        patronymic: 'Юрьевна',
+        id: '2',
+        gender: 'woman',
+        socialNetworks: [
+          {
+            networkName: 'vk',
+            link: 'https://vk.com/yudakov2014'
+          }
+        ]
+      },
+      {
+        name: 'Владос',
+        surname: 'Валеев',
+        patronymic: 'Ринатович',
+        id: '1',
+        gender: 'man',
+        socialNetworks: [
+          {
+            networkName: 'vk',
+            link: 'https://vk.com/yudakov2014'
+          }
+        ]
+      },
+      {
+        name: 'Лизок',
+        surname: 'Жукова',
+        patronymic: 'Юрьевна',
+        id: '2',
+        gender: 'woman',
+        socialNetworks: [
+          {
+            networkName: 'vk',
+            link: 'https://vk.com/yudakov2014'
+          }
+        ]
+      }
+    ]
+  },
+  {
+    id: '3',
+    title: 'Проконтролировать акции в БКС',
+    description: 'Необходимо проконтролировать акции в БКС, так как сильно меняются котировки. Возможно, будет шанс докупиться',
+    createdAt: new Date(),
+    priority: 'veryHigh',
+    time: dayjs( new Date( 2022, 5, 1, 20, 25 ) ).toDate(),
+    timeEnd: dayjs( new Date( 2022, 5, 1, 20, 25 ) ).add( 30, 'minute' ).toDate(),
+    members: [
+      {
+        name: 'Владос',
+        surname: 'Валеев',
+        patronymic: 'Ринатович',
+        id: '1',
+        gender: 'man',
+        socialNetworks: [
+          {
+            networkName: 'vk',
+            link: 'https://vk.com/yudakov2014'
+          }
+        ]
+      },
+      {
+        name: 'Лизок',
+        surname: 'Жукова',
+        patronymic: 'Юрьевна',
+        id: '2',
+        gender: 'woman',
+        socialNetworks: [
+          {
+            networkName: 'vk',
+            link: 'https://vk.com/yudakov2014'
+          }
+        ]
+      }
+    ]
+  },
+  {
+    id: '4',
+    title: 'Проконтролировать акции в БКС',
+    description: 'Необходимо проконтролировать акции в БКС, так как сильно меняются котировки. Возможно, будет шанс докупиться',
+    createdAt: new Date(),
+    priority: 'veryHigh',
+    time: dayjs( new Date( 2022, 5, 1, 20, 56 ) ).toDate(),
+    timeEnd: dayjs( new Date( 2022, 5, 1, 20, 56 ) ).add( 1, 'hour' ).add( 30, 'minute' ).toDate(),
+    members: [
+      {
+        name: 'Владос',
+        surname: 'Валеев',
+        patronymic: 'Ринатович',
+        id: '1',
+        gender: 'man',
+        socialNetworks: [
+          {
+            networkName: 'vk',
+            link: 'https://vk.com/yudakov2014'
+          }
+        ]
+      },
+      {
+        name: 'Лизок',
+        surname: 'Жукова',
+        patronymic: 'Юрьевна',
+        id: '2',
+        gender: 'woman',
+        socialNetworks: [
+          {
+            networkName: 'vk',
+            link: 'https://vk.com/yudakov2014'
+          }
+        ]
+      }
+    ]
+  },
+  {
+    id: '5',
+    title: 'Проконтролировать акции в БКС',
+    description: 'Необходимо проконтролировать акции в БКС, так как сильно меняются котировки. Возможно, будет шанс докупиться',
+    createdAt: new Date(),
+    priority: 'veryHigh',
+    time: dayjs( new Date( 2022, 5, 1, 21, 4 ) ).toDate(),
+    timeEnd: dayjs( new Date( 2022, 5, 1, 21, 4 ) ).add( 1, 'hour' ).add( 30, 'minute' ).toDate(),
+    members: [
+      {
+        name: 'Владос',
+        surname: 'Валеев',
+        patronymic: 'Ринатович',
+        id: '1',
+        gender: 'man',
+        socialNetworks: [
+          {
+            networkName: 'vk',
+            link: 'https://vk.com/yudakov2014'
+          }
+        ]
+      },
+      {
+        name: 'Лизок',
+        surname: 'Жукова',
+        patronymic: 'Юрьевна',
+        id: '2',
+        gender: 'woman',
+        socialNetworks: [
+          {
+            networkName: 'vk',
+            link: 'https://vk.com/yudakov2014'
+          }
+        ]
+      }
+    ]
+  },
+  {
+    id: '6',
+    title: 'Проконтролировать акции в БКС',
+    description: 'Необходимо проконтролировать акции в БКС, так как сильно меняются котировки. Возможно, будет шанс докупиться',
+    createdAt: new Date(),
+    priority: 'veryHigh',
+    time: dayjs( new Date( 2022, 5, 1, 21, 4 ) ).toDate(),
+    timeEnd: dayjs( new Date( 2022, 5, 1, 21, 4 ) ).add( 1, 'hour' ).add( 30, 'minute' ).toDate(),
+    members: [
+      {
+        name: 'Владос',
+        surname: 'Валеев',
+        patronymic: 'Ринатович',
+        id: '1',
+        gender: 'man',
+        socialNetworks: [
+          {
+            networkName: 'vk',
+            link: 'https://vk.com/yudakov2014'
+          }
+        ]
+      },
+      {
+        name: 'Лизок',
+        surname: 'Жукова',
+        patronymic: 'Юрьевна',
+        id: '2',
+        gender: 'woman',
+        socialNetworks: [
+          {
+            networkName: 'vk',
+            link: 'https://vk.com/yudakov2014'
+          }
+        ]
+      }
+    ]
+  },{
+    id: '1',
+    title: 'Завершить написание модального окна',
+    description: 'Необходимо завершить работу с модальным окном, чтобы информация по заданию выводилась корректно.',
+    createdAt: new Date( 2022, 5, 1, 12, 20 ),
+    priority: 'veryHigh',
+    time: dayjs( new Date( 2022, 5, 1, 12, 20 ) ).toDate(),
+    timeEnd: dayjs( new Date( 2022, 5, 1, 12, 20 ) ).add( 30, 'minute' ).toDate(),
+    members: [
+      {
+        name: 'Владос',
+        surname: 'Валеев',
+        patronymic: 'Ринатович',
+        id: '1',
+        gender: 'man',
+        socialNetworks: [
+          {
+            networkName: 'vk',
+            link: 'https://vk.com/yudakov2014'
+          }
+        ]
+      }
+    ]
+  },
+  {
+    id: '2',
+    title: 'Проконтролировать акции в БКС',
+    description: 'Необходимо проконтролировать акции в БКС, так как сильно меняются котировки. Возможно, будет шанс докупиться',
+    createdAt: new Date(),
+    priority: 'veryHigh',
+    time: dayjs( new Date( 2022, 5, 1, 20, 50 ) ).toDate(),
+    timeEnd: dayjs( new Date( 2022, 5, 1, 20, 50 ) ).add( 1, 'hour' ).add( 30, 'minute' ).toDate(),
+    members: [
+      {
+        name: 'Владос',
+        surname: 'Валеев',
+        patronymic: 'Ринатович',
+        id: '1',
+        gender: 'man',
+        socialNetworks: [
+          {
+            networkName: 'vk',
+            link: 'https://vk.com/yudakov2014'
+          }
+        ]
+      },
+      {
+        name: 'Лизок',
+        surname: 'Жукова',
+        patronymic: 'Юрьевна',
+        id: '2',
+        gender: 'woman',
+        socialNetworks: [
+          {
+            networkName: 'vk',
+            link: 'https://vk.com/yudakov2014'
+          }
+        ]
+      },
+      {
+        name: 'Владос',
+        surname: 'Валеев',
+        patronymic: 'Ринатович',
+        id: '1',
+        gender: 'man',
+        socialNetworks: [
+          {
+            networkName: 'vk',
+            link: 'https://vk.com/yudakov2014'
+          }
+        ]
+      },
+      {
+        name: 'Лизок',
+        surname: 'Жукова',
+        patronymic: 'Юрьевна',
+        id: '2',
+        gender: 'woman',
+        socialNetworks: [
+          {
+            networkName: 'vk',
+            link: 'https://vk.com/yudakov2014'
+          }
+        ]
+      },
+      {
+        name: 'Владос',
+        surname: 'Валеев',
+        patronymic: 'Ринатович',
+        id: '1',
+        gender: 'man',
+        socialNetworks: [
+          {
+            networkName: 'vk',
+            link: 'https://vk.com/yudakov2014'
+          }
+        ]
+      },
+      {
+        name: 'Лизок',
+        surname: 'Жукова',
+        patronymic: 'Юрьевна',
+        id: '2',
+        gender: 'woman',
+        socialNetworks: [
+          {
+            networkName: 'vk',
+            link: 'https://vk.com/yudakov2014'
+          }
+        ]
+      }, {
+        name: 'Владос',
+        surname: 'Валеев',
+        patronymic: 'Ринатович',
+        id: '1',
+        gender: 'man',
+        socialNetworks: [
+          {
+            networkName: 'vk',
+            link: 'https://vk.com/yudakov2014'
+          }
+        ]
+      },
+      {
+        name: 'Лизок',
+        surname: 'Жукова',
+        patronymic: 'Юрьевна',
+        id: '2',
+        gender: 'woman',
+        socialNetworks: [
+          {
+            networkName: 'vk',
+            link: 'https://vk.com/yudakov2014'
+          }
+        ]
+      },
+      {
+        name: 'Владос',
+        surname: 'Валеев',
+        patronymic: 'Ринатович',
+        id: '1',
+        gender: 'man',
+        socialNetworks: [
+          {
+            networkName: 'vk',
+            link: 'https://vk.com/yudakov2014'
+          }
+        ]
+      },
+      {
+        name: 'Лизок',
+        surname: 'Жукова',
+        patronymic: 'Юрьевна',
+        id: '2',
+        gender: 'woman',
+        socialNetworks: [
+          {
+            networkName: 'vk',
+            link: 'https://vk.com/yudakov2014'
+          }
+        ]
+      },
+      {
+        name: 'Владос',
+        surname: 'Валеев',
+        patronymic: 'Ринатович',
+        id: '1',
+        gender: 'man',
+        socialNetworks: [
+          {
+            networkName: 'vk',
+            link: 'https://vk.com/yudakov2014'
+          }
+        ]
+      },
+      {
+        name: 'Лизок',
+        surname: 'Жукова',
+        patronymic: 'Юрьевна',
+        id: '2',
+        gender: 'woman',
+        socialNetworks: [
+          {
+            networkName: 'vk',
+            link: 'https://vk.com/yudakov2014'
+          }
+        ]
+      }, {
+        name: 'Владос',
+        surname: 'Валеев',
+        patronymic: 'Ринатович',
+        id: '1',
+        gender: 'man',
+        socialNetworks: [
+          {
+            networkName: 'vk',
+            link: 'https://vk.com/yudakov2014'
+          }
+        ]
+      },
+      {
+        name: 'Лизок',
+        surname: 'Жукова',
+        patronymic: 'Юрьевна',
+        id: '2',
+        gender: 'woman',
+        socialNetworks: [
+          {
+            networkName: 'vk',
+            link: 'https://vk.com/yudakov2014'
+          }
+        ]
+      },
+      {
+        name: 'Владос',
+        surname: 'Валеев',
+        patronymic: 'Ринатович',
+        id: '1',
+        gender: 'man',
+        socialNetworks: [
+          {
+            networkName: 'vk',
+            link: 'https://vk.com/yudakov2014'
+          }
+        ]
+      },
+      {
+        name: 'Лизок',
+        surname: 'Жукова',
+        patronymic: 'Юрьевна',
+        id: '2',
+        gender: 'woman',
+        socialNetworks: [
+          {
+            networkName: 'vk',
+            link: 'https://vk.com/yudakov2014'
+          }
+        ]
+      },
+      {
+        name: 'Владос',
+        surname: 'Валеев',
+        patronymic: 'Ринатович',
+        id: '1',
+        gender: 'man',
+        socialNetworks: [
+          {
+            networkName: 'vk',
+            link: 'https://vk.com/yudakov2014'
+          }
+        ]
+      },
+      {
+        name: 'Лизок',
+        surname: 'Жукова',
+        patronymic: 'Юрьевна',
+        id: '2',
+        gender: 'woman',
+        socialNetworks: [
+          {
+            networkName: 'vk',
+            link: 'https://vk.com/yudakov2014'
+          }
+        ]
+      }
+    ]
+  },
+  {
+    id: '3',
+    title: 'Проконтролировать акции в БКС',
+    description: 'Необходимо проконтролировать акции в БКС, так как сильно меняются котировки. Возможно, будет шанс докупиться',
+    createdAt: new Date(),
+    priority: 'veryHigh',
+    time: dayjs( new Date( 2022, 5, 1, 20, 25 ) ).toDate(),
+    timeEnd: dayjs( new Date( 2022, 5, 1, 20, 25 ) ).add( 30, 'minute' ).toDate(),
+    members: [
+      {
+        name: 'Владос',
+        surname: 'Валеев',
+        patronymic: 'Ринатович',
+        id: '1',
+        gender: 'man',
+        socialNetworks: [
+          {
+            networkName: 'vk',
+            link: 'https://vk.com/yudakov2014'
+          }
+        ]
+      },
+      {
+        name: 'Лизок',
+        surname: 'Жукова',
+        patronymic: 'Юрьевна',
+        id: '2',
+        gender: 'woman',
+        socialNetworks: [
+          {
+            networkName: 'vk',
+            link: 'https://vk.com/yudakov2014'
+          }
+        ]
+      }
+    ]
+  },
+  {
+    id: '4',
+    title: 'Проконтролировать акции в БКС',
+    description: 'Необходимо проконтролировать акции в БКС, так как сильно меняются котировки. Возможно, будет шанс докупиться',
+    createdAt: new Date(),
+    priority: 'veryHigh',
+    time: dayjs( new Date( 2022, 5, 1, 20, 56 ) ).toDate(),
+    timeEnd: dayjs( new Date( 2022, 5, 1, 20, 56 ) ).add( 1, 'hour' ).add( 30, 'minute' ).toDate(),
+    members: [
+      {
+        name: 'Владос',
+        surname: 'Валеев',
+        patronymic: 'Ринатович',
+        id: '1',
+        gender: 'man',
+        socialNetworks: [
+          {
+            networkName: 'vk',
+            link: 'https://vk.com/yudakov2014'
+          }
+        ]
+      },
+      {
+        name: 'Лизок',
+        surname: 'Жукова',
+        patronymic: 'Юрьевна',
+        id: '2',
+        gender: 'woman',
+        socialNetworks: [
+          {
+            networkName: 'vk',
+            link: 'https://vk.com/yudakov2014'
+          }
+        ]
+      }
+    ]
+  },
+  {
+    id: '5',
+    title: 'Проконтролировать акции в БКС',
+    description: 'Необходимо проконтролировать акции в БКС, так как сильно меняются котировки. Возможно, будет шанс докупиться',
+    createdAt: new Date(),
+    priority: 'veryHigh',
+    time: dayjs( new Date( 2022, 5, 1, 21, 4 ) ).toDate(),
+    timeEnd: dayjs( new Date( 2022, 5, 1, 21, 4 ) ).add( 1, 'hour' ).add( 30, 'minute' ).toDate(),
+    members: [
+      {
+        name: 'Владос',
+        surname: 'Валеев',
+        patronymic: 'Ринатович',
+        id: '1',
+        gender: 'man',
+        socialNetworks: [
+          {
+            networkName: 'vk',
+            link: 'https://vk.com/yudakov2014'
+          }
+        ]
+      },
+      {
+        name: 'Лизок',
+        surname: 'Жукова',
+        patronymic: 'Юрьевна',
+        id: '2',
+        gender: 'woman',
+        socialNetworks: [
+          {
+            networkName: 'vk',
+            link: 'https://vk.com/yudakov2014'
+          }
+        ]
+      }
+    ]
+  },
+  {
+    id: '6',
+    title: 'Проконтролировать акции в БКС',
+    description: 'Необходимо проконтролировать акции в БКС, так как сильно меняются котировки. Возможно, будет шанс докупиться',
+    createdAt: new Date(),
+    priority: 'veryHigh',
+    time: dayjs( new Date( 2022, 5, 1, 21, 4 ) ).toDate(),
+    timeEnd: dayjs( new Date( 2022, 5, 1, 21, 4 ) ).add( 1, 'hour' ).add( 30, 'minute' ).toDate(),
+    members: [
+      {
+        name: 'Владос',
+        surname: 'Валеев',
+        patronymic: 'Ринатович',
+        id: '1',
+        gender: 'man',
+        socialNetworks: [
+          {
+            networkName: 'vk',
+            link: 'https://vk.com/yudakov2014'
+          }
+        ]
+      },
+      {
+        name: 'Лизок',
+        surname: 'Жукова',
+        patronymic: 'Юрьевна',
+        id: '2',
+        gender: 'woman',
+        socialNetworks: [
+          {
+            networkName: 'vk',
+            link: 'https://vk.com/yudakov2014'
+          }
+        ]
+      }
+    ]
+  },{
+    id: '1',
+    title: 'Завершить написание модального окна',
+    description: 'Необходимо завершить работу с модальным окном, чтобы информация по заданию выводилась корректно.',
+    createdAt: new Date( 2022, 5, 1, 12, 20 ),
+    priority: 'veryHigh',
+    time: dayjs( new Date( 2022, 5, 1, 12, 20 ) ).toDate(),
+    timeEnd: dayjs( new Date( 2022, 5, 1, 12, 20 ) ).add( 30, 'minute' ).toDate(),
+    members: [
+      {
+        name: 'Владос',
+        surname: 'Валеев',
+        patronymic: 'Ринатович',
+        id: '1',
+        gender: 'man',
+        socialNetworks: [
+          {
+            networkName: 'vk',
+            link: 'https://vk.com/yudakov2014'
+          }
+        ]
+      }
+    ]
+  },
+  {
+    id: '2',
+    title: 'Проконтролировать акции в БКС',
+    description: 'Необходимо проконтролировать акции в БКС, так как сильно меняются котировки. Возможно, будет шанс докупиться',
+    createdAt: new Date(),
+    priority: 'veryHigh',
+    time: dayjs( new Date( 2022, 5, 1, 20, 50 ) ).toDate(),
+    timeEnd: dayjs( new Date( 2022, 5, 1, 20, 50 ) ).add( 1, 'hour' ).add( 30, 'minute' ).toDate(),
+    members: [
+      {
+        name: 'Владос',
+        surname: 'Валеев',
+        patronymic: 'Ринатович',
+        id: '1',
+        gender: 'man',
+        socialNetworks: [
+          {
+            networkName: 'vk',
+            link: 'https://vk.com/yudakov2014'
+          }
+        ]
+      },
+      {
+        name: 'Лизок',
+        surname: 'Жукова',
+        patronymic: 'Юрьевна',
+        id: '2',
+        gender: 'woman',
+        socialNetworks: [
+          {
+            networkName: 'vk',
+            link: 'https://vk.com/yudakov2014'
+          }
+        ]
+      },
+      {
+        name: 'Владос',
+        surname: 'Валеев',
+        patronymic: 'Ринатович',
+        id: '1',
+        gender: 'man',
+        socialNetworks: [
+          {
+            networkName: 'vk',
+            link: 'https://vk.com/yudakov2014'
+          }
+        ]
+      },
+      {
+        name: 'Лизок',
+        surname: 'Жукова',
+        patronymic: 'Юрьевна',
+        id: '2',
+        gender: 'woman',
+        socialNetworks: [
+          {
+            networkName: 'vk',
+            link: 'https://vk.com/yudakov2014'
+          }
+        ]
+      },
+      {
+        name: 'Владос',
+        surname: 'Валеев',
+        patronymic: 'Ринатович',
+        id: '1',
+        gender: 'man',
+        socialNetworks: [
+          {
+            networkName: 'vk',
+            link: 'https://vk.com/yudakov2014'
+          }
+        ]
+      },
+      {
+        name: 'Лизок',
+        surname: 'Жукова',
+        patronymic: 'Юрьевна',
+        id: '2',
+        gender: 'woman',
+        socialNetworks: [
+          {
+            networkName: 'vk',
+            link: 'https://vk.com/yudakov2014'
+          }
+        ]
+      }, {
+        name: 'Владос',
+        surname: 'Валеев',
+        patronymic: 'Ринатович',
+        id: '1',
+        gender: 'man',
+        socialNetworks: [
+          {
+            networkName: 'vk',
+            link: 'https://vk.com/yudakov2014'
+          }
+        ]
+      },
+      {
+        name: 'Лизок',
+        surname: 'Жукова',
+        patronymic: 'Юрьевна',
+        id: '2',
+        gender: 'woman',
+        socialNetworks: [
+          {
+            networkName: 'vk',
+            link: 'https://vk.com/yudakov2014'
+          }
+        ]
+      },
+      {
+        name: 'Владос',
+        surname: 'Валеев',
+        patronymic: 'Ринатович',
+        id: '1',
+        gender: 'man',
+        socialNetworks: [
+          {
+            networkName: 'vk',
+            link: 'https://vk.com/yudakov2014'
+          }
+        ]
+      },
+      {
+        name: 'Лизок',
+        surname: 'Жукова',
+        patronymic: 'Юрьевна',
+        id: '2',
+        gender: 'woman',
+        socialNetworks: [
+          {
+            networkName: 'vk',
+            link: 'https://vk.com/yudakov2014'
+          }
+        ]
+      },
+      {
+        name: 'Владос',
+        surname: 'Валеев',
+        patronymic: 'Ринатович',
+        id: '1',
+        gender: 'man',
+        socialNetworks: [
+          {
+            networkName: 'vk',
+            link: 'https://vk.com/yudakov2014'
+          }
+        ]
+      },
+      {
+        name: 'Лизок',
+        surname: 'Жукова',
+        patronymic: 'Юрьевна',
+        id: '2',
+        gender: 'woman',
+        socialNetworks: [
+          {
+            networkName: 'vk',
+            link: 'https://vk.com/yudakov2014'
+          }
+        ]
+      }, {
+        name: 'Владос',
+        surname: 'Валеев',
+        patronymic: 'Ринатович',
+        id: '1',
+        gender: 'man',
+        socialNetworks: [
+          {
+            networkName: 'vk',
+            link: 'https://vk.com/yudakov2014'
+          }
+        ]
+      },
+      {
+        name: 'Лизок',
+        surname: 'Жукова',
+        patronymic: 'Юрьевна',
+        id: '2',
+        gender: 'woman',
+        socialNetworks: [
+          {
+            networkName: 'vk',
+            link: 'https://vk.com/yudakov2014'
+          }
+        ]
+      },
+      {
+        name: 'Владос',
+        surname: 'Валеев',
+        patronymic: 'Ринатович',
+        id: '1',
+        gender: 'man',
+        socialNetworks: [
+          {
+            networkName: 'vk',
+            link: 'https://vk.com/yudakov2014'
+          }
+        ]
+      },
+      {
+        name: 'Лизок',
+        surname: 'Жукова',
+        patronymic: 'Юрьевна',
+        id: '2',
+        gender: 'woman',
+        socialNetworks: [
+          {
+            networkName: 'vk',
+            link: 'https://vk.com/yudakov2014'
+          }
+        ]
+      },
+      {
+        name: 'Владос',
+        surname: 'Валеев',
+        patronymic: 'Ринатович',
+        id: '1',
+        gender: 'man',
+        socialNetworks: [
+          {
+            networkName: 'vk',
+            link: 'https://vk.com/yudakov2014'
+          }
+        ]
+      },
+      {
+        name: 'Лизок',
+        surname: 'Жукова',
+        patronymic: 'Юрьевна',
+        id: '2',
+        gender: 'woman',
+        socialNetworks: [
+          {
+            networkName: 'vk',
+            link: 'https://vk.com/yudakov2014'
+          }
+        ]
+      }
+    ]
+  },
+  {
+    id: '3',
+    title: 'Проконтролировать акции в БКС',
+    description: 'Необходимо проконтролировать акции в БКС, так как сильно меняются котировки. Возможно, будет шанс докупиться',
+    createdAt: new Date(),
+    priority: 'veryHigh',
+    time: dayjs( new Date( 2022, 5, 1, 20, 25 ) ).toDate(),
+    timeEnd: dayjs( new Date( 2022, 5, 1, 20, 25 ) ).add( 30, 'minute' ).toDate(),
+    members: [
+      {
+        name: 'Владос',
+        surname: 'Валеев',
+        patronymic: 'Ринатович',
+        id: '1',
+        gender: 'man',
+        socialNetworks: [
+          {
+            networkName: 'vk',
+            link: 'https://vk.com/yudakov2014'
+          }
+        ]
+      },
+      {
+        name: 'Лизок',
+        surname: 'Жукова',
+        patronymic: 'Юрьевна',
+        id: '2',
+        gender: 'woman',
+        socialNetworks: [
+          {
+            networkName: 'vk',
+            link: 'https://vk.com/yudakov2014'
+          }
+        ]
+      }
+    ]
+  },
+  {
+    id: '4',
+    title: 'Проконтролировать акции в БКС',
+    description: 'Необходимо проконтролировать акции в БКС, так как сильно меняются котировки. Возможно, будет шанс докупиться',
+    createdAt: new Date(),
+    priority: 'veryHigh',
+    time: dayjs( new Date( 2022, 5, 1, 20, 56 ) ).toDate(),
+    timeEnd: dayjs( new Date( 2022, 5, 1, 20, 56 ) ).add( 1, 'hour' ).add( 30, 'minute' ).toDate(),
+    members: [
+      {
+        name: 'Владос',
+        surname: 'Валеев',
+        patronymic: 'Ринатович',
+        id: '1',
+        gender: 'man',
+        socialNetworks: [
+          {
+            networkName: 'vk',
+            link: 'https://vk.com/yudakov2014'
+          }
+        ]
+      },
+      {
+        name: 'Лизок',
+        surname: 'Жукова',
+        patronymic: 'Юрьевна',
+        id: '2',
+        gender: 'woman',
+        socialNetworks: [
+          {
+            networkName: 'vk',
+            link: 'https://vk.com/yudakov2014'
+          }
+        ]
+      }
+    ]
+  },
+  {
+    id: '5',
+    title: 'Проконтролировать акции в БКС',
+    description: 'Необходимо проконтролировать акции в БКС, так как сильно меняются котировки. Возможно, будет шанс докупиться',
+    createdAt: new Date(),
+    priority: 'veryHigh',
+    time: dayjs( new Date( 2022, 5, 1, 21, 4 ) ).toDate(),
+    timeEnd: dayjs( new Date( 2022, 5, 1, 21, 4 ) ).add( 1, 'hour' ).add( 30, 'minute' ).toDate(),
+    members: [
+      {
+        name: 'Владос',
+        surname: 'Валеев',
+        patronymic: 'Ринатович',
+        id: '1',
+        gender: 'man',
+        socialNetworks: [
+          {
+            networkName: 'vk',
+            link: 'https://vk.com/yudakov2014'
+          }
+        ]
+      },
+      {
+        name: 'Лизок',
+        surname: 'Жукова',
+        patronymic: 'Юрьевна',
+        id: '2',
+        gender: 'woman',
+        socialNetworks: [
+          {
+            networkName: 'vk',
+            link: 'https://vk.com/yudakov2014'
+          }
+        ]
+      }
+    ]
+  },
+  {
+    id: '6',
+    title: 'Проконтролировать акции в БКС',
+    description: 'Необходимо проконтролировать акции в БКС, так как сильно меняются котировки. Возможно, будет шанс докупиться',
+    createdAt: new Date(),
+    priority: 'veryHigh',
+    time: dayjs( new Date( 2022, 5, 1, 21, 4 ) ).toDate(),
+    timeEnd: dayjs( new Date( 2022, 5, 1, 21, 4 ) ).add( 1, 'hour' ).add( 30, 'minute' ).toDate(),
+    members: [
+      {
+        name: 'Владос',
+        surname: 'Валеев',
+        patronymic: 'Ринатович',
+        id: '1',
+        gender: 'man',
+        socialNetworks: [
+          {
+            networkName: 'vk',
+            link: 'https://vk.com/yudakov2014'
+          }
+        ]
+      },
+      {
+        name: 'Лизок',
+        surname: 'Жукова',
+        patronymic: 'Юрьевна',
+        id: '2',
+        gender: 'woman',
+        socialNetworks: [
+          {
+            networkName: 'vk',
+            link: 'https://vk.com/yudakov2014'
+          }
+        ]
+      }
+    ]
+  },
 ]
+
+export const defaultYearItem: YearItem = {
+  year: -1,
+  months: []
+}
+export const defaultMonthItem: MonthItem = {
+  monthOfYear: -1,
+  year: -1,
+  weeks: []
+}
+export const defaultWeekItem: WeekItem = {
+  weekOfYear: -1,
+  month: -1,
+  year: -1,
+  days: []
+}
+export const defaultDateItem: DateItem = {
+  current: {
+    date: new Date(),
+    layout: 'day'
+  },
+  settingPanel: {
+    monthItem: defaultMonthItem,
+    monthCurrent: {
+      layout: 'month',
+      month: -1,
+      year: -1
+    }
+  }
+}
