@@ -1,6 +1,5 @@
 import { FC, useCallback, useMemo } from 'react'
 import { CalendarHeaderProps, CalendarMode } from '../types'
-import dayjs from 'dayjs'
 import { ShortChangeCurrentPattern } from '../../../common/commonTypes'
 import { changeCurrentModeHandler, getCalendarTitle } from '../../../common/functions'
 import { FlexBlock } from '../../LayoutComponents/FlexBlock'

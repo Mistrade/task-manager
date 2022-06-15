@@ -4,7 +4,7 @@ import {
   CalendarCurrentDay,
   CalendarItem,
   CalendarTaskItem,
-  CalendarTaskList,
+  CalendarTaskList, GlobalTaskListProps,
   OnSelectTaskFnType
 } from '../types'
 import { TaskTilePriorityIndicator } from '../Cell'
@@ -20,11 +20,15 @@ import { NotFoundIcon } from '../../Icons/Icons'
 import { Button } from '../../Buttons/Buttons.styled'
 import { StyledFindInput } from '../../Input/Input.styled'
 
-interface DayTaskListProps {
+interface DayTaskListProps extends GlobalTaskListProps {
   day: CalendarItem
   current: CalendarCurrentDay,
   taskList: CalendarTaskList,
-  onSelectTask?: OnSelectTaskFnType
+  onSelectTask?: OnSelectTaskFnType,
+}
+
+export interface NotFoundTaskProps extends Omit<GlobalTaskListProps, 'renderTaskCount'> {
+  day: CalendarItem
 }
 
 interface DayTaskItemProps {
@@ -61,7 +65,7 @@ const NotFoundTitle = styled( 'h2' )`
   }
 `
 
-export const NotFoundTask: FC = () => {
+export const NotFoundTask: FC<NotFoundTaskProps> = ( { onAddTask, day } ) => {
   return (
     <FlexBlock
       height={400}
@@ -75,14 +79,22 @@ export const NotFoundTask: FC = () => {
         <NotFoundIcon/>
       </FlexBlock>
       <NotFoundTitle>Событий, назначенных на текущую дату,<br/> не найдено</NotFoundTitle>
-      <Button>
+      <Button
+        onClick={() => onAddTask && day && onAddTask( day )}
+      >
         Добавить событие
       </Button>
     </FlexBlock>
   )
 }
 
-export const DayTaskList: FC<DayTaskListProps> = ( { current, taskList, onSelectTask, day } ) => {
+export const DayTaskList: FC<DayTaskListProps> = ( {
+                                                     current,
+                                                     taskList,
+                                                     onSelectTask,
+                                                     day,
+                                                     onAddTask
+                                                   } ) => {
 
   return (
     <FlexBlock
@@ -132,7 +144,7 @@ export const DayTaskList: FC<DayTaskListProps> = ( { current, taskList, onSelect
           </>
         )
         : (
-          <NotFoundTask/>
+          <NotFoundTask onAddTask={onAddTask} day={day}/>
         )}
     </FlexBlock>
   )
@@ -181,7 +193,7 @@ export const DayTaskItem: FC<DayTaskItemProps> = ( { taskInfo, tabIndex, onSelec
       <FlexBlock shrink={0}>
         <TaskTilePriorityIndicator
           priority={taskInfo.priority}
-          isCompleted={!!taskInfo.isCompleted}
+          isCompleted={taskInfo.status === 'completed'}
         />
       </FlexBlock>
       <FlexBlock shrink={0} minWidth={170} pl={8} mr={16}>

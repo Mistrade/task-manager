@@ -5,7 +5,8 @@ import { FlexBlock } from '../../LayoutComponents/FlexBlock'
 
 export const SmallCalendarMonthTitle: FC<SmallCalendarMonthTitleProps> = memo( ( {
                                                                                    monthItem,
-                                                                                   onClick
+                                                                                   onClick,
+                                                                                   renderYear
                                                                                  } ) => {
   return (
     <FlexBlock
@@ -17,6 +18,7 @@ export const SmallCalendarMonthTitle: FC<SmallCalendarMonthTitleProps> = memo( (
       onClick={() => onClick && onClick( monthItem )}
     >
       {MonthList[ monthItem.monthOfYear ]?.toLowerCase()}
+      {renderYear && ` ${monthItem.year} г.`}
     </FlexBlock>
   )
 } )

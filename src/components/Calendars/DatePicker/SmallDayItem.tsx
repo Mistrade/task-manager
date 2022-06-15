@@ -26,7 +26,7 @@ export const SmallDayItem: FC<SmallCalendarDayItemProps> = ( {
       align={'center'}
       width={'100%'}
       height={'100%'}
-      onClick={() => onSelectDate && onSelectDate( date )}
+      onClick={() => !date.meta.isDisabled && onSelectDate && onSelectDate( date )}
       style={{ cursor: 'pointer' }}
       bgColor={`${taskCount > 0 && !date.meta.isToday ? hoverColor : ''}`}
       borderRadius={4}
@@ -38,6 +38,7 @@ export const SmallDayItem: FC<SmallCalendarDayItemProps> = ( {
       <DateItem
         isCurrent={date.meta.isCurrent}
         isToday={dayjs( date.value ).isSame( currentDate, 'day' ) || false}
+        disabled={date.meta.isDisabled}
       >
         {addNull( date.value.getDate() )}
       </DateItem>

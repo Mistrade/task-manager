@@ -1,5 +1,5 @@
 import { css } from 'styled-components'
-import { currentColor } from './constants'
+import { currentColor, hoverColor } from './constants'
 
 export const HoverElementMixin = css`
   & {
@@ -8,7 +8,6 @@ export const HoverElementMixin = css`
   }
 
   &:hover {
-    background-color: ${currentColor};
-    color: #fff;
+    background-color: ${hoverColor};
   }
 `

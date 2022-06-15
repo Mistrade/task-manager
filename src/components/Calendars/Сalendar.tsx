@@ -78,9 +78,6 @@ export const Calendar: FC<CalendarProps> = ( {
       maxHeight={'100vh'}
       additionalCss={css`
         & {
-            // border: 1px solid ${defaultColor};
-            // box-shadow: 0px 0px 4px ${defaultColor};
-          //border-radius: 4px;
           padding: 24px 20px 0px 20px;
         }
       `}
@@ -143,6 +140,7 @@ export const Calendar: FC<CalendarProps> = ( {
           >
             <DayCalendar
               dateItem={dateItem}
+              onAddTask={calendar.onAddTask}
               onSelectTask={calendar.onSelectTask}
               onChangeCurrent={calendar.onChangeCurrent}
               taskStorage={taskStorage}

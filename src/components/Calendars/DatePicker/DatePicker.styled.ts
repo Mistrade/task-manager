@@ -1,6 +1,6 @@
 import styled from 'styled-components'
 import { CalendarDate } from '../Cell'
-import { darkColor, disabledColor } from '../../../common/constants'
+import { darkColor, defaultColor, disabledColor } from '../../../common/constants'
 
 export const DateItem = styled( CalendarDate )`
   & {
@@ -9,9 +9,6 @@ export const DateItem = styled( CalendarDate )`
     margin: 0px;
     font-size: 15px;
     font-weight: 500;
-    color: ${( {
-                                                         isCurrent,
-                                                         isToday
-                                                       } ) => isToday ? '#fff' : isCurrent ? darkColor : disabledColor} !important;
+    color: ${_ => _.disabled ? disabledColor : _.isToday ? '#fff' : _.isCurrent ? darkColor : defaultColor} !important;
   }
 `

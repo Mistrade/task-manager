@@ -39,6 +39,7 @@ export const DayCalendar: FC<DayCalendarProps> = ( {
       >
         <FlexBlock grow={0} shrink={0} maxWidth={'25%'} height={'100%'}>
           <DaySettingsPanel
+            onAddTask={onAddTask}
             taskStorage={taskStorage}
             dateItem={dateItem}
             date={day}
@@ -48,6 +49,7 @@ export const DayCalendar: FC<DayCalendarProps> = ( {
         <FlexBlock width={'100%'} height={'100%'}>
           <DayTaskList
             day={day}
+            onAddTask={onAddTask}
             onSelectTask={onSelectTask}
             current={dateItem.current}
             taskList={taskStorage ? sortTask( getTaskListOfDay( day, taskStorage ) ) : []}

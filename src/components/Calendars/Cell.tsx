@@ -19,6 +19,7 @@ import {
 import dayjs from 'dayjs'
 import { FlexBlock } from '../LayoutComponents/FlexBlock'
 import { searchIntersections, sortTask } from '../../common/dayjs'
+import { Arrow, BurgerIcon, CompleteIcon, DoubleArrow } from '../Icons/Icons'
 
 interface CellComponentProps {
   disabled?: boolean,
@@ -203,14 +204,38 @@ const Indicator = styled( 'span' )<{ color: string }>`
   & {
     display: block;
     flex-shrink: 0;
-    width: 5px;
-    height: 5px;
+    width: 10px;
+    height: 10px;
     border-radius: 50%;
     background-color: ${props => props.color || defaultColor};
-    box-shadow: 0px 0px 2px 2px ${props => props.color || defaultColor};
     margin-right: 6px;
   }
 `
+
+export const ArrowIndicator: FC<{ priorityKey: CalendarPriorityKeys, isCompleted?: boolean }> = ( {
+                                                                                                    priorityKey,
+                                                                                                    isCompleted
+                                                                                                  } ) => {
+
+  if( isCompleted ) {
+    return <CompleteIcon size={20}/>
+  }
+
+  switch (priorityKey) {
+    case 'veryHigh':
+      return <DoubleArrow size={20} color={priorityColors.veryHigh} transform={'rotate(-90deg)'}/>
+    case 'high':
+      return <Arrow size={20} color={priorityColors.high} transform={'rotate(-90deg)'}/>
+    case 'medium':
+      return <BurgerIcon size={20}/>
+    case 'low':
+      return <Arrow size={20} color={priorityColors.low} transform={'rotate(90deg)'}/>
+    case 'veryLow':
+      return <DoubleArrow size={20} color={priorityColors.veryLow} transform={'rotate(90deg)'}/>
+  }
+
+  return <></>
+}
 
 
 export const CalendarCell: FC<CalendarCellProps> = ( {
@@ -317,8 +342,8 @@ export const TaskTileItem: FC<TaskTileItemProps> = ( { taskInfo, onSelect, date 
       isCurrent={date.meta.isCurrent}
       onClick={( event ) => condition && onSelect && onSelect( { date, taskInfo, event } )}
     >
-      <TaskTilePriorityIndicator priority={taskInfo.priority} isCompleted={!!taskInfo.isCompleted}/>
-      <TaskTileText isCompleted={!!taskInfo.isCompleted}>
+      <TaskTilePriorityIndicator priority={taskInfo.priority} isCompleted={taskInfo.status === 'completed'}/>
+      <TaskTileText isCompleted={taskInfo.status === 'completed'}>
         {taskInfo.title}
       </TaskTileText>
       <TaskTimeValue>

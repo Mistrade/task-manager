@@ -1,6 +1,7 @@
 import React, { FC, HTMLProps } from 'react'
-import { defaultColor } from '../../common/constants'
+import { currentColor, defaultColor, priorityColors } from '../../common/constants'
 import { FlexBlock, FlexBlockProps } from '../LayoutComponents/FlexBlock'
+import { constants } from 'os'
 
 interface IconProps {
   size?: number,
@@ -113,6 +114,147 @@ export const Arrow: FC<IconProps & FlexBlockProps> = ( {
         <path
           fill={color}
           d="M340.864 149.312a30.592 30.592 0 0 0 0 42.752L652.736 512L340.864 831.872a30.592 30.592 0 0 0 0 42.752a29.12 29.12 0 0 0 41.728 0L714.24 534.336a32 32 0 0 0 0-44.672L382.592 149.376a29.12 29.12 0 0 0-41.728 0z"
+        />
+      </svg>
+    </FlexBlock>
+  )
+}
+
+export const CompleteIcon: FC<IconProps & FlexBlockProps> = ( {
+                                                                size = 24,
+                                                                color = currentColor,
+                                                                ...props
+                                                              } ) => {
+  return (
+    <FlexBlock {...props} align={'center'} justify={'center'}>
+      <svg
+        xmlns="http://www.w3.org/2000/svg"
+        aria-hidden="true"
+        role="img"
+        width={size}
+        height={size}
+        preserveAspectRatio="xMidYMid meet"
+        viewBox="0 0 24 24"
+      >
+        <path
+          fill="none"
+          stroke={color}
+          strokeLinecap="round"
+          strokeLinejoin="round"
+          strokeWidth="2"
+          d="m2 12l5.25 5l2.625-3M8 12l5.25 5L22 7m-6 0l-3.5 4"
+        />
+      </svg>
+
+    </FlexBlock>
+  )
+}
+
+export const WaitIcon: FC<IconProps & FlexBlockProps> = ( {
+                                                            size = 24,
+                                                            color = currentColor,
+                                                            ...props
+                                                          } ) => {
+  return (
+    <FlexBlock {...props} align={'center'} justify={'center'}>
+      <svg
+        xmlns="http://www.w3.org/2000/svg"
+        aria-hidden="true"
+        role="img"
+        width={size}
+        height={size}
+        preserveAspectRatio="xMidYMid meet"
+        viewBox="0 0 16 16"
+      >
+        <g fill={color}>
+          <path
+            d="M8.515 1.019A7 7 0 0 0 8 1V0a8 8 0 0 1 .589.022l-.074.997zm2.004.45a7.003 7.003 0 0 0-.985-.299l.219-.976c.383.086.76.2 1.126.342l-.36.933zm1.37.71a7.01 7.01 0 0 0-.439-.27l.493-.87a8.025 8.025 0 0 1 .979.654l-.615.789a6.996 6.996 0 0 0-.418-.302zm1.834 1.79a6.99 6.99 0 0 0-.653-.796l.724-.69c.27.285.52.59.747.91l-.818.576zm.744 1.352a7.08 7.08 0 0 0-.214-.468l.893-.45a7.976 7.976 0 0 1 .45 1.088l-.95.313a7.023 7.023 0 0 0-.179-.483zm.53 2.507a6.991 6.991 0 0 0-.1-1.025l.985-.17c.067.386.106.778.116 1.17l-1 .025zm-.131 1.538c.033-.17.06-.339.081-.51l.993.123a7.957 7.957 0 0 1-.23 1.155l-.964-.267c.046-.165.086-.332.12-.501zm-.952 2.379c.184-.29.346-.594.486-.908l.914.405c-.16.36-.345.706-.555 1.038l-.845-.535zm-.964 1.205c.122-.122.239-.248.35-.378l.758.653a8.073 8.073 0 0 1-.401.432l-.707-.707z"
+          />
+          <path
+            d="M8 1a7 7 0 1 0 4.95 11.95l.707.707A8.001 8.001 0 1 1 8 0v1z"
+          />
+          <path
+            d="M7.5 3a.5.5 0 0 1 .5.5v5.21l3.248 1.856a.5.5 0 0 1-.496.868l-3.5-2A.5.5 0 0 1 7 9V3.5a.5.5 0 0 1 .5-.5z"
+          />
+        </g>
+      </svg>
+
+    </FlexBlock>
+  )
+}
+export const ProcessIcon: FC<IconProps & FlexBlockProps> = ( {
+                                                               size = 24,
+                                                               color = currentColor,
+                                                               ...props
+                                                             } ) => {
+  return (
+    <FlexBlock {...props} align={'center'} justify={'center'}>
+      <svg
+        xmlns="http://www.w3.org/2000/svg"
+        aria-hidden="true"
+        role="img"
+        width={size}
+        height={size}
+        preserveAspectRatio="xMidYMid meet"
+        viewBox="0 0 24 24"
+      >
+        <path
+          fill={color}
+          d="M6.992 14.502a1 1 0 0 0-1 1v1.782a7.972 7.972 0 0 1-2-5.282a7.29 7.29 0 0 1 .052-.88a1 1 0 1 0-1.985-.24a9.173 9.173 0 0 0-.067 1.12a9.964 9.964 0 0 0 2.417 6.5H2.992a1 1 0 1 0 0 2h4a.982.982 0 0 0 .794-.422c.011-.015.026-.027.037-.043c.007-.01.007-.022.013-.032a.966.966 0 0 0 .106-.258a.952.952 0 0 0 .032-.156c.003-.03.018-.057.018-.089v-4a1 1 0 0 0-1-1Zm1.5-8.5H6.709a7.974 7.974 0 0 1 5.283-2a7.075 7.075 0 0 1 .88.053a1 1 0 0 0 .24-1.987a9.227 9.227 0 0 0-1.12-.066a9.964 9.964 0 0 0-6.5 2.417V3.002a1 1 0 0 0-2 0v4a.954.954 0 0 0 .039.195a.969.969 0 0 0 .141.346l.012.017a.973.973 0 0 0 .244.246c.011.008.017.02.028.028c.014.01.03.013.045.021a.958.958 0 0 0 .18.084a.988.988 0 0 0 .261.053c.018 0 .032.01.05.01h4a1 1 0 0 0 0-2Zm11.96 10.804a.967.967 0 0 0-.141-.345l-.011-.017a.973.973 0 0 0-.245-.246c-.011-.008-.016-.02-.028-.028c-.01-.007-.023-.007-.034-.014a1.154 1.154 0 0 0-.41-.136c-.032-.003-.059-.018-.091-.018h-4a1 1 0 0 0 0 2h1.782a7.973 7.973 0 0 1-5.282 2a7.074 7.074 0 0 1-.88-.054a1 1 0 0 0-.24 1.987a9.365 9.365 0 0 0 1.12.067a9.964 9.964 0 0 0 6.5-2.417v1.417a1 1 0 0 0 2 0v-4a.953.953 0 0 0-.04-.195Zm.54-11.304a1 1 0 0 0 0-2h-4a.952.952 0 0 0-.192.039l-.007.001a.968.968 0 0 0-.34.14l-.02.013a.974.974 0 0 0-.245.244c-.008.01-.02.016-.028.027c-.007.01-.007.023-.014.034a1.146 1.146 0 0 0-.136.413c-.003.03-.018.057-.018.089v4a1 1 0 1 0 2 0V6.719a7.975 7.975 0 0 1 2 5.283a7.289 7.289 0 0 1-.053.88a1.001 1.001 0 0 0 .872 1.113a1.03 1.03 0 0 0 .122.007a1 1 0 0 0 .991-.88a9.174 9.174 0 0 0 .068-1.12a9.964 9.964 0 0 0-2.417-6.5Z"
+        />
+      </svg>
+
+    </FlexBlock>
+  )
+}
+
+export const CreatedIcon: FC<IconProps & FlexBlockProps> = ( {
+                                                               size = 24,
+                                                               color = currentColor,
+                                                               ...props
+                                                             } ) => {
+  return (
+    <FlexBlock {...props} align={'center'} justify={'center'}>
+      <svg
+        xmlns="http://www.w3.org/2000/svg"
+        aria-hidden="true"
+        role="img"
+        width={size}
+        height={size}
+        preserveAspectRatio="xMidYMid meet"
+        viewBox="0 0 16 16"
+      >
+        <path
+          fill={color}
+          fillRule="evenodd"
+          d="M5.616 4.928a2.487 2.487 0 0 1-1.119.922c-.148.06-.458.138-.458.138v5.008a2.51 2.51 0 0 1 1.579 1.062c.273.412.419.895.419 1.388c.008.343-.057.684-.19 1A2.485 2.485 0 0 1 3.5 15.984a2.482 2.482 0 0 1-1.388-.419A2.487 2.487 0 0 1 1.05 13c.095-.486.331-.932.68-1.283c.349-.343.79-.579 1.269-.68V5.949a2.6 2.6 0 0 1-1.269-.68a2.503 2.503 0 0 1-.68-1.283a2.487 2.487 0 0 1 1.06-2.565A2.49 2.49 0 0 1 3.5 1a2.504 2.504 0 0 1 1.807.729a2.493 2.493 0 0 1 .729 1.81c.002.494-.144.978-.42 1.389zm-.756 7.861a1.5 1.5 0 0 0-.552-.579a1.45 1.45 0 0 0-.77-.21a1.495 1.495 0 0 0-1.47 1.79a1.493 1.493 0 0 0 1.18 1.179c.288.058.586.03.86-.08c.276-.117.512-.312.68-.56c.15-.226.235-.49.249-.76a1.51 1.51 0 0 0-.177-.78zM2.708 4.741c.247.161.536.25.83.25c.271 0 .538-.075.77-.211a1.514 1.514 0 0 0 .729-1.359a1.513 1.513 0 0 0-.25-.76a1.551 1.551 0 0 0-.68-.56a1.49 1.49 0 0 0-.86-.08a1.494 1.494 0 0 0-1.179 1.18c-.058.288-.03.586.08.86c.117.276.312.512.56.68zM13.037 7h-1.002V5.49a1.5 1.5 0 0 0-1.5-1.5H8.687l1.269 1.27l-.71.709L7.117 3.84v-.7l2.13-2.13l.71.711l-1.269 1.27h1.85a2.484 2.484 0 0 1 2.312 1.541c.125.302.189.628.187.957V7zM13 16h-1v-3H9v-1h3V9h1v3h3v1h-3v3z"
+          clipRule="evenodd"
+        />
+      </svg>
+
+    </FlexBlock>
+  )
+}
+
+export const BurgerIcon: FC<IconProps & FlexBlockProps> = ( {
+                                                              size = 20,
+                                                              color = priorityColors[ 'medium' ],
+                                                              ...props
+                                                            } ) => {
+  return (
+    <FlexBlock {...props} align={'center'} justify={'center'}>
+      <svg
+        xmlns="http://www.w3.org/2000/svg"
+        aria-hidden="true"
+        role="img"
+        width={size}
+        height={size}
+        preserveAspectRatio="xMidYMid meet"
+        viewBox="0 0 24 24"
+      >
+        <path
+          fill={color}
+          d="M4 5h16c.55 0 1-.45 1-1s-.45-1-1-1H4c-.55 0-1 .45-1 1s.45 1 1 1zm16 14H4c-.55 0-1 .45-1 1s.45 1 1 1h16c.55 0 1-.45 1-1s-.45-1-1-1zm0-8H4c-.55 0-1 .45-1 1s.45 1 1 1h16c.55 0 1-.45 1-1s-.45-1-1-1z"
         />
       </svg>
     </FlexBlock>

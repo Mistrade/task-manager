@@ -6,7 +6,7 @@ import { ShortChangeCurrentPattern } from '../../../common/commonTypes'
 import { CalendarTodaySwitchersProps } from '../types'
 
 
-export const CalendarTodaySwitchers: FC<CalendarTodaySwitchersProps> = ({onChange}) => {
+export const CalendarTodaySwitchers: FC<CalendarTodaySwitchersProps> = ( { onChange } ) => {
   return (
     <FlexBlock width={'100%'} justify={'flex-end'} align={'center'}>
       <DoubleArrow
@@ -22,6 +22,7 @@ export const CalendarTodaySwitchers: FC<CalendarTodaySwitchersProps> = ({onChang
         mr={6}
       />
       <SwitchCalendarMode
+        type={'button'}
         onClick={() => onChange( 'today' )}
       >
         Сегодня

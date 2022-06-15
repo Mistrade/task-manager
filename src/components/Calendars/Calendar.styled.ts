@@ -78,6 +78,7 @@ export const SwitchCalendarMode = styled( 'button' )<{ isSelected?: boolean }>`
     transition: all .3s ease-in-out;
     background-color: ${props => props.isSelected ? currentColor : '#fff'};
     color: ${props => props.isSelected ? '#fff' : defaultColor};
+    min-width: 50px;
   }
 
   &:hover {
@@ -87,5 +88,14 @@ export const SwitchCalendarMode = styled( 'button' )<{ isSelected?: boolean }>`
 
   &:not(:last-child) {
     margin-right: 4px;
+  }
+`
+
+export const TimeSelectorButton = styled( SwitchCalendarMode )`
+  margin: 0;
+  width: 55px;
+
+  &:not(:last-child) {
+    margin-bottom: 4px;
   }
 `

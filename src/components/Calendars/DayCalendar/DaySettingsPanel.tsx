@@ -13,13 +13,16 @@ import { getMonthDays } from '../../../common/calendarSupport/getters'
 import { css } from 'styled-components'
 import { Button } from '../../Buttons/Buttons.styled'
 import { SmallCalendarMonthTitle } from '../DatePicker/SmallCalendarMonthTitle'
+import dayjs from 'dayjs'
+import { dateToCalendarItem } from '../../../common/calendarSupport/generators'
 
 
 export const DaySettingsPanel: FC<DaySettingsPanelProps> = ( {
                                                                dateItem,
                                                                date,
                                                                onSelectDate,
-                                                               taskStorage
+                                                               taskStorage,
+                                                               onAddTask
                                                              } ) => {
   function getTimeZone() {
     const v = /\((.*)\)/.exec( new Date().toString() )
@@ -48,7 +51,24 @@ export const DaySettingsPanel: FC<DaySettingsPanelProps> = ( {
           z-index: 1;
         `}
       >
-        <Button>
+        <Button onClick={() => {
+          if( onAddTask && date ) {
+            const d = dayjs( date.value ).isBefore( new Date(), 'date' )
+            if( d ) {
+              const newD = dayjs()
+
+              const context = {
+                month: newD.month(),
+                year: newD.year()
+              }
+
+              const r = dateToCalendarItem( newD.toDate(), context )
+              return onAddTask( r )
+            }
+
+            onAddTask && date && onAddTask( date )
+          }
+        }}>
           Добавить событие
         </Button>
       </FlexBlock>

@@ -53,6 +53,7 @@ export interface FormalizationProps {
   overflowY?: CSSProperties['overflowY'],
   overflowX?: CSSProperties['overflowX'],
   transform?: CSSProperties['transform'],
+  gap?: CSSProperties['gap']
 }
 
 export interface FlexProps {
@@ -146,6 +147,7 @@ const formalization: CustomMixin<FormalizationProps> = ( _ ) => css`
   ${_.overflowX ? css`overflow-x: ${_.overflowX};` : ''}
   ${_.overflowY ? css`overflow-y: ${_.overflowY};` : ''}
   ${_.transform ? css`transform: ${_.transform};` : ''}
+  ${_.gap ? css`gap: ${pxToCssValue( _.gap )};` : ''}
 `
 
 const position: CustomMixin<PositionProps> = ( _ ) => css`

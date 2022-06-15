@@ -1,6 +1,8 @@
-import React from 'react'
+import React, { FC, ReactNode } from 'react'
 import { ShortChangeCurrentPattern } from '../../common/commonTypes'
 import { OnSelectDateFromCalendarFn } from './DatePicker/SmallMonthCalendar'
+
+export type FCWithChildren<T = any> = FC<{ children?: ReactNode } & T>
 
 export interface DatePickerProps {
 
@@ -83,7 +85,7 @@ export interface CalendarTodaySwitchersProps {
   onChange: ( pattern: ShortChangeCurrentPattern ) => void
 }
 
-export interface DaySettingsPanelProps {
+export interface DaySettingsPanelProps extends Omit<GlobalTaskListProps, 'renderTaskCount'> {
   dateItem: DateItem,
   date?: CalendarItem,
   onSelectDate?: OnSelectDateFromCalendarFn,
@@ -107,7 +109,8 @@ export interface SmallMonthCalendarWeekItemProps {
 
 export interface SmallCalendarMonthTitleProps {
   monthItem: MonthItem,
-  onClick?: ( monthItem: MonthItem ) => void
+  onClick?: ( monthItem: MonthItem ) => void,
+  renderYear?: boolean
 }
 
 export type RenderWeekPattern = 'short' | 'full' | 'none'
@@ -179,9 +182,11 @@ export interface CalendarCellDateProps {
 export type CalendarPriorityKeys = 'veryLow' | 'low' | 'medium' | 'high' | 'veryHigh'
 
 export type UUID = string
+export type TaskStatusesType = 'completed' | 'created' | 'in_progress' | 'review'
 
 export interface CalendarTaskItem {
   id: UUID,
+  type: 'event',
   createdAt: Date,
   linkedFrom?: UUID,
   title: string,
@@ -189,8 +194,19 @@ export interface CalendarTaskItem {
   priority: CalendarPriorityKeys,
   time: Date,
   timeEnd: Date,
-  isCompleted?: boolean,
+  status: TaskStatusesType,
   members: TaskMembersListType
+}
+
+export interface SelectBooleanInputDataItem {
+  value: boolean,
+  title: string,
+  icon?: ReactNode,
+  isDisabled?: boolean,
+}
+
+export interface TaskStatusInfo extends SelectBooleanInputDataItem {
+  key: TaskStatusesType
 }
 
 

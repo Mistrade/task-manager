@@ -21,7 +21,7 @@ import {
   ChangeMonthCurrentPattern,
   ChangeWeekCurrentFn, ChangeYearCurrentFn, ShortChangeCurrentPattern
 } from './commonTypes'
-import { MonthList, WeekDaysList } from './constants'
+import { getHumanizeDateValue, MonthList, WeekDaysList, WeekDaysShortList } from './constants'
 import { getMonthDays, getWeekDays, getYearDays } from './calendarSupport/getters'
 
 export const addNull = ( value: number ): string => value < 10 ? `0${value}` : value.toString()
@@ -32,7 +32,7 @@ export const generateTaskInformerObject = ( taskItem: TaskTileClickArguments ) =
 
 
 export const checkTaskStatus = ( taskItem: SelectTaskItem ): string => {
-  if( taskItem.taskInfo.isCompleted ) {
+  if( taskItem.taskInfo.status === 'completed' ) {
     return 'Завершено'
   }
 
@@ -189,9 +189,7 @@ const getDayCalendarTitle = ( current: CalendarCurrentDay ) => {
   const { date } = current
   const d = dayjs( date )
   const dayOfWeek = WeekDaysList[ d.weekday() ]
-  const m = MonthList[ d.month() ]
-  const format = `DD ${m} YYYY г.`
-  return `${dayOfWeek}, ${d.format( format )}`
+  return `${dayOfWeek} - ${getHumanizeDateValue( d.toDate(), false )}`
 }
 
 export const getCalendarTitle = ( current: CalendarMode ) => {
@@ -220,6 +218,36 @@ export const changeCurrentModeHandler = ( current: CalendarMode, pattern: ShortC
     case 'year':
       return changeYearCurrentHandler( current, pattern )
   }
+}
+
+export const generateHoursArray = ( {
+                                      start,
+                                      end
+                                    }: { start: number, end: number } ): Array<number> => {
+  const s: number = start < 0 || start > 23 ? 0 : start
+  const e: number = end < 0 || end > 23 ? 23 : end
+  let counter: number = s
+  let arr: Array<number> = []
+  while (counter <= e) {
+    arr.push( counter )
+    counter++
+  }
+  return arr
+}
+
+export const generateMinuteArray = ( { step }: { step: number } ) => {
+  const s = step <= 0 || step > 30 ? 5 : step > 5 ? Math.floor( step / 5 ) : step
+
+  const length = 60 / s
+  let counter = 0
+  let arr = []
+  while (counter < length) {
+    arr.push( counter * step )
+    counter++
+  }
+
+  return arr
+
 }
 
 export const CurrentObserver = {
