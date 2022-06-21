@@ -1,7 +1,24 @@
-import styled from 'styled-components'
+import styled, { css } from 'styled-components'
 import { currentColor, defaultColor, disabledColor } from '../../common/constants'
 
-export const StyledInput = styled( 'input' )<{ hasIcon?: boolean }>`
+const LeftIconPadding = css`
+  padding: 12px 16px 12px 46px;
+`
+
+const RightIconPadding = css`
+  padding: 12px 46px 12px 16px;
+`
+
+const DefaultPadding = css`
+  padding: 12px 16px;
+`
+
+const IconPlacement = {
+  left: LeftIconPadding,
+  right: RightIconPadding
+}
+
+export const StyledInput = styled( 'input' )<{ hasIcon?: boolean, iconPlacement?: 'left' | 'right' }>`
   width: 100%;
   border: 2px solid ${disabledColor};
   border-radius: 6px;
@@ -10,8 +27,8 @@ export const StyledInput = styled( 'input' )<{ hasIcon?: boolean }>`
   cursor: pointer;
   font-size: 16px;
   font-family: Helvetica, sans-serif;
-  padding: 12px ${_ => _.hasIcon ? '46px' : '16px'} 12px 16px;
 
+  ${_ => _.hasIcon ? IconPlacement[ _.iconPlacement || 'right' ] : DefaultPadding}
   &:focus {
     border: 2px solid ${currentColor};
   }

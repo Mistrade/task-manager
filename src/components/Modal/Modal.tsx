@@ -21,11 +21,7 @@ export const Modal: FC<ModalProps> = ( {
   if( isView ) {
     return (
       <ModalLayout
-        onClick={( e ) => {
-          if( onClose && ref.current ) {
-            !ref.current.contains( e.target as HTMLElement ) && onClose()
-          }
-        }}
+        onClick={( e ) => onClose && ref.current && !ref.current.contains( e.target as HTMLElement ) && onClose()}
       >
         <ModalContainer ref={ref}>
           {children || (

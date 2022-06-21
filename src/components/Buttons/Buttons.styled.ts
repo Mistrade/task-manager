@@ -10,6 +10,7 @@ export const StyledButton = styled( 'button' )<{ fillColor?: string, textColor?:
     border: none;
     border-radius: 4px;
     outline: none;
+    cursor: pointer;
   }
 
   &:not(:last-child) {

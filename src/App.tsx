@@ -4,7 +4,6 @@ import { createGlobalStyle, css } from 'styled-components'
 import './common/dayjs'
 import { Calendar } from './components/Calendars/Сalendar'
 import { FlexBlock } from './components/LayoutComponents/FlexBlock'
-import dayjs from 'dayjs'
 import { defaultTasksList } from './common/constants'
 
 const GlobalStyled = createGlobalStyle( {}, css`

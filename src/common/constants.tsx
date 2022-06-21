@@ -2,7 +2,7 @@ import {
   CalendarPriorityKeys,
   CalendarTaskList,
   DateItem,
-  MonthItem, TaskStatusesType, TaskStatusInfo, TaskStorage, WeekItem, YearItem
+  MonthItem, TaskMembersListType, TaskStatusesType, TaskStatusInfo, TaskStorage, WeekItem, YearItem
 } from '../components/Calendars/types'
 import dayjs from 'dayjs'
 import { CompleteIcon, CreatedIcon, ProcessIcon, WaitIcon } from '../components/Icons/Icons'
@@ -81,6 +81,23 @@ export const TASK_STATUSES: { [key in TaskStatusesType]: TaskStatusInfo } = {
 
 export const DATE_RENDER_FORMAT = 'DD-MM-YYYY HH:mm'
 export const DATE_HOURS_FORMAT = 'HH:mm'
+export const DEFAULT_TASK_STATUS: TaskStatusesType = 'created'
+export const DEFAULT_TASK_PRIORITY: CalendarPriorityKeys = 'medium'
+export const Members: TaskMembersListType = [
+  {
+    name: 'Владос',
+    surname: 'Валеев',
+    patronymic: 'Ринатович',
+    id: '1',
+    gender: 'man',
+    socialNetworks: [
+      {
+        networkName: 'vk',
+        link: 'https://vk.com/yudakov2014'
+      }
+    ]
+  }
+]
 export let defaultTasksList: CalendarTaskList = [
   {
     id: '1',
@@ -88,25 +105,11 @@ export let defaultTasksList: CalendarTaskList = [
     title: 'Завершить написание модального окна',
     description: 'Необходимо завершить работу с модальным окном, чтобы информация по заданию выводилась корректно.',
     createdAt: new Date( 2022, 5, 1, 12, 20 ),
-    status: 'created',
-    priority: 'medium',
+    status: DEFAULT_TASK_STATUS,
+    priority: DEFAULT_TASK_PRIORITY,
     time: dayjs( new Date( 2022, 5, 1, 12, 20 ) ).toDate(),
     timeEnd: dayjs( new Date( 2022, 5, 1, 12, 20 ) ).add( 30, 'minute' ).toDate(),
-    members: [
-      {
-        name: 'Владос',
-        surname: 'Валеев',
-        patronymic: 'Ринатович',
-        id: '1',
-        gender: 'man',
-        socialNetworks: [
-          {
-            networkName: 'vk',
-            link: 'https://vk.com/yudakov2014'
-          }
-        ]
-      }
-    ]
+    members: Members
   }
 ]
 

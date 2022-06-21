@@ -65,6 +65,7 @@ export const StyledModalFooterContainer = styled( StyledModalHeaderContainer )`
     padding: 12px 20px;
     width: 100%;
     border-top: 1px solid ${defaultColor};
+    border-bottom: none;
     flex: 1 0 10%;
     min-height: 50px;
     max-height: 100px;
@@ -79,7 +80,6 @@ export const StyledModalBodyContainer = styled( 'div' )`
     align-items: flex-start;
     flex-direction: row;
     flex-wrap: wrap;
-    padding: 12px 20px;
     width: 100%;
     min-height: 100px;
   }

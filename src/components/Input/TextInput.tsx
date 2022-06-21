@@ -19,6 +19,7 @@ export interface DefaultTextInputProps {
   children?: ReactNode,
   readOnly?: boolean,
   icon?: ReactNode,
+  iconPlacement?: 'left' | 'right',
   actions?: Array<TextInputAdditionalAction>,
   actionHandler?: ( action: TextInputAdditionalAction ) => void
 }
@@ -47,7 +48,8 @@ export const TextInput = forwardRef<HTMLInputElement, TextInputProps>( ( {
                                                                            containerProps,
                                                                            icon,
                                                                            actions,
-                                                                           actionHandler
+                                                                           actionHandler,
+                                                                           iconPlacement = 'right'
                                                                          }, ref ) => {
   return (
     <FlexBlock
@@ -64,6 +66,7 @@ export const TextInput = forwardRef<HTMLInputElement, TextInputProps>( ( {
           hasIcon={!!icon}
           id={inputId}
           ref={ref}
+          iconPlacement={iconPlacement}
           placeholder={placeholder}
           value={value}
           onChange={onChange}
@@ -77,12 +80,13 @@ export const TextInput = forwardRef<HTMLInputElement, TextInputProps>( ( {
             height={30}
             width={30}
             overflow={'hidden'}
-            justify={'flex-end'}
+            justify={iconPlacement === 'right' ? 'flex-end' : 'center'}
             align={'center'}
             additionalCss={css`
               top: 50%;
               transform: translateY(-50%);
-              right: 10px;`}
+              ${iconPlacement === 'right' ? css`right: 10px` : css`left: 10px;`};
+            `}
           >
             {icon}
           </FlexBlock>

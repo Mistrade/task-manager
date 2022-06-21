@@ -18,7 +18,7 @@ interface SelectInputMethods {
 
 export function SelectInput<T>( props: SelectInputProps<T> ): JSX.Element {
 
-  const { renderData, data, containerProps, ...textInputProps } = props
+  const { renderData, data, containerProps, readOnly, onChange, ...textInputProps } = props
   const [focus, setFocus] = useState( false )
   const ref = useRef<HTMLDivElement | null>( null )
   const inputRef = useRef<HTMLInputElement>( null )
@@ -52,6 +52,8 @@ export function SelectInput<T>( props: SelectInputProps<T> ): JSX.Element {
     >
       <TextInput
         ref={inputRef}
+        readOnly={readOnly}
+        onChange={!!readOnly ? undefined : onChange}
         {...textInputProps}
         onFocus={focusHandler}
         onBlur={focusHandler}
