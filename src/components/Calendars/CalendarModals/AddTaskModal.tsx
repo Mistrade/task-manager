@@ -7,8 +7,11 @@ import { DATE_RENDER_FORMAT, defaultColor, getHumanizeDateValue } from '../../..
 import { FlexBlock } from '../../LayoutComponents/FlexBlock'
 import { StyledButton } from '../../Buttons/Buttons.styled'
 import { AddTaskForm } from '../Forms/AddTaskForm'
+import { useAppDispatch } from '../../../store/hooks/hooks'
+import { addEvent } from '../../../store/thunk/events'
 
 export const AddTaskModal: FC<AddTaskModalProps> = ( { date, onClose, onComplete } ) => {
+  const dispatch = useAppDispatch()
 
   return (
     <Modal
@@ -23,7 +26,15 @@ export const AddTaskModal: FC<AddTaskModalProps> = ( { date, onClose, onComplete
       <ModalBody>
         <FlexBlock minWidth={'50vw'} maxWidth={'60vw'} grow={10}>
           <AddTaskForm
-            onComplete={( value ) => console.log( value )}
+            onComplete={( value ) => {
+              console.log( 'onComplete' )
+              dispatch(
+                addEvent( {
+                  event: value,
+                  onComplete: () => onClose && onClose()
+                } )
+              )
+            }}
             onCancel={( value ) => onClose && onClose()}
             date={date}
           />

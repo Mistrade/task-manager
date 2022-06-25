@@ -54,19 +54,19 @@ export type RenderTaskCountType = number | 'all'
 
 export interface CalendarCellProps extends GlobalTaskListProps {
   value: CalendarItem,
-  tasks?: CalendarTaskList,
+  tasks?: Array<EventItem>,
   onSelectTask?: ( data: TaskTileClickArguments ) => any,
   onClickToDate?: ( date: CalendarItem ) => void
 }
 
 export interface TaskTileListProps extends GlobalTaskListProps {
-  tasks?: CalendarTaskList,
+  tasks?: Array<EventItem>,
   date: CalendarItem,
   onSelect?: ( data: TaskTileClickArguments ) => any,
 }
 
 export interface TaskTileItemProps {
-  taskInfo: CalendarTaskItem,
+  taskInfo: EventItem,
   date: CalendarItem,
   onSelect?: TaskTileListProps['onSelect']
 }
@@ -117,7 +117,7 @@ export type RenderWeekPattern = 'short' | 'full' | 'none'
 
 export interface TaskTileClickArguments {
   date: CalendarItem,
-  taskInfo: CalendarTaskItem,
+  taskInfo: EventItem,
   event?: React.MouseEvent<HTMLDivElement>
 }
 
@@ -187,7 +187,7 @@ export type TaskStatusesType = 'completed' | 'created' | 'in_progress' | 'review
 export interface CalendarTaskItem {
   id: UUID,
   type: 'event',
-  createdAt: Date,
+  createdAt: string,
   linkedFrom?: UUID,
   title: string,
   description: string,
@@ -196,6 +196,11 @@ export interface CalendarTaskItem {
   timeEnd: Date,
   status: TaskStatusesType,
   members: TaskMembersListType
+}
+
+export type EventItem = Omit<CalendarTaskItem, 'time' | 'timeEnd'> & {
+  time: string,
+  timeEnd: string,
 }
 
 export interface SelectBooleanInputDataItem {
@@ -235,7 +240,12 @@ export type PartialCustomObject<T = any> = Partial<{ [key in string]: T }>
 export type TaskStorage = CustomObject<TaskYear>
 export type TaskYear = CustomObject<TaskMonth>
 export type TaskMonth = CustomObject<TaskDate>
-export type TaskDate = CalendarTaskList
+export type TaskDate = Array<EventItem>
+
+export interface TaskSetResult {
+  status: boolean,
+  storage: TaskStorage
+}
 
 export type CalendarTaskList = Array<CalendarTaskItem>
 

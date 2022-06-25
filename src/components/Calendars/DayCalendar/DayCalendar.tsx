@@ -52,7 +52,7 @@ export const DayCalendar: FC<DayCalendarProps> = ( {
             onAddTask={onAddTask}
             onSelectTask={onSelectTask}
             current={dateItem.current}
-            taskList={taskStorage ? sortTask( getTaskListOfDay( day, taskStorage ) ) : []}
+            taskList={taskStorage ? sortTask( getTaskListOfDay( day.value, taskStorage ) ) : []}
           />
         </FlexBlock>
 

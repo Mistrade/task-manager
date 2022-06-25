@@ -28,6 +28,7 @@ import {
   defaultWeekItem, defaultYearItem
 } from '../../common/constants'
 import { Interceptor } from './Interceptor'
+import { useAppSelector } from '../../store/hooks/hooks'
 
 export const Calendar: FC<CalendarProps> = ( {
                                                initialCurrent,
@@ -37,18 +38,19 @@ export const Calendar: FC<CalendarProps> = ( {
                                              } ) => {
   const calendar = useCalendar( initialCurrent )
 
-  const taskStorage: TaskStorage | undefined = useMemo( () => {
-    return taskList ? getTaskStorage( taskList ) : undefined
-  }, [taskList?.length] )
-
   const [yearItem, setYearItem] = useState<YearItem>( defaultYearItem )
   const [monthItem, setMonthItem] = useState<MonthItem>( defaultMonthItem )
   const [weekItem, setWeekItem] = useState<WeekItem>( defaultWeekItem )
   const [dateItem, setDateItem] = useState<DateItem>( defaultDateItem )
 
+  const taskStorage = useAppSelector( state => state.events.all )
 
   useEffect( () => {
-    changeCurrentObserver( calendar.current, disabledOptions )
+    console.log( taskStorage )
+  }, [taskStorage] )
+
+  useEffect( () => {
+    changeCurrentObserver( calendar.current, disabledOptions ).then( r => r)
   }, [calendar.current, disabledOptions] )
 
   const changeCurrentObserver = async ( current: CalendarMode, disabledOptions?: CalendarDisabledOptions ) => {

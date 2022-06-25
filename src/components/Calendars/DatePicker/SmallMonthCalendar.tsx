@@ -1,4 +1,4 @@
-import { FC, ReactNode, useCallback, useEffect } from 'react'
+import { FC, ReactNode, useCallback } from 'react'
 import {
   CalendarCurrentMonth,
   CalendarCurrentWeek,
@@ -9,21 +9,9 @@ import {
   WeekItem
 } from '../types'
 import styled, { css } from 'styled-components'
-import {
-  currentColor,
-  darkColor,
-  defaultColor,
-  disabledColor, hoverColor,
-  MonthList,
-  WeekDaysShortList
-} from '../../../common/constants'
+import { currentColor, defaultColor, MonthList, WeekDaysShortList } from '../../../common/constants'
 import { FlexBlock, pxToCssValue, UnitsType } from '../../LayoutComponents/FlexBlock'
-import { addNull, getTaskListOfDay } from '../../../common/functions'
-import { CalendarDate } from '../Cell'
 import dayjs from 'dayjs'
-import { getHumanizeWeekDay } from '../../../common/calendarSupport/other'
-import { DateItem } from './DatePicker.styled'
-import { SmallDayItem } from './SmallDayItem'
 import { SmallWeekItem } from './SmallWeekItem'
 
 interface SmallCalendarProps extends Pick<StyledProps, 'cellSize'> {

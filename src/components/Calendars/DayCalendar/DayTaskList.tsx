@@ -4,7 +4,7 @@ import {
   CalendarCurrentDay,
   CalendarItem,
   CalendarTaskItem,
-  CalendarTaskList, GlobalTaskListProps,
+  CalendarTaskList, EventItem, GlobalTaskListProps,
   OnSelectTaskFnType
 } from '../types'
 import { TaskTilePriorityIndicator } from '../Cell'
@@ -23,7 +23,7 @@ import { StyledFindInput } from '../../Input/Input.styled'
 interface DayTaskListProps extends GlobalTaskListProps {
   day: CalendarItem
   current: CalendarCurrentDay,
-  taskList: CalendarTaskList,
+  taskList: Array<EventItem>,
   onSelectTask?: OnSelectTaskFnType,
 }
 
@@ -32,7 +32,7 @@ export interface NotFoundTaskProps extends Omit<GlobalTaskListProps, 'renderTask
 }
 
 interface DayTaskItemProps {
-  taskInfo: CalendarTaskItem,
+  taskInfo: EventItem,
   tabIndex: number
   onSelectTask?: OnSelectTaskFnType,
   day: CalendarItem

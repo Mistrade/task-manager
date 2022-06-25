@@ -86,7 +86,7 @@ export const WeeKCalendar: FC<WeekCalendarProps> = ( {
             onAddTask={onAddTask}
             value={day}
             onClickToDate={onClickToDate}
-            tasks={taskStorage ? getTaskListOfDay( day, taskStorage ) : []}
+            tasks={taskStorage ? getTaskListOfDay( day.value, taskStorage ) : []}
             onSelectTask={onSelectTask}
           />
         ) )}

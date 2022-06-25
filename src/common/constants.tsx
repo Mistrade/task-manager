@@ -98,17 +98,19 @@ export const Members: TaskMembersListType = [
     ]
   }
 ]
+
+export const DAYJS_EVENT_FORMAT = 'DD-MM-YYYYTHH:mmZ'
 export let defaultTasksList: CalendarTaskList = [
   {
     id: '1',
     type: 'event',
     title: 'Завершить написание модального окна',
     description: 'Необходимо завершить работу с модальным окном, чтобы информация по заданию выводилась корректно.',
-    createdAt: new Date( 2022, 5, 1, 12, 20 ),
+    createdAt: dayjs().utc().format(),
     status: DEFAULT_TASK_STATUS,
     priority: DEFAULT_TASK_PRIORITY,
     time: dayjs( new Date( 2022, 5, 1, 12, 20 ) ).toDate(),
-    timeEnd: dayjs( new Date( 2022, 5, 1, 12, 20 ) ).add( 30, 'minute' ).toDate(),
+    timeEnd: dayjs( new Date( 2022, 5, 22, 12, 20 ) ).add( 30, 'minute' ).toDate(),
     members: Members
   }
 ]
@@ -145,4 +147,8 @@ export const defaultDateItem: DateItem = {
       year: -1
     }
   }
+}
+
+export enum LS_KEYS {
+  'EVENTS' = 'events'
 }

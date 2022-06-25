@@ -3,7 +3,6 @@ import { FlexBlock } from '../../LayoutComponents/FlexBlock'
 import { addNull, generateHoursArray, generateMinuteArray } from '../../../common/functions'
 import { TimeSelectorButton } from '../Calendar.styled'
 import dayjs from 'dayjs'
-import { currentColor, disabledColor } from '../../../common/constants'
 import { css } from 'styled-components'
 
 interface TimeSelectorProps {

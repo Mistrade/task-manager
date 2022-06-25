@@ -17,7 +17,7 @@ export const SmallDayItem: FC<SmallCalendarDayItemProps> = ( {
                                                                currentDate
                                                              } ) => {
   const taskCount: number = useMemo( () => {
-    return taskStorage ? getTaskListOfDay( date, taskStorage ).length : 0
+    return taskStorage ? getTaskListOfDay( date.value, taskStorage ).length : 0
   }, [taskStorage] )
 
   return (

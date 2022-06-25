@@ -5,11 +5,11 @@ import {
   CalendarCurrentWeek,
   CalendarCurrentYear, CalendarDisabledOptions,
   CalendarItem,
-  CalendarMode,
-  CalendarTaskList, DateItem, MonthItem,
+  CalendarMode, CalendarTaskItem,
+  CalendarTaskList, DateItem, EventItem, MonthItem,
   SelectTaskItem,
   TaskDate,
-  TaskMonth,
+  TaskMonth, TaskSetResult,
   TaskStorage,
   TaskTileClickArguments,
   TaskYear, WeekItem, YearItem
@@ -47,29 +47,125 @@ export const checkTaskStatus = ( taskItem: SelectTaskItem ): string => {
   return 'В работе'
 }
 
-export const getTaskListOfDay = ( day: CalendarItem, storage: TaskStorage ): CalendarTaskList => {
-  const y = storage[ dayjs( day.value ).year() ] || {}
-  const m = y[ dayjs( day.value ).month() ] || {}
-  const d = m[ dayjs( day.value ).date() ] || []
-
-  return d
+export const getTaskListOfDay = ( day: Date, storage: TaskStorage ): Array<EventItem> => {
+  const y = storage[ dayjs( day ).year() ] || {}
+  const m = y[ dayjs( day ).month() ] || {}
+  return m[ dayjs( day ).date() ] || []
 }
-export const getTaskStorage = ( tasks: CalendarTaskList ): TaskStorage => {
+
+
+export const setTaskListToDay = ( storage: TaskStorage, event: EventItem ): TaskStorage => {
+  const start = dayjs( event.time )
+  const end = dayjs( event.timeEnd )
+
+  let taskStorage = storage
+
+  if( start.isSame( end, 'day' ) ) {
+    let y = storage[ start.year() ]
+
+    if( y ) {
+      let m = y[ start.month() ]
+
+      if( m ) {
+        let d = m[ start.date() ]
+
+        if( d ) {
+          d.push( event )
+        } else {
+          m = {
+            ...m,
+            [ `${start.date()}` ]: [event]
+          }
+        }
+      } else {
+        y = {
+          ...y,
+          [ `${start.month()}` ]: {
+            [ `${start.date()}` ]: [event]
+          }
+        }
+      }
+    } else {
+      taskStorage = {
+        ...taskStorage,
+        [ `${start.year()}` ]: {
+          [ `${start.month()}` ]: {
+            [ `${start.date()}` ]: [event]
+          }
+        }
+      }
+    }
+    return taskStorage
+  }
+
+  return storage
+}
+
+export const setTaskAtDay = ( storage: TaskStorage, day: Date, event: EventItem ): TaskStorage => {
+  console.log( 'set task at day is atrted' )
+  let newStorage = {
+    ...storage
+  }
+
+  const y: number = day.getFullYear()
+  const m: number = day.getMonth()
+  const d: number = day.getDate()
+
+  const currentYear: TaskYear = newStorage[ y ] || {}
+  const currentMonth: TaskMonth = currentYear[ m ] || {}
+  const currentDate: TaskDate = currentMonth[ d ] || []
+
+  const date: TaskDate = [...currentDate]
+  date.push( event )
+
+  const month = {
+    ...currentMonth,
+    [ `${d}` ]: date
+  }
+
+  const year = {
+    ...currentYear,
+    [ `${m}` ]: month
+  }
+
+  newStorage = {
+    ...newStorage,
+    [ `${y}` ]: year
+  }
+
+  return newStorage
+}
+
+export const setTask = ( storage: TaskStorage, event: EventItem ): TaskSetResult => {
+  try {
+
+    const isOneDay = dayjs( event.time ).isSame( dayjs( event.timeEnd ), 'day' )
+
+    if( isOneDay ) {
+      storage = setTaskAtDay( storage, dayjs( event.time ).toDate(), event )
+      return { status: true, storage }
+    } else {
+      let i = dayjs( event.time )
+      while (i.isSameOrBefore( dayjs( event.timeEnd ), 'day' )) {
+        storage = setTaskAtDay( storage, i.toDate(), event )
+        i = i.add( 1, 'day' )
+      }
+      return { status: true, storage }
+    }
+  } catch (e) {
+    console.log( e )
+    return {
+      status: false,
+      storage
+    }
+  }
+}
+
+export const getTaskStorage = ( tasks: Array<EventItem> ): TaskStorage => {
   const r: TaskStorage = {}
 
   tasks.forEach( ( task ) => {
-    const y: number = dayjs( task.time ).year()
-    const m: number = dayjs( task.time ).month()
-    const d: number = dayjs( task.time ).date()
-
-    const currentYear: TaskYear = r[ y ] || {}
-    const currentMonth: TaskMonth = currentYear[ m ] || {}
-    const currentDate: TaskDate = currentMonth[ d ] || []
-    currentDate.push( task )
-
-    currentMonth[ d ] = currentDate
-    currentYear[ m ] = currentMonth
-    r[ y ] = currentYear
+    setTask( r, task )
   } )
 
   return r || {}

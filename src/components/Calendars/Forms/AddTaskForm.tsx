@@ -44,6 +44,7 @@ const addTaskValidationSchema = yup.object( {
 export const AddTaskForm: FC<AddTaskFormProps> = ( { date, onComplete, onCancel } ) => {
   const formik = useFormik<CalendarTaskItem>( {
     onSubmit( values ) {
+      console.log( 'onSubmit' )
       onComplete && onComplete( values )
     },
     validationSchema: addTaskValidationSchema,
@@ -52,7 +53,7 @@ export const AddTaskForm: FC<AddTaskFormProps> = ( { date, onComplete, onCancel 
       title: '',
       linkedFrom: '',
       type: 'event',
-      createdAt: new Date(),
+      createdAt: '',
       description: '',
       status: 'created',
       members: [],

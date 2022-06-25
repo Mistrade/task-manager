@@ -9,7 +9,8 @@ import isYesterday from 'dayjs/plugin/isYesterday'
 import weekOfYear from 'dayjs/plugin/weekOfYear'
 import updateLocale from 'dayjs/plugin/updateLocale'
 import duration from 'dayjs/plugin/duration'
-import { CalendarTaskItem, CalendarTaskList } from '../components/Calendars/types'
+import utc from 'dayjs/plugin/utc'
+import { CalendarTaskItem, CalendarTaskList, EventItem } from '../components/Calendars/types'
 
 const customLocale: Partial<ILocale> = {
   name: 'ru',
@@ -72,6 +73,7 @@ dayjs.extend( isSameOrBefore )
 dayjs.extend( weekOfYear )
 dayjs.extend( updateLocale )
 dayjs.extend( duration )
+dayjs.extend( utc )
 
 dayjs.updateLocale( 'en', {
   weekStart: 1,
@@ -123,9 +125,11 @@ export const searchIntersections = ( taskList: CalendarTaskList ): Array<Calenda
   return result
 }
 
-export const sortTask = ( initialList: CalendarTaskList ): CalendarTaskList => {
-  if( !!initialList.length ) {
-    initialList.sort( ( prev, cur ) => {
+export const sortTask = ( initialList: Array<EventItem> ): Array<EventItem> => {
+  const list = [...initialList]
+
+  if( !!list.length ) {
+    list.sort( ( prev, cur ) => {
       if( dayjs( cur.time ).isBefore( prev.time ) ) {
         return 1
       }
@@ -138,5 +142,5 @@ export const sortTask = ( initialList: CalendarTaskList ): CalendarTaskList => {
     } )
   }
 
-  return initialList
+  return list
 }
