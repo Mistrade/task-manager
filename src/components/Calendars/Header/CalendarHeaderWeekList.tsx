@@ -18,6 +18,7 @@ export const CalendarHeaderWeekList: FC<CalendarHeaderWeekListProps> = ( {
               justify={'center'}
               width={'100%'}
               p={'12px 0px'}
+              mb={6}
               borderBottom={`1px solid ${defaultColor}`}
             >
               {day}
@@ -36,6 +37,7 @@ export const CalendarHeaderWeekList: FC<CalendarHeaderWeekListProps> = ( {
               justify={'center'}
               width={'100%'}
               p={'12px 0px'}
+              mb={6}
               borderBottom={`1px solid ${defaultColor}`}
             >
               {day}

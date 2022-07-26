@@ -7,6 +7,7 @@ import { CalendarTitle } from '../Calendar.styled'
 import { CalendarModeSwitchers } from './CalendarModeSwitchers'
 import { CalendarTodaySwitchers } from './CalendarTodaySwitchers'
 import { CalendarHeaderWeekList } from './CalendarHeaderWeekList'
+import { Tooltip } from '../../Tooltip/Tooltip'
 
 
 export const CalendarHeader: FC<CalendarHeaderProps> = ( {
@@ -44,9 +45,14 @@ export const CalendarHeader: FC<CalendarHeaderProps> = ( {
         mb={8}
       >
         <FlexBlock flex={'0 0 33.3%'} justify={'flex-start'} align={'center'}>
-          <CalendarTitle>
-            {title}
-          </CalendarTitle>
+          <Tooltip
+            text={'Текущий выбранный период дат, нажмите чтобы перейти к "Сегодня"'}
+            placement={'top'}
+          >
+            <CalendarTitle onClick={() => onChangeCurrentHandler( 'today' )}>
+              {title}
+            </CalendarTitle>
+          </Tooltip>
         </FlexBlock>
         <FlexBlock flex={'1 1 33.3%'} maxWidth={400} justify={'center'} align={'center'}>
           <CalendarModeSwitchers

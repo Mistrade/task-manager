@@ -6,6 +6,7 @@ import { TaskInformer } from '../TaskInformer/TaskInformer'
 import { FlexBlock } from '../../LayoutComponents/FlexBlock'
 import { StyledButton } from '../../Buttons/Buttons.styled'
 import { defaultColor } from '../../../common/constants'
+import { Tooltip } from '../../Tooltip/Tooltip'
 
 export const TaskInfoModal: FC<TaskInfoModalProps> = ( { selectedTask, onClose } ) => {
   return (
@@ -14,9 +15,7 @@ export const TaskInfoModal: FC<TaskInfoModalProps> = ( { selectedTask, onClose }
       onClose={() => onClose()}
     >
       <ModalHeader>
-        <TaskTileText maxWidth={'100%'} fs={'18px'} data-title={selectedTask?.taskInfo.title}>
-          {selectedTask?.taskInfo.title}
-        </TaskTileText>
+        Событие #{selectedTask?.taskInfo.id || ''}
       </ModalHeader>
       <ModalBody>
         <TaskInformer taskItem={selectedTask}/>

@@ -422,3 +422,16 @@ export const CurrentObserver = {
     }
   }
 }
+
+export const convertEventStatus = ( status: EventItem['status'] ) => {
+  switch (status) {
+    case 'created':
+      return 'Создано, ожидает выполнения'
+    case 'in_progress':
+      return 'В процессе выполнения'
+    case 'review':
+      return 'Ожидает подтверждения'
+    case 'completed':
+      return 'Выполнено'
+  }
+}

@@ -50,7 +50,7 @@ export const Calendar: FC<CalendarProps> = ( {
   }, [taskStorage] )
 
   useEffect( () => {
-    changeCurrentObserver( calendar.current, disabledOptions ).then( r => r)
+    changeCurrentObserver( calendar.current, disabledOptions ).then( r => r )
   }, [calendar.current, disabledOptions] )
 
   const changeCurrentObserver = async ( current: CalendarMode, disabledOptions?: CalendarDisabledOptions ) => {
@@ -77,7 +77,7 @@ export const Calendar: FC<CalendarProps> = ( {
       className={'Calendar__container'}
       width={'100%'}
       minHeight={800}
-      maxHeight={'100vh'}
+      maxHeight={'95vh'}
       additionalCss={css`
         & {
           padding: 24px 20px 0px 20px;
@@ -92,7 +92,8 @@ export const Calendar: FC<CalendarProps> = ( {
 
       <FlexBlock
         position={'relative'}
-        maxHeight={`calc(100vh-${calendar.current.layout === 'month' || calendar.current.layout === 'week' ? '120px' : '70px'})`}
+        mt={12}
+        maxHeight={`calc(100vh-${calendar.current.layout === 'month' || calendar.current.layout === 'week' ? '150px' : '70px'})`}
         overflow={'scroll'}
         width={'100%'}
       >

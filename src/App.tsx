@@ -4,10 +4,9 @@ import { createGlobalStyle, css } from 'styled-components'
 import './common/dayjs'
 import { Calendar } from './components/Calendars/Сalendar'
 import { FlexBlock } from './components/LayoutComponents/FlexBlock'
-import { DAYJS_EVENT_FORMAT, defaultTasksList } from './common/constants'
+import { defaultTasksList } from './common/constants'
 import { Provider } from 'react-redux'
 import { store } from './store'
-import { setTask, setTaskListToDay } from './common/functions'
 import dayjs from 'dayjs'
 
 const GlobalStyled = createGlobalStyle( {}, css`
@@ -22,8 +21,6 @@ function App() {
 
   useEffect( () => {
     document.title = 'Онлайн планировщик дел'
-
-    console.log( dayjs( '2022-06-25T20:05:46Z' ) )
   }, [] )
 
   return (

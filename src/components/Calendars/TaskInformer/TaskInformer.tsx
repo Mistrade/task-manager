@@ -1,5 +1,6 @@
-import { FC, memo, ReactNode } from 'react'
+import { FC, memo, ReactNode, useMemo } from 'react'
 import {
+  CalendarCurrentMonth,
   GenderKeys,
   SelectTaskItem,
   TaskInformerMainProps,
@@ -8,10 +9,22 @@ import {
 } from '../types'
 import styled, { css, CSSProperties } from 'styled-components'
 import dayjs from 'dayjs'
-import { currentColor, DATE_RENDER_FORMAT, defaultColor } from '../../../common/constants'
+import {
+  currentColor, DATE_HOURS_FORMAT,
+  DATE_RENDER_FORMAT,
+  defaultColor,
+  disabledColor, hoverColor, TASK_STATUSES, WeekDaysList
+} from '../../../common/constants'
 import { Female, Male, SadSmile } from '../../Icons/Icons'
-import { checkTaskStatus } from '../../../common/functions'
+import { checkTaskStatus, convertEventStatus } from '../../../common/functions'
 import { FlexBlock, FlexBlockProps } from '../../LayoutComponents/FlexBlock'
+import { SmallMonthCalendar } from '../DatePicker/SmallMonthCalendar'
+import { getMonthDays } from '../../../common/calendarSupport/getters'
+import { SmallCalendarMonthTitle } from '../DatePicker/SmallCalendarMonthTitle'
+import { Heading } from '../../Text/Heading'
+import { JoinToEventButton } from '../../Buttons/Buttons.styled'
+import { ArrowIndicator } from '../Cell'
+import { EventIcon } from '../../Icons/EventIcon'
 
 const FlexColumn = styled( 'div' )`
   & {
@@ -172,30 +185,139 @@ const TaskMemberItem: FC<{ member: TaskMemberItemType }> = ( { member } ) => {
 }
 
 const TaskInformerMain: FC<TaskInformerMainProps> = ( { taskItem } ) => {
-  return (
-    <FlexBlock width={'fit-content'}>
-      <TaskInformerDataList>
-        <TaskInfoText
-          title={'Создано:'}
-          value={dayjs( taskItem.taskInfo.createdAt ).format( DATE_RENDER_FORMAT )}
-        />
-        <TaskInfoText
-          title={'Дата завершения:'}
-          value={dayjs( taskItem.taskInfo.time ).format( DATE_RENDER_FORMAT )}
-        />
-        <TaskInfoText
-          title={'Статус:'}
-          value={checkTaskStatus( taskItem )}
-        />
-        <TaskInfoText
-          title={'Описание:'}
-          value={taskItem.taskInfo.description || 'Не указано'}
-        />
-      </TaskInformerDataList>
+  const options = useMemo( () => {
+    const start = dayjs( taskItem.taskInfo.time )
+    const end = dayjs( taskItem.taskInfo.timeEnd )
+    const current: CalendarCurrentMonth = {
+      layout: 'month',
+      month: start.month(),
+      year: start.year()
+    }
+    return {
+      current,
+      monthItem: getMonthDays( current, { useOtherDays: true } ),
+      currentDate: start.toDate(),
+      start: `${WeekDaysList[ start.weekday() ]}, ${start.format( DATE_RENDER_FORMAT )}`,
+      end: `${start.isSame( end, 'day' ) ? `${end.format( DATE_HOURS_FORMAT )}` : `${`${WeekDaysList[ end.weekday() ]}, ${end.format( DATE_RENDER_FORMAT )}`}`}`
+    }
+  }, [taskItem.taskInfo.time] )
 
-      <TaskInformerDataList>
-        <TaskMemberList members={taskItem.taskInfo.members}/>
-      </TaskInformerDataList>
+  return (
+    <FlexBlock
+      direction={'column'}
+      width={'100%'}
+      minWidth={900}
+      maxWidth={1200}
+      p={'12px 20px'}
+      gap={20}
+    >
+      <FlexBlock direction={'row'} width={'100%'} gap={12}>
+        <FlexBlock
+          flex={'1 0 calc(50% - 6px)'}
+          borderRight={`1px solid ${disabledColor}`}
+          pr={20}
+          direction={'column'}
+          gap={12}
+        >
+          <FlexBlock mb={6}>
+            {taskItem.taskInfo.link?.value ? (
+              <JoinToEventButton
+                href={taskItem.taskInfo.link.value}
+                target={'_blank'}
+                rel={''}
+              >
+                Присоединиться
+              </JoinToEventButton>
+            ) : (
+              <span>+</span>
+            )}
+          </FlexBlock>
+          <FlexBlock
+            direction={'row'}
+            justify={'flex-start'}
+            align={'flex-start'}
+            width={'100%'}
+            gap={8}
+          >
+            <FlexBlock
+              bgColor={hoverColor}
+              pl={6}
+              pr={6}
+              borderRadius={4}
+              role={'button'}
+              height={28}
+              align={'center'}
+              justify={'center'}
+              additionalCss={css`
+                cursor: pointer;
+                transition: background-color .3s ease-in;
+
+                &:hover {
+                  background-color: ${disabledColor};
+                }
+              `}
+            >
+              <ArrowIndicator
+                priorityKey={taskItem.taskInfo.priority}
+                isCompleted={taskItem.taskInfo.status === 'completed'}
+              />
+            </FlexBlock>
+            <FlexBlock direction={'column'} gap={8} width={'100%'}>
+              <FlexBlock width={'100%'} mb={4}>
+                <Heading.H2>{taskItem.taskInfo.title}</Heading.H2>
+              </FlexBlock>
+              <FlexBlock align={'center'} gap={6}>
+                <FlexBlock
+                  bgColor={hoverColor}
+                  pl={6}
+                  pr={6}
+                  borderRadius={4}
+                  role={'button'}
+                  height={28}
+                  align={'center'}
+                  justify={'center'}
+                  additionalCss={css`
+                    cursor: pointer;
+                    transition: background-color .3s ease-in;
+
+                    &:hover {
+                      background-color: ${disabledColor};
+                    }
+                  `}
+                >
+                  <EventIcon status={taskItem.taskInfo.status} size={20}/>
+                </FlexBlock>
+                {convertEventStatus( taskItem.taskInfo.status )}
+              </FlexBlock>
+              <FlexBlock>
+                {`${options.start} - ${options.end}`}
+              </FlexBlock>
+              <FlexBlock>
+
+              </FlexBlock>
+            </FlexBlock>
+          </FlexBlock>
+          <FlexBlock width={'100%'} direction={'column'}>
+
+          </FlexBlock>
+        </FlexBlock>
+        <FlexBlock
+          width={'fit-content'}
+          justify={'flex-end'}
+          pl={20}
+        >
+          <SmallMonthCalendar
+            title={<SmallCalendarMonthTitle monthItem={options.monthItem}/>}
+            currentDate={options.currentDate}
+            current={options.current}
+            monthItem={options.monthItem}
+          />
+        </FlexBlock>
+      </FlexBlock>
+      <FlexBlock>
+        Событие создано:
+        {dayjs( taskItem.taskInfo.createdAt ).format( `${DATE_RENDER_FORMAT} по местному времени` )}
+      </FlexBlock>
     </FlexBlock>
   )
 }

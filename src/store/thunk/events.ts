@@ -17,6 +17,7 @@ export const addEvent = createAsyncThunk<TaskStorage, { event: CalendarTaskItem,
   const { events: eventsState } = getState()
   const eventItem: EventItem = {
     ...event,
+    createdAt: dayjs().utc().format(),
     time: dayjs( event.time ).utc().format(),
     timeEnd: dayjs( event.timeEnd ).utc().format()
   }

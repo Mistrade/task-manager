@@ -19,6 +19,8 @@ import * as yup from 'yup'
 import { CompleteIcon, CreatedIcon } from '../../Icons/Icons'
 import { ModalFooter } from '../../Modal/Modal'
 import { Button, StyledButton } from '../../Buttons/Buttons.styled'
+import { SelectLinks } from '../../Input/SelectInput/CalendarSelectInputs/SelectLinks'
+import { Tooltip } from '../../Tooltip/Tooltip'
 
 interface AddTaskFormProps {
   onComplete?: ( data: CalendarTaskItem ) => void,
@@ -38,7 +40,14 @@ const addTaskValidationSchema = yup.object( {
       yup.ref( 'time' ),
       'Время завершения должно быть позже начала события'
     )
-    .required( 'Время завершения события обязательно для заполнения' )
+    .required( 'Время завершения события обязательно для заполнения' ),
+  link: yup
+    .object( {
+      key: yup.string(),
+      value: yup.string().url( 'Ссылка должна быть корректным url-адресом' ).required()
+    } )
+    .nullable()
+    .notRequired()
 } )
 
 export const AddTaskForm: FC<AddTaskFormProps> = ( { date, onComplete, onCancel } ) => {
@@ -59,14 +68,26 @@ export const AddTaskForm: FC<AddTaskFormProps> = ( { date, onComplete, onCancel 
       members: [],
       time: date?.value || dayjs().toDate(),
       timeEnd: dayjs( date?.value ).add( 1, 'hour' ).toDate() || dayjs().add( 1, 'hour' ).toDate(),
-      priority: 'medium'
+      priority: 'medium',
+      link: null
     }
   } )
+
+
+  useEffect( () => {
+    console.log( formik.errors.link )
+  }, [formik.errors.link] )
 
   return (
     <form onSubmit={formik.handleSubmit} style={{ width: '100%' }}>
       <FlexBlock direction={'column'} p={'12px 20px 0px 20px'}>
         <TextInput
+          tooltip={
+            <Tooltip
+              text={'Название отображается на доске заданий'}
+              size={20}
+            />
+          }
           containerProps={{ mb: 12 }}
           onChange={( e ) => formik.setFieldValue( 'title', e.target.value )}
           onFocus={( e ) => !formik.touched.title && formik.setFieldTouched( 'title', true )}
@@ -76,7 +97,27 @@ export const AddTaskForm: FC<AddTaskFormProps> = ( { date, onComplete, onCancel 
           label={'Укажите название'}
           placeholder={'Позвонить заказчику'}
         />
+        <FlexBlock mb={12} wrap={'nowrap'} width={'100%'}>
+          <SelectLinks
+            tooltip={
+              <Tooltip
+                text={'Укажите ссылку, по которой любой участник события может подключиться в режиме онлайн'}
+                size={20}
+              />
+            }
+            label={'Укажите ссылку на встречу'}
+            onChange={( value ) => {
+              formik.setFieldValue( 'link', value )
+            }}
+          />
+        </FlexBlock>
         <SelectPriorityInput
+          tooltip={
+            <Tooltip
+              text={'Приоритет события обозначает важность его выполнения'}
+              size={20}
+            />
+          }
           containerProps={{ mb: 12 }}
           selected={formik.values.priority || 'medium'}
           onChange={( key ) => formik.setFieldValue( 'priority' as keyof CalendarTaskItem, key as CalendarTaskItem['priority'] )}
@@ -201,13 +242,15 @@ export const AddTaskForm: FC<AddTaskFormProps> = ( { date, onComplete, onCancel 
         <Button type={'submit'}>
           Добавить
         </Button>
-        <StyledButton
-          onClick={() => onCancel && onCancel( formik.values )}
-          fillColor={'#fff'}
-          textColor={defaultColor}
-        >
-          Отменить
-        </StyledButton>
+        <Tooltip text={'Изменения не будут сохранены'} placement={'top'}>
+          <StyledButton
+            onClick={() => onCancel && onCancel( formik.values )}
+            fillColor={'#fff'}
+            textColor={defaultColor}
+          >
+            Отменить
+          </StyledButton>
+        </Tooltip>
       </FlexBlock>
     </form>
   )

@@ -1,7 +1,7 @@
 import { FC } from 'react'
 import { FCWithChildren } from '../../Calendars/types'
 import { css } from 'styled-components'
-import { defaultColor } from '../../../common/constants'
+import { defaultColor, disabledColor } from '../../../common/constants'
 import { FlexBlock, FlexBlockProps } from '../../LayoutComponents/FlexBlock'
 
 export const SelectListContainer: FCWithChildren<FlexBlockProps> = ( {
@@ -14,14 +14,20 @@ export const SelectListContainer: FCWithChildren<FlexBlockProps> = ( {
         maxHeight={320}
         width={'100%'}
         {...flexBlockProps}
-        bgColor={'#fff'}
+        bgColor={'rgba(255,255,255)'}
         borderRadius={4}
         p={4}
+        border={`1px solid ${defaultColor}`}
         overflow={'scroll'}
-        additionalCss={css` box-shadow: 0 0 4px ${defaultColor}`}
+        additionalCss={css` box-shadow: 4px 2px 4px ${defaultColor}`}
         direction={'column'}
       >
-        {children}
+        <FlexBlock
+          additionalCss={css`z-index: 2`}
+          direction={'column'}
+        >
+          {children}
+        </FlexBlock>
       </FlexBlock>
     )
   }

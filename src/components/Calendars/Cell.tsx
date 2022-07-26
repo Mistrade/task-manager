@@ -19,7 +19,7 @@ import {
 import dayjs from 'dayjs'
 import { FlexBlock } from '../LayoutComponents/FlexBlock'
 import { searchIntersections, sortTask } from '../../common/dayjs'
-import { Arrow, BurgerIcon, CompleteIcon, DoubleArrow } from '../Icons/Icons'
+import { Arrow, BurgerIcon, CompleteIcon, DoubleArrow, SadSmile } from '../Icons/Icons'
 
 interface CellComponentProps {
   disabled?: boolean,
@@ -232,6 +232,8 @@ export const ArrowIndicator: FC<{ priorityKey: CalendarPriorityKeys, isCompleted
       return <Arrow size={20} color={priorityColors.low} transform={'rotate(90deg)'}/>
     case 'veryLow':
       return <DoubleArrow size={20} color={priorityColors.veryLow} transform={'rotate(90deg)'}/>
+    case 'not_selected':
+      return <SadSmile size={20} color={currentColor}/>
   }
 
   return <></>
@@ -342,7 +344,8 @@ export const TaskTileItem: FC<TaskTileItemProps> = ( { taskInfo, onSelect, date 
       isCurrent={date.meta.isCurrent}
       onClick={( event ) => condition && onSelect && onSelect( { date, taskInfo, event } )}
     >
-      <TaskTilePriorityIndicator priority={taskInfo.priority} isCompleted={taskInfo.status === 'completed'}/>
+      <TaskTilePriorityIndicator priority={taskInfo.priority}
+                                 isCompleted={taskInfo.status === 'completed'}/>
       <TaskTileText isCompleted={taskInfo.status === 'completed'}>
         {taskInfo.title}
       </TaskTileText>

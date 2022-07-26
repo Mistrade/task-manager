@@ -2,6 +2,7 @@ import React, { FC, ReactNode, useCallback, useRef, useState } from 'react'
 import { FlexBlock, FlexBlockProps } from '../../LayoutComponents/FlexBlock'
 import { DefaultTextInputProps, TextInput } from '../TextInput'
 import { css } from 'styled-components'
+import { defaultColor, disabledColor } from '../../../common/constants'
 
 type ExtendableFromTextInput = Omit<DefaultTextInputProps, 'children'>
 
@@ -56,15 +57,30 @@ export function SelectInput<T>( props: SelectInputProps<T> ): JSX.Element {
         onChange={!!readOnly ? undefined : onChange}
         {...textInputProps}
         onFocus={focusHandler}
+        onClick={() => setFocus( true )}
         onBlur={focusHandler}
       >
         {focus && (
           <FlexBlock
             position={'absolute'}
             additionalCss={css`
-              top: 100%;
+              top: calc(100% + 20px);
               left: 0;
               z-index: 1;
+
+              &:after {
+                content: '';
+                width: 20px;
+                height: 20px;
+                background-color: rgba(255, 255, 255);
+                transform: rotate(45deg);
+                position: absolute;
+                top: -10px;
+                left: 20px;
+                border-left: solid 1px ${defaultColor};
+                border-top: solid 1px ${defaultColor};
+                z-index: 0;
+              }
             `}
           >
             {renderData( data, methods )}

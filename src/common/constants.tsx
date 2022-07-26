@@ -1,5 +1,5 @@
 import {
-  CalendarPriorityKeys,
+  CalendarPriorityKeys, CalendarPriorityList,
   CalendarTaskList,
   DateItem,
   MonthItem, TaskMembersListType, TaskStatusesType, TaskStatusInfo, TaskStorage, WeekItem, YearItem
@@ -26,6 +26,7 @@ export const WeekDaysShortList = [
 export const disabledColor = 'rgba(30,30,30,.1)'
 export const defaultColor = 'rgba(30,30,30,.45)'
 export const currentColor = 'rgba(100,149,237,.9)'
+export const currentColorWithoutBlur = 'rgb(100,149,237)'
 export const hoverColor = 'rgba(100,149,237,.15)'
 export const darkColor = 'rgba(0, 0, 0, .6)'
 export const todayID = 'calendar-today'
@@ -35,16 +36,18 @@ export const priorityColors: { [key in CalendarPriorityKeys]: string } = {
   low: 'lightblue',
   medium: currentColor,
   high: 'orange',
-  veryHigh: 'red'
+  veryHigh: 'red',
+  not_selected: currentColor
 }
 export const PRIORITY_TITLES: { [key in CalendarPriorityKeys]: string } = {
   veryLow: 'Очень низкий',
   low: 'Низкий',
   medium: 'Средний',
   high: 'Высокий',
-  veryHigh: 'Очень высокий'
+  veryHigh: 'Очень высокий',
+  not_selected: 'Не выбрано'
 }
-export const PRIORITY_LIST: Array<{ type: CalendarPriorityKeys, title: string }> = [
+export const PRIORITY_LIST: CalendarPriorityList = [
   { type: 'veryHigh', title: PRIORITY_TITLES.veryHigh },
   { type: 'high', title: PRIORITY_TITLES.high },
   { type: 'medium', title: PRIORITY_TITLES.medium },
@@ -111,7 +114,9 @@ export let defaultTasksList: CalendarTaskList = [
     priority: DEFAULT_TASK_PRIORITY,
     time: dayjs( new Date( 2022, 5, 1, 12, 20 ) ).toDate(),
     timeEnd: dayjs( new Date( 2022, 5, 22, 12, 20 ) ).add( 30, 'minute' ).toDate(),
-    members: Members
+    members: Members,
+    link: null,
+    linkedFrom: ''
   }
 ]
 

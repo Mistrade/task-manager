@@ -40,16 +40,13 @@ export const StyledInput = styled( 'input' )<{ hasIcon?: boolean, iconPlacement?
 
 export const StyledLabel = styled( 'label' )`
   & {
-    width: 100%;
+    width: fit-content;
     font-size: 16px;
     font-family: Helvetica, sans-serif;
     font-weight: normal;
     color: ${currentColor};
     line-height: 1;
-    margin-bottom: 8px;
     cursor: pointer;
-    padding-left: 8px;
-    padding-right: 8px;
     overflow: hidden;
     text-overflow: ellipsis;
     white-space: nowrap;

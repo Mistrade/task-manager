@@ -1,11 +1,25 @@
 import React, { FC, ReactNode } from 'react'
 import { ShortChangeCurrentPattern } from '../../common/commonTypes'
 import { OnSelectDateFromCalendarFn } from './DatePicker/SmallMonthCalendar'
+import { FlexBlockProps } from '../LayoutComponents/FlexBlock'
+import { DefaultTextInputProps } from '../Input/TextInput'
 
 export type FCWithChildren<T = any> = FC<{ children?: ReactNode } & T>
 
 export interface DatePickerProps {
-
+  onFocus?: ( e: React.FocusEvent<HTMLInputElement> ) => void,
+  onChange?: ( date: Date ) => void,
+  currentDate: Date,
+  label?: ReactNode,
+  value: Date | null,
+  containerProps?: FlexBlockProps,
+  isDirty?: boolean,
+  errorMessage?: string,
+  icon?: ReactNode,
+  actionHandler?: DefaultTextInputProps['actionHandler'],
+  actions?: DefaultTextInputProps['actions']
+  iconPlacement?: DefaultTextInputProps['iconPlacement'],
+  disabledOptions?: CalendarDisabledOptions
 }
 
 export interface CalendarProps {
@@ -179,7 +193,13 @@ export interface CalendarCellDateProps {
   isToday?: boolean,
 }
 
-export type CalendarPriorityKeys = 'veryLow' | 'low' | 'medium' | 'high' | 'veryHigh'
+export type CalendarPriorityKeys =
+  'veryLow'
+  | 'low'
+  | 'medium'
+  | 'high'
+  | 'veryHigh'
+  | 'not_selected'
 
 export type UUID = string
 export type TaskStatusesType = 'completed' | 'created' | 'in_progress' | 'review'
@@ -195,7 +215,15 @@ export interface CalendarTaskItem {
   time: Date,
   timeEnd: Date,
   status: TaskStatusesType,
-  members: TaskMembersListType
+  members: TaskMembersListType,
+  link: EventLinkItem | null
+}
+
+export type CalendarPriorityList = Array<{ type: CalendarPriorityKeys, title: string }>
+
+export interface EventLinkItem {
+  key: string,
+  value: string
 }
 
 export type EventItem = Omit<CalendarTaskItem, 'time' | 'timeEnd'> & {

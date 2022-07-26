@@ -15,6 +15,7 @@ import { Button } from '../../Buttons/Buttons.styled'
 import { SmallCalendarMonthTitle } from '../DatePicker/SmallCalendarMonthTitle'
 import dayjs from 'dayjs'
 import { dateToCalendarItem } from '../../../common/calendarSupport/generators'
+import { Tooltip } from '../../Tooltip/Tooltip'
 
 
 export const DaySettingsPanel: FC<DaySettingsPanelProps> = ( {
@@ -85,10 +86,17 @@ export const DaySettingsPanel: FC<DaySettingsPanelProps> = ( {
         onSelectDate={onSelectDate}
         current={dateItem.settingPanel.monthCurrent}
       />
-      <FlexBlock mt={24} justify={'flex-end'} width={'100%'}>
-        <p style={{ textAlign: 'right' }}>
-          {getTimeZone()}
-        </p>
+      <FlexBlock textAlign={'right'} mt={24} justify={'flex-end'} align={'flex-end'} width={'100%'}>
+        <Tooltip
+          text={`Рассчитано на основе текущего часового пояса: UTC${dayjs().utcOffset() >= 0 ? `+${dayjs().utcOffset() / 60}` : `-${dayjs().utcOffset() / 60}`}`}
+          placement={'right'}
+          children={
+            <>
+              {getTimeZone()}
+            </>
+          }
+        />
+
       </FlexBlock>
     </FlexBlock>
   )

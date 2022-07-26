@@ -38,7 +38,7 @@ const WeekOfYearTitle = styled( 'h3' )`
     position: sticky;
     top: 0;
     left: 0;
-    border-radius: 4px;
+    //border-radius: 4px;
     cursor: pointer;
     transition: all .3s ease-in-out;
   }
@@ -46,6 +46,7 @@ const WeekOfYearTitle = styled( 'h3' )`
   &:hover {
     background-color: ${disabledColor};
     color: ${defaultColor};
+    border-radius: 4px;
   }
 `
 

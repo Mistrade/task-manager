@@ -11,6 +11,7 @@ export type FlexBlockProps =
   & PositionProps
   & CustomStyles
   & ChildrenProps
+  & FontsProps
 
 
 export type UnitsType = string | number
@@ -87,6 +88,13 @@ export interface CustomStyles {
   additionalCss?: FlattenSimpleInterpolation
 }
 
+export interface FontsProps {
+  fSize?: CSSProperties['fontSize'],
+  fWeight?: CSSProperties['fontWeight'],
+  textAlign?: CSSProperties['textAlign']
+}
+
+
 export type CustomMixin<T> = ( _: T ) => FlattenSimpleInterpolation
 
 export const pxToCssValue = ( value: UnitsType ) => {
@@ -150,6 +158,12 @@ const formalization: CustomMixin<FormalizationProps> = ( _ ) => css`
   ${_.gap ? css`gap: ${pxToCssValue( _.gap )};` : ''}
 `
 
+const fonts: CustomMixin<FontsProps> = ( _ ) => css`
+  ${_.fSize ? css`font-size: ${pxToCssValue( _.fSize )}` : css`font-size: 16px;`}
+  ${_.fWeight ? css`font-weight: ${pxToCssValue( _.fWeight )}` : ''}
+  ${_.textAlign ? css`text-align: ${_.textAlign}` : ''}
+`
+
 const position: CustomMixin<PositionProps> = ( _ ) => css`
   ${_.position ? css`position: ${_.position};` : ''}
 `
@@ -163,6 +177,7 @@ export const FlexBlock = styled( 'div' )<FlexBlockProps>`
     ${_ => paddings( _ )}
     ${_ => widths( _ )}
     ${_ => heights( _ )}
+    ${_ => fonts( _ )}
     ${_ => formalization( _ )}
     ${_ => _.additionalCss ? _.additionalCss : ''}
   }
