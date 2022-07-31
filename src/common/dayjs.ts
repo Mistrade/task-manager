@@ -6,11 +6,11 @@ import isSameOrAfter from 'dayjs/plugin/isSameOrAfter'
 import isSameOrBefore from 'dayjs/plugin/isSameOrBefore'
 import isTomorrow from 'dayjs/plugin/isTomorrow'
 import isYesterday from 'dayjs/plugin/isYesterday'
-import {
-  CalendarCurrentData,
-  CalendarDisabledOptions,
-  CalendarList
-} from '../components/Calendars/types'
+import weekOfYear from 'dayjs/plugin/weekOfYear'
+import updateLocale from 'dayjs/plugin/updateLocale'
+import duration from 'dayjs/plugin/duration'
+import utc from 'dayjs/plugin/utc'
+import { CalendarTaskItem, CalendarTaskList, EventItem } from '../components/Calendars/types'
 
 const customLocale: Partial<ILocale> = {
   name: 'ru',
@@ -70,121 +70,77 @@ dayjs.extend( isYesterday )
 dayjs.extend( Weekday )
 dayjs.extend( isSameOrAfter )
 dayjs.extend( isSameOrBefore )
+dayjs.extend( weekOfYear )
+dayjs.extend( updateLocale )
+dayjs.extend( duration )
+dayjs.extend( utc )
 
-interface CurrentData {
-  month: number,
-  year: number
-}
+dayjs.updateLocale( 'en', {
+  weekStart: 1,
+  yearStart: 4
+} )
 
-interface CheckStartDateFnResult {
-  startDate: dayjs.Dayjs,
-  endDate: dayjs.Dayjs
-}
+export const searchIntersections = ( taskList: CalendarTaskList ): Array<CalendarTaskItem & { intersectionCount: number, renderPriority: number }> => {
+  const tasksList: Array<CalendarTaskItem & { intersectionCount?: number, renderPriority?: number }> = [...taskList]
+  const period = 60
 
-type CheckStartDateFn = ( current: CurrentData ) => CheckStartDateFnResult | null
 
-const checkStartAndEndDate: CheckStartDateFn = ( { month, year } ) => {
-  if( isNaN( month ) || isNaN( year ) ) {
-    return null
-  }
+  let result: Array<CalendarTaskItem & { intersectionCount: number, renderPriority: number }> = tasksList.map( ( task, index, array ) => {
+    const intersections = array.filter( ( intItem ) => {
+      if( intItem.id !== task.id ) {
+        const s = dayjs( intItem.time )
+        const e = s.add( period, 'minute' )
+        return dayjs( task.time ).isBetween( s, e, 'minute', '[]' )
+          || dayjs( task.time ).add( period, 'minute' ).isBetween( s, e, 'minute', '[]' )
+      }
+      return false
+    } )
 
-  const firstDayOfMonth = dayjs( new Date( year, month, 1 ) )
-  const firstDayOfWeek = firstDayOfMonth.day()
-  const neededPrevDays = firstDayOfWeek === 0 ? 6 : firstDayOfWeek - 1
+    let priority = task.renderPriority || 1
 
-  const startDate = neededPrevDays > 0 ? firstDayOfMonth.subtract( neededPrevDays, 'day' ) : firstDayOfMonth
-  const endDate = startDate.add( 41, 'day' )
+    intersections.forEach( ( intItem ) => {
+      const d = dayjs( intItem.time )
+      if( d.isBefore( task.time, 'minute' ) ) {
+        priority++
+      } else if( d.isSame( task.time, 'minutes' ) ) {
+        intItem.renderPriority = intItem.renderPriority ? intItem.renderPriority - 1 : priority + 1
+      }
+    } )
 
-  return {
-    startDate,
-    endDate
-  }
-}
 
-const checkIsDisabledDate = ( currentDate: dayjs.Dayjs, options: CalendarDisabledOptions ): boolean => {
-  const {
-    min,
-    includeMin = false,
-    max,
-    includeMax = false,
-    excludeWeekends = true,
-    disableDates = []
-  } = options
+    return {
+      ...task,
+      intersectionCount: intersections.length,
+      renderPriority: priority
+    }
 
-  let result = false
+  } )
 
-  if( min ) {
-    result = includeMin ? min.isAfter( currentDate, 'day' ) : min.isSameOrAfter( currentDate, 'day' )
-    if( result ) return true
-  }
+  result = result.map( ( item, index ) => {
 
-  if( max ) {
-    // console.log( 'max from: ', max )
-    result = includeMax ? max.isBefore( currentDate, 'day' ) : max.isSameOrBefore( currentDate, 'day' )
-    if( result ) return true
-  }
 
-  if( excludeWeekends ) {
-    const weekDay = currentDate.day()
-    result = weekDay === 6 || weekDay === 0
-    if( result ) return true
-  }
-
-  if( !!disableDates.length ) {
-    result = disableDates.some(
-      ( value ) => currentDate.isSame( value, 'day' )
-    )
-
-    if( result ) return true
-  }
+    return item
+  } )
 
   return result
 }
 
-const checkIsCurrent = ( current: CalendarCurrentData, date: dayjs.Dayjs ): boolean => {
-  const { month, year } = current
-  const dateMonth = date.month()
-  const dateYear = date.year()
+export const sortTask = ( initialList: Array<EventItem> ): Array<EventItem> => {
+  const list = [...initialList]
 
-  return dateMonth === month && dateYear === year
-}
-
-type GenerateDateArrayFn = ( current: CalendarCurrentData, scope: CheckStartDateFnResult, disabledOptions: CalendarDisabledOptions ) => CalendarList
-
-const generateDateArray: GenerateDateArrayFn = ( current, {
-  startDate,
-  endDate
-}, disabledOptions ) => {
-  const array: CalendarList = []
-  let iterationDate = startDate
-
-  while (iterationDate.isBetween( startDate, endDate, 'day', '[]' )) {
-    array.push( {
-      value: iterationDate,
-      meta: {
-        isToday: iterationDate.isToday(),
-        isTomorrow: iterationDate.isTomorrow(),
-        isYesterday: iterationDate.isYesterday(),
-        isDisabled: checkIsDisabledDate( iterationDate, disabledOptions ),
-        isCurrent: checkIsCurrent( current, iterationDate )
+  if( !!list.length ) {
+    list.sort( ( prev, cur ) => {
+      if( dayjs( cur.time ).isBefore( prev.time ) ) {
+        return 1
       }
+
+      if( dayjs( cur.time ).isAfter( prev.time ) ) {
+        return -1
+      }
+
+      return 0
     } )
-
-    iterationDate = iterationDate.add( 1, 'day' )
   }
 
-  return array
-}
-
-
-type GetPickerDatesProps = ( current: CurrentData, disabledOptions: CalendarDisabledOptions ) => CalendarList
-
-export const getPickerDates: GetPickerDatesProps = ( current, disabledOptions ) => {
-  const dateScope = checkStartAndEndDate( current )
-
-  if( dateScope ) {
-    return generateDateArray( current, dateScope, disabledOptions )
-  }
-
-  return []
+  return list
 }

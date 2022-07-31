@@ -1,10 +1,11 @@
 import styled from 'styled-components'
 import { CalendarCellDateProps } from './types'
+import { currentColor, defaultColor } from '../../common/constants'
 
 export const CalendarDesktopContainer = styled( 'div' )`
   & {
     position: relative;
-    max-width: 100%;
+    width: 100%;
     max-height: 100%;
     display: flex;
     flex-direction: column;
@@ -22,10 +23,10 @@ export const CalendarDateListContainer = styled( 'div' )`
     width: 100%;
     height: 100%;
     display: grid;
-    grid-template-columns: repeat(7, minmax(50px, 1fr));
     grid-template-rows: repeat(auto-fill, 1fr);
-    grid-column-gap: 16px;
-    grid-row-gap: 12px;
+    grid-template-columns: repeat(7, minmax(80px, 1fr));
+    grid-column-gap: 4px;
+    grid-row-gap: 16px;
   }
 `
 
@@ -51,24 +52,50 @@ export const CalendarCellDateFullSize = styled( 'div' )<CalendarCellDateProps>`
 
 export const CalendarTitle = styled( 'h2' )`
   & {
-    padding: 16px 0;
-    position: sticky;
-    top: 0;
-    left: 0;
-    width: 100%;
-    background-color: #fff;
-    z-index: 2;
     font-size: 24px;
     font-family: "Helvetica Neue", sans-serif;
     font-weight: bold;
     color: rgba(15, 15, 15, .6);
-    margin-bottom: 24px;
     margin-top: 0;
+    margin-bottom: 0;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    text-align: left;
+    flex-shrink: 0;
   }
 `
 
-export const StyledCalendar = {
-  f: {
-    Cell: CalendarCellDateFullSize
+
+export const SwitchCalendarMode = styled( 'button' )<{ isSelected?: boolean }>`
+  & {
+    outline: none;
+    padding: 6px 16px;
+    font-size: 16px;
+    border: 1px solid ${defaultColor};
+    border-radius: 4px;
+    cursor: pointer;
+    transition: all .3s ease-in-out;
+    background-color: ${props => props.isSelected ? currentColor : '#fff'};
+    color: ${props => props.isSelected ? '#fff' : defaultColor};
+    min-width: 50px;
   }
-}
+
+  &:hover {
+    background-color: ${currentColor};
+    color: #fff;
+  }
+
+  &:not(:last-child) {
+    margin-right: 4px;
+  }
+`
+
+export const TimeSelectorButton = styled( SwitchCalendarMode )`
+  margin: 0;
+  width: 55px;
+
+  &:not(:last-child) {
+    margin-bottom: 4px;
+  }
+`
