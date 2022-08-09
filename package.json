@@ -25,8 +25,8 @@
     "yup": "^0.32.11"
   },
   "scripts": {
-    "start": "react-scripts start",
-    "build": "react-scripts build",
+    "start": "webpack serve --config webpack.dev-config.js --open",
+    "build": "webpack --config webpack.prod-config.js",
     "test": "react-scripts test",
     "eject": "react-scripts eject"
   },
@@ -51,6 +51,15 @@
   "devDependencies": {
     "@types/react-redux": "^7.1.24",
     "@types/styled-components": "^5.1.25",
-    "@types/yup": "^0.29.14"
+    "@types/yup": "^0.29.14",
+    "copy-webpack-plugin": "^11.0.0",
+    "css-loader": "^6.7.1",
+    "html-webpack-plugin": "^5.5.0",
+    "raw-loader": "^4.0.2",
+    "style-loader": "^3.3.1",
+    "ts-loader": "^9.3.1",
+    "webpack": "^5.74.0",
+    "webpack-cli": "^4.10.0",
+    "webpack-dev-server": "^4.9.3"
   }
 }
