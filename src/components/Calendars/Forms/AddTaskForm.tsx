@@ -6,7 +6,14 @@ import {FlexBlock} from '../../LayoutComponents/FlexBlock'
 import {TextInput} from '../../Input/TextInput'
 import {SelectPriorityInput} from '../../Input/SelectInput/CalendarSelectInputs/SelectPriorityInput'
 import {SelectBooleanInput} from '../../Input/SelectInput/SelectBooleanInput'
-import {currentColor, defaultColor, getHumanizeDateValue, hoverColor, TASK_STATUSES} from '../../../common/constants'
+import {
+	currentColor,
+	defaultColor,
+	getHumanizeDateValue,
+	hoverColor,
+	PRIORITY_TITLES,
+	TASK_STATUSES
+} from '../../../common/constants'
 import {SelectInput} from '../../Input/SelectInput/SelectInput'
 import {DatePickerPaper} from '../DatePicker/DatePickerPaper'
 import {SelectListContainer} from '../../Input/SelectInput/SelectListContainer'
@@ -41,7 +48,9 @@ const addTaskValidationSchema = yup.object({
 			value: yup.string().url('Ссылка должна быть корректным url-адресом').required()
 		})
 		.nullable()
-		.notRequired()
+		.notRequired(),
+	priority: yup.string().oneOf(Object.keys(PRIORITY_TITLES)).required('Пожалуйста, выберите приоритет события'),
+	status: yup.string().oneOf(Object.keys(TASK_STATUSES)).required('Пожалуйста, укажите статус события')
 })
 
 export const AddTaskForm: FC<AddTaskFormProps> = ({date, onComplete, onCancel}) => {

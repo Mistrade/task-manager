@@ -30,6 +30,7 @@ module.exports = {
             patterns: [
                 './public/robots.txt',
                 './public/.htaccess',
+                './public/manifest.json'
             ]
         })
     ],

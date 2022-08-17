@@ -1,13 +1,16 @@
 import React, {FC} from 'react'
 import {AddTaskModalProps} from '../types'
 import {Modal, ModalBody, ModalHeader} from '../../Modal/Modal'
-import {getHumanizeDateValue} from '../../../common/constants'
+import {ERROR_DESCRIPTIONS, ERROR_TITLES, getHumanizeDateValue} from '../../../common/constants'
 import {FlexBlock} from '../../LayoutComponents/FlexBlock'
 import {useAppDispatch} from '../../../store/hooks/hooks'
 import {addEvent} from '../../../store/thunk/events'
 import {Tooltip} from '../../Tooltip/Tooltip'
+import {ErrorBoundary} from "../../Errors/ErrorBoundary";
 
-const Form = React.lazy(() => import('./../Forms/AddTaskForm').then(({AddTaskForm}) => ({default: AddTaskForm})))
+const Form = React.lazy(() => import('./../Forms/AddTaskForm')
+	.then(({AddTaskForm}) => ({default: AddTaskForm}))
+)
 
 export const AddTaskModal: FC<AddTaskModalProps> = ({date, onClose}) => {
 	const dispatch = useAppDispatch()
@@ -27,21 +30,27 @@ export const AddTaskModal: FC<AddTaskModalProps> = ({date, onClose}) => {
 				</ModalHeader>
 				<ModalBody>
 					<FlexBlock minWidth={'50vw'} maxWidth={'60vw'} grow={10}>
-						<React.Suspense fallback={'Загрузка формы...'}>
-							<Form
-								onComplete={(value) => {
-									console.log('onComplete')
-									dispatch(
-										addEvent({
-											event: value,
-											onComplete: () => onClose && onClose()
-										})
-									)
-								}}
-								onCancel={(value) => onClose && onClose()}
-								date={date}
-							/>
-						</React.Suspense>
+						<ErrorBoundary
+							title={ERROR_TITLES['SUSPENSE']}
+							description={ERROR_DESCRIPTIONS['SUSPENSE']}
+							errorType={'SYSTEM_ERROR'}
+						>
+							<React.Suspense fallback={'Загрузка формы...'}>
+								<Form
+									onComplete={(value) => {
+										console.log('onComplete')
+										dispatch(
+											addEvent({
+												event: value,
+												onComplete: () => onClose && onClose()
+											})
+										)
+									}}
+									onCancel={(value) => onClose && onClose()}
+									date={date}
+								/>
+							</React.Suspense>
+						</ErrorBoundary>
 					</FlexBlock>
 				</ModalBody>
 			</Modal>
