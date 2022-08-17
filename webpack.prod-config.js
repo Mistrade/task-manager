@@ -1,6 +1,8 @@
 const path = require('path')
 const HtmlWebpackPlugin = require('html-webpack-plugin')
 const CopyWebpackPlugin = require('copy-webpack-plugin')
+const MiniCssExtractPlugin = require('mini-css-extract-plugin')
+const webpack = require("webpack");
 
 module.exports = {
     mode: "production",
@@ -8,8 +10,12 @@ module.exports = {
     output: {
         clean: true,
         path: path.join(process.cwd(), 'dist'),
+        filename: "js/[name].[contenthash].js"
     },
     plugins: [
+        new MiniCssExtractPlugin({
+            filename: path.join('css', '[name].[chunkhash].css')
+        }),
         new HtmlWebpackPlugin({
             template: './public/index.html',
             title: 'Проект собран с помощью вебпак',
@@ -41,15 +47,34 @@ module.exports = {
             },
             {
                 test: /\.css$/,
-                use: [{
-                    loader: 'css-loader',
-                }
-                ],
+                use: [MiniCssExtractPlugin.loader, 'css-loader'],
             }
         ],
     },
     resolve: {
         extensions: ['.js', '.ts', '.tsx']
     },
-    optimization: {}
+    optimization: {
+        mergeDuplicateChunks: true,
+        splitChunks: {
+            chunks: "async",
+            minSize: 30000,
+            maxSize: 150000,
+            cacheGroups: {
+                commons: {
+                    test: /[\\/]node_modules[\\/]/,
+                    name(module) {
+                        const moduleFileName = module
+                            .identifier()
+                            .split('/')
+                            .reduceRight((item) => item);
+
+                        return `vendors/${moduleFileName}`
+                    },
+                    chunks: 'all',
+                }
+            }
+        }
+
+    }
 }

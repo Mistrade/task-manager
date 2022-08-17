@@ -1,10 +1,10 @@
-import { FC, useEffect, useState } from 'react'
-import { CalendarPriorityKeys, EventItem } from '../types'
-import { useFormik } from 'formik'
-import { FlexBlock } from '../../LayoutComponents/FlexBlock'
-import { SelectPriorityInput } from '../../Input/SelectInput/CalendarSelectInputs/SelectPriorityInput'
-import { TextInput } from '../../Input/TextInput'
-import { DatePicker } from '../DatePicker/DatePicker'
+import {FC, useEffect, useState} from 'react'
+import {CalendarPriorityKeys, EventItem} from '../types'
+import {useFormik} from 'formik'
+import {FlexBlock} from '../../LayoutComponents/FlexBlock'
+import {SelectPriorityInput} from '../../Input/SelectInput/CalendarSelectInputs/SelectPriorityInput'
+import {TextInput} from '../../Input/TextInput'
+import {DatePicker} from '../DatePicker/DatePicker'
 import dayjs from 'dayjs'
 
 interface FiltersValue {

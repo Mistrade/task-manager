@@ -1,11 +1,9 @@
-import React, { FC, forwardRef, ReactNode } from 'react'
-import { FlexBlock, FlexBlockProps } from '../LayoutComponents/FlexBlock'
-import { StyledInput, StyledLabel } from './Input.styled'
-import { css } from 'styled-components'
-import { ArrowIndicator } from '../Calendars/Cell'
-import { SwitchCalendarMode, TimeSelectorButton } from '../Calendars/Calendar.styled'
-import { CalendarModeSwitchers } from '../Calendars/Header/CalendarModeSwitchers'
-import { LoaderIcon } from '../Icons/Icons'
+import React, {forwardRef, ReactNode} from 'react'
+import {FlexBlock, FlexBlockProps} from '../LayoutComponents/FlexBlock'
+import {StyledInput, StyledLabel} from './Input.styled'
+import {css} from 'styled-components'
+import {SwitchCalendarMode} from '../Calendars/Calendar.styled'
+import {LoaderIcon} from '../Icons/Icons'
 
 export interface DefaultTextInputProps {
   inputId?: string

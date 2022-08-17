@@ -1,10 +1,9 @@
-import { FC } from 'react'
-import { YearCalendarProps } from '../types'
-import { SmallMonthCalendar } from '../DatePicker/SmallMonthCalendar'
-import styled, { css } from 'styled-components'
-import { FlexBlock } from '../../LayoutComponents/FlexBlock'
-import { currentColor, MonthList } from '../../../common/constants'
-import { SmallCalendarMonthTitle } from '../DatePicker/SmallCalendarMonthTitle'
+import {FC} from 'react'
+import {YearCalendarProps} from '../types'
+import {SmallMonthCalendar} from '../DatePicker/SmallMonthCalendar'
+import styled, {css} from 'styled-components'
+import {FlexBlock} from '../../LayoutComponents/FlexBlock'
+import {SmallCalendarMonthTitle} from '../DatePicker/SmallCalendarMonthTitle'
 
 const YearGrid = styled( 'div' )`
   display: grid;

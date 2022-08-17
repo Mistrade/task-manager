@@ -1,5 +1,5 @@
 import styled from 'styled-components'
-import { currentColor, defaultColor, disabledColor } from '../../common/constants'
+import {currentColor, defaultColor} from '../../common/constants'
 
 export const StyledButton = styled( 'button' )<{ fillColor?: string, textColor?: string }>`
   & {

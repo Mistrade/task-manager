@@ -1,14 +1,9 @@
-import { createAsyncThunk } from '@reduxjs/toolkit'
-import {
-  CalendarTaskItem,
-  EventItem,
-  TaskSetResult,
-  TaskStorage
-} from '../../components/Calendars/types'
-import { RootState } from '../index'
-import { getTaskListOfDay, setTask } from '../../common/functions'
+import {createAsyncThunk} from '@reduxjs/toolkit'
+import {CalendarTaskItem, EventItem, TaskSetResult, TaskStorage} from '../../components/Calendars/types'
+import {RootState} from '../index'
+import {setTask} from '../../common/functions'
 import dayjs from 'dayjs'
-import { LS_KEYS } from '../../common/constants'
+import {LS_KEYS} from '../../common/constants'
 
 export const addEvent = createAsyncThunk<TaskStorage, { event: CalendarTaskItem, onComplete?: () => void }, { state: RootState }>( 'addEvent', ( args, thunkApi ) => {
   const { event } = args

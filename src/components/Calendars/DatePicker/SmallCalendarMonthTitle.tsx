@@ -1,7 +1,7 @@
-import { FC, memo } from 'react'
-import { SmallCalendarMonthTitleProps } from '../types'
-import { currentColor, MonthList } from '../../../common/constants'
-import { FlexBlock } from '../../LayoutComponents/FlexBlock'
+import {FC, memo} from 'react'
+import {SmallCalendarMonthTitleProps} from '../types'
+import {currentColor, MonthList} from '../../../common/constants'
+import {FlexBlock} from '../../LayoutComponents/FlexBlock'
 
 export const SmallCalendarMonthTitle: FC<SmallCalendarMonthTitleProps> = memo( ( {
                                                                                    monthItem,

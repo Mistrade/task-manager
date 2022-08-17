@@ -1,5 +1,5 @@
-import { combineReducers, configureStore } from '@reduxjs/toolkit'
-import { eventReducer } from './reducers/events'
+import {combineReducers, configureStore} from '@reduxjs/toolkit'
+import {eventReducer} from './reducers/events'
 
 const rootReducer = combineReducers( {
   events: eventReducer

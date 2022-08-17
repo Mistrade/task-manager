@@ -1,8 +1,7 @@
-import { FC } from 'react'
-import { FCWithChildren } from '../../Calendars/types'
-import { css } from 'styled-components'
-import { defaultColor, disabledColor } from '../../../common/constants'
-import { FlexBlock, FlexBlockProps } from '../../LayoutComponents/FlexBlock'
+import {FCWithChildren} from '../../Calendars/types'
+import {css} from 'styled-components'
+import {defaultColor} from '../../../common/constants'
+import {FlexBlock, FlexBlockProps} from '../../LayoutComponents/FlexBlock'
 
 export const SelectListContainer: FCWithChildren<FlexBlockProps> = ( {
                                                                        children,

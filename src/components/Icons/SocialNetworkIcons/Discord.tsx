@@ -1,6 +1,6 @@
-import React, { FC } from 'react'
-import { IconProps } from '../Icons'
-import { FlexBlock, FlexBlockProps } from '../../LayoutComponents/FlexBlock'
+import React, {FC} from 'react'
+import {IconProps} from '../Icons'
+import {FlexBlock, FlexBlockProps} from '../../LayoutComponents/FlexBlock'
 
 export const DiscordLogoIcon: FC<IconProps & FlexBlockProps> = ( {
                                                                    size = 24,

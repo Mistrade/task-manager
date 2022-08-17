@@ -1,18 +1,14 @@
 import {
-  CalendarCurrentContext,
-  CalendarCurrentMonth,
-  CalendarCurrentWeek,
-  CalendarCurrentYear,
-  MonthItem,
-  WeekItem,
-  YearItem
+	CalendarCurrentContext,
+	CalendarCurrentMonth,
+	CalendarCurrentWeek,
+	CalendarCurrentYear,
+	MonthItem,
+	WeekItem,
+	YearItem
 } from '../../components/Calendars/types'
-import { DateScopeOptions, getMonthScope, getWeekScope, getYearScope } from './scopes'
-import {
-  generateDateOfMonthArray,
-  generateDateOfWeekArray,
-  generateDateOfYearArray
-} from './generators'
+import {DateScopeOptions, getMonthScope, getWeekScope, getYearScope} from './scopes'
+import {generateDateOfMonthArray, generateDateOfWeekArray, generateDateOfYearArray} from './generators'
 
 export const getWeekDays = ( current: CalendarCurrentWeek, context: CalendarCurrentContext, options?: DateScopeOptions ): WeekItem => {
   const dateScope = getWeekScope( current )

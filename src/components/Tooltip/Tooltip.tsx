@@ -1,9 +1,8 @@
-import { FC, ReactNode, useEffect, useMemo, useRef, useState } from 'react'
-import { TooltipContent, TooltipWrapper } from './Tooltip.styled'
-import { TooltipIcon } from '../Icons/TooltipIcon'
-import { IconProps } from '../Icons/Icons'
-import { FlexBlock } from '../LayoutComponents/FlexBlock'
-import { DefaultTextInputProps } from '../Input/TextInput'
+import {FC, ReactNode, useEffect, useRef, useState} from 'react'
+import {TooltipContent, TooltipWrapper} from './Tooltip.styled'
+import {TooltipIcon} from '../Icons/TooltipIcon'
+import {IconProps} from '../Icons/Icons'
+import {FlexBlock} from '../LayoutComponents/FlexBlock'
 
 interface TooltipProps {
   children?: ReactNode,

@@ -1,8 +1,8 @@
-import { createSlice, isAnyOf, PayloadAction } from '@reduxjs/toolkit'
-import { TaskStorage } from '../../components/Calendars/types'
-import { getFromLocalStorage } from '../../common/localStorage'
-import { LS_KEYS } from '../../common/constants'
-import { addEvent } from '../thunk/events'
+import {createSlice, isAnyOf, PayloadAction} from '@reduxjs/toolkit'
+import {TaskStorage} from '../../components/Calendars/types'
+import {getFromLocalStorage} from '../../common/localStorage'
+import {LS_KEYS} from '../../common/constants'
+import {addEvent} from '../thunk/events'
 
 export interface EventsStateProps {
   all: TaskStorage

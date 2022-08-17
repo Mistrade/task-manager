@@ -1,13 +1,12 @@
 import {
-  AddTaskDateType,
-  CalendarMode,
-  CalendarProps,
-  OnAddTaskFnType,
-  OnChangeCurrentFnType,
-  OnSelectTaskFnType,
-  SelectedTaskType
+	AddTaskDateType,
+	CalendarMode,
+	OnAddTaskFnType,
+	OnChangeCurrentFnType,
+	OnSelectTaskFnType,
+	SelectedTaskType
 } from '../Calendars/types'
-import React, { useCallback, useState } from 'react'
+import React, {useCallback, useState} from 'react'
 
 interface Returned {
   current: CalendarMode,

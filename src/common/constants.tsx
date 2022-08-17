@@ -1,11 +1,17 @@
 import {
-  CalendarPriorityKeys, CalendarPriorityList,
-  CalendarTaskList,
-  DateItem,
-  MonthItem, TaskMembersListType, TaskStatusesType, TaskStatusInfo, TaskStorage, WeekItem, YearItem
+	CalendarPriorityKeys,
+	CalendarPriorityList,
+	CalendarTaskList,
+	DateItem,
+	MonthItem,
+	TaskMembersListType,
+	TaskStatusesType,
+	TaskStatusInfo,
+	WeekItem,
+	YearItem
 } from '../components/Calendars/types'
 import dayjs from 'dayjs'
-import { CompleteIcon, CreatedIcon, ProcessIcon, WaitIcon } from '../components/Icons/Icons'
+import {CompleteIcon, CreatedIcon, ProcessIcon, WaitIcon} from '../components/Icons/Icons'
 
 export const MonthList = [
   'Январь', 'Февраль', 'Март', 'Апрель', 'Май', 'Июнь', 'Июль', 'Август', 'Сентябрь', 'Октябрь', 'Ноябрь', 'Декабрь'
@@ -99,24 +105,6 @@ export const Members: TaskMembersListType = [
         link: 'https://vk.com/yudakov2014'
       }
     ]
-  }
-]
-
-export const DAYJS_EVENT_FORMAT = 'DD-MM-YYYYTHH:mmZ'
-export let defaultTasksList: CalendarTaskList = [
-  {
-    id: '1',
-    type: 'event',
-    title: 'Завершить написание модального окна',
-    description: 'Необходимо завершить работу с модальным окном, чтобы информация по заданию выводилась корректно.',
-    createdAt: dayjs().utc().format(),
-    status: DEFAULT_TASK_STATUS,
-    priority: DEFAULT_TASK_PRIORITY,
-    time: dayjs( new Date( 2022, 5, 1, 12, 20 ) ).toDate(),
-    timeEnd: dayjs( new Date( 2022, 5, 22, 12, 20 ) ).add( 30, 'minute' ).toDate(),
-    members: Members,
-    link: null,
-    linkedFrom: ''
   }
 ]
 

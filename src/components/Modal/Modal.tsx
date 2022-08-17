@@ -1,11 +1,12 @@
-import { FC, ReactNode, useRef } from 'react'
+import {FC, ReactNode, useRef} from 'react'
 import {
-  ModalContainer,
-  ModalLayout, StyledModalBodyContainer,
-  StyledModalFooterContainer,
-  StyledModalHeaderContainer
+	ModalContainer,
+	ModalLayout,
+	StyledModalBodyContainer,
+	StyledModalFooterContainer,
+	StyledModalHeaderContainer
 } from './Modal.styled'
-import { ModalProps } from './types'
+import {ModalProps} from './types'
 
 export const Modal: FC<ModalProps> = ( {
                                          modalBody,

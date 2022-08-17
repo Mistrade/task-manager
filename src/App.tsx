@@ -3,7 +3,6 @@ import {createGlobalStyle, css} from 'styled-components'
 import './common/dayjs'
 import {Calendar} from './components/Calendars/Сalendar'
 import {FlexBlock} from './components/LayoutComponents/FlexBlock'
-import {defaultTasksList} from './common/constants'
 import {Provider} from 'react-redux'
 import {store} from './store'
 
@@ -12,6 +11,7 @@ const GlobalStyled = createGlobalStyle({}, css`
     box-sizing: border-box;
     margin: 0;
     padding: 0;
+    font-family: "Helvetica Neue", sans-serif;
   }
 `)
 
@@ -28,7 +28,6 @@ function App() {
 				<FlexBlock width={'100%'} justify={'flex-end'}>
 					<FlexBlock width={'80%'}>
 						<Calendar
-							taskList={defaultTasksList}
 							initialCurrent={{
 								layout: 'day',
 								date: new Date()

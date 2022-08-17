@@ -1,4 +1,4 @@
-import {FC, ReactNode, useEffect} from 'react'
+import {FC, useEffect} from 'react'
 import {CalendarItem, CalendarTaskItem} from '../types'
 import {useFormik} from 'formik'
 import dayjs from 'dayjs'
@@ -6,18 +6,12 @@ import {FlexBlock} from '../../LayoutComponents/FlexBlock'
 import {TextInput} from '../../Input/TextInput'
 import {SelectPriorityInput} from '../../Input/SelectInput/CalendarSelectInputs/SelectPriorityInput'
 import {SelectBooleanInput} from '../../Input/SelectInput/SelectBooleanInput'
-import {
-	currentColor, defaultColor,
-	getHumanizeDateValue,
-	hoverColor,
-	TASK_STATUSES
-} from '../../../common/constants'
+import {currentColor, defaultColor, getHumanizeDateValue, hoverColor, TASK_STATUSES} from '../../../common/constants'
 import {SelectInput} from '../../Input/SelectInput/SelectInput'
 import {DatePickerPaper} from '../DatePicker/DatePickerPaper'
 import {SelectListContainer} from '../../Input/SelectInput/SelectListContainer'
 import * as yup from 'yup'
 import {CompleteIcon, CreatedIcon} from '../../Icons/Icons'
-import {ModalFooter} from '../../Modal/Modal'
 import {Button, StyledButton} from '../../Buttons/Buttons.styled'
 import {SelectLinks} from '../../Input/SelectInput/CalendarSelectInputs/SelectLinks'
 import {Tooltip} from '../../Tooltip/Tooltip'

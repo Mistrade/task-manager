@@ -1,8 +1,8 @@
-import { FC } from 'react'
-import { CalendarHeaderWeekListProps } from '../types'
-import { CalendarDateListContainer } from '../Calendar.styled'
-import { defaultColor, WeekDaysList, WeekDaysShortList } from '../../../common/constants'
-import { FlexBlock } from '../../LayoutComponents/FlexBlock'
+import {FC} from 'react'
+import {CalendarHeaderWeekListProps} from '../types'
+import {CalendarDateListContainer} from '../Calendar.styled'
+import {defaultColor, WeekDaysList, WeekDaysShortList} from '../../../common/constants'
+import {FlexBlock} from '../../LayoutComponents/FlexBlock'
 
 export const CalendarHeaderWeekList: FC<CalendarHeaderWeekListProps> = ( {
                                                                            renderWeekPattern,

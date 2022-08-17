@@ -1,7 +1,7 @@
-import { FC } from 'react'
-import { SwitchCalendarMode } from '../Calendar.styled'
-import { FlexBlock } from '../../LayoutComponents/FlexBlock'
-import { CalendarHeaderSwitchersProps, CalendarMode } from '../types'
+import {FC} from 'react'
+import {SwitchCalendarMode} from '../Calendar.styled'
+import {FlexBlock} from '../../LayoutComponents/FlexBlock'
+import {CalendarHeaderSwitchersProps} from '../types'
 
 export const CalendarModeSwitchers: FC<CalendarHeaderSwitchersProps> = ( {
                                                                            current,

@@ -1,7 +1,7 @@
-import { FC } from 'react'
-import { MonthCalendarProps } from '../types'
-import { CalendarDateListContainer, CalendarDesktopContainer } from '../Calendar.styled'
-import { WeeKCalendar } from '../WeekCalendar/WeekCalendar'
+import {FC} from 'react'
+import {MonthCalendarProps} from '../types'
+import {CalendarDateListContainer, CalendarDesktopContainer} from '../Calendar.styled'
+import {WeeKCalendar} from '../WeekCalendar/WeekCalendar'
 
 export const MonthCalendar: FC<MonthCalendarProps> = ( {
                                                          monthItem,

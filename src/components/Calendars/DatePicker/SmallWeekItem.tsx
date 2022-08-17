@@ -1,7 +1,6 @@
-import { FC, Fragment } from 'react'
-import { SmallDayItem } from './SmallDayItem'
-import { CalendarItem, MonthItem, SmallMonthCalendarWeekItemProps, TaskStorage } from '../types'
-
+import {FC, Fragment} from 'react'
+import {SmallDayItem} from './SmallDayItem'
+import {SmallMonthCalendarWeekItemProps} from '../types'
 
 
 export const SmallWeekItem: FC<SmallMonthCalendarWeekItemProps> = ( {

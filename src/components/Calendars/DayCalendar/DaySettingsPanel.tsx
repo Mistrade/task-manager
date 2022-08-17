@@ -1,21 +1,14 @@
-import { FC, useEffect, useMemo } from 'react'
-import { FlexBlock } from '../../LayoutComponents/FlexBlock'
-import { defaultColor, disabledColor } from '../../../common/constants'
-import { OnSelectDateFromCalendarFn, SmallMonthCalendar } from '../DatePicker/SmallMonthCalendar'
-import {
-  CalendarCurrentDay,
-  CalendarCurrentMonth,
-  CalendarItem,
-  DaySettingsPanelProps,
-  TaskStorage
-} from '../types'
-import { getMonthDays } from '../../../common/calendarSupport/getters'
-import { css } from 'styled-components'
-import { Button } from '../../Buttons/Buttons.styled'
-import { SmallCalendarMonthTitle } from '../DatePicker/SmallCalendarMonthTitle'
+import {FC} from 'react'
+import {FlexBlock} from '../../LayoutComponents/FlexBlock'
+import {disabledColor} from '../../../common/constants'
+import {SmallMonthCalendar} from '../DatePicker/SmallMonthCalendar'
+import {DaySettingsPanelProps} from '../types'
+import {css} from 'styled-components'
+import {Button} from '../../Buttons/Buttons.styled'
+import {SmallCalendarMonthTitle} from '../DatePicker/SmallCalendarMonthTitle'
 import dayjs from 'dayjs'
-import { dateToCalendarItem } from '../../../common/calendarSupport/generators'
-import { Tooltip } from '../../Tooltip/Tooltip'
+import {dateToCalendarItem} from '../../../common/calendarSupport/generators'
+import {Tooltip} from '../../Tooltip/Tooltip'
 
 
 export const DaySettingsPanel: FC<DaySettingsPanelProps> = ( {

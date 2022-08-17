@@ -1,5 +1,5 @@
-import styled, { css } from 'styled-components'
-import { currentColor, defaultColor, disabledColor } from '../../common/constants'
+import styled, {css} from 'styled-components'
+import {currentColor, disabledColor} from '../../common/constants'
 
 const LeftIconPadding = css`
   padding: 12px 16px 12px 46px;

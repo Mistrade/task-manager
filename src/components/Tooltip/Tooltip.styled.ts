@@ -1,12 +1,7 @@
-import styled, { css } from 'styled-components'
-import {
-  currentColor,
-  currentColorWithoutBlur,
-  defaultColor,
-  disabledColor
-} from '../../common/constants'
-import { pxToCssValue } from '../LayoutComponents/FlexBlock'
-import { OptionsTooltip } from './Tooltip'
+import styled, {css} from 'styled-components'
+import {currentColorWithoutBlur, defaultColor} from '../../common/constants'
+import {pxToCssValue} from '../LayoutComponents/FlexBlock'
+import {OptionsTooltip} from './Tooltip'
 
 export const TooltipWrapper = styled( 'span' )`
   & {

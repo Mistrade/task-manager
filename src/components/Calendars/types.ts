@@ -1,8 +1,8 @@
-import React, { FC, ReactNode } from 'react'
-import { ShortChangeCurrentPattern } from '../../common/commonTypes'
-import { OnSelectDateFromCalendarFn } from './DatePicker/SmallMonthCalendar'
-import { FlexBlockProps } from '../LayoutComponents/FlexBlock'
-import { DefaultTextInputProps } from '../Input/TextInput'
+import React, {FC, ReactNode} from 'react'
+import {ShortChangeCurrentPattern} from '../../common/commonTypes'
+import {OnSelectDateFromCalendarFn} from './DatePicker/SmallMonthCalendar'
+import {FlexBlockProps} from '../LayoutComponents/FlexBlock'
+import {DefaultTextInputProps} from '../Input/TextInput'
 
 export type FCWithChildren<T = any> = FC<{ children?: ReactNode } & T>
 

@@ -1,6 +1,6 @@
-import React, { FC, HTMLProps } from 'react'
-import { currentColor, defaultColor, priorityColors } from '../../common/constants'
-import { FlexBlock, FlexBlockProps } from '../LayoutComponents/FlexBlock'
+import React, {FC} from 'react'
+import {currentColor, defaultColor, priorityColors} from '../../common/constants'
+import {FlexBlock, FlexBlockProps} from '../LayoutComponents/FlexBlock'
 
 export interface IconProps {
   size?: number,

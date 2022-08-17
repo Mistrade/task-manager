@@ -1,28 +1,21 @@
-import React, { FC, ReactNode, useCallback, useEffect, useMemo, useState } from 'react'
-import { FlexBlock } from '../../LayoutComponents/FlexBlock'
+import React, {FC, ReactNode, useCallback, useEffect, useState} from 'react'
+import {FlexBlock} from '../../LayoutComponents/FlexBlock'
 import {
-  CalendarCurrentDay,
-  CalendarItem, CalendarPriorityKeys,
-  CalendarTaskItem,
-  CalendarTaskList, EventItem, GlobalTaskListProps,
-  OnSelectTaskFnType
+	CalendarCurrentDay,
+	CalendarItem,
+	CalendarPriorityKeys,
+	EventItem,
+	GlobalTaskListProps,
+	OnSelectTaskFnType
 } from '../types'
-import { ArrowIndicator, TaskTilePriorityIndicator } from '../Cell'
+import {ArrowIndicator} from '../Cell'
 import dayjs from 'dayjs'
-import {
-  currentColor,
-  DATE_HOURS_FORMAT, DATE_RENDER_FORMAT,
-  defaultColor,
-  disabledColor, hoverColor
-} from '../../../common/constants'
-import styled, { css } from 'styled-components'
-import { NotFoundIcon } from '../../Icons/Icons'
-import { Button, JoinToEventButton } from '../../Buttons/Buttons.styled'
-import { StyledFindInput } from '../../Input/Input.styled'
-import { TextInput } from '../../Input/TextInput'
-import { SelectPriorityInput } from '../../Input/SelectInput/CalendarSelectInputs/SelectPriorityInput'
-import { useFormik } from 'formik'
-import { EventFilter } from './EventFilter'
+import {defaultColor, hoverColor} from '../../../common/constants'
+import styled, {css} from 'styled-components'
+import {NotFoundIcon} from '../../Icons/Icons'
+import {Button, JoinToEventButton} from '../../Buttons/Buttons.styled'
+import {useFormik} from 'formik'
+import {EventFilter} from './EventFilter'
 
 interface DayTaskListProps extends GlobalTaskListProps {
   day: CalendarItem

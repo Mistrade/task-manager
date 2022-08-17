@@ -10,58 +10,7 @@ import weekOfYear from 'dayjs/plugin/weekOfYear'
 import updateLocale from 'dayjs/plugin/updateLocale'
 import duration from 'dayjs/plugin/duration'
 import utc from 'dayjs/plugin/utc'
-import { CalendarTaskItem, CalendarTaskList, EventItem } from '../components/Calendars/types'
-
-const customLocale: Partial<ILocale> = {
-  name: 'ru',
-  weekdays: [
-    'Понедельник', 'Вторник', 'Среда', 'Четверг', 'Пятница', 'Суббота', 'Воскресенье'
-  ],
-  weekdaysMin: [
-    'Понедельник', 'Вторник', 'Среда', 'Четверг', 'Пятница', 'Суббота', 'Воскресенье'
-  ],
-  weekdaysShort: [
-    'Понедельник', 'Вторник', 'Среда', 'Четверг', 'Пятница', 'Суббота', 'Воскресенье'
-  ],
-  months: [
-    'Январь', 'Февраль', 'Март', 'Апрель', 'Май', 'Июнь', 'Июль', 'Август', 'Сентябрь', 'Октябрь', 'Ноябрь', 'Декабрь'
-  ],
-  monthsShort: [
-    'Январь', 'Февраль', 'Март', 'Апрель', 'Май', 'Июнь', 'Июль', 'Август', 'Сентябрь', 'Октябрь', 'Ноябрь', 'Декабрь'
-  ],
-  ordinal: n => `${n}º`, // ordinal Function (number) => return number + output
-  formats: {
-    // сокращенные имена параметров для локализации
-    LTS: 'h:mm:ss A',
-    LT: 'h:mm A',
-    L: 'MM/DD/YYYY',
-    LL: 'MMMM D, YYYY',
-    LLL: 'MMMM D, YYYY h:mm A',
-    LLLL: 'dddd, MMMM D, YYYY h:mm A'
-    // нижний регистр/краткая запись, необязательные форматы для локализации
-    // l: 'D/M/YYYY',
-    // ll: 'D MMM, YYYY',
-    // lll: 'D MMM, YYYY h:mm A',
-    // llll: 'ddd, MMM D, YYYY h:mm A'
-  },
-  relativeTime: {
-    // строковый формат относительного времени, оставьте %s %d в том же виде
-    future: 'in %s', // например, "в 2 часа", %s был заменен на "2 часа"
-    past: '%s ago',
-    s: 'a few seconds',
-    m: 'a minute',
-    mm: '%d minutes',
-    h: 'an hour',
-    hh: '%d hours', // например, "2 часа" %d был заменен на "2"
-    d: 'a day',
-    dd: '%d days',
-    M: 'a month',
-    MM: '%d months',
-    y: 'a year',
-    yy: '%d years'
-  },
-  weekStart: 1
-}
+import {CalendarTaskItem, CalendarTaskList, EventItem} from '../components/Calendars/types'
 
 dayjs.extend( isBetween )
 dayjs.extend( isToday )

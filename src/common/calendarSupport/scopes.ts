@@ -1,11 +1,11 @@
 import {
-  CalendarCurrentMonth,
-  CalendarCurrentWeek,
-  CalendarCurrentYear,
-  CalendarDisabledOptions
+	CalendarCurrentMonth,
+	CalendarCurrentWeek,
+	CalendarCurrentYear,
+	CalendarDisabledOptions
 } from '../../components/Calendars/types'
 import dayjs from 'dayjs'
-import { getMonday } from './other'
+import {getMonday} from './other'
 
 export interface DateScopeType {
   startDate: Date,

@@ -1,10 +1,10 @@
-import { FC, useCallback } from 'react'
-import { CalendarItem, WeekCalendarProps, WeekItem } from '../types'
+import {FC, useCallback} from 'react'
+import {CalendarItem, WeekCalendarProps, WeekItem} from '../types'
 import dayjs from 'dayjs'
-import { CalendarCell } from '../Cell'
-import { getTaskListOfDay } from '../../../common/functions'
+import {CalendarCell} from '../Cell'
+import {getTaskListOfDay} from '../../../common/functions'
 import styled from 'styled-components'
-import { defaultColor, disabledColor } from '../../../common/constants'
+import {defaultColor, disabledColor} from '../../../common/constants'
 
 const WeekContainer = styled( 'div' )`
   position: relative;

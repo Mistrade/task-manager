@@ -1,12 +1,12 @@
-import { FC, useMemo } from 'react'
-import { CalendarItem, DayCalendarProps } from '../types'
-import { dateToCalendarItem } from '../../../common/calendarSupport/generators'
-import { FlexBlock } from '../../LayoutComponents/FlexBlock'
-import { DayTaskList } from './DayTaskList'
-import { sortTask } from '../../../common/dayjs'
-import { getTaskListOfDay } from '../../../common/functions'
-import { DaySettingsPanel } from './DaySettingsPanel'
-import { css } from 'styled-components'
+import {FC, useMemo} from 'react'
+import {CalendarItem, DayCalendarProps} from '../types'
+import {dateToCalendarItem} from '../../../common/calendarSupport/generators'
+import {FlexBlock} from '../../LayoutComponents/FlexBlock'
+import {DayTaskList} from './DayTaskList'
+import {sortTask} from '../../../common/dayjs'
+import {getTaskListOfDay} from '../../../common/functions'
+import {DaySettingsPanel} from './DaySettingsPanel'
+import {css} from 'styled-components'
 
 export const DayCalendar: FC<DayCalendarProps> = ( {
                                                      dateItem,

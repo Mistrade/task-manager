@@ -1,13 +1,13 @@
-import { FC, useCallback, useMemo } from 'react'
-import { CalendarHeaderProps, CalendarMode } from '../types'
-import { ShortChangeCurrentPattern } from '../../../common/commonTypes'
-import { changeCurrentModeHandler, getCalendarTitle } from '../../../common/functions'
-import { FlexBlock } from '../../LayoutComponents/FlexBlock'
-import { CalendarTitle } from '../Calendar.styled'
-import { CalendarModeSwitchers } from './CalendarModeSwitchers'
-import { CalendarTodaySwitchers } from './CalendarTodaySwitchers'
-import { CalendarHeaderWeekList } from './CalendarHeaderWeekList'
-import { Tooltip } from '../../Tooltip/Tooltip'
+import {FC, useCallback, useMemo} from 'react'
+import {CalendarHeaderProps, CalendarMode} from '../types'
+import {ShortChangeCurrentPattern} from '../../../common/commonTypes'
+import {changeCurrentModeHandler, getCalendarTitle} from '../../../common/functions'
+import {FlexBlock} from '../../LayoutComponents/FlexBlock'
+import {CalendarTitle} from '../Calendar.styled'
+import {CalendarModeSwitchers} from './CalendarModeSwitchers'
+import {CalendarTodaySwitchers} from './CalendarTodaySwitchers'
+import {CalendarHeaderWeekList} from './CalendarHeaderWeekList'
+import {Tooltip} from '../../Tooltip/Tooltip'
 
 
 export const CalendarHeader: FC<CalendarHeaderProps> = ( {

@@ -1,25 +1,19 @@
-import styled, { css, keyframes } from 'styled-components'
-import React, { FC, useMemo, useRef, useState } from 'react'
+import styled, {css, keyframes} from 'styled-components'
+import React, {FC, useMemo, useRef, useState} from 'react'
 import {
-  CalendarCellProps, CalendarItem,
-  CalendarPriorityKeys,
-  CalendarTaskItem, CalendarTaskList,
-  TaskTileItemProps,
-  TaskTileListProps,
-  TaskTilePriorityIndicatorProps
+	CalendarCellProps,
+	CalendarPriorityKeys,
+	CalendarTaskItem,
+	CalendarTaskList,
+	TaskTileItemProps,
+	TaskTileListProps,
+	TaskTilePriorityIndicatorProps
 } from './types'
-import { addNull } from '../../common/functions'
-import {
-  currentColor,
-  defaultColor, defaultTasksList,
-  disabledColor,
-  hoverColor,
-  priorityColors
-} from '../../common/constants'
+import {addNull} from '../../common/functions'
+import {currentColor, defaultColor, disabledColor, hoverColor, priorityColors} from '../../common/constants'
 import dayjs from 'dayjs'
-import { FlexBlock } from '../LayoutComponents/FlexBlock'
-import { searchIntersections, sortTask } from '../../common/dayjs'
-import { Arrow, BurgerIcon, CompleteIcon, DoubleArrow, SadSmile } from '../Icons/Icons'
+import {FlexBlock} from '../LayoutComponents/FlexBlock'
+import {Arrow, BurgerIcon, CompleteIcon, DoubleArrow, SadSmile} from '../Icons/Icons'
 
 interface CellComponentProps {
   disabled?: boolean,

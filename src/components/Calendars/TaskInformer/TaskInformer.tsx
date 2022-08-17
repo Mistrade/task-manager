@@ -1,30 +1,24 @@
-import { FC, memo, ReactNode, useMemo } from 'react'
+import {FC, memo, useMemo} from 'react'
 import {
-  CalendarCurrentMonth,
-  GenderKeys,
-  SelectTaskItem,
-  TaskInformerMainProps,
-  TaskInformerProps, TaskMemberItemType,
-  TaskMembersListType
+	CalendarCurrentMonth,
+	TaskInformerMainProps,
+	TaskInformerProps,
+	TaskMemberItemType,
+	TaskMembersListType
 } from '../types'
-import styled, { css, CSSProperties } from 'styled-components'
+import styled, {css} from 'styled-components'
 import dayjs from 'dayjs'
-import {
-  currentColor, DATE_HOURS_FORMAT,
-  DATE_RENDER_FORMAT,
-  defaultColor,
-  disabledColor, hoverColor, TASK_STATUSES, WeekDaysList
-} from '../../../common/constants'
-import { Female, Male, SadSmile } from '../../Icons/Icons'
-import { checkTaskStatus, convertEventStatus } from '../../../common/functions'
-import { FlexBlock, FlexBlockProps } from '../../LayoutComponents/FlexBlock'
-import { SmallMonthCalendar } from '../DatePicker/SmallMonthCalendar'
-import { getMonthDays } from '../../../common/calendarSupport/getters'
-import { SmallCalendarMonthTitle } from '../DatePicker/SmallCalendarMonthTitle'
-import { Heading } from '../../Text/Heading'
-import { JoinToEventButton } from '../../Buttons/Buttons.styled'
-import { ArrowIndicator } from '../Cell'
-import { EventIcon } from '../../Icons/EventIcon'
+import {DATE_HOURS_FORMAT, DATE_RENDER_FORMAT, disabledColor, hoverColor, WeekDaysList} from '../../../common/constants'
+import {Female, Male, SadSmile} from '../../Icons/Icons'
+import {convertEventStatus} from '../../../common/functions'
+import {FlexBlock, FlexBlockProps} from '../../LayoutComponents/FlexBlock'
+import {SmallMonthCalendar} from '../DatePicker/SmallMonthCalendar'
+import {getMonthDays} from '../../../common/calendarSupport/getters'
+import {SmallCalendarMonthTitle} from '../DatePicker/SmallCalendarMonthTitle'
+import {Heading} from '../../Text/Heading'
+import {JoinToEventButton} from '../../Buttons/Buttons.styled'
+import {ArrowIndicator} from '../Cell'
+import {EventIcon} from '../../Icons/EventIcon'
 
 const FlexColumn = styled( 'div' )`
   & {

@@ -1,8 +1,7 @@
-import React, { FC } from 'react'
-import { CompleteIcon, CreatedIcon, IconProps, ProcessIcon, WaitIcon } from './Icons'
-import { FlexBlock, FlexBlockProps } from '../LayoutComponents/FlexBlock'
-import { currentColor } from '../../common/constants'
-import { EventItem } from '../Calendars/types'
+import React, {FC} from 'react'
+import {CompleteIcon, CreatedIcon, IconProps, ProcessIcon, WaitIcon} from './Icons'
+import {FlexBlockProps} from '../LayoutComponents/FlexBlock'
+import {EventItem} from '../Calendars/types'
 
 export const EventIcon: FC<IconProps & FlexBlockProps & { status: EventItem['status'] }> = ( { ...props } ) => {
   switch (props.status) {

@@ -1,7 +1,9 @@
 import {
-  CalendarCurrentData, CalendarCurrentDay,
-  CalendarCurrentMonth,
-  CalendarCurrentWeek, CalendarCurrentYear, CalendarMode
+	CalendarCurrentDay,
+	CalendarCurrentMonth,
+	CalendarCurrentWeek,
+	CalendarCurrentYear,
+	CalendarMode
 } from '../components/Calendars/types'
 
 export type ChangeMonthCurrentPattern = '-year' | '-month' | '+year' | '+month' | 'today'
