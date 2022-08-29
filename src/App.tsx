@@ -5,6 +5,12 @@ import {Calendar} from './components/Calendars/Сalendar'
 import {FlexBlock} from './components/LayoutComponents/FlexBlock'
 import {Provider} from 'react-redux'
 import {store} from './store'
+import {Registration} from "./components/Session/Registration";
+import {BrowserRouter, Routes, useNavigate} from "react-router-dom";
+import {Route} from "react-router";
+import {AuthorizationForm} from "./components/Session/AuthorizationForm";
+import {useAppDispatch, useAppSelector} from "./store/hooks/hooks";
+import {CheckUserSession} from "./store/thunk/session";
 
 const GlobalStyled = createGlobalStyle({}, css`
   * {
@@ -16,30 +22,45 @@ const GlobalStyled = createGlobalStyle({}, css`
 `)
 
 function App() {
-	
+	const dispatch = useAppDispatch()
 	useEffect(() => {
 		document.title = 'Онлайн планировщик дел'
+		dispatch(CheckUserSession())
 	}, [])
 	
-	return (
-		<Provider store={store}>
-			<div style={{padding: 5}}>
-				<GlobalStyled/>
-				<FlexBlock width={'100%'} justify={'flex-end'}>
-					<FlexBlock width={'80%'}>
-						<Calendar
-							initialCurrent={{
-								layout: 'day',
-								date: new Date()
-							}}
-							disabledOptions={{}}
-							renderWeekPattern={'full'}
-						/>
-					</FlexBlock>
-				</FlexBlock>
-			</div>
-		</Provider>
+	const isAuth = useAppSelector(state => state.session.isAuth)
 	
+	return (
+		<FlexBlock width={'100%'}>
+			<GlobalStyled/>
+			<Routes>
+				<Route
+					path={'session/registration'}
+					element={<Registration/>}
+				/>
+				<Route
+					path={'session/login'}
+					element={<AuthorizationForm/>}
+				/>
+				{isAuth && (
+					<Route
+						path={'calendar/*'}
+						element={
+							<Calendar
+								initialCurrent={{
+									layout: 'day',
+									date: new Date()
+								}}
+								disabledOptions={{}}
+								renderWeekPattern={'full'}
+							/>
+						}
+					>
+					</Route>
+				)}
+			</Routes>
+		
+		</FlexBlock>
 	)
 }
 

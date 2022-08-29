@@ -8,7 +8,7 @@ import {LS_KEYS} from '../../common/constants'
 export const addEvent = createAsyncThunk<TaskStorage, { event: CalendarTaskItem, onComplete?: () => void }, { state: RootState }>( 'addEvent', ( args, thunkApi ) => {
   const { event } = args
   const { rejectWithValue, dispatch, fulfillWithValue, getState } = thunkApi
-
+  
   const { events: eventsState } = getState()
   const eventItem: EventItem = {
     ...event,

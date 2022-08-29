@@ -12,7 +12,7 @@ import {
 } from '../components/Calendars/types'
 import dayjs from 'dayjs'
 import {CompleteIcon, CreatedIcon, ProcessIcon, WaitIcon} from '../components/Icons/Icons'
-import {ErrorImagesType} from "./types";
+import {ErrorImagesType, InitialCurrentCalendarModeType} from "./types";
 import {SystemErrorImg} from "../components/Icons/Errors/SystemError";
 import {ErrorBadRequestImg} from "../components/Icons/Errors/ErrorBadRequest";
 import {ErrorForbiddenImg} from "../components/Icons/Errors/ErrorForbidden";
@@ -164,5 +164,27 @@ export enum ERROR_DESCRIPTIONS {
 export enum ERROR_TITLES {
 	'SUSPENSE' = 'Не удалось загрузить запрашиваемый ресурс ленивой загрузки, попробуйте снова, позже...',
 	'CALENDAR_RENDER' = 'Произошла критическая ошибка рендера во время работы календаря.'
+}
+
+
+const currentDate = new Date()
+export const initialCurrentMap: InitialCurrentCalendarModeType = {
+	day: {
+		layout: 'day',
+		date: currentDate,
+	},
+	week: {
+		layout: 'week',
+		aroundDate: currentDate
+	},
+	month: {
+		layout: 'month',
+		year: currentDate.getFullYear(),
+		month: currentDate.getMonth()
+	},
+	year: {
+		layout: 'year',
+		year: currentDate.getFullYear()
+	}
 }
 

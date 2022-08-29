@@ -1,0 +1,1 @@
+export const PhoneNumberRegExp = new RegExp(/^7\d{10}$/, 'gi')

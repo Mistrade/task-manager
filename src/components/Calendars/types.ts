@@ -37,7 +37,7 @@ export interface GlobalTaskListProps {
 export interface YearCalendarProps {
   yearItem: YearItem,
   taskStorage?: TaskStorage,
-  current: CalendarCurrentYear,
+  current: CalendarMode,
   onChangeCurrent?: OnChangeCurrentFnType
 }
 

@@ -18,6 +18,7 @@ export const DayCalendar: FC<DayCalendarProps> = ( {
                                                      renderTaskCount
                                                    } ) => {
   const day: CalendarItem = useMemo( () => {
+    console.log(123)
     return dateToCalendarItem( dateItem.current.date, {
       month: dateItem.current.date.getMonth(),
       year: dateItem.current.date.getFullYear()

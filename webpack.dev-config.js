@@ -9,7 +9,7 @@ module.exports = {
     output: {
         clean: true,
         path: path.join(process.cwd(), 'dist'),
-
+        publicPath: '/'
     },
     plugins: [
         new MiniCssExtractPlugin(),
@@ -44,5 +44,8 @@ module.exports = {
         modules: [
             path.resolve(process.cwd(), './node_modules')
         ]
+    },
+    devServer: {
+        historyApiFallback: true
     }
 }

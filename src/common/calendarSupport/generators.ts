@@ -75,7 +75,6 @@ export const generateDateOfMonthArray = (current: CalendarCurrentMonth, scope: D
 		}
 		week--
 		d = d.add(7, 'day')
-		
 	}
 	
 	return {

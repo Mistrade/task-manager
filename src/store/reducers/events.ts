@@ -5,26 +5,30 @@ import {LS_KEYS} from '../../common/constants'
 import {addEvent} from '../thunk/events'
 
 export interface EventsStateProps {
-  all: TaskStorage
+	all: TaskStorage
 }
 
 const initialState: EventsStateProps = {
-  all: getFromLocalStorage<TaskStorage>( LS_KEYS[ 'EVENTS' ] ) || {}
+	all: getFromLocalStorage<TaskStorage>(LS_KEYS['EVENTS']) || {}
 }
 
-const eventSlice = createSlice( {
-  name: 'events',
-  initialState,
-  reducers: {},
-  extraReducers: ( builder ) => {
-    builder.addMatcher(
-      isAnyOf( addEvent.fulfilled ),
-      ( state, action: PayloadAction<TaskStorage> ) => {
-        state.all = action.payload
-      }
-    )
-  }
-} )
+const eventSlice = createSlice({
+	name: 'events',
+	initialState,
+	reducers: {
+		setTaskId(state, data: PayloadAction<{ name: string, password: string }>) {
+		
+		}
+	},
+	extraReducers: (builder) => {
+		builder.addMatcher(
+			isAnyOf(addEvent.fulfilled),
+			(state, action: PayloadAction<TaskStorage>) => {
+				state.all = action.payload
+			}
+		)
+	}
+})
 
 export const eventReducer = eventSlice.reducer
 export const {} = eventSlice.actions
