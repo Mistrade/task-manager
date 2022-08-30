@@ -11,6 +11,7 @@ import {Route} from "react-router";
 import {AuthorizationForm} from "./components/Session/AuthorizationForm";
 import {useAppDispatch, useAppSelector} from "./store/hooks/hooks";
 import {CheckUserSession} from "./store/thunk/session";
+import {CalendarMain} from "./components/Calendars";
 
 const GlobalStyled = createGlobalStyle({}, css`
   * {
@@ -23,9 +24,15 @@ const GlobalStyled = createGlobalStyle({}, css`
 
 function App() {
 	const dispatch = useAppDispatch()
+	const navigate = useNavigate()
 	useEffect(() => {
 		document.title = 'Онлайн планировщик дел'
 		dispatch(CheckUserSession())
+			.then(r => {
+				if (!r.payload) {
+					navigate('/session/login', {replace: true})
+				}
+			})
 	}, [])
 	
 	const isAuth = useAppSelector(state => state.session.isAuth)
@@ -44,18 +51,12 @@ function App() {
 				/>
 				{isAuth && (
 					<Route
-						path={'calendar/*'}
-						element={
-							<Calendar
-								initialCurrent={{
-									layout: 'day',
-									date: new Date()
-								}}
-								disabledOptions={{}}
-								renderWeekPattern={'full'}
-							/>
-						}
+						path={'calendar'}
 					>
+						<Route
+							path={':layout'}
+							element={<CalendarMain/>}
+						/>
 					</Route>
 				)}
 			</Routes>

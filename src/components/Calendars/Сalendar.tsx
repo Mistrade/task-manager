@@ -7,34 +7,25 @@ import {TaskInfoModal} from './CalendarModals/TaskInfoModal'
 import {AddTaskModal} from './CalendarModals/AddTaskModal'
 import {FlexBlock} from '../LayoutComponents/FlexBlock'
 import {css} from 'styled-components'
-import {
-	defaultDateItem,
-	defaultMonthItem,
-	defaultWeekItem,
-	defaultYearItem,
-	ERROR_TITLES,
-	initialCurrentMap
-} from '../../common/constants'
+import {defaultDateItem, defaultMonthItem, defaultWeekItem, defaultYearItem, ERROR_TITLES} from '../../common/constants'
 import {Interceptor} from './Interceptor'
 import {useAppSelector} from '../../store/hooks/hooks'
 import {ErrorBoundary} from "../Errors/ErrorBoundary";
-import {Navigate, Route, Routes, useLocation, useParams} from "react-router";
-import {useNavigate} from "react-router-dom";
+import {InfinitySpin} from "react-loader-spinner";
+import {Loader} from "../Loaders/Loader";
 
 const DayCalendar = React.lazy(() => import('./DayCalendar/DayCalendar').then(({DayCalendar}) => ({default: DayCalendar})))
 const WeekCalendar = React.lazy(() => import('./WeekCalendar/WeekCalendar').then(({WeeKCalendar}) => ({default: WeeKCalendar})))
 const MonthCalendar = React.lazy(() => import('./MonthCalendar/MonthCalendar').then(({MonthCalendar}) => ({default: MonthCalendar})))
 const YearCalendar = React.lazy(() => import('./YearCalendar/YearCalendar').then(({YearCalendar}) => ({default: YearCalendar})))
 
+
 export const Calendar: FC<CalendarProps> = ({
-																							initialCurrent,
-																							disabledOptions = {},
+																							layout,
+																							disabledOptions,
 																							renderWeekPattern = 'full',
 																						}) => {
-	
-	const calendar = useCalendar({...initialCurrent})
-	const params = useParams<{ layout: CalendarMode['layout'] }>()
-	const navigate = useNavigate()
+	const calendar = useCalendar(layout)
 	
 	const [yearItem, setYearItem] = useState<YearItem>(defaultYearItem)
 	const [monthItem, setMonthItem] = useState<MonthItem>(defaultMonthItem)
@@ -46,12 +37,6 @@ export const Calendar: FC<CalendarProps> = ({
 	useEffect(() => {
 		changeCurrentObserver(calendar.current, disabledOptions)
 	}, [calendar.current, disabledOptions])
-	
-	// useEffect(() => {
-	// 	if (params.layout) {
-	// 		changeCurrentObserver(initialCurrentMap[params.layout], disabledOptions)
-	// 	}
-	// }, [params.layout])
 	
 	const changeCurrentObserver = (current: CalendarMode, disabledOptions?: CalendarDisabledOptions) => {
 		const {layout} = current
@@ -69,75 +54,58 @@ export const Calendar: FC<CalendarProps> = ({
 	}
 	
 	return (
-		<FlexBlock
-			position={'relative'}
-			align={'flex-start'}
-			direction={'column'}
-			grow={3}
-			className={'Calendar__container'}
-			width={'100%'}
-			minHeight={800}
-			maxHeight={'95vh'}
-			additionalCss={css`
-        & {
-          padding: 24px 20px 0px 20px;
-        }
-			`}
-		>
-			<ErrorBoundary
-				title={ERROR_TITLES['CALENDAR_RENDER']}
-				description={ERROR_TITLES['SUSPENSE']}
-				errorType={'SYSTEM_ERROR'}
+		<>
+			<FlexBlock
+				position={'relative'}
+				align={'flex-start'}
+				direction={'column'}
+				grow={3}
+				width={'100%'}
+				minHeight={800}
+				maxHeight={'100vh'}
+				additionalCss={css`
+          & {
+            padding: 0px;
+          }
+				`}
 			>
-				
-				<CalendarHeader
-					current={calendar.current}
-					onChangeCurrent={calendar.onChangeCurrent}
-					renderWeekPattern={renderWeekPattern}
-				/>
-				<FlexBlock
-					position={'relative'}
-					mt={12}
-					maxHeight={`calc(100vh-${calendar.current.layout === 'month' || calendar.current.layout === 'week' ? '150px' : '70px'})`}
-					overflow={'scroll'}
-					width={'100%'}
+				<ErrorBoundary
+					title={ERROR_TITLES['CALENDAR_RENDER']}
+					description={ERROR_TITLES['SUSPENSE']}
+					errorType={'SYSTEM_ERROR'}
 				>
-					<Routes>
-						<Route
-							path={'day'}
-							element={
-								<React.Suspense fallback={'Загрузка'}>
-									<DayCalendar
-										dateItem={dateItem}
-										onAddTask={calendar.onAddTask}
-										onSelectTask={calendar.onSelectTask}
-										onChangeCurrent={calendar.onChangeCurrent}
-										taskStorage={taskStorage}
-										renderTaskCount={'all'}
-									/>
-								</React.Suspense>
-							}
-						/>
-						<Route
-							path={'week'}
-							element={
-								<React.Suspense fallback={'Загрузка'}>
-									<WeekCalendar
-										onChangeCurrent={calendar.onChangeCurrent}
+					
+					<CalendarHeader
+						current={calendar.current}
+						onChangeCurrent={calendar.onChangeCurrent}
+						renderWeekPattern={renderWeekPattern}
+					/>
+					<FlexBlock
+						position={'relative'}
+						pl={24}
+						pr={24}
+						height={`100vh`}
+						overflow={'scroll'}
+						width={'100%'}
+					>
+						{layout === 'year' ? (
+							<Interceptor
+								shouldRenderChildren={yearItem.year > 0 && yearItem.months.length > 0}
+							>
+								<React.Suspense fallback={<Loader title={'Загружаем ваш календарь, секундочку...'}/>}>
+									<YearCalendar
+										yearItem={yearItem}
 										current={calendar.current}
-										weekItem={weekItem}
-										renderTaskCount={'all'}
 										taskStorage={taskStorage}
-										onAddTask={calendar.onAddTask}
-										onSelectTask={calendar.onSelectTask}
+										onChangeCurrent={calendar.onChangeCurrent}
 									/>
 								</React.Suspense>
-							}
-						/>
-						<Route
-							path={'month'}
-							element={
-								<React.Suspense fallback={'Загрука'}>
+							</Interceptor>
+						) : layout === 'month' ? (
+							<Interceptor
+								shouldRenderChildren={monthItem.monthOfYear >= 0 && monthItem.weeks.length > 0}
+							>
+								<React.Suspense fallback={<Loader title={'Загружаем ваш календарь, секундочку...'}/>}>
 									<MonthCalendar
 										onChangeCurrent={calendar.onChangeCurrent}
 										renderWeekPattern={renderWeekPattern}
@@ -149,98 +117,52 @@ export const Calendar: FC<CalendarProps> = ({
 										onSelectTask={calendar.onSelectTask}
 									/>
 								</React.Suspense>
-							}
-						/>
-						
-						<Route
-							path={'year'}
-							element={
-								<React.Suspense fallback={'Загрузка календаря...'}>
-									<YearCalendar
-										yearItem={yearItem}
-										current={calendar.current}
-										taskStorage={taskStorage}
+							</Interceptor>
+						) : layout === 'week' ? (
+							<Interceptor
+								shouldRenderChildren={weekItem.weekOfYear > 0 && weekItem.days.length > 0}
+							>
+								<FlexBlock pt={24} width={'100%'} height={'100%'}>
+									<React.Suspense fallback={<Loader title={'Загружаем ваш календарь, секундочку...'}/>}>
+										<WeekCalendar
+											onChangeCurrent={calendar.onChangeCurrent}
+											current={calendar.current}
+											weekItem={weekItem}
+											renderTaskCount={'all'}
+											taskStorage={taskStorage}
+											onAddTask={calendar.onAddTask}
+											onSelectTask={calendar.onSelectTask}
+										/>
+									</React.Suspense>
+								</FlexBlock>
+							</Interceptor>
+						) : layout === 'day' ? (
+							<Interceptor
+								shouldRenderChildren={dateItem.settingPanel.monthItem.weeks.length > 0}
+							>
+								<React.Suspense fallback={<Loader title={'Загружаем ваш календарь, секундочку...'}/>}>
+									<DayCalendar
+										dateItem={dateItem}
+										onAddTask={calendar.onAddTask}
+										onSelectTask={calendar.onSelectTask}
 										onChangeCurrent={calendar.onChangeCurrent}
+										taskStorage={taskStorage}
+										renderTaskCount={'all'}
 									/>
 								</React.Suspense>
-							}
-						/>
-						{/*<Route*/}
-						{/*	path={'*'}*/}
-						{/*	element={<Navigate to={'/calendar/day'}/>}*/}
-					</Routes>
-					{/*{params.layout === 'year' ? (*/}
-					{/*	<Interceptor*/}
-					{/*		shouldRenderChildren={yearItem.year > 0 && yearItem.months.length > 0}*/}
-					{/*	>*/}
-					{/*		<React.Suspense fallback={'Загрузка календаря...'}>*/}
-					{/*			<YearCalendar*/}
-					{/*				yearItem={yearItem}*/}
-					{/*				current={calendar.current}*/}
-					{/*				taskStorage={taskStorage}*/}
-					{/*				onChangeCurrent={calendar.onChangeCurrent}*/}
-					{/*			/>*/}
-					{/*		</React.Suspense>*/}
-					{/*	</Interceptor>*/}
-					{/*) : params.layout === 'month' ? (*/}
-					{/*	<Interceptor*/}
-					{/*		shouldRenderChildren={monthItem.monthOfYear >= 0 && monthItem.weeks.length > 0}*/}
-					{/*	>*/}
-					{/*		<React.Suspense fallback={'Загрузка календаря...'}>*/}
-					{/*			<MonthCalendar*/}
-					{/*				onChangeCurrent={calendar.onChangeCurrent}*/}
-					{/*				renderWeekPattern={renderWeekPattern}*/}
-					{/*				renderTaskCount={5}*/}
-					{/*				current={calendar.current}*/}
-					{/*				monthItem={monthItem}*/}
-					{/*				taskStorage={taskStorage}*/}
-					{/*				onAddTask={calendar.onAddTask}*/}
-					{/*				onSelectTask={calendar.onSelectTask}*/}
-					{/*			/>*/}
-					{/*		</React.Suspense>*/}
-					{/*	</Interceptor>*/}
-					{/*) : params.layout === 'week' ? (*/}
-					{/*	<Interceptor*/}
-					{/*		shouldRenderChildren={weekItem.weekOfYear > 0 && weekItem.days.length > 0}*/}
-					{/*	>*/}
-					{/*		<React.Suspense fallback={'Загрузка календаря...'}>*/}
-					{/*			<WeekCalendar*/}
-					{/*				onChangeCurrent={calendar.onChangeCurrent}*/}
-					{/*				current={calendar.current}*/}
-					{/*				weekItem={weekItem}*/}
-					{/*				renderTaskCount={'all'}*/}
-					{/*				taskStorage={taskStorage}*/}
-					{/*				onAddTask={calendar.onAddTask}*/}
-					{/*				onSelectTask={calendar.onSelectTask}*/}
-					{/*			/>*/}
-					{/*		</React.Suspense>*/}
-					{/*	</Interceptor>*/}
-					{/*) : params.layout === 'day' ? (*/}
-					{/*	<Interceptor*/}
-					{/*		shouldRenderChildren={dateItem.settingPanel.monthItem.weeks.length > 0}*/}
-					{/*	>*/}
-					{/*		<React.Suspense fallback={'Загрузка календаря...'}>*/}
-					{/*			<DayCalendar*/}
-					{/*				dateItem={dateItem}*/}
-					{/*				onAddTask={calendar.onAddTask}*/}
-					{/*				onSelectTask={calendar.onSelectTask}*/}
-					{/*				onChangeCurrent={calendar.onChangeCurrent}*/}
-					{/*				taskStorage={taskStorage}*/}
-					{/*				renderTaskCount={'all'}*/}
-					{/*			/>*/}
-					{/*		</React.Suspense>*/}
-					{/*	</Interceptor>*/}
-					{/*) : <></>}*/}
-				</FlexBlock>
-				<AddTaskModal
-					date={calendar.addTaskDate}
-					onClose={() => calendar.setAddTaskDate(null)}
-				/>
-				<TaskInfoModal
-					selectedTask={calendar.selectedTask}
-					onClose={() => calendar.setSelectedTask(null)}
-				/>
-			</ErrorBoundary>
-		</FlexBlock>
+							</Interceptor>
+						) : <></>}
+					</FlexBlock>
+					<AddTaskModal
+						date={calendar.addTaskDate}
+						onClose={() => calendar.setAddTaskDate(null)}
+					/>
+					<TaskInfoModal
+						selectedTask={calendar.selectedTask}
+						onClose={() => calendar.setSelectedTask(null)}
+					/>
+				</ErrorBoundary>
+			</FlexBlock>
+		</>
 	)
 }

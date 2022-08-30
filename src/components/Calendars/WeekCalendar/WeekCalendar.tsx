@@ -72,8 +72,6 @@ export const WeeKCalendar: FC<WeekCalendarProps> = ({
 	
 	return (
 		<WeekContainer>
-			week container
-			{JSON.stringify(current)}
 			{current.layout === 'month' && (
 				<WeekOfYearTitle
 					onClick={() => onSelectWeek(weekItem)}

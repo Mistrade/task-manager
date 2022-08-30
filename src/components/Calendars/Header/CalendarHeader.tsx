@@ -9,6 +9,8 @@ import {CalendarTodaySwitchers} from './CalendarTodaySwitchers'
 import {CalendarHeaderWeekList} from './CalendarHeaderWeekList'
 import {Tooltip} from '../../Tooltip/Tooltip'
 import {useNavigate} from "react-router-dom";
+import {disabledColor} from "../../../common/constants";
+import {css} from "styled-components";
 
 
 export const CalendarHeader: FC<CalendarHeaderProps> = ({
@@ -39,17 +41,24 @@ export const CalendarHeader: FC<CalendarHeaderProps> = ({
 			className={'Calendar__header'}
 			direction={'column'}
 			width={'100%'}
-			maxHeight={120}
+			maxHeight={200}
 			minHeight={70}
-			pb={8}
-			pt={8}
+			pl={24}
+			pt={24}
+			pr={24}
+			pb={16}
 			bgColor={'#fff'}
+			borderBottom={`1px solid ${disabledColor}`}
+			additionalCss={css`
+        box-shadow: 0px 5px 5px ${disabledColor};
+        z-index: 5;
+			`}
 		>
 			<FlexBlock
 				width={'100%'}
 				justify={'space-between'}
 				align={'center'}
-				mb={8}
+				mb={16}
 			>
 				<FlexBlock flex={'0 0 33.3%'} justify={'flex-start'} align={'center'}>
 					<Tooltip

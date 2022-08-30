@@ -25,6 +25,7 @@ export const DaySettingsPanel: FC<DaySettingsPanelProps> = ({
 			direction={'column'}
 			grow={0}
 			pr={24}
+			pt={24}
 			align={'flex-end'}
 			borderRight={`1px solid ${disabledColor}`}
 			position={'relative'}

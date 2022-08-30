@@ -11,6 +11,7 @@ export const CalendarDesktopContainer = styled( 'div' )`
     flex-direction: column;
     align-items: flex-start;
     justify-content: flex-start;
+    padding-top: 24px;
   }
 
   & * {
@@ -26,7 +27,7 @@ export const CalendarDateListContainer = styled( 'div' )`
     grid-template-rows: repeat(auto-fill, 1fr);
     grid-template-columns: repeat(7, minmax(80px, 1fr));
     grid-column-gap: 4px;
-    grid-row-gap: 16px;
+    grid-row-gap: 8px;
   }
 `
 

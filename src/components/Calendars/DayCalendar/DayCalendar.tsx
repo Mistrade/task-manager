@@ -35,7 +35,7 @@ export const DayCalendar: FC<DayCalendarProps> = ( {
         position={'relative'}
         width={'100%'}
         grow={10}
-        pt={6}
+        // pt={6}
         additionalCss={css`gap: 20px`}
       >
         <FlexBlock grow={0} shrink={0} maxWidth={'25%'} height={'100%'}>
