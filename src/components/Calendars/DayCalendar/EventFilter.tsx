@@ -1,85 +1,37 @@
-import {FC, useEffect, useState} from 'react'
-import {CalendarPriorityKeys, EventItem} from '../types'
-import {useFormik} from 'formik'
+import React, {FC} from 'react'
+import {CalendarPriorityKeys} from '../types'
+import {FormikErrors} from 'formik'
 import {FlexBlock} from '../../LayoutComponents/FlexBlock'
 import {SelectPriorityInput} from '../../Input/SelectInput/CalendarSelectInputs/SelectPriorityInput'
 import {TextInput} from '../../Input/TextInput'
 import {DatePicker} from '../DatePicker/DatePicker'
-import dayjs from 'dayjs'
+import {DayTaskListFilters} from "./DayTaskList";
 
-interface FiltersValue {
-	title: null | string,
-	priority: null | CalendarPriorityKeys,
-	start: null | Date,
-	end: null | Date
-}
-
-interface EventFilterProps {
+interface EventFilterProps extends FormHandle {
 	currentDay: Date,
-	initialValues?: FiltersValue,
-	listForFilter: Array<EventItem>,
-	onChange?: (list: Array<EventItem>) => void
 }
+
+interface FormHandle {
+	values: DayTaskListFilters,
+	onChangeHandlers: EventFilterOnChangeHandle,
+	onFocusHandlers?: OnFocusEventHandlers
+}
+
+export interface EventFilterOnChangeHandle {
+	start: (date: Date) => void,
+	end: (date: Date) => void
+	priority: (priority: CalendarPriorityKeys | null) => void,
+	title: (value: string) => void
+}
+
+type OnFocusEventHandlers = (fieldName: keyof DayTaskListFilters, e: React.FocusEvent<HTMLInputElement>) => void
 
 export const EventFilter: FC<EventFilterProps> = ({
 																										currentDay,
-																										initialValues,
-																										listForFilter,
-																										onChange
+																										values,
+																										onChangeHandlers,
+																										onFocusHandlers
 																									}) => {
-	const form = useFormik({
-		onSubmit: () => {
-		},
-		initialValues: {
-			title: null,
-			priority: null,
-			start: null,
-			end: null,
-			...initialValues
-		}
-	})
-	
-	const [timeoutID, setTimeoutID] = useState<any>()
-	
-	useEffect(() => {
-		form.resetForm()
-	}, [currentDay])
-	
-	useEffect(() => {
-		setTimeoutID((prev: any) => {
-				clearTimeout(prev)
-				
-				return setTimeout(() => {
-					filterFunc()
-				}, 177)
-			}
-		)
-	}, [listForFilter, form.values])
-	
-	const filterFunc = () => {
-		let result = listForFilter
-		
-		const {title, start, end, priority} = form.values
-		
-		if (!!title) {
-			result = result.filter(item => item.title.toLowerCase().includes(title.toLowerCase()))
-		}
-		
-		if (!!start) {
-			result = result.filter(item => dayjs(item.time).isSameOrAfter(start, 'minute'))
-		}
-		
-		if (!!end) {
-			result = result.filter(item => dayjs(item.timeEnd).isSameOrBefore(end, 'minute'))
-		}
-		
-		if (!!priority) {
-			result = result.filter(item => item.priority === priority)
-		}
-		
-		return onChange && onChange(result)
-	}
-	
 	return (
 		<FlexBlock
 			width={'100%'}
@@ -88,35 +40,35 @@ export const EventFilter: FC<EventFilterProps> = ({
 			<FlexBlock flex={'1 0 calc(25% - 6px)'} maxWidth={'25%'}>
 				<DatePicker
 					currentDate={currentDay}
-					value={form.values.start}
-					onChange={(date) => form.setFieldValue('start', date)}
-					onFocus={() => form.setFieldTouched('start', true)}
+					value={values.start}
+					onChange={onChangeHandlers.start}
+					onFocus={(e) => onFocusHandlers && onFocusHandlers('start', e)}
 					label={'Начинается не раньше, чем:'}
 				/>
 			</FlexBlock>
 			<FlexBlock flex={'1 0 calc(25% - 6px)'} maxWidth={'25%'}>
 				<DatePicker
 					currentDate={currentDay}
-					value={form.values.end}
-					onChange={(date) => form.setFieldValue('end', date)}
-					onFocus={() => form.setFieldTouched('end', true)}
+					value={values.end}
+					onChange={onChangeHandlers.end}
+					onFocus={(e) => onFocusHandlers && onFocusHandlers('end', e)}
 					label={'Заканчивается не позже, чем:'}
 				/>
 			</FlexBlock>
 			<FlexBlock flex={'1 0 calc(25% - 6px)'} maxWidth={'25%'}>
 				<SelectPriorityInput
 					useClearItem={true}
-					selected={form.values.priority}
-					onChange={(value) => form.setFieldValue('priority', value === 'not_selected' ? null : value)}
-					onFocus={() => form.setFieldTouched('priority', true)}
+					selected={values.priority}
+					onChange={onChangeHandlers.priority}
+					onFocus={(e) => onFocusHandlers && onFocusHandlers('priority', e)}
 					label={'Приоритет события'}
 				/>
 			</FlexBlock>
 			<FlexBlock flex={'1 0 calc(25% - 6px)'} maxWidth={'25%'}>
 				<TextInput
-					value={form.values.title || ''}
-					onChange={(e) => form.setFieldValue('title', e.target.value)}
-					onFocus={(e) => form.setFieldTouched('title', true)}
+					value={values.title || ''}
+					onChange={(e) => onChangeHandlers.title(e.target.value)}
+					onFocus={(e) => onFocusHandlers && onFocusHandlers('title', e)}
 					label={'Название события'}
 				/>
 			</FlexBlock>

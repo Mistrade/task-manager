@@ -7,7 +7,8 @@ export const SmallWeekItem: FC<SmallMonthCalendarWeekItemProps> = ( {
                                                                       monthItem,
                                                                       taskStorage,
                                                                       onSelectDate,
-                                                                      currentDate
+                                                                      currentDate,
+                                                                      includesTasks
                                                                     } ) => {
   return (
     <Fragment>
@@ -23,6 +24,7 @@ export const SmallWeekItem: FC<SmallMonthCalendarWeekItemProps> = ( {
               onSelectDate={onSelectDate}
               taskStorage={taskStorage}
               date={weekDay}
+              includesTasks={includesTasks}
               weekIndex={weekIndex}
             />
           ) )}

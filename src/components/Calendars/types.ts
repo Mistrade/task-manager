@@ -3,6 +3,7 @@ import {ShortChangeCurrentPattern} from '../../common/commonTypes'
 import {OnSelectDateFromCalendarFn} from './DatePicker/SmallMonthCalendar'
 import {FlexBlockProps} from '../LayoutComponents/FlexBlock'
 import {DefaultTextInputProps} from '../Input/TextInput'
+import {GetTaskSchemeResponse} from "../../store/api";
 
 export type FCWithChildren<T = any> = FC<{ children?: ReactNode } & T>
 
@@ -103,22 +104,27 @@ export interface DaySettingsPanelProps extends Omit<GlobalTaskListProps, 'render
 	dateItem: DateItem,
 	date?: CalendarItem,
 	onSelectDate?: OnSelectDateFromCalendarFn,
-	taskStorage?: TaskStorage
+	//TODO убрать taskStorage
+	taskStorage?: TaskStorage,
 }
 
 export interface SmallCalendarDayItemProps {
 	onSelectDate?: (date: CalendarItem) => void,
 	date: CalendarItem,
 	weekIndex: number,
+	//TODO убрать taskStorage
 	taskStorage?: TaskStorage,
-	currentDate?: Date
+	currentDate?: Date,
+	includesTasks?: GetTaskSchemeResponse
 }
 
 export interface SmallMonthCalendarWeekItemProps {
 	monthItem: MonthItem,
 	onSelectDate?: (date: CalendarItem) => void,
+	//TODO убрать taskStorage
 	taskStorage?: TaskStorage,
 	currentDate?: Date
+	includesTasks?: GetTaskSchemeResponse
 }
 
 export interface SmallCalendarMonthTitleProps {

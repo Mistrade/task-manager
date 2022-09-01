@@ -22,3 +22,4 @@ export const getYearDays = ( current: CalendarCurrentYear, options?: DateScopeOp
   const dateScope = getYearScope( current, options )
   return generateDateOfYearArray( current, dateScope, options )
 }
+

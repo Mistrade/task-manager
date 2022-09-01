@@ -7,7 +7,7 @@ import {Provider} from 'react-redux'
 import {store} from './store'
 import {Registration} from "./components/Session/Registration";
 import {BrowserRouter, Routes, useNavigate} from "react-router-dom";
-import {Route} from "react-router";
+import {Navigate, Route} from "react-router";
 import {AuthorizationForm} from "./components/Session/AuthorizationForm";
 import {useAppDispatch, useAppSelector} from "./store/hooks/hooks";
 import {CheckUserSession} from "./store/thunk/session";
@@ -53,6 +53,10 @@ function App() {
 					<Route
 						path={'calendar'}
 					>
+						<Route
+							index
+							element={<Navigate to={'/calendar/day'}/>}
+						/>
 						<Route
 							path={':layout'}
 							element={<CalendarMain/>}

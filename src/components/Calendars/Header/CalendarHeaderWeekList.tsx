@@ -11,7 +11,7 @@ export const CalendarHeaderWeekList: FC<CalendarHeaderWeekListProps> = ({
 	if (current.layout === 'week' || current.layout === 'month') {
 		if (renderWeekPattern === 'full') {
 			return (
-				<CalendarDateListContainer>
+				<CalendarDateListContainer rowsCount={1}>
 					{WeekDaysList.map(day => (
 						<FlexBlock
 							key={day}
@@ -31,7 +31,7 @@ export const CalendarHeaderWeekList: FC<CalendarHeaderWeekListProps> = ({
 		
 		if (renderWeekPattern === 'short') {
 			return (
-				<CalendarDateListContainer>
+				<CalendarDateListContainer rowsCount={1}>
 					{WeekDaysShortList.map(day => (
 						<FlexBlock
 							key={day + '_short'}

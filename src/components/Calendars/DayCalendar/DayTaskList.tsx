@@ -1,4 +1,4 @@
-import React, {FC, ReactNode, useCallback, useEffect, useState} from 'react'
+import React, {FC, ReactNode, useCallback, useEffect, useMemo, useState} from 'react'
 import {FlexBlock} from '../../LayoutComponents/FlexBlock'
 import {
 	CalendarCurrentDay,
@@ -15,12 +15,14 @@ import styled, {css} from 'styled-components'
 import {NotFoundIcon} from '../../Icons/Icons'
 import {Button, JoinToEventButton} from '../../Buttons/Buttons.styled'
 import {useFormik} from 'formik'
-import {EventFilter} from './EventFilter'
+import {EventFilter, EventFilterOnChangeHandle} from './EventFilter'
+import {useGetTasksAtDayQuery, useRemoveTaskMutation} from "../../../store/api";
+import {useDebounce} from "../../hooks/useDebounce";
+import {Loader} from "../../Loaders/Loader";
 
 interface DayTaskListProps extends GlobalTaskListProps {
 	day: CalendarItem
 	current: CalendarCurrentDay,
-	taskList: Array<EventItem>,
 	onSelectTask?: OnSelectTaskFnType,
 }
 
@@ -33,7 +35,8 @@ interface DayTaskItemProps {
 	taskInfo: EventItem,
 	tabIndex: number
 	onSelectTask?: OnSelectTaskFnType,
-	day: CalendarItem
+	day: CalendarItem,
+	onDelete?: (id: string) => void
 }
 
 const TileMixin = css`
@@ -88,105 +91,142 @@ export const NotFoundTask: FC<NotFoundTaskProps> = ({onAddTask, day, text}) => {
 	)
 }
 
+export interface DayTaskListFilters {
+	title: string | null,
+	priority: null | CalendarPriorityKeys,
+	start: null | Date,
+	end: null | Date
+}
+
+const initialFiltersValues: (day: Date) => DayTaskListFilters = (day) => ({
+	title: null,
+	priority: null,
+	start: dayjs(day).startOf('day').toDate(),
+	end: dayjs(day).endOf('day').toDate()
+})
+
+console.log(initialFiltersValues)
 export const DayTaskList: FC<DayTaskListProps> = ({
 																										current,
-																										taskList,
 																										onSelectTask,
 																										day,
 																										onAddTask
 																									}) => {
-	const filters = useFormik<{ title: string | null, priority: null | CalendarPriorityKeys, start: null | Date, end: null | Date }>({
-		initialValues: {
-			title: null,
-			priority: null,
-			start: null,
-			end: null
-		},
-		onSubmit: () => {
-		}
-	})
-	const [list, setList] = useState(taskList)
+	const [filters, setFilters] = useState<DayTaskListFilters>(initialFiltersValues(day.value))
+	const debounceValue = useDebounce(filters, 300)
 	
-	useEffect(() => {
-		filters.resetForm({
-			values: {
-				title: null,
-				priority: null,
-				start: null,
-				end: null
+	const changeFiltersStateHandler = <T extends keyof DayTaskListFilters>(fieldName: T, value: DayTaskListFilters[T]) => {
+		setFilters((prev) => {
+			return {
+				...prev,
+				[fieldName]: value
 			}
 		})
+	}
+	
+	const eventFiltersHandlers: EventFilterOnChangeHandle = useMemo(() => ({
+		start: (date) => changeFiltersStateHandler('start', date),
+		end: (date) => changeFiltersStateHandler('end', date),
+		title: (value) => changeFiltersStateHandler('title', value),
+		priority: (key) => changeFiltersStateHandler('priority', key === 'not_selected' ? null : key)
+	}), [])
+	
+	const {data, isLoading, isError, isSuccess, isFetching} = useGetTasksAtDayQuery({
+		fromDate:
+			debounceValue.start
+				? dayjs(debounceValue.start).utc().toString()
+				: dayjs(day.value).utc().toString(),
+		toDate:
+			debounceValue.end
+				? dayjs(debounceValue.end).utc().toString()
+				: dayjs(day.value).add(23, 'hour').add(59, 'minute').utc().toString(),
+		title: debounceValue.title,
+		priority: debounceValue.priority === 'not_selected' ? null : debounceValue.priority
+	}, {refetchOnMountOrArgChange: true})
+	
+	const [removeTask, {isSuccess: isRemoveSuccess, isError: isRemoveError}] = useRemoveTaskMutation()
+	
+	useEffect(() => {
+		setFilters(initialFiltersValues(day.value))
 	}, [day])
 	
 	return (
 		<FlexBlock
 			direction={'column'}
 			width={'100%'}
-			height={'100%'}
+			height={'90vh'}
+			overflow={'scroll'}
 			grow={10}
-			minHeight={650}
-			maxHeight={800}
 			// pt={4}
+			pb={24}
+			ml={-8}
+			pl={8}
+			mr={-8}
 			pr={8}
 		>
-			{!taskList.length ? (
-				<NotFoundTask onAddTask={onAddTask} day={day}/>
-			) : (
-				<>
-					
-					<FlexBlock
-						pb={24}
-						ml={-8}
-						pl={8}
-						mr={-8}
-						pr={8}
-						pt={24}
-						justify={'flex-start'}
-						wrap={'nowrap'}
-						bgColor={'#fff'}
-						width={'calc(100% + 16px)'}
-						additionalCss={css`gap: 12px;
-              top: 0;
-              left: 0;
-              z-index: 1
-						`}
-						position={'sticky'}
-					>
-						<EventFilter
-							currentDay={current.date}
-							listForFilter={taskList}
-							onChange={(list) => setList(list)}
-						/>
-					
-					</FlexBlock>
-					{!!list.length ? (
-						<FlexBlock direction={'column'} width={'100%'} height={'100%'} pt={4}>
-							{list.map((task, index) => (
-								<DayTaskItem
-									key={task.createdAt.toString() + index}
-									taskInfo={task}
-									day={day}
-									tabIndex={index + 1}
-									onSelectTask={onSelectTask}
-								/>))
-							}
-						</FlexBlock>
-					) : (
-						<NotFoundTask
-							onAddTask={onAddTask}
-							day={day}
-							text={<>
-								Событий по указанным фильтрам<br/>не найдено!
-							</>}
-						/>
-					)}
-				</>
-			)}
+			<FlexBlock
+				pb={24}
+				
+				pt={24}
+				justify={'flex-start'}
+				wrap={'nowrap'}
+				bgColor={'#fff'}
+				width={'calc(100%)'}
+				additionalCss={css`gap: 12px;
+          top: 0;
+          left: 0;
+          z-index: 1
+				`}
+				position={'sticky'}
+			>
+				<EventFilter
+					currentDay={current.date}
+					values={filters}
+					onChangeHandlers={eventFiltersHandlers}
+				/>
+			
+			</FlexBlock>
+			<Loader
+				title={'Загружаем ваши события...'}
+				isActive={isLoading || isFetching}
+			>
+				{isSuccess ? (
+					<>
+						{!!data?.length ? (
+							<FlexBlock direction={'column'} width={'100%'} height={'max-content'} pt={4}>
+								{data.map((task, index) => (
+									<DayTaskItem
+										key={task.createdAt.toString() + index}
+										taskInfo={task}
+										day={day}
+										tabIndex={index + 1}
+										onSelectTask={onSelectTask}
+										onDelete={async (id) => await removeTask({id}).unwrap()}
+									/>))
+								}
+							</FlexBlock>
+						) : (
+							<NotFoundTask
+								onAddTask={onAddTask}
+								day={day}
+								text={<>
+									Событий по указанным фильтрам<br/>не найдено!
+								</>}
+							/>
+						)}
+					</>
+				) : (
+					<>
+						{'Произошла ошибка на сервере'}
+					</>
+				)}
+			</Loader>
+		
 		</FlexBlock>
 	)
 }
 
-export const DayTaskItem: FC<DayTaskItemProps> = ({taskInfo, tabIndex, onSelectTask, day}) => {
+export const DayTaskItem: FC<DayTaskItemProps> = ({taskInfo, tabIndex, onSelectTask, day, onDelete}) => {
 	const start = dayjs(taskInfo.time).format('DD-MM HH:mm')
 	const end = dayjs(taskInfo.timeEnd).format('DD-MM HH:mm')
 	
@@ -261,6 +301,18 @@ export const DayTaskItem: FC<DayTaskItemProps> = ({taskInfo, tabIndex, onSelectT
 								onClick={(e) => e.stopPropagation()}
 							>
 								Подключиться
+							</JoinToEventButton>
+						</FlexBlock>
+					)}
+					{taskInfo.id && (
+						<FlexBlock>
+							<JoinToEventButton
+								onClick={(e) => {
+									e.stopPropagation()
+									onDelete && onDelete(taskInfo.id)
+								}}
+							>
+								Удалить
 							</JoinToEventButton>
 						</FlexBlock>
 					)}

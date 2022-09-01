@@ -39,12 +39,7 @@ export const AddTaskModal: FC<AddTaskModalProps> = ({date, onClose}) => {
 								<Form
 									onComplete={(value) => {
 										console.log('onComplete')
-										dispatch(
-											addEvent({
-												event: value,
-												onComplete: () => onClose && onClose()
-											})
-										)
+										onClose && onClose()
 									}}
 									onCancel={(value) => onClose && onClose()}
 									date={date}

@@ -15,7 +15,7 @@ export const MonthCalendar: FC<MonthCalendarProps> = ( {
 
   return (
     <CalendarDesktopContainer>
-      <CalendarDateListContainer>
+      <CalendarDateListContainer rowsCount={6}>
         {monthItem.weeks.map( ( week ) => (
           <WeeKCalendar
             key={`monthCalendarWeek_year_${monthItem.year}_month_${monthItem.monthOfYear}_week_${week.weekOfYear}`}

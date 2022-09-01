@@ -63,7 +63,7 @@ export const CalendarHeader: FC<CalendarHeaderProps> = ({
 				<FlexBlock flex={'0 0 33.3%'} justify={'flex-start'} align={'center'}>
 					<Tooltip
 						text={'Текущий выбранный период дат, нажмите чтобы перейти к "Сегодня"'}
-						placement={'top'}
+						placement={'right'}
 					>
 						<CalendarTitle onClick={() => onChangeCurrentHandler('today')}>
 							{title}

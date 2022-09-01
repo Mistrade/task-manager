@@ -22,6 +22,7 @@ import {CompleteIcon, CreatedIcon} from '../../Icons/Icons'
 import {Button, StyledButton} from '../../Buttons/Buttons.styled'
 import {SelectLinks} from '../../Input/SelectInput/CalendarSelectInputs/SelectLinks'
 import {Tooltip} from '../../Tooltip/Tooltip'
+import {useAddTaskMutation} from "../../../store/api";
 
 interface AddTaskFormProps {
 	onComplete?: (data: CalendarTaskItem) => void,
@@ -54,9 +55,11 @@ const addTaskValidationSchema = yup.object({
 })
 
 export const AddTaskForm: FC<AddTaskFormProps> = ({date, onComplete, onCancel}) => {
+	const [addTask, {isLoading, status}] = useAddTaskMutation()
 	const formik = useFormik<CalendarTaskItem>({
-		onSubmit(values) {
+		async onSubmit(values) {
 			console.log('onSubmit')
+			await addTask(values).unwrap()
 			onComplete && onComplete(values)
 		},
 		validationSchema: addTaskValidationSchema,
@@ -75,10 +78,6 @@ export const AddTaskForm: FC<AddTaskFormProps> = ({date, onComplete, onCancel}) 
 			link: null
 		}
 	})
-	
-	useEffect(() => {
-		console.log(formik.errors.link)
-	}, [formik.errors.link])
 	
 	return (
 		<form onSubmit={formik.handleSubmit} style={{width: '100%'}}>

@@ -85,14 +85,14 @@ export const Calendar: FC<CalendarProps> = ({
 						pl={24}
 						pr={24}
 						height={`100vh`}
-						overflow={'scroll'}
+						// overflow={'scroll'}
 						width={'100%'}
 					>
 						{layout === 'year' ? (
 							<Interceptor
 								shouldRenderChildren={yearItem.year > 0 && yearItem.months.length > 0}
 							>
-								<React.Suspense fallback={<Loader title={'Загружаем ваш календарь, секундочку...'}/>}>
+								<React.Suspense fallback={<Loader title={'Загружаем ваш календарь, секундочку...'} isActive={true}/>}>
 									<YearCalendar
 										yearItem={yearItem}
 										current={calendar.current}
@@ -105,7 +105,7 @@ export const Calendar: FC<CalendarProps> = ({
 							<Interceptor
 								shouldRenderChildren={monthItem.monthOfYear >= 0 && monthItem.weeks.length > 0}
 							>
-								<React.Suspense fallback={<Loader title={'Загружаем ваш календарь, секундочку...'}/>}>
+								<React.Suspense fallback={<Loader title={'Загружаем ваш календарь, секундочку...'} isActive={true}/>}>
 									<MonthCalendar
 										onChangeCurrent={calendar.onChangeCurrent}
 										renderWeekPattern={renderWeekPattern}
@@ -123,7 +123,7 @@ export const Calendar: FC<CalendarProps> = ({
 								shouldRenderChildren={weekItem.weekOfYear > 0 && weekItem.days.length > 0}
 							>
 								<FlexBlock pt={24} width={'100%'} height={'100%'}>
-									<React.Suspense fallback={<Loader title={'Загружаем ваш календарь, секундочку...'}/>}>
+									<React.Suspense fallback={<Loader title={'Загружаем ваш календарь, секундочку...'} isActive={true}/>}>
 										<WeekCalendar
 											onChangeCurrent={calendar.onChangeCurrent}
 											current={calendar.current}
@@ -140,7 +140,7 @@ export const Calendar: FC<CalendarProps> = ({
 							<Interceptor
 								shouldRenderChildren={dateItem.settingPanel.monthItem.weeks.length > 0}
 							>
-								<React.Suspense fallback={<Loader title={'Загружаем ваш календарь, секундочку...'}/>}>
+								<React.Suspense fallback={<Loader title={'Загружаем ваш календарь, секундочку...'} isActive={true}/>}>
 									<DayCalendar
 										dateItem={dateItem}
 										onAddTask={calendar.onAddTask}

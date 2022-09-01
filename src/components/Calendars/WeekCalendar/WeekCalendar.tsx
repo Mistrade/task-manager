@@ -38,7 +38,6 @@ const WeekOfYearTitle = styled('h3')`
     position: sticky;
     top: 0;
     left: 0;
-    //border-radius: 4px;
     cursor: pointer;
     transition: all .3s ease-in-out;
   }
