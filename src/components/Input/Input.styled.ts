@@ -1,24 +1,24 @@
-import styled, { css } from 'styled-components'
-import { currentColor, defaultColor, disabledColor } from '../../common/constants'
+import styled, {css} from 'styled-components'
+import {currentColor, disabledColor} from '../../common/constants'
 
 const LeftIconPadding = css`
-  padding: 12px 16px 12px 46px;
+  padding: 6px 8px 6px 46px;
 `
 
 const RightIconPadding = css`
-  padding: 12px 46px 12px 16px;
+  padding: 6px 46px 6px 8px;
 `
 
 const DefaultPadding = css`
-  padding: 12px 16px;
+  padding: 6px 8px;
 `
 
 const IconPlacement = {
-  left: LeftIconPadding,
-  right: RightIconPadding
+	left: LeftIconPadding,
+	right: RightIconPadding
 }
 
-export const StyledInput = styled( 'input' )<{ hasIcon?: boolean, iconPlacement?: 'left' | 'right' }>`
+export const StyledInput = styled('input')<{ hasIcon?: boolean, iconPlacement?: 'left' | 'right' }>`
   width: 100%;
   border: 2px solid ${disabledColor};
   border-radius: 6px;
@@ -28,7 +28,7 @@ export const StyledInput = styled( 'input' )<{ hasIcon?: boolean, iconPlacement?
   font-size: 16px;
   font-family: Helvetica, sans-serif;
 
-  ${_ => _.hasIcon ? IconPlacement[ _.iconPlacement || 'right' ] : DefaultPadding}
+  ${_ => _.hasIcon ? IconPlacement[_.iconPlacement || 'right'] : DefaultPadding}
   &:focus {
     border: 2px solid ${currentColor};
   }
@@ -38,7 +38,7 @@ export const StyledInput = styled( 'input' )<{ hasIcon?: boolean, iconPlacement?
   }
 `
 
-export const StyledLabel = styled( 'label' )`
+export const StyledLabel = styled('label')`
   & {
     width: fit-content;
     font-size: 16px;
@@ -53,6 +53,6 @@ export const StyledLabel = styled( 'label' )`
   }
 `
 
-export const StyledFindInput = styled( StyledInput )`
+export const StyledFindInput = styled(StyledInput)`
 
 `

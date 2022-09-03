@@ -1,9 +1,9 @@
 import styled from 'styled-components'
-import { currentColor, defaultColor, disabledColor } from '../../common/constants'
+import {currentColor, defaultColor} from '../../common/constants'
 
 export const StyledButton = styled( 'button' )<{ fillColor?: string, textColor?: string }>`
   & {
-    padding: 12px 24px;
+    padding: 6px 24px;
     font-size: 16px;
     color: ${props => props.textColor || '#fff'};
     background-color: ${props => props.fillColor || currentColor};
@@ -20,7 +20,7 @@ export const StyledButton = styled( 'button' )<{ fillColor?: string, textColor?:
 
 export const Button = styled( 'button' )`
   & {
-    padding: 12px 32px;
+    padding: 6px 32px;
     font-size: 16px;
     color: #fff;
     background-color: ${currentColor};
@@ -41,7 +41,7 @@ export const Button = styled( 'button' )`
 
 export const LinkButton = styled( 'a' )`
   & {
-    padding: 12px 32px;
+    padding: 6px 32px;
     font-size: 16px;
     color: ${defaultColor};
     background-color: #fff;
@@ -64,7 +64,7 @@ export const LinkButton = styled( 'a' )`
 
 export const WhiteButton = styled( 'button' )`
   & {
-    padding: 12px 32px;
+    padding: 6px 32px;
     font-size: 16px;
     color: ${defaultColor};
     background-color: #fff;

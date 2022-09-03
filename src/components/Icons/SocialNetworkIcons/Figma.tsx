@@ -1,7 +1,7 @@
-import React, { FC } from 'react'
-import { FlexBlock, FlexBlockProps } from '../../LayoutComponents/FlexBlock'
-import { currentColor } from '../../../common/constants'
-import { IconProps } from '../Icons'
+import React, {FC} from 'react'
+import {FlexBlock, FlexBlockProps} from '../../LayoutComponents/FlexBlock'
+import {currentColor} from '../../../common/constants'
+import {IconProps} from '../Icons'
 
 export const FigmaLogoIcon: FC<IconProps & FlexBlockProps> = ( {
                                                                  size = 24,

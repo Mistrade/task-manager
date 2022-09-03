@@ -1,28 +1,33 @@
 import {
-  CalendarCurrentData,
-  CalendarCurrentDay,
-  CalendarCurrentMonth,
-  CalendarCurrentWeek,
-  CalendarCurrentYear, CalendarDisabledOptions,
-  CalendarItem,
-  CalendarMode, CalendarTaskItem,
-  CalendarTaskList, DateItem, EventItem, MonthItem,
-  SelectTaskItem,
-  TaskDate,
-  TaskMonth, TaskSetResult,
-  TaskStorage,
-  TaskTileClickArguments,
-  TaskYear, WeekItem, YearItem
+	CalendarCurrentDay,
+	CalendarCurrentMonth,
+	CalendarCurrentWeek,
+	CalendarCurrentYear,
+	CalendarDisabledOptions,
+	CalendarMode,
+	DateItem,
+	EventItem,
+	MonthItem,
+	SelectTaskItem,
+	TaskDate,
+	TaskMonth,
+	TaskSetResult,
+	TaskStorage,
+	TaskTileClickArguments,
+	TaskYear,
+	WeekItem,
+	YearItem
 } from '../components/Calendars/types'
 import dayjs from 'dayjs'
 import {
-  ChangeCurrentFnType, ChangeDayCurrentFn,
-  ChangeMonthCurrentFn,
-  ChangeMonthCurrentPattern,
-  ChangeWeekCurrentFn, ChangeYearCurrentFn, ShortChangeCurrentPattern
+	ChangeDayCurrentFn,
+	ChangeMonthCurrentFn,
+	ChangeWeekCurrentFn,
+	ChangeYearCurrentFn,
+	ShortChangeCurrentPattern
 } from './commonTypes'
-import { getHumanizeDateValue, MonthList, WeekDaysList, WeekDaysShortList } from './constants'
-import { getMonthDays, getWeekDays, getYearDays } from './calendarSupport/getters'
+import {getHumanizeDateValue, MonthList, WeekDaysList} from './constants'
+import {getMonthDays, getWeekDays, getYearDays} from './calendarSupport/getters'
 
 export const addNull = ( value: number ): string => value < 10 ? `0${value}` : value.toString()
 

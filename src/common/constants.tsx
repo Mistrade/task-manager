@@ -1,26 +1,36 @@
 import {
-  CalendarPriorityKeys, CalendarPriorityList,
-  CalendarTaskList,
-  DateItem,
-  MonthItem, TaskMembersListType, TaskStatusesType, TaskStatusInfo, TaskStorage, WeekItem, YearItem
+	CalendarPriorityKeys,
+	CalendarPriorityList,
+	CalendarTaskList,
+	DateItem,
+	MonthItem,
+	TaskMembersListType,
+	TaskStatusesType,
+	TaskStatusInfo,
+	WeekItem,
+	YearItem
 } from '../components/Calendars/types'
 import dayjs from 'dayjs'
-import { CompleteIcon, CreatedIcon, ProcessIcon, WaitIcon } from '../components/Icons/Icons'
+import {CompleteIcon, CreatedIcon, ProcessIcon, WaitIcon} from '../components/Icons/Icons'
+import {ErrorImagesType, InitialCurrentCalendarModeType} from "./types";
+import {SystemErrorImg} from "../components/Icons/Errors/SystemError";
+import {ErrorBadRequestImg} from "../components/Icons/Errors/ErrorBadRequest";
+import {ErrorForbiddenImg} from "../components/Icons/Errors/ErrorForbidden";
 
 export const MonthList = [
-  'Январь', 'Февраль', 'Март', 'Апрель', 'Май', 'Июнь', 'Июль', 'Август', 'Сентябрь', 'Октябрь', 'Ноябрь', 'Декабрь'
+	'Январь', 'Февраль', 'Март', 'Апрель', 'Май', 'Июнь', 'Июль', 'Август', 'Сентябрь', 'Октябрь', 'Ноябрь', 'Декабрь'
 ]
 
 export const DeclinationMonthList = [
-  'Января', 'Февраля', 'Марта', 'Апреля', 'Мая', 'Июня', 'Июля', 'Августа', 'Сентября', 'Октября', 'Ноября', 'Декабря'
+	'Января', 'Февраля', 'Марта', 'Апреля', 'Мая', 'Июня', 'Июля', 'Августа', 'Сентября', 'Октября', 'Ноября', 'Декабря'
 ]
 
 export const WeekDaysList = [
-  'Понедельник', 'Вторник', 'Среда', 'Четверг', 'Пятница', 'Суббота', 'Воскресенье'
+	'Понедельник', 'Вторник', 'Среда', 'Четверг', 'Пятница', 'Суббота', 'Воскресенье'
 ]
 
 export const WeekDaysShortList = [
-  'Пн', 'Вт', 'Ср', 'Чт', 'Пт', 'Сб', 'Вс'
+	'Пн', 'Вт', 'Ср', 'Чт', 'Пт', 'Сб', 'Вс'
 ]
 
 export const disabledColor = 'rgba(30,30,30,.1)'
@@ -32,54 +42,54 @@ export const darkColor = 'rgba(0, 0, 0, .6)'
 export const todayID = 'calendar-today'
 
 export const priorityColors: { [key in CalendarPriorityKeys]: string } = {
-  veryLow: defaultColor,
-  low: 'lightblue',
-  medium: currentColor,
-  high: 'orange',
-  veryHigh: 'red',
-  not_selected: currentColor
+	veryLow: defaultColor,
+	low: 'lightblue',
+	medium: currentColor,
+	high: 'orange',
+	veryHigh: 'red',
+	not_selected: currentColor
 }
 export const PRIORITY_TITLES: { [key in CalendarPriorityKeys]: string } = {
-  veryLow: 'Очень низкий',
-  low: 'Низкий',
-  medium: 'Средний',
-  high: 'Высокий',
-  veryHigh: 'Очень высокий',
-  not_selected: 'Не выбрано'
+	veryLow: 'Очень низкий',
+	low: 'Низкий',
+	medium: 'Средний',
+	high: 'Высокий',
+	veryHigh: 'Очень высокий',
+	not_selected: 'Не выбрано'
 }
 export const PRIORITY_LIST: CalendarPriorityList = [
-  { type: 'veryHigh', title: PRIORITY_TITLES.veryHigh },
-  { type: 'high', title: PRIORITY_TITLES.high },
-  { type: 'medium', title: PRIORITY_TITLES.medium },
-  { type: 'low', title: PRIORITY_TITLES.low },
-  { type: 'veryLow', title: PRIORITY_TITLES.veryLow }
+	{type: 'veryHigh', title: PRIORITY_TITLES.veryHigh},
+	{type: 'high', title: PRIORITY_TITLES.high},
+	{type: 'medium', title: PRIORITY_TITLES.medium},
+	{type: 'low', title: PRIORITY_TITLES.low},
+	{type: 'veryLow', title: PRIORITY_TITLES.veryLow}
 ]
 
 export const TASK_STATUSES: { [key in TaskStatusesType]: TaskStatusInfo } = {
-  created: {
-    value: false,
-    key: 'created',
-    title: 'Запланировано к выполнению',
-    icon: <CreatedIcon size={20}/>
-  },
-  in_progress: {
-    value: false,
-    key: 'in_progress',
-    title: 'В процессе выполнения',
-    icon: <ProcessIcon size={20}/>
-  },
-  review: {
-    value: false,
-    key: 'review',
-    title: 'Ожидает подтверждения',
-    icon: <WaitIcon size={20}/>
-  },
-  completed: {
-    value: true,
-    key: 'completed',
-    title: 'Выполнено',
-    icon: <CompleteIcon size={20}/>
-  }
+	created: {
+		value: false,
+		key: 'created',
+		title: 'Запланировано к выполнению',
+		icon: <CreatedIcon size={20}/>
+	},
+	in_progress: {
+		value: false,
+		key: 'in_progress',
+		title: 'В процессе выполнения',
+		icon: <ProcessIcon size={20}/>
+	},
+	review: {
+		value: false,
+		key: 'review',
+		title: 'Ожидает подтверждения',
+		icon: <WaitIcon size={20}/>
+	},
+	completed: {
+		value: true,
+		key: 'completed',
+		title: 'Выполнено',
+		icon: <CompleteIcon size={20}/>
+	}
 }
 
 export const DATE_RENDER_FORMAT = 'DD-MM-YYYY HH:mm'
@@ -87,73 +97,94 @@ export const DATE_HOURS_FORMAT = 'HH:mm'
 export const DEFAULT_TASK_STATUS: TaskStatusesType = 'created'
 export const DEFAULT_TASK_PRIORITY: CalendarPriorityKeys = 'medium'
 export const Members: TaskMembersListType = [
-  {
-    name: 'Владос',
-    surname: 'Валеев',
-    patronymic: 'Ринатович',
-    id: '1',
-    gender: 'man',
-    socialNetworks: [
-      {
-        networkName: 'vk',
-        link: 'https://vk.com/yudakov2014'
-      }
-    ]
-  }
+	{
+		name: 'Владос',
+		surname: 'Валеев',
+		patronymic: 'Ринатович',
+		id: '1',
+		gender: 'man',
+		socialNetworks: [
+			{
+				networkName: 'vk',
+				link: 'https://vk.com/yudakov2014'
+			}
+		]
+	}
 ]
 
-export const DAYJS_EVENT_FORMAT = 'DD-MM-YYYYTHH:mmZ'
-export let defaultTasksList: CalendarTaskList = [
-  {
-    id: '1',
-    type: 'event',
-    title: 'Завершить написание модального окна',
-    description: 'Необходимо завершить работу с модальным окном, чтобы информация по заданию выводилась корректно.',
-    createdAt: dayjs().utc().format(),
-    status: DEFAULT_TASK_STATUS,
-    priority: DEFAULT_TASK_PRIORITY,
-    time: dayjs( new Date( 2022, 5, 1, 12, 20 ) ).toDate(),
-    timeEnd: dayjs( new Date( 2022, 5, 22, 12, 20 ) ).add( 30, 'minute' ).toDate(),
-    members: Members,
-    link: null,
-    linkedFrom: ''
-  }
-]
+export const ERROR_IMAGES: ErrorImagesType = {
+	SYSTEM_ERROR: <SystemErrorImg/>,
+	BAD_REQUEST: <ErrorBadRequestImg/>,
+	ERR_FORBIDDEN: <ErrorForbiddenImg/>,
+	ERR_NOT_VALID_RESPONSE: <SystemErrorImg/>
+}
 
-export const getHumanizeDateValue = ( date: Date, withTime: boolean = true ) => {
-  return dayjs( date ).format( `DD ${DeclinationMonthList[ date.getMonth() ]} YYYY${withTime ? ' в HH:mm' : ''}` )
+export const getHumanizeDateValue = (date: Date, withTime: boolean = true) => {
+	return dayjs(date).format(`DD ${DeclinationMonthList[date.getMonth()]} YYYY${withTime ? ' в HH:mm' : ''}`)
 }
 
 export const defaultYearItem: YearItem = {
-  year: -1,
-  months: []
+	year: -1,
+	months: []
 }
 export const defaultMonthItem: MonthItem = {
-  monthOfYear: -1,
-  year: -1,
-  weeks: []
+	monthOfYear: -1,
+	year: -1,
+	weeks: []
 }
 export const defaultWeekItem: WeekItem = {
-  weekOfYear: -1,
-  month: -1,
-  year: -1,
-  days: []
+	weekOfYear: -1,
+	month: -1,
+	year: -1,
+	days: []
 }
 export const defaultDateItem: DateItem = {
-  current: {
-    date: new Date(),
-    layout: 'day'
-  },
-  settingPanel: {
-    monthItem: defaultMonthItem,
-    monthCurrent: {
-      layout: 'month',
-      month: -1,
-      year: -1
-    }
-  }
+	current: {
+		date: new Date(),
+		layout: 'day'
+	},
+	settingPanel: {
+		monthItem: defaultMonthItem,
+		monthCurrent: {
+			layout: 'month',
+			month: -1,
+			year: -1
+		}
+	}
 }
 
 export enum LS_KEYS {
-  'EVENTS' = 'events'
+	'EVENTS' = 'events'
 }
+
+export enum ERROR_DESCRIPTIONS {
+	'SUSPENSE' = 'Это может быть связано с нестабильным интернет-соединением или временной неполадкой.\nНе переживайте, мы уже работаем над этим.',
+}
+
+export enum ERROR_TITLES {
+	'SUSPENSE' = 'Не удалось загрузить запрашиваемый ресурс ленивой загрузки, попробуйте снова, позже...',
+	'CALENDAR_RENDER' = 'Произошла критическая ошибка рендера во время работы календаря.'
+}
+
+
+const currentDate = new Date()
+export const initialCurrentMap: InitialCurrentCalendarModeType = {
+	day: {
+		layout: 'day',
+		date: currentDate,
+	},
+	week: {
+		layout: 'week',
+		aroundDate: currentDate
+	},
+	month: {
+		layout: 'month',
+		year: currentDate.getFullYear(),
+		month: currentDate.getMonth()
+	},
+	year: {
+		layout: 'year',
+		year: currentDate.getFullYear()
+	}
+}
+

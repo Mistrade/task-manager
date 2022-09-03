@@ -1,9 +1,8 @@
-import { FC } from 'react'
-import { FlexBlock } from '../../LayoutComponents/FlexBlock'
-import { Arrow, DoubleArrow } from '../../Icons/Icons'
-import { SwitchCalendarMode } from '../Calendar.styled'
-import { ShortChangeCurrentPattern } from '../../../common/commonTypes'
-import { CalendarTodaySwitchersProps } from '../types'
+import {FC} from 'react'
+import {FlexBlock} from '../../LayoutComponents/FlexBlock'
+import {Arrow, DoubleArrow} from '../../Icons/Icons'
+import {SwitchCalendarMode} from '../Calendar.styled'
+import {CalendarTodaySwitchersProps} from '../types'
 
 
 export const CalendarTodaySwitchers: FC<CalendarTodaySwitchersProps> = ( { onChange } ) => {

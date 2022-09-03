@@ -1,12 +1,12 @@
-import { FC, useMemo } from 'react'
-import { PRIORITY_LIST, PRIORITY_TITLES } from '../../../../common/constants'
-import { SelectListContainer } from '../SelectListContainer'
-import { SelectItemContainer } from '../SelectItemContainer'
-import { CalendarPriorityKeys, CalendarPriorityList } from '../../../Calendars/types'
-import { FlexBlockProps } from '../../../LayoutComponents/FlexBlock'
-import { ArrowIndicator } from '../../../Calendars/Cell'
-import { SelectInput } from '../SelectInput'
-import { DefaultTextInputProps } from '../../TextInput'
+import {FC, useMemo} from 'react'
+import {PRIORITY_LIST, PRIORITY_TITLES} from '../../../../common/constants'
+import {SelectListContainer} from '../SelectListContainer'
+import {SelectItemContainer} from '../SelectItemContainer'
+import {CalendarPriorityKeys, CalendarPriorityList} from '../../../Calendars/types'
+import {FlexBlockProps} from '../../../LayoutComponents/FlexBlock'
+import {ArrowIndicator} from '../../../Calendars/Cell'
+import {SelectInput} from '../SelectInput'
+import {DefaultTextInputProps} from '../../TextInput'
 
 interface SelectPriorityInputProps extends Partial<Omit<DefaultTextInputProps, 'onChange'>> {
   selected: CalendarPriorityKeys | null,

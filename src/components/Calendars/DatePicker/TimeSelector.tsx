@@ -1,9 +1,9 @@
-import { FC, useCallback, useEffect, useMemo, useRef, useState } from 'react'
-import { FlexBlock } from '../../LayoutComponents/FlexBlock'
-import { addNull, generateHoursArray, generateMinuteArray } from '../../../common/functions'
-import { TimeSelectorButton } from '../Calendar.styled'
+import {FC, useCallback, useEffect, useMemo, useRef, useState} from 'react'
+import {FlexBlock} from '../../LayoutComponents/FlexBlock'
+import {addNull, generateHoursArray, generateMinuteArray} from '../../../common/functions'
+import {TimeSelectorButton} from '../Calendar.styled'
 import dayjs from 'dayjs'
-import { css } from 'styled-components'
+import {css} from 'styled-components'
 
 interface TimeSelectorProps {
   currentDate: Date,

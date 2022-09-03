@@ -1,8 +1,8 @@
-import React, { FC, ReactNode, useCallback, useRef, useState } from 'react'
-import { FlexBlock, FlexBlockProps } from '../../LayoutComponents/FlexBlock'
-import { DefaultTextInputProps, TextInput } from '../TextInput'
-import { css } from 'styled-components'
-import { defaultColor, disabledColor } from '../../../common/constants'
+import React, {ReactNode, useCallback, useRef, useState} from 'react'
+import {FlexBlock, FlexBlockProps} from '../../LayoutComponents/FlexBlock'
+import {DefaultTextInputProps, TextInput} from '../TextInput'
+import {css} from 'styled-components'
+import {defaultColor} from '../../../common/constants'
 
 type ExtendableFromTextInput = Omit<DefaultTextInputProps, 'children'>
 

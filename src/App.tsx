@@ -1,49 +1,45 @@
-import React, { useEffect } from 'react'
-import './App.css'
-import { createGlobalStyle, css } from 'styled-components'
+import React from 'react'
+import {createGlobalStyle, css} from 'styled-components'
 import './common/dayjs'
-import { Calendar } from './components/Calendars/Сalendar'
-import { FlexBlock } from './components/LayoutComponents/FlexBlock'
-import { defaultTasksList } from './common/constants'
-import { Provider } from 'react-redux'
-import { store } from './store'
-import dayjs from 'dayjs'
+import {FlexBlock} from './components/LayoutComponents/FlexBlock'
+import {MainHeader} from "./components/MainHeader/MainHeader";
+import {OnlyAuthRoutes} from "./components/AppRoutes/OnlyAuthRoutes";
+import {OnlyWithoutSessionRoutes} from "./components/AppRoutes/OnlyWithoutSessionRoutes";
+import {ToastContainer} from "react-toastify";
+import 'react-toastify/dist/ReactToastify.css';
+import {useConfirmSessionQuery} from "./store/api/sessionApi";
+import {Loader} from "./components/Loaders/Loader";
 
-const GlobalStyled = createGlobalStyle( {}, css`
+const GlobalStyled = createGlobalStyle({}, css`
   * {
     box-sizing: border-box;
     margin: 0;
     padding: 0;
+    font-family: "Helvetica Neue", sans-serif;
   }
-` )
+`)
 
 function App() {
-
-  useEffect( () => {
-    document.title = 'Онлайн планировщик дел'
-  }, [] )
-
-  return (
-    <Provider store={store}>
-      <div style={{ padding: 5 }}>
-        <GlobalStyled/>
-        <FlexBlock width={'100%'} justify={'flex-end'}>
-          <FlexBlock width={'80%'}>
-            <Calendar
-              taskList={defaultTasksList}
-              initialCurrent={{
-                layout: 'day',
-                date: new Date()
-              }}
-              disabledOptions={{}}
-              renderWeekPattern={'full'}
-            />
-          </FlexBlock>
-        </FlexBlock>
-      </div>
-    </Provider>
-
-  )
+	const {data: userInfo, isFetching, isError} = useConfirmSessionQuery()
+	
+	return (
+		<>
+			<Loader title={'Проверка сессии пользователя...'} isActive={isFetching}>
+				<FlexBlock width={'100%'} direction={'column'} minHeight={'100vh'} pb={24}>
+					<GlobalStyled/>
+					<MainHeader
+						userInfo={isError ? undefined : userInfo?.data}
+						msOptions={{
+							calendar: {renderWeekPattern: 'full'}
+						}}
+					/>
+					<OnlyAuthRoutes userInfo={isError ? undefined : userInfo?.data}/>
+					<OnlyWithoutSessionRoutes userInfo={isError ? undefined : userInfo?.data}/>
+				</FlexBlock>
+			</Loader>
+			<ToastContainer pauseOnHover={true} position={'top-right'} limit={3} newestOnTop={true}/>
+		</>
+	)
 }
 
 export default App

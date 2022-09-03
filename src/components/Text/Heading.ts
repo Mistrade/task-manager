@@ -1,5 +1,5 @@
 import styled from 'styled-components'
-import { darkColor, defaultColor } from '../../common/constants'
+import {darkColor} from '../../common/constants'
 
 export const Heading = {
   H1: styled( 'h1' )`

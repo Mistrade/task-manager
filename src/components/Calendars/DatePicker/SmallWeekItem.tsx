@@ -1,14 +1,14 @@
-import { FC, Fragment } from 'react'
-import { SmallDayItem } from './SmallDayItem'
-import { CalendarItem, MonthItem, SmallMonthCalendarWeekItemProps, TaskStorage } from '../types'
-
+import {FC, Fragment} from 'react'
+import {SmallDayItem} from './SmallDayItem'
+import {SmallMonthCalendarWeekItemProps} from '../types'
 
 
 export const SmallWeekItem: FC<SmallMonthCalendarWeekItemProps> = ( {
                                                                       monthItem,
                                                                       taskStorage,
                                                                       onSelectDate,
-                                                                      currentDate
+                                                                      currentDate,
+                                                                      includesTasks
                                                                     } ) => {
   return (
     <Fragment>
@@ -24,6 +24,7 @@ export const SmallWeekItem: FC<SmallMonthCalendarWeekItemProps> = ( {
               onSelectDate={onSelectDate}
               taskStorage={taskStorage}
               date={weekDay}
+              includesTasks={includesTasks}
               weekIndex={weekIndex}
             />
           ) )}

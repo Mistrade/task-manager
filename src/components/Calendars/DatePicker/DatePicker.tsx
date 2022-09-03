@@ -1,9 +1,9 @@
-import React, { FC } from 'react'
-import { DatePickerProps } from '../types'
-import { SelectListContainer } from '../../Input/SelectInput/SelectListContainer'
-import { DatePickerPaper } from './DatePickerPaper'
-import { getHumanizeDateValue } from '../../../common/constants'
-import { SelectInput } from '../../Input/SelectInput/SelectInput'
+import React, {FC} from 'react'
+import {DatePickerProps} from '../types'
+import {SelectListContainer} from '../../Input/SelectInput/SelectListContainer'
+import {DatePickerPaper} from './DatePickerPaper'
+import {getHumanizeDateValue} from '../../../common/constants'
+import {SelectInput} from '../../Input/SelectInput/SelectInput'
 
 
 export const DatePicker: FC<DatePickerProps> = ( {

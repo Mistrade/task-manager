@@ -1,28 +1,26 @@
-import styled, { css } from 'styled-components'
-import {
-  currentColor,
-  currentColorWithoutBlur,
-  defaultColor,
-  disabledColor
-} from '../../common/constants'
-import { pxToCssValue } from '../LayoutComponents/FlexBlock'
-import { OptionsTooltip } from './Tooltip'
+import styled, {css} from 'styled-components'
+import {currentColorWithoutBlur, defaultColor} from '../../common/constants'
+import {pxToCssValue} from '../LayoutComponents/FlexBlock'
+import {OptionsTooltip} from './Tooltip'
 
-export const TooltipWrapper = styled( 'span' )`
+export const TooltipWrapper = styled('span')`
   & {
     position: relative;
     cursor: pointer;
+    display: flex;
+    justify-content: center;
+    align-items: center;
   }
 `
 
 
-export const TooltipContent = styled( 'span' )<{ isVisible: boolean, left: number | string, top: number | string, opacity: number, placement: OptionsTooltip['placement'] }>`
+export const TooltipContent = styled('span')<{ isVisible: boolean, left: number | string, top: number | string, opacity: number, placement: OptionsTooltip['placement'] }>`
   & {
     display: flex;
     visibility: ${_ => _.isVisible ? 'visible' : 'hidden'};
     position: absolute;
-    top: ${_ => pxToCssValue( _.top )};
-    left: ${_ => pxToCssValue( _.left )};
+    top: ${_ => pxToCssValue(_.top)};
+    left: ${_ => pxToCssValue(_.left)};
     z-index: 10000;
     width: max-content;
     word-wrap: break-word;

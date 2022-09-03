@@ -1,9 +1,8 @@
-import { FC, ReactNode } from 'react'
-import { DefaultTextInputProps, TextInputProps } from '../TextInput'
-import { SelectInput } from './SelectInput'
-import { SelectListContainer } from './SelectListContainer'
-import { SelectItemContainer } from './SelectItemContainer'
-import { SelectBooleanInputDataItem } from '../../Calendars/types'
+import {TextInputProps} from '../TextInput'
+import {SelectInput} from './SelectInput'
+import {SelectListContainer} from './SelectListContainer'
+import {SelectItemContainer} from './SelectItemContainer'
+import {SelectBooleanInputDataItem} from '../../Calendars/types'
 
 interface SelectBooleanInputProps<T extends SelectBooleanInputDataItem> extends Omit<TextInputProps, 'onChange' | 'readOnly' | 'value'> {
   onChange?: ( data: T ) => void,

@@ -1,7 +1,7 @@
-import React, { FC } from 'react'
-import { IconProps } from '../Icons'
-import { FlexBlock, FlexBlockProps } from '../../LayoutComponents/FlexBlock'
-import { currentColor } from '../../../common/constants'
+import React, {FC} from 'react'
+import {IconProps} from '../Icons'
+import {FlexBlock, FlexBlockProps} from '../../LayoutComponents/FlexBlock'
+import {currentColor} from '../../../common/constants'
 
 export const ViberLogoIcon: FC<IconProps & FlexBlockProps> = ( {
                                                                  size = 24,

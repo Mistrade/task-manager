@@ -1,8 +1,8 @@
-import { FCWithChildren } from '../../Calendars/types'
-import { FlexBlock } from '../../LayoutComponents/FlexBlock'
-import { css } from 'styled-components'
-import { HoverElementMixin } from '../../../common/cssMixins'
-import { currentColor, defaultColor, hoverColor } from '../../../common/constants'
+import {FCWithChildren} from '../../Calendars/types'
+import {FlexBlock} from '../../LayoutComponents/FlexBlock'
+import {css} from 'styled-components'
+import {HoverElementMixin} from '../../../common/cssMixins'
+import {hoverColor} from '../../../common/constants'
 
 export const SelectItemContainer: FCWithChildren<{ onClick?: () => void, isSelected?: boolean }> = ( {
                                                                                                        onClick,

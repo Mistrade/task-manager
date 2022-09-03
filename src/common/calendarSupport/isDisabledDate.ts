@@ -1,4 +1,4 @@
-import { CalendarDisabledOptions } from '../../components/Calendars/types'
+import {CalendarDisabledOptions} from '../../components/Calendars/types'
 import dayjs from 'dayjs'
 
 export const checkMinDateIsDisabled = ( currentDate: Date, minDate?: CalendarDisabledOptions['min'], includeMin?: CalendarDisabledOptions['includeMin'] ): boolean => {
