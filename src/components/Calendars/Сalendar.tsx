@@ -1,7 +1,7 @@
 import {CalendarDisabledOptions, CalendarMode, CalendarProps, DateItem, MonthItem, WeekItem, YearItem} from './types'
 import React, {FC, useEffect, useState} from 'react'
 import {CurrentObserver} from '../../common/functions'
-import {useCalendar} from '../hooks/useCalendar'
+import {useCalendar} from '../../hooks/useCalendar'
 import {CalendarHeader} from './Header/CalendarHeader'
 import {TaskInfoModal} from './CalendarModals/TaskInfoModal'
 import {AddTaskModal} from './CalendarModals/AddTaskModal'
@@ -11,8 +11,8 @@ import {defaultDateItem, defaultMonthItem, defaultWeekItem, defaultYearItem, ERR
 import {Interceptor} from './Interceptor'
 import {useAppSelector} from '../../store/hooks/hooks'
 import {ErrorBoundary} from "../Errors/ErrorBoundary";
-import {InfinitySpin} from "react-loader-spinner";
 import {Loader} from "../Loaders/Loader";
+import {Route, Routes} from 'react-router-dom'
 
 const DayCalendar = React.lazy(() => import('./DayCalendar/DayCalendar').then(({DayCalendar}) => ({default: DayCalendar})))
 const WeekCalendar = React.lazy(() => import('./WeekCalendar/WeekCalendar').then(({WeeKCalendar}) => ({default: WeeKCalendar})))
@@ -24,8 +24,9 @@ export const Calendar: FC<CalendarProps> = ({
 																							layout,
 																							disabledOptions,
 																							renderWeekPattern = 'full',
+																							taskId
 																						}) => {
-	const calendar = useCalendar(layout)
+	const calendar = useCalendar()
 	
 	const [yearItem, setYearItem] = useState<YearItem>(defaultYearItem)
 	const [monthItem, setMonthItem] = useState<MonthItem>(defaultMonthItem)
@@ -74,12 +75,6 @@ export const Calendar: FC<CalendarProps> = ({
 					description={ERROR_TITLES['SUSPENSE']}
 					errorType={'SYSTEM_ERROR'}
 				>
-					
-					<CalendarHeader
-						current={calendar.current}
-						onChangeCurrent={calendar.onChangeCurrent}
-						renderWeekPattern={renderWeekPattern}
-					/>
 					<FlexBlock
 						position={'relative'}
 						pl={24}
@@ -95,7 +90,6 @@ export const Calendar: FC<CalendarProps> = ({
 								<React.Suspense fallback={<Loader title={'Загружаем ваш календарь, секундочку...'} isActive={true}/>}>
 									<YearCalendar
 										yearItem={yearItem}
-										current={calendar.current}
 										taskStorage={taskStorage}
 										onChangeCurrent={calendar.onChangeCurrent}
 									/>
@@ -157,10 +151,16 @@ export const Calendar: FC<CalendarProps> = ({
 						date={calendar.addTaskDate}
 						onClose={() => calendar.setAddTaskDate(null)}
 					/>
-					<TaskInfoModal
-						selectedTask={calendar.selectedTask}
-						onClose={() => calendar.setSelectedTask(null)}
-					/>
+					<Routes>
+						<Route
+							path={':taskId'}
+							element={
+								<TaskInfoModal
+									onClose={() => calendar.onCloseTaskInfo()}
+								/>
+							}
+						/>
+					</Routes>
 				</ErrorBoundary>
 			</FlexBlock>
 		</>

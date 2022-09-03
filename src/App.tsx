@@ -1,17 +1,14 @@
-import React, {useEffect} from 'react'
+import React from 'react'
 import {createGlobalStyle, css} from 'styled-components'
 import './common/dayjs'
-import {Calendar} from './components/Calendars/Сalendar'
 import {FlexBlock} from './components/LayoutComponents/FlexBlock'
-import {Provider} from 'react-redux'
-import {store} from './store'
-import {Registration} from "./components/Session/Registration";
-import {BrowserRouter, Routes, useNavigate} from "react-router-dom";
-import {Navigate, Route} from "react-router";
-import {AuthorizationForm} from "./components/Session/AuthorizationForm";
-import {useAppDispatch, useAppSelector} from "./store/hooks/hooks";
-import {CheckUserSession} from "./store/thunk/session";
-import {CalendarMain} from "./components/Calendars";
+import {MainHeader} from "./components/MainHeader/MainHeader";
+import {OnlyAuthRoutes} from "./components/AppRoutes/OnlyAuthRoutes";
+import {OnlyWithoutSessionRoutes} from "./components/AppRoutes/OnlyWithoutSessionRoutes";
+import {ToastContainer} from "react-toastify";
+import 'react-toastify/dist/ReactToastify.css';
+import {useConfirmSessionQuery} from "./store/api/sessionApi";
+import {Loader} from "./components/Loaders/Loader";
 
 const GlobalStyled = createGlobalStyle({}, css`
   * {
@@ -23,49 +20,25 @@ const GlobalStyled = createGlobalStyle({}, css`
 `)
 
 function App() {
-	const dispatch = useAppDispatch()
-	const navigate = useNavigate()
-	useEffect(() => {
-		document.title = 'Онлайн планировщик дел'
-		dispatch(CheckUserSession())
-			.then(r => {
-				if (!r.payload) {
-					navigate('/session/login', {replace: true})
-				}
-			})
-	}, [])
-	
-	const isAuth = useAppSelector(state => state.session.isAuth)
+	const {data: userInfo, isFetching, isError} = useConfirmSessionQuery()
 	
 	return (
-		<FlexBlock width={'100%'}>
-			<GlobalStyled/>
-			<Routes>
-				<Route
-					path={'session/registration'}
-					element={<Registration/>}
-				/>
-				<Route
-					path={'session/login'}
-					element={<AuthorizationForm/>}
-				/>
-				{isAuth && (
-					<Route
-						path={'calendar'}
-					>
-						<Route
-							index
-							element={<Navigate to={'/calendar/day'}/>}
-						/>
-						<Route
-							path={':layout'}
-							element={<CalendarMain/>}
-						/>
-					</Route>
-				)}
-			</Routes>
-		
-		</FlexBlock>
+		<>
+			<Loader title={'Проверка сессии пользователя...'} isActive={isFetching}>
+				<FlexBlock width={'100%'} direction={'column'} minHeight={'100vh'} pb={24}>
+					<GlobalStyled/>
+					<MainHeader
+						userInfo={isError ? undefined : userInfo?.data}
+						msOptions={{
+							calendar: {renderWeekPattern: 'full'}
+						}}
+					/>
+					<OnlyAuthRoutes userInfo={isError ? undefined : userInfo?.data}/>
+					<OnlyWithoutSessionRoutes userInfo={isError ? undefined : userInfo?.data}/>
+				</FlexBlock>
+			</Loader>
+			<ToastContainer pauseOnHover={true} position={'top-right'} limit={3} newestOnTop={true}/>
+		</>
 	)
 }
 

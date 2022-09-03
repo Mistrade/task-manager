@@ -22,7 +22,7 @@ import {CompleteIcon, CreatedIcon} from '../../Icons/Icons'
 import {Button, StyledButton} from '../../Buttons/Buttons.styled'
 import {SelectLinks} from '../../Input/SelectInput/CalendarSelectInputs/SelectLinks'
 import {Tooltip} from '../../Tooltip/Tooltip'
-import {useAddTaskMutation} from "../../../store/api";
+import {useAddTaskMutation} from "../../../store/api/taskApi";
 
 interface AddTaskFormProps {
 	onComplete?: (data: CalendarTaskItem) => void,
@@ -82,23 +82,25 @@ export const AddTaskForm: FC<AddTaskFormProps> = ({date, onComplete, onCancel}) 
 	return (
 		<form onSubmit={formik.handleSubmit} style={{width: '100%'}}>
 			<FlexBlock direction={'column'} p={'12px 20px 0px 20px'}>
-				<TextInput
-					inputId={'task__title'}
-					tooltip={
-						<Tooltip
-							text={'Название отображается на доске заданий'}
-							size={20}
-						/>
-					}
-					containerProps={{mb: 12}}
-					onChange={(e) => formik.setFieldValue('title', e.target.value)}
-					onFocus={(e) => !formik.touched.title && formik.setFieldTouched('title', true)}
-					errorMessage={formik.errors.title}
-					isDirty={formik.touched.title}
-					value={formik.values.title || ''}
-					label={'Укажите название'}
-					placeholder={'Позвонить заказчику'}
-				/>
+				<FlexBlock mb={12} gap={12}>
+					<TextInput
+						inputId={'task__title'}
+						tooltip={
+							<Tooltip
+								text={'Название отображается на доске заданий'}
+								size={20}
+							/>
+						}
+						onChange={(e) => formik.setFieldValue('title', e.target.value)}
+						onFocus={(e) => !formik.touched.title && formik.setFieldTouched('title', true)}
+						errorMessage={formik.errors.title}
+						isDirty={formik.touched.title}
+						value={formik.values.title || ''}
+						label={'Укажите название'}
+						placeholder={'Позвонить заказчику'}
+					/>
+					<div style={{width: '100%'}}/>
+				</FlexBlock>
 				<FlexBlock mb={12} wrap={'nowrap'} width={'100%'}>
 					<SelectLinks
 						inputId={'select__link'}
@@ -114,28 +116,28 @@ export const AddTaskForm: FC<AddTaskFormProps> = ({date, onComplete, onCancel}) 
 						}}
 					/>
 				</FlexBlock>
-				<SelectPriorityInput
-					inputId={'task__priority'}
-					tooltip={
-						<Tooltip
-							text={'Приоритет события обозначает важность его выполнения'}
-							size={20}
-						/>
-					}
-					containerProps={{mb: 12}}
-					selected={formik.values.priority || 'medium'}
-					onChange={(key) => formik.setFieldValue('priority' as keyof CalendarTaskItem, key as CalendarTaskItem['priority'])}
-					onFocus={() => !formik.touched.priority && formik.setFieldTouched('priority', true)}
-				/>
-				<SelectBooleanInput
-					containerProps={{mb: 12}}
-					label={'Укажите статус'}
-					inputId={'select_status'}
-					data={Object.values(TASK_STATUSES)}
-					selected={TASK_STATUSES[formik.values.status || 'created']}
-					onChange={(data) => formik.setFieldValue('status', data.key)}
-					onFocus={() => !formik.touched.status && formik.setFieldTouched('status', true)}
-				/>
+				<FlexBlock mb={12} gap={12}>
+					<SelectPriorityInput
+						inputId={'task__priority'}
+						tooltip={
+							<Tooltip
+								text={'Приоритет события обозначает важность его выполнения'}
+								size={14}
+							/>
+						}
+						selected={formik.values.priority || 'medium'}
+						onChange={(key) => formik.setFieldValue('priority' as keyof CalendarTaskItem, key as CalendarTaskItem['priority'])}
+						onFocus={() => !formik.touched.priority && formik.setFieldTouched('priority', true)}
+					/>
+					<SelectBooleanInput
+						label={'Укажите статус'}
+						inputId={'select_status'}
+						data={Object.values(TASK_STATUSES)}
+						selected={TASK_STATUSES[formik.values.status || 'created']}
+						onChange={(data) => formik.setFieldValue('status', data.key)}
+						onFocus={() => !formik.touched.status && formik.setFieldTouched('status', true)}
+					/>
+				</FlexBlock>
 				<FlexBlock mb={12} gap={12} direction={'row'}>
 					<SelectInput
 						inputId={'start__date'}

@@ -16,8 +16,8 @@ import {NotFoundIcon} from '../../Icons/Icons'
 import {Button, JoinToEventButton} from '../../Buttons/Buttons.styled'
 import {useFormik} from 'formik'
 import {EventFilter, EventFilterOnChangeHandle} from './EventFilter'
-import {useGetTasksAtDayQuery, useRemoveTaskMutation} from "../../../store/api";
-import {useDebounce} from "../../hooks/useDebounce";
+import {ShortEventItem, useGetTasksAtDayQuery, useRemoveTaskMutation} from "../../../store/api/taskApi";
+import {useDebounce} from "../../../hooks/useDebounce";
 import {Loader} from "../../Loaders/Loader";
 
 interface DayTaskListProps extends GlobalTaskListProps {
@@ -28,11 +28,12 @@ interface DayTaskListProps extends GlobalTaskListProps {
 
 export interface NotFoundTaskProps extends Omit<GlobalTaskListProps, 'renderTaskCount'> {
 	day: CalendarItem,
-	text?: ReactNode
+	text?: ReactNode,
+	actions?: ReactNode
 }
 
 interface DayTaskItemProps {
-	taskInfo: EventItem,
+	taskInfo: ShortEventItem,
 	tabIndex: number
 	onSelectTask?: OnSelectTaskFnType,
 	day: CalendarItem,
@@ -66,7 +67,7 @@ const NotFoundTitle = styled('h2')`
   }
 `
 
-export const NotFoundTask: FC<NotFoundTaskProps> = ({onAddTask, day, text}) => {
+export const NotFoundTask: FC<NotFoundTaskProps> = ({onAddTask, day, text, actions}) => {
 	return (
 		<FlexBlock
 			height={400}
@@ -82,11 +83,14 @@ export const NotFoundTask: FC<NotFoundTaskProps> = ({onAddTask, day, text}) => {
 			<NotFoundTitle>
 				{text || <>Событий, назначенных на текущую дату,<br/> не найдено</>}
 			</NotFoundTitle>
-			<Button
-				onClick={() => onAddTask && day && onAddTask(day)}
-			>
-				Добавить событие
-			</Button>
+			<FlexBlock direction={'column'} gap={16}>
+				<Button
+					onClick={() => onAddTask && day && onAddTask(day)}
+				>
+					Добавить событие
+				</Button>
+				{actions}
+			</FlexBlock>
 		</FlexBlock>
 	)
 }
@@ -113,6 +117,7 @@ export const DayTaskList: FC<DayTaskListProps> = ({
 																										onAddTask
 																									}) => {
 	const [filters, setFilters] = useState<DayTaskListFilters>(initialFiltersValues(day.value))
+	
 	const debounceValue = useDebounce(filters, 300)
 	
 	const changeFiltersStateHandler = <T extends keyof DayTaskListFilters>(fieldName: T, value: DayTaskListFilters[T]) => {
@@ -147,8 +152,13 @@ export const DayTaskList: FC<DayTaskListProps> = ({
 	const [removeTask, {isSuccess: isRemoveSuccess, isError: isRemoveError}] = useRemoveTaskMutation()
 	
 	useEffect(() => {
+		clearFiltersHandle()
+	}, [day.value])
+	
+	const clearFiltersHandle = useCallback(() => {
 		setFilters(initialFiltersValues(day.value))
-	}, [day])
+	}, [day.value])
+	
 	
 	return (
 		<FlexBlock
@@ -187,7 +197,7 @@ export const DayTaskList: FC<DayTaskListProps> = ({
 			
 			</FlexBlock>
 			<Loader
-				title={'Загружаем ваши события...'}
+				title={'Обновляем список событий...'}
 				isActive={isLoading || isFetching}
 			>
 				{isSuccess ? (
@@ -196,7 +206,7 @@ export const DayTaskList: FC<DayTaskListProps> = ({
 							<FlexBlock direction={'column'} width={'100%'} height={'max-content'} pt={4}>
 								{data.map((task, index) => (
 									<DayTaskItem
-										key={task.createdAt.toString() + index}
+										key={task.time.toString() + index}
 										taskInfo={task}
 										day={day}
 										tabIndex={index + 1}
@@ -209,19 +219,13 @@ export const DayTaskList: FC<DayTaskListProps> = ({
 							<NotFoundTask
 								onAddTask={onAddTask}
 								day={day}
-								text={<>
-									Событий по указанным фильтрам<br/>не найдено!
-								</>}
+								text={<>Событий по указанным фильтрам<br/>не найдено!</>}
+								actions={<Button onClick={clearFiltersHandle}>Очистить фильтры</Button>}
 							/>
 						)}
 					</>
-				) : (
-					<>
-						{'Произошла ошибка на сервере'}
-					</>
-				)}
+				) : <></>}
 			</Loader>
-		
 		</FlexBlock>
 	)
 }
@@ -232,10 +236,7 @@ export const DayTaskItem: FC<DayTaskItemProps> = ({taskInfo, tabIndex, onSelectT
 	
 	const setTaskInfo = useCallback(() => {
 		if (onSelectTask) {
-			onSelectTask({
-				date: day,
-				taskInfo
-			})
+			onSelectTask(taskInfo.id)
 		}
 	}, [onSelectTask, taskInfo, day])
 	

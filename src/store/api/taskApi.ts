@@ -1,5 +1,5 @@
 import {createApi, fetchBaseQuery} from "@reduxjs/toolkit/dist/query/react";
-import {CalendarPriorityKeys, EventItem} from "../components/Calendars/types";
+import {CalendarPriorityKeys, EventItem} from "../../components/Calendars/types";
 
 interface GetTaskQueryProps {
 	limit?: number,
@@ -15,16 +15,16 @@ export type GetTaskSchemeResponse = {
 	[key: string]: boolean | undefined
 }
 
-type ErrorTypes = 'NOT_VALID_REQUEST' | 'NOT_FOUND' | 'UNKNOWN_SERVER_ERROR' | 'UNKNOWN_USER'
+type ErrorTypes = 'info' | 'success' | 'warning' | 'error' | 'default'
 
 interface ServerErrorType {
 	message: string,
 	type: ErrorTypes
 }
 
-interface ServerResponse<T> {
-	data: T | null,
-	error: ServerErrorType
+export interface ServerResponse<T = null> {
+	data?: T | null,
+	info?: ServerErrorType
 }
 
 interface GetTaskAtDayResult {
@@ -32,17 +32,28 @@ interface GetTaskAtDayResult {
 	errorMessage?: string
 }
 
+export type ShortEventItem = Pick<EventItem, 'title' | 'time' | 'timeEnd' | 'link' | 'id' | 'priority' | 'description' | 'status'>
+
 export const taskApi = createApi({
 	reducerPath: 'taskApi',
-	tagTypes: ['Tasks'],
+	tagTypes: ['Tasks', 'TaskInfo'],
 	baseQuery: fetchBaseQuery({
 		baseUrl: 'http://localhost:9090/api/events',
 		credentials: 'include',
+		cache: 'no-cache'
 	}),
 	endpoints(build) {
 		return {
+			getTaskInfo: build
+				.query<ServerResponse<EventItem>, string>({
+					query: (id: string) => ({
+						url: `/taskInfo/${id}`,
+						method: 'GET'
+					}),
+					providesTags: ['TaskInfo']
+				}),
 			getTasksAtDay: build
-				.query<Array<EventItem>, GetTaskQueryProps>({
+				.query<Array<ShortEventItem>, GetTaskQueryProps>({
 					query: (props) => ({
 						url: `/getTaskAtDay`,
 						method: 'POST',
@@ -76,14 +87,14 @@ export const taskApi = createApi({
 						body: args,
 					}),
 					transformResponse: (baseQueryReturnValue: ServerResponse<GetTaskSchemeResponse>, meta, arg): GetTaskSchemeResponse => {
-						if (!baseQueryReturnValue.data || baseQueryReturnValue.error) {
+						if (!baseQueryReturnValue.data || baseQueryReturnValue?.info?.type === 'error') {
 							return {}
 						}
 						
-						return baseQueryReturnValue.data
+						return baseQueryReturnValue.data || {}
 					},
 					providesTags: ['Tasks']
-				})
+				}),
 		}
 	}
 })
@@ -93,5 +104,6 @@ export const {
 	useLazyGetTasksAtDayQuery,
 	useAddTaskMutation,
 	useRemoveTaskMutation,
-	useGetTaskSchemeQuery
+	useGetTaskSchemeQuery,
+	useLazyGetTaskInfoQuery
 } = taskApi

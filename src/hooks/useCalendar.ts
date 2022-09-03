@@ -2,16 +2,16 @@ import {
 	AddTaskDateType,
 	CalendarMode,
 	OnAddTaskFnType,
-	OnChangeCurrentFnType,
+	OnChangeCurrentFnType, OnCloseTaskInfoFnType,
 	OnSelectTaskFnType,
 	SelectedTaskType
-} from '../Calendars/types'
+} from '../components/Calendars/types'
 import React, {useCallback, useState} from 'react'
-import {useAppDispatch, useAppSelector} from "../../store/hooks/hooks";
-import {Nullable} from "../../types";
-import {changeCalendarCurrent} from "../../store/reducers/calendar";
-import {ChangeCurrentFnType} from "../../common/commonTypes";
-import {useCalendarCurrentSelector} from "../../store/selectors/calendarItems";
+import {useAppDispatch, useAppSelector} from "../store/hooks/hooks";
+import {Nullable} from "../types";
+import {changeCalendarCurrent} from "../store/reducers/calendar";
+import {ChangeCurrentFnType} from "../common/commonTypes";
+import {CalendarCurrentSelector} from "../store/selectors/calendarItems";
 import {useNavigate} from "react-router-dom";
 
 interface Returned {
@@ -22,35 +22,37 @@ interface Returned {
 	setAddTaskDate: React.Dispatch<React.SetStateAction<AddTaskDateType>>,
 	onSelectTask: OnSelectTaskFnType,
 	onAddTask: OnAddTaskFnType,
-	onChangeCurrent: OnChangeCurrentFnType
+	onChangeCurrent: OnChangeCurrentFnType,
+	onCloseTaskInfo: OnCloseTaskInfoFnType
 }
 
-export type UseCalendarType = (layout?: CalendarMode['layout']) => Returned
+export type UseCalendarType = () => Returned
 
-export const useCalendar: UseCalendarType = (layout) => {
+export const useCalendar: UseCalendarType = () => {
 	
-	const current = useAppSelector(useCalendarCurrentSelector)
+	const current = useAppSelector(CalendarCurrentSelector)
 	const navigate = useNavigate()
 	
 	const [selectedTask, setSelectedTask] = useState<SelectedTaskType>(null)
 	const [addTaskDate, setAddTaskDate] = useState<AddTaskDateType>(null)
 	const dispatch = useAppDispatch()
-	const onSelectTask: OnSelectTaskFnType = useCallback((data) => {
-		setSelectedTask({...data})
-	}, [setSelectedTask])
+	
+	const onSelectTask: OnSelectTaskFnType = useCallback((taskId: string) => {
+		navigate(`/calendar/${current.layout}/${taskId}`)
+	}, [setSelectedTask, current.layout])
 	
 	const onAddTask: OnAddTaskFnType = useCallback((date) => {
 		setAddTaskDate(date)
 	}, [setAddTaskDate])
 	
 	const onChangeCurrent = useCallback((date: Date, l: CalendarMode['layout']) => {
-		
-		// if (l !== layout && layout) {
 		navigate(`/calendar/${l}`, {replace: true})
-		// }
-		
 		dispatch(changeCalendarCurrent({layout: l, date: date.toString()}))
 	}, [])
+	
+	const onCloseTaskInfo = useCallback(() => {
+		navigate(`/calendar/${current.layout}`, {replace: true})
+	}, [current.layout])
 	
 	return {
 		current,
@@ -60,6 +62,7 @@ export const useCalendar: UseCalendarType = (layout) => {
 		setAddTaskDate,
 		onSelectTask,
 		onAddTask,
-		onChangeCurrent
+		onChangeCurrent,
+		onCloseTaskInfo
 	}
 }

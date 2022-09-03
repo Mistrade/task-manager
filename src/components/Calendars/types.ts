@@ -3,7 +3,7 @@ import {ShortChangeCurrentPattern} from '../../common/commonTypes'
 import {OnSelectDateFromCalendarFn} from './DatePicker/SmallMonthCalendar'
 import {FlexBlockProps} from '../LayoutComponents/FlexBlock'
 import {DefaultTextInputProps} from '../Input/TextInput'
-import {GetTaskSchemeResponse} from "../../store/api";
+import {GetTaskSchemeResponse} from "../../store/api/taskApi";
 
 export type FCWithChildren<T = any> = FC<{ children?: ReactNode } & T>
 
@@ -24,6 +24,7 @@ export interface DatePickerProps {
 }
 
 export interface CalendarProps {
+	taskId?: string,
 	layout: CalendarMode['layout'],
 	disabledOptions?: CalendarDisabledOptions,
 	renderWeekPattern?: RenderWeekPattern,
@@ -38,7 +39,6 @@ export interface GlobalTaskListProps {
 export interface YearCalendarProps {
 	yearItem: YearItem,
 	taskStorage?: TaskStorage,
-	current: CalendarMode,
 	onChangeCurrent?: OnChangeCurrentFnType
 }
 
@@ -46,7 +46,7 @@ export interface MonthCalendarProps extends GlobalTaskListProps {
 	onChangeCurrent?: OnChangeCurrentFnType
 	monthItem: MonthItem,
 	current: CalendarMode,
-	onSelectTask?: (data: TaskTileClickArguments) => any,
+	onSelectTask?: OnSelectTaskFnType,
 	renderWeekPattern?: RenderWeekPattern,
 	taskStorage?: TaskStorage
 }
@@ -58,26 +58,26 @@ export interface WeekCalendarProps extends Omit<MonthCalendarProps, 'monthItem' 
 export interface DayCalendarProps extends GlobalTaskListProps {
 	onChangeCurrent?: OnChangeCurrentFnType,
 	dateItem: DateItem,
-	onSelectTask?: (data: TaskTileClickArguments) => any,
+	onSelectTask?: OnSelectTaskFnType,
 	renderWeekPattern?: RenderWeekPattern,
 	taskStorage?: TaskStorage,
 }
 
-export type CalendarHeaderProps = Pick<MonthCalendarProps, 'current' | 'onChangeCurrent' | 'renderWeekPattern'>
+export type CalendarHeaderProps = Pick<MonthCalendarProps, 'renderWeekPattern'>
 export type CalendarHeaderWeekListProps = Pick<MonthCalendarProps, 'renderWeekPattern' | 'current'>
 export type RenderTaskCountType = number | 'all'
 
 export interface CalendarCellProps extends GlobalTaskListProps {
 	value: CalendarItem,
 	tasks?: Array<EventItem>,
-	onSelectTask?: (data: TaskTileClickArguments) => any,
+	onSelectTask?: OnSelectTaskFnType,
 	onClickToDate?: (date: CalendarItem) => void
 }
 
 export interface TaskTileListProps extends GlobalTaskListProps {
 	tasks?: Array<EventItem>,
 	date: CalendarItem,
-	onSelect?: (data: TaskTileClickArguments) => any,
+	onSelect?: OnSelectTaskFnType,
 }
 
 export interface TaskTileItemProps {
@@ -92,7 +92,7 @@ export interface TaskTilePriorityIndicatorProps {
 }
 
 export interface CalendarHeaderSwitchersProps {
-	current: CalendarMode,
+	layout?: CalendarMode['layout']
 	onChange: (newLayout: CalendarMode['layout']) => void
 }
 
@@ -235,7 +235,33 @@ export interface EventLinkItem {
 export type EventItem = Omit<CalendarTaskItem, 'time' | 'timeEnd'> & {
 	time: string,
 	timeEnd: string,
+	lastChange: string,
+	history: Array<EventHistoryItem>
 }
+
+export type EventHistoryFields = Omit<EventItem, '_id' | 'linkedFrom' | 'userId' | 'lastChange' | 'history'>
+
+export interface EventHistoryItem<T extends keyof EventHistoryFields = keyof EventHistoryFields> {
+	date: string,
+	field: T,
+	description: string,
+	userId: UserModel,
+	oldValue: EventHistoryFields[T],
+	newValue: EventHistoryFields[T]
+}
+
+export interface UserModel {
+	_id: string,
+	email?: string,
+	phone: string,
+	name: string,
+	surname: string,
+	patronymic?: string,
+	created: string,
+	lastUpdate?: string,
+	password: string
+}
+
 
 export interface SelectBooleanInputDataItem {
 	value: boolean,
@@ -286,15 +312,14 @@ export type CalendarTaskList = Array<CalendarTaskItem>
 export type SelectTaskItem = Omit<TaskTileClickArguments, 'event'>
 
 export interface TaskInformerProps {
-	taskItem: SelectTaskItem | null
+	taskItem: EventItem | null
 }
 
 export type TaskInformerMainProps = {
-	taskItem: SelectTaskItem
+	taskItem: EventItem
 }
 
 export interface TaskInfoModalProps {
-	selectedTask: SelectTaskItem | null,
 	onClose: () => void
 }
 
@@ -342,8 +367,9 @@ export interface DateSettingPanelOptions {
 }
 
 
+export type OnCloseTaskInfoFnType = () => void
 export type OnAddTaskFnType = (date: CalendarItem) => void
 export type OnChangeCurrentFnType = (date: Date, layout: CalendarMode['layout']) => void
-export type OnSelectTaskFnType = (data: TaskTileClickArguments) => any
+export type OnSelectTaskFnType = (taskId: string) => any
 export type AddTaskDateType = CalendarItem | null
 export type SelectedTaskType = SelectTaskItem | null

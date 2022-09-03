@@ -11,24 +11,25 @@ import {Tooltip} from '../../Tooltip/Tooltip'
 import {useNavigate} from "react-router-dom";
 import {disabledColor} from "../../../common/constants";
 import {css} from "styled-components";
+import {useCalendar} from "../../../hooks/useCalendar";
+import {useParams} from "react-router";
 
 
 export const CalendarHeader: FC<CalendarHeaderProps> = ({
-																													current,
-																													onChangeCurrent,
 																													renderWeekPattern
 																												}) => {
+	const {layout} = useParams<{ layout?: CalendarMode['layout'] }>()
+	const {current, onChangeCurrent} = useCalendar()
+	
 	const title: string = useMemo(() => {
 		return getCalendarTitle(current)
 	}, [current])
+	
 	const navigate = useNavigate()
+	
 	const onChangeCurrentHandler = useCallback((pattern: ShortChangeCurrentPattern = 'today') => {
 		onChangeCurrent && onChangeCurrent(changeCurrentModeHandler(current, pattern), current.layout)
 	}, [current, onChangeCurrent])
-	
-	// const onChangeCurrentLayoutHandler = useCallback( ( newLayout: CalendarMode['layout'] ) => {
-	//   onChangeCurrent && onChangeCurrent( new Date(), newLayout )
-	// }, [current, onChangeCurrent] )
 	
 	const onChangeCurrentLayoutHandler = useCallback((newLayout: CalendarMode["layout"]) => {
 		navigate(`/calendar/${newLayout}`, {replace: true})
@@ -41,45 +42,31 @@ export const CalendarHeader: FC<CalendarHeaderProps> = ({
 			className={'Calendar__header'}
 			direction={'column'}
 			width={'100%'}
+			height={'fit-content'}
 			maxHeight={200}
-			minHeight={70}
-			pl={24}
-			pt={24}
-			pr={24}
-			pb={16}
-			bgColor={'#fff'}
-			borderBottom={`1px solid ${disabledColor}`}
-			additionalCss={css`
-        box-shadow: 0px 5px 5px ${disabledColor};
-        z-index: 5;
-			`}
+			flex={'1 0 auto'}
 		>
 			<FlexBlock
 				width={'100%'}
 				justify={'space-between'}
 				align={'center'}
-				mb={16}
+				mb={current.layout === 'day' || current.layout === 'year' ? 0 : 12}
 			>
 				<FlexBlock flex={'0 0 33.3%'} justify={'flex-start'} align={'center'}>
-					<Tooltip
-						text={'Текущий выбранный период дат, нажмите чтобы перейти к "Сегодня"'}
-						placement={'right'}
-					>
-						<CalendarTitle onClick={() => onChangeCurrentHandler('today')}>
-							{title}
-						</CalendarTitle>
-					</Tooltip>
+					<CalendarTitle onClick={() => onChangeCurrentHandler('today')}>
+						{title}
+					</CalendarTitle>
 				</FlexBlock>
-				<FlexBlock flex={'1 1 33.3%'} maxWidth={400} justify={'center'} align={'center'}>
+				<FlexBlock flex={'1 1 auto'} justify={'center'} align={'center'}>
 					<CalendarModeSwitchers
-						current={current}
+						layout={layout}
 						onChange={onChangeCurrentLayoutHandler}
 					/>
-				</FlexBlock>
-				<FlexBlock flex={'1 0 33.3%'} justify={'flex-end'} align={'center'}>
+					{/*<FlexBlock flex={'1 0 33.3%'} justify={'flex-end'} align={'center'}>*/}
 					<CalendarTodaySwitchers
 						onChange={onChangeCurrentHandler}
 					/>
+					{/*</FlexBlock>*/}
 				</FlexBlock>
 			</FlexBlock>
 			<CalendarHeaderWeekList renderWeekPattern={renderWeekPattern} current={current}/>

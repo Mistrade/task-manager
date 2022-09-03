@@ -53,7 +53,8 @@ export const ErrorScreen: FC<ErrorScreenProps> = ({
 						fontSize: 18,
 						lineHeight: 1.5,
 						textAlign: 'center',
-						color: defaultColor
+						color: defaultColor,
+						whiteSpace: 'pre-wrap'
 					}}
 				>
 					{description}

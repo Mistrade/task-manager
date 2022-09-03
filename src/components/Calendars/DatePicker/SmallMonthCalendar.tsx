@@ -13,7 +13,7 @@ import {currentColor, defaultColor, MonthList, WeekDaysShortList} from '../../..
 import {FlexBlock, pxToCssValue, UnitsType} from '../../LayoutComponents/FlexBlock'
 import dayjs from 'dayjs'
 import {SmallWeekItem} from './SmallWeekItem'
-import {GetTaskSchemeResponse} from "../../../store/api";
+import {GetTaskSchemeResponse} from "../../../store/api/taskApi";
 
 interface SmallCalendarProps extends Pick<StyledProps, 'cellSize'> {
 	current: CalendarCurrentMonth,

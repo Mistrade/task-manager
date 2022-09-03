@@ -9,7 +9,7 @@ import {SmallCalendarMonthTitle} from '../DatePicker/SmallCalendarMonthTitle'
 import dayjs from 'dayjs'
 import {dateToCalendarItem} from '../../../common/calendarSupport/generators'
 import {Tooltip} from '../../Tooltip/Tooltip'
-import {GetTaskSchemeRequest, useGetTaskSchemeQuery} from "../../../store/api";
+import {GetTaskSchemeRequest, useGetTaskSchemeQuery} from "../../../store/api/taskApi";
 import {getTaskSchemeScope} from "../../../common/calendarSupport/scopes";
 
 
@@ -31,7 +31,8 @@ export const DaySettingsPanel: FC<DaySettingsPanelProps> = ({
 		data: taskScheme,
 		isLoading: isLoadingTaskScheme,
 		isFetching: isFetchingTaskScheme,
-		refetch: refetchTaskScheme
+		refetch: refetchTaskScheme,
+		isError
 	} = useGetTaskSchemeQuery(datesForScheme, {refetchOnMountOrArgChange: true})
 	
 	const buttonClickHandler = useCallback(() => {
