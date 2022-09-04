@@ -96,29 +96,34 @@ export function SelectLinks<T>({
 	const [showNotification, setShowNotification] = useState(true)
 	
 	const changeIconHandler = async (value: string): Promise<string> => {
-		setLoading(true)
-		const url = new URL(value)
-		setIsSecure(url.protocol === 'https:')
-		
-		const host = url.host.replace('www.', '')
-		const index = linkList.findIndex((value, index) => {
-			if (Array.isArray(value.pattern)) {
-				return value.pattern.some((pattern) => {
-					const r = new RegExp(pattern, 'i')
-					return r.test(host)
-				})
+		if (value) {
+			
+			setLoading(true)
+			const url = new URL(value)
+			setIsSecure(url.protocol === 'https:')
+			
+			const host = url.host.replace('www.', '')
+			const index = linkList.findIndex((value, index) => {
+				if (Array.isArray(value.pattern)) {
+					return value.pattern.some((pattern) => {
+						const r = new RegExp(pattern, 'i')
+						return r.test(host)
+					})
+				}
+				const r = new RegExp(value.pattern, 'i')
+				return r.test(host)
+			})
+			
+			setLoading(false)
+			
+			if (index < 0) {
+				return 'default'
+			} else {
+				return linkList[index].key
 			}
-			const r = new RegExp(value.pattern, 'i')
-			return r.test(host)
-		})
-		
-		setLoading(false)
-		
-		if (index < 0) {
-			return 'default'
-		} else {
-			return linkList[index].key
 		}
+		
+		return 'default'
 	}
 	
 	
@@ -138,14 +143,15 @@ export function SelectLinks<T>({
 						iconPlacement={'right'}
 						onBlur={async (e) => {
 							let value = e.target.value.toLowerCase()
-							const isHttp = /http:\/\//i.test(value)
-							const isHttps = /https:\/\//i.test(value)
 							
-							if (!isHttp && !isHttps) {
-								value = `https://${value}`
+							if (value) {
+								const isHttp = /http:\/\//i.test(value)
+								const isHttps = /https:\/\//i.test(value)
+								
+								if (!isHttp && !isHttps) {
+									value = `https://${value}`
+								}
 							}
-							
-							console.log(value)
 							
 							const isUrl = yup.string().url().isValidSync(value)
 							
@@ -202,20 +208,15 @@ export function SelectLinks<T>({
 							onClick={() => {
 								setLink((prev) => {
 									const v = prev.value.replace('http:', 'https:')
-									
 									if (yup.string().url().isValidSync(v)) {
-										
 										setIsSecure(true)
 										return {
 											key: prev.key,
 											value: v
 										}
 									}
-									
 									return prev
 								})
-								
-								
 							}}
 						>
 							Заменить

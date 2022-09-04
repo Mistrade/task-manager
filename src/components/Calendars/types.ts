@@ -56,11 +56,8 @@ export interface WeekCalendarProps extends Omit<MonthCalendarProps, 'monthItem' 
 }
 
 export interface DayCalendarProps extends GlobalTaskListProps {
-	onChangeCurrent?: OnChangeCurrentFnType,
 	dateItem: DateItem,
 	onSelectTask?: OnSelectTaskFnType,
-	renderWeekPattern?: RenderWeekPattern,
-	taskStorage?: TaskStorage,
 }
 
 export type CalendarHeaderProps = Pick<MonthCalendarProps, 'renderWeekPattern'>
@@ -101,11 +98,9 @@ export interface CalendarTodaySwitchersProps {
 }
 
 export interface DaySettingsPanelProps extends Omit<GlobalTaskListProps, 'renderTaskCount'> {
-	dateItem: DateItem,
-	date?: CalendarItem,
+	monthItem: MonthItem
 	onSelectDate?: OnSelectDateFromCalendarFn,
-	//TODO убрать taskStorage
-	taskStorage?: TaskStorage,
+	current: CalendarMode
 }
 
 export interface SmallCalendarDayItemProps {
@@ -115,7 +110,7 @@ export interface SmallCalendarDayItemProps {
 	//TODO убрать taskStorage
 	taskStorage?: TaskStorage,
 	currentDate?: Date,
-	includesTasks?: GetTaskSchemeResponse
+	includesTasks?: GetTaskSchemeResponse,
 }
 
 export interface SmallMonthCalendarWeekItemProps {
@@ -124,7 +119,8 @@ export interface SmallMonthCalendarWeekItemProps {
 	//TODO убрать taskStorage
 	taskStorage?: TaskStorage,
 	currentDate?: Date
-	includesTasks?: GetTaskSchemeResponse
+	includesTasks?: GetTaskSchemeResponse,
+	pourWeeks?: Array<number>
 }
 
 export interface SmallCalendarMonthTitleProps {
@@ -324,7 +320,7 @@ export interface TaskInfoModalProps {
 }
 
 export interface AddTaskModalProps {
-	date: CalendarItem | null,
+	date: Date | null,
 	onClose?: () => void,
 	onComplete?: () => void
 }
@@ -368,7 +364,7 @@ export interface DateSettingPanelOptions {
 
 
 export type OnCloseTaskInfoFnType = () => void
-export type OnAddTaskFnType = (date: CalendarItem) => void
+export type OnAddTaskFnType = (date: Date) => void
 export type OnChangeCurrentFnType = (date: Date, layout: CalendarMode['layout']) => void
 export type OnSelectTaskFnType = (taskId: string) => any
 export type AddTaskDateType = CalendarItem | null

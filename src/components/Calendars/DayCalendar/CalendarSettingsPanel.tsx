@@ -1,0 +1,136 @@
+import React, {FC, useCallback, useMemo} from 'react'
+import {FlexBlock} from '../../LayoutComponents/FlexBlock'
+import {disabledColor} from '../../../common/constants'
+import {PourDatesProps, SmallMonth, SmallMonthCalendar} from '../DatePicker/SmallMonthCalendar'
+import {DaySettingsPanelProps} from '../types'
+import {css} from 'styled-components'
+import {Button} from '../../Buttons/Buttons.styled'
+import {SmallCalendarMonthTitle} from '../DatePicker/SmallCalendarMonthTitle'
+import dayjs from 'dayjs'
+import {dateToCalendarItem} from '../../../common/calendarSupport/generators'
+import {Tooltip} from '../../Tooltip/Tooltip'
+import {GetTaskSchemeRequest, useGetTaskSchemeQuery} from "../../../store/api/taskApi";
+import {getTaskSchemeScope} from "../../../common/calendarSupport/scopes";
+import {CalendarList} from "../CalendarList/CalendarList";
+
+
+export const CalendarSettingsPanel: FC<DaySettingsPanelProps> = ({
+																																	 onSelectDate,
+																																	 onAddTask,
+																																	 current,
+																																	 monthItem
+																																 }) => {
+	
+	const datesForScheme: GetTaskSchemeRequest = useMemo(() => {
+		const {monthOfYear, year} = monthItem
+		const d = dayjs().set('year', year).set('month', monthOfYear).toDate()
+		return getTaskSchemeScope(d, 'month', false)
+	}, [monthItem.monthOfYear])
+	
+	const {
+		data: taskScheme,
+		isLoading: isLoadingTaskScheme,
+		isFetching: isFetchingTaskScheme,
+		refetch: refetchTaskScheme,
+		isError
+	} = useGetTaskSchemeQuery(datesForScheme, {refetchOnMountOrArgChange: true})
+	
+	const currentDate: Date = useMemo(() => {
+		switch (current.layout) {
+			case "day":
+				return current.date || dayjs().toDate()
+			case "week":
+				const d = dayjs(current.aroundDate)
+				
+				if (d.startOf('week').month() !== d.endOf('week').month()) {
+					return d.startOf('month').toDate()
+				}
+				
+				return d.startOf('week').toDate()
+			case "month":
+				return dayjs().set('year', current.year).set('month', current.month).startOf('month').toDate()
+			case "year":
+				return dayjs().startOf('month').toDate()
+		}
+	}, [current])
+	
+	const buttonClickHandler = useCallback(() => {
+		if (onAddTask && currentDate) {
+			const d = dayjs(currentDate).isBefore(new Date(), 'date')
+			if (d) {
+				return onAddTask(dayjs().toDate())
+			}
+			
+			onAddTask && currentDate && onAddTask(currentDate)
+		}
+	}, [currentDate])
+	
+	const pour: PourDatesProps | undefined = useMemo(() => {
+		if (current.layout === 'month') {
+			const date = dayjs().set('year', current.year).set('month', current.month).startOf('month').toDate()
+			return {
+				type: current.layout,
+				date
+			}
+		}
+		
+		if (current.layout === 'week') {
+			return {
+				type: 'week',
+				date: current.aroundDate
+			}
+		}
+		
+		return undefined
+	}, [current])
+	
+	return (
+		<FlexBlock
+			direction={'column'}
+			grow={0}
+			align={'flex-start'}
+			position={'relative'}
+		>
+			<FlexBlock
+				width={'100%'}
+				mb={24}
+				justify={'center'}
+				position={'sticky'}
+				additionalCss={css`
+          top: 0;
+          left: 0;
+          z-index: 1;
+				`}
+			>
+				<Button onClick={buttonClickHandler}>
+					Добавить событие
+				</Button>
+			</FlexBlock>
+			<FlexBlock minHeight={200} mb={24}>
+				<SmallMonth
+					pourDates={pour}
+					includesTasks={taskScheme}
+					monthItem={monthItem}
+					useTooltips={true}
+					title={
+						<SmallCalendarMonthTitle
+							monthItem={monthItem}
+						/>
+					}
+					currentDate={currentDate}
+					onSelectDate={onSelectDate}
+				/>
+			</FlexBlock>
+			<FlexBlock textAlign={'left'} mb={24} justify={'flex-end'} align={'flex-end'} width={'100%'}>
+				<Tooltip
+					text={`Рассчитано на основе текущего часового пояса: UTC${dayjs().utcOffset() >= 0 ? `+${dayjs().utcOffset() / 60}` : `-${dayjs().utcOffset() / 60}`}`}
+					placement={'right'}
+					children={`Часовой пояс:\n${dayjs.tz.guess()}`}
+				/>
+			</FlexBlock>
+			<FlexBlock width={'100%'}>
+				<CalendarList/>
+			</FlexBlock>
+		</FlexBlock>
+	)
+}

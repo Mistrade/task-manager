@@ -2,12 +2,13 @@ import {createApi, fetchBaseQuery} from "@reduxjs/toolkit/dist/query/react";
 import {RegistrationFormType} from "../../components/Session/Registration";
 import {ServerResponse} from "./taskApi";
 import {AuthorizationProps} from "../../components/Session/AuthorizationForm";
+import {baseServerUrl} from "./defaultApiConfig";
 
 export const sessionApi = createApi({
 	reducerPath: 'sessionApi',
 	tagTypes: ['Session'],
 	baseQuery: fetchBaseQuery({
-		baseUrl: 'http://localhost:9090/api/session',
+		baseUrl: `${baseServerUrl}/session`,
 		credentials: 'include',
 		cache: 'no-cache'
 	}),

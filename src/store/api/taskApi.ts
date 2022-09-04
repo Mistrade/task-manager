@@ -1,5 +1,6 @@
 import {createApi, fetchBaseQuery} from "@reduxjs/toolkit/dist/query/react";
 import {CalendarPriorityKeys, EventItem} from "../../components/Calendars/types";
+import {baseServerUrl} from "./defaultApiConfig";
 
 interface GetTaskQueryProps {
 	limit?: number,
@@ -38,7 +39,7 @@ export const taskApi = createApi({
 	reducerPath: 'taskApi',
 	tagTypes: ['Tasks', 'TaskInfo'],
 	baseQuery: fetchBaseQuery({
-		baseUrl: 'http://localhost:9090/api/events',
+		baseUrl: `${baseServerUrl}/events`,
 		credentials: 'include',
 		cache: 'no-cache'
 	}),

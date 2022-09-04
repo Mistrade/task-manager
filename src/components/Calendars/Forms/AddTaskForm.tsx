@@ -1,4 +1,4 @@
-import {FC, useEffect} from 'react'
+import {FC} from 'react'
 import {CalendarItem, CalendarTaskItem} from '../types'
 import {useFormik} from 'formik'
 import dayjs from 'dayjs'
@@ -26,7 +26,7 @@ import {useAddTaskMutation} from "../../../store/api/taskApi";
 
 interface AddTaskFormProps {
 	onComplete?: (data: CalendarTaskItem) => void,
-	date: CalendarItem | null,
+	date: Date | null,
 	onCancel?: (data: CalendarTaskItem) => void
 }
 
@@ -72,8 +72,8 @@ export const AddTaskForm: FC<AddTaskFormProps> = ({date, onComplete, onCancel}) 
 			description: '',
 			status: 'created',
 			members: [],
-			time: date?.value || dayjs().toDate(),
-			timeEnd: dayjs(date?.value).add(1, 'hour').toDate() || dayjs().add(1, 'hour').toDate(),
+			time: date || dayjs().toDate(),
+			timeEnd: dayjs(date).add(1, 'hour').toDate() || dayjs().add(1, 'hour').toDate(),
 			priority: 'medium',
 			link: null
 		}
@@ -88,7 +88,7 @@ export const AddTaskForm: FC<AddTaskFormProps> = ({date, onComplete, onCancel}) 
 						tooltip={
 							<Tooltip
 								text={'Название отображается на доске заданий'}
-								size={20}
+								size={14}
 							/>
 						}
 						onChange={(e) => formik.setFieldValue('title', e.target.value)}
@@ -107,7 +107,7 @@ export const AddTaskForm: FC<AddTaskFormProps> = ({date, onComplete, onCancel}) 
 						tooltip={
 							<Tooltip
 								text={'Укажите ссылку, по которой любой участник события может подключиться в режиме онлайн'}
-								size={20}
+								size={14}
 							/>
 						}
 						label={'Укажите ссылку на встречу'}
@@ -146,7 +146,6 @@ export const AddTaskForm: FC<AddTaskFormProps> = ({date, onComplete, onCancel}) 
 						renderData={() => (
 							<SelectListContainer maxHeight={500} width={'200%'}>
 								<DatePickerPaper
-									disabledOptions={{min: new Date(), includeMin: true}}
 									currentDate={formik.values.time || new Date()}
 									onChange={(date) => {
 										formik.setFieldValue('time', date)
@@ -155,7 +154,7 @@ export const AddTaskForm: FC<AddTaskFormProps> = ({date, onComplete, onCancel}) 
 								/>
 							</SelectListContainer>
 						)}
-						value={getHumanizeDateValue(formik.values.time || date?.value || new Date())}
+						value={getHumanizeDateValue(formik.values.time || date || new Date())}
 						label={'Выберите время начала'}
 						containerProps={{flex: '1 0 calc(50% - 6px)', maxWidth: '50%'}}
 						isDirty={!!formik.touched.time}
@@ -187,12 +186,12 @@ export const AddTaskForm: FC<AddTaskFormProps> = ({date, onComplete, onCancel}) 
 							<SelectListContainer maxHeight={500} width={'200%'}>
 								<DatePickerPaper
 									disabledOptions={{min: formik.values.time || new Date(), includeMin: true}}
-									currentDate={formik.values.timeEnd || dayjs(date?.value).add(30, 'minute').toDate() || dayjs().add(30, 'minute').toDate()}
+									currentDate={formik.values.timeEnd || dayjs(date).add(30, 'minute').toDate() || dayjs().add(30, 'minute').toDate()}
 									onChange={(date) => formik.setFieldValue('timeEnd', date)}
 								/>
 							</SelectListContainer>
 						)}
-						value={getHumanizeDateValue(formik.values.timeEnd || date?.value || new Date())}
+						value={getHumanizeDateValue(formik.values.timeEnd || date || new Date())}
 						label={'Выберите время завершения'}
 						containerProps={{flex: '1 0 calc(50% - 6px)', maxWidth: '50%'}}
 						isDirty={!!formik.touched.timeEnd}
@@ -209,12 +208,8 @@ export const AddTaskForm: FC<AddTaskFormProps> = ({date, onComplete, onCancel}) 
 						actions={[
 							{title: '30 мин', actionKey: '30'},
 							{title: 'час', actionKey: '60'},
+							{title: '3 часа', actionKey: '180'},
 							{title: '6 часов', actionKey: (6 * 60).toString()},
-							{title: '12 часов', actionKey: (12 * 60).toString()},
-							{title: '1 день', actionKey: (24 * 60).toString()},
-							{title: '3 дня', actionKey: (1440 * 3).toString()},
-							{title: 'неделя', actionKey: (1440 * 7).toString()},
-							{title: 'весь день', actionKey: 'all-day'}
 						]}
 					/>
 				</FlexBlock>

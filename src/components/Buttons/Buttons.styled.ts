@@ -1,7 +1,7 @@
 import styled from 'styled-components'
 import {currentColor, defaultColor} from '../../common/constants'
 
-export const StyledButton = styled( 'button' )<{ fillColor?: string, textColor?: string }>`
+export const StyledButton = styled('button')<{ fillColor?: string, textColor?: string }>`
   & {
     padding: 6px 24px;
     font-size: 16px;
@@ -18,9 +18,9 @@ export const StyledButton = styled( 'button' )<{ fillColor?: string, textColor?:
   }
 `
 
-export const Button = styled( 'button' )`
+export const Button = styled('button')`
   & {
-    padding: 6px 32px;
+    padding: 6px 24px;
     font-size: 16px;
     color: #fff;
     background-color: ${currentColor};
@@ -39,7 +39,7 @@ export const Button = styled( 'button' )`
   }
 `
 
-export const LinkButton = styled( 'a' )`
+export const LinkButton = styled('a')`
   & {
     padding: 6px 32px;
     font-size: 16px;
@@ -62,7 +62,7 @@ export const LinkButton = styled( 'a' )`
   }
 `
 
-export const WhiteButton = styled( 'button' )`
+export const WhiteButton = styled('button')`
   & {
     padding: 6px 32px;
     font-size: 16px;
@@ -85,7 +85,7 @@ export const WhiteButton = styled( 'button' )`
   }
 `
 
-export const JoinToEventButton = styled( 'a' )`
+export const JoinToEventButton = styled('a')`
   font-size: 14px;
   padding: 4px 8px;
   border: 1px solid ${defaultColor};

@@ -21,13 +21,13 @@ import {useDebounce} from "../../../hooks/useDebounce";
 import {Loader} from "../../Loaders/Loader";
 
 interface DayTaskListProps extends GlobalTaskListProps {
-	day: CalendarItem
+	day: Date
 	current: CalendarCurrentDay,
 	onSelectTask?: OnSelectTaskFnType,
 }
 
 export interface NotFoundTaskProps extends Omit<GlobalTaskListProps, 'renderTaskCount'> {
-	day: CalendarItem,
+	day: Date,
 	text?: ReactNode,
 	actions?: ReactNode
 }
@@ -36,7 +36,7 @@ interface DayTaskItemProps {
 	taskInfo: ShortEventItem,
 	tabIndex: number
 	onSelectTask?: OnSelectTaskFnType,
-	day: CalendarItem,
+	day: Date,
 	onDelete?: (id: string) => void
 }
 
@@ -116,7 +116,7 @@ export const DayTaskList: FC<DayTaskListProps> = ({
 																										day,
 																										onAddTask
 																									}) => {
-	const [filters, setFilters] = useState<DayTaskListFilters>(initialFiltersValues(day.value))
+	const [filters, setFilters] = useState<DayTaskListFilters>(initialFiltersValues(day))
 	
 	const debounceValue = useDebounce(filters, 300)
 	
@@ -140,11 +140,11 @@ export const DayTaskList: FC<DayTaskListProps> = ({
 		fromDate:
 			debounceValue.start
 				? dayjs(debounceValue.start).utc().toString()
-				: dayjs(day.value).utc().toString(),
+				: dayjs(day).utc().toString(),
 		toDate:
 			debounceValue.end
 				? dayjs(debounceValue.end).utc().toString()
-				: dayjs(day.value).add(23, 'hour').add(59, 'minute').utc().toString(),
+				: dayjs(day).add(23, 'hour').add(59, 'minute').utc().toString(),
 		title: debounceValue.title,
 		priority: debounceValue.priority === 'not_selected' ? null : debounceValue.priority
 	}, {refetchOnMountOrArgChange: true})
@@ -153,11 +153,11 @@ export const DayTaskList: FC<DayTaskListProps> = ({
 	
 	useEffect(() => {
 		clearFiltersHandle()
-	}, [day.value])
+	}, [day])
 	
 	const clearFiltersHandle = useCallback(() => {
-		setFilters(initialFiltersValues(day.value))
-	}, [day.value])
+		setFilters(initialFiltersValues(day))
+	}, [day])
 	
 	
 	return (

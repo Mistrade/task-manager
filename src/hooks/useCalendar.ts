@@ -18,8 +18,8 @@ interface Returned {
 	current: CalendarMode,
 	selectedTask: SelectedTaskType,
 	setSelectedTask: React.Dispatch<React.SetStateAction<SelectedTaskType>>,
-	addTaskDate: AddTaskDateType,
-	setAddTaskDate: React.Dispatch<React.SetStateAction<AddTaskDateType>>,
+	addTaskDate: Date | null,
+	setAddTaskDate: React.Dispatch<React.SetStateAction<Date | null>>,
 	onSelectTask: OnSelectTaskFnType,
 	onAddTask: OnAddTaskFnType,
 	onChangeCurrent: OnChangeCurrentFnType,
@@ -34,7 +34,7 @@ export const useCalendar: UseCalendarType = () => {
 	const navigate = useNavigate()
 	
 	const [selectedTask, setSelectedTask] = useState<SelectedTaskType>(null)
-	const [addTaskDate, setAddTaskDate] = useState<AddTaskDateType>(null)
+	const [addTaskDate, setAddTaskDate] = useState<Date | null>(null)
 	const dispatch = useAppDispatch()
 	
 	const onSelectTask: OnSelectTaskFnType = useCallback((taskId: string) => {

@@ -24,7 +24,7 @@ export const TooltipContent = styled('span')<{ isVisible: boolean, left: number 
     z-index: 10000;
     width: max-content;
     word-wrap: break-word;
-    min-width: 200px;
+    min-width: 50px;
     max-width: 400px;
     flex-shrink: 1;
     border-radius: 4px;
@@ -57,7 +57,7 @@ export const TooltipContent = styled('span')<{ isVisible: boolean, left: number 
           return css`top: -1px`
         case 'right':
           return css`
-            top: 30px;
+            top: 20px;
             transform: translateY(-50%) rotate(45deg);
             left: -7px;
           `

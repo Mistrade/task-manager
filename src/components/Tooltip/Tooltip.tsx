@@ -71,7 +71,7 @@ export const Tooltip: FC<TooltipProps & IconProps> = ({
 			}
 			
 			if (placement === 'right') {
-				let top = -20
+				let top = -10
 				let left = containerRef.current.offsetWidth + 20
 				
 				return setOptions({

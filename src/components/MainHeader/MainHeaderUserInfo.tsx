@@ -8,7 +8,7 @@ import {Button} from "../Buttons/Buttons.styled";
 import {useLogoutMutation} from "../../store/api/sessionApi";
 import {LogoutIcon} from "../Icons/Session/LogoutIcon";
 import {css} from "styled-components";
-import { EmptyButtonStyled } from "../Buttons/EmptyButton.styled";
+import {EmptyButtonStyled} from "../Buttons/EmptyButton.styled";
 
 export interface MainHeaderUserInfoProps {
 	userInfo?: UserModel | null
@@ -29,15 +29,20 @@ export const MainHeaderUserInfo: FC<MainHeaderUserInfoProps> = ({userInfo}) => {
 					</HeaderDefaultLink>
 				</FlexBlock>
 			) : (
-				<EmptyButtonStyled>
-					<LogoutIcon
-						size={36}
-						additionalCss={css`cursor: pointer`}
-						onClick={async () => await logoutUser().then(() => navigate('/session/login', {replace: true}))}
-					>
-						Выход
-					</LogoutIcon>
-				</EmptyButtonStyled>
+				<FlexBlock align={'center'} gap={12}>
+					<FlexBlock>
+						{userInfo.name + ' ' + (userInfo.surname || '')}
+					</FlexBlock>
+					<EmptyButtonStyled>
+						<LogoutIcon
+							size={36}
+							additionalCss={css`cursor: pointer`}
+							onClick={async () => await logoutUser().then(() => navigate('/session/login', {replace: true}))}
+						>
+							Выход
+						</LogoutIcon>
+					</EmptyButtonStyled>
+				</FlexBlock>
 			)}
 		</FlexBlock>
 	)

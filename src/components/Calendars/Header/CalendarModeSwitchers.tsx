@@ -1,5 +1,5 @@
 import {FC} from 'react'
-import {SwitchCalendarMode} from '../Calendar.styled'
+import {SwitchCalendarModeTab} from '../Calendar.styled'
 import {FlexBlock} from '../../LayoutComponents/FlexBlock'
 import {CalendarHeaderSwitchersProps} from '../types'
 
@@ -9,30 +9,30 @@ export const CalendarModeSwitchers: FC<CalendarHeaderSwitchersProps> = ({
 																																				}) => {
 	return (
 		<FlexBlock width={'100%'} align={'center'} justify={'center'}>
-			<SwitchCalendarMode
+			<SwitchCalendarModeTab
 				isSelected={layout === 'day'}
 				onClick={() => onChange('day')}
 			>
 				День
-			</SwitchCalendarMode>
-			<SwitchCalendarMode
+			</SwitchCalendarModeTab>
+			<SwitchCalendarModeTab
 				onClick={() => onChange('week')}
 				isSelected={layout === 'week'}
 			>
 				Неделя
-			</SwitchCalendarMode>
-			<SwitchCalendarMode
+			</SwitchCalendarModeTab>
+			<SwitchCalendarModeTab
 				onClick={() => onChange('month')}
 				isSelected={layout === 'month'}
 			>
 				Месяц
-			</SwitchCalendarMode>
-			<SwitchCalendarMode
+			</SwitchCalendarModeTab>
+			<SwitchCalendarModeTab
 				isSelected={layout === 'year'}
 				onClick={() => onChange('year')}
 			>
 				Год
-			</SwitchCalendarMode>
+			</SwitchCalendarModeTab>
 		</FlexBlock>
 	)
 }

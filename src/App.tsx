@@ -25,7 +25,7 @@ function App() {
 	return (
 		<>
 			<Loader title={'Проверка сессии пользователя...'} isActive={isFetching}>
-				<FlexBlock width={'100%'} direction={'column'} minHeight={'100vh'} pb={24}>
+				<FlexBlock width={'100%'} direction={'column'} minHeight={'100vh'}>
 					<GlobalStyled/>
 					<MainHeader
 						userInfo={isError ? undefined : userInfo?.data}
@@ -33,8 +33,10 @@ function App() {
 							calendar: {renderWeekPattern: 'full'}
 						}}
 					/>
-					<OnlyAuthRoutes userInfo={isError ? undefined : userInfo?.data}/>
-					<OnlyWithoutSessionRoutes userInfo={isError ? undefined : userInfo?.data}/>
+					<FlexBlock height={'calc(100vh - 70px)'}>
+						<OnlyAuthRoutes userInfo={isError ? undefined : userInfo?.data}/>
+						<OnlyWithoutSessionRoutes userInfo={isError ? undefined : userInfo?.data}/>
+					</FlexBlock>
 				</FlexBlock>
 			</Loader>
 			<ToastContainer pauseOnHover={true} position={'top-right'} limit={3} newestOnTop={true}/>

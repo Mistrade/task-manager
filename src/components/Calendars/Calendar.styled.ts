@@ -1,6 +1,6 @@
 import styled from 'styled-components'
 import {CalendarCellDateProps} from './types'
-import {currentColor, defaultColor} from '../../common/constants'
+import {currentColor, defaultColor, disabledColor} from '../../common/constants'
 
 export const CalendarDesktopContainer = styled('div')`
   & {
@@ -85,6 +85,30 @@ export const SwitchCalendarMode = styled('button')<{ isSelected?: boolean }>`
   &:hover {
     background-color: ${currentColor};
     color: #fff;
+  }
+
+  &:not(:last-child) {
+    margin-right: 4px;
+  }
+`
+export const SwitchCalendarModeTab = styled('button')<{ isSelected?: boolean }>`
+  & {
+    outline: none;
+    padding: 6px 16px;
+    font-size: 16px;
+    background-color: transparent;
+    border: none;
+    cursor: pointer;
+    transition: all .3s ease-in-out;
+    border-bottom: 3px solid ${props => props.isSelected ? currentColor : 'transparent'};
+    color: ${defaultColor};
+    min-width: 50px;
+  }
+
+  &:hover {
+    background-color: ${currentColor};
+    color: #fff;
+    border-radius: 4px 4px 0px 0px;
   }
 
   &:not(:last-child) {

@@ -6,13 +6,10 @@ import {FlexBlock} from '../../LayoutComponents/FlexBlock'
 import {CalendarTitle} from '../Calendar.styled'
 import {CalendarModeSwitchers} from './CalendarModeSwitchers'
 import {CalendarTodaySwitchers} from './CalendarTodaySwitchers'
-import {CalendarHeaderWeekList} from './CalendarHeaderWeekList'
-import {Tooltip} from '../../Tooltip/Tooltip'
 import {useNavigate} from "react-router-dom";
-import {disabledColor} from "../../../common/constants";
-import {css} from "styled-components";
 import {useCalendar} from "../../../hooks/useCalendar";
 import {useParams} from "react-router";
+import {CalendarHeaderContainer} from "./CalendarHeader.styled";
 
 
 export const CalendarHeader: FC<CalendarHeaderProps> = ({
@@ -38,38 +35,36 @@ export const CalendarHeader: FC<CalendarHeaderProps> = ({
 	
 	
 	return (
-		<FlexBlock
-			className={'Calendar__header'}
-			direction={'column'}
-			width={'100%'}
-			height={'fit-content'}
-			maxHeight={200}
-			flex={'1 0 auto'}
-		>
-			<FlexBlock
-				width={'100%'}
-				justify={'space-between'}
-				align={'center'}
-				mb={current.layout === 'day' || current.layout === 'year' ? 0 : 12}
-			>
-				<FlexBlock flex={'0 0 33.3%'} justify={'flex-start'} align={'center'}>
-					<CalendarTitle onClick={() => onChangeCurrentHandler('today')}>
-						{title}
-					</CalendarTitle>
-				</FlexBlock>
-				<FlexBlock flex={'1 1 auto'} justify={'center'} align={'center'}>
-					<CalendarModeSwitchers
-						layout={layout}
-						onChange={onChangeCurrentLayoutHandler}
-					/>
-					{/*<FlexBlock flex={'1 0 33.3%'} justify={'flex-end'} align={'center'}>*/}
-					<CalendarTodaySwitchers
-						onChange={onChangeCurrentHandler}
-					/>
-					{/*</FlexBlock>*/}
-				</FlexBlock>
+		<CalendarHeaderContainer>
+			<FlexBlock width={'100%'} justify={'space-between'}>
+				<CalendarTitle onClick={() => onChangeCurrentHandler('today')}>
+					{title}
+				</CalendarTitle>
+				<CalendarTodaySwitchers
+					onChange={onChangeCurrentHandler}
+				/>
 			</FlexBlock>
-			<CalendarHeaderWeekList renderWeekPattern={renderWeekPattern} current={current}/>
-		</FlexBlock>
+			{/*<FlexBlock*/}
+			{/*	width={'100%'}*/}
+			{/*	justify={'space-between'}*/}
+			{/*	align={'center'}*/}
+			{/*	// mb={current.layout === 'day' || current.layout === 'year' ? 0 : 12}*/}
+			{/*>*/}
+			{/*	*/}
+			{/*	<FlexBlock flex={'1 1 auto'} justify={'center'} align={'center'}>*/}
+			{/*		*/}
+			
+			{/*	</FlexBlock>*/}
+			{/*</FlexBlock>*/}
+			{/*<CalendarHeaderWeekList renderWeekPattern={renderWeekPattern} current={current}/>*/}
+			<FlexBlock justify={'flex-start'}>
+				
+				<CalendarModeSwitchers
+					layout={layout}
+					onChange={onChangeCurrentLayoutHandler}
+				/>
+			</FlexBlock>
+		
+		</CalendarHeaderContainer>
 	)
 }

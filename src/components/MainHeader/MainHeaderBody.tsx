@@ -1,8 +1,6 @@
 import React, {FC, useEffect, useMemo} from "react";
 import {FlexBlock} from "../LayoutComponents/FlexBlock";
 import {MainHeaderUserInfo, MainHeaderUserInfoProps} from "./MainHeaderUserInfo";
-import {Link} from "react-router-dom";
-import {LinkStyled} from "../Buttons/Link.styled";
 import {HeaderLink} from "./HeaderLink";
 import {useLocation} from "react-router";
 import {NavigationContainer} from "./MainHeader.styled";
@@ -13,7 +11,6 @@ import {AppLogoIcon} from "../Icons/AppIcon/AppLogoIcon";
 import {toast} from "react-toastify";
 import {Heading} from "../Text/Heading";
 import {currentColor} from "../../common/constants";
-import {api} from "../../Api/api";
 
 export interface MainHeaderBodyProps extends MainHeaderUserInfoProps {
 
@@ -61,8 +58,6 @@ export const MainHeaderBody: FC<MainHeaderBodyProps> = ({userInfo}) => {
 				flex={'1 0  auto'}
 				direction={'row'}
 				justify={'flex-start'}
-				pt={8}
-				pb={8}
 			>
 				<FlexBlock flex={'1 0 20%'} justify={'flex-start'} align={'center'} gap={8}>
 					<EmptyButtonStyled onClick={() => toast('Добро пожаловать в Онлайн Планировщик дел!')}>
