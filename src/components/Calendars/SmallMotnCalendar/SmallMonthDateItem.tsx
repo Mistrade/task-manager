@@ -4,7 +4,7 @@ import {CheckPourMonthResult, SmallMonthWeekItemProps} from "./SmallMonthWeekIte
 import {FC} from "react";
 import dayjs from "dayjs";
 import {addNull} from "../../../common/functions";
-import { SmallMonthRowItem } from "./SmallMonth.styled";
+import {SmallMonthRowItem} from "./SmallMonth.styled";
 
 interface SmallMonthDateItemProps {
 	date: CalendarItem,

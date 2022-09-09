@@ -1,5 +1,5 @@
 import {FC, ReactNode} from "react";
-import {InfinitySpin, MagnifyingGlass} from "react-loader-spinner";
+import {MagnifyingGlass} from "react-loader-spinner";
 import {currentColor} from "../../common/constants";
 import {FlexBlock} from "../LayoutComponents/FlexBlock";
 

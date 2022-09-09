@@ -1,6 +1,7 @@
 import styled, {css} from "styled-components";
 import {
-	currentColor, darkColor,
+	currentColor,
+	darkColor,
 	defaultColor,
 	disabledColor,
 	hoverColor,

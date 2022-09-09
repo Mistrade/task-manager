@@ -2,7 +2,6 @@ import {FlexBlock} from "../../LayoutComponents/FlexBlock"
 import {CalendarNameCheckbox} from "./CalendarList.styled"
 import {FC} from "react";
 import {LoaderIcon} from "../../Icons/Icons";
-import {isDisabled} from "@testing-library/user-event/dist/utils";
 
 export interface CalendarNameItem {
 	_id: string,

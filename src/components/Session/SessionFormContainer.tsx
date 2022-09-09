@@ -1,8 +1,8 @@
+import * as React from "react";
 import {FC, ReactNode} from "react";
 import {currentColor, defaultColor} from "../../common/constants";
 import {css} from "styled-components";
 import {FlexBlock} from "../LayoutComponents/FlexBlock";
-import * as React from "react";
 
 interface SessionFormContainerProps {
 	children: ReactNode,

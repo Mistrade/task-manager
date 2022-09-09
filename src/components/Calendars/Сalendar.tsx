@@ -17,10 +17,9 @@ import {
 	WeekDaysList
 } from '../../common/constants'
 import {Interceptor} from './Interceptor'
-import {useAppSelector} from '../../store/hooks/hooks'
 import {ErrorBoundary} from "../Errors/ErrorBoundary";
 import {Loader} from "../Loaders/Loader";
-import {Route, Routes, useNavigate} from 'react-router-dom'
+import {Route, Routes} from 'react-router-dom'
 import {CalendarSettingsPanel} from "./DayCalendar/CalendarSettingsPanel";
 import dayjs from "dayjs";
 import {getMonthDays} from "../../common/calendarSupport/getters";

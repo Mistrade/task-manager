@@ -8,7 +8,6 @@ import {DayTaskListFilters} from "./TaskList/DayTaskList";
 import dayjs from "dayjs";
 import {disabledColor} from "../../../common/constants";
 import {SwitchCalendarModeTab} from "../Calendar.styled";
-import {toast} from "react-toastify";
 
 interface EventFilterProps extends FormHandle {
 	currentDay: Date,

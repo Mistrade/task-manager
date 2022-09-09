@@ -1,6 +1,5 @@
-import styled, {css} from "styled-components";
+import styled from "styled-components";
 import {SwitchCalendarMode} from "../../Calendars/Calendar.styled";
-import {disabledColor} from "../../../common/constants";
 
 export const InputActionsStyledContainer = styled('div')`
   display: flex;

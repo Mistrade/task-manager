@@ -7,7 +7,7 @@ import {changeMonthCurrentHandler} from '../../../common/functions'
 import dayjs from 'dayjs'
 import {SmallCalendarMonthTitle} from '../SmallMotnCalendar/SmallCalendarMonthTitle'
 import {TimeSelector} from './TimeSelector'
-import { SmallMonth } from '../SmallMotnCalendar/SmallMonth'
+import {SmallMonth} from '../SmallMotnCalendar/SmallMonth'
 
 interface DatePickerPaperProps {
 	disabledOptions?: CalendarDisabledOptions,

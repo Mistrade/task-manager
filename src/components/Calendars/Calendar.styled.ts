@@ -1,6 +1,6 @@
 import styled from 'styled-components'
 import {CalendarCellDateProps} from './types'
-import {currentColor, defaultColor, disabledColor} from '../../common/constants'
+import {currentColor, defaultColor} from '../../common/constants'
 
 export const CalendarDesktopContainer = styled('div')`
   & {

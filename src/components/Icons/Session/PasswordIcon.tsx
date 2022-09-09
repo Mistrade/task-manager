@@ -1,7 +1,6 @@
 import React, {FC} from "react";
 import {IconProps} from "../Icons";
-import {FlexBlock, FlexBlockProps} from "../../LayoutComponents/FlexBlock";
-import {currentColor} from "../../../common/constants";
+import {FlexBlockProps} from "../../LayoutComponents/FlexBlock";
 import {CloseEyeIcon} from "./CloseEyeIcon";
 import {OpenEyeIcon} from "./OpenEyeIcon";
 import {Tooltip} from "../../Tooltip/Tooltip";

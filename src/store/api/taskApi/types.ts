@@ -1,6 +1,6 @@
 import {
 	CalendarPriorityKeys,
-	EventHistoryFields, EventItem,
+	EventHistoryFields,
 	EventLinkItem,
 	TaskStatusesType,
 	UserModel
@@ -56,5 +56,5 @@ export interface FullResponseEventModel {
 	calendar: CalendarResponse
 }
 
-export type ShortEventItem = Pick<FullResponseEventModel, 'title' | 'time' | 'timeEnd' | 'link' | 'id' | 'priority' | 'description' | 'status'>
+export type ShortEventItem = Pick<FullResponseEventModel, 'title' | 'time' | 'timeEnd' | 'link' | 'id' | 'priority' | 'description' | 'status' | 'calendar'>
 

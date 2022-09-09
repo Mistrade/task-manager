@@ -8,7 +8,6 @@ import {useLazyGetTaskInfoQuery} from "../../../store/api/taskApi/taskApi";
 import {useParams} from "react-router";
 import {ErrorBoundary} from "../../Errors/ErrorBoundary";
 import {Loader} from "../../Loaders/Loader";
-import {Heading} from '../../Text/Heading'
 
 const Informer = React.lazy(() => import('./../TaskInformer/TaskInformer').then(({TaskInformer}) => ({default: TaskInformer})))
 

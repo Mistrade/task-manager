@@ -3,7 +3,6 @@ import {AddTaskModalProps} from '../types'
 import {Modal, ModalBody, ModalHeader} from '../../Modal/Modal'
 import {ERROR_DESCRIPTIONS, ERROR_TITLES, getHumanizeDateValue} from '../../../common/constants'
 import {FlexBlock} from '../../LayoutComponents/FlexBlock'
-import {useAppDispatch} from '../../../store/hooks/hooks'
 import {Tooltip} from '../../Tooltip/Tooltip'
 import {ErrorBoundary} from "../../Errors/ErrorBoundary";
 

@@ -2,8 +2,8 @@ import {ReactNode} from "react";
 import {
 	CalendarCurrentDay,
 	CalendarCurrentMonth,
-	CalendarCurrentWeek, CalendarCurrentYear,
-	CalendarMode
+	CalendarCurrentWeek,
+	CalendarCurrentYear
 } from "../components/Calendars/types";
 
 export type DocumentErrorTypes = 'ERR_FORBIDDEN' | 'SYSTEM_ERROR' | 'BAD_REQUEST' | 'ERR_NOT_VALID_RESPONSE'

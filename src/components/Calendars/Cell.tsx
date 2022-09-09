@@ -1,5 +1,5 @@
 import styled, {css, keyframes} from 'styled-components'
-import React, {FC, forwardRef, useMemo, useRef, useState} from 'react'
+import React, {FC, useMemo, useRef, useState} from 'react'
 import {
 	CalendarCellProps,
 	CalendarPriorityKeys,

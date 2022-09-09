@@ -2,8 +2,13 @@ import {createSlice, PayloadAction} from "@reduxjs/toolkit";
 import {
 	CalendarCurrentDay,
 	CalendarCurrentMonth,
-	CalendarCurrentWeek, CalendarCurrentYear, CalendarDisabledOptions,
-	CalendarMode, DateItem, MonthItem, WeekItem, YearItem
+	CalendarCurrentWeek,
+	CalendarCurrentYear,
+	CalendarMode,
+	DateItem,
+	MonthItem,
+	WeekItem,
+	YearItem
 } from "../../components/Calendars/types";
 
 export interface CalendarStateData {

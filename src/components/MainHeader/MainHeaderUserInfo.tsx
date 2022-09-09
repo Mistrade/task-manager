@@ -1,10 +1,8 @@
 import {FC} from "react";
 import {UserModel} from "../Calendars/types";
 import {FlexBlock} from "../LayoutComponents/FlexBlock";
-import {HeaderDefaultLink, HeaderLinkStyled} from "./HeaderLink.styled.";
-import {Link, useNavigate} from "react-router-dom";
-import {LinkStyled} from "../Buttons/Link.styled";
-import {Button} from "../Buttons/Buttons.styled";
+import {HeaderDefaultLink} from "./HeaderLink.styled.";
+import {useNavigate} from "react-router-dom";
 import {useLogoutMutation} from "../../store/api/sessionApi";
 import {LogoutIcon} from "../Icons/Session/LogoutIcon";
 import {css} from "styled-components";

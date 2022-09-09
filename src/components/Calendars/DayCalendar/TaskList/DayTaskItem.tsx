@@ -2,14 +2,15 @@ import React, {FC, useCallback} from "react";
 import dayjs from "dayjs";
 import {ServerResponse, useUpdateTaskMutation} from "../../../../store/api/taskApi/taskApi";
 import {FlexBlock} from "../../../LayoutComponents/FlexBlock";
-import {completeColor, defaultColor, hoverColor} from "../../../../common/constants";
+import {defaultColor, hoverColor} from "../../../../common/constants";
 import {css} from "styled-components";
-import {ToggleEventPriority} from "../../TaskInformer/TaskInformer";
 import {toast} from "react-toastify";
 import {TaskPreviewDescription} from "./TaskList.styled";
 import {JoinToEventButton} from "../../../Buttons/Buttons.styled";
 import {ShortEventItem} from "../../../../store/api/taskApi/types";
 import {OnSelectTaskFnType} from "../../types";
+import {CalendarIdentifier} from "../../CalendarList/CalendarList.styled";
+import {ToggleEventPriority} from "../../TaskInformer/SupportsComponent/ToggleTaskInformerButtons";
 
 interface DayTaskItemProps {
 	taskInfo: ShortEventItem,
@@ -65,7 +66,7 @@ export const DayTaskItem: FC<DayTaskItemProps> = ({taskInfo, tabIndex, onSelectT
 			borderRadius={4}
 			role={'button'}
 			tabIndex={tabIndex}
-			bgColor={taskInfo.status === 'completed' ? completeColor : hoverColor}
+			bgColor={hoverColor}
 			onKeyPress={keyPressHandler}
 			onClick={clickHandler}
 			additionalCss={css`
@@ -107,8 +108,11 @@ export const DayTaskItem: FC<DayTaskItemProps> = ({taskInfo, tabIndex, onSelectT
 					width={'100%'}
 				>
 					<FlexBlock width={'100%'} direction={'column'} align={'flex-start'} justify={'flex-start'} gap={12}>
-						<FlexBlock width={'100%'}>
-							{taskInfo.title}
+						<FlexBlock width={'100%'} direction={'row'} gap={8} align={'flex-start'} justify={'flex-start'}>
+							<CalendarIdentifier color={taskInfo.calendar.color}/>
+							<FlexBlock>
+								{taskInfo.title}
+							</FlexBlock>
 						</FlexBlock>
 						{taskInfo?.description && (
 							<TaskPreviewDescription>

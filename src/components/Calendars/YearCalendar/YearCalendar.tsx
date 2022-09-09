@@ -1,6 +1,6 @@
 import {FC, useMemo} from 'react'
 import {YearCalendarProps} from '../types'
-import styled, {css} from 'styled-components'
+import {css} from 'styled-components'
 import {FlexBlock} from '../../LayoutComponents/FlexBlock'
 import {SmallCalendarMonthTitle} from '../SmallMotnCalendar/SmallCalendarMonthTitle'
 import {useGetTaskSchemeQuery} from "../../../store/api/taskApi/taskApi";

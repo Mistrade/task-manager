@@ -1,5 +1,4 @@
-import {FC, useEffect} from "react";
-import {Route, Routes} from "react-router-dom";
+import {FC} from "react";
 import {ErrorScreen} from "../Errors/ErrorScreen";
 import {FlexBlock} from "../LayoutComponents/FlexBlock";
 

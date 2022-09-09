@@ -1,9 +1,7 @@
-import {FC, useMemo} from 'react'
-import {CalendarItem, DayCalendarProps} from '../types'
-import {dateToCalendarItem} from '../../../common/calendarSupport/generators'
+import {FC} from 'react'
+import {DayCalendarProps} from '../types'
 import {FlexBlock} from '../../LayoutComponents/FlexBlock'
 import {DayTaskList} from './TaskList/DayTaskList'
-import {CalendarSettingsPanel} from './CalendarSettingsPanel'
 import {css} from 'styled-components'
 
 export const DayCalendar: FC<DayCalendarProps> = ({

@@ -4,8 +4,8 @@ import {Tooltip} from "../../Tooltip/Tooltip";
 import {PourDatesProps, SmallMonthProps} from "./SmallMonth";
 import {WeekItem} from "../types";
 import {GetTaskSchemeResponse} from "../../../store/api/taskApi/taskApi";
-import { SmallMonthRow, SmallMonthWeekCount } from "./SmallMonth.styled";
-import { SmallMonthDateItem } from "./SmallMonthDateItem";
+import {SmallMonthRow, SmallMonthWeekCount} from "./SmallMonth.styled";
+import {SmallMonthDateItem} from "./SmallMonthDateItem";
 
 export interface SmallMonthWeekItemProps extends Pick<SmallMonthProps, 'onSelectWeek' | 'onSelectDate' | 'useTooltips'> {
 	pourDates?: PourDatesProps,

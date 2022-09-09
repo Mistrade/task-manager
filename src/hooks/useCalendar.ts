@@ -1,16 +1,14 @@
 import {
-	AddTaskDateType,
 	CalendarMode,
 	OnAddTaskFnType,
-	OnChangeCurrentFnType, OnCloseTaskInfoFnType,
+	OnChangeCurrentFnType,
+	OnCloseTaskInfoFnType,
 	OnSelectTaskFnType,
 	SelectedTaskType
 } from '../components/Calendars/types'
 import React, {useCallback, useState} from 'react'
 import {useAppDispatch, useAppSelector} from "../store/hooks/hooks";
-import {Nullable} from "../types";
 import {changeCalendarCurrent} from "../store/reducers/calendar";
-import {ChangeCurrentFnType} from "../common/commonTypes";
 import {CalendarCurrentSelector} from "../store/selectors/calendarItems";
 import {useNavigate} from "react-router-dom";
 

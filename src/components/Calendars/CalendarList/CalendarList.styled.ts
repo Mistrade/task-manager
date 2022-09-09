@@ -89,3 +89,10 @@ export const CalendarNameCheckbox = styled('input')<{ color: string }>`
     background-color: #e9ecef;
   }
 `
+
+export const CalendarIdentifier = styled('div')<{color: string}>`
+	width: 20px;
+	height: 20px;
+	border-radius: 4px;
+	background-color: ${_ => _.color};
+`

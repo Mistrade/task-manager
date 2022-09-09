@@ -1,7 +1,6 @@
 import {createSelector} from "@reduxjs/toolkit";
 import {CreateSelectorReturnType, RootState} from "../index";
-import {CalendarModeForState, CalendarStateData} from "../reducers/calendar";
-import dayjs from "dayjs";
+import {CalendarModeForState} from "../reducers/calendar";
 import {CalendarMode} from "../../components/Calendars/types";
 
 // export const useCalendarItemSelector = createSelector(

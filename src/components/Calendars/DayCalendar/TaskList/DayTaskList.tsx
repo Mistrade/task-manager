@@ -2,7 +2,6 @@ import React, {FC, useCallback, useEffect, useMemo, useState} from 'react'
 import {FlexBlock} from '../../../LayoutComponents/FlexBlock'
 import {CalendarCurrentDay, CalendarPriorityKeys, GlobalTaskListProps, OnSelectTaskFnType} from '../../types'
 import dayjs from 'dayjs'
-import {css} from 'styled-components'
 import {Button} from '../../../Buttons/Buttons.styled'
 import {EventFilter, EventFilterOnChangeHandle, FilterTaskStatuses} from '../EventFilter'
 import {useGetTasksAtDayQuery, useRemoveTaskMutation} from "../../../../store/api/taskApi/taskApi";

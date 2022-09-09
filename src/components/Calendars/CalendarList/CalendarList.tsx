@@ -1,7 +1,6 @@
-import {currentColor} from "../../../common/constants";
 import {CalendarListStyled} from "./CalendarList.styled";
-import {CalendarNameItem, CalendarNameListItem} from "./CalendarNameListItem";
-import {useEffect, useMemo, useState} from "react";
+import {CalendarNameListItem} from "./CalendarNameListItem";
+import {useMemo, useState} from "react";
 import {useChangeSelectCalendarMutation, useGetCalendarsQuery} from "../../../store/api/taskApi/taskApi";
 
 interface CalendarList {
