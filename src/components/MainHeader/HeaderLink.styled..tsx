@@ -11,7 +11,7 @@ export const HeaderDefaultLink = styled(LinkStyled)`
   cursor: pointer;
 `
 
-export const HeaderLink = styled(HeaderDefaultLink)<{ isSelected: boolean }>`
+export const HeaderLinkStyled = styled(HeaderDefaultLink)<{ isSelected: boolean }>`
   & {
     transition: all .3s ease-in-out;
     background-color: ${props => props.isSelected ? currentColor : '#fff'};

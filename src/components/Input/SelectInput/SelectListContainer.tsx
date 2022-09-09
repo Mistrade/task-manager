@@ -13,7 +13,7 @@ export const SelectListContainer: FCWithChildren<FlexBlockProps> = ( {
         maxHeight={320}
         width={'100%'}
         {...flexBlockProps}
-        bgColor={'rgba(255,255,255)'}
+        bgColor={'rgba(255,255,255, 1)'}
         borderRadius={4}
         p={4}
         border={`1px solid ${defaultColor}`}

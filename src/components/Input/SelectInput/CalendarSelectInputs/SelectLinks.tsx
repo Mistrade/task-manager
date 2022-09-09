@@ -1,16 +1,19 @@
 import {FlexBlock} from '../../../LayoutComponents/FlexBlock'
 import React, {useRef, useState} from 'react'
-import {DefaultTextInputProps, TextInput} from '../../TextInput'
+import {DefaultTextInputProps, TextInput} from '../../TextInput/TextInput'
 import {currentColor, hoverColor} from '../../../../common/constants'
 import * as yup from 'yup'
 import {Button, LinkButton, WhiteButton} from '../../../Buttons/Buttons.styled'
 import {DefaultWebIcon} from '../../../Icons/SocialNetworkIcons/DefaultWeb'
 import {UrlIcon} from '../../../Icons/SocialNetworkIcons'
+import {EventLinkItem} from "../../../Calendars/types";
 
-export interface SelectLinksProps extends Omit<DefaultTextInputProps, 'onChange'> {
+export interface SelectLinksProps extends Omit<DefaultTextInputProps, 'onChange' | 'value'> {
 	label?: string,
 	onChange: (value: { key: string, value: string } | null) => void,
-	tooltip?: DefaultTextInputProps['tooltip']
+	tooltip?: DefaultTextInputProps['tooltip'],
+	initialShowNotification?: boolean,
+	initialLinkValue?: EventLinkItem | null
 }
 
 interface LinkItem {
@@ -79,21 +82,20 @@ export function SelectLinks<T>({
 																 label,
 																 onChange,
 																 tooltip,
+																 initialShowNotification = true,
+																 initialLinkValue,
 																 ...props
 															 }: SelectLinksProps): JSX.Element {
 	
 	
 	//TODO компонент должен принимать только ссылки, при визуализации показывать только домен, без пути
 	//TODO так же для ссылки можно добавить описание и выбрать одну основную ссылку
-	//TODO если в домене ссылки удалось распознать какой-то популярный ресурс например ВК, скайп или зум - то поставить логотип, если не удалось, установить дефолтный логотип WWW
-	//TODO если ссылка корректная и проходит валидацию, должна быть кнопка "перейти"
-	//TODO каждая ссылка должна открываться в новом окне
 	
-	const [link, setLink] = useState<{ key: string, value: string }>({key: 'default', value: ''})
+	const [link, setLink] = useState<{ key: string, value: string }>(initialLinkValue || {key: 'default', value: ''})
 	const ref = useRef<HTMLInputElement>(null)
 	const [loading, setLoading] = useState<boolean>(false)
 	const [isSecure, setIsSecure] = useState(true)
-	const [showNotification, setShowNotification] = useState(true)
+	const [showNotification, setShowNotification] = useState(!!initialShowNotification)
 	
 	const changeIconHandler = async (value: string): Promise<string> => {
 		if (value) {

@@ -1,65 +1,41 @@
 import {currentColor} from "../../../common/constants";
 import {CalendarListStyled} from "./CalendarList.styled";
 import {CalendarNameItem, CalendarNameListItem} from "./CalendarNameListItem";
-import {useEffect, useState} from "react";
+import {useEffect, useMemo, useState} from "react";
+import {useChangeSelectCalendarMutation, useGetCalendarsQuery} from "../../../store/api/taskApi/taskApi";
 
 interface CalendarList {
 
 }
 
-
-const list: Array<CalendarNameItem> = [
-	{
-		id: '1',
-		title: 'Home Calendar',
-		color: currentColor,
-	},
-	{
-		id: '2',
-		title: 'Work Calendar',
-		color: '#FFA4A4'
-	},
-	{
-		id: '3',
-		title: 'Freelance Calendar',
-		color: '#D4CC00'
-	},
-	{
-		id: '4',
-		title: 'Freelance2 Calendar',
-		color: '#D46600'
-	},
-	{
-		id: '5',
-		title: 'Freelance3 Calendar',
-		color: '#D49051'
-	}
-]
-
-
 export const CalendarList = () => {
-	const [checked, setChecked] = useState<{ [key: string]: boolean }>({})
+	const {currentData, isFetching} = useGetCalendarsQuery({}, {})
+	const [changeSelect, {isLoading}] = useChangeSelectCalendarMutation()
 	
-	useEffect(() => {
-		console.log(checked)
-	}, [checked])
+	const [isChangedProcessOf, setIsChangedProcessOf] = useState<null | string>(null)
+	
+	const count: number = useMemo(() => {
+		return currentData?.data?.length || 3
+	}, [currentData?.data?.length])
 	
 	return (
 		<CalendarListStyled>
-			
-			{list.map((item) => {
+			{currentData?.data?.map((item) => {
 				return (
 					<CalendarNameListItem
 						item={item}
-						key={item.id}
-						isChecked={checked[item.id]}
-						onChange={(isChecked) => {
-							
+						key={item._id}
+						isChecked={item.isSelected}
+						isLoading={item._id === isChangedProcessOf}
+						onChange={async (isChecked) => {
 							console.log(isChecked)
-							setChecked(prev => ({
-								...prev,
-								[item.id]: isChecked
-							}))
+							setIsChangedProcessOf(item._id)
+							await changeSelect({
+								id: item._id,
+								state: isChecked
+							})
+								.unwrap()
+								.finally(() => setIsChangedProcessOf(null))
 						}}
 					/>
 				)

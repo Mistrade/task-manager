@@ -25,7 +25,7 @@ function App() {
 	return (
 		<>
 			<Loader title={'Проверка сессии пользователя...'} isActive={isFetching}>
-				<FlexBlock width={'100%'} direction={'column'} minHeight={'100vh'}>
+				<FlexBlock width={'100%'} direction={'column'} height={'100vh'}>
 					<GlobalStyled/>
 					<MainHeader
 						userInfo={isError ? undefined : userInfo?.data}

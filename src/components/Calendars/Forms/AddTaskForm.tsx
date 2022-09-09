@@ -1,9 +1,9 @@
-import {FC} from 'react'
-import {CalendarItem, CalendarTaskItem} from '../types'
+import {FC, useMemo} from 'react'
+import {CalendarTaskItem} from '../types'
 import {useFormik} from 'formik'
 import dayjs from 'dayjs'
 import {FlexBlock} from '../../LayoutComponents/FlexBlock'
-import {TextInput} from '../../Input/TextInput'
+import {TextInput} from '../../Input/TextInput/TextInput'
 import {SelectPriorityInput} from '../../Input/SelectInput/CalendarSelectInputs/SelectPriorityInput'
 import {SelectBooleanInput} from '../../Input/SelectInput/SelectBooleanInput'
 import {
@@ -22,7 +22,10 @@ import {CompleteIcon, CreatedIcon} from '../../Icons/Icons'
 import {Button, StyledButton} from '../../Buttons/Buttons.styled'
 import {SelectLinks} from '../../Input/SelectInput/CalendarSelectInputs/SelectLinks'
 import {Tooltip} from '../../Tooltip/Tooltip'
-import {useAddTaskMutation} from "../../../store/api/taskApi";
+import {useAddTaskMutation, useGetCalendarsQuery} from "../../../store/api/taskApi/taskApi";
+import {TextAreaInput} from "../../Input/TextAreaInput/TextAreaInput";
+import {CalendarNameItem} from "../CalendarList/CalendarNameListItem";
+import {SelectItemContainer} from "../../Input/SelectInput/SelectItemContainer";
 
 interface AddTaskFormProps {
 	onComplete?: (data: CalendarTaskItem) => void,
@@ -30,6 +33,13 @@ interface AddTaskFormProps {
 	onCancel?: (data: CalendarTaskItem) => void
 }
 
+export const LinkValidationSchema = yup
+	.object({
+		key: yup.string(),
+		value: yup.string().url('Ссылка должна быть корректным url-адресом').required()
+	})
+	.nullable()
+	.notRequired()
 
 const addTaskValidationSchema = yup.object({
 	title: yup.string()
@@ -43,18 +53,18 @@ const addTaskValidationSchema = yup.object({
 			'Время завершения должно быть позже начала события'
 		)
 		.required('Время завершения события обязательно для заполнения'),
-	link: yup
-		.object({
-			key: yup.string(),
-			value: yup.string().url('Ссылка должна быть корректным url-адресом').required()
-		})
-		.nullable()
-		.notRequired(),
+	link: LinkValidationSchema,
 	priority: yup.string().oneOf(Object.keys(PRIORITY_TITLES)).required('Пожалуйста, выберите приоритет события'),
-	status: yup.string().oneOf(Object.keys(TASK_STATUSES)).required('Пожалуйста, укажите статус события')
+	status: yup.string().oneOf(Object.keys(TASK_STATUSES)).required('Пожалуйста, укажите статус события'),
+	calendar: yup.string()
+		.required('Это поле обязательно для заполнения')
+		.min(10, 'Выберите элемент из выпадающего списка')
+		.max(30, 'Выберите элемент из выпадающего списка')
+	
 })
 
 export const AddTaskForm: FC<AddTaskFormProps> = ({date, onComplete, onCancel}) => {
+	const {data: calendarsList} = useGetCalendarsQuery({exclude: ['Invite']})
 	const [addTask, {isLoading, status}] = useAddTaskMutation()
 	const formik = useFormik<CalendarTaskItem>({
 		async onSubmit(values) {
@@ -73,12 +83,16 @@ export const AddTaskForm: FC<AddTaskFormProps> = ({date, onComplete, onCancel}) 
 			status: 'created',
 			members: [],
 			time: date || dayjs().toDate(),
-			timeEnd: dayjs(date).add(1, 'hour').toDate() || dayjs().add(1, 'hour').toDate(),
+			timeEnd: dayjs(date || dayjs()).add(1, 'hour').toDate() || dayjs().add(1, 'hour').toDate(),
 			priority: 'medium',
-			link: null
+			link: null,
+			calendar: ''
 		}
 	})
 	
+	const calendarItem = useMemo(() => {
+		return calendarsList?.data?.find((item) => item._id === formik.values.calendar)
+	}, [formik.values.calendar])
 	return (
 		<form onSubmit={formik.handleSubmit} style={{width: '100%'}}>
 			<FlexBlock direction={'column'} p={'12px 20px 0px 20px'}>
@@ -115,6 +129,41 @@ export const AddTaskForm: FC<AddTaskFormProps> = ({date, onComplete, onCancel}) 
 							formik.setFieldValue('link', value)
 						}}
 					/>
+				</FlexBlock>
+				<FlexBlock mb={12} wrap={'nowrap'} width={'100%'} gap={12}>
+					<FlexBlock width={'calc(50% - 6px)'}>
+						<SelectInput
+							label={'Выберите календарь'}
+							icon={calendarItem &&
+              <FlexBlock width={20} height={20} bgColor={calendarItem?.color} borderRadius={4}/>}
+							iconPlacement={'right'}
+							value={calendarItem?.title || ''}
+							errorMessage={formik.errors.calendar}
+							isDirty={formik.touched.calendar}
+							data={calendarsList?.data || [] as Array<CalendarNameItem>}
+							onFocus={() => formik.setFieldTouched('calendar', true, false)}
+							renderData={(data, methods) => (
+								<SelectListContainer>
+									{!!data.length ? (
+										<>
+											{data.map((item) => (
+												<SelectItemContainer
+													onClick={() => formik.setFieldValue('calendar', item._id)}
+												>
+													<FlexBlock width={20} height={20} bgColor={item.color} borderRadius={4}/>
+													{item.title}
+												</SelectItemContainer>
+											))}
+										</>
+									) : (
+										<SelectItemContainer>
+											Не удалось загрузить данные
+										</SelectItemContainer>
+									)}
+								</SelectListContainer>
+							)}
+						/>
+					</FlexBlock>
 				</FlexBlock>
 				<FlexBlock mb={12} gap={12}>
 					<SelectPriorityInput
@@ -186,8 +235,10 @@ export const AddTaskForm: FC<AddTaskFormProps> = ({date, onComplete, onCancel}) 
 							<SelectListContainer maxHeight={500} width={'200%'}>
 								<DatePickerPaper
 									disabledOptions={{min: formik.values.time || new Date(), includeMin: true}}
-									currentDate={formik.values.timeEnd || dayjs(date).add(30, 'minute').toDate() || dayjs().add(30, 'minute').toDate()}
-									onChange={(date) => formik.setFieldValue('timeEnd', date)}
+									currentDate={formik.values.timeEnd}
+									onChange={(date) => {
+										formik.setFieldValue('timeEnd', date)
+									}}
 								/>
 							</SelectListContainer>
 						)}
@@ -230,7 +281,20 @@ export const AddTaskForm: FC<AddTaskFormProps> = ({date, onComplete, onCancel}) 
 						Так происходит потому что мы стараемся показывать актуальную информацию на каждый день.
 					</FlexBlock>
 				)}
+				<FlexBlock mb={12} direction={'row'}>
+					<TextAreaInput
+						value={formik.values.description}
+						onChange={(value) => formik.setFieldValue('description', value)}
+						onFocus={() => formik.setFieldTouched('description', true)}
+						errorMessage={formik.errors.description}
+						isDirty={formik.touched.description}
+						inputId={'task__description'}
+						label={'Добавьте описание к событию'}
+						placeholder={'Произвольный текст, на заметку...'}
+					/>
+				</FlexBlock>
 			</FlexBlock>
+			
 			<FlexBlock
 				width={'100%'}
 				justify={'flex-end'}

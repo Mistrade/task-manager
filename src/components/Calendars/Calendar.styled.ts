@@ -6,12 +6,11 @@ export const CalendarDesktopContainer = styled('div')`
   & {
     position: relative;
     width: 100%;
-    max-height: 100%;
+    height: max-content;
     display: flex;
     flex-direction: column;
     align-items: flex-start;
     justify-content: flex-start;
-    padding-top: 24px;
   }
 
   & * {
@@ -102,7 +101,7 @@ export const SwitchCalendarModeTab = styled('button')<{ isSelected?: boolean }>`
     transition: all .3s ease-in-out;
     border-bottom: 3px solid ${props => props.isSelected ? currentColor : 'transparent'};
     color: ${defaultColor};
-    min-width: 50px;
+    min-width: 30px;
   }
 
   &:hover {

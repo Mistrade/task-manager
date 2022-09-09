@@ -23,7 +23,8 @@ interface Returned {
 	onSelectTask: OnSelectTaskFnType,
 	onAddTask: OnAddTaskFnType,
 	onChangeCurrent: OnChangeCurrentFnType,
-	onCloseTaskInfo: OnCloseTaskInfoFnType
+	onCloseTaskInfo: OnCloseTaskInfoFnType,
+	onCloseAddTaskModal: () => void
 }
 
 export type UseCalendarType = () => Returned
@@ -42,8 +43,9 @@ export const useCalendar: UseCalendarType = () => {
 	}, [setSelectedTask, current.layout])
 	
 	const onAddTask: OnAddTaskFnType = useCallback((date) => {
+		navigate(`/calendar/${current.layout}/add`)
 		setAddTaskDate(date)
-	}, [setAddTaskDate])
+	}, [setAddTaskDate, current.layout])
 	
 	const onChangeCurrent = useCallback((date: Date, l: CalendarMode['layout']) => {
 		navigate(`/calendar/${l}`, {replace: true})
@@ -52,6 +54,11 @@ export const useCalendar: UseCalendarType = () => {
 	
 	const onCloseTaskInfo = useCallback(() => {
 		navigate(`/calendar/${current.layout}`, {replace: true})
+	}, [current.layout])
+	
+	const onCloseAddTaskModal = useCallback(() => {
+		setAddTaskDate(null)
+		navigate(`/calendar/${current.layout}`)
 	}, [current.layout])
 	
 	return {
@@ -63,6 +70,7 @@ export const useCalendar: UseCalendarType = () => {
 		onSelectTask,
 		onAddTask,
 		onChangeCurrent,
-		onCloseTaskInfo
+		onCloseTaskInfo,
+		onCloseAddTaskModal
 	}
 }

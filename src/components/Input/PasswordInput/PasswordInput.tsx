@@ -1,7 +1,6 @@
-import {FlexBlock} from "../LayoutComponents/FlexBlock";
-import {currentColor, defaultColor} from "../../common/constants";
-import {PasswordIcon} from "../Icons/Session/PasswordIcon";
-import {TextInput, TextInputProps} from "./TextInput";
+import {defaultColor} from "../../../common/constants";
+import {PasswordIcon} from "../../Icons/Session/PasswordIcon";
+import {TextInput, TextInputProps} from "../TextInput/TextInput";
 import {FC, useState} from "react";
 
 export const PasswordInput: FC<TextInputProps> = ({

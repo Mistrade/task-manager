@@ -5,14 +5,6 @@ import {
 	CalendarCurrentWeek, CalendarCurrentYear, CalendarDisabledOptions,
 	CalendarMode, DateItem, MonthItem, WeekItem, YearItem
 } from "../../components/Calendars/types";
-import {
-	defaultDateItem,
-	defaultMonthItem,
-	defaultWeekItem,
-	defaultYearItem,
-	initialCurrentMap
-} from "../../common/constants";
-import {Nullable} from "../../types";
 
 export interface CalendarStateData {
 	day: DateItem,
@@ -37,11 +29,6 @@ interface CalendarState {
 
 const initialState: CalendarState = {
 	current: {layout: 'day', date: new Date().toString()},
-}
-
-interface ChangeCalendarCurrentPayload {
-	value: CalendarMode,
-	disabledOptions?: CalendarDisabledOptions
 }
 
 const CalendarSlice = createSlice({

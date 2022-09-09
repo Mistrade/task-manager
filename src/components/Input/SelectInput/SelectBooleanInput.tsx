@@ -1,4 +1,4 @@
-import {TextInputProps} from '../TextInput'
+import {TextInputProps} from '../TextInput/TextInput'
 import {SelectInput} from './SelectInput'
 import {SelectListContainer} from './SelectListContainer'
 import {SelectItemContainer} from './SelectItemContainer'

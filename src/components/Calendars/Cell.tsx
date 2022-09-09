@@ -1,5 +1,5 @@
 import styled, {css, keyframes} from 'styled-components'
-import React, {FC, useMemo, useRef, useState} from 'react'
+import React, {FC, forwardRef, useMemo, useRef, useState} from 'react'
 import {
 	CalendarCellProps,
 	CalendarPriorityKeys,
@@ -12,8 +12,8 @@ import {
 import {addNull} from '../../common/functions'
 import {currentColor, defaultColor, disabledColor, hoverColor, priorityColors} from '../../common/constants'
 import dayjs from 'dayjs'
-import {FlexBlock} from '../LayoutComponents/FlexBlock'
-import {Arrow, BurgerIcon, CompleteIcon, DoubleArrow, SadSmile} from '../Icons/Icons'
+import {FlexBlock, FlexBlockProps} from '../LayoutComponents/FlexBlock'
+import {Arrow, BurgerIcon, CompleteIcon, DoubleArrow, IconProps, SadSmile} from '../Icons/Icons'
 
 interface CellComponentProps {
 	disabled?: boolean,
@@ -21,18 +21,6 @@ interface CellComponentProps {
 	isHover?: boolean
 	isToday?: boolean
 }
-
-const CalendarDateContainer = styled('div')`
-  & {
-    position: relative;
-    width: 100%;
-    display: flex;
-    justify-content: flex-start;
-    flex-wrap: nowrap;
-    padding: 12px;
-    transition: all .3s ease-in-out;
-  }
-`
 
 export const CalendarDate = styled('span')<CellComponentProps>`
   & {
@@ -206,28 +194,29 @@ const Indicator = styled('span')<{ color: string }>`
   }
 `
 
-export const ArrowIndicator: FC<{ priorityKey: CalendarPriorityKeys, isCompleted?: boolean }> = ({
-																																																	 priorityKey,
-																																																	 isCompleted
-																																																 }) => {
+export const ArrowIndicator: FC<{ priorityKey: CalendarPriorityKeys, isCompleted?: boolean } & IconProps & FlexBlockProps> = ({
+																																																																priorityKey,
+																																																																isCompleted,
+																																																																...props
+																																																															}) => {
 	
 	if (isCompleted) {
-		return <CompleteIcon size={20}/>
+		return <CompleteIcon size={20} {...props}/>
 	}
 	
 	switch (priorityKey) {
 		case 'veryHigh':
-			return <DoubleArrow size={20} color={priorityColors.veryHigh} transform={'rotate(-90deg)'}/>
+			return <DoubleArrow size={20} color={priorityColors.veryHigh} {...props} transform={'rotate(-90deg)'}/>
 		case 'high':
-			return <Arrow size={20} color={priorityColors.high} transform={'rotate(-90deg)'}/>
+			return <Arrow size={20} color={priorityColors.high}  {...props} transform={'rotate(-90deg)'}/>
 		case 'medium':
-			return <BurgerIcon size={20}/>
+			return <BurgerIcon size={20} {...props}/>
 		case 'low':
-			return <Arrow size={20} color={priorityColors.low} transform={'rotate(90deg)'}/>
+			return <Arrow size={20} color={priorityColors.low}  {...props} transform={'rotate(90deg)'}/>
 		case 'veryLow':
-			return <DoubleArrow size={20} color={priorityColors.veryLow} transform={'rotate(90deg)'}/>
+			return <DoubleArrow size={20} color={priorityColors.veryLow}  {...props} transform={'rotate(90deg)'}/>
 		case 'not_selected':
-			return <SadSmile size={20} color={currentColor}/>
+			return <SadSmile size={20} color={currentColor} {...props}/>
 	}
 	
 	return <></>

@@ -2,7 +2,7 @@ import {combineReducers, configureStore} from '@reduxjs/toolkit'
 import {eventReducer} from './reducers/events'
 import {SessionReducer} from "./reducers/session";
 import {CalendarReducer} from "./reducers/calendar";
-import {taskApi} from "./api/taskApi";
+import {taskApi} from "./api/taskApi/taskApi";
 import {sessionApi} from "./api/sessionApi";
 
 const rootReducer = combineReducers({

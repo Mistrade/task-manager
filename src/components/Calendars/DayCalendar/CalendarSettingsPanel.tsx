@@ -1,17 +1,15 @@
 import React, {FC, useCallback, useMemo} from 'react'
 import {FlexBlock} from '../../LayoutComponents/FlexBlock'
-import {disabledColor} from '../../../common/constants'
-import {PourDatesProps, SmallMonth, SmallMonthCalendar} from '../DatePicker/SmallMonthCalendar'
 import {DaySettingsPanelProps} from '../types'
 import {css} from 'styled-components'
 import {Button} from '../../Buttons/Buttons.styled'
-import {SmallCalendarMonthTitle} from '../DatePicker/SmallCalendarMonthTitle'
+import {SmallCalendarMonthTitle} from '../SmallMotnCalendar/SmallCalendarMonthTitle'
 import dayjs from 'dayjs'
-import {dateToCalendarItem} from '../../../common/calendarSupport/generators'
 import {Tooltip} from '../../Tooltip/Tooltip'
-import {GetTaskSchemeRequest, useGetTaskSchemeQuery} from "../../../store/api/taskApi";
+import {GetTaskSchemeRequest, useGetTaskSchemeQuery} from "../../../store/api/taskApi/taskApi";
 import {getTaskSchemeScope} from "../../../common/calendarSupport/scopes";
 import {CalendarList} from "../CalendarList/CalendarList";
+import {PourDatesProps, SmallMonth} from "../SmallMotnCalendar/SmallMonth";
 
 
 export const CalendarSettingsPanel: FC<DaySettingsPanelProps> = ({
@@ -106,7 +104,7 @@ export const CalendarSettingsPanel: FC<DaySettingsPanelProps> = ({
 					Добавить событие
 				</Button>
 			</FlexBlock>
-			<FlexBlock minHeight={200} mb={24}>
+			<FlexBlock minHeight={200} mb={24} style={{zIndex: 1}}>
 				<SmallMonth
 					pourDates={pour}
 					includesTasks={taskScheme}

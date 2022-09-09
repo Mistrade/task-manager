@@ -12,44 +12,38 @@ const Form = React.lazy(() => import('./../Forms/AddTaskForm')
 )
 
 export const AddTaskModal: FC<AddTaskModalProps> = ({date, onClose}) => {
-	const dispatch = useAppDispatch()
-	
-	if (!!date) {
-		return (
-			<Modal
-				isView={!!date}
-				onClose={onClose}
-			>
-				<ModalHeader>
-					<Tooltip
-						text={'Дата выбирается автоматически, когда вы нажимаете "Добавить задание".\nЕсли дата была в прошлом, выберется текущий календарный день и время.'}
-						children={`Добавить событие ${getHumanizeDateValue(date || new Date(), false)}`}
-						placement={'right'}
-					/>
-				</ModalHeader>
-				<ModalBody>
-					<FlexBlock minWidth={'50vw'} maxWidth={'60vw'} grow={10}>
-						<ErrorBoundary
-							title={ERROR_TITLES['SUSPENSE']}
-							description={ERROR_DESCRIPTIONS['SUSPENSE']}
-							errorType={'SYSTEM_ERROR'}
-						>
-							<React.Suspense fallback={'Загрузка формы...'}>
-								<Form
-									onComplete={(value) => {
-										console.log('onComplete')
-										onClose && onClose()
-									}}
-									onCancel={(value) => onClose && onClose()}
-									date={date}
-								/>
-							</React.Suspense>
-						</ErrorBoundary>
-					</FlexBlock>
-				</ModalBody>
-			</Modal>
-		)
-	}
-	
-	return <></>
+	return (
+		<Modal
+			isView={true}
+			onClose={onClose}
+		>
+			<ModalHeader>
+				<Tooltip
+					text={'Дата выбирается автоматически, когда вы нажимаете "Добавить задание".\nЕсли дата была в прошлом, выберется текущий календарный день и время.'}
+					children={`Добавить событие ${getHumanizeDateValue(date || new Date(), false)}`}
+					placement={'right'}
+				/>
+			</ModalHeader>
+			<ModalBody>
+				<FlexBlock minWidth={'50vw'} maxWidth={'60vw'} grow={10}>
+					<ErrorBoundary
+						title={ERROR_TITLES['SUSPENSE']}
+						description={ERROR_DESCRIPTIONS['SUSPENSE']}
+						errorType={'SYSTEM_ERROR'}
+					>
+						<React.Suspense fallback={'Загрузка формы...'}>
+							<Form
+								onComplete={(value) => {
+									console.log('onComplete')
+									onClose && onClose()
+								}}
+								onCancel={(value) => onClose && onClose()}
+								date={date}
+							/>
+						</React.Suspense>
+					</ErrorBoundary>
+				</FlexBlock>
+			</ModalBody>
+		</Modal>
+	)
 }

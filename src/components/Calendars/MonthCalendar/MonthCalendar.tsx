@@ -10,7 +10,6 @@ export const MonthCalendar: FC<MonthCalendarProps> = ( {
                                                          onSelectTask,
                                                          onChangeCurrent,
                                                          renderTaskCount,
-                                                         taskStorage
                                                        } ) => {
 
   return (
@@ -25,7 +24,6 @@ export const MonthCalendar: FC<MonthCalendarProps> = ( {
             onSelectTask={onSelectTask}
             renderTaskCount={renderTaskCount}
             onAddTask={onAddTask}
-            taskStorage={taskStorage}
           />
         ) )}
       </CalendarDateListContainer>

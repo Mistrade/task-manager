@@ -1,6 +1,6 @@
 import {createApi, fetchBaseQuery} from "@reduxjs/toolkit/dist/query/react";
 import {RegistrationFormType} from "../../components/Session/Registration";
-import {ServerResponse} from "./taskApi";
+import {ServerResponse} from "./taskApi/taskApi";
 import {AuthorizationProps} from "../../components/Session/AuthorizationForm";
 import {baseServerUrl} from "./defaultApiConfig";
 
@@ -17,7 +17,7 @@ export const sessionApi = createApi({
 			query: (args) => ({
 				url: '/reg',
 				method: 'POST',
-				body: args
+				body: args,
 			}),
 		}),
 		login: build.mutation<ServerResponse, AuthorizationProps>({

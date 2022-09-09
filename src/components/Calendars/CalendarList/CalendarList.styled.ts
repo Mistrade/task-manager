@@ -48,7 +48,6 @@ export const CalendarNameCheckbox = styled('input')<{ color: string }>`
     flex-grow: 0;
     border: 1px solid #adb5bd;
     border-radius: 0.25em;
-    margin-right: 0.5em;
     background-repeat: no-repeat;
     background-position: center center;
     background-size: 50% 50%;

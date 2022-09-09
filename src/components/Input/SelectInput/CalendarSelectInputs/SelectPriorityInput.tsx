@@ -6,7 +6,7 @@ import {CalendarPriorityKeys, CalendarPriorityList} from '../../../Calendars/typ
 import {FlexBlockProps} from '../../../LayoutComponents/FlexBlock'
 import {ArrowIndicator} from '../../../Calendars/Cell'
 import {SelectInput} from '../SelectInput'
-import {DefaultTextInputProps} from '../../TextInput'
+import {DefaultTextInputProps} from '../../TextInput/TextInput'
 
 interface SelectPriorityInputProps extends Partial<Omit<DefaultTextInputProps, 'onChange'>> {
   selected: CalendarPriorityKeys | null,

@@ -1,11 +1,11 @@
-import {TextInput} from "../Input/TextInput";
+import {TextInput} from "../Input/TextInput/TextInput";
 import {useFormik} from "formik";
 import {Button} from "../Buttons/Buttons.styled";
 import {useNavigate} from "react-router-dom";
 import {SessionFormContainer} from "./SessionFormContainer";
 import {Heading} from "../Text/Heading";
 import {FlexBlock} from "../LayoutComponents/FlexBlock";
-import {PasswordInput} from "../Input/PasswordInput";
+import {PasswordInput} from "../Input/PasswordInput/PasswordInput";
 import {useLoginMutation} from "../../store/api/sessionApi";
 import {toast} from "react-toastify";
 import {defaultColor} from "../../common/constants";
@@ -39,7 +39,7 @@ export const AuthorizationForm = () => {
 			
 			if (result?.info) {
 				toast(result.info.message, {
-					type: result.info.type
+					type: result.info.type,
 				})
 				
 				if (result.info.type === 'success') {

@@ -3,8 +3,9 @@ import {FlexBlock} from '../../LayoutComponents/FlexBlock'
 import {css} from 'styled-components'
 import {HoverElementMixin} from '../../../common/cssMixins'
 import {hoverColor} from '../../../common/constants'
+import React from "react";
 
-export const SelectItemContainer: FCWithChildren<{ onClick?: () => void, isSelected?: boolean }> = ( {
+export const SelectItemContainer: FCWithChildren<{ onClick?: (e: React.MouseEvent<HTMLDivElement>) => void, isSelected?: boolean }> = ( {
                                                                                                        onClick,
                                                                                                        children,
                                                                                                        isSelected

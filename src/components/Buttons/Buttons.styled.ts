@@ -64,7 +64,7 @@ export const LinkButton = styled('a')`
 
 export const WhiteButton = styled('button')`
   & {
-    padding: 6px 32px;
+    padding: 4px 8px;
     font-size: 16px;
     color: ${defaultColor};
     background-color: #fff;
@@ -88,15 +88,18 @@ export const WhiteButton = styled('button')`
 export const JoinToEventButton = styled('a')`
   font-size: 14px;
   padding: 4px 8px;
-  border: 1px solid ${defaultColor};
+  border-width: 1px;
+  border-style: solid;
+  border-color: ${defaultColor};
   border-radius: 4px;
   color: ${defaultColor};
   text-decoration: none;
   outline: none;
-  background-color: inherit;
-  transition: background-color .3s ease-in;
+  background-color: transparent;
+  transition: all .3s ease-in;
 
   &:hover {
-    background-color: #fff;
+    border-color: ${currentColor};
+    color: ${currentColor}
   }
 `

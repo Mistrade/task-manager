@@ -1,9 +1,9 @@
 import React, {FC, ReactNode} from 'react'
 import {ShortChangeCurrentPattern} from '../../common/commonTypes'
-import {OnSelectDateFromCalendarFn} from './DatePicker/SmallMonthCalendar'
 import {FlexBlockProps} from '../LayoutComponents/FlexBlock'
-import {DefaultTextInputProps} from '../Input/TextInput'
-import {GetTaskSchemeResponse} from "../../store/api/taskApi";
+import {DefaultTextInputProps} from '../Input/TextInput/TextInput'
+import {GetTaskSchemeResponse} from "../../store/api/taskApi/taskApi";
+import {FullResponseEventModel} from "../../store/api/taskApi/types";
 
 export type FCWithChildren<T = any> = FC<{ children?: ReactNode } & T>
 
@@ -12,7 +12,6 @@ export interface DatePickerProps {
 	onChange?: (date: Date) => void,
 	currentDate: Date,
 	label?: ReactNode,
-	value: Date | null,
 	containerProps?: FlexBlockProps,
 	isDirty?: boolean,
 	errorMessage?: string,
@@ -24,11 +23,9 @@ export interface DatePickerProps {
 }
 
 export interface CalendarProps {
-	taskId?: string,
 	layout: CalendarMode['layout'],
 	disabledOptions?: CalendarDisabledOptions,
 	renderWeekPattern?: RenderWeekPattern,
-	taskList?: CalendarTaskList
 }
 
 export interface GlobalTaskListProps {
@@ -38,7 +35,6 @@ export interface GlobalTaskListProps {
 
 export interface YearCalendarProps {
 	yearItem: YearItem,
-	taskStorage?: TaskStorage,
 	onChangeCurrent?: OnChangeCurrentFnType
 }
 
@@ -48,7 +44,6 @@ export interface MonthCalendarProps extends GlobalTaskListProps {
 	current: CalendarMode,
 	onSelectTask?: OnSelectTaskFnType,
 	renderWeekPattern?: RenderWeekPattern,
-	taskStorage?: TaskStorage
 }
 
 export interface WeekCalendarProps extends Omit<MonthCalendarProps, 'monthItem' | 'renderWeekPattern'> {
@@ -97,6 +92,8 @@ export interface CalendarTodaySwitchersProps {
 	onChange: (pattern: ShortChangeCurrentPattern) => void
 }
 
+export type OnSelectDateFromCalendarFn = (data: CalendarItem) => void
+
 export interface DaySettingsPanelProps extends Omit<GlobalTaskListProps, 'renderTaskCount'> {
 	monthItem: MonthItem
 	onSelectDate?: OnSelectDateFromCalendarFn,
@@ -107,8 +104,6 @@ export interface SmallCalendarDayItemProps {
 	onSelectDate?: (date: CalendarItem) => void,
 	date: CalendarItem,
 	weekIndex: number,
-	//TODO убрать taskStorage
-	taskStorage?: TaskStorage,
 	currentDate?: Date,
 	includesTasks?: GetTaskSchemeResponse,
 }
@@ -116,8 +111,6 @@ export interface SmallCalendarDayItemProps {
 export interface SmallMonthCalendarWeekItemProps {
 	monthItem: MonthItem,
 	onSelectDate?: (date: CalendarItem) => void,
-	//TODO убрать taskStorage
-	taskStorage?: TaskStorage,
 	currentDate?: Date
 	includesTasks?: GetTaskSchemeResponse,
 	pourWeeks?: Array<number>
@@ -218,7 +211,8 @@ export interface CalendarTaskItem {
 	timeEnd: Date,
 	status: TaskStatusesType,
 	members: TaskMembersListType,
-	link: EventLinkItem | null
+	link: EventLinkItem | null,
+	calendar: string
 }
 
 export type CalendarPriorityList = Array<{ type: CalendarPriorityKeys, title: string }>
@@ -308,12 +302,14 @@ export type CalendarTaskList = Array<CalendarTaskItem>
 export type SelectTaskItem = Omit<TaskTileClickArguments, 'event'>
 
 export interface TaskInformerProps {
-	taskItem: EventItem | null
+	taskItem: FullResponseEventModel | null
 }
 
-export type TaskInformerMainProps = {
-	taskItem: EventItem
+export interface UsageTaskItemBaseProps {
+	taskItem: FullResponseEventModel
 }
+
+export type TaskInformerMainProps = UsageTaskItemBaseProps
 
 export interface TaskInfoModalProps {
 	onClose: () => void

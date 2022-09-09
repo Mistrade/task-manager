@@ -42,6 +42,7 @@ export const todayID = 'calendar-today'
 export const pageHeaderColor = '#f6f8fa'
 export const orangeColor = 'rgba(255,117,66, 1)'
 export const lightHoverColor ='rgba(220, 220, 220, .4)'
+export const completeColor = '#c6fcda'
 
 export const priorityColors: { [key in CalendarPriorityKeys]: string } = {
 	veryLow: defaultColor,
@@ -72,25 +73,25 @@ export const TASK_STATUSES: { [key in TaskStatusesType]: TaskStatusInfo } = {
 		value: false,
 		key: 'created',
 		title: 'Запланировано к выполнению',
-		icon: <CreatedIcon size={20}/>
+		icon: <CreatedIcon size={16}/>
 	},
 	in_progress: {
 		value: false,
 		key: 'in_progress',
 		title: 'В процессе выполнения',
-		icon: <ProcessIcon size={20}/>
+		icon: <ProcessIcon size={16}/>
 	},
 	review: {
 		value: false,
 		key: 'review',
 		title: 'Ожидает подтверждения',
-		icon: <WaitIcon size={20}/>
+		icon: <WaitIcon size={16}/>
 	},
 	completed: {
 		value: true,
 		key: 'completed',
 		title: 'Выполнено',
-		icon: <CompleteIcon size={20}/>
+		icon: <CompleteIcon size={16}/>
 	}
 }
 

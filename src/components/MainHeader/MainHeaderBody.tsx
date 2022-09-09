@@ -1,7 +1,7 @@
 import React, {FC, useEffect, useMemo} from "react";
 import {FlexBlock} from "../LayoutComponents/FlexBlock";
 import {MainHeaderUserInfo, MainHeaderUserInfoProps} from "./MainHeaderUserInfo";
-import {HeaderLink} from "./HeaderLink";
+import {HeaderLinkStyled} from "./HeaderLink.styled.";
 import {useLocation} from "react-router";
 import {NavigationContainer} from "./MainHeader.styled";
 import {useAppSelector} from "../../store/hooks/hooks";
@@ -70,14 +70,14 @@ export const MainHeaderBody: FC<MainHeaderBodyProps> = ({userInfo}) => {
 				<FlexBlock flex={'1 0 60%'}>
 					<NavigationContainer>
 						{NavigationArray.map((nav) => (
-							<HeaderLink
+							<HeaderLinkStyled
 								key={nav.path}
 								to={nav.path}
 								title={nav.title}
 								isSelected={pathname.toLowerCase().startsWith(nav.path.toLowerCase())}
 							>
 								{nav.title}
-							</HeaderLink>
+							</HeaderLinkStyled>
 						))}
 					</NavigationContainer>
 				</FlexBlock>

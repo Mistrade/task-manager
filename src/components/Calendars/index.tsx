@@ -7,7 +7,7 @@ import {useNavigate} from "react-router-dom";
 import {Calendar} from "./Сalendar";
 
 export const CalendarMain: FC = () => {
-	const {layout, taskId} = useParams<{ layout: CalendarMode["layout"], taskId: string }>()
+	const {layout} = useParams<{ layout: CalendarMode["layout"] }>()
 	const dispatch = useAppDispatch()
 	const navigate = useNavigate()
 	
@@ -37,7 +37,6 @@ export const CalendarMain: FC = () => {
 	if (isCorrectLayout(layout) && layout) {
 		return (
 			<Calendar
-				taskId={taskId}
 				layout={layout}
 			/>
 		)

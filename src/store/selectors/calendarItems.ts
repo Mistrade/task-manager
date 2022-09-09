@@ -22,8 +22,13 @@ import {CalendarMode} from "../../components/Calendars/types";
 // 	}
 // )
 
+const rootCalendarSelector: CreateSelectorReturnType<RootState['calendar']['current']> = createSelector(
+	(state: RootState) => state,
+	(state) => state.calendar.current
+)
+
 export const CalendarCurrentSelector: CreateSelectorReturnType<CalendarMode> = createSelector(
-	(state: RootState) => state.calendar.current,
+	rootCalendarSelector,
 	(state: CalendarModeForState): CalendarMode => {
 		const {layout} = state
 		

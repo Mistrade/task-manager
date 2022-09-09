@@ -52,7 +52,6 @@ const WeekOfYearTitle = styled('h3')`
 export const WeeKCalendar: FC<WeekCalendarProps> = ({
 																											weekItem,
 																											renderTaskCount,
-																											taskStorage,
 																											onSelectTask,
 																											onAddTask,
 																											onChangeCurrent,
@@ -86,7 +85,6 @@ export const WeeKCalendar: FC<WeekCalendarProps> = ({
 						onAddTask={onAddTask}
 						value={day}
 						onClickToDate={onClickToDate}
-						tasks={taskStorage ? getTaskListOfDay(day.value, taskStorage) : []}
 						onSelectTask={onSelectTask}
 					/>
 				))}

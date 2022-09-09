@@ -3,6 +3,7 @@ import {lightHoverColor} from "../../common/constants";
 
 export const EmptyButtonStyled = styled('button')`
   & {
+		
     outline: none;
     border: none;
     background-color: transparent;
@@ -13,8 +14,13 @@ export const EmptyButtonStyled = styled('button')`
     align-items: center;
     justify-content: flex-start;
     gap: 8px;
-    padding: 4px;
+    padding: 4px 12px;
   }
+	
+	&:focus {
+    border-radius: 4px;
+    background-color: ${lightHoverColor};
+	}
 
 
   &:hover {

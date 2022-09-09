@@ -1,29 +1,17 @@
 import {FC, useMemo} from 'react'
 import {YearCalendarProps} from '../types'
-import {SmallMonthCalendar} from '../DatePicker/SmallMonthCalendar'
 import styled, {css} from 'styled-components'
 import {FlexBlock} from '../../LayoutComponents/FlexBlock'
-import {SmallCalendarMonthTitle} from '../DatePicker/SmallCalendarMonthTitle'
-import {useGetTaskSchemeQuery} from "../../../store/api/taskApi";
+import {SmallCalendarMonthTitle} from '../SmallMotnCalendar/SmallCalendarMonthTitle'
+import {useGetTaskSchemeQuery} from "../../../store/api/taskApi/taskApi";
 import {getTaskSchemeScope} from "../../../common/calendarSupport/scopes";
 import dayjs from 'dayjs'
 import {Loader} from "../../Loaders/Loader";
-
-const YearGrid = styled('div')`
-  display: grid;
-  grid-template-columns: repeat(4, minmax(20px, 1fr));
-  grid-gap: 20px;
-  grid-template-rows: 230px 230px 230px;
-  justify-content: center;
-  justify-items: center;
-  align-items: center;
-  width: 100%;
-  position: relative;
-`
+import {pageHeaderColor} from '../../../common/constants'
+import {SmallMonth} from "../SmallMotnCalendar/SmallMonth";
 
 export const YearCalendar: FC<YearCalendarProps> = ({
 																											yearItem,
-																											taskStorage,
 																											onChangeCurrent,
 																										}) => {
 	const dateForScheme: Date = useMemo(() => {
@@ -36,20 +24,27 @@ export const YearCalendar: FC<YearCalendarProps> = ({
 	return (
 		<FlexBlock mt={32} mb={32} width={'100%'}>
 			<Loader title={'Загрузка схемы событий...'} isActive={isFetching}>
-				<YearGrid>
+				<FlexBlock gap={24} wrap={'wrap'} justify={'flex-start'} align={'flex-start'}>
 					{yearItem.months.map((monthItem) => {
 						return (
 							<FlexBlock
 								key={`monthItem_year_${monthItem.year}_month_${monthItem.monthOfYear}`}
+								p={12}
+								borderRadius={4}
+								justify={'center'}
+								align={'center'}
+								width={'calc(25% - 24px)'}
+								additionalCss={css`&:hover {
+                  background-color: ${pageHeaderColor}
+                }`}
 							>
-								<SmallMonthCalendar
+								<SmallMonth
 									includesTasks={taskScheme}
-									taskStorage={taskStorage}
 									title={(
 										<FlexBlock
 											width={'100%'}
 											position={'sticky'}
-											bgColor={'#fff'}
+											bgColor={'transparent'}
 											additionalCss={css`
                         z-index: 1;
                         top: 0;
@@ -65,16 +60,11 @@ export const YearCalendar: FC<YearCalendarProps> = ({
 									onSelectDate={(data) => onChangeCurrent && onChangeCurrent(data.value, 'day')}
 									onSelectWeek={(current) => onChangeCurrent && onChangeCurrent(current.aroundDate, 'week')}
 									monthItem={monthItem}
-									current={{
-										layout: 'month',
-										month: monthItem.monthOfYear,
-										year: monthItem.year
-									}}
 								/>
 							</FlexBlock>
 						)
 					})}
-				</YearGrid>
+				</FlexBlock>
 			</Loader>
 		</FlexBlock>
 	)

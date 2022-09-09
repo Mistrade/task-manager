@@ -53,6 +53,27 @@ export const StyledLabel = styled('label')`
   }
 `
 
-export const StyledFindInput = styled(StyledInput)`
+export const StyledTextAreaInput = styled('textarea')`
+	& {
+		width: 100%;
+		border: 2px solid ${disabledColor};
+		border-radius: 6px;
+		outline: none;
+    -moz-appearance: none;
+		resize: none;
+		transition: all .3s ease-in;
+		cursor: pointer;
+		font-size: 16px;
+		font-family: Helvetica, sans-serif;
+	}
+	
+	${DefaultPadding};
 
+  &:focus {
+    border: 2px solid ${currentColor};
+  }
+
+  &:hover {
+    box-shadow: 0 0 8px 0px ${currentColor};
+  }
 `

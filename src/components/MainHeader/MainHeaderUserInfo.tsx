@@ -1,7 +1,7 @@
 import {FC} from "react";
 import {UserModel} from "../Calendars/types";
 import {FlexBlock} from "../LayoutComponents/FlexBlock";
-import {HeaderDefaultLink, HeaderLink} from "./HeaderLink";
+import {HeaderDefaultLink, HeaderLinkStyled} from "./HeaderLink.styled.";
 import {Link, useNavigate} from "react-router-dom";
 import {LinkStyled} from "../Buttons/Link.styled";
 import {Button} from "../Buttons/Buttons.styled";

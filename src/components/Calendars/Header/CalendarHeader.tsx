@@ -44,19 +44,6 @@ export const CalendarHeader: FC<CalendarHeaderProps> = ({
 					onChange={onChangeCurrentHandler}
 				/>
 			</FlexBlock>
-			{/*<FlexBlock*/}
-			{/*	width={'100%'}*/}
-			{/*	justify={'space-between'}*/}
-			{/*	align={'center'}*/}
-			{/*	// mb={current.layout === 'day' || current.layout === 'year' ? 0 : 12}*/}
-			{/*>*/}
-			{/*	*/}
-			{/*	<FlexBlock flex={'1 1 auto'} justify={'center'} align={'center'}>*/}
-			{/*		*/}
-			
-			{/*	</FlexBlock>*/}
-			{/*</FlexBlock>*/}
-			{/*<CalendarHeaderWeekList renderWeekPattern={renderWeekPattern} current={current}/>*/}
 			<FlexBlock justify={'flex-start'}>
 				
 				<CalendarModeSwitchers
