@@ -1,6 +1,7 @@
-# Getting Started with Create React App
+# Сервис онлайн планирования дел, встреч, события, задач
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+Проект использует Typescript, React, Redux Toolkit & RTK Query.
+Код Сервера проекта размещен [здесь](https://github.com/Mistrade/task-manager-server) 
 
 ## Available Scripts
 
