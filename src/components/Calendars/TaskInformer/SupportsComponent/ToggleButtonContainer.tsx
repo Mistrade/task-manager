@@ -6,6 +6,9 @@ const StyledToggleButtonContainer = styled('label')`
   display: flex;
   align-items: center;
   gap: 6px;
+  //background-color: #fff;
+  //border-radius: 4px;
+	//border: 1px solid #fff;
 `
 
 export const ToggleButtonContainer: FC<{ button: ReactNode, text: ReactNode, focusElementId: string }> = ({
@@ -18,9 +21,11 @@ export const ToggleButtonContainer: FC<{ button: ReactNode, text: ReactNode, foc
 			<FlexBlock grow={0} shrink={0}>
 				{button}
 			</FlexBlock>
-			<FlexBlock grow={1} shrink={1} maxWidth={'100%'}>
-				{text}
-			</FlexBlock>
+			{text && (
+				<FlexBlock grow={1} shrink={1} maxWidth={'100%'}>
+					{text}
+				</FlexBlock>
+			)}
 		</StyledToggleButtonContainer>
 	)
 }

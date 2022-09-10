@@ -53,9 +53,8 @@ const TaskInformerMain: FC<TaskInformerMainProps> = ({taskItem}) => {
 	return (
 		<FlexBlock
 			direction={'column'}
-			width={'100%'}
 			minWidth={900}
-			maxWidth={'80vw'}
+			width={'70vw'}
 			p={'12px 20px'}
 			gap={20}
 		>

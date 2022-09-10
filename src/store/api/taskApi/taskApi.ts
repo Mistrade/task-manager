@@ -63,6 +63,7 @@ export const taskApi = createApi({
 					query: (id: string) => ({
 						url: `/taskInfo/${id}`,
 						method: 'GET',
+						cache: 'no-store'
 					}),
 					providesTags: ['TaskInfo']
 				}),

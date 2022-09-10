@@ -1,4 +1,4 @@
-import React, {FC, useCallback, useEffect, useState} from 'react'
+import React, {FC, memo, useCallback, useEffect, useState} from 'react'
 import {DatePickerProps} from '../types'
 import {SelectListContainer} from '../../Input/SelectInput/SelectListContainer'
 import {DatePickerPaper} from './DatePickerPaper'
@@ -9,7 +9,7 @@ import {Button} from '../../Buttons/Buttons.styled'
 import {EmptyButtonStyled} from '../../Buttons/EmptyButton.styled'
 
 
-export const DatePicker: FC<DatePickerProps> = ({
+export const DatePicker: FC<DatePickerProps> = memo(({
 																									onFocus,
 																									currentDate,
 																									label,
@@ -32,10 +32,6 @@ export const DatePicker: FC<DatePickerProps> = ({
 	const clickDeclineHandler = useCallback(() => {
 		setStateValue(currentDate)
 	}, [])
-	
-	useEffect(() => {
-		setStateValue(currentDate)
-	}, [currentDate])
 	
 	return (
 		<SelectInput
@@ -84,4 +80,4 @@ export const DatePicker: FC<DatePickerProps> = ({
 			actions={actions}
 		/>
 	)
-}
+})

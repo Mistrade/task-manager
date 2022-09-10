@@ -13,7 +13,7 @@ const Informer = React.lazy(() => import('./../TaskInformer/TaskInformer').then(
 
 export const TaskInfoModal: FC<TaskInfoModalProps> = ({onClose}) => {
 	const {taskId} = useParams<{ taskId: string }>()
-	const [getTaskInfo, {data: taskInfo, isLoading}] = useLazyGetTaskInfoQuery()
+	const [getTaskInfo, {data: taskInfo, currentData, isLoading}] = useLazyGetTaskInfoQuery()
 	
 	useEffect(() => {
 		taskId && getTaskInfo(taskId)
@@ -38,7 +38,7 @@ export const TaskInfoModal: FC<TaskInfoModalProps> = ({onClose}) => {
 				>
 					<Loader title={'Загрузка информации события...'} isActive={isLoading}>
 						<React.Suspense fallback={<Loader title={'Загрузка дополнительных скриптов...'} isActive={true}/>}>
-							<Informer taskItem={taskInfo?.data || null}/>
+							<Informer taskItem={currentData?.data || null}/>
 						</React.Suspense>
 					</Loader>
 				</ErrorBoundary>

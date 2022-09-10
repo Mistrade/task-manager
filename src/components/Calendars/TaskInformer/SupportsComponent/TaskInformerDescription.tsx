@@ -75,7 +75,12 @@ export const TaskInformerDescription: FC<TaskInformerDescriptionProps> = ({taskI
 				/>
 			) : (
 				<FlexBlock width={'100%'} direction={'column'} gap={6}>
-					<FlexBlock fSize={16} gap={6} pl={8} additionalCss={css`color: ${currentColor};`}>
+					<FlexBlock
+						fSize={16}
+						gap={6}
+						pl={8}
+						additionalCss={css`color: ${currentColor};`}
+					>
 						Описание события
 						<Tooltip
 							size={16}

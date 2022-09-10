@@ -133,6 +133,7 @@ export const AddTaskForm: FC<AddTaskFormProps> = ({date, onComplete, onCancel}) 
 				<FlexBlock mb={12} wrap={'nowrap'} width={'100%'} gap={12}>
 					<FlexBlock width={'calc(50% - 6px)'}>
 						<SelectInput
+							placeholder={'Выберите из выпадающего списка'}
 							label={'Выберите календарь'}
 							icon={calendarItem &&
               <FlexBlock width={20} height={20} bgColor={calendarItem?.color} borderRadius={4}/>}
@@ -148,7 +149,10 @@ export const AddTaskForm: FC<AddTaskFormProps> = ({date, onComplete, onCancel}) 
 										<>
 											{data.map((item) => (
 												<SelectItemContainer
-													onClick={() => formik.setFieldValue('calendar', item._id)}
+													onClick={() => {
+														formik.setFieldValue('calendar', item._id)
+														methods.focusOut()
+													}}
 												>
 													<FlexBlock width={20} height={20} bgColor={item.color} borderRadius={4}/>
 													{item.title}

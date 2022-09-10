@@ -2,7 +2,7 @@ import React, {FC, useCallback} from "react";
 import dayjs from "dayjs";
 import {ServerResponse, useUpdateTaskMutation} from "../../../../store/api/taskApi/taskApi";
 import {FlexBlock} from "../../../LayoutComponents/FlexBlock";
-import {defaultColor, hoverColor} from "../../../../common/constants";
+import {defaultColor, hoverColor, pageHeaderColor} from "../../../../common/constants";
 import {css} from "styled-components";
 import {toast} from "react-toastify";
 import {TaskPreviewDescription} from "./TaskList.styled";
@@ -66,7 +66,8 @@ export const DayTaskItem: FC<DayTaskItemProps> = ({taskInfo, tabIndex, onSelectT
 			borderRadius={4}
 			role={'button'}
 			tabIndex={tabIndex}
-			bgColor={hoverColor}
+			bgColor={pageHeaderColor}
+			border={`1px solid ${hoverColor}`}
 			onKeyPress={keyPressHandler}
 			onClick={clickHandler}
 			additionalCss={css`

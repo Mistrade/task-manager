@@ -1,6 +1,6 @@
 import {MonthItem, UsageTaskItemBaseProps} from "../../types";
 import {
-	TaskInformerUpdateFn,
+	TaskInformerUpdateFn, ToggleEventCalendar,
 	ToggleEventPriority,
 	ToggleEventStatus
 } from "../SupportsComponent/ToggleTaskInformerButtons";
@@ -35,6 +35,7 @@ export const TaskInformerRightBar: FC<TaskInformerRightBarProps> = ({taskItem, m
 				</FlexBlock>
 				<ToggleEventStatus value={taskItem.status} onChange={updateFn}/>
 				<ToggleEventPriority value={taskItem.priority} onChange={updateFn}/>
+				<ToggleEventCalendar value={taskItem.calendar} renderText={true} onChange={updateFn}/>
 			</FlexBlock>
 			<FlexBlock mb={6} mt={6}>
 				<Heading.H2 style={{textAlign: 'left', fontSize: 16}}>График месяца</Heading.H2>
