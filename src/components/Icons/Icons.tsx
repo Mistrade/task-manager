@@ -1,5 +1,5 @@
 import React, {FC} from 'react'
-import {currentColor, defaultColor, priorityColors} from '../../common/constants'
+import {currentColor, defaultColor, disabledColor, priorityColors} from '../../common/constants'
 import {FlexBlock, FlexBlockProps} from '../LayoutComponents/FlexBlock'
 
 export interface IconProps {
@@ -87,6 +87,33 @@ export const DoubleArrow: FC<IconProps & FlexBlockProps> = ({
 				<path
 					fill={color}
 					d="M452.864 149.312a29.12 29.12 0 0 1 41.728.064L826.24 489.664a32 32 0 0 1 0 44.672L494.592 874.624a29.12 29.12 0 0 1-41.728 0a30.592 30.592 0 0 1 0-42.752L764.736 512L452.864 192a30.592 30.592 0 0 1 0-42.688zm-256 0a29.12 29.12 0 0 1 41.728.064L570.24 489.664a32 32 0 0 1 0 44.672L238.592 874.624a29.12 29.12 0 0 1-41.728 0a30.592 30.592 0 0 1 0-42.752L508.736 512L196.864 192a30.592 30.592 0 0 1 0-42.688z"
+				/>
+			</svg>
+		</FlexBlock>
+	)
+}
+
+export const TrashIcon: FC<IconProps & FlexBlockProps> = ({
+																														size = 24,
+																														color = defaultColor,
+																														...props
+																													}) => {
+	return (
+		<FlexBlock {...props} align={'center'} justify={'center'}>
+			<svg
+				xmlns="http://www.w3.org/2000/svg"
+				width={size}
+				height={size}
+				preserveAspectRatio="xMidYMid meet"
+				viewBox="0 0 24 24"
+			>
+				<path
+					fill="none"
+					stroke={color}
+					strokeLinecap="round"
+					strokeLinejoin="round"
+					strokeWidth="2"
+					d="M4 6h16l-1.58 14.22A2 2 0 0 1 16.432 22H7.568a2 2 0 0 1-1.988-1.78L4 6Zm3.345-2.853A2 2 0 0 1 9.154 2h5.692a2 2 0 0 1 1.81 1.147L18 6H6l1.345-2.853ZM2 6h20m-12 5v5m4-5v5"
 				/>
 			</svg>
 		</FlexBlock>
@@ -354,6 +381,55 @@ export const BurgerIcon: FC<IconProps & FlexBlockProps> = ({
 				<path
 					fill={color}
 					d="M4 5h16c.55 0 1-.45 1-1s-.45-1-1-1H4c-.55 0-1 .45-1 1s.45 1 1 1zm16 14H4c-.55 0-1 .45-1 1s.45 1 1 1h16c.55 0 1-.45 1-1s-.45-1-1-1zm0-8H4c-.55 0-1 .45-1 1s.45 1 1 1h16c.55 0 1-.45 1-1s-.45-1-1-1z"
+				/>
+			</svg>
+		</FlexBlock>
+	)
+}
+
+export const SelectIcon: FC<IconProps & FlexBlockProps> = ({
+																														 size = 20,
+																														 color = priorityColors['medium'],
+																														 ...props
+																													 }) => {
+	return (
+		<FlexBlock {...props} align={'center'} justify={'center'}>
+			<svg
+				xmlns="http://www.w3.org/2000/svg"
+				width={size}
+				height={size}
+				preserveAspectRatio="xMidYMid meet"
+				viewBox="0 0 1024 1024"
+			>
+				<path
+					fill={color}
+					d="M77.248 415.04a64 64 0 0 1 90.496 0l226.304 226.304L846.528 188.8a64 64 0 1 1 90.56 90.496l-543.04 543.04l-316.8-316.8a64 64 0 0 1 0-90.496z"
+				/>
+			</svg>
+		</FlexBlock>
+	)
+}
+
+export const PlusIcon: FC<IconProps & FlexBlockProps> = ({
+																													 size = 20,
+																													 color = priorityColors['medium'],
+																													 ...props
+																												 }) => {
+	return (
+		<FlexBlock {...props} align={'center'} justify={'center'}>
+			<svg
+				xmlns="http://www.w3.org/2000/svg"
+				width={size}
+				height={size}
+				preserveAspectRatio="xMidYMid meet"
+				viewBox="0 0 24 24"
+			>
+				<path
+					fill="none"
+					stroke={color}
+					strokeLinecap="round"
+					strokeWidth="2"
+					d="M12 20v-8m0 0V4m0 8h8m-8 0H4"
 				/>
 			</svg>
 		</FlexBlock>

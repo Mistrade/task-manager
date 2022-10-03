@@ -3,7 +3,7 @@ import {lightHoverColor} from "../../common/constants";
 
 export const EmptyButtonStyled = styled('button')`
   & {
-		
+    position: relative;
     outline: none;
     border: none;
     background-color: transparent;
@@ -28,3 +28,7 @@ export const EmptyButtonStyled = styled('button')`
     background-color: ${lightHoverColor};
   }
 `
+
+EmptyButtonStyled.defaultProps = {
+	type: 'button'
+}

@@ -1,4 +1,4 @@
-import {FC, useCallback, useMemo} from 'react'
+import {FC, RefObject, useCallback, useMemo} from 'react'
 import {CalendarHeaderProps, CalendarMode} from '../types'
 import {ShortChangeCurrentPattern} from '../../../common/commonTypes'
 import {changeCurrentModeHandler, getCalendarTitle} from '../../../common/functions'
@@ -10,13 +10,19 @@ import {useNavigate} from "react-router-dom";
 import {useCalendar} from "../../../hooks/useCalendar";
 import {useParams} from "react-router";
 import {CalendarHeaderContainer} from "./CalendarHeader.styled";
+import {DropDownButton} from "../../Buttons/DropDownButton";
+import {EmptyButtonStyled} from '../../Buttons/EmptyButton.styled'
+import {PencilIcon, PlusIcon} from "../../Icons/Icons";
+import {DropDown} from "../../Dropdown/DropDown";
+import {SelectListContainer} from "../../Input/SelectInput/SelectListContainer";
+import {SelectItemContainer} from "../../Input/SelectInput/SelectItemContainer";
 
 
 export const CalendarHeader: FC<CalendarHeaderProps> = ({
 																													renderWeekPattern
 																												}) => {
 	const {layout} = useParams<{ layout?: CalendarMode['layout'] }>()
-	const {current, onChangeCurrent} = useCalendar()
+	const {current, onChangeCurrent, onAddTask, addTaskDate} = useCalendar()
 	
 	const title: string = useMemo(() => {
 		return getCalendarTitle(current)
@@ -33,25 +39,60 @@ export const CalendarHeader: FC<CalendarHeaderProps> = ({
 		onChangeCurrent && onChangeCurrent(new Date(), newLayout)
 	}, [])
 	
+	const addTaskHandler = useCallback(() => {
+		if (current.layout !== 'day') {
+			return onAddTask(new Date())
+		}
+		
+		return onAddTask(current.date)
+	}, [current, addTaskDate])
 	
 	return (
 		<CalendarHeaderContainer>
 			<FlexBlock width={'100%'} justify={'space-between'}>
-				<CalendarTitle onClick={() => onChangeCurrentHandler('today')}>
-					{title}
-				</CalendarTitle>
+				<FlexBlock justify={'flex-start'} align={'center'} gap={12}>
+					<CalendarTitle>
+						{title}
+					</CalendarTitle>
+					<DropDown
+						//TODO Вынести DropDown с элементами управления в отдельный компонент
+						dropDownChildren={(methods) => (
+							<SelectListContainer>
+								<SelectItemContainer onClick={() => {
+									addTaskHandler()
+									methods.focusOut()
+								}}>
+									Добавить событие
+								</SelectItemContainer>
+								<SelectItemContainer
+									onClick={() => navigate(`/calendar/${current.layout}/createCalendar`)}
+								>
+									Создать новый календарь
+								</SelectItemContainer>
+							</SelectListContainer>
+						)}
+						renderElement={({ref, onElementFocused, onElementBlur}) => (
+							<EmptyButtonStyled
+								style={{padding: '2px'}}
+								ref={ref as RefObject<HTMLButtonElement>}
+								onFocus={onElementFocused}
+								onBlur={onElementBlur}
+							>
+								<PlusIcon size={30}/>
+							</EmptyButtonStyled>
+						)}
+					/>
+				</FlexBlock>
 				<CalendarTodaySwitchers
 					onChange={onChangeCurrentHandler}
 				/>
 			</FlexBlock>
 			<FlexBlock justify={'flex-start'}>
-				
 				<CalendarModeSwitchers
 					layout={layout}
 					onChange={onChangeCurrentLayoutHandler}
 				/>
 			</FlexBlock>
-		
 		</CalendarHeaderContainer>
 	)
 }

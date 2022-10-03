@@ -1,5 +1,6 @@
 import styled, {css} from 'styled-components'
-import {currentColor, disabledColor} from '../../common/constants'
+import {currentColor, disabledColor, errorColor} from '../../common/constants'
+import {DefaultTextInputProps} from "./TextInput/TextInput";
 
 const LeftIconPadding = css`
   padding: 6px 8px 6px 46px;
@@ -18,9 +19,15 @@ const IconPlacement = {
 	right: RightIconPadding
 }
 
-export const StyledInput = styled('input')<{ hasIcon?: boolean, iconPlacement?: 'left' | 'right' }>`
+interface InputStyledProps {
+	hasIcon?: boolean,
+	iconPlacement?: DefaultTextInputProps['iconPlacement'],
+	isError?: boolean
+}
+
+export const StyledInput = styled('input')<InputStyledProps>`
   width: 100%;
-  border: 2px solid ${disabledColor};
+  border: 2px solid ${_ => _.isError ? errorColor : disabledColor};
   border-radius: 6px;
   outline: none;
   transition: all .3s ease-in;

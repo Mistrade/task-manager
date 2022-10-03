@@ -10,6 +10,8 @@ import {
 	WeekItem,
 	YearItem
 } from "../../components/Calendars/types";
+import {UtcDate} from "../api/taskApi/types";
+import {CalendarNameItem} from "../../components/Calendars/CalendarList/CalendarNameListItem";
 
 export interface CalendarStateData {
 	day: DateItem,
@@ -30,10 +32,14 @@ export type CalendarModeForState =
 
 interface CalendarState {
 	current: CalendarModeForState,
+	addTaskDate: null | string,
+	calendarRemoveCandidate: null | CalendarNameItem
 }
 
 const initialState: CalendarState = {
 	current: {layout: 'day', date: new Date().toString()},
+	addTaskDate: null,
+	calendarRemoveCandidate: null
 }
 
 const CalendarSlice = createSlice({
@@ -73,11 +79,19 @@ const CalendarSlice = createSlice({
 					}
 					break;
 			}
+		},
+		changeAddTaskDate(state, data: PayloadAction<UtcDate | null>) {
+			state.addTaskDate = data.payload
+		},
+		changeCalendarRemoveCandidate(state, data: PayloadAction<CalendarState['calendarRemoveCandidate']>) {
+			state.calendarRemoveCandidate = data.payload
 		}
 	},
 })
 
 export const CalendarReducer = CalendarSlice.reducer
 export const {
-	changeCalendarCurrent
+	changeCalendarCurrent,
+	changeAddTaskDate,
+	changeCalendarRemoveCandidate
 } = CalendarSlice.actions

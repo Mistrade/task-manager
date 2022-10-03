@@ -1,4 +1,4 @@
-import {FC, useMemo} from 'react'
+import {FC, useCallback, useEffect, useMemo} from 'react'
 import {CalendarTaskItem} from '../types'
 import {useFormik} from 'formik'
 import dayjs from 'dayjs'
@@ -68,7 +68,6 @@ export const AddTaskForm: FC<AddTaskFormProps> = ({date, onComplete, onCancel}) 
 	const [addTask, {isLoading, status}] = useAddTaskMutation()
 	const formik = useFormik<CalendarTaskItem>({
 		async onSubmit(values) {
-			console.log('onSubmit')
 			await addTask(values).unwrap()
 			onComplete && onComplete(values)
 		},
@@ -93,6 +92,11 @@ export const AddTaskForm: FC<AddTaskFormProps> = ({date, onComplete, onCancel}) 
 	const calendarItem = useMemo(() => {
 		return calendarsList?.data?.find((item) => item._id === formik.values.calendar)
 	}, [formik.values.calendar])
+	
+	useEffect(() => {
+		console.log(formik.errors)
+	}, [formik.errors])
+	
 	return (
 		<form onSubmit={formik.handleSubmit} style={{width: '100%'}}>
 			<FlexBlock direction={'column'} p={'12px 20px 0px 20px'}>

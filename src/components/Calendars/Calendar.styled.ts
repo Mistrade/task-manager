@@ -1,6 +1,6 @@
 import styled from 'styled-components'
 import {CalendarCellDateProps} from './types'
-import {currentColor, defaultColor} from '../../common/constants'
+import {currentColor, defaultColor, hoverColor} from '../../common/constants'
 
 export const CalendarDesktopContainer = styled('div')`
   & {
@@ -105,8 +105,7 @@ export const SwitchCalendarModeTab = styled('button')<{ isSelected?: boolean }>`
   }
 
   &:hover {
-    background-color: ${currentColor};
-    color: #fff;
+    background-color: ${hoverColor};
     border-radius: 4px 4px 0px 0px;
   }
 

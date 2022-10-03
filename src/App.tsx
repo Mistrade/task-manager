@@ -3,8 +3,7 @@ import {createGlobalStyle, css} from 'styled-components'
 import './common/dayjs'
 import {FlexBlock} from './components/LayoutComponents/FlexBlock'
 import {MainHeader} from "./components/MainHeader/MainHeader";
-import {OnlyAuthRoutes} from "./components/AppRoutes/OnlyAuthRoutes";
-import {OnlyWithoutSessionRoutes} from "./components/AppRoutes/OnlyWithoutSessionRoutes";
+import {AppRoutes} from "./components/AppRoutes/AppRoutes";
 import {ToastContainer} from "react-toastify";
 import 'react-toastify/dist/ReactToastify.css';
 import {useConfirmSessionQuery} from "./store/api/sessionApi";
@@ -34,12 +33,11 @@ function App() {
 						}}
 					/>
 					<FlexBlock height={'calc(100vh - 70px)'}>
-						<OnlyAuthRoutes userInfo={isError ? undefined : userInfo?.data}/>
-						<OnlyWithoutSessionRoutes userInfo={isError ? undefined : userInfo?.data}/>
+						<AppRoutes userInfo={isError ? undefined : userInfo?.data}/>
 					</FlexBlock>
 				</FlexBlock>
 			</Loader>
-			<ToastContainer pauseOnHover={true} position={'top-right'} limit={3} newestOnTop={true}/>
+			<ToastContainer pauseOnHover={true} position={'top-right'} autoClose={4000} limit={2} newestOnTop={true}/>
 		</>
 	)
 }

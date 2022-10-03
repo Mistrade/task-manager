@@ -14,7 +14,6 @@ import {PourDatesProps, SmallMonth} from "../SmallMotnCalendar/SmallMonth";
 
 export const CalendarSettingsPanel: FC<DaySettingsPanelProps> = ({
 																																	 onSelectDate,
-																																	 onAddTask,
 																																	 current,
 																																	 monthItem
 																																 }) => {
@@ -52,17 +51,6 @@ export const CalendarSettingsPanel: FC<DaySettingsPanelProps> = ({
 		}
 	}, [current])
 	
-	const buttonClickHandler = useCallback(() => {
-		if (onAddTask && currentDate) {
-			const d = dayjs(currentDate).isBefore(new Date(), 'date')
-			if (d) {
-				return onAddTask(dayjs().toDate())
-			}
-			
-			onAddTask && currentDate && onAddTask(currentDate)
-		}
-	}, [currentDate])
-	
 	const pour: PourDatesProps | undefined = useMemo(() => {
 		if (current.layout === 'month') {
 			const date = dayjs().set('year', current.year).set('month', current.month).startOf('month').toDate()
@@ -89,21 +77,6 @@ export const CalendarSettingsPanel: FC<DaySettingsPanelProps> = ({
 			align={'flex-start'}
 			position={'relative'}
 		>
-			<FlexBlock
-				width={'100%'}
-				mb={24}
-				justify={'center'}
-				position={'sticky'}
-				additionalCss={css`
-          top: 0;
-          left: 0;
-          z-index: 1;
-				`}
-			>
-				<Button onClick={buttonClickHandler}>
-					Добавить событие
-				</Button>
-			</FlexBlock>
 			<FlexBlock minHeight={200} mb={24} style={{zIndex: 1}}>
 				<SmallMonth
 					pourDates={pour}

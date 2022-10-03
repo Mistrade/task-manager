@@ -32,7 +32,7 @@ export const ModalContainer = styled('div')`
     background-color: #fff;
     max-width: 90%;
     max-height: 90%;
-		min-width: 50%;
+		min-width: 400px;
     opacity: 1;
     border: 1px solid ${defaultColor};
     box-shadow: 0px 0px 30px ${defaultColor};

@@ -4,6 +4,7 @@ import {baseServerUrl} from "../defaultApiConfig";
 import {FilterTaskStatuses} from "../../../components/Calendars/DayCalendar/EventFilter";
 import {CalendarNameItem} from "../../../components/Calendars/CalendarList/CalendarNameListItem";
 import {CalendarsModelType, FullResponseEventModel, ShortEventItem} from "./types";
+import {CreateCalendarFormData} from "../../../components/Calendars/CalendarModals/CreateCalendar";
 
 interface GetTaskQueryProps {
 	limit?: number,
@@ -20,7 +21,7 @@ export type GetTaskSchemeResponse = {
 	[key: string]: boolean | undefined
 }
 
-type ErrorTypes = 'info' | 'success' | 'warning' | 'error' | 'default'
+export type ErrorTypes = 'info' | 'success' | 'warning' | 'error' | 'default'
 
 interface ServerErrorType {
 	message: string,
@@ -42,6 +43,28 @@ export const taskApi = createApi({
 	}),
 	endpoints(build) {
 		return {
+			hasTasksInCalendar: build.query<ServerResponse<number>, { id: string }>({
+				query: ({id}) => ({
+					url: `/calendar/hasTasks/${id}`,
+					method: 'GET',
+				})
+			}),
+			deleteCalendar: build.mutation<ServerResponse, { id: string, moveTo: string }>({
+				query: (args) => ({
+					url: '/calendars/remove',
+					body: args,
+					method: 'POST',
+				}),
+				invalidatesTags: ['Calendars']
+			}),
+			createCalendar: build.mutation<ServerResponse<null>, CreateCalendarFormData>({
+				query: (args) => ({
+					url: '/calendars/create',
+					method: 'POST',
+					body: args
+				}),
+				invalidatesTags: ['Calendars']
+			}),
 			getCalendars: build.query<ServerResponse<Array<CalendarNameItem>>, { exclude?: Array<CalendarsModelType> }>({
 				query: (args) => ({
 					url: '/calendars',
@@ -56,7 +79,7 @@ export const taskApi = createApi({
 					method: 'POST',
 					body: args
 				}),
-				invalidatesTags: ['Calendars', 'Tasks']
+				invalidatesTags: ['Tasks']
 			}),
 			getTaskInfo: build
 				.query<ServerResponse<FullResponseEventModel>, string>({
@@ -131,5 +154,9 @@ export const {
 	useLazyGetTaskInfoQuery,
 	useUpdateTaskMutation,
 	useGetCalendarsQuery,
-	useChangeSelectCalendarMutation
+	useChangeSelectCalendarMutation,
+	useCreateCalendarMutation,
+	useHasTasksInCalendarQuery,
+	useDeleteCalendarMutation,
+	useLazyGetCalendarsQuery
 } = taskApi

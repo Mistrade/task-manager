@@ -94,7 +94,7 @@ export interface CalendarTodaySwitchersProps {
 
 export type OnSelectDateFromCalendarFn = (data: CalendarItem) => void
 
-export interface DaySettingsPanelProps extends Omit<GlobalTaskListProps, 'renderTaskCount'> {
+export interface DaySettingsPanelProps {
 	monthItem: MonthItem
 	onSelectDate?: OnSelectDateFromCalendarFn,
 	current: CalendarMode

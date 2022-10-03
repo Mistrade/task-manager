@@ -24,6 +24,8 @@ import {CalendarSettingsPanel} from "./DayCalendar/CalendarSettingsPanel";
 import dayjs from "dayjs";
 import {getMonthDays} from "../../common/calendarSupport/getters";
 import {WeekDays} from "./WeekDays/WeekDays";
+import {CreateCalendarModal} from "./CalendarModals/CreateCalendar";
+import {RemoveCalendarHock, RemoveCalendarModal} from "./CalendarModals/RemoveCalendarModal";
 
 const DayCalendar = React.lazy(() => import('./DayCalendar/DayCalendar').then(({DayCalendar}) => ({default: DayCalendar})))
 const WeekCalendar = React.lazy(() => import('./WeekCalendar/WeekCalendar').then(({WeeKCalendar}) => ({default: WeeKCalendar})))
@@ -112,7 +114,7 @@ export const Calendar: FC<CalendarProps> = ({
 						shrink={0}
 						maxWidth={300}
 						bgColor={pageHeaderColor}
-						pr={24}
+						pr={12}
 						pl={24}
 						pt={24}
 						flex={'1 0 20%'}
@@ -121,7 +123,6 @@ export const Calendar: FC<CalendarProps> = ({
 						<CalendarSettingsPanel
 							monthItem={checkMonthItemSettingsPanel(calendar.current)}
 							current={calendar.current}
-							onAddTask={calendar.onAddTask}
 							onSelectDate={(data) => calendar.onChangeCurrent(data.value, 'day')}
 						/>
 					</FlexBlock>
@@ -204,7 +205,20 @@ export const Calendar: FC<CalendarProps> = ({
 					description={ERROR_TITLES['SUSPENSE']}
 					errorType={'SYSTEM_ERROR'}
 				>
+					<RemoveCalendarHock
+						calendarItem={calendar.calendarRemoveCandidate}
+						onClose={() => calendar.onSelectToRemoveCalendar(null)}
+						onSuccess={() => calendar.onSelectToRemoveCalendar(null)}
+					/>
 					<Routes>
+						<Route
+							path={'createCalendar'}
+							element={
+								<CreateCalendarModal
+									onClose={calendar.onCloseAddCalendarModal}
+								/>
+							}
+						/>
 						<Route
 							path={'add'}
 							element={
@@ -218,7 +232,7 @@ export const Calendar: FC<CalendarProps> = ({
 							path={':taskId'}
 							element={
 								<TaskInfoModal
-									onClose={() => calendar.onCloseTaskInfo()}
+									onClose={calendar.onCloseTaskInfo}
 								/>
 							}
 						/>

@@ -4,7 +4,7 @@ import {useDebounce} from "../../hooks/useDebounce";
 import {StyledDropDownContainer} from "./DropDown.styled";
 import {DropDownAdditionalMethods, DropDownElementsSupport, DropDownProps} from "./types";
 
-export function DropDown<T extends DropDownElementsSupport = HTMLInputElement>({
+export function DropDown<T extends HTMLElement = HTMLElement>({
 																																								 renderElement,
 																																								 dropDownChildren,
 																																								 containerProps

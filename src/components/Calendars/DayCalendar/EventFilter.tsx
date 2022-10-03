@@ -80,6 +80,7 @@ export const EventFilter: FC<EventFilterProps> = ({
 						onChange={onChangeHandlers.priority}
 						onFocus={(e) => onFocusHandlers && onFocusHandlers('priority', e)}
 						label={'Приоритет события'}
+						placeholder={'Приоритет сужает поиск событий'}
 					/>
 				</FlexBlock>
 				<FlexBlock flex={'1 0 calc(25% - 6px)'} maxWidth={'25%'}>
@@ -88,6 +89,7 @@ export const EventFilter: FC<EventFilterProps> = ({
 						onChange={(e) => onChangeHandlers.title(e.target.value)}
 						onFocus={(e) => onFocusHandlers && onFocusHandlers('title', e)}
 						label={'Название события'}
+						placeholder={'Найдем совпадения по названию'}
 					/>
 				</FlexBlock>
 			</FlexBlock>
