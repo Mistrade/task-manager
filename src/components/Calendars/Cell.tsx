@@ -14,12 +14,14 @@ import {currentColor, defaultColor, disabledColor, hoverColor, priorityColors} f
 import dayjs from 'dayjs'
 import {FlexBlock, FlexBlockProps} from '../LayoutComponents/FlexBlock'
 import {Arrow, BurgerIcon, CompleteIcon, DoubleArrow, IconProps, SadSmile} from '../Icons/Icons'
+import {CalendarIdentifier} from "./CalendarList/CalendarList.styled";
 
 interface CellComponentProps {
 	disabled?: boolean,
 	isCurrent?: boolean,
 	isHover?: boolean
-	isToday?: boolean
+	isToday?: boolean,
+	isVisible?: boolean
 }
 
 export const CalendarDate = styled('span')<CellComponentProps>`
@@ -63,7 +65,12 @@ export const CellContainer = styled('div')<CellComponentProps>`
     border: 1px solid ${defaultColor};
     //transition: all .3s ease-in;
     //opacity: .2;
-    transition: all .3s ease-in-out;
+    transition: box-shadow .3s ease-in-out;
+    ${_ => 'isVisible' in _ ?
+            !_.isVisible
+                    ? css`display: none`
+                    : css`display: flex`
+            : ''}
   }
 
   ${({isCurrent, disabled}) => {
@@ -125,6 +132,7 @@ const AddTask = styled('div')`
 
 const TaskTile = styled('div')<CellComponentProps & { withFill?: boolean }>`
   & {
+    gap: 4px;
     background-color: ${props => props.withFill ? hoverColor : ''};
     width: 100%;
     padding: 3px 6px;
@@ -229,11 +237,13 @@ export const CalendarCell: FC<CalendarCellProps> = ({
 																											onAddTask,
 																											renderTaskCount,
 																											onSelectTask,
-																											onClickToDate
+																											onClickToDate,
+																											isVisible
 																										}) => {
 	
 	return (
 		<CellContainer
+			isVisible={isVisible}
 			disabled={value.meta.isDisabled}
 			isCurrent={value.meta.isCurrent}
 		>
@@ -270,14 +280,10 @@ export const TaskTileList: FC<TaskTileListProps> = ({
 																											onSelect,
 																											renderTaskCount = 'all'
 																										}) => {
-	const length = useMemo(() => {
-		return renderTaskCount !== 'all' ? renderTaskCount : tasks?.length || 5
-	}, [renderTaskCount, tasks])
-	
 	if (!!tasks?.length) {
 		return (
 			<TaskTileContainer>
-				{tasks.slice(0, length + 1).map((item, index) => (
+				{tasks.map((item, index) => (
 					<TaskTileItem
 						key={item.title + index}
 						taskInfo={item}
@@ -285,13 +291,6 @@ export const TaskTileList: FC<TaskTileListProps> = ({
 						onSelect={onSelect}
 					/>
 				))}
-				{tasks.length > length && (
-					<FlexBlock width={'100%'} justify={'center'} align={'center'} mt={6} mb={6}>
-						<TaskTileText style={{textAlign: 'center'}}>
-							и еще {tasks.length - length}
-						</TaskTileText>
-					</FlexBlock>
-				)}
 			</TaskTileContainer>
 		)
 	}
@@ -327,8 +326,10 @@ export const TaskTileItem: FC<TaskTileItemProps> = ({taskInfo, onSelect, date}) 
 			isCurrent={date.meta.isCurrent}
 			onClick={(event) => condition && onSelect && onSelect(taskInfo.id)}
 		>
-			<TaskTilePriorityIndicator priority={taskInfo.priority}
-																 isCompleted={taskInfo.status === 'completed'}/>
+			<CalendarIdentifier
+				color={taskInfo.calendar.color}
+				size={13}
+			/>
 			<TaskTileText isCompleted={taskInfo.status === 'completed'}>
 				{taskInfo.title}
 			</TaskTileText>

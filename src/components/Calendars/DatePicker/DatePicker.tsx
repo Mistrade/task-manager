@@ -10,19 +10,20 @@ import {EmptyButtonStyled} from '../../Buttons/EmptyButton.styled'
 
 
 export const DatePicker: FC<DatePickerProps> = memo(({
-																									onFocus,
-																									currentDate,
-																									label,
-																									onChange,
-																									containerProps,
-																									isDirty,
-																									errorMessage,
-																									icon,
-																									actionHandler,
-																									actions,
-																									iconPlacement,
-																									disabledOptions
-																								}) => {
+																											 onFocus,
+																											 currentDate,
+																											 label,
+																											 onChange,
+																											 containerProps,
+																											 isDirty,
+																											 errorMessage,
+																											 icon,
+																											 actionHandler,
+																											 actions,
+																											 iconPlacement,
+																											 disabledOptions,
+																											 useForceUpdateValue = false
+																										 }) => {
 	const [stateValue, setStateValue] = useState<Date>(currentDate)
 	
 	const clickSaveHandler = useCallback(() => {
@@ -33,13 +34,19 @@ export const DatePicker: FC<DatePickerProps> = memo(({
 		setStateValue(currentDate)
 	}, [])
 	
+	useEffect(() => {
+		if (currentDate && useForceUpdateValue) {
+			setStateValue(currentDate)
+		}
+	}, [currentDate, useForceUpdateValue])
+	
 	return (
 		<SelectInput
 			onFocus={onFocus}
 			data={[]}
 			renderData={(data, methods) => (
 				<SelectListContainer maxHeight={500} width={'200%'}>
-					<FlexBlock direction={'column'} width={'100%'} gap={12}>
+					<FlexBlock direction={'column'} width={'100%'} pb={4}>
 						<DatePickerPaper
 							disabledOptions={disabledOptions}
 							currentDate={currentDate}
@@ -47,7 +54,7 @@ export const DatePicker: FC<DatePickerProps> = memo(({
 								setStateValue(date)
 							}}
 						/>
-						<FlexBlock direction={'row'} width={'100%'} justify={'flex-end'} gap={8}>
+						<FlexBlock direction={'row'} width={'100%'} align={'center'} justify={'flex-end'} gap={8}>
 							<Button
 								onClick={() => {
 									clickSaveHandler()

@@ -29,9 +29,8 @@ export const TaskInformerRightBar: FC<TaskInformerRightBarProps> = ({taskItem, m
 			pl={8}
 		>
 			<FlexBlock direction={'column'} align={'flex-start'} justify={'flex-start'} gap={12}>
-				<TaskCreatedMessage taskItem={taskItem}/>
 				<FlexBlock>
-					<Heading.H2 style={{textAlign: 'left', fontSize: 16}}>Доп инфо:</Heading.H2>
+					<Heading.H2 style={{textAlign: 'left', fontSize: 16}}>Доп инфо</Heading.H2>
 				</FlexBlock>
 				<ToggleEventStatus value={taskItem.status} onChange={updateFn}/>
 				<ToggleEventPriority value={taskItem.priority} onChange={updateFn}/>
@@ -42,13 +41,19 @@ export const TaskInformerRightBar: FC<TaskInformerRightBarProps> = ({taskItem, m
 			</FlexBlock>
 			<SmallMonth
 				title={<SmallCalendarMonthTitle monthItem={monthItem}/>}
-				currentDate={dayjs(taskItem.time).toDate()}
+				value={dayjs(taskItem.time).toDate()}
+				current={{
+					layout: 'month',
+					month: monthItem.monthOfYear,
+					year: monthItem.year
+				}}
 				pourDates={{
 					type: 'week',
 					date: dayjs(taskItem.time).toDate()
 				}}
 				monthItem={monthItem}
 			/>
+			<TaskCreatedMessage taskItem={taskItem}/>
 		</FlexBlock>
 	)
 }

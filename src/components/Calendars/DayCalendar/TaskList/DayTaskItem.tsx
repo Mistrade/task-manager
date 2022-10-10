@@ -72,6 +72,7 @@ export const DayTaskItem: FC<DayTaskItemProps> = ({taskInfo, tabIndex, onSelectT
 			onClick={clickHandler}
 			additionalCss={css`
         ${TileMixin};
+        scroll-snap-align: end;
 			`}
 			p={'8px 12px'}
 			gap={8}

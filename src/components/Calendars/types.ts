@@ -3,7 +3,8 @@ import {ShortChangeCurrentPattern} from '../../common/commonTypes'
 import {FlexBlockProps} from '../LayoutComponents/FlexBlock'
 import {DefaultTextInputProps} from '../Input/TextInput/TextInput'
 import {GetTaskSchemeResponse} from "../../store/api/taskApi/taskApi";
-import {FullResponseEventModel} from "../../store/api/taskApi/types";
+import {FullResponseEventModel, ShortEventItem} from "../../store/api/taskApi/types";
+import {Task} from "copy-webpack-plugin/types/utils";
 
 export type FCWithChildren<T = any> = FC<{ children?: ReactNode } & T>
 
@@ -19,7 +20,8 @@ export interface DatePickerProps {
 	actionHandler?: DefaultTextInputProps['actionHandler'],
 	actions?: DefaultTextInputProps['actions']
 	iconPlacement?: DefaultTextInputProps['iconPlacement'],
-	disabledOptions?: CalendarDisabledOptions
+	disabledOptions?: CalendarDisabledOptions,
+	useForceUpdateValue?: boolean
 }
 
 export interface CalendarProps {
@@ -48,6 +50,7 @@ export interface MonthCalendarProps extends GlobalTaskListProps {
 
 export interface WeekCalendarProps extends Omit<MonthCalendarProps, 'monthItem' | 'renderWeekPattern'> {
 	weekItem: WeekItem
+	taskStorage: TaskStorage<ShortEventItem>
 }
 
 export interface DayCalendarProps extends GlobalTaskListProps {
@@ -60,20 +63,21 @@ export type CalendarHeaderWeekListProps = Pick<MonthCalendarProps, 'renderWeekPa
 export type RenderTaskCountType = number | 'all'
 
 export interface CalendarCellProps extends GlobalTaskListProps {
+	isVisible?: boolean
 	value: CalendarItem,
-	tasks?: Array<EventItem>,
+	tasks?: Array<ShortEventItem>,
 	onSelectTask?: OnSelectTaskFnType,
 	onClickToDate?: (date: CalendarItem) => void
 }
 
 export interface TaskTileListProps extends GlobalTaskListProps {
-	tasks?: Array<EventItem>,
+	tasks?: Array<ShortEventItem>,
 	date: CalendarItem,
 	onSelect?: OnSelectTaskFnType,
 }
 
 export interface TaskTileItemProps {
-	taskInfo: EventItem,
+	taskInfo: ShortEventItem,
 	date: CalendarItem,
 	onSelect?: TaskTileListProps['onSelect']
 }
@@ -287,10 +291,10 @@ export type TaskMembersListType = Array<TaskMemberItemType>
 export type CustomObject<T = any> = { [key in string]: T }
 export type PartialCustomObject<T = any> = Partial<{ [key in string]: T }>
 
-export type TaskStorage = CustomObject<TaskYear>
-export type TaskYear = CustomObject<TaskMonth>
-export type TaskMonth = CustomObject<TaskDate>
-export type TaskDate = Array<EventItem>
+export type TaskStorage<EVENT = EventItem> = CustomObject<TaskYear<EVENT>>
+export type TaskYear<EVENT = EventItem> = CustomObject<TaskMonth<EVENT>>
+export type TaskMonth<EVENT = EventItem> = CustomObject<TaskDate<EVENT>>
+export type TaskDate<EVENT = EventItem> = Array<EVENT>
 
 export interface TaskSetResult {
 	status: boolean,

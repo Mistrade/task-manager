@@ -28,6 +28,7 @@ import {
 } from './commonTypes'
 import {getHumanizeDateValue, MonthList, WeekDaysList} from './constants'
 import {getMonthDays, getWeekDays, getYearDays} from './calendarSupport/getters'
+import {number} from "yup";
 
 export const addNull = (value: number): string => value < 10 ? `0${value}` : value.toString()
 
@@ -52,7 +53,7 @@ export const checkTaskStatus = (taskItem: SelectTaskItem): string => {
 	return 'В работе'
 }
 
-export const getTaskListOfDay = (day: Date, storage: TaskStorage): Array<EventItem> => {
+export const getTaskListOfDay = <EVENT = EventItem>(day: Date, storage: TaskStorage<EVENT>): Array<EVENT> => {
 	const y = storage[dayjs(day).year()] || {}
 	const m = y[dayjs(day).month()] || {}
 	return m[dayjs(day).date()] || []
@@ -438,5 +439,177 @@ export const convertEventStatus = (status: EventItem['status']) => {
 			return 'Ожидает проверки'
 		case 'completed':
 			return 'Выполнено'
+	}
+}
+
+interface CheckPassportIssueDate {
+	dateBirthday: Date,
+	issueDate: Date
+}
+
+export const getUserAge = (date: Date) => {
+	const today = new Date()
+	const todayStart = new Date(today.getFullYear(), today.getMonth(), today.getDate())
+	const birthdayInCurrentYear = new Date(today.getFullYear(), date.getMonth(), date.getDate())
+	let age = today.getFullYear() - date.getFullYear()
+	if (birthdayInCurrentYear.getTime() > todayStart.getTime()) {
+		age--
+	}
+	return age
+}
+
+interface GetPassportIssueDateScopeReturned {
+	min: Date | null,
+	max: Date | null
+}
+
+export const getAgeBirthday = (birthday: Date, age: number) => {
+	return new Date(birthday.getFullYear() + age, birthday.getMonth(), birthday.getDate())
+}
+
+export const getPassportIssueDateScope = ({dateBirthday, issueDate}: CheckPassportIssueDate): GetPassportIssueDateScopeReturned => {
+	const age = getUserAge(dateBirthday)
+	
+	if (age < 14) {
+		return {
+			min: null,
+			max: null
+		}
+	}
+	
+	if (age >= 14 && age < 20) {
+		return {
+			min: getAgeBirthday(dateBirthday, 14),
+			max: getAgeBirthday(dateBirthday, 20)
+		}
+	}
+	
+	if (age >= 20 && age < 45) {
+		return {
+			min: getAgeBirthday(dateBirthday, 20),
+			max: getAgeBirthday(dateBirthday, 45),
+		}
+	}
+	
+	return {
+		min: getAgeBirthday(dateBirthday, 45),
+		max: null
+	}
+}
+
+
+type ComparePatterns = '===' | '>=' | '>' | '<' | '<='
+
+export const compareDates = (first: Date, second: Date, pattern: ComparePatterns) => {
+	if (pattern === '>') {
+		if (first.getFullYear() > second.getFullYear()) return true
+		
+		if (first.getFullYear() === second.getFullYear()) {
+			if (first.getMonth() > second.getMonth()) return true
+			
+			if (first.getMonth() === second.getMonth()) {
+				if (first.getDate() > second.getDate()) return true
+			}
+		}
+		
+		return false
+	}
+	
+	if (pattern === '>=') {
+		if (first.getFullYear() > second.getFullYear()) return true
+		
+		if (first.getFullYear() === second.getFullYear()) {
+			if (first.getMonth() > second.getMonth()) return true
+			
+			if (first.getMonth() === second.getMonth()) {
+				if (first.getDate() > second.getDate()) return true
+				if (first.getDate() === second.getDate()) return true
+			}
+		}
+		
+		return false
+	}
+	
+	if (pattern === '<') {
+		if (first.getFullYear() < second.getFullYear()) return true
+		
+		if (first.getFullYear() === second.getFullYear()) {
+			if (first.getMonth() < second.getMonth()) return true
+			
+			if (first.getMonth() === second.getMonth()) {
+				if (first.getDate() < second.getDate()) return true
+			}
+		}
+		
+		return false
+	}
+	
+	if (pattern === '<=') {
+		if (first.getFullYear() < second.getFullYear()) return true
+		
+		if (first.getFullYear() === second.getFullYear()) {
+			if (first.getMonth() < second.getMonth()) return true
+			
+			if (first.getMonth() === second.getMonth()) {
+				if (first.getDate() < second.getDate()) return true
+				if (first.getDate() === second.getDate()) return true
+			}
+		}
+		
+		return false
+	}
+	
+	return first.getFullYear() === second.getFullYear()
+		&& first.getMonth() === second.getMonth()
+		&& first.getDate() === second.getDate()
+}
+
+export const getHumanizeDate = (date: Date) => {
+	const arr = [
+		`${date.getDate() < 10 ? `0${date.getDate()}` : date.getDate()}`, //дата
+		`${(date.getMonth() + 1) < 10 ? `0${date.getMonth() + 1}` : date.getMonth() + 1}`, //месяц
+		`${date.getFullYear()}` //год
+	]
+	return arr.join('-')
+}
+
+export const checkPassportIssueDate = (options: CheckPassportIssueDate) => {
+	const {issueDate} = options
+	if (compareDates(issueDate, new Date(), '>')) {
+		return {
+			test: false,
+			errorMessage: 'Дата выдачи не может быть в будущем'
+		}
+	}
+	
+	const scope = getPassportIssueDateScope(options)
+	let minTest = true
+	let maxTest = true
+	let errorMessage = ''
+	
+	if (!scope.min && !scope.max) {
+		return {
+			test: false,
+			errorMessage: 'Вы младше 14 лет.'
+		}
+	}
+	
+	if (scope.min) {
+		minTest = compareDates(scope.min, issueDate, '<=')
+		if (!errorMessage && !minTest) {
+			errorMessage = `Дата выдачи паспорта должна быть после ${getHumanizeDate(scope.min)}`
+		}
+	}
+	
+	if (scope.max) {
+		maxTest = compareDates(scope.max, issueDate, '>')
+		if (!errorMessage && !maxTest) {
+			errorMessage = `Дата выдачи паспорта не может быть позже ${getHumanizeDate(scope.max)}`
+		}
+	}
+	
+	return {
+		test: minTest && maxTest,
+		errorMessage
 	}
 }

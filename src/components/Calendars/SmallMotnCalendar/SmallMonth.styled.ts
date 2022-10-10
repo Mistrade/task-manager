@@ -31,7 +31,7 @@ export interface SmallMonthRowItemProps {
 }
 
 export interface SmallMonthRowProps {
-	isPoured?: boolean
+	isPoured?: boolean,
 }
 
 
@@ -173,7 +173,7 @@ export const SmallMonthRow = styled('div')<SmallMonthRowProps>`
   & {
     display: flex;
     flex-direction: row;
-    width: fit-content;
+    width: 100%;
     height: fit-content;
     flex-wrap: nowrap;
     gap: 4px;

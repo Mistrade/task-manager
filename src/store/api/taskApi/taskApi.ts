@@ -1,10 +1,11 @@
 import {createApi, fetchBaseQuery} from "@reduxjs/toolkit/dist/query/react";
-import {CalendarPriorityKeys, EventItem} from "../../../components/Calendars/types";
+import {CalendarPriorityKeys, EventItem, TaskStorage} from "../../../components/Calendars/types";
 import {baseServerUrl} from "../defaultApiConfig";
 import {FilterTaskStatuses} from "../../../components/Calendars/DayCalendar/EventFilter";
 import {CalendarNameItem} from "../../../components/Calendars/CalendarList/CalendarNameListItem";
 import {CalendarsModelType, FullResponseEventModel, ShortEventItem} from "./types";
 import {CreateCalendarFormData} from "../../../components/Calendars/CalendarModals/CreateCalendar";
+import {SwitcherBadges} from "../../../components/Switcher/Switcher";
 
 interface GetTaskQueryProps {
 	limit?: number,
@@ -49,13 +50,13 @@ export const taskApi = createApi({
 					method: 'GET',
 				})
 			}),
-			deleteCalendar: build.mutation<ServerResponse, { id: string, moveTo: string }>({
+			deleteCalendar: build.mutation<ServerResponse, { id: string }>({
 				query: (args) => ({
 					url: '/calendars/remove',
 					body: args,
 					method: 'POST',
 				}),
-				invalidatesTags: ['Calendars']
+				invalidatesTags: ['Calendars', 'Tasks', 'TaskScheme']
 			}),
 			createCalendar: build.mutation<ServerResponse<null>, CreateCalendarFormData>({
 				query: (args) => ({
@@ -94,6 +95,15 @@ export const taskApi = createApi({
 				.query<Array<ShortEventItem>, GetTaskQueryProps>({
 					query: (props) => ({
 						url: `/getTaskAtDay`,
+						method: 'POST',
+						body: props,
+					}),
+					providesTags: ['Tasks', 'TaskInfo'],
+				}),
+			getTasksAtScope: build
+				.query<TaskStorage<ShortEventItem>, GetTaskQueryProps>({
+					query: (props) => ({
+						url: `/getTaskAtScope`,
 						method: 'POST',
 						body: props,
 					}),
@@ -140,6 +150,14 @@ export const taskApi = createApi({
 					body: args,
 				}),
 				invalidatesTags: ['TaskInfo', 'TaskScheme']
+			}),
+			getTaskCountOfStatus: build.query<SwitcherBadges<FilterTaskStatuses>, Omit<GetTaskQueryProps, 'taskStatus'>>({
+				query: (args) => ({
+					url: '/getTaskCountOfStatus',
+					method: 'POST',
+					body: args
+				}),
+				providesTags: ['Tasks']
 			})
 		}
 	}
@@ -158,5 +176,7 @@ export const {
 	useCreateCalendarMutation,
 	useHasTasksInCalendarQuery,
 	useDeleteCalendarMutation,
-	useLazyGetCalendarsQuery
+	useLazyGetCalendarsQuery,
+	useGetTasksAtScopeQuery,
+	useGetTaskCountOfStatusQuery
 } = taskApi

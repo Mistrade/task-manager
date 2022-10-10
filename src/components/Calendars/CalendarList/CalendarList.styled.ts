@@ -92,6 +92,8 @@ export const CalendarNameCheckbox = styled('input')<{ color: string }>`
 `
 
 export const CalendarIdentifier = styled('div')<{color: string, size?: number}>`
+	flex-grow: 0;
+	flex-shrink: 0;
 	width: ${_ => _.size ? pxToCssValue(_.size) : '20px'};
 	height: ${_ => _.size ? pxToCssValue(_.size) : '20px'};
 	border-radius: 4px;

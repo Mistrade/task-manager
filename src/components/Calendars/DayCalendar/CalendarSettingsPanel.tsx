@@ -88,7 +88,12 @@ export const CalendarSettingsPanel: FC<DaySettingsPanelProps> = ({
 							monthItem={monthItem}
 						/>
 					}
-					currentDate={currentDate}
+					current={{
+						layout: "month",
+						month: currentDate.getMonth(),
+						year: currentDate.getFullYear()
+					}}
+					value={currentDate}
 					onSelectDate={onSelectDate}
 				/>
 			</FlexBlock>

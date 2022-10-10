@@ -1,10 +1,11 @@
 import {FlexBlock} from "../../LayoutComponents/FlexBlock"
 import {CalendarNameCheckbox} from "./CalendarList.styled"
-import {FC, useState} from "react";
+import {FC, useCallback, useState} from "react";
 import {LoaderIcon, TrashIcon} from "../../Icons/Icons";
 import {defaultColor} from "../../../common/constants";
 import {EmptyButtonStyled} from "../../Buttons/EmptyButton.styled";
 import styled from "styled-components";
+import {useChangeSelectCalendarMutation} from "../../../store/api/taskApi/taskApi";
 
 export interface CalendarNameItem {
 	_id: string,
@@ -19,13 +20,13 @@ interface CalendarNameListItemProps {
 	onChange?: (checked: boolean) => void,
 	item: CalendarNameItem,
 	isChecked: boolean,
-	isLoading?: boolean,
 	isDisabled?: boolean,
 	onDelete?: (item: CalendarNameItem) => void,
+	onSuccessChangeSelect?: () => Promise<void>
 }
 
 const Label = styled('label')`
-	width: 100%;
+  width: 100%;
   gap: 6px;
   overflow: hidden;
   white-space: break-spaces;
@@ -40,10 +41,32 @@ export const CalendarNameListItem: FC<CalendarNameListItemProps> = ({
 																																			isChecked,
 																																			item,
 																																			isDisabled,
-																																			isLoading,
-																																			onDelete
+																																			onDelete,
+																																			onSuccessChangeSelect
 																																		}) => {
 	const [isHover, setIsHover] = useState(false)
+	const [isLoading, setIsLoading] = useState<boolean>(false)
+	const [changeSelect] = useChangeSelectCalendarMutation()
+	
+	const changeHandler = async (isChecked: boolean) => {
+		console.log(isChecked)
+		setIsLoading(true)
+		await changeSelect({
+			id: item._id,
+			state: isChecked
+		})
+			.unwrap()
+			.catch(() => setIsLoading(false))
+			.then(async () => {
+					if (onSuccessChangeSelect) {
+						await onSuccessChangeSelect()
+							.finally(() => setIsLoading(false))
+					} else {
+						setIsLoading(false)
+					}
+				}
+			)
+	}
 	
 	return (
 		<li onMouseEnter={() => onDelete && setIsHover(true)} onMouseLeave={() => onDelete && setIsHover(false)}>
@@ -58,7 +81,7 @@ export const CalendarNameListItem: FC<CalendarNameListItemProps> = ({
 							color={item.color}
 							disabled={isDisabled}
 							checked={isChecked}
-							onChange={(e) => onChange && onChange(e.target.checked)}
+							onChange={(e) => changeHandler(e.target.checked)}
 						/>
 					)}
 					<Label htmlFor={item._id}>{item.title}</Label>

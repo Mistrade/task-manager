@@ -1,4 +1,4 @@
-import {CalendarCurrentWeek, MonthItem, OnSelectDateFromCalendarFn} from "../types";
+import {CalendarCurrentMonth, CalendarCurrentWeek, MonthItem, OnSelectDateFromCalendarFn} from "../types";
 import {FC, ReactNode} from "react";
 import {GetTaskSchemeResponse} from "../../../store/api/taskApi/taskApi";
 import {FlexBlock} from "../../LayoutComponents/FlexBlock";
@@ -12,7 +12,8 @@ export interface PourDatesProps {
 }
 
 export interface SmallMonthProps {
-	currentDate?: Date,
+	current: CalendarCurrentMonth,
+	value?: Date,
 	onSelectDate?: OnSelectDateFromCalendarFn,
 	monthItem: MonthItem,
 	title?: ReactNode,
@@ -23,9 +24,10 @@ export interface SmallMonthProps {
 }
 
 export const SmallMonth: FC<SmallMonthProps> = ({
+																									current,
 																									onSelectDate,
 																									monthItem,
-																									currentDate,
+																									value,
 																									includesTasks,
 																									pourDates,
 																									onSelectWeek,
@@ -56,13 +58,14 @@ export const SmallMonth: FC<SmallMonthProps> = ({
 				</SmallMonthRow>
 				{monthItem?.weeks.map((weekItem) => (
 					<SmallMonthWeekItem
+						current={current}
 						useTooltips={useTooltips}
 						key={`short-week-${weekItem.weekOfYear}`}
 						onSelectWeek={onSelectWeek}
 						onSelectDate={onSelectDate}
 						weekItem={weekItem}
 						pourDates={pourDates}
-						currentDate={currentDate}
+						currentDate={value}
 						taskScheme={includesTasks}
 					/>
 				))}

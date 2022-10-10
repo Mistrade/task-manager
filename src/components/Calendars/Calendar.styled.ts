@@ -6,7 +6,7 @@ export const CalendarDesktopContainer = styled('div')`
   & {
     position: relative;
     width: 100%;
-    height: max-content;
+    height: 100%;
     display: flex;
     flex-direction: column;
     align-items: flex-start;

@@ -82,6 +82,6 @@ export const StyledModalBodyContainer = styled('div')`
     flex-direction: row;
     flex-wrap: wrap;
     width: 100%;
-    min-height: 300px;
+    min-height: 150px;
   }
 `

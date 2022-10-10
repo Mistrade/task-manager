@@ -4,12 +4,19 @@ import {CalendarCurrentDay, CalendarPriorityKeys, GlobalTaskListProps, OnSelectT
 import dayjs from 'dayjs'
 import {Button} from '../../../Buttons/Buttons.styled'
 import {EventFilter, EventFilterOnChangeHandle, FilterTaskStatuses} from '../EventFilter'
-import {useGetTasksAtDayQuery, useRemoveTaskMutation} from "../../../../store/api/taskApi/taskApi";
+import {
+	useGetTaskCountOfStatusQuery,
+	useGetTasksAtDayQuery,
+	useGetTasksAtScopeQuery,
+	useRemoveTaskMutation
+} from "../../../../store/api/taskApi/taskApi";
 import {useDebounce} from "../../../../hooks/useDebounce";
 import {Loader} from "../../../Loaders/Loader";
 import {DayTaskItem} from "./DayTaskItem";
 import {NotFoundTask} from "./NotFoundTasks";
 import {TaskListEventFiltersContainer, TaskListMainContainer} from "./TaskList.styled";
+import {css} from "styled-components";
+import {initialFiltersValues, useEventFilters} from "../../../../hooks/useEventFilters";
 
 interface DayTaskListProps extends GlobalTaskListProps {
 	day: Date
@@ -17,7 +24,7 @@ interface DayTaskListProps extends GlobalTaskListProps {
 	onSelectTask?: OnSelectTaskFnType,
 }
 
-export interface DayTaskListFilters {
+export interface EventFilters {
 	title: string | null,
 	priority: null | CalendarPriorityKeys,
 	start: null | Date,
@@ -25,79 +32,67 @@ export interface DayTaskListFilters {
 	taskStatus: FilterTaskStatuses
 }
 
-const initialFiltersValues: (day: Date) => DayTaskListFilters = (day) => ({
-	title: null,
-	priority: null,
-	start: dayjs(day).startOf('day').toDate(),
-	end: dayjs(day).endOf('day').toDate(),
-	taskStatus: 'in_work'
-})
-
 export const DayTaskList: FC<DayTaskListProps> = ({
 																										current,
 																										onSelectTask,
 																										day,
 																										onAddTask
 																									}) => {
-	const [filters, setFilters] = useState<DayTaskListFilters>(initialFiltersValues(day))
+	const {
+		filters,
+		debounceValue,
+		setFiltersState,
+		handlers
+	} = useEventFilters({initialValues: initialFiltersValues(day)})
 	
-	const debounceValue = useDebounce(filters, 300)
-	
-	const changeFiltersStateHandler = <T extends keyof DayTaskListFilters>(fieldName: T, value: DayTaskListFilters[T]) => {
-		setFilters((prev) => {
-			return {
-				...prev,
-				[fieldName]: value
-			}
-		})
-	}
-	
-	const eventFiltersHandlers: EventFilterOnChangeHandle = useMemo(() => ({
-		start: (date) => changeFiltersStateHandler('start', date),
-		end: (date) => changeFiltersStateHandler('end', date),
-		title: (value) => changeFiltersStateHandler('title', value),
-		priority: (key) => changeFiltersStateHandler('priority', key === 'not_selected' ? null : key),
-		taskStatus: (value) => changeFiltersStateHandler('taskStatus', value)
-	}), [])
+	const queryArgs = useMemo(() => {
+		return {
+			fromDate:
+				debounceValue.start
+					? dayjs(debounceValue.start).utc().toString()
+					: dayjs(day).utc().toString(),
+			toDate:
+				debounceValue.end
+					? dayjs(debounceValue.end).utc().toString()
+					: dayjs(day).add(23, 'hour').add(59, 'minute').utc().toString(),
+			title: debounceValue.title,
+			priority: debounceValue.priority === 'not_selected' ? null : debounceValue.priority,
+		}
+	}, [debounceValue])
 	
 	const {data, isLoading, isError, isSuccess, isFetching} = useGetTasksAtDayQuery({
-		fromDate:
-			debounceValue.start
-				? dayjs(debounceValue.start).utc().toString()
-				: dayjs(day).utc().toString(),
-		toDate:
-			debounceValue.end
-				? dayjs(debounceValue.end).utc().toString()
-				: dayjs(day).add(23, 'hour').add(59, 'minute').utc().toString(),
-		title: debounceValue.title,
-		priority: debounceValue.priority === 'not_selected' ? null : debounceValue.priority,
+		...queryArgs,
 		taskStatus: debounceValue.taskStatus
 	}, {refetchOnMountOrArgChange: true})
+	
+	const {data: SwitcherBadges} = useGetTaskCountOfStatusQuery(queryArgs)
 	
 	const [removeTask, {isSuccess: isRemoveSuccess, isError: isRemoveError}] = useRemoveTaskMutation()
 	
 	useEffect(() => {
-		clearFiltersHandle()
-	}, [day])
+		setFiltersState(initialFiltersValues(current.date))
+	}, [current.date])
 	
 	const clearFiltersHandle = useCallback(() => {
-		setFilters(initialFiltersValues(day))
-	}, [day])
+		setFiltersState(initialFiltersValues(current.date))
+	}, [current.date])
 	
 	
 	return (
 		<TaskListMainContainer>
-			<TaskListEventFiltersContainer>
-				<EventFilter
-					currentDay={current.date}
-					values={filters}
-					onChangeHandlers={eventFiltersHandlers}
-				/>
-			</TaskListEventFiltersContainer>
+			<EventFilter
+				statusBadges={SwitcherBadges}
+				values={filters}
+				onChangeHandlers={handlers}
+			/>
 			<FlexBlock
 				direction={'column'}
-				height={'100vh'}
 				overflow={'scroll'}
+				height={'100vh'}
+				wrap={'nowrap'}
+				additionalCss={css`
+          scroll-snap-type: y proximity;
+				`}
 				ml={-8}
 				pl={8}
 				mr={-8}
