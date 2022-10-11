@@ -439,6 +439,8 @@ export const convertEventStatus = (status: EventItem['status']) => {
 			return 'Ожидает проверки'
 		case 'completed':
 			return 'Выполнено'
+		case "archive":
+			return 'В архиве'
 	}
 }
 
@@ -467,7 +469,10 @@ export const getAgeBirthday = (birthday: Date, age: number) => {
 	return new Date(birthday.getFullYear() + age, birthday.getMonth(), birthday.getDate())
 }
 
-export const getPassportIssueDateScope = ({dateBirthday, issueDate}: CheckPassportIssueDate): GetPassportIssueDateScopeReturned => {
+export const getPassportIssueDateScope = ({
+																						dateBirthday,
+																						issueDate
+																					}: CheckPassportIssueDate): GetPassportIssueDateScopeReturned => {
 	const age = getUserAge(dateBirthday)
 	
 	if (age < 14) {

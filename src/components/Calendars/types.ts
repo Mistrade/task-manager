@@ -3,7 +3,7 @@ import {ShortChangeCurrentPattern} from '../../common/commonTypes'
 import {FlexBlockProps} from '../LayoutComponents/FlexBlock'
 import {DefaultTextInputProps} from '../Input/TextInput/TextInput'
 import {GetTaskSchemeResponse} from "../../store/api/taskApi/taskApi";
-import {FullResponseEventModel, ShortEventItem} from "../../store/api/taskApi/types";
+import {FullResponseEventModel, ObjectId, ShortEventItem} from "../../store/api/taskApi/types";
 import {Task} from "copy-webpack-plugin/types/utils";
 
 export type FCWithChildren<T = any> = FC<{ children?: ReactNode } & T>
@@ -201,10 +201,9 @@ export type CalendarPriorityKeys =
 	| 'not_selected'
 
 export type UUID = string
-export type TaskStatusesType = 'completed' | 'created' | 'in_progress' | 'review'
+export type TaskStatusesType = 'completed' | 'created' | 'in_progress' | 'review' | 'archive'
 
 export interface CalendarTaskItem {
-	id: UUID,
 	type: 'event',
 	createdAt: string,
 	linkedFrom?: UUID,
@@ -216,7 +215,7 @@ export interface CalendarTaskItem {
 	status: TaskStatusesType,
 	members: TaskMembersListType,
 	link: EventLinkItem | null,
-	calendar: string
+	calendar: string,
 }
 
 export type CalendarPriorityList = Array<{ type: CalendarPriorityKeys, title: string }>
@@ -306,23 +305,28 @@ export type CalendarTaskList = Array<CalendarTaskItem>
 export type SelectTaskItem = Omit<TaskTileClickArguments, 'event'>
 
 export interface TaskInformerProps {
-	taskItem: FullResponseEventModel | null
+	taskItem: FullResponseEventModel | null,
+	openClonedTask?: (taskId: ObjectId) => void,
 }
 
 export interface UsageTaskItemBaseProps {
-	taskItem: FullResponseEventModel
+	taskItem: FullResponseEventModel,
+	openClonedTask?: (taskId: ObjectId) => void,
 }
 
 export type TaskInformerMainProps = UsageTaskItemBaseProps
 
 export interface TaskInfoModalProps {
-	onClose: () => void
+	onClose: () => void,
+	onCloneEvent?: (event: FullResponseEventModel) => void,
+	onOpenClonedEvent?: (taskId: ObjectId) => void
 }
 
 export interface AddTaskModalProps {
 	date: Date | null,
 	onClose?: () => void,
-	onComplete?: () => void
+	onComplete?: () => void,
+	clonedEventInfo?: FullResponseEventModel | null
 }
 
 export interface CalendarCurrentYear {
@@ -364,7 +368,7 @@ export interface DateSettingPanelOptions {
 
 
 export type OnCloseTaskInfoFnType = () => void
-export type OnAddTaskFnType = (date: Date) => void
+export type OnAddTaskFnType = (date: Date, initialValues?: FullResponseEventModel) => void
 export type OnChangeCurrentFnType = (date: Date, layout: CalendarMode['layout']) => void
 export type OnSelectTaskFnType = (taskId: string) => any
 export type AddTaskDateType = CalendarItem | null

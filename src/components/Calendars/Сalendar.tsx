@@ -214,6 +214,7 @@ export const Calendar: FC<CalendarProps> = ({
 								<AddTaskModal
 									date={calendar.addTaskDate}
 									onClose={calendar.onCloseAddTaskModal}
+									clonedEventInfo={calendar.clonedEventInfo}
 								/>
 							}
 						/>
@@ -222,6 +223,8 @@ export const Calendar: FC<CalendarProps> = ({
 							element={
 								<TaskInfoModal
 									onClose={calendar.onCloseTaskInfo}
+									onCloneEvent={calendar.onCloneEvent}
+									onOpenClonedEvent={calendar.onSelectTask}
 								/>
 							}
 						/>

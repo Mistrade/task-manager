@@ -7,6 +7,7 @@ export interface DropDownRenderElementObject<T extends HTMLElement = HTMLInputEl
 	ref: React.RefObject<T>,
 	onElementFocused: (e: React.FocusEvent<T>) => void,
 	onElementBlur: (e: React.FocusEvent<T>) => void,
+	onClick: (e: React.MouseEvent) => void
 }
 
 export interface DropDownProps<T extends HTMLElement = HTMLInputElement> {

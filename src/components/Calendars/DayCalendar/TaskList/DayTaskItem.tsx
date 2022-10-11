@@ -137,12 +137,15 @@ export const DayTaskItem: FC<DayTaskItemProps> = ({taskInfo, tabIndex, onSelectT
 					{taskInfo.id && (
 						<FlexBlock>
 							<JoinToEventButton
-								onClick={(e) => {
+								onClick={async (e) => {
 									e.stopPropagation()
+									if (taskInfo.status === 'archive') {
+										return await updateTask({field: 'status', data: 'created', id: taskInfo.id})
+									}
 									onDelete && onDelete(taskInfo.id)
 								}}
 							>
-								Удалить
+								{taskInfo.status === 'archive' ? 'Восстановить' : 'Удалить'}
 							</JoinToEventButton>
 						</FlexBlock>
 					)}

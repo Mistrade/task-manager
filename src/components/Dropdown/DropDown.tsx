@@ -39,6 +39,10 @@ export function DropDown<T extends HTMLElement = HTMLElement>({
 		}
 	})
 	
+	const onClickHandler = useCallback((e: React.MouseEvent) => {
+		setFocused(true)
+	}, [])
+	
 	
 	return (
 		<FlexBlock
@@ -50,7 +54,8 @@ export function DropDown<T extends HTMLElement = HTMLElement>({
 			{renderElement({
 				onElementBlur: focusHandler,
 				onElementFocused: focusHandler,
-				ref: elRef
+				ref: elRef,
+				onClick: onClickHandler
 			})}
 			{dFocus && (
 				<StyledDropDownContainer tabIndex={1} isOpen={dFocus}>

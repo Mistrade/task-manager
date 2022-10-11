@@ -11,13 +11,19 @@ import {SmallMonth} from "../../SmallMotnCalendar/SmallMonth";
 import {SmallCalendarMonthTitle} from "../../SmallMotnCalendar/SmallCalendarMonthTitle";
 import dayjs from "dayjs";
 import {TaskCreatedMessage} from "../TaskCreatedMessage";
+import {EmptyButtonStyled} from "../../../Buttons/EmptyButton.styled";
 
 interface TaskInformerRightBarProps extends UsageTaskItemBaseProps {
 	monthItem: MonthItem,
-	updateFn: TaskInformerUpdateFn
+	updateFn: TaskInformerUpdateFn,
 }
 
-export const TaskInformerRightBar: FC<TaskInformerRightBarProps> = ({taskItem, monthItem, updateFn}) => {
+export const TaskInformerRightBar: FC<TaskInformerRightBarProps> = ({
+																																			taskItem,
+																																			monthItem,
+																																			updateFn,
+																																			openClonedTask
+																																		}) => {
 	return (
 		<FlexBlock
 			flex={'0 0 300px'}
@@ -54,6 +60,17 @@ export const TaskInformerRightBar: FC<TaskInformerRightBarProps> = ({taskItem, m
 				monthItem={monthItem}
 			/>
 			<TaskCreatedMessage taskItem={taskItem}/>
+			{taskItem.linkedFrom && (
+				<FlexBlock>
+					<EmptyButtonStyled
+						onClick={() => {
+							taskItem.linkedFrom && openClonedTask && openClonedTask(taskItem.linkedFrom)
+						}}
+					>
+						Смотреть исходное событие
+					</EmptyButtonStyled>
+				</FlexBlock>
+			)}
 		</FlexBlock>
 	)
 }

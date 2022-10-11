@@ -10,7 +10,7 @@ import {
 	WeekItem,
 	YearItem
 } from "../../components/Calendars/types";
-import {UtcDate} from "../api/taskApi/types";
+import {FullResponseEventModel, UtcDate} from "../api/taskApi/types";
 import {CalendarNameItem} from "../../components/Calendars/CalendarList/CalendarNameListItem";
 
 export interface CalendarStateData {
@@ -33,13 +33,15 @@ export type CalendarModeForState =
 interface CalendarState {
 	current: CalendarModeForState,
 	addTaskDate: null | string,
-	calendarRemoveCandidate: null | CalendarNameItem
+	calendarRemoveCandidate: null | CalendarNameItem,
+	clonedParentEvent: FullResponseEventModel | null,
 }
 
 const initialState: CalendarState = {
 	current: {layout: 'day', date: new Date().toString()},
 	addTaskDate: null,
-	calendarRemoveCandidate: null
+	calendarRemoveCandidate: null,
+	clonedParentEvent: null
 }
 
 const CalendarSlice = createSlice({
@@ -85,6 +87,9 @@ const CalendarSlice = createSlice({
 		},
 		changeCalendarRemoveCandidate(state, data: PayloadAction<CalendarState['calendarRemoveCandidate']>) {
 			state.calendarRemoveCandidate = data.payload
+		},
+		setClonedParentEvent(state, data: PayloadAction<FullResponseEventModel | null>) {
+			state.clonedParentEvent = data.payload
 		}
 	},
 })
@@ -93,5 +98,6 @@ export const CalendarReducer = CalendarSlice.reducer
 export const {
 	changeCalendarCurrent,
 	changeAddTaskDate,
-	changeCalendarRemoveCandidate
+	changeCalendarRemoveCandidate,
+	setClonedParentEvent
 } = CalendarSlice.actions

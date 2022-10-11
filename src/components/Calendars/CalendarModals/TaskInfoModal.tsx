@@ -1,4 +1,4 @@
-import React, {FC, useEffect} from 'react'
+import React, {FC, RefObject, useCallback, useEffect} from 'react'
 import {TaskInfoModalProps} from '../types'
 import {Modal, ModalBody, ModalFooter, ModalHeader} from '../../Modal/Modal'
 import {FlexBlock} from '../../LayoutComponents/FlexBlock'
@@ -8,12 +8,18 @@ import {useLazyGetTaskInfoQuery} from "../../../store/api/taskApi/taskApi";
 import {useParams} from "react-router";
 import {ErrorBoundary} from "../../Errors/ErrorBoundary";
 import {Loader} from "../../Loaders/Loader";
+import {DropDownButton} from "../../Buttons/DropDownButton";
+import {DropDown} from "../../Dropdown/DropDown";
+import {EmptyButtonStyled} from '../../Buttons/EmptyButton.styled'
+import {SelectListContainer} from "../../Input/SelectInput/SelectListContainer";
+import {SelectItemContainer} from '../../Input/SelectInput/SelectItemContainer'
+import {ObjectId} from "../../../store/api/taskApi/types";
 
 const Informer = React.lazy(() => import('./../TaskInformer/TaskInformer').then(({TaskInformer}) => ({default: TaskInformer})))
 
-export const TaskInfoModal: FC<TaskInfoModalProps> = ({onClose}) => {
+export const TaskInfoModal: FC<TaskInfoModalProps> = ({onClose, onCloneEvent, onOpenClonedEvent}) => {
 	const {taskId} = useParams<{ taskId: string }>()
-	const [getTaskInfo, {data: taskInfo, currentData, isLoading}] = useLazyGetTaskInfoQuery()
+	const [getTaskInfo, {currentData: taskInfo, isFetching: isLoading}] = useLazyGetTaskInfoQuery()
 	
 	useEffect(() => {
 		taskId && getTaskInfo(taskId)
@@ -29,7 +35,44 @@ export const TaskInfoModal: FC<TaskInfoModalProps> = ({onClose}) => {
 		>
 			
 			<ModalHeader>
-				Режим просмотра и редактирования события
+				<FlexBlock
+					direction={'row'}
+					justify={'space-between'}
+					align={'center'}
+					width={'100%'}
+				>
+					<FlexBlock fSize={15}>
+						Режим просмотра и редактирования события
+					</FlexBlock>
+					{taskInfo?.data && (
+						<FlexBlock>
+							<DropDown
+								renderElement={({ref, onElementFocused, onElementBlur}) => (
+									<EmptyButtonStyled
+										type={'button'}
+										onFocus={onElementFocused}
+										onBlur={onElementBlur}
+										ref={ref as RefObject<HTMLButtonElement>}
+									>
+										Действия
+									</EmptyButtonStyled>
+								)}
+								dropDownChildren={(methods) => (
+									<SelectListContainer>
+										<SelectItemContainer
+											onClick={() => {
+												taskInfo.data && onCloneEvent && onCloneEvent(taskInfo.data)
+												methods.focusOut()
+											}}
+										>
+											Клонировать событие
+										</SelectItemContainer>
+									</SelectListContainer>
+								)}
+							/>
+						</FlexBlock>
+					)}
+				</FlexBlock>
 			</ModalHeader>
 			<ModalBody>
 				<ErrorBoundary
@@ -38,7 +81,10 @@ export const TaskInfoModal: FC<TaskInfoModalProps> = ({onClose}) => {
 				>
 					<Loader title={'Загрузка информации события...'} isActive={isLoading}>
 						<React.Suspense fallback={<Loader title={'Загрузка дополнительных скриптов...'} isActive={true}/>}>
-							<Informer taskItem={currentData?.data || null}/>
+							<Informer
+								taskItem={taskInfo?.data || null}
+								openClonedTask={onOpenClonedEvent}
+							/>
 						</React.Suspense>
 					</Loader>
 				</ErrorBoundary>

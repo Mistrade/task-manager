@@ -10,7 +10,7 @@ import {TaskInformerRightBar} from "./RightBar/TaskInformerRightBar";
 import {TaskInformerLeftBar} from "./LeftBar/TaskInformerLeftBar";
 import {TaskInfoNotFound} from "./SupportsComponent/TaskInfoNotFound";
 
-const TaskInformerMain: FC<TaskInformerMainProps> = ({taskItem}) => {
+const TaskInformerMain: FC<TaskInformerMainProps> = ({taskItem, openClonedTask}) => {
 	const options = useMemo(() => {
 		const start = dayjs(taskItem.time)
 		const current: CalendarCurrentMonth = {
@@ -60,12 +60,17 @@ const TaskInformerMain: FC<TaskInformerMainProps> = ({taskItem}) => {
 		>
 			<FlexBlock direction={'row'} width={'100%'} gap={12}>
 				<TaskInformerLeftBar taskItem={taskItem} updateFn={updateTaskHandler}/>
-				<TaskInformerRightBar taskItem={taskItem} monthItem={options.monthItem} updateFn={updateTaskHandler}/>
+				<TaskInformerRightBar
+					taskItem={taskItem}
+					monthItem={options.monthItem}
+					updateFn={updateTaskHandler}
+					openClonedTask={openClonedTask}
+				/>
 			</FlexBlock>
 		</FlexBlock>
 	)
 }
 
-export const TaskInformer: FC<TaskInformerProps> = ({taskItem}) => {
-	return !taskItem ? <TaskInfoNotFound/> : <TaskInformerMain taskItem={taskItem}/>
+export const TaskInformer: FC<TaskInformerProps> = ({taskItem, openClonedTask}) => {
+	return !taskItem ? <TaskInfoNotFound/> : <TaskInformerMain taskItem={taskItem} openClonedTask={openClonedTask}/>
 }

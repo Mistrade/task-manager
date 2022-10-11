@@ -30,7 +30,8 @@ import {SelectItemContainer} from "../../Input/SelectInput/SelectItemContainer";
 interface AddTaskFormProps {
 	onComplete?: (data: CalendarTaskItem) => void,
 	date: Date | null,
-	onCancel?: (data: CalendarTaskItem) => void
+	onCancel?: (data: CalendarTaskItem) => void,
+	initialValues?: CalendarTaskItem
 }
 
 export const LinkValidationSchema = yup
@@ -63,7 +64,7 @@ const addTaskValidationSchema = yup.object({
 	
 })
 
-export const AddTaskForm: FC<AddTaskFormProps> = ({date, onComplete, onCancel}) => {
+export const AddTaskForm: FC<AddTaskFormProps> = ({date, onComplete, onCancel, initialValues}) => {
 	const {data: calendarsList} = useGetCalendarsQuery({exclude: ['Invite']})
 	const [addTask, {isLoading, status}] = useAddTaskMutation()
 	const formik = useFormik<CalendarTaskItem>({
@@ -72,8 +73,7 @@ export const AddTaskForm: FC<AddTaskFormProps> = ({date, onComplete, onCancel}) 
 			onComplete && onComplete(values)
 		},
 		validationSchema: addTaskValidationSchema,
-		initialValues: {
-			id: '',
+		initialValues: initialValues || {
 			title: '',
 			linkedFrom: '',
 			type: 'event',

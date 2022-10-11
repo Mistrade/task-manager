@@ -10,7 +10,7 @@ import {
 	YearItem
 } from '../components/Calendars/types'
 import dayjs from 'dayjs'
-import {CompleteIcon, CreatedIcon, ProcessIcon, WaitIcon} from '../components/Icons/Icons'
+import {CompleteIcon, CreatedIcon, ProcessIcon, TrashIcon, WaitIcon} from '../components/Icons/Icons'
 import {ErrorImagesType, InitialCurrentCalendarModeType} from "./types";
 import {SystemErrorImg} from "../components/Icons/Errors/SystemError";
 import {ErrorBadRequestImg} from "../components/Icons/Errors/ErrorBadRequest";
@@ -96,6 +96,12 @@ export const TASK_STATUSES: { [key in TaskStatusesType]: TaskStatusInfo } = {
 		key: 'completed',
 		title: 'Выполнено',
 		icon: <CompleteIcon size={16}/>
+	},
+	archive: {
+		value: false,
+		key: 'archive',
+		title: 'Перенести в архив',
+		icon: <TrashIcon size={16} color={currentColor}/>
 	}
 }
 
