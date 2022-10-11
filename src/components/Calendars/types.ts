@@ -5,6 +5,8 @@ import {DefaultTextInputProps} from '../Input/TextInput/TextInput'
 import {GetTaskSchemeResponse} from "../../store/api/taskApi/taskApi";
 import {FullResponseEventModel, ObjectId, ShortEventItem} from "../../store/api/taskApi/types";
 import {Task} from "copy-webpack-plugin/types/utils";
+import {FilterTaskStatuses} from "./DayCalendar/EventFilter";
+import {UseCalendarReturned} from "../../hooks/useCalendar";
 
 export type FCWithChildren<T = any> = FC<{ children?: ReactNode } & T>
 
@@ -25,6 +27,7 @@ export interface DatePickerProps {
 }
 
 export interface CalendarProps {
+	taskStatus: FilterTaskStatuses,
 	layout: CalendarMode['layout'],
 	disabledOptions?: CalendarDisabledOptions,
 	renderWeekPattern?: RenderWeekPattern,
@@ -326,7 +329,8 @@ export interface AddTaskModalProps {
 	date: Date | null,
 	onClose?: () => void,
 	onComplete?: () => void,
-	clonedEventInfo?: FullResponseEventModel | null
+	clonedEventInfo?: FullResponseEventModel | null,
+	onSuccessClonedEvent?: UseCalendarReturned['onSuccessClonedEvent']
 }
 
 export interface CalendarCurrentYear {

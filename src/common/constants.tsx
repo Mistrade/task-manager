@@ -15,6 +15,7 @@ import {ErrorImagesType, InitialCurrentCalendarModeType} from "./types";
 import {SystemErrorImg} from "../components/Icons/Errors/SystemError";
 import {ErrorBadRequestImg} from "../components/Icons/Errors/ErrorBadRequest";
 import {ErrorForbiddenImg} from "../components/Icons/Errors/ErrorForbidden";
+import {FilterTaskStatuses} from "../components/Calendars/DayCalendar/EventFilter";
 
 export const MonthList = [
 	'Январь', 'Февраль', 'Март', 'Апрель', 'Май', 'Июнь', 'Июль', 'Август', 'Сентябрь', 'Октябрь', 'Ноябрь', 'Декабрь'
@@ -71,6 +72,16 @@ export const PRIORITY_LIST: CalendarPriorityList = [
 	{type: 'low', title: PRIORITY_TITLES.low},
 	{type: 'veryLow', title: PRIORITY_TITLES.veryLow}
 ]
+
+type TaskStatusesObjectProps = {
+	[key in FilterTaskStatuses]: Array<TaskStatusesType>
+}
+export const TaskStatusesObject: TaskStatusesObjectProps = {
+	created: ['created'],
+	in_work: ['in_progress', 'review'],
+	completed: ['completed'],
+	archive: ['archive']
+}
 
 export const TASK_STATUSES: { [key in TaskStatusesType]: TaskStatusInfo } = {
 	created: {

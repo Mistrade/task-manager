@@ -22,13 +22,15 @@ import {CompleteIcon, CreatedIcon} from '../../Icons/Icons'
 import {Button, StyledButton} from '../../Buttons/Buttons.styled'
 import {SelectLinks} from '../../Input/SelectInput/CalendarSelectInputs/SelectLinks'
 import {Tooltip} from '../../Tooltip/Tooltip'
-import {useAddTaskMutation, useGetCalendarsQuery} from "../../../store/api/taskApi/taskApi";
+import {ServerResponse, useAddTaskMutation, useGetCalendarsQuery} from "../../../store/api/taskApi/taskApi";
 import {TextAreaInput} from "../../Input/TextAreaInput/TextAreaInput";
 import {CalendarNameItem} from "../CalendarList/CalendarNameListItem";
 import {SelectItemContainer} from "../../Input/SelectInput/SelectItemContainer";
+import {ObjectId} from "../../../store/api/taskApi/types";
+import {toast} from "react-toastify";
 
 interface AddTaskFormProps {
-	onComplete?: (data: CalendarTaskItem) => void,
+	onComplete?: (data: CalendarTaskItem, taskId?: ObjectId) => void,
 	date: Date | null,
 	onCancel?: (data: CalendarTaskItem) => void,
 	initialValues?: CalendarTaskItem
@@ -69,8 +71,18 @@ export const AddTaskForm: FC<AddTaskFormProps> = ({date, onComplete, onCancel, i
 	const [addTask, {isLoading, status}] = useAddTaskMutation()
 	const formik = useFormik<CalendarTaskItem>({
 		async onSubmit(values) {
-			await addTask(values).unwrap()
-			onComplete && onComplete(values)
+			await addTask(values)
+				.unwrap()
+				.then((response) => {
+					onComplete && onComplete(values, response?.data?.taskId)
+				})
+				.catch((response: ServerResponse<null>) => {
+					if(response.info){
+						toast(response.info?.message, {
+							type: response.info.type
+						})
+					}
+				})
 		},
 		validationSchema: addTaskValidationSchema,
 		initialValues: initialValues || {

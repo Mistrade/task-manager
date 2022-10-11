@@ -35,6 +35,7 @@ const YearCalendar = React.lazy(() => import('./YearCalendar/YearCalendar').then
 
 export const Calendar: FC<CalendarProps> = ({
 																							layout,
+																							taskStatus,
 																							disabledOptions,
 																							renderWeekPattern = 'full',
 																						}) => {
@@ -215,6 +216,7 @@ export const Calendar: FC<CalendarProps> = ({
 									date={calendar.addTaskDate}
 									onClose={calendar.onCloseAddTaskModal}
 									clonedEventInfo={calendar.clonedEventInfo}
+									onSuccessClonedEvent={calendar.onSuccessClonedEvent}
 								/>
 							}
 						/>

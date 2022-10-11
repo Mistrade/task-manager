@@ -1,9 +1,9 @@
 import {createApi, fetchBaseQuery} from "@reduxjs/toolkit/dist/query/react";
-import {CalendarPriorityKeys, EventItem, TaskStorage} from "../../../components/Calendars/types";
+import {CalendarPriorityKeys, CalendarTaskItem, EventItem, TaskStorage} from "../../../components/Calendars/types";
 import {baseServerUrl} from "../defaultApiConfig";
 import {FilterTaskStatuses} from "../../../components/Calendars/DayCalendar/EventFilter";
 import {CalendarNameItem} from "../../../components/Calendars/CalendarList/CalendarNameListItem";
-import {CalendarsModelType, FullResponseEventModel, ShortEventItem} from "./types";
+import {CalendarsModelType, FullResponseEventModel, ObjectId, ShortEventItem} from "./types";
 import {CreateCalendarFormData} from "../../../components/Calendars/CalendarModals/CreateCalendar";
 import {SwitcherBadges} from "../../../components/Switcher/Switcher";
 
@@ -110,7 +110,7 @@ export const taskApi = createApi({
 					providesTags: ['Tasks', 'TaskInfo'],
 				}),
 			addTask: build
-				.mutation({
+				.mutation<ServerResponse<{taskId: ObjectId}>, CalendarTaskItem>({
 					query: (body) => ({
 						url: `/add`,
 						method: "POST",

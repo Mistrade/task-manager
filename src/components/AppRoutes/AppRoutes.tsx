@@ -24,7 +24,7 @@ export const AppRoutes: FC<OnlyAuthRoutes> = ({userInfo}) => {
 				>
 					<Route
 						index
-						element={<Navigate to={'/calendar/day'}/>}
+						element={<Navigate to={'/calendar/day/in_work'}/>}
 					/>
 					<Route
 						path={':layout/*'}

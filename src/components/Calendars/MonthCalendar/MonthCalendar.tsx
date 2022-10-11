@@ -10,6 +10,7 @@ import {EventFilter} from "../DayCalendar/EventFilter";
 import {FlexBlock} from "../../LayoutComponents/FlexBlock";
 import {WeekDays} from "../WeekDays/WeekDays";
 import {WeekDaysList} from "../../../common/constants";
+import {useAppSelector} from "../../../store/hooks/hooks";
 
 export const MonthCalendar: FC<MonthCalendarProps> = ({
 																												monthItem,
@@ -23,14 +24,17 @@ export const MonthCalendar: FC<MonthCalendarProps> = ({
 		return getTaskSchemeScope(new Date(monthItem.year, monthItem.monthOfYear, 1), 'month', false)
 	}, [monthItem.monthOfYear])
 	
+	const {statuses} = useAppSelector(state => state.calendar)
+	
 	const {filters, setFiltersState, debounceValue, handlers} = useEventFilters({
 		initialValues: {
 			title: null,
 			priority: null,
 			start: dayjs(scope.fromDate).toDate(),
 			end: dayjs(scope.toDate).toDate(),
-			taskStatus: "in_work"
-		}
+			taskStatus: statuses
+		},
+		layout: current.layout
 	})
 	
 	const queryArgs = useMemo(() => {

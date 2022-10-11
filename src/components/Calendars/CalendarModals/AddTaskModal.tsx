@@ -1,7 +1,7 @@
 import React, {FC} from 'react'
 import {AddTaskModalProps} from '../types'
 import {Modal, ModalBody, ModalHeader} from '../../Modal/Modal'
-import {ERROR_DESCRIPTIONS, ERROR_TITLES, getHumanizeDateValue} from '../../../common/constants'
+import {ERROR_DESCRIPTIONS, ERROR_TITLES, getHumanizeDateValue, TaskStatusesObject} from '../../../common/constants'
 import {FlexBlock} from '../../LayoutComponents/FlexBlock'
 import {Tooltip} from '../../Tooltip/Tooltip'
 import {ErrorBoundary} from "../../Errors/ErrorBoundary";
@@ -11,7 +11,7 @@ const Form = React.lazy(() => import('./../Forms/AddTaskForm')
 	.then(({AddTaskForm}) => ({default: AddTaskForm}))
 )
 
-export const AddTaskModal: FC<AddTaskModalProps> = ({date, onClose, clonedEventInfo}) => {
+export const AddTaskModal: FC<AddTaskModalProps> = ({date, onClose, clonedEventInfo, onSuccessClonedEvent}) => {
 	console.log(clonedEventInfo)
 	return (
 		<Modal
@@ -34,9 +34,13 @@ export const AddTaskModal: FC<AddTaskModalProps> = ({date, onClose, clonedEventI
 					>
 						<React.Suspense fallback={'Загрузка формы...'}>
 							<Form
-								onComplete={(value) => {
+								onComplete={(value, taskId) => {
 									console.log('onComplete')
-									onClose && onClose()
+									if (value.linkedFrom) {
+										onSuccessClonedEvent && onSuccessClonedEvent(value.time, 'created', taskId)
+									} else {
+										onClose && onClose()
+									}
 								}}
 								initialValues={clonedEventInfo ? {
 									description: clonedEventInfo?.description || '',

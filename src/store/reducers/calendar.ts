@@ -12,6 +12,7 @@ import {
 } from "../../components/Calendars/types";
 import {FullResponseEventModel, UtcDate} from "../api/taskApi/types";
 import {CalendarNameItem} from "../../components/Calendars/CalendarList/CalendarNameListItem";
+import {FilterTaskStatuses} from "../../components/Calendars/DayCalendar/EventFilter";
 
 export interface CalendarStateData {
 	day: DateItem,
@@ -32,6 +33,7 @@ export type CalendarModeForState =
 
 interface CalendarState {
 	current: CalendarModeForState,
+	statuses: FilterTaskStatuses,
 	addTaskDate: null | string,
 	calendarRemoveCandidate: null | CalendarNameItem,
 	clonedParentEvent: FullResponseEventModel | null,
@@ -39,6 +41,7 @@ interface CalendarState {
 
 const initialState: CalendarState = {
 	current: {layout: 'day', date: new Date().toString()},
+	statuses: 'in_work',
 	addTaskDate: null,
 	calendarRemoveCandidate: null,
 	clonedParentEvent: null
@@ -90,6 +93,9 @@ const CalendarSlice = createSlice({
 		},
 		setClonedParentEvent(state, data: PayloadAction<FullResponseEventModel | null>) {
 			state.clonedParentEvent = data.payload
+		},
+		changeTaskStatuses(state, data: PayloadAction<FilterTaskStatuses>) {
+			state.statuses = data.payload
 		}
 	},
 })
@@ -99,5 +105,6 @@ export const {
 	changeCalendarCurrent,
 	changeAddTaskDate,
 	changeCalendarRemoveCandidate,
-	setClonedParentEvent
+	setClonedParentEvent,
+	changeTaskStatuses
 } = CalendarSlice.actions

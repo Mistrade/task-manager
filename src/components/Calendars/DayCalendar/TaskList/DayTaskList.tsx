@@ -17,6 +17,7 @@ import {NotFoundTask} from "./NotFoundTasks";
 import {TaskListEventFiltersContainer, TaskListMainContainer} from "./TaskList.styled";
 import {css} from "styled-components";
 import {initialFiltersValues, useEventFilters} from "../../../../hooks/useEventFilters";
+import {useAppSelector} from "../../../../store/hooks/hooks";
 
 interface DayTaskListProps extends GlobalTaskListProps {
 	day: Date
@@ -38,12 +39,14 @@ export const DayTaskList: FC<DayTaskListProps> = ({
 																										day,
 																										onAddTask
 																									}) => {
+	const statuses = useAppSelector(state => state.calendar.statuses)
+	
 	const {
 		filters,
 		debounceValue,
 		setFiltersState,
 		handlers
-	} = useEventFilters({initialValues: initialFiltersValues(day)})
+	} = useEventFilters({initialValues: initialFiltersValues(day, statuses), layout: current.layout})
 	
 	const queryArgs = useMemo(() => {
 		return {
@@ -70,12 +73,12 @@ export const DayTaskList: FC<DayTaskListProps> = ({
 	const [removeTask, {isSuccess: isRemoveSuccess, isError: isRemoveError}] = useRemoveTaskMutation()
 	
 	useEffect(() => {
-		setFiltersState(initialFiltersValues(current.date))
+		clearFiltersHandle()
 	}, [current.date])
 	
 	const clearFiltersHandle = useCallback(() => {
-		setFiltersState(initialFiltersValues(current.date))
-	}, [current.date])
+		setFiltersState(initialFiltersValues(current.date, filters.taskStatus))
+	}, [current.date, filters.taskStatus])
 	
 	
 	return (

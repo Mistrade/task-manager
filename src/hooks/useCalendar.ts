@@ -11,17 +11,18 @@ import {useAppDispatch, useAppSelector} from "../store/hooks/hooks";
 import {
 	changeAddTaskDate,
 	changeCalendarCurrent,
-	changeCalendarRemoveCandidate,
+	changeCalendarRemoveCandidate, changeTaskStatuses,
 	setClonedParentEvent
 } from "../store/reducers/calendar";
 import {CalendarCurrentSelector} from "../store/selectors/calendarItems";
 import {useNavigate} from "react-router-dom";
 import dayjs from "dayjs";
 import {CalendarNameItem} from "../components/Calendars/CalendarList/CalendarNameListItem";
-import {FullResponseEventModel} from "../store/api/taskApi/types";
+import {FullResponseEventModel, ObjectId} from "../store/api/taskApi/types";
 import {toast} from "react-toastify";
+import {FilterTaskStatuses} from "../components/Calendars/DayCalendar/EventFilter";
 
-interface Returned {
+export interface UseCalendarReturned {
 	current: CalendarMode,
 	selectedTask: SelectedTaskType,
 	setSelectedTask: React.Dispatch<React.SetStateAction<SelectedTaskType>>,
@@ -31,21 +32,22 @@ interface Returned {
 	onAddTask: OnAddTaskFnType,
 	onChangeCurrent: OnChangeCurrentFnType,
 	onCloseTaskInfo: OnCloseTaskInfoFnType,
-	onCloseAddTaskModal: () => void,
+	onCloseAddTaskModal: (taskStatus?: FilterTaskStatuses) => void,
 	onCloseAddCalendarModal: () => void,
 	onSelectToRemoveCalendar: (item: CalendarNameItem | null) => void,
 	calendarRemoveCandidate: CalendarNameItem | null,
 	onCloneEvent: (initialValues: FullResponseEventModel) => void,
-	clonedEventInfo: FullResponseEventModel | null
+	clonedEventInfo: FullResponseEventModel | null,
+	onSuccessClonedEvent: (date: Date, taskStatus: FilterTaskStatuses, taskId?: ObjectId) => void
 }
 
-export type UseCalendarType = () => Returned
+export type UseCalendarType = () => UseCalendarReturned
 
 export const useCalendar: UseCalendarType = () => {
 	
 	const current = useAppSelector(CalendarCurrentSelector)
 	const navigate = useNavigate()
-	const {calendarRemoveCandidate, addTaskDate, clonedParentEvent} = useAppSelector(state => state.calendar)
+	const {calendarRemoveCandidate, addTaskDate, clonedParentEvent, statuses} = useAppSelector(state => state.calendar)
 	
 	useEffect(() => {
 		console.log(clonedParentEvent)
@@ -80,39 +82,36 @@ export const useCalendar: UseCalendarType = () => {
 	}, [calendarRemoveCandidate, current.layout])
 	
 	const onCloseAddCalendarModal = useCallback(() => {
-		return navigate(`/calendar/${current.layout}`)
-	}, [current.layout])
+		return navigate(`/calendar/${current.layout}/${statuses}`)
+	}, [current.layout, statuses])
 	
 	const onSelectTask: OnSelectTaskFnType = useCallback((taskId: string) => {
-		console.log('click')
-		navigate(`/calendar/${current.layout}/${taskId}`)
-	}, [setSelectedTask, current.layout])
+		navigate(`/calendar/${current.layout}/${statuses}/${taskId}`)
+	}, [setSelectedTask, current.layout, statuses])
 	
 	const onAddTask: OnAddTaskFnType = useCallback((date, initialValues) => {
-		navigate(`/calendar/${current.layout}/add`)
+		navigate(`/calendar/${current.layout}/${statuses}/add`)
 		updateAddTaskState(date, initialValues || null)
-	}, [updateAddTaskState, current.layout])
+	}, [updateAddTaskState, current.layout, statuses])
 	
 	const onChangeCurrent = useCallback((date: Date, l: CalendarMode['layout']) => {
-		navigate(`/calendar/${l}`, {replace: true})
+		navigate(`/calendar/${l}/${statuses}`, {replace: true})
 		dispatch(changeCalendarCurrent({layout: l, date: date.toString()}))
-	}, [])
+	}, [statuses])
 	
 	const onCloseTaskInfo = useCallback(() => {
-		navigate(`/calendar/${current.layout}`, {replace: true})
-	}, [current.layout])
+		navigate(`/calendar/${current.layout}/${statuses}`, {replace: true})
+	}, [current.layout, statuses])
 	
-	const onCloseAddTaskModal = useCallback(() => {
+	const onCloseAddTaskModal = useCallback((taskStatus?: FilterTaskStatuses, taskId?: ObjectId) => {
 		updateAddTaskState(null, null)
-		navigate(`/calendar/${current.layout}`)
-	}, [current.layout])
+		const defaultPath = `/calendar/${current.layout}/${taskStatus || statuses}`
+		navigate(taskId ? `${defaultPath}/${taskId}` : defaultPath, {replace: true})
+	}, [current.layout, statuses])
 	
 	const onCloneEvent = useCallback((event: FullResponseEventModel) => {
-		
-		console.log(event)
 		const date = dayjs(event.time)
 		if (date.isValid()) {
-			console.log('дата валидна')
 			onCloseTaskInfo()
 			onAddTask(dayjs(event.time).toDate(), event)
 		} else {
@@ -120,6 +119,13 @@ export const useCalendar: UseCalendarType = () => {
 		}
 		
 	}, [])
+	
+	const onSuccessClonedEvent: UseCalendarReturned['onSuccessClonedEvent'] = useCallback((date, taskStatus, taskId) => {
+		console.log('task status:', taskStatus)
+		dispatch(changeTaskStatuses(taskStatus))
+		dispatch(changeCalendarCurrent({layout: current.layout, date: date.toString()}))
+		onCloseAddTaskModal(taskStatus, taskId)
+	}, [current.layout])
 	
 	return {
 		current,
@@ -136,6 +142,7 @@ export const useCalendar: UseCalendarType = () => {
 		onSelectToRemoveCalendar,
 		calendarRemoveCandidate,
 		onCloneEvent,
-		clonedEventInfo: clonedParentEvent
+		clonedEventInfo: clonedParentEvent,
+		onSuccessClonedEvent: onSuccessClonedEvent
 	}
 }

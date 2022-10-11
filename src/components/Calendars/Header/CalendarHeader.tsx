@@ -16,6 +16,7 @@ import {PencilIcon, PlusIcon} from "../../Icons/Icons";
 import {DropDown} from "../../Dropdown/DropDown";
 import {SelectListContainer} from "../../Input/SelectInput/SelectListContainer";
 import {SelectItemContainer} from "../../Input/SelectInput/SelectItemContainer";
+import {useAppSelector} from "../../../store/hooks/hooks";
 
 
 export const CalendarHeader: FC<CalendarHeaderProps> = ({
@@ -23,6 +24,7 @@ export const CalendarHeader: FC<CalendarHeaderProps> = ({
 																												}) => {
 	const {layout} = useParams<{ layout?: CalendarMode['layout'] }>()
 	const {current, onChangeCurrent, onAddTask, addTaskDate} = useCalendar()
+	const {statuses} = useAppSelector(state => state.calendar)
 	
 	const title: string = useMemo(() => {
 		return getCalendarTitle(current)
@@ -35,9 +37,9 @@ export const CalendarHeader: FC<CalendarHeaderProps> = ({
 	}, [current, onChangeCurrent])
 	
 	const onChangeCurrentLayoutHandler = useCallback((newLayout: CalendarMode["layout"]) => {
-		navigate(`/calendar/${newLayout}`, {replace: true})
+		navigate(`/calendar/${newLayout}/${statuses}`, {replace: true})
 		onChangeCurrent && onChangeCurrent(new Date(), newLayout)
-	}, [])
+	}, [statuses])
 	
 	const addTaskHandler = useCallback(() => {
 		if (current.layout !== 'day') {
@@ -65,7 +67,7 @@ export const CalendarHeader: FC<CalendarHeaderProps> = ({
 									Добавить событие
 								</SelectItemContainer>
 								<SelectItemContainer
-									onClick={() => navigate(`/calendar/${current.layout}/createCalendar`)}
+									onClick={() => navigate(`/calendar/${current.layout}/${statuses}/createCalendar`)}
 								>
 									Создать новый календарь
 								</SelectItemContainer>

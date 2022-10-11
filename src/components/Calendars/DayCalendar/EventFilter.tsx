@@ -10,6 +10,8 @@ import {disabledColor} from "../../../common/constants";
 import {SwitchCalendarModeTab} from "../Calendar.styled";
 import {TaskListEventFiltersContainer} from './TaskList/TaskList.styled'
 import {Switcher, SwitcherBadges} from "../../Switcher/Switcher";
+import {useAppSelector} from "../../../store/hooks/hooks";
+import {CalendarStatusProxy} from "../CalendarStatusProxy";
 
 interface EventFilterProps extends FormHandle {
 	statusBadges?: SwitcherBadges<FilterTaskStatuses>
@@ -38,11 +40,18 @@ interface DayTaskListTabObject {
 	key: FilterTaskStatuses,
 }
 
-const dayTaskListTabsArray: Array<DayTaskListTabObject> = [
-	{title: 'Создано', key: 'created'},
-	{title: 'В работе', key: 'in_work'},
-	{title: 'Выполнено', key: 'completed'},
-	{title: 'Архив событий', key: 'archive'}
+export const URLTaskStatuses: { [key in FilterTaskStatuses]: FilterTaskStatuses } = {
+	created: 'created',
+	in_work: 'in_work',
+	completed: 'completed',
+	archive: 'archive'
+}
+
+export const dayTaskListTabsArray: Array<DayTaskListTabObject> = [
+	{title: 'Запланировано', key: URLTaskStatuses.created},
+	{title: 'В работе', key: URLTaskStatuses.in_work},
+	{title: 'Выполнено', key: URLTaskStatuses.completed},
+	{title: 'Архив событий', key: URLTaskStatuses.archive}
 ]
 
 
@@ -52,6 +61,8 @@ export const EventFilter: FC<EventFilterProps> = ({
 																										onFocusHandlers,
 																										statusBadges
 																									}) => {
+	const {statuses} = useAppSelector(state => state.calendar)
+	
 	return (
 		<TaskListEventFiltersContainer>
 			<FlexBlock
@@ -102,7 +113,7 @@ export const EventFilter: FC<EventFilterProps> = ({
 				<Switcher
 					switchersList={dayTaskListTabsArray}
 					onClick={(item) => onChangeHandlers.taskStatus(item.key)}
-					selected={values.taskStatus}
+					selected={statuses}
 					badges={statusBadges}
 				/>
 			</FlexBlock>

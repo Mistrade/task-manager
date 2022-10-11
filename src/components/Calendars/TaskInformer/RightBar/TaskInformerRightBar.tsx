@@ -64,6 +64,7 @@ export const TaskInformerRightBar: FC<TaskInformerRightBarProps> = ({
 				<FlexBlock>
 					<EmptyButtonStyled
 						onClick={() => {
+							//TODO При клонировании события открывать либо вновь отклонированное событие, либо открывать день и статус с вновь созданным событием
 							taskItem.linkedFrom && openClonedTask && openClonedTask(taskItem.linkedFrom)
 						}}
 					>

@@ -7,6 +7,7 @@ import dayjs from "dayjs";
 import {FlexBlock} from "../../LayoutComponents/FlexBlock";
 import {EventFilter} from "../DayCalendar/EventFilter";
 import {useEventFilters} from "../../../hooks/useEventFilters";
+import {useAppSelector} from "../../../store/hooks/hooks";
 
 export interface WeekCalendarControllerProps extends Omit<WeekCalendarProps, 'taskStorage'> {
 
@@ -24,14 +25,17 @@ export const WeekCalendarController: FC<WeekCalendarControllerProps> = (props) =
 		}
 	}, [props.weekItem.weekOfYear])
 	
+	const {statuses} = useAppSelector(state => state.calendar)
+	
 	const {filters, setFiltersState, handlers, debounceValue} = useEventFilters({
 		initialValues: {
 			title: null,
-			taskStatus: 'in_work',
+			taskStatus: statuses,
 			start: dayjs(scope.fromDate).toDate(),
 			end: dayjs(scope.toDate).toDate(),
 			priority: null,
-		}
+		},
+		layout: props.current.layout
 	})
 	
 	const queryArgs = useMemo(() => {
