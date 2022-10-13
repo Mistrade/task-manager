@@ -7,6 +7,7 @@ import {SelectInput} from '../../Input/SelectInput/SelectInput'
 import {FlexBlock} from '../../LayoutComponents/FlexBlock'
 import {Button} from '../../Buttons/Buttons.styled'
 import {EmptyButtonStyled} from '../../Buttons/EmptyButton.styled'
+import dayjs from "dayjs";
 
 
 export const DatePicker: FC<DatePickerProps> = memo(({
@@ -35,8 +36,13 @@ export const DatePicker: FC<DatePickerProps> = memo(({
 	}, [])
 	
 	useEffect(() => {
-		if (currentDate && useForceUpdateValue) {
-			setStateValue(currentDate)
+		console.log(currentDate)
+		const d = dayjs(currentDate)
+		if (d.isValid()) {
+			const isSame = d.isSame(stateValue, 'minute')
+			if (currentDate && useForceUpdateValue && !isSame) {
+				setStateValue(currentDate)
+			}
 		}
 	}, [currentDate, useForceUpdateValue])
 	

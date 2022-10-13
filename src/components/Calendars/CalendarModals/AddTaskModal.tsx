@@ -51,7 +51,7 @@ export const AddTaskModal: FC<AddTaskModalProps> = ({date, onClose, clonedEventI
 									calendar: clonedEventInfo.calendar._id,
 									createdAt: '',
 									type: 'event',
-									title: clonedEventInfo.title,
+									title: `CLONE - ${clonedEventInfo.title}`,
 									members: [],
 									link: clonedEventInfo.link,
 									linkedFrom: clonedEventInfo.id,

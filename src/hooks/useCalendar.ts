@@ -38,7 +38,8 @@ export interface UseCalendarReturned {
 	calendarRemoveCandidate: CalendarNameItem | null,
 	onCloneEvent: (initialValues: FullResponseEventModel) => void,
 	clonedEventInfo: FullResponseEventModel | null,
-	onSuccessClonedEvent: (date: Date, taskStatus: FilterTaskStatuses, taskId?: ObjectId) => void
+	onSuccessClonedEvent: (date: Date, taskStatus: FilterTaskStatuses, taskId?: ObjectId) => void,
+	onAddCalendar: (calendarId?: ObjectId) => void
 }
 
 export type UseCalendarType = () => UseCalendarReturned
@@ -48,10 +49,6 @@ export const useCalendar: UseCalendarType = () => {
 	const current = useAppSelector(CalendarCurrentSelector)
 	const navigate = useNavigate()
 	const {calendarRemoveCandidate, addTaskDate, clonedParentEvent, statuses} = useAppSelector(state => state.calendar)
-	
-	useEffect(() => {
-		console.log(clonedParentEvent)
-	}, [clonedParentEvent])
 	
 	const [selectedTask, setSelectedTask] = useState<SelectedTaskType>(null)
 	const dispatch = useAppDispatch()
@@ -77,6 +74,14 @@ export const useCalendar: UseCalendarType = () => {
 		return null
 	}, [addTaskDate])
 	
+	const onAddCalendar: UseCalendarReturned['onAddCalendar'] = useCallback((calendarId) => {
+		const defaultPath = `/calendar/${current.layout}/${statuses}/calendar`
+		navigate(calendarId
+			? `${defaultPath}/${calendarId}`
+			: defaultPath
+		)
+	}, [statuses, current.layout])
+	
 	const onSelectToRemoveCalendar = useCallback((item: CalendarNameItem | null) => {
 		dispatch(changeCalendarRemoveCandidate(item))
 	}, [calendarRemoveCandidate, current.layout])
@@ -92,7 +97,7 @@ export const useCalendar: UseCalendarType = () => {
 	const onAddTask: OnAddTaskFnType = useCallback((date, initialValues) => {
 		navigate(`/calendar/${current.layout}/${statuses}/add`)
 		updateAddTaskState(date, initialValues || null)
-	}, [updateAddTaskState, current.layout, statuses])
+	}, [current.layout, statuses])
 	
 	const onChangeCurrent = useCallback((date: Date, l: CalendarMode['layout']) => {
 		navigate(`/calendar/${l}/${statuses}`, {replace: true})
@@ -112,16 +117,14 @@ export const useCalendar: UseCalendarType = () => {
 	const onCloneEvent = useCallback((event: FullResponseEventModel) => {
 		const date = dayjs(event.time)
 		if (date.isValid()) {
-			onCloseTaskInfo()
 			onAddTask(dayjs(event.time).toDate(), event)
 		} else {
 			toast('Не удалось клонировать событие', {type: 'warning'})
 		}
 		
-	}, [])
+	}, [statuses, current.layout])
 	
 	const onSuccessClonedEvent: UseCalendarReturned['onSuccessClonedEvent'] = useCallback((date, taskStatus, taskId) => {
-		console.log('task status:', taskStatus)
 		dispatch(changeTaskStatuses(taskStatus))
 		dispatch(changeCalendarCurrent({layout: current.layout, date: date.toString()}))
 		onCloseAddTaskModal(taskStatus, taskId)
@@ -143,6 +146,7 @@ export const useCalendar: UseCalendarType = () => {
 		calendarRemoveCandidate,
 		onCloneEvent,
 		clonedEventInfo: clonedParentEvent,
-		onSuccessClonedEvent: onSuccessClonedEvent
+		onSuccessClonedEvent: onSuccessClonedEvent,
+		onAddCalendar
 	}
 }

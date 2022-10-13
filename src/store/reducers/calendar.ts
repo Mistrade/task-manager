@@ -44,7 +44,7 @@ const initialState: CalendarState = {
 	statuses: 'in_work',
 	addTaskDate: null,
 	calendarRemoveCandidate: null,
-	clonedParentEvent: null
+	clonedParentEvent: null,
 }
 
 const CalendarSlice = createSlice({

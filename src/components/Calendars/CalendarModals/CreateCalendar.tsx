@@ -7,25 +7,54 @@ import {useFormik} from "formik";
 import * as yup from 'yup'
 import {ColorScheme} from "../ColorScheme/ColorScheme";
 import {TextInput} from "../../Input/TextInput/TextInput";
-import {ServerResponse, useCreateCalendarMutation, useGetCalendarsQuery} from "../../../store/api/taskApi/taskApi";
+import {
+	ServerResponse,
+	useCreateCalendarMutation,
+	useGetCalendarsQuery,
+	useUpdateCalendarInfoMutation
+} from "../../../store/api/taskApi/taskApi";
 import {CalendarNameListItem} from "../CalendarList/CalendarNameListItem";
 import {Tooltip} from "../../Tooltip/Tooltip";
 import {Button, WhiteButton} from "../../Buttons/Buttons.styled";
 import {InputErrorMessage} from "../../Input/InputSupportComponents/InputErrorMessage";
 import {toast} from "react-toastify";
 
-interface CreateCalendarModalProps {
+export interface ChangeCalendarModalDefaultProps {
 	onClose?: () => void
 }
 
+export interface ChangeCalendarModalProps extends ChangeCalendarModalDefaultProps {
+	initialValues?: CreateCalendarFormData,
+	isEditing?: boolean,
+}
+
 export interface CreateCalendarFormData {
+	id: string
 	color: string,
 	title: string,
 }
 
 const validationSchema = yup.object().shape({
 	color: yup.string()
-		.oneOf(colorPalette, 'Выберите цвет из предложенных')
+		.test((value, helpers) => {
+			if (!value) {
+				return helpers.createError({
+					message: 'Цвет обязателен'
+				})
+			}
+			
+			const hasColor = colorPalette.find((item) => {
+				return item.toLowerCase() === value.toLowerCase()
+			})
+			
+			if (!hasColor) {
+				return helpers.createError({
+					message: 'Выберите цвет из предложенных'
+				})
+			}
+			
+			return true
+		})
 		.required('Выберите цвет календаря'),
 	title: yup.string()
 		.min(5, 'Минимальная длина - 5 символов')
@@ -34,9 +63,10 @@ const validationSchema = yup.object().shape({
 	
 })
 
-export const CreateCalendarModal: FC<CreateCalendarModalProps> = ({onClose}) => {
+export const ChangeCalendarModal: FC<ChangeCalendarModalProps> = ({onClose, isEditing, initialValues}) => {
 	const {currentData} = useGetCalendarsQuery({})
 	const [create] = useCreateCalendarMutation()
+	const [update] = useUpdateCalendarInfoMutation()
 	
 	const {
 		setFieldValue,
@@ -45,34 +75,31 @@ export const CreateCalendarModal: FC<CreateCalendarModalProps> = ({onClose}) => 
 		touched,
 		setFieldTouched,
 		handleSubmit,
-		setFieldError
+		setFieldError,
+		setValues
 	} = useFormik<CreateCalendarFormData>({
 		validationSchema,
-		initialValues: {
+		initialValues: initialValues || {
+			id: '',
 			color: currentColor,
 			title: 'Мой новый календарь'
 		},
 		async onSubmit(values, {setFieldError}) {
-			if (currentData?.data && currentData.data.length > 0) {
-				const notOneOf: Array<CreateCalendarFormData> = currentData.data.map((item) => ({
-					color: item.color,
-					title: item.title
-				}))
-				
-				const hasTitle = notOneOf.some((item) => item.title.toLowerCase().trim() === values.title.toLowerCase().trim())
-				
-				if (hasTitle) {
-					return setFieldError('title', 'Такое название уже используется')
-				}
-				
-				const hasColor = notOneOf.some((item) => item.color.trim().toLowerCase() === values.color.toLowerCase().trim())
-				
-				if (hasColor) {
-					return setFieldError('color', 'Выбранный цвет уже используется')
-				}
+			if (!isEditing) {
+				return await create(values)
+					.unwrap()
+					.then((r: ServerResponse) => {
+						if (r.info) {
+							toast(r.info.message, {type: r.info.type})
+						}
+						return onClose && onClose()
+					})
+					.catch((e: ServerResponse) => {
+						return e.info ? toast(e.info.message, {type: e.info.type}) : null
+					})
 			}
 			
-			await create(values)
+			return await update(values)
 				.unwrap()
 				.then((r: ServerResponse) => {
 					if (r.info) {
@@ -84,28 +111,41 @@ export const CreateCalendarModal: FC<CreateCalendarModalProps> = ({onClose}) => 
 					return e.info ? toast(e.info.message, {type: e.info.type}) : null
 				})
 			
-			
 		}
 	})
 	
+	useEffect(() => {
+		if (isEditing && initialValues) {
+			setValues(initialValues, true)
+		}
+	}, [isEditing, initialValues])
+	
+	useEffect(() => {
+		console.log(errors, values)
+	}, [errors])
+	
 	const list: Array<CreateCalendarFormData> = useMemo(() => {
 		const item = {
+			id: '',
 			title: `new - ${values.title}`,
 			color: values.color
 		}
 		
 		if (currentData?.data) {
 			const a: Array<CreateCalendarFormData> = currentData.data.map((item) => ({
+				id: item._id,
 				color: item.color,
 				title: item.title
 			}))
 			
-			a.unshift(item)
+			if (!isEditing) {
+				a.unshift(item)
+			}
 			return a
 		}
 		
 		return [item]
-	}, [currentData?.data, values])
+	}, [currentData?.data, values, isEditing])
 	
 	return (
 		<form onSubmit={handleSubmit}>

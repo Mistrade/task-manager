@@ -63,12 +63,12 @@ export const DayTaskList: FC<DayTaskListProps> = ({
 		}
 	}, [debounceValue])
 	
-	const {data, isLoading, isError, isSuccess, isFetching} = useGetTasksAtDayQuery({
+	const {data, isLoading, isError, isSuccess, isFetching, refetch: refetchTaskList} = useGetTasksAtDayQuery({
 		...queryArgs,
 		taskStatus: debounceValue.taskStatus
 	}, {refetchOnMountOrArgChange: true})
 	
-	const {data: SwitcherBadges} = useGetTaskCountOfStatusQuery(queryArgs)
+	const {data: SwitcherBadges, refetch: refetchTaskCount} = useGetTaskCountOfStatusQuery(queryArgs)
 	
 	const [removeTask, {isSuccess: isRemoveSuccess, isError: isRemoveError}] = useRemoveTaskMutation()
 	
@@ -79,6 +79,10 @@ export const DayTaskList: FC<DayTaskListProps> = ({
 	const clearFiltersHandle = useCallback(() => {
 		setFiltersState(initialFiltersValues(current.date, filters.taskStatus))
 	}, [current.date, filters.taskStatus])
+	
+	const memoRefetchTaskCount = useCallback(async () => {
+		await refetchTaskCount()
+	}, [])
 	
 	
 	return (
@@ -100,38 +104,30 @@ export const DayTaskList: FC<DayTaskListProps> = ({
 				pl={8}
 				mr={-8}
 				pr={8}>
-				<Loader
-					title={'Обновляем список событий...'}
-					isActive={isLoading || isFetching}
-				>
-					{isSuccess ? (
-						<>
-							{!!data?.length ? (
-								<FlexBlock direction={'column'} width={'100%'} height={'max-content'} pt={4}>
-									{data.map((task, index) => (
-										<DayTaskItem
-											key={task.time.toString() + index}
-											taskInfo={task}
-											day={day}
-											tabIndex={index + 1}
-											onSelectTask={onSelectTask}
-											onDelete={async (id) => await removeTask({id}).unwrap()}
-										/>))
-									}
-								</FlexBlock>
-							) : (
-								<NotFoundTask
-									onAddTask={onAddTask}
-									day={day}
-									text={<>Событий по указанным фильтрам<br/>не найдено!</>}
-									actions={<Button onClick={clearFiltersHandle}>Очистить фильтры</Button>}
-								/>
-							)}
-						</>
-					) : <></>}
-				</Loader>
+				
+				{!!data?.length ? (
+					<FlexBlock direction={'column'} width={'100%'} height={'max-content'} pt={4}>
+						{data.map((task, index) => (
+							<DayTaskItem
+								key={task.time.toString() + index}
+								taskInfo={task}
+								day={day}
+								tabIndex={index + 1}
+								onSelectTask={onSelectTask}
+								onDelete={async (id) => await removeTask({id}).unwrap()}
+								refetchTaskList={memoRefetchTaskCount}
+							/>
+						))}
+					</FlexBlock>
+				) : (
+					<NotFoundTask
+						onAddTask={onAddTask}
+						day={day}
+						text={<>Событий по указанным фильтрам<br/>не найдено!</>}
+						actions={<Button onClick={clearFiltersHandle}>Очистить фильтры</Button>}
+					/>
+				)}
 			</FlexBlock>
-		
 		</TaskListMainContainer>
 	)
 }

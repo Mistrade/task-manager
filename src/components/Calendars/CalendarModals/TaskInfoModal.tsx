@@ -1,4 +1,4 @@
-import React, {FC, RefObject, useCallback, useEffect} from 'react'
+import React, {FC, RefObject, useCallback, useEffect, useMemo} from 'react'
 import {TaskInfoModalProps} from '../types'
 import {Modal, ModalBody, ModalFooter, ModalHeader} from '../../Modal/Modal'
 import {FlexBlock} from '../../LayoutComponents/FlexBlock'
@@ -13,13 +13,12 @@ import {DropDown} from "../../Dropdown/DropDown";
 import {EmptyButtonStyled} from '../../Buttons/EmptyButton.styled'
 import {SelectListContainer} from "../../Input/SelectInput/SelectListContainer";
 import {SelectItemContainer} from '../../Input/SelectInput/SelectItemContainer'
-import {ObjectId} from "../../../store/api/taskApi/types";
 
 const Informer = React.lazy(() => import('./../TaskInformer/TaskInformer').then(({TaskInformer}) => ({default: TaskInformer})))
 
 export const TaskInfoModal: FC<TaskInfoModalProps> = ({onClose, onCloneEvent, onOpenClonedEvent}) => {
 	const {taskId} = useParams<{ taskId: string }>()
-	const [getTaskInfo, {currentData: taskInfo, isFetching: isLoading}] = useLazyGetTaskInfoQuery()
+	const [getTaskInfo, {data: taskInfo, isLoading}] = useLazyGetTaskInfoQuery()
 	
 	useEffect(() => {
 		taskId && getTaskInfo(taskId)
@@ -89,20 +88,6 @@ export const TaskInfoModal: FC<TaskInfoModalProps> = ({onClose, onCloneEvent, on
 					</Loader>
 				</ErrorBoundary>
 			</ModalBody>
-			<ModalFooter>
-				<FlexBlock justify={'end'} align={'center'} width={'100%'}>
-					<StyledButton>
-						Ок
-					</StyledButton>
-					<StyledButton
-						onClick={() => onClose()}
-						fillColor={'#fff'}
-						textColor={defaultColor}
-					>
-						Закрыть
-					</StyledButton>
-				</FlexBlock>
-			</ModalFooter>
 		</Modal>
 	)
 	

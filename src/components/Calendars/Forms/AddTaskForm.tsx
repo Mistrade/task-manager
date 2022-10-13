@@ -112,7 +112,7 @@ export const AddTaskForm: FC<AddTaskFormProps> = ({date, onComplete, onCancel, i
 	return (
 		<form onSubmit={formik.handleSubmit} style={{width: '100%'}}>
 			<FlexBlock direction={'column'} p={'12px 20px 0px 20px'}>
-				<FlexBlock mb={12} gap={12}>
+				<FlexBlock mb={12} gap={12} width={'100%'}>
 					<TextInput
 						inputId={'task__title'}
 						tooltip={
@@ -129,7 +129,6 @@ export const AddTaskForm: FC<AddTaskFormProps> = ({date, onComplete, onCancel, i
 						label={'Укажите название'}
 						placeholder={'Позвонить заказчику'}
 					/>
-					<div style={{width: '100%'}}/>
 				</FlexBlock>
 				<FlexBlock mb={12} wrap={'nowrap'} width={'100%'}>
 					<SelectLinks

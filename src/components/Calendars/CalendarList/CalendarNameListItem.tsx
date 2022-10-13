@@ -1,11 +1,12 @@
 import {FlexBlock} from "../../LayoutComponents/FlexBlock"
 import {CalendarNameCheckbox} from "./CalendarList.styled"
 import {FC, useCallback, useState} from "react";
-import {LoaderIcon, TrashIcon} from "../../Icons/Icons";
+import {LoaderIcon, PencilIcon, TrashIcon} from "../../Icons/Icons";
 import {defaultColor} from "../../../common/constants";
 import {EmptyButtonStyled} from "../../Buttons/EmptyButton.styled";
 import styled from "styled-components";
 import {useChangeSelectCalendarMutation} from "../../../store/api/taskApi/taskApi";
+import {UseCalendarReturned} from "../../../hooks/useCalendar";
 
 export interface CalendarNameItem {
 	_id: string,
@@ -22,7 +23,8 @@ interface CalendarNameListItemProps {
 	isChecked: boolean,
 	isDisabled?: boolean,
 	onDelete?: (item: CalendarNameItem) => void,
-	onSuccessChangeSelect?: () => Promise<void>
+	onSuccessChangeSelect?: () => Promise<void>,
+	onEdit?: UseCalendarReturned['onAddCalendar'],
 }
 
 const Label = styled('label')`
@@ -42,14 +44,14 @@ export const CalendarNameListItem: FC<CalendarNameListItemProps> = ({
 																																			item,
 																																			isDisabled,
 																																			onDelete,
-																																			onSuccessChangeSelect
+																																			onSuccessChangeSelect,
+																																			onEdit
 																																		}) => {
 	const [isHover, setIsHover] = useState(false)
 	const [isLoading, setIsLoading] = useState<boolean>(false)
 	const [changeSelect] = useChangeSelectCalendarMutation()
 	
 	const changeHandler = async (isChecked: boolean) => {
-		console.log(isChecked)
 		setIsLoading(true)
 		await changeSelect({
 			id: item._id,
@@ -86,11 +88,18 @@ export const CalendarNameListItem: FC<CalendarNameListItemProps> = ({
 					)}
 					<Label htmlFor={item._id}>{item.title}</Label>
 				</FlexBlock>
-				{isHover && item.deletable && onDelete && (
+				{isHover && (
 					<FlexBlock shrink={0} grow={0}>
-						<EmptyButtonStyled style={{padding: 2}} onClick={() => onDelete(item)}>
-							<TrashIcon size={14} color={defaultColor}/>
-						</EmptyButtonStyled>
+						{item.editable && onEdit && (
+							<EmptyButtonStyled style={{padding: 2}} onClick={() => onEdit(item._id)}>
+								<PencilIcon size={14} color={defaultColor}/>
+							</EmptyButtonStyled>
+						)}
+						{item.deletable && onDelete && (
+							<EmptyButtonStyled style={{padding: 2}} onClick={() => onDelete(item)}>
+								<TrashIcon size={14} color={defaultColor}/>
+							</EmptyButtonStyled>
+						)}
 					</FlexBlock>
 				)}
 			</FlexBlock>

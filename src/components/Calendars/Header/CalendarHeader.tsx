@@ -67,7 +67,7 @@ export const CalendarHeader: FC<CalendarHeaderProps> = ({
 									Добавить событие
 								</SelectItemContainer>
 								<SelectItemContainer
-									onClick={() => navigate(`/calendar/${current.layout}/${statuses}/createCalendar`)}
+									onClick={() => navigate(`/calendar/${current.layout}/${statuses}/calendar`)}
 								>
 									Создать новый календарь
 								</SelectItemContainer>

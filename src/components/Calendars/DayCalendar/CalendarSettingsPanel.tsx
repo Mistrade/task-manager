@@ -82,7 +82,6 @@ export const CalendarSettingsPanel: FC<DaySettingsPanelProps> = ({
 					pourDates={pour}
 					includesTasks={taskScheme}
 					monthItem={monthItem}
-					useTooltips={true}
 					title={
 						<SmallCalendarMonthTitle
 							monthItem={monthItem}

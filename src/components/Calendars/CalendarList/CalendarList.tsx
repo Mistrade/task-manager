@@ -1,17 +1,12 @@
 import {CalendarListStyled} from "./CalendarList.styled";
 import {CalendarNameListItem} from "./CalendarNameListItem";
 import {useEffect} from "react";
-import {useLazyGetCalendarsQuery} from "../../../store/api/taskApi/taskApi";
+import {useGetCalendarsQuery} from "../../../store/api/taskApi/taskApi";
 import {useCalendar} from "../../../hooks/useCalendar";
 
 export const CalendarList = () => {
-	const [getCalendars, {currentData, isFetching}] = useLazyGetCalendarsQuery({})
-	const {onSelectToRemoveCalendar} = useCalendar()
-	
-	useEffect(() => {
-		getCalendars({})
-	}, [])
-	
+	const {currentData, isFetching, refetch} = useGetCalendarsQuery({})
+	const {onSelectToRemoveCalendar, onAddCalendar} = useCalendar()
 	
 	return (
 		<CalendarListStyled>
@@ -22,9 +17,7 @@ export const CalendarList = () => {
 						key={item._id}
 						onDelete={onSelectToRemoveCalendar}
 						isChecked={item.isSelected}
-						onSuccessChangeSelect={async () => {
-							await getCalendars({}).unwrap()
-						}}
+						onEdit={onAddCalendar}
 					/>
 				)
 			})}

@@ -24,9 +24,10 @@ import {CalendarSettingsPanel} from "./DayCalendar/CalendarSettingsPanel";
 import dayjs from "dayjs";
 import {getMonthDays} from "../../common/calendarSupport/getters";
 import {WeekDays} from "./WeekDays/WeekDays";
-import {CreateCalendarModal} from "./CalendarModals/CreateCalendar";
+import {ChangeCalendarModal} from "./CalendarModals/CreateCalendar";
 import {RemoveCalendarHock, RemoveCalendarModal} from "./CalendarModals/RemoveCalendarModal";
 import {css} from "styled-components";
+import {ChangeCalendarHock} from "./CalendarList/ChangeCalendarHock";
 
 const DayCalendar = React.lazy(() => import('./DayCalendar/DayCalendar').then(({DayCalendar}) => ({default: DayCalendar})))
 const WeekCalendar = React.lazy(() => import('./WeekCalendar/WeekCalendarController').then(({WeekCalendarController}) => ({default: WeekCalendarController})))
@@ -202,9 +203,9 @@ export const Calendar: FC<CalendarProps> = ({
 					/>
 					<Routes>
 						<Route
-							path={'createCalendar'}
+							path={'calendar/:calendarId'}
 							element={
-								<CreateCalendarModal
+								<ChangeCalendarHock
 									onClose={calendar.onCloseAddCalendarModal}
 								/>
 							}

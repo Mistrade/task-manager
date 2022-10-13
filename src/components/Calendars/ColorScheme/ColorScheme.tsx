@@ -30,7 +30,7 @@ export const ColorScheme: FC<ColorSchemeProps> = ({gap = 6, size = 30, onSelect,
 		<Grid gap={gap} borderColor={isError ? errorColor : disabledColor}>
 			{colorPalette.map((color) => (
 				<EmptyButtonStyled style={{padding: 4}} onClick={() => onSelect && onSelect(color)}>
-					{color === selectedValue && (
+					{color.toLowerCase() === selectedValue.toLowerCase() && (
 						<SelectIcon
 							position={'absolute'}
 							width={'100%'}

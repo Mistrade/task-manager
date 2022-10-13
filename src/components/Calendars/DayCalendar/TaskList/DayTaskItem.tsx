@@ -17,7 +17,8 @@ interface DayTaskItemProps {
 	tabIndex: number
 	onSelectTask?: OnSelectTaskFnType,
 	day: Date,
-	onDelete?: (id: string) => void
+	onDelete?: (id: string) => void,
+	refetchTaskList?: () => void
 }
 
 const TileMixin = css`
@@ -36,7 +37,14 @@ const TileMixin = css`
   }
 `
 
-export const DayTaskItem: FC<DayTaskItemProps> = ({taskInfo, tabIndex, onSelectTask, day, onDelete}) => {
+export const DayTaskItem: FC<DayTaskItemProps> = ({
+																										taskInfo,
+																										tabIndex,
+																										onSelectTask,
+																										day,
+																										onDelete,
+																										refetchTaskList
+																									}) => {
 	const start = dayjs(taskInfo.time).format('DD-MM HH:mm')
 	const end = dayjs(taskInfo.timeEnd).format('DD-MM HH:mm')
 	const [updateTask] = useUpdateTaskMutation()
@@ -135,19 +143,33 @@ export const DayTaskItem: FC<DayTaskItemProps> = ({taskInfo, tabIndex, onSelectT
 						</FlexBlock>
 					)}
 					{taskInfo.id && (
-						<FlexBlock>
-							<JoinToEventButton
-								onClick={async (e) => {
-									e.stopPropagation()
-									if (taskInfo.status === 'archive') {
-										return await updateTask({field: 'status', data: 'created', id: taskInfo.id})
-									}
-									onDelete && onDelete(taskInfo.id)
-								}}
-							>
-								{taskInfo.status === 'archive' ? 'Восстановить' : 'Удалить'}
-							</JoinToEventButton>
-						</FlexBlock>
+						<>
+							{taskInfo.status === 'archive' && (
+								<FlexBlock>
+									<JoinToEventButton
+										onClick={async (e) => {
+											e.stopPropagation()
+											await updateTask({field: 'status', data: 'created', id: taskInfo.id})
+											if (refetchTaskList) {
+												await refetchTaskList()
+											}
+										}}
+									>
+										Восстановить
+									</JoinToEventButton>
+								</FlexBlock>
+							)}
+							<FlexBlock>
+								<JoinToEventButton
+									onClick={async (e) => {
+										e.stopPropagation()
+										onDelete && onDelete(taskInfo.id)
+									}}
+								>
+									Удалить
+								</JoinToEventButton>
+							</FlexBlock>
+						</>
 					)}
 				</FlexBlock>
 			</FlexBlock>
