@@ -67,6 +67,7 @@ export const TextInput = forwardRef<HTMLInputElement, TextInputProps>(({
 						hasIcon={!!icon}
 						id={inputId}
 						ref={ref}
+						isError={isDirty && !!errorMessage}
 						iconPlacement={iconPlacement}
 						placeholder={placeholder}
 						value={value}

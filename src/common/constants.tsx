@@ -10,11 +10,12 @@ import {
 	YearItem
 } from '../components/Calendars/types'
 import dayjs from 'dayjs'
-import {CompleteIcon, CreatedIcon, ProcessIcon, WaitIcon} from '../components/Icons/Icons'
+import {CompleteIcon, CreatedIcon, ProcessIcon, TrashIcon, WaitIcon} from '../components/Icons/Icons'
 import {ErrorImagesType, InitialCurrentCalendarModeType} from "./types";
 import {SystemErrorImg} from "../components/Icons/Errors/SystemError";
 import {ErrorBadRequestImg} from "../components/Icons/Errors/ErrorBadRequest";
 import {ErrorForbiddenImg} from "../components/Icons/Errors/ErrorForbidden";
+import {FilterTaskStatuses} from "../components/Calendars/DayCalendar/EventFilter";
 
 export const MonthList = [
 	'Январь', 'Февраль', 'Март', 'Апрель', 'Май', 'Июнь', 'Июль', 'Август', 'Сентябрь', 'Октябрь', 'Ноябрь', 'Декабрь'
@@ -41,8 +42,12 @@ export const darkColor = 'rgba(0, 0, 0, .6)'
 export const todayID = 'calendar-today'
 export const pageHeaderColor = '#f6f8fa'
 export const orangeColor = 'rgba(255,117,66, 1)'
-export const lightHoverColor ='rgba(220, 220, 220, .4)'
+export const lightHoverColor = 'rgba(220, 220, 220, .4)'
+export const errorColor = '#FF6666'
 export const completeColor = '#c6fcda'
+
+export const colorRegExpDefault = /#[a-fA-F0-9]{3,6}$/gi
+export const colorRegExpRGBA = /rgba?\(((25[0-5]|2[0-4]\d|1\d{1,2}|\d\d?)\s*,\s*?){2}(25[0-5]|2[0-4]\d|1\d{1,2}|\d\d?)\s*,?\s*([01]\.?\d*?)?\)/gi
 
 export const priorityColors: { [key in CalendarPriorityKeys]: string } = {
 	veryLow: defaultColor,
@@ -68,6 +73,16 @@ export const PRIORITY_LIST: CalendarPriorityList = [
 	{type: 'veryLow', title: PRIORITY_TITLES.veryLow}
 ]
 
+type TaskStatusesObjectProps = {
+	[key in FilterTaskStatuses]: Array<TaskStatusesType>
+}
+export const TaskStatusesObject: TaskStatusesObjectProps = {
+	created: ['created'],
+	in_work: ['in_progress', 'review'],
+	completed: ['completed'],
+	archive: ['archive']
+}
+
 export const TASK_STATUSES: { [key in TaskStatusesType]: TaskStatusInfo } = {
 	created: {
 		value: false,
@@ -92,6 +107,12 @@ export const TASK_STATUSES: { [key in TaskStatusesType]: TaskStatusInfo } = {
 		key: 'completed',
 		title: 'Выполнено',
 		icon: <CompleteIcon size={16}/>
+	},
+	archive: {
+		value: false,
+		key: 'archive',
+		title: 'Перенести в архив',
+		icon: <TrashIcon size={16} color={currentColor}/>
 	}
 }
 
@@ -190,4 +211,32 @@ export const initialCurrentMap: InitialCurrentCalendarModeType = {
 		year: currentDate.getFullYear()
 	}
 }
+
+export const colorPalette = [
+	'rgba(100,149,237,.9)',
+	'#FF6666',
+	'#996666',
+	'#FFA4A4',
+	'#D46600',
+	'#9999CC',
+	'#0099FF',
+	'#996699',
+	'#660099',
+	'#CC6699',
+	'#FFCCFF',
+	'#006699',
+	'#66CCCC',
+	'#336666',
+	'#00CCCC',
+	'#009999',
+	'#00CC99',
+	'#66FF66',
+	'#CCFF99',
+	'#99CC00',
+	'#CCCC99',
+	'#CCCC33',
+	'#999966',
+	'#999999'
+
+]
 

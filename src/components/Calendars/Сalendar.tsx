@@ -24,14 +24,19 @@ import {CalendarSettingsPanel} from "./DayCalendar/CalendarSettingsPanel";
 import dayjs from "dayjs";
 import {getMonthDays} from "../../common/calendarSupport/getters";
 import {WeekDays} from "./WeekDays/WeekDays";
+import {ChangeCalendarModal} from "./CalendarModals/CreateCalendar";
+import {RemoveCalendarHock, RemoveCalendarModal} from "./CalendarModals/RemoveCalendarModal";
+import {css} from "styled-components";
+import {ChangeCalendarHock} from "./CalendarList/ChangeCalendarHock";
 
 const DayCalendar = React.lazy(() => import('./DayCalendar/DayCalendar').then(({DayCalendar}) => ({default: DayCalendar})))
-const WeekCalendar = React.lazy(() => import('./WeekCalendar/WeekCalendar').then(({WeeKCalendar}) => ({default: WeeKCalendar})))
+const WeekCalendar = React.lazy(() => import('./WeekCalendar/WeekCalendarController').then(({WeekCalendarController}) => ({default: WeekCalendarController})))
 const MonthCalendar = React.lazy(() => import('./MonthCalendar/MonthCalendar').then(({MonthCalendar}) => ({default: MonthCalendar})))
 const YearCalendar = React.lazy(() => import('./YearCalendar/YearCalendar').then(({YearCalendar}) => ({default: YearCalendar})))
 
 export const Calendar: FC<CalendarProps> = ({
 																							layout,
+																							taskStatus,
 																							disabledOptions,
 																							renderWeekPattern = 'full',
 																						}) => {
@@ -112,20 +117,20 @@ export const Calendar: FC<CalendarProps> = ({
 						shrink={0}
 						maxWidth={300}
 						bgColor={pageHeaderColor}
-						pr={24}
+						pr={12}
 						pl={24}
 						pt={24}
 						flex={'1 0 20%'}
 						borderRight={`1px solid ${disabledColor}`}
 					>
 						<CalendarSettingsPanel
+							onChangeCurrent={calendar.onChangeCurrent}
 							monthItem={checkMonthItemSettingsPanel(calendar.current)}
 							current={calendar.current}
-							onAddTask={calendar.onAddTask}
 							onSelectDate={(data) => calendar.onChangeCurrent(data.value, 'day')}
 						/>
 					</FlexBlock>
-					<FlexBlock flex={'1 0 80%'} pr={24} height={'100%'}>
+					<FlexBlock flex={'1 0 80%'} pr={24} height={'100%'} additionalCss={css`z-index: 0`}>
 						{layout === 'year' ? (
 							<Interceptor
 								shouldRenderChildren={yearItem.year > 0 && yearItem.months.length > 0}
@@ -141,48 +146,36 @@ export const Calendar: FC<CalendarProps> = ({
 							<Interceptor
 								shouldRenderChildren={monthItem.monthOfYear >= 0 && monthItem.weeks.length > 0}
 							>
-								<FlexBlock width={'100%'} height={'100%'} direction={'column'}>
-									<FlexBlock width={'100%'} mb={6} pt={6}>
-										<WeekDays list={WeekDaysList} gap={8}/>
-									</FlexBlock>
-									<FlexBlock
-										height={'calc(100vh)'}
-										overflowY={'scroll'}
-									>
-										<React.Suspense
-											fallback={
-												<Loader title={'Загружаем ваш календарь, секундочку...'} isActive={true}/>
-											}
-										>
-											<MonthCalendar
-												onChangeCurrent={calendar.onChangeCurrent}
-												renderWeekPattern={renderWeekPattern}
-												renderTaskCount={5}
-												current={calendar.current}
-												monthItem={monthItem}
-												onAddTask={calendar.onAddTask}
-												onSelectTask={calendar.onSelectTask}
-											/>
-										</React.Suspense>
-									</FlexBlock>
-								</FlexBlock>
+								<React.Suspense
+									fallback={
+										<Loader title={'Загружаем ваш календарь, секундочку...'} isActive={true}/>
+									}
+								>
+									<MonthCalendar
+										onChangeCurrent={calendar.onChangeCurrent}
+										renderWeekPattern={renderWeekPattern}
+										renderTaskCount={5}
+										current={calendar.current}
+										monthItem={monthItem}
+										onAddTask={calendar.onAddTask}
+										onSelectTask={calendar.onSelectTask}
+									/>
+								</React.Suspense>
 							</Interceptor>
 						) : layout === 'week' ? (
 							<Interceptor
 								shouldRenderChildren={weekItem.weekOfYear > 0 && weekItem.days.length > 0}
 							>
-								<FlexBlock pt={24} width={'100%'} height={'100%'}>
-									<React.Suspense fallback={<Loader title={'Загружаем ваш календарь, секундочку...'} isActive={true}/>}>
-										<WeekCalendar
-											onChangeCurrent={calendar.onChangeCurrent}
-											current={calendar.current}
-											weekItem={weekItem}
-											renderTaskCount={'all'}
-											onAddTask={calendar.onAddTask}
-											onSelectTask={calendar.onSelectTask}
-										/>
-									</React.Suspense>
-								</FlexBlock>
+								<React.Suspense fallback={<Loader title={'Загружаем ваш календарь, секундочку...'} isActive={true}/>}>
+									<WeekCalendar
+										onChangeCurrent={calendar.onChangeCurrent}
+										current={calendar.current}
+										weekItem={weekItem}
+										renderTaskCount={'all'}
+										onAddTask={calendar.onAddTask}
+										onSelectTask={calendar.onSelectTask}
+									/>
+								</React.Suspense>
 							</Interceptor>
 						) : layout === 'day' ? (
 							<Interceptor
@@ -204,13 +197,32 @@ export const Calendar: FC<CalendarProps> = ({
 					description={ERROR_TITLES['SUSPENSE']}
 					errorType={'SYSTEM_ERROR'}
 				>
+					<RemoveCalendarHock
+						calendarItem={calendar.calendarRemoveCandidate}
+						onClose={() => calendar.onSelectToRemoveCalendar(null)}
+						onSuccess={() => calendar.onSelectToRemoveCalendar(null)}
+					/>
 					<Routes>
+						<Route
+							path={'calendar'}
+						>
+							<Route
+								index
+								element={<ChangeCalendarModal onClose={calendar.onCloseAddCalendarModal}/>}
+							/>
+							<Route
+								path={':calendarId'}
+								element={<ChangeCalendarHock onClose={calendar.onCloseAddCalendarModal}/>}
+							/>
+						</Route>
 						<Route
 							path={'add'}
 							element={
 								<AddTaskModal
 									date={calendar.addTaskDate}
 									onClose={calendar.onCloseAddTaskModal}
+									clonedEventInfo={calendar.clonedEventInfo}
+									onSuccessClonedEvent={calendar.onSuccessClonedEvent}
 								/>
 							}
 						/>
@@ -218,7 +230,9 @@ export const Calendar: FC<CalendarProps> = ({
 							path={':taskId'}
 							element={
 								<TaskInfoModal
-									onClose={() => calendar.onCloseTaskInfo()}
+									onClose={calendar.onCloseTaskInfo}
+									onCloneEvent={calendar.onCloneEvent}
+									onOpenClonedEvent={calendar.onSelectTask}
 								/>
 							}
 						/>

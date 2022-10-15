@@ -1,5 +1,6 @@
 import styled from "styled-components";
 import {defaultColor, lightHoverColor} from "../../../common/constants";
+import {pxToCssValue} from "../../LayoutComponents/FlexBlock";
 
 export const CalendarListStyled = styled('ul')`
   margin: 0;
@@ -15,7 +16,7 @@ export const CalendarListStyled = styled('ul')`
   & li {
     width: 100%;
 		background-color: transparent;
-		padding: 4px 8px;
+		padding: 4px;
 		border-radius: 4px;
     transition: all .3s ease-in;
   }
@@ -42,12 +43,12 @@ export const CalendarNameCheckbox = styled('input')<{ color: string }>`
   & + label::before {
     content: '';
     display: inline-block;
-    width: 1em;
-    height: 1em;
+    width: 16px;
+    height: 16px;
     flex-shrink: 0;
     flex-grow: 0;
     border: 1px solid #adb5bd;
-    border-radius: 0.25em;
+    border-radius: 4px;
     background-repeat: no-repeat;
     background-position: center center;
     background-size: 50% 50%;
@@ -90,9 +91,11 @@ export const CalendarNameCheckbox = styled('input')<{ color: string }>`
   }
 `
 
-export const CalendarIdentifier = styled('div')<{color: string}>`
-	width: 20px;
-	height: 20px;
+export const CalendarIdentifier = styled('div')<{color: string, size?: number}>`
+	flex-grow: 0;
+	flex-shrink: 0;
+	width: ${_ => _.size ? pxToCssValue(_.size) : '20px'};
+	height: ${_ => _.size ? pxToCssValue(_.size) : '20px'};
 	border-radius: 4px;
 	background-color: ${_ => _.color};
 `

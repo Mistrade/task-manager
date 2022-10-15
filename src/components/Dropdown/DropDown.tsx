@@ -4,7 +4,7 @@ import {useDebounce} from "../../hooks/useDebounce";
 import {StyledDropDownContainer} from "./DropDown.styled";
 import {DropDownAdditionalMethods, DropDownElementsSupport, DropDownProps} from "./types";
 
-export function DropDown<T extends DropDownElementsSupport = HTMLInputElement>({
+export function DropDown<T extends HTMLElement = HTMLElement>({
 																																								 renderElement,
 																																								 dropDownChildren,
 																																								 containerProps
@@ -39,6 +39,10 @@ export function DropDown<T extends DropDownElementsSupport = HTMLInputElement>({
 		}
 	})
 	
+	const onClickHandler = useCallback((e: React.MouseEvent) => {
+		setFocused(true)
+	}, [])
+	
 	
 	return (
 		<FlexBlock
@@ -50,7 +54,8 @@ export function DropDown<T extends DropDownElementsSupport = HTMLInputElement>({
 			{renderElement({
 				onElementBlur: focusHandler,
 				onElementFocused: focusHandler,
-				ref: elRef
+				ref: elRef,
+				onClick: onClickHandler
 			})}
 			{dFocus && (
 				<StyledDropDownContainer tabIndex={1} isOpen={dFocus}>

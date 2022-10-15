@@ -11,13 +11,19 @@ import {SmallMonth} from "../../SmallMotnCalendar/SmallMonth";
 import {SmallCalendarMonthTitle} from "../../SmallMotnCalendar/SmallCalendarMonthTitle";
 import dayjs from "dayjs";
 import {TaskCreatedMessage} from "../TaskCreatedMessage";
+import {EmptyButtonStyled} from "../../../Buttons/EmptyButton.styled";
 
 interface TaskInformerRightBarProps extends UsageTaskItemBaseProps {
 	monthItem: MonthItem,
-	updateFn: TaskInformerUpdateFn
+	updateFn: TaskInformerUpdateFn,
 }
 
-export const TaskInformerRightBar: FC<TaskInformerRightBarProps> = ({taskItem, monthItem, updateFn}) => {
+export const TaskInformerRightBar: FC<TaskInformerRightBarProps> = ({
+																																			taskItem,
+																																			monthItem,
+																																			updateFn,
+																																			openClonedTask
+																																		}) => {
 	return (
 		<FlexBlock
 			flex={'0 0 300px'}
@@ -29,9 +35,8 @@ export const TaskInformerRightBar: FC<TaskInformerRightBarProps> = ({taskItem, m
 			pl={8}
 		>
 			<FlexBlock direction={'column'} align={'flex-start'} justify={'flex-start'} gap={12}>
-				<TaskCreatedMessage taskItem={taskItem}/>
 				<FlexBlock>
-					<Heading.H2 style={{textAlign: 'left', fontSize: 16}}>Доп инфо:</Heading.H2>
+					<Heading.H2 style={{textAlign: 'left', fontSize: 16}}>Доп инфо</Heading.H2>
 				</FlexBlock>
 				<ToggleEventStatus value={taskItem.status} onChange={updateFn}/>
 				<ToggleEventPriority value={taskItem.priority} onChange={updateFn}/>
@@ -42,13 +47,30 @@ export const TaskInformerRightBar: FC<TaskInformerRightBarProps> = ({taskItem, m
 			</FlexBlock>
 			<SmallMonth
 				title={<SmallCalendarMonthTitle monthItem={monthItem}/>}
-				currentDate={dayjs(taskItem.time).toDate()}
+				value={dayjs(taskItem.time).toDate()}
+				current={{
+					layout: 'month',
+					month: monthItem.monthOfYear,
+					year: monthItem.year
+				}}
 				pourDates={{
 					type: 'week',
 					date: dayjs(taskItem.time).toDate()
 				}}
 				monthItem={monthItem}
 			/>
+			<TaskCreatedMessage taskItem={taskItem}/>
+			{taskItem.linkedFrom && (
+				<FlexBlock>
+					<EmptyButtonStyled
+						onClick={() => {
+							taskItem.linkedFrom && openClonedTask && openClonedTask(taskItem.linkedFrom)
+						}}
+					>
+						Смотреть исходное событие
+					</EmptyButtonStyled>
+				</FlexBlock>
+			)}
 		</FlexBlock>
 	)
 }

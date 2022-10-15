@@ -10,6 +10,9 @@ import {
 	WeekItem,
 	YearItem
 } from "../../components/Calendars/types";
+import {FullResponseEventModel, UtcDate} from "../api/taskApi/types";
+import {CalendarNameItem} from "../../components/Calendars/CalendarList/CalendarNameListItem";
+import {FilterTaskStatuses} from "../../components/Calendars/DayCalendar/EventFilter";
 
 export interface CalendarStateData {
 	day: DateItem,
@@ -30,10 +33,18 @@ export type CalendarModeForState =
 
 interface CalendarState {
 	current: CalendarModeForState,
+	statuses: FilterTaskStatuses,
+	addTaskDate: null | string,
+	calendarRemoveCandidate: null | CalendarNameItem,
+	clonedParentEvent: FullResponseEventModel | null,
 }
 
 const initialState: CalendarState = {
 	current: {layout: 'day', date: new Date().toString()},
+	statuses: 'in_work',
+	addTaskDate: null,
+	calendarRemoveCandidate: null,
+	clonedParentEvent: null,
 }
 
 const CalendarSlice = createSlice({
@@ -73,11 +84,27 @@ const CalendarSlice = createSlice({
 					}
 					break;
 			}
+		},
+		changeAddTaskDate(state, data: PayloadAction<UtcDate | null>) {
+			state.addTaskDate = data.payload
+		},
+		changeCalendarRemoveCandidate(state, data: PayloadAction<CalendarState['calendarRemoveCandidate']>) {
+			state.calendarRemoveCandidate = data.payload
+		},
+		setClonedParentEvent(state, data: PayloadAction<FullResponseEventModel | null>) {
+			state.clonedParentEvent = data.payload
+		},
+		changeTaskStatuses(state, data: PayloadAction<FilterTaskStatuses>) {
+			state.statuses = data.payload
 		}
 	},
 })
 
 export const CalendarReducer = CalendarSlice.reducer
 export const {
-	changeCalendarCurrent
+	changeCalendarCurrent,
+	changeAddTaskDate,
+	changeCalendarRemoveCandidate,
+	setClonedParentEvent,
+	changeTaskStatuses
 } = CalendarSlice.actions

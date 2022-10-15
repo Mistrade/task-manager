@@ -1,20 +1,46 @@
 import React, {FC} from "react";
 import {UserModel} from "../Calendars/types";
-import {Route} from "react-router";
-import {Routes} from "react-router-dom";
+import {Routes} from 'react-router-dom'
+import {Navigate, Route} from "react-router";
 import {NotFoundPage} from "./NotFoundRoutes";
+import {Loader} from "../Loaders/Loader";
 import {WithSuspense} from "../Loaders/WithSuspense";
 
-interface OnlyWithoutSessionRoutesProps {
-	userInfo?: UserModel | null
+interface OnlyAuthRoutes {
+	userInfo?: UserModel | null,
 }
 
+const CalendarController = React.lazy(() => import('../Calendars/index').then(({CalendarMain}) => ({default: CalendarMain})))
 const RegistrationForm = React.lazy(() => import('../Session/Registration').then(({Registration}) => ({default: Registration})))
 const AuthorizationForm = React.lazy(() => import('../Session/AuthorizationForm').then(({AuthorizationForm}) => ({default: AuthorizationForm})))
 
-export const OnlyWithoutSessionRoutes: FC<OnlyWithoutSessionRoutesProps> = ({userInfo}) => {
+export const AppRoutes: FC<OnlyAuthRoutes> = ({userInfo}) => {
+	
 	if (userInfo) {
-		return <></>
+		return (
+			<Routes>
+				<Route
+					path={'calendar'}
+				>
+					<Route
+						index
+						element={<Navigate to={'/calendar/day/in_work'}/>}
+					/>
+					<Route
+						path={':layout/*'}
+						element={
+							<React.Suspense fallback={<Loader title={'Загрузка сервиса планирования'} isActive={true}/>}>
+								<CalendarController/>
+							</React.Suspense>
+						}
+					/>
+				</Route>
+				<Route
+					path={'*'}
+					element={<NotFoundPage/>}
+				/>
+			</Routes>
+		)
 	}
 	
 	return (

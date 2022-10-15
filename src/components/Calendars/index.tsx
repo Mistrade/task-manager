@@ -1,44 +1,53 @@
 import {FC, useEffect} from "react";
-import {useParams} from "react-router";
 import {CalendarMode} from "./types";
-import {useAppDispatch} from "../../store/hooks/hooks";
+import {useAppDispatch, useAppSelector} from "../../store/hooks/hooks";
 import {changeCalendarCurrent} from "../../store/reducers/calendar";
-import {useNavigate} from "react-router-dom";
-import {Calendar} from "./Сalendar";
+import {Route, Routes, useNavigate, useParams} from "react-router-dom";
+import {CalendarStatusProxy} from "./CalendarStatusProxy";
+import {useLocation} from "react-router";
+
+const layouts: Array<CalendarMode['layout']> = [
+	'day', 'week', 'month', 'year'
+]
 
 export const CalendarMain: FC = () => {
 	const {layout} = useParams<{ layout: CalendarMode["layout"] }>()
+	const {pathname} = useLocation()
 	const dispatch = useAppDispatch()
 	const navigate = useNavigate()
+	const {statuses} = useAppSelector(state => state.calendar)
 	
 	useEffect(() => {
-		if (!layout) {
-			navigate('/calendar/day', {replace: true})
+		if (!layout || !isCorrectLayout(layout)) {
+			navigate(`/calendar/day/${statuses}`, {replace: true})
 		} else {
 			dispatch(changeCalendarCurrent({layout, date: new Date().toString()}))
+			console.log(pathname, pathname.split('/'))
+			const pathArray = pathname.split('/').filter(Boolean)
+			if (pathArray.length <= 2) {
+				navigate(`/calendar/${layout}/${statuses}`, {replace: true})
+			}
 		}
 	}, [])
 	
 	const isCorrectLayout = (l: CalendarMode["layout"] | undefined) => {
-		switch (l) {
-			case 'year':
-				return true
-			case 'month':
-				return true
-			case 'week':
-				return true
-			case 'day':
-				return true
-			default:
-				return false
-		}
+		return l && layouts.includes(l)
 	}
 	
 	if (isCorrectLayout(layout) && layout) {
 		return (
-			<Calendar
-				layout={layout}
-			/>
+			<Routes
+			>
+				<Route
+					path={':taskStatus/*'}
+					element={
+						<CalendarStatusProxy
+							layout={layout}
+						/>
+					}
+				/>
+			</Routes>
+		
 		)
 	}
 	

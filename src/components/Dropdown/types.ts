@@ -3,13 +3,14 @@ import {FlexBlockProps} from "../LayoutComponents/FlexBlock";
 
 export type DropDownElementsSupport = HTMLButtonElement | HTMLInputElement | HTMLTextAreaElement
 
-export interface DropDownRenderElementObject<T extends DropDownElementsSupport = HTMLInputElement> {
+export interface DropDownRenderElementObject<T extends HTMLElement = HTMLInputElement> {
 	ref: React.RefObject<T>,
 	onElementFocused: (e: React.FocusEvent<T>) => void,
 	onElementBlur: (e: React.FocusEvent<T>) => void,
+	onClick: (e: React.MouseEvent) => void
 }
 
-export interface DropDownProps<T extends DropDownElementsSupport = HTMLInputElement> {
+export interface DropDownProps<T extends HTMLElement = HTMLInputElement> {
 	renderElement: (options: DropDownRenderElementObject<T>) => ReactNode,
 	dropDownChildren: (methods: DropDownAdditionalMethods) => ReactNode,
 	containerProps?: FlexBlockProps

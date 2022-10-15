@@ -1,16 +1,18 @@
 import React, {FC} from 'react'
 import {AddTaskModalProps} from '../types'
 import {Modal, ModalBody, ModalHeader} from '../../Modal/Modal'
-import {ERROR_DESCRIPTIONS, ERROR_TITLES, getHumanizeDateValue} from '../../../common/constants'
+import {ERROR_DESCRIPTIONS, ERROR_TITLES, getHumanizeDateValue, TaskStatusesObject} from '../../../common/constants'
 import {FlexBlock} from '../../LayoutComponents/FlexBlock'
 import {Tooltip} from '../../Tooltip/Tooltip'
 import {ErrorBoundary} from "../../Errors/ErrorBoundary";
+import dayjs from "dayjs";
 
 const Form = React.lazy(() => import('./../Forms/AddTaskForm')
 	.then(({AddTaskForm}) => ({default: AddTaskForm}))
 )
 
-export const AddTaskModal: FC<AddTaskModalProps> = ({date, onClose}) => {
+export const AddTaskModal: FC<AddTaskModalProps> = ({date, onClose, clonedEventInfo, onSuccessClonedEvent}) => {
+	console.log(clonedEventInfo)
 	return (
 		<Modal
 			isView={true}
@@ -32,10 +34,28 @@ export const AddTaskModal: FC<AddTaskModalProps> = ({date, onClose}) => {
 					>
 						<React.Suspense fallback={'Загрузка формы...'}>
 							<Form
-								onComplete={(value) => {
+								onComplete={(value, taskId) => {
 									console.log('onComplete')
-									onClose && onClose()
+									if (value.linkedFrom) {
+										onSuccessClonedEvent && onSuccessClonedEvent(value.time, 'created', taskId)
+									} else {
+										onClose && onClose()
+									}
 								}}
+								initialValues={clonedEventInfo ? {
+									description: clonedEventInfo?.description || '',
+									timeEnd: dayjs(clonedEventInfo?.timeEnd).toDate(),
+									time: dayjs(clonedEventInfo.time).toDate(),
+									status: 'created',
+									priority: clonedEventInfo.priority,
+									calendar: clonedEventInfo.calendar._id,
+									createdAt: '',
+									type: 'event',
+									title: `CLONE - ${clonedEventInfo.title}`,
+									members: [],
+									link: clonedEventInfo.link,
+									linkedFrom: clonedEventInfo.id,
+								} : undefined}
 								onCancel={(value) => onClose && onClose()}
 								date={date}
 							/>

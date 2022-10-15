@@ -1,4 +1,4 @@
-import {combineReducers, configureStore} from '@reduxjs/toolkit'
+import {combineReducers, configureStore, getDefaultMiddleware} from '@reduxjs/toolkit'
 import {eventReducer} from './reducers/events'
 import {SessionReducer} from "./reducers/session";
 import {CalendarReducer} from "./reducers/calendar";
@@ -13,12 +13,17 @@ const rootReducer = combineReducers({
 	[sessionApi.reducerPath]: sessionApi.reducer
 })
 
-export const store = configureStore({
-	reducer: rootReducer,
-	middleware: (getDefaultMiddleware) => getDefaultMiddleware()
-		.concat(taskApi.middleware, sessionApi.middleware)
-})
+export const createAppStore = (preloadedState?: RootState) => {
+	return configureStore({
+		reducer: rootReducer,
+		middleware: (getDefaultMiddleware) => getDefaultMiddleware()
+			.concat(taskApi.middleware, sessionApi.middleware),
+		preloadedState
+	})
+}
 
-export type RootState = ReturnType<typeof store.getState>
+export const store = createAppStore()
+
+export type RootState = ReturnType<typeof rootReducer>
 export type RootDispatch = typeof store.dispatch
 export type CreateSelectorReturnType<R> = (state: RootState) => R

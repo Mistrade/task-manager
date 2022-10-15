@@ -93,7 +93,8 @@ export const DatePickerPaper: FC<DatePickerPaperProps> = ({
 						
 						setValue(r)
 					}}
-					currentDate={value}
+					current={current}
+					value={value}
 					monthItem={monthItem}
 				/>
 				<TimeSelector

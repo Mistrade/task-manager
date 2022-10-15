@@ -11,26 +11,26 @@ export const DayCalendar: FC<DayCalendarProps> = ({
 																									}) => {
 	
 	return (
-		<FlexBlock position={'relative'} width={'100%'} direction={'column'}>
-			<FlexBlock
-				className={'day--calendar'}
-				justify={'flex-start'}
-				align={'stretch'}
-				wrap={'nowrap'}
-				position={'relative'}
-				width={'100%'}
-				grow={10}
-				additionalCss={css`gap: 20px`}
-			>
-				<FlexBlock width={'100%'} height={'fit-content'}>
-					<DayTaskList
-						day={dateItem.current.date}
-						onAddTask={onAddTask}
-						onSelectTask={onSelectTask}
-						current={dateItem.current}
-					/>
-				</FlexBlock>
-			</FlexBlock>
+		<FlexBlock
+			position={'relative'}
+			width={'100%'}
+			direction={'column'}
+			className={'day--calendar'}
+			justify={'flex-start'}
+			align={'stretch'}
+			wrap={'nowrap'}
+			grow={10}
+			mt={16}
+			mb={16}
+			additionalCss={css`gap: 20px`}
+			height={'100%'}
+		>
+			<DayTaskList
+				day={dateItem.current.date}
+				onAddTask={onAddTask}
+				onSelectTask={onSelectTask}
+				current={dateItem.current}
+			/>
 		</FlexBlock>
 	)
 }
