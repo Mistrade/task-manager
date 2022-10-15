@@ -1,5 +1,5 @@
 import {WeekCalendarProps} from "../types";
-import {FC, useMemo} from "react";
+import React, {FC, useMemo} from "react";
 import {WeeKCalendar} from "./WeekCalendar";
 import {getTaskSchemeScope} from "../../../common/calendarSupport/scopes";
 import {useGetTaskCountOfStatusQuery, useGetTasksAtScopeQuery} from "../../../store/api/taskApi/taskApi";
@@ -8,6 +8,8 @@ import {FlexBlock} from "../../LayoutComponents/FlexBlock";
 import {EventFilter} from "../DayCalendar/EventFilter";
 import {useEventFilters} from "../../../hooks/useEventFilters";
 import {useAppSelector} from "../../../store/hooks/hooks";
+import {WeekDays} from "../WeekDays/WeekDays";
+import {WeekDaysList} from "../../../common/constants";
 
 export interface WeekCalendarControllerProps extends Omit<WeekCalendarProps, 'taskStorage'> {
 
@@ -62,6 +64,9 @@ export const WeekCalendarController: FC<WeekCalendarControllerProps> = (props) =
 					values={filters}
 					onChangeHandlers={handlers}
 				/>
+			</FlexBlock>
+			<FlexBlock width={'100%'} mb={6} pt={6}>
+				<WeekDays list={WeekDaysList} gap={4}/>
 			</FlexBlock>
 			<WeeKCalendar
 				taskStorage={data || {}}

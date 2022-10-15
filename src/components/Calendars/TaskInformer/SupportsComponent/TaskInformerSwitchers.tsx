@@ -19,9 +19,9 @@ interface TaskInformerSwitchers {
 
 const taskInformerSwitcherList: Array<TaskInformerSwitchersItem> = [
 	{title: 'О событии', key: 'about'},
-	{title: 'История', key: 'history'},
-	{title: 'Комментарии', key: 'comments', badgeCount: 3},
-	{title: 'Участники', key: 'members'}
+	{title: 'История (Dev)', key: 'history'},
+	{title: 'Комментарии (Dev)', key: 'comments', badgeCount: 3},
+	{title: 'Участники (Dev)', key: 'members'}
 ]
 export const TaskInformerSwitchers: FC<TaskInformerSwitchers> = ({selected, onChange}) => {
 	

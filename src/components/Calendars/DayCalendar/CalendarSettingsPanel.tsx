@@ -10,12 +10,16 @@ import {GetTaskSchemeRequest, useGetTaskSchemeQuery} from "../../../store/api/ta
 import {getTaskSchemeScope} from "../../../common/calendarSupport/scopes";
 import {CalendarList} from "../CalendarList/CalendarList";
 import {PourDatesProps, SmallMonth} from "../SmallMotnCalendar/SmallMonth";
+import {CalendarTodaySwitchers} from "../Header/CalendarTodaySwitchers";
+import {ShortChangeCurrentPattern} from "../../../common/commonTypes";
+import {changeCurrentModeHandler} from "../../../common/functions";
 
 
 export const CalendarSettingsPanel: FC<DaySettingsPanelProps> = ({
 																																	 onSelectDate,
 																																	 current,
-																																	 monthItem
+																																	 monthItem,
+																																	 onChangeCurrent
 																																 }) => {
 	
 	const datesForScheme: GetTaskSchemeRequest = useMemo(() => {
@@ -70,6 +74,10 @@ export const CalendarSettingsPanel: FC<DaySettingsPanelProps> = ({
 		return undefined
 	}, [current])
 	
+	const onChangeCurrentHandler = useCallback((pattern: ShortChangeCurrentPattern = 'today') => {
+		onChangeCurrent && onChangeCurrent(changeCurrentModeHandler(current, pattern), current.layout)
+	}, [current, onChangeCurrent])
+	
 	return (
 		<FlexBlock
 			direction={'column'}
@@ -77,6 +85,11 @@ export const CalendarSettingsPanel: FC<DaySettingsPanelProps> = ({
 			align={'flex-start'}
 			position={'relative'}
 		>
+			<FlexBlock pl={24} mb={24}>
+			<CalendarTodaySwitchers
+				onChange={onChangeCurrentHandler}
+			/>
+			</FlexBlock>
 			<FlexBlock minHeight={200} mb={24} style={{zIndex: 1}}>
 				<SmallMonth
 					pourDates={pour}

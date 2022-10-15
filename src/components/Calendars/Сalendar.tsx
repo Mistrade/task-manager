@@ -124,6 +124,7 @@ export const Calendar: FC<CalendarProps> = ({
 						borderRight={`1px solid ${disabledColor}`}
 					>
 						<CalendarSettingsPanel
+							onChangeCurrent={calendar.onChangeCurrent}
 							monthItem={checkMonthItemSettingsPanel(calendar.current)}
 							current={calendar.current}
 							onSelectDate={(data) => calendar.onChangeCurrent(data.value, 'day')}
@@ -203,13 +204,17 @@ export const Calendar: FC<CalendarProps> = ({
 					/>
 					<Routes>
 						<Route
-							path={'calendar/:calendarId'}
-							element={
-								<ChangeCalendarHock
-									onClose={calendar.onCloseAddCalendarModal}
-								/>
-							}
-						/>
+							path={'calendar'}
+						>
+							<Route
+								index
+								element={<ChangeCalendarModal onClose={calendar.onCloseAddCalendarModal}/>}
+							/>
+							<Route
+								path={':calendarId'}
+								element={<ChangeCalendarHock onClose={calendar.onCloseAddCalendarModal}/>}
+							/>
+						</Route>
 						<Route
 							path={'add'}
 							element={

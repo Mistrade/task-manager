@@ -104,7 +104,8 @@ export type OnSelectDateFromCalendarFn = (data: CalendarItem) => void
 export interface DaySettingsPanelProps {
 	monthItem: MonthItem
 	onSelectDate?: OnSelectDateFromCalendarFn,
-	current: CalendarMode
+	current: CalendarMode,
+	onChangeCurrent: UseCalendarReturned['onChangeCurrent']
 }
 
 export interface SmallCalendarDayItemProps {
@@ -352,6 +353,17 @@ export interface CalendarCurrentWeek {
 export interface CalendarCurrentDay {
 	layout: 'day',
 	date: Date,
+}
+
+export interface CalendarCurrentList {
+	layout: 'list',
+	fromDate: Date,
+	toDate: Date,
+}
+
+export interface CalendarCurrentThreeDays {
+	layout: 'three_days',
+	fromDate: Date,
 }
 
 export type CalendarMode =

@@ -12,11 +12,14 @@ import {useParams} from "react-router";
 import {CalendarHeaderContainer} from "./CalendarHeader.styled";
 import {DropDownButton} from "../../Buttons/DropDownButton";
 import {EmptyButtonStyled} from '../../Buttons/EmptyButton.styled'
-import {PencilIcon, PlusIcon} from "../../Icons/Icons";
+import {BurgerIcon, PencilIcon, PlusIcon, WaitIcon} from "../../Icons/Icons";
 import {DropDown} from "../../Dropdown/DropDown";
 import {SelectListContainer} from "../../Input/SelectInput/SelectListContainer";
 import {SelectItemContainer} from "../../Input/SelectInput/SelectItemContainer";
 import {useAppSelector} from "../../../store/hooks/hooks";
+import {EventIcon} from "../../Icons/EventIcon";
+import {UrlIcon} from "../../Icons/SocialNetworkIcons";
+import {currentColor, defaultColor} from "../../../common/constants";
 
 
 export const CalendarHeader: FC<CalendarHeaderProps> = ({
@@ -85,9 +88,33 @@ export const CalendarHeader: FC<CalendarHeaderProps> = ({
 						)}
 					/>
 				</FlexBlock>
-				<CalendarTodaySwitchers
-					onChange={onChangeCurrentHandler}
-				/>
+				<FlexBlock justify={'flex-end'} gap={6}>
+					<EmptyButtonStyled>
+						<FlexBlock justify={'flex-start'} gap={4} align={'center'}>
+							<WaitIcon size={15} color={defaultColor}/>
+							<FlexBlock>
+								Поиск событий (Dev)
+							</FlexBlock>
+						</FlexBlock>
+					</EmptyButtonStyled>
+					<EmptyButtonStyled>
+						<FlexBlock justify={'flex-start'} gap={4} align={'center'}>
+							<WaitIcon size={15} color={defaultColor}/>
+							<FlexBlock>
+								Массовое редактирование (Dev)
+							</FlexBlock>
+						</FlexBlock>
+					</EmptyButtonStyled>
+					<EmptyButtonStyled>
+						<FlexBlock justify={'flex-start'} gap={4} align={'center'}>
+							<WaitIcon size={15} color={defaultColor}/>
+							<FlexBlock>
+								Настройки (Dev)
+							</FlexBlock>
+						</FlexBlock>
+					</EmptyButtonStyled>
+				</FlexBlock>
+			
 			</FlexBlock>
 			<FlexBlock justify={'flex-start'}>
 				<CalendarModeSwitchers

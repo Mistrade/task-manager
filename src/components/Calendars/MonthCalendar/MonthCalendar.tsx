@@ -71,7 +71,7 @@ export const MonthCalendar: FC<MonthCalendarProps> = ({
 				/>
 			</FlexBlock>
 			<FlexBlock width={'100%'} mb={6} pt={6}>
-				<WeekDays list={WeekDaysList} gap={8}/>
+				<WeekDays list={WeekDaysList} gap={4}/>
 			</FlexBlock>
 			<FlexBlock
 				overflow={'scroll'}
