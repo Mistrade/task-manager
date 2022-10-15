@@ -2,6 +2,8 @@ import {FC} from 'react'
 import {SwitchCalendarModeTab} from '../Calendar.styled'
 import {FlexBlock} from '../../LayoutComponents/FlexBlock'
 import {CalendarHeaderSwitchersProps} from '../types'
+import {WaitIcon} from "../../Icons/Icons";
+import {defaultColor} from "../../../common/constants";
 
 export const CalendarModeSwitchers: FC<CalendarHeaderSwitchersProps> = ({
 																																					layout,
@@ -32,6 +34,24 @@ export const CalendarModeSwitchers: FC<CalendarHeaderSwitchersProps> = ({
 				onClick={() => onChange('year')}
 			>
 				Год
+			</SwitchCalendarModeTab>
+			<SwitchCalendarModeTab
+				// isSelected={layout === 'year'}
+				// onClick={() => onChange('year')}
+			>
+				<FlexBlock align={'center'} gap={6}>
+					<WaitIcon size={15} color={defaultColor}/>
+					Список (Dev)
+				</FlexBlock>
+			</SwitchCalendarModeTab>
+			<SwitchCalendarModeTab
+				// isSelected={layout === 'year'}
+				// onClick={() => onChange('year')}
+			>
+				<FlexBlock align={'center'} gap={6}>
+					<WaitIcon size={15} color={defaultColor}/>
+					3 дня (Dev)
+				</FlexBlock>
 			</SwitchCalendarModeTab>
 		</FlexBlock>
 	)

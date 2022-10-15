@@ -31,51 +31,6 @@ dayjs.updateLocale('en', {
 	yearStart: 4
 })
 
-export const searchIntersections = (taskList: CalendarTaskList): Array<CalendarTaskItem & { intersectionCount: number, renderPriority: number }> => {
-	const tasksList: Array<CalendarTaskItem & { intersectionCount?: number, renderPriority?: number }> = [...taskList]
-	const period = 60
-	
-	
-	let result: Array<CalendarTaskItem & { intersectionCount: number, renderPriority: number }> = tasksList.map((task, index, array) => {
-		const intersections = array.filter((intItem) => {
-			if (intItem.id !== task.id) {
-				const s = dayjs(intItem.time)
-				const e = s.add(period, 'minute')
-				return dayjs(task.time).isBetween(s, e, 'minute', '[]')
-					|| dayjs(task.time).add(period, 'minute').isBetween(s, e, 'minute', '[]')
-			}
-			return false
-		})
-		
-		let priority = task.renderPriority || 1
-		
-		intersections.forEach((intItem) => {
-			const d = dayjs(intItem.time)
-			if (d.isBefore(task.time, 'minute')) {
-				priority++
-			} else if (d.isSame(task.time, 'minutes')) {
-				intItem.renderPriority = intItem.renderPriority ? intItem.renderPriority - 1 : priority + 1
-			}
-		})
-		
-		
-		return {
-			...task,
-			intersectionCount: intersections.length,
-			renderPriority: priority
-		}
-		
-	})
-	
-	result = result.map((item, index) => {
-		
-		
-		return item
-	})
-	
-	return result
-}
-
 export const sortTask = (initialList: Array<EventItem>): Array<EventItem> => {
 	const list = [...initialList]
 	

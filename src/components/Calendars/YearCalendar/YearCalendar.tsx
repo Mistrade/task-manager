@@ -22,23 +22,28 @@ export const YearCalendar: FC<YearCalendarProps> = ({
 	
 	
 	return (
-		<FlexBlock mt={32} mb={32} width={'100%'}>
+		<FlexBlock mt={16} mb={16} width={'100%'} overflow={'scroll'}>
 			<Loader title={'Загрузка схемы событий...'} isActive={isFetching}>
-				<FlexBlock gap={24} wrap={'wrap'} justify={'flex-start'} align={'flex-start'}>
+				<FlexBlock gap={8} wrap={'wrap'} justify={'flex-start'} align={'flex-start'}>
 					{yearItem.months.map((monthItem) => {
 						return (
 							<FlexBlock
 								key={`monthItem_year_${monthItem.year}_month_${monthItem.monthOfYear}`}
-								p={12}
+								p={4}
 								borderRadius={4}
 								justify={'center'}
 								align={'center'}
-								width={'calc(25% - 24px)'}
+								width={'calc(25% - 8px)'}
 								additionalCss={css`&:hover {
                   background-color: ${pageHeaderColor}
                 }`}
 							>
 								<SmallMonth
+									current={{
+										layout: "month",
+										month: monthItem.monthOfYear,
+										year: monthItem.year
+									}}
 									includesTasks={taskScheme}
 									title={(
 										<FlexBlock

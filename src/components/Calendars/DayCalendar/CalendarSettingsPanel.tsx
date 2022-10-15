@@ -10,13 +10,16 @@ import {GetTaskSchemeRequest, useGetTaskSchemeQuery} from "../../../store/api/ta
 import {getTaskSchemeScope} from "../../../common/calendarSupport/scopes";
 import {CalendarList} from "../CalendarList/CalendarList";
 import {PourDatesProps, SmallMonth} from "../SmallMotnCalendar/SmallMonth";
+import {CalendarTodaySwitchers} from "../Header/CalendarTodaySwitchers";
+import {ShortChangeCurrentPattern} from "../../../common/commonTypes";
+import {changeCurrentModeHandler} from "../../../common/functions";
 
 
 export const CalendarSettingsPanel: FC<DaySettingsPanelProps> = ({
 																																	 onSelectDate,
-																																	 onAddTask,
 																																	 current,
-																																	 monthItem
+																																	 monthItem,
+																																	 onChangeCurrent
 																																 }) => {
 	
 	const datesForScheme: GetTaskSchemeRequest = useMemo(() => {
@@ -52,17 +55,6 @@ export const CalendarSettingsPanel: FC<DaySettingsPanelProps> = ({
 		}
 	}, [current])
 	
-	const buttonClickHandler = useCallback(() => {
-		if (onAddTask && currentDate) {
-			const d = dayjs(currentDate).isBefore(new Date(), 'date')
-			if (d) {
-				return onAddTask(dayjs().toDate())
-			}
-			
-			onAddTask && currentDate && onAddTask(currentDate)
-		}
-	}, [currentDate])
-	
 	const pour: PourDatesProps | undefined = useMemo(() => {
 		if (current.layout === 'month') {
 			const date = dayjs().set('year', current.year).set('month', current.month).startOf('month').toDate()
@@ -82,6 +74,10 @@ export const CalendarSettingsPanel: FC<DaySettingsPanelProps> = ({
 		return undefined
 	}, [current])
 	
+	const onChangeCurrentHandler = useCallback((pattern: ShortChangeCurrentPattern = 'today') => {
+		onChangeCurrent && onChangeCurrent(changeCurrentModeHandler(current, pattern), current.layout)
+	}, [current, onChangeCurrent])
+	
 	return (
 		<FlexBlock
 			direction={'column'}
@@ -89,33 +85,27 @@ export const CalendarSettingsPanel: FC<DaySettingsPanelProps> = ({
 			align={'flex-start'}
 			position={'relative'}
 		>
-			<FlexBlock
-				width={'100%'}
-				mb={24}
-				justify={'center'}
-				position={'sticky'}
-				additionalCss={css`
-          top: 0;
-          left: 0;
-          z-index: 1;
-				`}
-			>
-				<Button onClick={buttonClickHandler}>
-					Добавить событие
-				</Button>
+			<FlexBlock pl={24} mb={24}>
+			<CalendarTodaySwitchers
+				onChange={onChangeCurrentHandler}
+			/>
 			</FlexBlock>
 			<FlexBlock minHeight={200} mb={24} style={{zIndex: 1}}>
 				<SmallMonth
 					pourDates={pour}
 					includesTasks={taskScheme}
 					monthItem={monthItem}
-					useTooltips={true}
 					title={
 						<SmallCalendarMonthTitle
 							monthItem={monthItem}
 						/>
 					}
-					currentDate={currentDate}
+					current={{
+						layout: "month",
+						month: currentDate.getMonth(),
+						year: currentDate.getFullYear()
+					}}
+					value={currentDate}
 					onSelectDate={onSelectDate}
 				/>
 			</FlexBlock>

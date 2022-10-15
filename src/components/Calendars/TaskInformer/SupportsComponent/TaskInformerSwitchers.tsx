@@ -2,12 +2,14 @@ import {FC} from "react";
 import {FlexBlock} from "../../../LayoutComponents/FlexBlock";
 import {disabledColor} from "../../../../common/constants";
 import {SwitchCalendarModeTab} from "../../Calendar.styled";
+import {Badge} from "../../../Badge/Badge";
 
 export type TaskInformerSwitchersKeys = 'about' | 'history' | 'comments' | 'members'
 
-interface TaskInformerSwitchersItem {
+export interface TaskInformerSwitchersItem {
 	title: string,
-	key: TaskInformerSwitchersKeys
+	key: TaskInformerSwitchersKeys,
+	badgeCount?: number
 }
 
 interface TaskInformerSwitchers {
@@ -17,9 +19,9 @@ interface TaskInformerSwitchers {
 
 const taskInformerSwitcherList: Array<TaskInformerSwitchersItem> = [
 	{title: 'О событии', key: 'about'},
-	{title: 'История', key: 'history'},
-	{title: 'Комментарии', key: 'comments'},
-	{title: 'Участники', key: 'members'}
+	{title: 'История (Dev)', key: 'history'},
+	{title: 'Комментарии (Dev)', key: 'comments', badgeCount: 3},
+	{title: 'Участники (Dev)', key: 'members'}
 ]
 export const TaskInformerSwitchers: FC<TaskInformerSwitchers> = ({selected, onChange}) => {
 	
@@ -27,11 +29,17 @@ export const TaskInformerSwitchers: FC<TaskInformerSwitchers> = ({selected, onCh
 		<FlexBlock borderBottom={`1px solid ${disabledColor}`} justify={'flex-start'} align={'flex-end'}>
 			{taskInformerSwitcherList.map((item) => (
 				<SwitchCalendarModeTab
+					style={{gap: 4, display: "flex"}}
 					key={item.key}
 					onClick={() => onChange && onChange(item)}
 					isSelected={item.key === selected}
 				>
+					<span>
 					{item.title}
+					</span>
+					{item.badgeCount && item.badgeCount > 0 && (
+						<Badge>{item.badgeCount}</Badge>
+					)}
 				</SwitchCalendarModeTab>
 			))}
 		</FlexBlock>

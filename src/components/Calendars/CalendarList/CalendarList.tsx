@@ -1,21 +1,12 @@
 import {CalendarListStyled} from "./CalendarList.styled";
 import {CalendarNameListItem} from "./CalendarNameListItem";
-import {useMemo, useState} from "react";
-import {useChangeSelectCalendarMutation, useGetCalendarsQuery} from "../../../store/api/taskApi/taskApi";
-
-interface CalendarList {
-
-}
+import {useEffect} from "react";
+import {useGetCalendarsQuery} from "../../../store/api/taskApi/taskApi";
+import {useCalendar} from "../../../hooks/useCalendar";
 
 export const CalendarList = () => {
-	const {currentData, isFetching} = useGetCalendarsQuery({}, {})
-	const [changeSelect, {isLoading}] = useChangeSelectCalendarMutation()
-	
-	const [isChangedProcessOf, setIsChangedProcessOf] = useState<null | string>(null)
-	
-	const count: number = useMemo(() => {
-		return currentData?.data?.length || 3
-	}, [currentData?.data?.length])
+	const {currentData, isFetching, refetch} = useGetCalendarsQuery({})
+	const {onSelectToRemoveCalendar, onAddCalendar} = useCalendar()
 	
 	return (
 		<CalendarListStyled>
@@ -24,18 +15,9 @@ export const CalendarList = () => {
 					<CalendarNameListItem
 						item={item}
 						key={item._id}
+						onDelete={onSelectToRemoveCalendar}
 						isChecked={item.isSelected}
-						isLoading={item._id === isChangedProcessOf}
-						onChange={async (isChecked) => {
-							console.log(isChecked)
-							setIsChangedProcessOf(item._id)
-							await changeSelect({
-								id: item._id,
-								state: isChecked
-							})
-								.unwrap()
-								.finally(() => setIsChangedProcessOf(null))
-						}}
+						onEdit={onAddCalendar}
 					/>
 				)
 			})}

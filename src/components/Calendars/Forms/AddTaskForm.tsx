@@ -1,4 +1,4 @@
-import {FC, useMemo} from 'react'
+import {FC, useCallback, useEffect, useMemo} from 'react'
 import {CalendarTaskItem} from '../types'
 import {useFormik} from 'formik'
 import dayjs from 'dayjs'
@@ -22,15 +22,18 @@ import {CompleteIcon, CreatedIcon} from '../../Icons/Icons'
 import {Button, StyledButton} from '../../Buttons/Buttons.styled'
 import {SelectLinks} from '../../Input/SelectInput/CalendarSelectInputs/SelectLinks'
 import {Tooltip} from '../../Tooltip/Tooltip'
-import {useAddTaskMutation, useGetCalendarsQuery} from "../../../store/api/taskApi/taskApi";
+import {ServerResponse, useAddTaskMutation, useGetCalendarsQuery} from "../../../store/api/taskApi/taskApi";
 import {TextAreaInput} from "../../Input/TextAreaInput/TextAreaInput";
 import {CalendarNameItem} from "../CalendarList/CalendarNameListItem";
 import {SelectItemContainer} from "../../Input/SelectInput/SelectItemContainer";
+import {ObjectId} from "../../../store/api/taskApi/types";
+import {toast} from "react-toastify";
 
 interface AddTaskFormProps {
-	onComplete?: (data: CalendarTaskItem) => void,
+	onComplete?: (data: CalendarTaskItem, taskId?: ObjectId) => void,
 	date: Date | null,
-	onCancel?: (data: CalendarTaskItem) => void
+	onCancel?: (data: CalendarTaskItem) => void,
+	initialValues?: CalendarTaskItem
 }
 
 export const LinkValidationSchema = yup
@@ -63,18 +66,26 @@ const addTaskValidationSchema = yup.object({
 	
 })
 
-export const AddTaskForm: FC<AddTaskFormProps> = ({date, onComplete, onCancel}) => {
+export const AddTaskForm: FC<AddTaskFormProps> = ({date, onComplete, onCancel, initialValues}) => {
 	const {data: calendarsList} = useGetCalendarsQuery({exclude: ['Invite']})
 	const [addTask, {isLoading, status}] = useAddTaskMutation()
 	const formik = useFormik<CalendarTaskItem>({
 		async onSubmit(values) {
-			console.log('onSubmit')
-			await addTask(values).unwrap()
-			onComplete && onComplete(values)
+			await addTask(values)
+				.unwrap()
+				.then((response) => {
+					onComplete && onComplete(values, response?.data?.taskId)
+				})
+				.catch((response: ServerResponse<null>) => {
+					if(response.info){
+						toast(response.info?.message, {
+							type: response.info.type
+						})
+					}
+				})
 		},
 		validationSchema: addTaskValidationSchema,
-		initialValues: {
-			id: '',
+		initialValues: initialValues || {
 			title: '',
 			linkedFrom: '',
 			type: 'event',
@@ -93,10 +104,15 @@ export const AddTaskForm: FC<AddTaskFormProps> = ({date, onComplete, onCancel}) 
 	const calendarItem = useMemo(() => {
 		return calendarsList?.data?.find((item) => item._id === formik.values.calendar)
 	}, [formik.values.calendar])
+	
+	useEffect(() => {
+		console.log(formik.errors)
+	}, [formik.errors])
+	
 	return (
 		<form onSubmit={formik.handleSubmit} style={{width: '100%'}}>
 			<FlexBlock direction={'column'} p={'12px 20px 0px 20px'}>
-				<FlexBlock mb={12} gap={12}>
+				<FlexBlock mb={12} gap={12} width={'100%'}>
 					<TextInput
 						inputId={'task__title'}
 						tooltip={
@@ -113,7 +129,6 @@ export const AddTaskForm: FC<AddTaskFormProps> = ({date, onComplete, onCancel}) 
 						label={'Укажите название'}
 						placeholder={'Позвонить заказчику'}
 					/>
-					<div style={{width: '100%'}}/>
 				</FlexBlock>
 				<FlexBlock mb={12} wrap={'nowrap'} width={'100%'}>
 					<SelectLinks

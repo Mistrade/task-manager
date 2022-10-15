@@ -30,17 +30,18 @@ export const MainHeaderBody: FC<MainHeaderBodyProps> = ({userInfo}) => {
 	const {pathname} = useLocation()
 	
 	const {layout} = useAppSelector(CalendarCurrentSelector)
+	const {statuses} = useAppSelector(state => state.calendar)
 	
 	const NavigationArray: Array<NavigationArrayItem> = useMemo(() => ([
 		{
 			title: 'Календарь',
-			path: userInfo ? `/calendar/${layout}` : '/calendar',
+			path: userInfo ? `/calendar/${layout}/${statuses}` : '/calendar',
 		},
 		{
 			title: 'Мои контакты',
 			path: '/contacts'
 		}
-	]), [layout])
+	]), [layout, statuses])
 	
 	useEffect(() => {
 		const urlEl = PageHeaderArray.find((urlItem) => {

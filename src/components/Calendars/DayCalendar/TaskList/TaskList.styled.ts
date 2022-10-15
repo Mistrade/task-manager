@@ -23,8 +23,7 @@ export const TaskListMainContainer = styled('div')`
   display: flex;
   flex-direction: column;
   width: 100%;
-  height: 100vh;
-  overflow-y: hidden;
+  height: 100%;
   flex-grow: 10;
   padding-bottom: 24px;
   margin-left: -8px;
@@ -35,15 +34,16 @@ export const TaskListMainContainer = styled('div')`
 `
 
 export const TaskListEventFiltersContainer = styled('div')`
+	z-index: 10;
   display: flex;
-  padding-bottom: 24px;
-  padding-top: 24px;
+  padding-bottom: 10px;
+  padding-top: 10px;
   justify-content: flex-start;
   flex-wrap: nowrap;
   background-color: #fff;
   gap: 12px;
   top: 0;
   left: 0;
-  z-index: 1;
   position: sticky;
+	width: 100%;
 `

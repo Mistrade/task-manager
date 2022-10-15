@@ -1,9 +1,11 @@
 import {createApi, fetchBaseQuery} from "@reduxjs/toolkit/dist/query/react";
-import {CalendarPriorityKeys, EventItem} from "../../../components/Calendars/types";
+import {CalendarPriorityKeys, CalendarTaskItem, EventItem, TaskStorage} from "../../../components/Calendars/types";
 import {baseServerUrl} from "../defaultApiConfig";
 import {FilterTaskStatuses} from "../../../components/Calendars/DayCalendar/EventFilter";
 import {CalendarNameItem} from "../../../components/Calendars/CalendarList/CalendarNameListItem";
-import {CalendarsModelType, FullResponseEventModel, ShortEventItem} from "./types";
+import {CalendarsModelType, FullResponseEventModel, ObjectId, ShortEventItem} from "./types";
+import {CreateCalendarFormData} from "../../../components/Calendars/CalendarModals/CreateCalendar";
+import {SwitcherBadges} from "../../../components/Switcher/Switcher";
 
 interface GetTaskQueryProps {
 	limit?: number,
@@ -20,7 +22,7 @@ export type GetTaskSchemeResponse = {
 	[key: string]: boolean | undefined
 }
 
-type ErrorTypes = 'info' | 'success' | 'warning' | 'error' | 'default'
+export type ErrorTypes = 'info' | 'success' | 'warning' | 'error' | 'default'
 
 interface ServerErrorType {
 	message: string,
@@ -34,7 +36,7 @@ export interface ServerResponse<T = null> {
 
 export const taskApi = createApi({
 	reducerPath: 'taskApi',
-	tagTypes: ['Tasks', 'TaskInfo', 'Calendars', 'TaskScheme'],
+	tagTypes: ['Tasks', 'TaskInfo', 'Calendars', 'TaskScheme', 'CalendarInfo', 'TaskCount'],
 	baseQuery: fetchBaseQuery({
 		baseUrl: `${baseServerUrl}/events`,
 		credentials: 'include',
@@ -42,6 +44,28 @@ export const taskApi = createApi({
 	}),
 	endpoints(build) {
 		return {
+			hasTasksInCalendar: build.query<ServerResponse<number>, { id: string }>({
+				query: ({id}) => ({
+					url: `/calendar/hasTasks/${id}`,
+					method: 'GET',
+				})
+			}),
+			deleteCalendar: build.mutation<ServerResponse, { id: string }>({
+				query: (args) => ({
+					url: '/calendars/remove',
+					body: args,
+					method: 'POST',
+				}),
+				invalidatesTags: ['Calendars', 'Tasks', 'TaskScheme', 'TaskCount']
+			}),
+			createCalendar: build.mutation<ServerResponse<null>, CreateCalendarFormData>({
+				query: (args) => ({
+					url: '/calendars/create',
+					method: 'POST',
+					body: args
+				}),
+				invalidatesTags: ['Calendars']
+			}),
 			getCalendars: build.query<ServerResponse<Array<CalendarNameItem>>, { exclude?: Array<CalendarsModelType> }>({
 				query: (args) => ({
 					url: '/calendars',
@@ -56,7 +80,7 @@ export const taskApi = createApi({
 					method: 'POST',
 					body: args
 				}),
-				invalidatesTags: ['Calendars', 'Tasks']
+				invalidatesTags: ['Tasks', 'Calendars', 'TaskCount']
 			}),
 			getTaskInfo: build
 				.query<ServerResponse<FullResponseEventModel>, string>({
@@ -76,14 +100,23 @@ export const taskApi = createApi({
 					}),
 					providesTags: ['Tasks', 'TaskInfo'],
 				}),
+			getTasksAtScope: build
+				.query<TaskStorage<ShortEventItem>, GetTaskQueryProps>({
+					query: (props) => ({
+						url: `/getTaskAtScope`,
+						method: 'POST',
+						body: props,
+					}),
+					providesTags: ['Tasks', 'TaskInfo'],
+				}),
 			addTask: build
-				.mutation({
+				.mutation<ServerResponse<{ taskId: ObjectId }>, CalendarTaskItem>({
 					query: (body) => ({
 						url: `/add`,
 						method: "POST",
 						body
 					}),
-					invalidatesTags: ['Tasks', 'TaskScheme']
+					invalidatesTags: ['Tasks', 'TaskScheme', 'TaskCount']
 				}),
 			removeTask: build
 				.mutation({
@@ -92,7 +125,7 @@ export const taskApi = createApi({
 						method: 'POST',
 						body: arg
 					}),
-					invalidatesTags: ['Tasks', 'TaskScheme']
+					invalidatesTags: ['Tasks', 'TaskScheme', 'TaskCount']
 				}),
 			getTaskScheme: build
 				.query<GetTaskSchemeResponse, GetTaskSchemeRequest>({
@@ -116,7 +149,30 @@ export const taskApi = createApi({
 					method: 'POST',
 					body: args,
 				}),
-				invalidatesTags: ['TaskInfo', 'TaskScheme']
+				invalidatesTags: ['TaskInfo', 'TaskScheme', 'Tasks', 'TaskCount']
+			}),
+			getTaskCountOfStatus: build.query<SwitcherBadges<FilterTaskStatuses>, Omit<GetTaskQueryProps, 'taskStatus'>>({
+				query: (args) => ({
+					url: '/getTaskCountOfStatus',
+					method: 'POST',
+					body: args
+				}),
+				providesTags: ['TaskCount']
+			}),
+			getCalendarInfo: build.query<ServerResponse<CalendarNameItem>, string>({
+				query: (calendarId) => ({
+					url: `/calendars/info/${calendarId}`,
+					method: 'GET',
+					cache: 'reload'
+				}),
+			}),
+			updateCalendarInfo: build.mutation<ServerResponse<null>, CreateCalendarFormData>({
+				query: (args) => ({
+					url: '/calendars/update',
+					method: 'POST',
+					body: args
+				}),
+				invalidatesTags: ['Calendars', 'Tasks']
 			})
 		}
 	}
@@ -131,5 +187,13 @@ export const {
 	useLazyGetTaskInfoQuery,
 	useUpdateTaskMutation,
 	useGetCalendarsQuery,
-	useChangeSelectCalendarMutation
+	useChangeSelectCalendarMutation,
+	useCreateCalendarMutation,
+	useHasTasksInCalendarQuery,
+	useDeleteCalendarMutation,
+	useLazyGetCalendarsQuery,
+	useGetTasksAtScopeQuery,
+	useGetTaskCountOfStatusQuery,
+	useGetCalendarInfoQuery,
+	useUpdateCalendarInfoMutation
 } = taskApi

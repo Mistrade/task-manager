@@ -8,20 +8,22 @@ import {EmptyButtonStyled} from '../../Buttons/EmptyButton.styled'
 
 export const CalendarTodaySwitchers: FC<CalendarTodaySwitchersProps> = ({onChange}) => {
 	return (
-		<FlexBlock width={'100%'} justify={'flex-end'} align={'center'} gap={6}>
+		<FlexBlock width={'100%'} justify={'flex-start'} align={'center'} gap={2}>
 			<EmptyButtonStyled
+				style={{padding: '4px'}}
 				onClick={() => onChange('--')}
 			>
 				<DoubleArrow
-					size={20}
+					size={16}
 					transform={'rotate(180deg)'}
 				/>
 			</EmptyButtonStyled>
 			<EmptyButtonStyled
+				style={{padding: '4px'}}
 				onClick={() => onChange('-')}
 			>
 				<Arrow
-					size={20}
+					size={16}
 					transform={'rotate(180deg)'}
 				/>
 			</EmptyButtonStyled>
@@ -32,17 +34,19 @@ export const CalendarTodaySwitchers: FC<CalendarTodaySwitchersProps> = ({onChang
 				Сегодня
 			</SwitchCalendarMode>
 			<EmptyButtonStyled
+				style={{padding: '4px'}}
 				onClick={() => onChange('+')}
 			>
 				<Arrow
-					size={20}
+					size={16}
 				/>
 			</EmptyButtonStyled>
 			<EmptyButtonStyled
+				style={{padding: '4px'}}
 				onClick={() => onChange('++')}
 			>
 				<DoubleArrow
-					size={20}
+					size={16}
 				/>
 			</EmptyButtonStyled>
 		</FlexBlock>

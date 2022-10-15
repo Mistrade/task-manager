@@ -1,4 +1,4 @@
-import React, {ReactNode} from 'react'
+import React, {ReactNode, RefObject} from 'react'
 import {FlexBlock, FlexBlockProps} from '../../LayoutComponents/FlexBlock'
 import {DefaultTextInputProps, TextInput} from '../TextInput/TextInput'
 import {DropDown} from '../../Dropdown/DropDown'
@@ -42,7 +42,7 @@ export function SelectInput<T>({
 				dropDownChildren={(methods) => renderData(data, methods)}
 				renderElement={({ref, onElementFocused, onElementBlur}) => (
 					<TextInput
-						ref={ref}
+						ref={ref as RefObject<HTMLInputElement>}
 						readOnly={readOnly}
 						onChange={!!readOnly ? undefined : onChange}
 						{...textInputProps}

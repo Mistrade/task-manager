@@ -10,6 +10,7 @@ import {useLoginMutation} from "../../store/api/sessionApi";
 import {toast} from "react-toastify";
 import {defaultColor} from "../../common/constants";
 import {AuthValidationScheme} from "../../common/validation/session";
+import {useAppSelector} from "../../store/hooks/hooks";
 
 export interface AuthorizationProps {
 	phone: string,
@@ -24,6 +25,7 @@ const initialValues: AuthorizationProps = {
 export const AuthorizationForm = () => {
 	const navigate = useNavigate()
 	const [loginUser] = useLoginMutation()
+	const {statuses} = useAppSelector(state => state.calendar)
 	const {
 		values,
 		setFieldValue,
@@ -43,7 +45,7 @@ export const AuthorizationForm = () => {
 				})
 				
 				if (result.info.type === 'success') {
-					navigate('/calendar/day', {replace: true})
+					navigate(`/calendar/day/${statuses}`, {replace: true})
 				}
 			}
 		}
