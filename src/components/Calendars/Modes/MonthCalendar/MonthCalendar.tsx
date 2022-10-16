@@ -1,16 +1,16 @@
 import React, {FC, useMemo} from 'react'
-import {MonthCalendarProps} from '../types'
-import {CalendarDateListContainer, CalendarDesktopContainer} from '../Calendar.styled'
+import {MonthCalendarProps} from '../../types'
+import {CalendarDateListContainer, CalendarDesktopContainer} from '../../Calendar.styled'
 import {WeeKCalendar} from '../WeekCalendar/WeekCalendar'
-import {useGetTaskCountOfStatusQuery, useGetTasksAtScopeQuery} from "../../../store/api/taskApi/taskApi";
-import {getTaskSchemeScope} from "../../../common/calendarSupport/scopes";
-import {initialFiltersValues, useEventFilters} from "../../../hooks/useEventFilters";
+import {useGetTaskCountOfStatusQuery, useGetTasksAtScopeQuery} from "../../../../store/api/taskApi/taskApi";
+import {getTaskSchemeScope} from "../../../../common/calendarSupport/scopes";
+import {initialFiltersValues, useEventFilters} from "../../../../hooks/useEventFilters";
 import dayjs from "dayjs";
 import {EventFilter} from "../DayCalendar/EventFilter";
-import {FlexBlock} from "../../LayoutComponents/FlexBlock";
-import {WeekDays} from "../WeekDays/WeekDays";
-import {WeekDaysList} from "../../../common/constants";
-import {useAppSelector} from "../../../store/hooks/hooks";
+import {FlexBlock} from "../../../LayoutComponents/FlexBlock";
+import {WeekDays} from "../WeekCalendar/WeekDays/WeekDays";
+import {WeekDaysList} from "../../../../common/constants";
+import {useAppSelector} from "../../../../store/hooks/hooks";
 
 export const MonthCalendar: FC<MonthCalendarProps> = ({
 																												monthItem,

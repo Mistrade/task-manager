@@ -1,6 +1,6 @@
 import {CalendarMode} from "./types";
 import {FC, useEffect} from "react";
-import {FilterTaskStatuses, URLTaskStatuses} from "./DayCalendar/EventFilter";
+import {FilterTaskStatuses, URLTaskStatuses} from "./Modes/DayCalendar/EventFilter";
 import {useLocation, useParams} from "react-router";
 import {useAppDispatch, useAppSelector} from "../../store/hooks/hooks";
 import {useNavigate} from "react-router-dom";

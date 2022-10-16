@@ -1,16 +1,16 @@
 import React, {FC, useCallback} from "react";
 import dayjs from "dayjs";
-import {ServerResponse, useUpdateTaskMutation} from "../../../../store/api/taskApi/taskApi";
-import {FlexBlock} from "../../../LayoutComponents/FlexBlock";
-import {defaultColor, hoverColor, pageHeaderColor} from "../../../../common/constants";
+import {ServerResponse, useUpdateTaskMutation} from "../../../../../store/api/taskApi/taskApi";
+import {FlexBlock} from "../../../../LayoutComponents/FlexBlock";
+import {defaultColor, hoverColor, pageHeaderColor} from "../../../../../common/constants";
 import {css} from "styled-components";
 import {toast} from "react-toastify";
 import {TaskPreviewDescription} from "./TaskList.styled";
-import {JoinToEventButton} from "../../../Buttons/Buttons.styled";
-import {ShortEventItem} from "../../../../store/api/taskApi/types";
-import {OnSelectTaskFnType} from "../../types";
-import {CalendarIdentifier} from "../../CalendarList/CalendarList.styled";
-import {ToggleEventPriority} from "../../TaskInformer/SupportsComponent/ToggleTaskInformerButtons";
+import {JoinToEventButton} from "../../../../Buttons/Buttons.styled";
+import {ShortEventItem} from "../../../../../store/api/taskApi/types";
+import {OnSelectTaskFnType} from "../../../types";
+import {CalendarIdentifier} from "../../../CalendarList/CalendarList.styled";
+import {ToggleEventPriority} from "../../../TaskInformer/SupportsComponent/ToggleTaskInformerButtons";
 
 interface DayTaskItemProps {
 	taskInfo: ShortEventItem,

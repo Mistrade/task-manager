@@ -20,7 +20,7 @@ import dayjs from "dayjs";
 import {CalendarNameItem} from "../components/Calendars/CalendarList/CalendarNameListItem";
 import {FullResponseEventModel, ObjectId} from "../store/api/taskApi/types";
 import {toast} from "react-toastify";
-import {FilterTaskStatuses} from "../components/Calendars/DayCalendar/EventFilter";
+import {FilterTaskStatuses} from "../components/Calendars/Modes/DayCalendar/EventFilter";
 
 export interface UseCalendarReturned {
 	current: CalendarMode,
@@ -99,9 +99,20 @@ export const useCalendar: UseCalendarType = () => {
 		updateAddTaskState(date, initialValues || null)
 	}, [current.layout, statuses])
 	
-	const onChangeCurrent = useCallback((date: Date, l: CalendarMode['layout']) => {
+	const onChangeCurrent: UseCalendarReturned['onChangeCurrent'] = useCallback((date, l) => {
 		navigate(`/calendar/${l}/${statuses}`, {replace: true})
-		dispatch(changeCalendarCurrent({layout: l, date: date.toString()}))
+		if ('fromDate' in date || 'toDate' in date) {
+			dispatch(changeCalendarCurrent({
+				layout: date.layout,
+				date: {
+					layout: date.layout,
+					fromDate: date.fromDate.toString(),
+					toDate: date.toDate.toString(),
+				}
+			}))
+		} else {
+			dispatch(changeCalendarCurrent({layout: l, date: date.toString()}))
+		}
 	}, [statuses])
 	
 	const onCloseTaskInfo = useCallback(() => {

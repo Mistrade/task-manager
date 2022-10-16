@@ -1,12 +1,12 @@
 import {FC, useCallback, useState} from 'react'
-import {CalendarItem, WeekCalendarProps, WeekItem} from '../types'
+import {CalendarItem, WeekCalendarProps, WeekItem} from '../../types'
 import dayjs from 'dayjs'
-import {CalendarCell} from '../Cell'
+import {CalendarCell} from '../../Cell'
 import styled, {css} from 'styled-components'
-import {defaultColor, disabledColor, lightHoverColor} from '../../../common/constants'
-import {getTaskListOfDay} from "../../../common/functions";
-import {FlexBlock} from '../../LayoutComponents/FlexBlock'
-import {EmptyButtonStyled} from "../../Buttons/EmptyButton.styled";
+import {defaultColor, disabledColor, lightHoverColor} from '../../../../common/constants'
+import {getTaskListOfDay} from "../../../../common/functions";
+import {FlexBlock} from '../../../LayoutComponents/FlexBlock'
+import {EmptyButtonStyled} from "../../../Buttons/EmptyButton.styled";
 
 const WeekContainer = styled('div')<{ isVisible?: boolean }>`
   position: relative;

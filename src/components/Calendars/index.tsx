@@ -5,9 +5,10 @@ import {changeCalendarCurrent} from "../../store/reducers/calendar";
 import {Route, Routes, useNavigate, useParams} from "react-router-dom";
 import {CalendarStatusProxy} from "./CalendarStatusProxy";
 import {useLocation} from "react-router";
+import dayjs from "dayjs";
 
 const layouts: Array<CalendarMode['layout']> = [
-	'day', 'week', 'month', 'year'
+	'day', 'week', 'month', 'year', 'list'
 ]
 
 export const CalendarMain: FC = () => {
@@ -21,7 +22,17 @@ export const CalendarMain: FC = () => {
 		if (!layout || !isCorrectLayout(layout)) {
 			navigate(`/calendar/day/${statuses}`, {replace: true})
 		} else {
-			dispatch(changeCalendarCurrent({layout, date: new Date().toString()}))
+			if (layout === 'list') {
+				dispatch(changeCalendarCurrent({
+					layout, date: {
+						layout: 'list',
+						fromDate: dayjs().startOf('date').toString(),
+						toDate: dayjs().add(31, 'day').endOf('date').toString(),
+					}
+				}))
+			} else {
+				dispatch(changeCalendarCurrent({layout, date: new Date().toString()}))
+			}
 			console.log(pathname, pathname.split('/'))
 			const pathArray = pathname.split('/').filter(Boolean)
 			if (pathArray.length <= 2) {

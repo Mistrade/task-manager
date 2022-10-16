@@ -1,10 +1,10 @@
 import styled from "styled-components";
-import {defaultColor} from "../../../../common/constants";
+import {defaultColor} from "../../../../../common/constants";
 import React, {FC, ReactNode} from "react";
-import {FlexBlock} from "../../../LayoutComponents/FlexBlock";
-import {NotFoundIcon} from "../../../Icons/Icons";
-import {Button} from "../../../Buttons/Buttons.styled";
-import {GlobalTaskListProps} from "../../types";
+import {FlexBlock} from "../../../../LayoutComponents/FlexBlock";
+import {NotFoundIcon} from "../../../../Icons/Icons";
+import {Button} from "../../../../Buttons/Buttons.styled";
+import {GlobalTaskListProps} from "../../../types";
 
 export interface NotFoundTaskProps extends Omit<GlobalTaskListProps, 'renderTaskCount'> {
 	day: Date,

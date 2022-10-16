@@ -36,12 +36,12 @@ export const CalendarModeSwitchers: FC<CalendarHeaderSwitchersProps> = ({
 				Год
 			</SwitchCalendarModeTab>
 			<SwitchCalendarModeTab
-				// isSelected={layout === 'year'}
-				// onClick={() => onChange('year')}
+				isSelected={layout === 'list'}
+				onClick={() => onChange('list')}
 			>
 				<FlexBlock align={'center'} gap={6}>
 					<WaitIcon size={15} color={defaultColor}/>
-					Список (Dev)
+					Список (dev)
 				</FlexBlock>
 			</SwitchCalendarModeTab>
 			<SwitchCalendarModeTab

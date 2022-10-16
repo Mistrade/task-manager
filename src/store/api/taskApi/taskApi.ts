@@ -1,7 +1,7 @@
 import {createApi, fetchBaseQuery} from "@reduxjs/toolkit/dist/query/react";
 import {CalendarPriorityKeys, CalendarTaskItem, EventItem, TaskStorage} from "../../../components/Calendars/types";
 import {baseServerUrl} from "../defaultApiConfig";
-import {FilterTaskStatuses} from "../../../components/Calendars/DayCalendar/EventFilter";
+import {FilterTaskStatuses} from "../../../components/Calendars/Modes/DayCalendar/EventFilter";
 import {CalendarNameItem} from "../../../components/Calendars/CalendarList/CalendarNameListItem";
 import {CalendarsModelType, FullResponseEventModel, ObjectId, ShortEventItem} from "./types";
 import {CreateCalendarFormData} from "../../../components/Calendars/CalendarModals/CreateCalendar";

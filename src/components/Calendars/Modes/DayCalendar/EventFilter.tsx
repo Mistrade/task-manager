@@ -1,17 +1,17 @@
 import React, {FC} from 'react'
-import {CalendarPriorityKeys} from '../types'
-import {FlexBlock} from '../../LayoutComponents/FlexBlock'
-import {SelectPriorityInput} from '../../Input/SelectInput/CalendarSelectInputs/SelectPriorityInput'
-import {TextInput} from '../../Input/TextInput/TextInput'
-import {DatePicker} from '../DatePicker/DatePicker'
+import {CalendarPriorityKeys} from '../../types'
+import {FlexBlock} from '../../../LayoutComponents/FlexBlock'
+import {SelectPriorityInput} from '../../../Input/SelectInput/CalendarSelectInputs/SelectPriorityInput'
+import {TextInput} from '../../../Input/TextInput/TextInput'
+import {DatePicker} from '../../DatePicker/DatePicker'
 import {EventFilters} from "./TaskList/DayTaskList";
 import dayjs from "dayjs";
-import {disabledColor} from "../../../common/constants";
-import {SwitchCalendarModeTab} from "../Calendar.styled";
+import {disabledColor} from "../../../../common/constants";
+import {SwitchCalendarModeTab} from "../../Calendar.styled";
 import {TaskListEventFiltersContainer} from './TaskList/TaskList.styled'
-import {Switcher, SwitcherBadges} from "../../Switcher/Switcher";
-import {useAppSelector} from "../../../store/hooks/hooks";
-import {CalendarStatusProxy} from "../CalendarStatusProxy";
+import {Switcher, SwitcherBadges} from "../../../Switcher/Switcher";
+import {useAppSelector} from "../../../../store/hooks/hooks";
+import {CalendarStatusProxy} from "../../CalendarStatusProxy";
 
 interface EventFilterProps extends FormHandle {
 	statusBadges?: SwitcherBadges<FilterTaskStatuses>

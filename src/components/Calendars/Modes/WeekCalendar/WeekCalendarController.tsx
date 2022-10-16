@@ -1,15 +1,15 @@
-import {WeekCalendarProps} from "../types";
+import {WeekCalendarProps} from "../../types";
 import React, {FC, useMemo} from "react";
 import {WeeKCalendar} from "./WeekCalendar";
-import {getTaskSchemeScope} from "../../../common/calendarSupport/scopes";
-import {useGetTaskCountOfStatusQuery, useGetTasksAtScopeQuery} from "../../../store/api/taskApi/taskApi";
+import {getTaskSchemeScope} from "../../../../common/calendarSupport/scopes";
+import {useGetTaskCountOfStatusQuery, useGetTasksAtScopeQuery} from "../../../../store/api/taskApi/taskApi";
 import dayjs from "dayjs";
-import {FlexBlock} from "../../LayoutComponents/FlexBlock";
+import {FlexBlock} from "../../../LayoutComponents/FlexBlock";
 import {EventFilter} from "../DayCalendar/EventFilter";
-import {useEventFilters} from "../../../hooks/useEventFilters";
-import {useAppSelector} from "../../../store/hooks/hooks";
-import {WeekDays} from "../WeekDays/WeekDays";
-import {WeekDaysList} from "../../../common/constants";
+import {useEventFilters} from "../../../../hooks/useEventFilters";
+import {useAppSelector} from "../../../../store/hooks/hooks";
+import {WeekDays} from "./WeekDays/WeekDays";
+import {WeekDaysList} from "../../../../common/constants";
 
 export interface WeekCalendarControllerProps extends Omit<WeekCalendarProps, 'taskStorage'> {
 

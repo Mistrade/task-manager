@@ -1,6 +1,6 @@
 import {FC} from "react";
-import {FlexBlock} from "../../LayoutComponents/FlexBlock";
-import {disabledColor} from "../../../common/constants";
+import {FlexBlock} from "../../../../LayoutComponents/FlexBlock";
+import {disabledColor} from "../../../../../common/constants";
 
 interface WeekDaysProps {
 	gap?: number,

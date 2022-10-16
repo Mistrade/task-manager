@@ -1,5 +1,5 @@
 import {
-	CalendarCurrentDay,
+	CalendarCurrentDay, CalendarCurrentList,
 	CalendarCurrentMonth,
 	CalendarCurrentWeek,
 	CalendarCurrentYear,
@@ -20,13 +20,13 @@ import {
 } from '../components/Calendars/types'
 import dayjs from 'dayjs'
 import {
-	ChangeDayCurrentFn,
+	ChangeDayCurrentFn, ChangeListCurrentFn,
 	ChangeMonthCurrentFn,
 	ChangeWeekCurrentFn,
 	ChangeYearCurrentFn,
 	ShortChangeCurrentPattern
 } from './commonTypes'
-import {getHumanizeDateValue, MonthList, WeekDaysList} from './constants'
+import {DeclinationMonthList, getHumanizeDateValue, MonthList, ShortMonthList, WeekDaysList} from './constants'
 import {getMonthDays, getWeekDays, getYearDays} from './calendarSupport/getters'
 import {number} from "yup";
 
@@ -260,6 +260,44 @@ export const changeDayCurrentHandler: ChangeDayCurrentFn = (current, pattern = '
 	}
 }
 
+export const changeListCurrentHandler: ChangeListCurrentFn = (current, pattern = 'today') => {
+	const oldFromCurrent = dayjs(current.fromDate)
+	const oldToCurrent = dayjs(current.toDate)
+	
+	switch (pattern) {
+		case '+':
+			return {
+				layout: 'list',
+				fromDate: oldFromCurrent.add(1, 'day').startOf('date').toDate(),
+				toDate: oldToCurrent.add(1, 'day').endOf('date').toDate(),
+			}
+		case '-':
+			return {
+				layout: 'list',
+				fromDate: oldFromCurrent.subtract(1, 'day').startOf('date').toDate(),
+				toDate: oldToCurrent.subtract(1, 'day').endOf('date').toDate(),
+			}
+		case 'today':
+			return {
+				layout: 'list',
+				fromDate: dayjs().startOf('date').toDate(),
+				toDate: dayjs().add(31, 'day').endOf('date').toDate(),
+			}
+		case '++':
+			return {
+				layout: 'list',
+				fromDate: oldFromCurrent.add(7, 'day').startOf('date').toDate(),
+				toDate: oldToCurrent.add(7, 'day').endOf('date').toDate(),
+			}
+		case '--':
+			return {
+				layout: 'list',
+				fromDate: oldFromCurrent.subtract(7, 'day').startOf('date').toDate(),
+				toDate: oldToCurrent.subtract(7, 'day').endOf('date').toDate(),
+			}
+	}
+}
+
 const getMonthCalendarTitle = (current: CalendarCurrentMonth, withTodayMonth?: boolean): string => {
 	const {year, month} = current
 	const m = MonthList[month]
@@ -294,6 +332,13 @@ const getDayCalendarTitle = (current: CalendarCurrentDay) => {
 	return `${dayOfWeek} - ${getHumanizeDateValue(d.toDate(), false)}`
 }
 
+const getListCalendarTitle = (current: CalendarCurrentList) => {
+	const start = dayjs(current.fromDate).format(`DD ${ShortMonthList[current.fromDate.getMonth()]}`)
+	const end = dayjs(current.toDate).format(`DD ${ShortMonthList[current.toDate.getMonth()]}`)
+	
+	return `Список событий ${start} - ${end}`
+}
+
 export const getCalendarTitle = (current: CalendarMode) => {
 	switch (current.layout) {
 		case 'month':
@@ -304,6 +349,8 @@ export const getCalendarTitle = (current: CalendarMode) => {
 			return getDayCalendarTitle(current)
 		case 'year':
 			return getYearCalendarTitle(current)
+		case "list":
+			return getListCalendarTitle(current)
 	}
 }
 
@@ -319,6 +366,8 @@ export const changeCurrentModeHandler = (current: CalendarMode, pattern: ShortCh
 			return changeMonthCurrentHandler(current, pattern)
 		case 'year':
 			return changeYearCurrentHandler(current, pattern)
+		case 'list':
+			return changeListCurrentHandler(current, pattern)
 	}
 }
 

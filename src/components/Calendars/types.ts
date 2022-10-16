@@ -5,7 +5,7 @@ import {DefaultTextInputProps} from '../Input/TextInput/TextInput'
 import {GetTaskSchemeResponse} from "../../store/api/taskApi/taskApi";
 import {FullResponseEventModel, ObjectId, ShortEventItem} from "../../store/api/taskApi/types";
 import {Task} from "copy-webpack-plugin/types/utils";
-import {FilterTaskStatuses} from "./DayCalendar/EventFilter";
+import {FilterTaskStatuses} from "./Modes/DayCalendar/EventFilter";
 import {UseCalendarReturned} from "../../hooks/useCalendar";
 
 export type FCWithChildren<T = any> = FC<{ children?: ReactNode } & T>
@@ -51,12 +51,18 @@ export interface MonthCalendarProps extends GlobalTaskListProps {
 	renderWeekPattern?: RenderWeekPattern,
 }
 
+export interface ListCalendarModeProps {
+	current: CalendarCurrentList,
+	onSelectTask: OnSelectTaskFnType,
+}
+
 export interface WeekCalendarProps extends Omit<MonthCalendarProps, 'monthItem' | 'renderWeekPattern'> {
 	weekItem: WeekItem
 	taskStorage: TaskStorage<ShortEventItem>
 }
 
 export interface DayCalendarProps extends GlobalTaskListProps {
+	//TODO убрать наследование @GlobalTaskListProps
 	dateItem: DateItem,
 	onSelectTask?: OnSelectTaskFnType,
 }
@@ -371,6 +377,7 @@ export type CalendarMode =
 	| CalendarCurrentMonth
 	| CalendarCurrentWeek
 	| CalendarCurrentDay
+	| CalendarCurrentList
 
 export interface DateItem {
 	current: CalendarCurrentDay,
@@ -385,7 +392,7 @@ export interface DateSettingPanelOptions {
 
 export type OnCloseTaskInfoFnType = () => void
 export type OnAddTaskFnType = (date: Date, initialValues?: FullResponseEventModel) => void
-export type OnChangeCurrentFnType = (date: Date, layout: CalendarMode['layout']) => void
+export type OnChangeCurrentFnType = (date: Date | CalendarCurrentList, layout: CalendarMode['layout']) => void
 export type OnSelectTaskFnType = (taskId: string) => any
 export type AddTaskDateType = CalendarItem | null
 export type SelectedTaskType = SelectTaskItem | null

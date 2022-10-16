@@ -20,6 +20,7 @@ import {useAppSelector} from "../../../store/hooks/hooks";
 import {EventIcon} from "../../Icons/EventIcon";
 import {UrlIcon} from "../../Icons/SocialNetworkIcons";
 import {currentColor, defaultColor} from "../../../common/constants";
+import dayjs from "dayjs";
 
 
 export const CalendarHeader: FC<CalendarHeaderProps> = ({
@@ -41,7 +42,14 @@ export const CalendarHeader: FC<CalendarHeaderProps> = ({
 	
 	const onChangeCurrentLayoutHandler = useCallback((newLayout: CalendarMode["layout"]) => {
 		navigate(`/calendar/${newLayout}/${statuses}`, {replace: true})
-		onChangeCurrent && onChangeCurrent(new Date(), newLayout)
+		if (newLayout === 'list') {
+			return onChangeCurrent && onChangeCurrent({
+				layout: 'list',
+				fromDate: dayjs().startOf('date').toDate(),
+				toDate: dayjs().add(31, 'day').endOf('date').toDate()
+			}, newLayout)
+		}
+		return onChangeCurrent && onChangeCurrent(new Date(), newLayout)
 	}, [statuses])
 	
 	const addTaskHandler = useCallback(() => {

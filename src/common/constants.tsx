@@ -15,7 +15,7 @@ import {ErrorImagesType, InitialCurrentCalendarModeType} from "./types";
 import {SystemErrorImg} from "../components/Icons/Errors/SystemError";
 import {ErrorBadRequestImg} from "../components/Icons/Errors/ErrorBadRequest";
 import {ErrorForbiddenImg} from "../components/Icons/Errors/ErrorForbidden";
-import {FilterTaskStatuses} from "../components/Calendars/DayCalendar/EventFilter";
+import {FilterTaskStatuses} from "../components/Calendars/Modes/DayCalendar/EventFilter";
 
 export const MonthList = [
 	'Январь', 'Февраль', 'Март', 'Апрель', 'Май', 'Июнь', 'Июль', 'Август', 'Сентябрь', 'Октябрь', 'Ноябрь', 'Декабрь'
@@ -23,6 +23,10 @@ export const MonthList = [
 
 export const DeclinationMonthList = [
 	'Января', 'Февраля', 'Марта', 'Апреля', 'Мая', 'Июня', 'Июля', 'Августа', 'Сентября', 'Октября', 'Ноября', 'Декабря'
+]
+
+export const ShortMonthList = [
+	'Янв', 'Фев', 'Март', "Апр", "Май", "Июнь", "Июль", "Авг", "Сент", "Окт", "Нояб", "Дек"
 ]
 
 export const WeekDaysList = [

@@ -1,14 +1,14 @@
 import {FC, useMemo} from 'react'
-import {YearCalendarProps} from '../types'
+import {YearCalendarProps} from '../../types'
 import {css} from 'styled-components'
-import {FlexBlock} from '../../LayoutComponents/FlexBlock'
-import {SmallCalendarMonthTitle} from '../SmallMotnCalendar/SmallCalendarMonthTitle'
-import {useGetTaskSchemeQuery} from "../../../store/api/taskApi/taskApi";
-import {getTaskSchemeScope} from "../../../common/calendarSupport/scopes";
+import {FlexBlock} from '../../../LayoutComponents/FlexBlock'
+import {SmallCalendarMonthTitle} from '../../SmallMotnCalendar/SmallCalendarMonthTitle'
+import {useGetTaskSchemeQuery} from "../../../../store/api/taskApi/taskApi";
+import {getTaskSchemeScope} from "../../../../common/calendarSupport/scopes";
 import dayjs from 'dayjs'
-import {Loader} from "../../Loaders/Loader";
-import {pageHeaderColor} from '../../../common/constants'
-import {SmallMonth} from "../SmallMotnCalendar/SmallMonth";
+import {Loader} from "../../../Loaders/Loader";
+import {pageHeaderColor} from '../../../../common/constants'
+import {SmallMonth} from "../../SmallMotnCalendar/SmallMonth";
 
 export const YearCalendar: FC<YearCalendarProps> = ({
 																											yearItem,
