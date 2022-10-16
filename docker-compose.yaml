@@ -1,0 +1,8 @@
+---
+version: '3.8'
+services:
+  front-react:
+    build: ../../front/task-manager
+    container_name: front-react
+    command: npm start
+    restart: unless-stopped
