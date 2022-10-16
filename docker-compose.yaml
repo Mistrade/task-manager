@@ -2,7 +2,13 @@
 version: '3.8'
 services:
   front-react:
-    build: ../../front/task-manager
+    build: ./
     container_name: front-react
     command: npm start
     restart: unless-stopped
+    ports:
+      - "8080:8080"
+    stdin_open: true
+    tty: true
+    volumes:
+      - './src:/app/src'
