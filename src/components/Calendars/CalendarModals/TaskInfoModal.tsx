@@ -14,7 +14,7 @@ import {EmptyButtonStyled} from '../../Buttons/EmptyButton.styled'
 import {SelectListContainer} from "../../Input/SelectInput/SelectListContainer";
 import {SelectItemContainer} from '../../Input/SelectInput/SelectItemContainer'
 
-const Informer = React.lazy(() => import('./../TaskInformer/TaskInformer').then(({TaskInformer}) => ({default: TaskInformer})))
+const Informer = React.lazy(() => import('../TaskInformer/TaskInformer').then(({TaskInformer}) => ({default: TaskInformer})))
 
 export const TaskInfoModal: FC<TaskInfoModalProps> = ({onClose, onCloneEvent, onOpenClonedEvent}) => {
 	const {taskId} = useParams<{ taskId: string }>()

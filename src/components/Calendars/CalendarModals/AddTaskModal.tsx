@@ -7,7 +7,7 @@ import {Tooltip} from '../../Tooltip/Tooltip'
 import {ErrorBoundary} from "../../Errors/ErrorBoundary";
 import dayjs from "dayjs";
 
-const Form = React.lazy(() => import('./../Forms/AddTaskForm')
+const Form = React.lazy(() => import('../Forms/AddTaskForm')
 	.then(({AddTaskForm}) => ({default: AddTaskForm}))
 )
 
