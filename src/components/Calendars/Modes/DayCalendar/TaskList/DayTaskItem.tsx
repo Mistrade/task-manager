@@ -89,7 +89,7 @@ export const DayTaskItem: FC<DayTaskItemProps> = ({
 				<ToggleEventPriority
 					stopPropagation={true}
 					renderText={false}
-					elementId={`change__status_${taskInfo.id}`}
+					elementId={`change__status_${taskInfo.id}_${tabIndex}`}
 					value={taskInfo.priority}
 					onChange={async (field, data) => {
 						await updateTask({field, data, id: taskInfo.id})

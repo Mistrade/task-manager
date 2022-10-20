@@ -29,6 +29,7 @@ import {
 import {DeclinationMonthList, getHumanizeDateValue, MonthList, ShortMonthList, WeekDaysList} from './constants'
 import {getMonthDays, getWeekDays, getYearDays} from './calendarSupport/getters'
 import {number} from "yup";
+import {ShortEventItem} from "../store/api/taskApi/types";
 
 export const addNull = (value: number): string => value < 10 ? `0${value}` : value.toString()
 
@@ -53,7 +54,7 @@ export const checkTaskStatus = (taskItem: SelectTaskItem): string => {
 	return 'В работе'
 }
 
-export const getTaskListOfDay = <EVENT = EventItem>(day: Date, storage: TaskStorage<EVENT>): Array<EVENT> => {
+export const getTaskListOfDay = <EVENT = EventItem | ShortEventItem>(day: Date, storage: TaskStorage<EVENT>): Array<EVENT> => {
 	const y = storage[dayjs(day).year()] || {}
 	const m = y[dayjs(day).month()] || {}
 	return m[dayjs(day).date()] || []

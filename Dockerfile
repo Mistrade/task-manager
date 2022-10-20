@@ -5,7 +5,7 @@ WORKDIR /app
 COPY package.json /app
 # COPY package*.json ./
 
-RUN npm install -g npm
+#RUN npm install -g npm
 
 RUN npm install
 
@@ -14,6 +14,6 @@ RUN npm install
 
 COPY . .
 
-RUN npm run build
+#RUN npm run build
 
-RUN npm install --global serve
+#RUN npm install --global serve

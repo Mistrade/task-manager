@@ -1,11 +1,17 @@
 import React, {FC, useCallback, useMemo} from "react";
-import {ListCalendarModeProps} from "../../types";
+import {ListCalendarModeProps, TaskStorage} from "../../types";
 import {FlexBlock} from "../../../LayoutComponents/FlexBlock";
 import {EventFilter} from "../DayCalendar/EventFilter";
-import {useGetTaskCountOfStatusQuery, useGetTasksAtScopeQuery} from "../../../../store/api/taskApi/taskApi";
+import {
+	ServerResponse,
+	useGetTaskCountOfStatusQuery,
+	useGetTasksAtScopeQuery
+} from "../../../../store/api/taskApi/taskApi";
 import {useAppDispatch, useAppSelector} from "../../../../store/hooks/hooks";
 import {useEventFilters} from "../../../../hooks/useEventFilters";
 import {changeCalendarCurrent} from "../../../../store/reducers/calendar";
+import {ShortEventItem} from "../../../../store/api/taskApi/types";
+import {ListModeTaskController} from "./ListModeTaskController";
 
 
 export const ListCalendarMode: FC<ListCalendarModeProps> = ({current, onSelectTask}) => {
@@ -76,6 +82,7 @@ export const ListCalendarMode: FC<ListCalendarModeProps> = ({current, onSelectTa
 					values={filters}
 					onChangeHandlers={{
 						...handlers,
+						//TODO Добавить обработку на изменение диапазона (например не более 90 дней или 30 дней должна быть разница между start и end)
 						start: (date) => onChangeDate(date, 'start'),
 						end: (date) => onChangeDate(date, 'end'),
 					}}
@@ -84,8 +91,18 @@ export const ListCalendarMode: FC<ListCalendarModeProps> = ({current, onSelectTa
 			</FlexBlock>
 			<FlexBlock
 				overflow={'scroll'}
+				position={'relative'}
+				direction={'column'}
+				width={'100%'}
+				m={-8}
+				p={8}
 			>
-				Тут будут события
+				<ListModeTaskController
+					eventStorage={data as TaskStorage<ShortEventItem>}
+					fromDate={debounceValue.start}
+					toDate={debounceValue.end}
+					onSelectTask={onSelectTask}
+				/>
 			</FlexBlock>
 		</FlexBlock>
 	)
