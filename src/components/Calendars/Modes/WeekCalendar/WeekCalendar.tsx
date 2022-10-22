@@ -18,7 +18,7 @@ const WeekContainer = styled('div')<{ isVisible?: boolean }>`
   align-items: flex-start;
   width: 100%;
   transition: all .3s ease-in;
-	border: 1px solid transparent;
+  border: 1px solid transparent;
 
   ${_ => !_.isVisible ? css`
             border: 1px solid ${defaultColor};

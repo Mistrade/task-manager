@@ -1,7 +1,6 @@
 import {WeekCalendarProps} from "../../types";
 import React, {FC, useMemo} from "react";
 import {WeeKCalendar} from "./WeekCalendar";
-import {getTaskSchemeScope} from "../../../../common/calendarSupport/scopes";
 import {useGetTaskCountOfStatusQuery, useGetTasksAtScopeQuery} from "../../../../store/api/taskApi/taskApi";
 import dayjs from "dayjs";
 import {FlexBlock} from "../../../LayoutComponents/FlexBlock";

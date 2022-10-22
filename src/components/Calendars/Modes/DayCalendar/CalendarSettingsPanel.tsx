@@ -1,8 +1,6 @@
 import React, {FC, useCallback, useMemo} from 'react'
 import {FlexBlock} from '../../../LayoutComponents/FlexBlock'
 import {DaySettingsPanelProps} from '../../types'
-import {css} from 'styled-components'
-import {Button} from '../../../Buttons/Buttons.styled'
 import {SmallCalendarMonthTitle} from '../../SmallMotnCalendar/SmallCalendarMonthTitle'
 import dayjs from 'dayjs'
 import {Tooltip} from '../../../Tooltip/Tooltip'

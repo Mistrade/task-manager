@@ -6,12 +6,9 @@ import {TextInput} from '../../../Input/TextInput/TextInput'
 import {DatePicker} from '../../DatePicker/DatePicker'
 import {EventFilters} from "./TaskList/DayTaskList";
 import dayjs from "dayjs";
-import {disabledColor} from "../../../../common/constants";
-import {SwitchCalendarModeTab} from "../../Calendar.styled";
 import {TaskListEventFiltersContainer} from './TaskList/TaskList.styled'
 import {Switcher, SwitcherBadges} from "../../../Switcher/Switcher";
 import {useAppSelector} from "../../../../store/hooks/hooks";
-import {CalendarStatusProxy} from "../../CalendarStatusProxy";
 
 interface EventFilterProps extends FormHandle {
 	statusBadges?: SwitcherBadges<FilterTaskStatuses>
@@ -33,7 +30,7 @@ export interface EventFilterOnChangeHandle {
 
 type OnFocusEventHandlers = (fieldName: keyof EventFilters, e: React.FocusEvent<HTMLInputElement>) => void
 
-export type FilterTaskStatuses = 'in_work' | 'completed' | 'archive' | "created"
+export type FilterTaskStatuses = 'in_work' | 'completed' | 'archive' | "created" | 'all'
 
 interface DayTaskListTabObject {
 	title: string,
@@ -44,14 +41,16 @@ export const URLTaskStatuses: { [key in FilterTaskStatuses]: FilterTaskStatuses 
 	created: 'created',
 	in_work: 'in_work',
 	completed: 'completed',
-	archive: 'archive'
+	archive: 'archive',
+	all: 'all'
 }
 
 export const dayTaskListTabsArray: Array<DayTaskListTabObject> = [
+	{title: 'Все события', key: URLTaskStatuses.all},
 	{title: 'Запланировано', key: URLTaskStatuses.created},
 	{title: 'В работе', key: URLTaskStatuses.in_work},
 	{title: 'Выполнено', key: URLTaskStatuses.completed},
-	{title: 'Архив событий', key: URLTaskStatuses.archive}
+	{title: 'Архив событий', key: URLTaskStatuses.archive},
 ]
 
 

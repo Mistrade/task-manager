@@ -22,8 +22,9 @@ export const InputActions: FC<InputActionsProps> = ({actions, actionHandler, onD
 		
 		return (
 			<InputActionsStyledContainer>
-				{actions.map(action => (
+				{actions.map((action, index) => (
 					<InputActionStyledItem
+						key={action.actionKey + action.title}
 						type={'button'}
 						onClick={() => actionHandler(action)}
 						withDelete={!!onDeleteAction}

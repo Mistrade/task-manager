@@ -4,7 +4,7 @@ import {CalendarDateListContainer, CalendarDesktopContainer} from '../../Calenda
 import {WeeKCalendar} from '../WeekCalendar/WeekCalendar'
 import {useGetTaskCountOfStatusQuery, useGetTasksAtScopeQuery} from "../../../../store/api/taskApi/taskApi";
 import {getTaskSchemeScope} from "../../../../common/calendarSupport/scopes";
-import {initialFiltersValues, useEventFilters} from "../../../../hooks/useEventFilters";
+import {useEventFilters} from "../../../../hooks/useEventFilters";
 import dayjs from "dayjs";
 import {EventFilter} from "../DayCalendar/EventFilter";
 import {FlexBlock} from "../../../LayoutComponents/FlexBlock";

@@ -36,7 +36,6 @@ export const DatePicker: FC<DatePickerProps> = memo(({
 	}, [])
 	
 	useEffect(() => {
-		console.log(currentDate)
 		const d = dayjs(currentDate)
 		if (d.isValid()) {
 			const isSame = d.isSame(stateValue, 'minute')

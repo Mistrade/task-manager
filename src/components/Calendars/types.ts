@@ -4,7 +4,6 @@ import {FlexBlockProps} from '../LayoutComponents/FlexBlock'
 import {DefaultTextInputProps} from '../Input/TextInput/TextInput'
 import {GetTaskSchemeResponse} from "../../store/api/taskApi/taskApi";
 import {FullResponseEventModel, ObjectId, ShortEventItem} from "../../store/api/taskApi/types";
-import {Task} from "copy-webpack-plugin/types/utils";
 import {FilterTaskStatuses} from "./Modes/DayCalendar/EventFilter";
 import {UseCalendarReturned} from "../../hooks/useCalendar";
 
@@ -226,6 +225,7 @@ export interface CalendarTaskItem {
 	members: TaskMembersListType,
 	link: EventLinkItem | null,
 	calendar: string,
+	isLiked?: boolean
 }
 
 export type CalendarPriorityList = Array<{ type: CalendarPriorityKeys, title: string }>

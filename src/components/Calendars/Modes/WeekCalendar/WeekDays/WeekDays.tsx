@@ -12,6 +12,7 @@ export const WeekDays: FC<WeekDaysProps> = ({gap = 4, list}) => {
 		<FlexBlock gap={gap} width={'100%'} direction={'row'} justify={'flex-start'} align={'flex-end'}>
 			{list.map((weekDay) => (
 				<FlexBlock
+					key={weekDay}
 					width={`calc(${100 / list.length}% - ${((list.length - 1) * gap) / list.length}px)`}
 					justify={'center'}
 					pb={6}

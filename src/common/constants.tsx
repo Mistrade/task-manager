@@ -84,7 +84,39 @@ export const TaskStatusesObject: TaskStatusesObjectProps = {
 	created: ['created'],
 	in_work: ['in_progress', 'review'],
 	completed: ['completed'],
-	archive: ['archive']
+	archive: ['archive'],
+	all: ['created', 'completed', 'review', 'in_progress']
+}
+
+interface ContinueTaskObject {
+	title: string,
+	nextStatus: TaskStatusesType,
+}
+
+export const ContinueWorkTaskButtonName: { [key in TaskStatusesType]: Array<ContinueTaskObject> } = {
+	archive: [{
+		title: 'Восстановить',
+		nextStatus: 'created',
+	}],
+	review: [{
+		title: 'Выполнить',
+		nextStatus: 'completed',
+	}],
+	completed: [],
+	in_progress: [
+		{
+			title: 'На проверку',
+			nextStatus: 'review',
+		},
+		{
+			title: 'Выполнить',
+			nextStatus: 'completed'
+		}
+	],
+	created: [{
+		title: 'Взять в работу',
+		nextStatus: 'in_progress'
+	}]
 }
 
 export const TASK_STATUSES: { [key in TaskStatusesType]: TaskStatusInfo } = {

@@ -2,7 +2,7 @@ import React, {FC, useCallback} from "react";
 import dayjs from "dayjs";
 import {ServerResponse, useUpdateTaskMutation} from "../../../../../store/api/taskApi/taskApi";
 import {FlexBlock} from "../../../../LayoutComponents/FlexBlock";
-import {defaultColor, hoverColor, pageHeaderColor} from "../../../../../common/constants";
+import {currentColor, defaultColor, hoverColor, orangeColor, pageHeaderColor,} from "../../../../../common/constants";
 import {css} from "styled-components";
 import {toast} from "react-toastify";
 import {TaskPreviewDescription} from "./TaskList.styled";
@@ -11,6 +11,9 @@ import {ShortEventItem} from "../../../../../store/api/taskApi/types";
 import {OnSelectTaskFnType} from "../../../types";
 import {CalendarIdentifier} from "../../../CalendarList/CalendarList.styled";
 import {ToggleEventPriority} from "../../../TaskInformer/SupportsComponent/ToggleTaskInformerButtons";
+import {ContinueTaskButtonGroup} from "../../../../Buttons/ContinueTaskButtons/ContinueTaskButtonGroup";
+import {EventIcon} from "../../../../Icons/EventIcon";
+import {LikeButton} from "../../../../Buttons/LikeButton";
 
 interface DayTaskItemProps {
 	taskInfo: ShortEventItem,
@@ -119,10 +122,40 @@ export const DayTaskItem: FC<DayTaskItemProps> = ({
 				>
 					<FlexBlock width={'100%'} direction={'column'} align={'flex-start'} justify={'flex-start'} gap={12}>
 						<FlexBlock width={'100%'} direction={'row'} gap={8} align={'flex-start'} justify={'flex-start'}>
+							<LikeButton
+								isChecked={taskInfo.isLiked}
+								id={taskInfo.id}
+								onChange={async (isChecked) => {
+									await updateTask({id: taskInfo.id, data: !taskInfo.isLiked, field: 'isLiked'})
+								}}
+							/>
 							<CalendarIdentifier color={taskInfo.calendar.color}/>
-							<FlexBlock>
+							<EventIcon
+								size={20}
+								color={currentColor}
+								status={taskInfo.status}
+							/>
+							<FlexBlock
+								additionalCss={css`
+                  text-decoration: ${taskInfo.status === 'completed' ? 'line-through' : 'none'};
+                  text-decoration-color: ${taskInfo.status === 'completed' ? orangeColor : '#000'};
+                  text-decoration-thickness: 2px;
+                  font-weight: 500;
+								`}
+							>
 								{taskInfo.title}
 							</FlexBlock>
+						</FlexBlock>
+						<FlexBlock>
+							<ContinueTaskButtonGroup
+								status={taskInfo.status}
+								updateFn={async (nextStatus) => {
+									await updateTask({field: 'status', data: nextStatus, id: taskInfo.id})
+									if (refetchTaskList) {
+										await refetchTaskList()
+									}
+								}}
+							/>
 						</FlexBlock>
 						{taskInfo?.description && (
 							<TaskPreviewDescription>
@@ -143,33 +176,14 @@ export const DayTaskItem: FC<DayTaskItemProps> = ({
 						</FlexBlock>
 					)}
 					{taskInfo.id && (
-						<>
-							{taskInfo.status === 'archive' && (
-								<FlexBlock>
-									<JoinToEventButton
-										onClick={async (e) => {
-											e.stopPropagation()
-											await updateTask({field: 'status', data: 'created', id: taskInfo.id})
-											if (refetchTaskList) {
-												await refetchTaskList()
-											}
-										}}
-									>
-										Восстановить
-									</JoinToEventButton>
-								</FlexBlock>
-							)}
-							<FlexBlock>
-								<JoinToEventButton
-									onClick={async (e) => {
-										e.stopPropagation()
-										onDelete && onDelete(taskInfo.id)
-									}}
-								>
-									Удалить
-								</JoinToEventButton>
-							</FlexBlock>
-						</>
+						<JoinToEventButton
+							onClick={async (e) => {
+								e.stopPropagation()
+								onDelete && onDelete(taskInfo.id)
+							}}
+						>
+							Удалить
+						</JoinToEventButton>
 					)}
 				</FlexBlock>
 			</FlexBlock>

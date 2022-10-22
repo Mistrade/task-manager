@@ -1,6 +1,7 @@
 import {MonthItem, UsageTaskItemBaseProps} from "../../types";
 import {
-	TaskInformerUpdateFn, ToggleEventCalendar,
+	TaskInformerUpdateFn,
+	ToggleEventCalendar,
 	ToggleEventPriority,
 	ToggleEventStatus
 } from "../SupportsComponent/ToggleTaskInformerButtons";

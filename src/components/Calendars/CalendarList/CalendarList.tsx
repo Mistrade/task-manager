@@ -1,6 +1,5 @@
 import {CalendarListStyled} from "./CalendarList.styled";
 import {CalendarNameListItem} from "./CalendarNameListItem";
-import {useEffect} from "react";
 import {useGetCalendarsQuery} from "../../../store/api/taskApi/taskApi";
 import {useCalendar} from "../../../hooks/useCalendar";
 

@@ -1,20 +1,17 @@
-import React, {FC, useCallback, useEffect, useMemo, useState} from 'react'
+import React, {FC, useCallback, useEffect, useMemo} from 'react'
 import {FlexBlock} from '../../../../LayoutComponents/FlexBlock'
 import {CalendarCurrentDay, CalendarPriorityKeys, GlobalTaskListProps, OnSelectTaskFnType} from '../../../types'
 import dayjs from 'dayjs'
 import {Button} from '../../../../Buttons/Buttons.styled'
-import {EventFilter, EventFilterOnChangeHandle, FilterTaskStatuses} from '../EventFilter'
+import {EventFilter, FilterTaskStatuses} from '../EventFilter'
 import {
 	useGetTaskCountOfStatusQuery,
 	useGetTasksAtDayQuery,
-	useGetTasksAtScopeQuery,
 	useRemoveTaskMutation
 } from "../../../../../store/api/taskApi/taskApi";
-import {useDebounce} from "../../../../../hooks/useDebounce";
-import {Loader} from "../../../../Loaders/Loader";
 import {DayTaskItem} from "./DayTaskItem";
 import {NotFoundTask} from "./NotFoundTasks";
-import {TaskListEventFiltersContainer, TaskListMainContainer} from "./TaskList.styled";
+import {TaskListMainContainer} from "./TaskList.styled";
 import {css} from "styled-components";
 import {initialFiltersValues, useEventFilters} from "../../../../../hooks/useEventFilters";
 import {useAppSelector} from "../../../../../store/hooks/hooks";

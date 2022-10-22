@@ -53,8 +53,9 @@ export interface FullResponseEventModel {
 	userId: UserModelResponse,
 	lastChange: UtcDate,
 	history: Array<EventHistoryResponse>,
-	calendar: CalendarResponse
+	calendar: CalendarResponse,
+	isLiked: boolean
 }
 
-export type ShortEventItem = Pick<FullResponseEventModel, 'title' | 'time' | 'timeEnd' | 'link' | 'id' | 'priority' | 'description' | 'status' | 'calendar'>
+export type ShortEventItem = Pick<FullResponseEventModel, 'title' | 'time' | 'timeEnd' | 'link' | 'id' | 'priority' | 'description' | 'status' | 'calendar' | 'isLiked'>
 

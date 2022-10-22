@@ -9,7 +9,7 @@ import {convertEventStatus} from "../../../../common/functions";
 import {ArrowIndicator} from "../../Cell";
 import {FlexBlock} from "../../../LayoutComponents/FlexBlock";
 import {CalendarNameItem} from "../../CalendarList/CalendarNameListItem";
-import {useChangeSelectCalendarMutation, useGetCalendarsQuery} from "../../../../store/api/taskApi/taskApi";
+import {useGetCalendarsQuery} from "../../../../store/api/taskApi/taskApi";
 import {CalendarIdentifier} from "../../CalendarList/CalendarList.styled";
 import {LoaderIcon} from "../../../Icons/Icons";
 

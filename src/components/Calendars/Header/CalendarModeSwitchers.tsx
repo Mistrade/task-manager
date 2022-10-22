@@ -2,7 +2,6 @@ import {FC} from 'react'
 import {SwitchCalendarModeTab} from '../Calendar.styled'
 import {FlexBlock} from '../../LayoutComponents/FlexBlock'
 import {CalendarHeaderSwitchersProps} from '../types'
-import {WaitIcon} from "../../Icons/Icons";
 import {currentColor} from "../../../common/constants";
 import {StarsListIcon} from "../../Icons/AppIcon/StarsListIcon";
 import {ListIcon} from "../../Icons/AppIcon/ListIcon";

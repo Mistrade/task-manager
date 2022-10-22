@@ -2,10 +2,11 @@ import {FC, useEffect} from "react";
 import {CalendarMode} from "./types";
 import {useAppDispatch, useAppSelector} from "../../store/hooks/hooks";
 import {changeCalendarCurrent} from "../../store/reducers/calendar";
-import {Route, Routes, useNavigate, useParams} from "react-router-dom";
+import {Route, Routes, useParams} from "react-router-dom";
 import {CalendarStatusProxy} from "./CalendarStatusProxy";
 import {useLocation} from "react-router";
 import dayjs from "dayjs";
+import {useSearchNavigate} from "../../hooks/useSearchNavigate";
 
 const layouts: Array<CalendarMode['layout']> = [
 	'day', 'week', 'month', 'year', 'list'
@@ -15,7 +16,7 @@ export const CalendarMain: FC = () => {
 	const {layout} = useParams<{ layout: CalendarMode["layout"] }>()
 	const {pathname} = useLocation()
 	const dispatch = useAppDispatch()
-	const navigate = useNavigate()
+	const navigate = useSearchNavigate()
 	const {statuses} = useAppSelector(state => state.calendar)
 	
 	useEffect(() => {
@@ -33,7 +34,6 @@ export const CalendarMain: FC = () => {
 			} else {
 				dispatch(changeCalendarCurrent({layout, date: new Date().toString()}))
 			}
-			console.log(pathname, pathname.split('/'))
 			const pathArray = pathname.split('/').filter(Boolean)
 			if (pathArray.length <= 2) {
 				navigate(`/calendar/${layout}/${statuses}`, {replace: true})

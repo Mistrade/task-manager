@@ -5,22 +5,18 @@ import {changeCurrentModeHandler, getCalendarTitle} from '../../../common/functi
 import {FlexBlock} from '../../LayoutComponents/FlexBlock'
 import {CalendarTitle} from '../Calendar.styled'
 import {CalendarModeSwitchers} from './CalendarModeSwitchers'
-import {CalendarTodaySwitchers} from './CalendarTodaySwitchers'
-import {useNavigate} from "react-router-dom";
 import {useCalendar} from "../../../hooks/useCalendar";
 import {useParams} from "react-router";
 import {CalendarHeaderContainer} from "./CalendarHeader.styled";
-import {DropDownButton} from "../../Buttons/DropDownButton";
 import {EmptyButtonStyled} from '../../Buttons/EmptyButton.styled'
-import {BurgerIcon, PencilIcon, PlusIcon, WaitIcon} from "../../Icons/Icons";
+import {PlusIcon, WaitIcon} from "../../Icons/Icons";
 import {DropDown} from "../../Dropdown/DropDown";
 import {SelectListContainer} from "../../Input/SelectInput/SelectListContainer";
 import {SelectItemContainer} from "../../Input/SelectInput/SelectItemContainer";
 import {useAppSelector} from "../../../store/hooks/hooks";
-import {EventIcon} from "../../Icons/EventIcon";
-import {UrlIcon} from "../../Icons/SocialNetworkIcons";
-import {currentColor, defaultColor} from "../../../common/constants";
+import {defaultColor} from "../../../common/constants";
 import dayjs from "dayjs";
+import {useSearchNavigate} from "../../../hooks/useSearchNavigate";
 
 
 export const CalendarHeader: FC<CalendarHeaderProps> = ({
@@ -34,7 +30,7 @@ export const CalendarHeader: FC<CalendarHeaderProps> = ({
 		return getCalendarTitle(current)
 	}, [current])
 	
-	const navigate = useNavigate()
+	const navigate = useSearchNavigate()
 	
 	const onChangeCurrentHandler = useCallback((pattern: ShortChangeCurrentPattern = 'today') => {
 		onChangeCurrent && onChangeCurrent(changeCurrentModeHandler(current, pattern), current.layout)

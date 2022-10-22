@@ -22,8 +22,7 @@ import {
 	defaultYearItem,
 	disabledColor,
 	ERROR_TITLES,
-	pageHeaderColor,
-	WeekDaysList
+	pageHeaderColor
 } from '../../common/constants'
 import {Interceptor} from './Interceptor'
 import {ErrorBoundary} from "../Errors/ErrorBoundary";
@@ -32,9 +31,8 @@ import {Route, Routes} from 'react-router-dom'
 import {CalendarSettingsPanel} from "./Modes/DayCalendar/CalendarSettingsPanel";
 import dayjs from "dayjs";
 import {getMonthDays} from "../../common/calendarSupport/getters";
-import {WeekDays} from "./Modes/WeekCalendar/WeekDays/WeekDays";
 import {ChangeCalendarModal} from "./CalendarModals/CreateCalendar";
-import {RemoveCalendarHock, RemoveCalendarModal} from "./CalendarModals/RemoveCalendarModal";
+import {RemoveCalendarHock} from "./CalendarModals/RemoveCalendarModal";
 import {css} from "styled-components";
 import {ChangeCalendarHock} from "./CalendarList/ChangeCalendarHock";
 
@@ -104,10 +102,6 @@ export const Calendar: FC<CalendarProps> = ({
 				}, {useOtherDays: true})
 		}
 	}
-	
-	useEffect(() => {
-		console.log(calendar.current)
-	}, [calendar.current])
 	
 	return (
 		<>

@@ -2,11 +2,7 @@ import React, {FC, useCallback, useMemo} from "react";
 import {ListCalendarModeProps, TaskStorage} from "../../types";
 import {FlexBlock} from "../../../LayoutComponents/FlexBlock";
 import {EventFilter} from "../DayCalendar/EventFilter";
-import {
-	ServerResponse,
-	useGetTaskCountOfStatusQuery,
-	useGetTasksAtScopeQuery
-} from "../../../../store/api/taskApi/taskApi";
+import {useGetTaskCountOfStatusQuery, useGetTasksAtScopeQuery} from "../../../../store/api/taskApi/taskApi";
 import {useAppDispatch, useAppSelector} from "../../../../store/hooks/hooks";
 import {useEventFilters} from "../../../../hooks/useEventFilters";
 import {changeCalendarCurrent} from "../../../../store/reducers/calendar";

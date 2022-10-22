@@ -1,11 +1,10 @@
 import {TaskStorage} from "../../types";
 import {ShortEventItem} from "../../../../store/api/taskApi/types";
-import {FC, useEffect, useMemo, useRef} from "react";
+import {FC, useMemo} from "react";
 import dayjs from "dayjs";
 import {FlexBlock} from "../../../LayoutComponents/FlexBlock";
 import {getTaskListOfDay} from "../../../../common/functions";
 import {DayTaskItem} from "../DayCalendar/TaskList/DayTaskItem";
-import {disabledColor} from "../../../../common/constants";
 import {CalendarTitle} from "../../Calendar.styled";
 import {css} from "styled-components";
 import {UseCalendarReturned} from "../../../../hooks/useCalendar";

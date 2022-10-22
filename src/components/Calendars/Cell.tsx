@@ -1,16 +1,21 @@
 import styled, {css, keyframes} from 'styled-components'
-import React, {FC, useMemo, useRef, useState} from 'react'
+import React, {FC, useMemo, useState} from 'react'
 import {
 	CalendarCellProps,
 	CalendarPriorityKeys,
-	CalendarTaskItem,
-	CalendarTaskList, EventItem,
 	TaskTileItemProps,
 	TaskTileListProps,
 	TaskTilePriorityIndicatorProps
 } from './types'
 import {addNull} from '../../common/functions'
-import {currentColor, defaultColor, disabledColor, hoverColor, priorityColors} from '../../common/constants'
+import {
+	currentColor,
+	defaultColor,
+	disabledColor,
+	hoverColor,
+	orangeColor,
+	priorityColors
+} from '../../common/constants'
 import dayjs from 'dayjs'
 import {FlexBlock, FlexBlockProps} from '../LayoutComponents/FlexBlock'
 import {Arrow, BurgerIcon, CompleteIcon, DoubleArrow, IconProps, SadSmile} from '../Icons/Icons'
@@ -54,7 +59,7 @@ export const CellContainer = styled('div')<CellComponentProps>`
   & {
     position: relative;
     width: 100%;
-    height: 100%;
+    height: fit-content;
     display: flex;
     padding: 4px;
     justify-content: flex-start;
@@ -65,7 +70,7 @@ export const CellContainer = styled('div')<CellComponentProps>`
     border: 1px solid ${defaultColor};
     //transition: all .3s ease-in;
     //opacity: .2;
-    transition: box-shadow .3s ease-in-out;
+    transition: box-shadow .3s ease-in-out, height .3s ease-in;
     ${_ => 'isVisible' in _ ?
             !_.isVisible
                     ? css`display: none`
@@ -141,17 +146,18 @@ const TaskTile = styled('div')<CellComponentProps & { withFill?: boolean }>`
     margin-top: 4px;
     opacity: ${props => props.disabled ? .2 : 1};
     display: flex;
-    justify-content: flex-start;
-    align-items: center;
+    //justify-content: flex-start;
+    //align-items: center;
     flex-wrap: nowrap;
     cursor: pointer;
+    flex-direction: column;
   }
 `
 
 export const TaskTileText = styled('span')<{ isCompleted?: boolean, maxWidth?: string, fs?: string }>`
   & {
     display: block;
-    font-size: ${props => props.fs || '12px'};
+    font-size: ${props => props.fs || '14px'};
     line-height: 1;
     width: 100%;
     flex: 1 1 auto;
@@ -160,6 +166,9 @@ export const TaskTileText = styled('span')<{ isCompleted?: boolean, maxWidth?: s
     text-overflow: ellipsis;
     text-align: left;
     text-decoration: ${props => props.isCompleted ? 'line-through' : 'none'};
+    text-decoration-color: ${props => props.isCompleted ? orangeColor : '#000'};
+    text-decoration-thickness: 2px;
+    font-weight: 500;
   }
 `
 
@@ -170,11 +179,12 @@ const TaskTimeValue = styled('span')`
     display: flex;
     flex: 1 0 auto;
     flex-grow: 1;
-    justify-content: flex-end;
+    justify-content: flex-start;
     white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis;
     text-align: right;
+    color: ${defaultColor}
   }
 `
 
@@ -255,6 +265,11 @@ export const CalendarCell: FC<CalendarCellProps> = ({
 				wrap={'nowrap'}
 				align={'center'}
 				onClick={() => onClickToDate && onClickToDate(value)}
+				additionalCss={onClickToDate && css`
+          &:hover {
+            background-color: ${hoverColor};
+          }
+				`}
 			>
 				<CalendarDate
 					isToday={value.meta.isToday}
@@ -326,16 +341,22 @@ export const TaskTileItem: FC<TaskTileItemProps> = ({taskInfo, onSelect, date}) 
 			isCurrent={date.meta.isCurrent}
 			onClick={(event) => condition && onSelect && onSelect(taskInfo.id)}
 		>
-			<CalendarIdentifier
-				color={taskInfo.calendar.color}
-				size={13}
-			/>
-			<TaskTileText isCompleted={taskInfo.status === 'completed'}>
-				{taskInfo.title}
-			</TaskTileText>
-			<TaskTimeValue>
-				{addNull(dayjs(taskInfo.time).hour())}:{addNull(dayjs(taskInfo.time).minute())} UTC+{dayjs(taskInfo.time).utcOffset() / 60}
-			</TaskTimeValue>
+			<FlexBlock direction={'row'} gap={4} width={'100%'}>
+				<CalendarIdentifier
+					color={taskInfo.calendar.color}
+					size={13}
+				/>
+				<FlexBlock direction={'column'} gap={4} width={'calc(100% - 13px)'}>
+					<FlexBlock direction={'row'} justify={'flex-start'} align={'center'} width={'100%'}>
+						<TaskTileText isCompleted={taskInfo.status === 'completed'}>
+							{taskInfo.title}
+						</TaskTileText>
+					</FlexBlock>
+					<TaskTimeValue>
+						{addNull(dayjs(taskInfo.time).hour())}:{addNull(dayjs(taskInfo.time).minute())} - {addNull(dayjs(taskInfo.timeEnd).hour())}:{addNull(dayjs(taskInfo.timeEnd).minute())}
+					</TaskTimeValue>
+				</FlexBlock>
+			</FlexBlock>
 		</TaskTile>
 	)
 }

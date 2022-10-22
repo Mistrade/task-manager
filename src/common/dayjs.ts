@@ -11,7 +11,7 @@ import updateLocale from 'dayjs/plugin/updateLocale'
 import duration from 'dayjs/plugin/duration'
 import utc from 'dayjs/plugin/utc'
 import tz from 'dayjs/plugin/timezone'
-import {CalendarTaskItem, CalendarTaskList, EventItem} from '../components/Calendars/types'
+import {EventItem} from '../components/Calendars/types'
 
 dayjs.extend(isBetween)
 dayjs.extend(isToday)

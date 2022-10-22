@@ -1,6 +1,7 @@
 import {createSlice, PayloadAction} from "@reduxjs/toolkit";
 import {
-	CalendarCurrentDay, CalendarCurrentList,
+	CalendarCurrentDay,
+	CalendarCurrentList,
 	CalendarCurrentMonth,
 	CalendarCurrentWeek,
 	CalendarCurrentYear,
@@ -45,7 +46,7 @@ interface CalendarState {
 
 const initialState: CalendarState = {
 	current: {layout: 'day', date: new Date().toString()},
-	statuses: 'in_work',
+	statuses: 'all',
 	addTaskDate: null,
 	calendarRemoveCandidate: null,
 	clonedParentEvent: null,

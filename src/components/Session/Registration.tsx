@@ -6,13 +6,13 @@ import {defaultColor} from "../../common/constants";
 import {TextInput} from "../Input/TextInput/TextInput";
 import {Tooltip} from "../Tooltip/Tooltip";
 import {Button} from "../Buttons/Buttons.styled";
-import {useNavigate} from "react-router-dom";
 import {LinkStyled} from "../Buttons/Link.styled";
 import {SessionFormContainer} from "./SessionFormContainer";
 import {PasswordInput} from "../Input/PasswordInput/PasswordInput";
 import {useRegistrationMutation} from "../../store/api/sessionApi";
 import {toast} from "react-toastify";
 import {RegistrationValidationScheme} from "../../common/validation/session";
+import {useSearchNavigate} from "../../hooks/useSearchNavigate";
 
 
 export interface RegistrationFormType {
@@ -47,7 +47,7 @@ export const Registration: FC = () => {
 		}
 	})
 	
-	const navigate = useNavigate()
+	const navigate = useSearchNavigate()
 	
 	useEffect(() => {
 		if (data?.info?.type) {

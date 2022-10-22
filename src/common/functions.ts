@@ -1,5 +1,6 @@
 import {
-	CalendarCurrentDay, CalendarCurrentList,
+	CalendarCurrentDay,
+	CalendarCurrentList,
 	CalendarCurrentMonth,
 	CalendarCurrentWeek,
 	CalendarCurrentYear,
@@ -20,15 +21,15 @@ import {
 } from '../components/Calendars/types'
 import dayjs from 'dayjs'
 import {
-	ChangeDayCurrentFn, ChangeListCurrentFn,
+	ChangeDayCurrentFn,
+	ChangeListCurrentFn,
 	ChangeMonthCurrentFn,
 	ChangeWeekCurrentFn,
 	ChangeYearCurrentFn,
 	ShortChangeCurrentPattern
 } from './commonTypes'
-import {DeclinationMonthList, getHumanizeDateValue, MonthList, ShortMonthList, WeekDaysList} from './constants'
+import {getHumanizeDateValue, MonthList, ShortMonthList, WeekDaysList} from './constants'
 import {getMonthDays, getWeekDays, getYearDays} from './calendarSupport/getters'
-import {number} from "yup";
 import {ShortEventItem} from "../store/api/taskApi/types";
 
 export const addNull = (value: number): string => value < 10 ? `0${value}` : value.toString()
@@ -109,7 +110,6 @@ export const setTaskListToDay = (storage: TaskStorage, event: EventItem): TaskSt
 }
 
 export const setTaskAtDay = (storage: TaskStorage, day: Date, event: EventItem): TaskStorage => {
-	console.log('set task at day is atrted')
 	let newStorage = {
 		...storage
 	}
@@ -160,7 +160,6 @@ export const setTask = (storage: TaskStorage, event: EventItem): TaskSetResult =
 			return {status: true, storage}
 		}
 	} catch (e) {
-		console.log(e)
 		return {
 			status: false,
 			storage
@@ -407,7 +406,6 @@ export const CurrentObserver = {
 		const {year: prevYear} = prev
 		
 		if (current.year !== prevYear) {
-			console.log('year handler has been started')
 			return getYearDays(current, {useOtherDays: false, disabled: disabledOptions})
 		}
 		
@@ -418,7 +416,6 @@ export const CurrentObserver = {
 		const prevYear = prev.year
 		
 		if (prevMonth !== current.month || prevYear !== current.year) {
-			console.log('month handler has been started')
 			return getMonthDays(current, {useOtherDays: true, disabled: disabledOptions})
 		}
 		
@@ -434,7 +431,6 @@ export const CurrentObserver = {
 		}
 		
 		if (prev.year !== c.y || prev.month !== c.m || prev.weekOfYear !== c.w) {
-			console.log('week handler has been started')
 			return getWeekDays(
 				current,
 				{year: c.y, month: c.m},
@@ -458,8 +454,6 @@ export const CurrentObserver = {
 				current
 			}
 		}
-		
-		console.log('date handler has been started')
 		
 		const monthItemCurrent: CalendarCurrentMonth = {
 			layout: 'month',

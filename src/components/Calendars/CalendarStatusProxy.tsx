@@ -1,23 +1,22 @@
 import {CalendarMode} from "./types";
 import {FC, useEffect} from "react";
 import {FilterTaskStatuses, URLTaskStatuses} from "./Modes/DayCalendar/EventFilter";
-import {useLocation, useParams} from "react-router";
+import {useParams} from "react-router";
 import {useAppDispatch, useAppSelector} from "../../store/hooks/hooks";
-import {useNavigate} from "react-router-dom";
 import {changeTaskStatuses} from "../../store/reducers/calendar";
 import {Calendar} from "./Сalendar";
+import {useSearchNavigate} from "../../hooks/useSearchNavigate";
 
 
 export const CalendarStatusProxy: FC<{ layout: CalendarMode["layout"] }> = ({layout}) => {
 	const {taskStatus} = useParams<{ taskStatus: FilterTaskStatuses }>()
 	const dispatch = useAppDispatch()
-	const navigate = useNavigate()
+	const navigate = useSearchNavigate()
 	
 	const isCorrectTaskStatus = (status: FilterTaskStatuses | undefined) => {
 		return status && URLTaskStatuses[status]
 	}
 	const {statuses} = useAppSelector(state => state.calendar)
-	const location = useLocation()
 	
 	useEffect(() => {
 		if (!taskStatus || !isCorrectTaskStatus(taskStatus)) {
@@ -26,14 +25,6 @@ export const CalendarStatusProxy: FC<{ layout: CalendarMode["layout"] }> = ({lay
 			dispatch(changeTaskStatuses(taskStatus))
 		}
 	}, [])
-	
-	useEffect(() => {
-		console.log(taskStatus, statuses)
-	}, [taskStatus, statuses])
-	
-	useEffect(()=>{
-		console.log(location)
-	}, [location])
 	
 	if (taskStatus && isCorrectTaskStatus(taskStatus)) {
 		return (
