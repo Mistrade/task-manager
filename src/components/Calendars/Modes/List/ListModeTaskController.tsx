@@ -6,9 +6,9 @@ import {FlexBlock} from "../../../LayoutComponents/FlexBlock";
 import {getTaskListOfDay} from "../../../../common/functions";
 import {DayTaskItem} from "../DayCalendar/TaskList/DayTaskItem";
 import {CalendarTitle} from "../../Calendar.styled";
-import {css} from "styled-components";
 import {UseCalendarReturned} from "../../../../hooks/useCalendar";
 import {useRemoveTaskMutation} from "../../../../store/api/taskApi/taskApi";
+import {DeclinationMonthList} from "../../../../common/constants";
 
 export interface ListModeTaskController {
 	eventStorage?: TaskStorage<ShortEventItem>,
@@ -62,16 +62,9 @@ export const ListModeTaskController: FC<ListModeTaskController> = ({eventStorage
 									mr={-8}
 									pr={8}
 									bgColor={'#fff'}
-									position={'sticky'}
-									additionalCss={css`
-                    top: 0;
-                    left: 0;
-                    z-index: 1;
-									
-									`}
 								>
 									<CalendarTitle style={{fontSize: 18}}>
-										{dayjs(date).format(`DD-MM-YYYY г.`)}
+										{dayjs(date).format(`DD ${DeclinationMonthList[date.getMonth()]} YYYY г.`)}
 									</CalendarTitle>
 								</FlexBlock>
 								{tasks.map((taskInfo, index) => (

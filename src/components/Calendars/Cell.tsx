@@ -341,22 +341,32 @@ export const TaskTileItem: FC<TaskTileItemProps> = ({taskInfo, onSelect, date}) 
 			isCurrent={date.meta.isCurrent}
 			onClick={(event) => condition && onSelect && onSelect(taskInfo.id)}
 		>
-			<FlexBlock direction={'row'} gap={4} width={'100%'}>
-				<CalendarIdentifier
-					color={taskInfo.calendar.color}
-					size={13}
-				/>
-				<FlexBlock direction={'column'} gap={4} width={'calc(100% - 13px)'}>
-					<FlexBlock direction={'row'} justify={'flex-start'} align={'center'} width={'100%'}>
+			<FlexBlock direction={'column'} gap={4} width={'100%'}>
+				<FlexBlock direction={'row'} gap={4} align={'center'}>
+					<CalendarIdentifier
+						color={taskInfo.calendar.color}
+						size={16}
+					/>
+					<FlexBlock width={'calc(100% - 16px)'}>
 						<TaskTileText isCompleted={taskInfo.status === 'completed'}>
 							{taskInfo.title}
 						</TaskTileText>
 					</FlexBlock>
-					<TaskTimeValue>
-						{addNull(dayjs(taskInfo.time).hour())}:{addNull(dayjs(taskInfo.time).minute())} - {addNull(dayjs(taskInfo.timeEnd).hour())}:{addNull(dayjs(taskInfo.timeEnd).minute())}
-					</TaskTimeValue>
+				</FlexBlock>
+				<FlexBlock direction={'row'} gap={4} width={'calc(100% - 16px)'} align={'center'}>
+					<ArrowIndicator
+						priorityKey={taskInfo.priority}
+						size={16}
+					/>
+					<FlexBlock width={'calc(100% - 16px)'}>
+						<TaskTimeValue>
+							{addNull(dayjs(taskInfo.time).hour())}:{addNull(dayjs(taskInfo.time).minute())} - {addNull(dayjs(taskInfo.timeEnd).hour())}:{addNull(dayjs(taskInfo.timeEnd).minute())}
+						</TaskTimeValue>
+					</FlexBlock>
 				</FlexBlock>
 			</FlexBlock>
+		
+		
 		</TaskTile>
 	)
 }

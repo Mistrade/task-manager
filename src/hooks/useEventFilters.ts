@@ -18,7 +18,7 @@ export interface EventFilters {
 
 export interface UseEventFiltersProps {
 	initialValues: EventFilters,
-	layout: CalendarMode['layout']
+	layout: CalendarMode['layout'],
 }
 
 export interface UseEventFiltersReturned {

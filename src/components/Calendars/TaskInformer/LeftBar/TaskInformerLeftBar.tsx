@@ -26,6 +26,8 @@ export const TaskInformerLeftBar: FC<TaskInformerLeftBarProps> = ({taskItem, upd
 			<TaskInformerTitle
 				title={taskItem.title}
 				onChange={async (value) => await updateFn('title', value)}
+				isLiked={taskItem.isLiked}
+				onChangeLiked={async (value) => await updateFn('isLiked', value) }
 			/>
 			<TaskInformerLinkButton
 				link={taskItem.link}

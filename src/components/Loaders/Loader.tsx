@@ -1,5 +1,5 @@
 import {FC, ReactNode} from "react";
-import {MagnifyingGlass} from "react-loader-spinner";
+import {MagnifyingGlass, ThreeDots} from "react-loader-spinner";
 import {currentColor} from "../../common/constants";
 import {FlexBlock} from "../LayoutComponents/FlexBlock";
 
@@ -13,12 +13,13 @@ export const Loader: FC<{ title: ReactNode, children?: ReactNode, isActive: bool
 		return (
 			<FlexBlock width={'100%'} height={'100%'} justify={'center'} align={'center'}>
 				<FlexBlock direction={'column'} align={'center'} justify={'center'}>
-					<MagnifyingGlass
-						visible={true}
-						width={'80'}
-						height={'80'}
-						glassColor="#fff"
+					<ThreeDots
+						height="80"
+						width="80"
+						radius="9"
 						color={currentColor}
+						ariaLabel="three-dots-loading"
+						visible={true}
 					/>
 					<FlexBlock textAlign={'center'}>{title}</FlexBlock>
 				</FlexBlock>

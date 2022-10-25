@@ -662,3 +662,9 @@ export const checkPassportIssueDate = (options: CheckPassportIssueDate) => {
 		errorMessage
 	}
 }
+
+export async function Delay(delayCountMs: number = 500): Promise<void> {
+	return new Promise((resolve, reject) => setTimeout(() => {
+		resolve()
+	}, delayCountMs))
+}

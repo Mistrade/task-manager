@@ -5,14 +5,12 @@ import {orangeColor} from "../../common/constants";
 
 export interface LikeButtonProps {
 	isChecked: boolean,
-	id: string,
 	onChange?: (isChecked: boolean) => void
 }
 
-export const LikeButton: FC<LikeButtonProps> = ({isChecked, id, onChange}) => {
+export const LikeButton: FC<LikeButtonProps> = ({isChecked, onChange}) => {
 	return (
 		<EmptyButtonStyled
-			style={{padding: 0}}
 			onClick={(e) => {
 				e.stopPropagation()
 				onChange && onChange(!isChecked)

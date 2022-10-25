@@ -2,15 +2,13 @@ import React, {FC, useMemo} from 'react'
 import {MonthCalendarProps} from '../../types'
 import {CalendarDateListContainer, CalendarDesktopContainer} from '../../Calendar.styled'
 import {WeeKCalendar} from '../WeekCalendar/WeekCalendar'
-import {useGetTaskCountOfStatusQuery, useGetTasksAtScopeQuery} from "../../../../store/api/taskApi/taskApi";
 import {getTaskSchemeScope} from "../../../../common/calendarSupport/scopes";
-import {useEventFilters} from "../../../../hooks/useEventFilters";
 import dayjs from "dayjs";
 import {EventFilter} from "../DayCalendar/EventFilter";
 import {FlexBlock} from "../../../LayoutComponents/FlexBlock";
 import {WeekDays} from "../WeekCalendar/WeekDays/WeekDays";
 import {WeekDaysList} from "../../../../common/constants";
-import {useAppSelector} from "../../../../store/hooks/hooks";
+import {useTaskStorageQueryArgs} from "../../../../hooks/useTaskStorageScope";
 
 export const MonthCalendar: FC<MonthCalendarProps> = ({
 																												monthItem,
@@ -24,37 +22,13 @@ export const MonthCalendar: FC<MonthCalendarProps> = ({
 		return getTaskSchemeScope(new Date(monthItem.year, monthItem.monthOfYear, 1), 'month', false)
 	}, [monthItem.monthOfYear])
 	
-	const {statuses} = useAppSelector(state => state.calendar)
-	
-	const {filters, setFiltersState, debounceValue, handlers} = useEventFilters({
-		initialValues: {
-			title: null,
-			priority: null,
+	const {filters, SwitcherBadges, TaskStorage, handlers} = useTaskStorageQueryArgs({
+		layout: current.layout,
+		scope: {
 			start: dayjs(scope.fromDate).toDate(),
-			end: dayjs(scope.toDate).toDate(),
-			taskStatus: statuses
+			end: dayjs(scope.toDate).toDate()
 		},
-		layout: current.layout
 	})
-	
-	const queryArgs = useMemo(() => {
-		return {
-			title: debounceValue.title,
-			fromDate: debounceValue.start.toString(),
-			toDate: debounceValue.end.toString(),
-			priority: debounceValue.priority,
-		}
-	}, [debounceValue])
-	
-	const {data} = useGetTasksAtScopeQuery({
-		...queryArgs,
-		taskStatus: debounceValue.taskStatus
-	})
-	
-	const {data: SwitcherBadges} = useGetTaskCountOfStatusQuery(queryArgs)
-	
-	//TODO написать функционал и запрос на бэке для подсчета количества задач по статусам событий
-	
 	
 	return (
 		<FlexBlock
@@ -80,7 +54,7 @@ export const MonthCalendar: FC<MonthCalendarProps> = ({
 					<CalendarDateListContainer rowsCount={6}>
 						{monthItem.weeks.map((week) => (
 							<WeeKCalendar
-								taskStorage={data || {}}
+								taskStorage={TaskStorage || {}}
 								key={`monthCalendarWeek_year_${monthItem.year}_month_${monthItem.monthOfYear}_week_${week.weekOfYear}`}
 								weekItem={week}
 								current={current}

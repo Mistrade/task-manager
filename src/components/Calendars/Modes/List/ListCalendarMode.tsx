@@ -1,46 +1,25 @@
-import React, {FC, useCallback, useMemo} from "react";
+import React, {FC, useCallback} from "react";
 import {ListCalendarModeProps, TaskStorage} from "../../types";
 import {FlexBlock} from "../../../LayoutComponents/FlexBlock";
 import {EventFilter} from "../DayCalendar/EventFilter";
-import {useGetTaskCountOfStatusQuery, useGetTasksAtScopeQuery} from "../../../../store/api/taskApi/taskApi";
-import {useAppDispatch, useAppSelector} from "../../../../store/hooks/hooks";
-import {useEventFilters} from "../../../../hooks/useEventFilters";
+import {useAppDispatch} from "../../../../store/hooks/hooks";
 import {changeCalendarCurrent} from "../../../../store/reducers/calendar";
 import {ShortEventItem} from "../../../../store/api/taskApi/types";
 import {ListModeTaskController} from "./ListModeTaskController";
+import {useTaskStorageQueryArgs} from "../../../../hooks/useTaskStorageScope";
 
 
 export const ListCalendarMode: FC<ListCalendarModeProps> = ({current, onSelectTask}) => {
 	
 	
-	const {statuses} = useAppSelector(state => state.calendar)
 	const dispatch = useAppDispatch()
-	const {filters, setFiltersState, debounceValue, handlers} = useEventFilters({
-		initialValues: {
-			title: null,
-			priority: null,
+	const {TaskStorage, SwitcherBadges, handlers, filters, debounceValue} = useTaskStorageQueryArgs({
+		layout: 'list',
+		scope: {
 			start: current.fromDate,
-			end: current.toDate,
-			taskStatus: statuses
-		},
-		layout: current.layout
-	})
-	
-	const queryArgs = useMemo(() => {
-		return {
-			title: debounceValue.title,
-			fromDate: debounceValue.start.toString(),
-			toDate: debounceValue.end.toString(),
-			priority: debounceValue.priority,
+			end: current.toDate
 		}
-	}, [debounceValue])
-	
-	const {data} = useGetTasksAtScopeQuery({
-		...queryArgs,
-		taskStatus: debounceValue.taskStatus
 	})
-	
-	const {data: SwitcherBadges} = useGetTaskCountOfStatusQuery(queryArgs)
 	
 	const onChangeDate = useCallback((date: Date, type: 'start' | 'end') => {
 		if (type === 'start') {
@@ -78,7 +57,6 @@ export const ListCalendarMode: FC<ListCalendarModeProps> = ({current, onSelectTa
 					values={filters}
 					onChangeHandlers={{
 						...handlers,
-						//TODO Добавить обработку на изменение диапазона (например не более 90 дней или 30 дней должна быть разница между start и end)
 						start: (date) => onChangeDate(date, 'start'),
 						end: (date) => onChangeDate(date, 'end'),
 					}}
@@ -89,12 +67,13 @@ export const ListCalendarMode: FC<ListCalendarModeProps> = ({current, onSelectTa
 				overflow={'scroll'}
 				position={'relative'}
 				direction={'column'}
+				height={'100vh'}
 				width={'100%'}
-				m={-8}
-				p={8}
+				ml={-8} mr={-8}
+				pl={8} pr={8}
 			>
 				<ListModeTaskController
-					eventStorage={data as TaskStorage<ShortEventItem>}
+					eventStorage={TaskStorage as TaskStorage<ShortEventItem>}
 					fromDate={debounceValue.start}
 					toDate={debounceValue.end}
 					onSelectTask={onSelectTask}

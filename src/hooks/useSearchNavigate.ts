@@ -6,7 +6,6 @@ export const useSearchNavigate = () => {
 	const location = useLocation()
 	
 	return (url: string, options?: { replace: boolean }) => {
-		console.log(location.search)
 		const urlRes = location.search ? url + location.search : url
 		navigate(urlRes, options)
 	}

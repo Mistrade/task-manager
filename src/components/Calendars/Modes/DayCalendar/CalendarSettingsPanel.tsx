@@ -32,7 +32,10 @@ export const CalendarSettingsPanel: FC<DaySettingsPanelProps> = ({
 		isFetching: isFetchingTaskScheme,
 		refetch: refetchTaskScheme,
 		isError
-	} = useGetTaskSchemeQuery(datesForScheme, {refetchOnMountOrArgChange: true})
+	} = useGetTaskSchemeQuery(datesForScheme, {
+		refetchOnMountOrArgChange: true,
+		skip: !dayjs(datesForScheme.fromDate).isValid() || !dayjs(datesForScheme.toDate).isValid()
+	})
 	
 	const currentDate: Date = useMemo(() => {
 		switch (current.layout) {
@@ -86,9 +89,9 @@ export const CalendarSettingsPanel: FC<DaySettingsPanelProps> = ({
 			position={'relative'}
 		>
 			<FlexBlock pl={24} mb={24}>
-			<CalendarTodaySwitchers
-				onChange={onChangeCurrentHandler}
-			/>
+				<CalendarTodaySwitchers
+					onChange={onChangeCurrentHandler}
+				/>
 			</FlexBlock>
 			<FlexBlock minHeight={200} mb={24} style={{zIndex: 1}}>
 				<SmallMonth

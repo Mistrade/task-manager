@@ -1,4 +1,4 @@
-import {WeekCalendarProps} from "../../types";
+import {WeekCalendarProps, WeekItem} from "../../types";
 import React, {FC, useMemo} from "react";
 import {WeeKCalendar} from "./WeekCalendar";
 import {useGetTaskCountOfStatusQuery, useGetTasksAtScopeQuery} from "../../../../store/api/taskApi/taskApi";
@@ -9,51 +9,33 @@ import {useEventFilters} from "../../../../hooks/useEventFilters";
 import {useAppSelector} from "../../../../store/hooks/hooks";
 import {WeekDays} from "./WeekDays/WeekDays";
 import {WeekDaysList} from "../../../../common/constants";
+import {useTaskStorageQueryArgs} from "../../../../hooks/useTaskStorageScope";
 
 export interface WeekCalendarControllerProps extends Omit<WeekCalendarProps, 'taskStorage'> {
 
 }
 
+interface Scope {
+	start: Date,
+	end: Date,
+}
+
+function getScope(weekItem: WeekItem): Scope {
+	const start = dayjs(weekItem.days[0].value).startOf('date')
+	const end = dayjs(weekItem.days[weekItem.days.length - 1].value).endOf('date')
+	
+	return {
+		start: start.toDate(),
+		end: end.toDate(),
+	}
+}
+
 export const WeekCalendarController: FC<WeekCalendarControllerProps> = (props) => {
-	const scope = useMemo(() => {
-		const {weekItem} = props
-		
-		const start = dayjs(weekItem.days[0].value).startOf('date')
-		const end = dayjs(weekItem.days[weekItem.days.length - 1].value).endOf('date')
-		return {
-			fromDate: start.toString(),
-			toDate: end.toString()
-		}
-	}, [props.weekItem.weekOfYear])
-	
-	const {statuses} = useAppSelector(state => state.calendar)
-	
-	const {filters, setFiltersState, handlers, debounceValue} = useEventFilters({
-		initialValues: {
-			title: null,
-			taskStatus: statuses,
-			start: dayjs(scope.fromDate).toDate(),
-			end: dayjs(scope.toDate).toDate(),
-			priority: null,
-		},
+	const scope = useMemo(() => getScope(props.weekItem), [props.weekItem.weekOfYear, props.weekItem.month, props.weekItem.year])
+	const {queryArgs, taskStatus, handlers, filters, TaskStorage, SwitcherBadges} = useTaskStorageQueryArgs({
+		scope,
 		layout: props.current.layout
 	})
-	
-	const queryArgs = useMemo(() => {
-		return {
-			title: debounceValue.title,
-			fromDate: debounceValue.start.toString(),
-			toDate: debounceValue.end.toString(),
-			priority: debounceValue.priority,
-		}
-	}, [debounceValue])
-	
-	const {data} = useGetTasksAtScopeQuery({
-		...queryArgs,
-		taskStatus: debounceValue.taskStatus
-	})
-	
-	const {data: SwitcherBadges} = useGetTaskCountOfStatusQuery(queryArgs)
 	
 	return (
 		<FlexBlock mt={16} mb={16} height={'100%'} width={'100%'} direction={'column'}>
@@ -68,7 +50,7 @@ export const WeekCalendarController: FC<WeekCalendarControllerProps> = (props) =
 				<WeekDays list={WeekDaysList} gap={4}/>
 			</FlexBlock>
 			<WeeKCalendar
-				taskStorage={data || {}}
+				taskStorage={TaskStorage || {}}
 				{...props}
 			/>
 		</FlexBlock>

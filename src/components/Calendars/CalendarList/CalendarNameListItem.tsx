@@ -62,7 +62,7 @@ export const CalendarNameListItem: FC<CalendarNameListItemProps> = ({
 			.then(async () => {
 					if (onSuccessChangeSelect) {
 						await onSuccessChangeSelect()
-							.finally(() => setIsLoading(false))
+							.then(() => setIsLoading(false))
 					} else {
 						setIsLoading(false)
 					}
