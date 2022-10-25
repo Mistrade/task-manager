@@ -1,5 +1,6 @@
 import {
 	CalendarCurrentDay,
+	CalendarCurrentList,
 	CalendarCurrentMonth,
 	CalendarCurrentWeek,
 	CalendarCurrentYear,
@@ -21,14 +22,15 @@ import {
 import dayjs from 'dayjs'
 import {
 	ChangeDayCurrentFn,
+	ChangeListCurrentFn,
 	ChangeMonthCurrentFn,
 	ChangeWeekCurrentFn,
 	ChangeYearCurrentFn,
 	ShortChangeCurrentPattern
 } from './commonTypes'
-import {getHumanizeDateValue, MonthList, WeekDaysList} from './constants'
+import {getHumanizeDateValue, MonthList, ShortMonthList, WeekDaysList} from './constants'
 import {getMonthDays, getWeekDays, getYearDays} from './calendarSupport/getters'
-import {number} from "yup";
+import {ShortEventItem} from "../store/api/taskApi/types";
 
 export const addNull = (value: number): string => value < 10 ? `0${value}` : value.toString()
 
@@ -53,7 +55,7 @@ export const checkTaskStatus = (taskItem: SelectTaskItem): string => {
 	return 'В работе'
 }
 
-export const getTaskListOfDay = <EVENT = EventItem>(day: Date, storage: TaskStorage<EVENT>): Array<EVENT> => {
+export const getTaskListOfDay = <EVENT = EventItem | ShortEventItem>(day: Date, storage: TaskStorage<EVENT>): Array<EVENT> => {
 	const y = storage[dayjs(day).year()] || {}
 	const m = y[dayjs(day).month()] || {}
 	return m[dayjs(day).date()] || []
@@ -108,7 +110,6 @@ export const setTaskListToDay = (storage: TaskStorage, event: EventItem): TaskSt
 }
 
 export const setTaskAtDay = (storage: TaskStorage, day: Date, event: EventItem): TaskStorage => {
-	console.log('set task at day is atrted')
 	let newStorage = {
 		...storage
 	}
@@ -159,7 +160,6 @@ export const setTask = (storage: TaskStorage, event: EventItem): TaskSetResult =
 			return {status: true, storage}
 		}
 	} catch (e) {
-		console.log(e)
 		return {
 			status: false,
 			storage
@@ -260,6 +260,44 @@ export const changeDayCurrentHandler: ChangeDayCurrentFn = (current, pattern = '
 	}
 }
 
+export const changeListCurrentHandler: ChangeListCurrentFn = (current, pattern = 'today') => {
+	const oldFromCurrent = dayjs(current.fromDate)
+	const oldToCurrent = dayjs(current.toDate)
+	
+	switch (pattern) {
+		case '+':
+			return {
+				layout: 'list',
+				fromDate: oldFromCurrent.add(1, 'day').startOf('date').toDate(),
+				toDate: oldToCurrent.add(1, 'day').endOf('date').toDate(),
+			}
+		case '-':
+			return {
+				layout: 'list',
+				fromDate: oldFromCurrent.subtract(1, 'day').startOf('date').toDate(),
+				toDate: oldToCurrent.subtract(1, 'day').endOf('date').toDate(),
+			}
+		case 'today':
+			return {
+				layout: 'list',
+				fromDate: dayjs().startOf('date').toDate(),
+				toDate: dayjs().add(31, 'day').endOf('date').toDate(),
+			}
+		case '++':
+			return {
+				layout: 'list',
+				fromDate: oldFromCurrent.add(7, 'day').startOf('date').toDate(),
+				toDate: oldToCurrent.add(7, 'day').endOf('date').toDate(),
+			}
+		case '--':
+			return {
+				layout: 'list',
+				fromDate: oldFromCurrent.subtract(7, 'day').startOf('date').toDate(),
+				toDate: oldToCurrent.subtract(7, 'day').endOf('date').toDate(),
+			}
+	}
+}
+
 const getMonthCalendarTitle = (current: CalendarCurrentMonth, withTodayMonth?: boolean): string => {
 	const {year, month} = current
 	const m = MonthList[month]
@@ -294,6 +332,13 @@ const getDayCalendarTitle = (current: CalendarCurrentDay) => {
 	return `${dayOfWeek} - ${getHumanizeDateValue(d.toDate(), false)}`
 }
 
+const getListCalendarTitle = (current: CalendarCurrentList) => {
+	const start = dayjs(current.fromDate).format(`DD ${ShortMonthList[current.fromDate.getMonth()]}`)
+	const end = dayjs(current.toDate).format(`DD ${ShortMonthList[current.toDate.getMonth()]}`)
+	
+	return `Список событий ${start} - ${end}`
+}
+
 export const getCalendarTitle = (current: CalendarMode) => {
 	switch (current.layout) {
 		case 'month':
@@ -304,6 +349,8 @@ export const getCalendarTitle = (current: CalendarMode) => {
 			return getDayCalendarTitle(current)
 		case 'year':
 			return getYearCalendarTitle(current)
+		case "list":
+			return getListCalendarTitle(current)
 	}
 }
 
@@ -319,6 +366,8 @@ export const changeCurrentModeHandler = (current: CalendarMode, pattern: ShortCh
 			return changeMonthCurrentHandler(current, pattern)
 		case 'year':
 			return changeYearCurrentHandler(current, pattern)
+		case 'list':
+			return changeListCurrentHandler(current, pattern)
 	}
 }
 
@@ -357,7 +406,6 @@ export const CurrentObserver = {
 		const {year: prevYear} = prev
 		
 		if (current.year !== prevYear) {
-			console.log('year handler has been started')
 			return getYearDays(current, {useOtherDays: false, disabled: disabledOptions})
 		}
 		
@@ -368,7 +416,6 @@ export const CurrentObserver = {
 		const prevYear = prev.year
 		
 		if (prevMonth !== current.month || prevYear !== current.year) {
-			console.log('month handler has been started')
 			return getMonthDays(current, {useOtherDays: true, disabled: disabledOptions})
 		}
 		
@@ -384,7 +431,6 @@ export const CurrentObserver = {
 		}
 		
 		if (prev.year !== c.y || prev.month !== c.m || prev.weekOfYear !== c.w) {
-			console.log('week handler has been started')
 			return getWeekDays(
 				current,
 				{year: c.y, month: c.m},
@@ -408,8 +454,6 @@ export const CurrentObserver = {
 				current
 			}
 		}
-		
-		console.log('date handler has been started')
 		
 		const monthItemCurrent: CalendarCurrentMonth = {
 			layout: 'month',
@@ -617,4 +661,10 @@ export const checkPassportIssueDate = (options: CheckPassportIssueDate) => {
 		test: minTest && maxTest,
 		errorMessage
 	}
+}
+
+export async function Delay(delayCountMs: number = 500): Promise<void> {
+	return new Promise((resolve, reject) => setTimeout(() => {
+		resolve()
+	}, delayCountMs))
 }

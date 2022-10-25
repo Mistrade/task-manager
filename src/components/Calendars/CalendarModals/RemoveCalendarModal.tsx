@@ -3,18 +3,7 @@ import {CalendarNameItem} from "../CalendarList/CalendarNameListItem";
 import {FC} from "react";
 import {FlexBlock} from "../../LayoutComponents/FlexBlock";
 import {Button, WhiteButton} from "../../Buttons/Buttons.styled";
-import {useFormik} from "formik";
-import {
-	useDeleteCalendarMutation,
-	useGetCalendarsQuery,
-	useHasTasksInCalendarQuery
-} from "../../../store/api/taskApi/taskApi";
-import {Loader} from "../../Loaders/Loader";
-import {SelectInput} from "../../Input/SelectInput/SelectInput";
-import {SelectListContainer} from "../../Input/SelectInput/SelectListContainer";
-import {SelectItemContainer} from "../../Input/SelectInput/SelectItemContainer";
-import {currentColor} from "../../../common/constants";
-import {Informer} from "../../Content/Informer";
+import {useDeleteCalendarMutation} from "../../../store/api/taskApi/taskApi";
 import {toast} from "react-toastify";
 
 interface RemoveCalendarModalBaseProps {

@@ -4,10 +4,10 @@ import {FlexBlock, FlexBlockProps} from "../../LayoutComponents/FlexBlock";
 import {currentColor} from "../../../common/constants";
 
 export const AppLogoIcon: FC<IconProps & FlexBlockProps> = ({
-																														 size = 24,
-																														 color = currentColor,
-																														 ...props
-																													 }) => {
+																															size = 24,
+																															color = currentColor,
+																															...props
+																														}) => {
 	return (
 		<FlexBlock {...props} align={'center'} justify={'center'}>
 			<svg

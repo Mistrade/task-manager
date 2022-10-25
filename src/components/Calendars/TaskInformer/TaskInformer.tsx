@@ -34,7 +34,6 @@ const TaskInformerMain: FC<TaskInformerMainProps> = ({taskItem, openClonedTask})
 		})
 			.unwrap()
 			.then(r => {
-				console.log(r)
 				if (r.info) {
 					toast(r.info.message, {
 						type: r.info.type

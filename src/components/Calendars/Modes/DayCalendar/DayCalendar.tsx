@@ -1,6 +1,6 @@
 import {FC} from 'react'
-import {DayCalendarProps} from '../types'
-import {FlexBlock} from '../../LayoutComponents/FlexBlock'
+import {DayCalendarProps} from '../../types'
+import {FlexBlock} from '../../../LayoutComponents/FlexBlock'
 import {DayTaskList} from './TaskList/DayTaskList'
 import {css} from 'styled-components'
 

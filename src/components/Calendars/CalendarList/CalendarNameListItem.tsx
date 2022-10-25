@@ -1,6 +1,6 @@
 import {FlexBlock} from "../../LayoutComponents/FlexBlock"
 import {CalendarNameCheckbox} from "./CalendarList.styled"
-import {FC, useCallback, useState} from "react";
+import {FC, useState} from "react";
 import {LoaderIcon, PencilIcon, TrashIcon} from "../../Icons/Icons";
 import {defaultColor} from "../../../common/constants";
 import {EmptyButtonStyled} from "../../Buttons/EmptyButton.styled";
@@ -62,7 +62,7 @@ export const CalendarNameListItem: FC<CalendarNameListItemProps> = ({
 			.then(async () => {
 					if (onSuccessChangeSelect) {
 						await onSuccessChangeSelect()
-							.finally(() => setIsLoading(false))
+							.then(() => setIsLoading(false))
 					} else {
 						setIsLoading(false)
 					}

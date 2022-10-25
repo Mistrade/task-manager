@@ -1,5 +1,5 @@
 import styled from "styled-components";
-import {defaultColor, hoverColor, orangeColor, pageHeaderColor} from "../../common/constants";
+import {defaultColor, pageHeaderColor} from "../../common/constants";
 
 export const Badge = styled('span')`
 	line-height: 1;

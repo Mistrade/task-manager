@@ -1,4 +1,13 @@
-import {CalendarDisabledOptions, CalendarMode, CalendarProps, DateItem, MonthItem, WeekItem, YearItem} from './types'
+import {
+	CalendarCurrentList,
+	CalendarDisabledOptions,
+	CalendarMode,
+	CalendarProps,
+	DateItem,
+	MonthItem,
+	WeekItem,
+	YearItem
+} from './types'
 import React, {FC, useEffect, useState} from 'react'
 import {CurrentObserver} from '../../common/functions'
 import {useCalendar} from '../../hooks/useCalendar'
@@ -13,26 +22,25 @@ import {
 	defaultYearItem,
 	disabledColor,
 	ERROR_TITLES,
-	pageHeaderColor,
-	WeekDaysList
+	pageHeaderColor
 } from '../../common/constants'
 import {Interceptor} from './Interceptor'
 import {ErrorBoundary} from "../Errors/ErrorBoundary";
 import {Loader} from "../Loaders/Loader";
 import {Route, Routes} from 'react-router-dom'
-import {CalendarSettingsPanel} from "./DayCalendar/CalendarSettingsPanel";
+import {CalendarSettingsPanel} from "./Modes/DayCalendar/CalendarSettingsPanel";
 import dayjs from "dayjs";
 import {getMonthDays} from "../../common/calendarSupport/getters";
-import {WeekDays} from "./WeekDays/WeekDays";
 import {ChangeCalendarModal} from "./CalendarModals/CreateCalendar";
-import {RemoveCalendarHock, RemoveCalendarModal} from "./CalendarModals/RemoveCalendarModal";
+import {RemoveCalendarHock} from "./CalendarModals/RemoveCalendarModal";
 import {css} from "styled-components";
 import {ChangeCalendarHock} from "./CalendarList/ChangeCalendarHock";
 
-const DayCalendar = React.lazy(() => import('./DayCalendar/DayCalendar').then(({DayCalendar}) => ({default: DayCalendar})))
-const WeekCalendar = React.lazy(() => import('./WeekCalendar/WeekCalendarController').then(({WeekCalendarController}) => ({default: WeekCalendarController})))
-const MonthCalendar = React.lazy(() => import('./MonthCalendar/MonthCalendar').then(({MonthCalendar}) => ({default: MonthCalendar})))
-const YearCalendar = React.lazy(() => import('./YearCalendar/YearCalendar').then(({YearCalendar}) => ({default: YearCalendar})))
+const DayCalendar = React.lazy(() => import('./Modes/DayCalendar/DayCalendar').then(({DayCalendar}) => ({default: DayCalendar})))
+const WeekCalendar = React.lazy(() => import('./Modes/WeekCalendar/WeekCalendarController').then(({WeekCalendarController}) => ({default: WeekCalendarController})))
+const MonthCalendar = React.lazy(() => import('./Modes/MonthCalendar/MonthCalendar').then(({MonthCalendar}) => ({default: MonthCalendar})))
+const YearCalendar = React.lazy(() => import('./Modes/YearCalendar/YearCalendar').then(({YearCalendar}) => ({default: YearCalendar})))
+const ListCalendar = React.lazy(() => import('./Modes/List/ListCalendarMode').then(({ListCalendarMode}) => ({default: ListCalendarMode})))
 
 export const Calendar: FC<CalendarProps> = ({
 																							layout,
@@ -86,6 +94,12 @@ export const Calendar: FC<CalendarProps> = ({
 					month: d.month(),
 					year: d.year()
 				}, {useOtherDays: true})
+			case "list":
+				return getMonthDays({
+					layout: 'month',
+					month: current.fromDate.getMonth(),
+					year: current.fromDate.getFullYear()
+				}, {useOtherDays: true})
 		}
 	}
 	
@@ -131,7 +145,16 @@ export const Calendar: FC<CalendarProps> = ({
 						/>
 					</FlexBlock>
 					<FlexBlock flex={'1 0 80%'} pr={24} height={'100%'} additionalCss={css`z-index: 0`}>
-						{layout === 'year' ? (
+						{layout === 'list' ? (
+							<Interceptor shouldRenderChildren={calendar.current.layout === 'list'}>
+								<React.Suspense fallback={<Loader title={'Загружаем ваш календарь, секундочку...'} isActive={true}/>}>
+									<ListCalendar
+										current={calendar.current as CalendarCurrentList}
+										onSelectTask={calendar.onSelectTask}
+									/>
+								</React.Suspense>
+							</Interceptor>
+						) : layout === 'year' ? (
 							<Interceptor
 								shouldRenderChildren={yearItem.year > 0 && yearItem.months.length > 0}
 							>

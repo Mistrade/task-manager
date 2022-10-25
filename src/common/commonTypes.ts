@@ -1,5 +1,6 @@
 import {
 	CalendarCurrentDay,
+	CalendarCurrentList,
 	CalendarCurrentMonth,
 	CalendarCurrentWeek,
 	CalendarCurrentYear,
@@ -27,3 +28,4 @@ export type ChangeMonthCurrentFn = ( current: CalendarCurrentMonth, pattern?: Sh
 export type ChangeWeekCurrentFn = ( current: CalendarCurrentWeek, pattern?: ShortChangeCurrentPattern ) => Date
 export type ChangeYearCurrentFn = ( current: CalendarCurrentYear, pattern?: ShortChangeCurrentPattern ) => Date
 export type ChangeDayCurrentFn = ( current: CalendarCurrentDay, pattern?: ShortChangeCurrentPattern ) => Date
+export type ChangeListCurrentFn = ( current: CalendarCurrentList, pattern?: ShortChangeCurrentPattern ) => CalendarCurrentList

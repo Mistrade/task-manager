@@ -8,10 +8,13 @@ import {Heading} from "../../../Text/Heading";
 import {EmptyButtonStyled} from "../../../Buttons/EmptyButton.styled";
 import {PencilIcon} from "../../../Icons/Icons";
 import {currentColor} from "../../../../common/constants";
+import {LikeButton} from "../../../Buttons/LikeButton";
 
 interface TaskInformerTitle {
 	title: string,
-	onChange: (newTitle: string) => Promise<void>
+	onChange: (newTitle: string) => Promise<void>,
+	isLiked?: boolean,
+	onChangeLiked?: (isLiked: boolean) => void
 }
 
 interface TaskInformerTitleInputProps {
@@ -48,12 +51,16 @@ const TaskInformerTitleInput: FC<TaskInformerTitleInputProps> = ({oldValue, onSa
 	)
 }
 
-export const TaskInformerTitle: FC<TaskInformerTitle> = ({title, onChange}) => {
+export const TaskInformerTitle: FC<TaskInformerTitle> = ({title, onChange, onChangeLiked, isLiked}) => {
 	const [isEdit, setIsEdit] = useState(false)
 	return (
 		<FlexBlock direction={'row'} justify={'start'} width={'100%'} mb={6}>
 			{!isEdit ? (
 				<FlexBlock gap={6} align={'flex-start'}>
+					<LikeButton
+						isChecked={!!isLiked}
+						onChange={onChangeLiked}
+					/>
 					<Heading.H2>{title}</Heading.H2>
 					<EmptyButtonStyled onClick={() => setIsEdit(true)}>
 						<PencilIcon size={22} color={currentColor}/>

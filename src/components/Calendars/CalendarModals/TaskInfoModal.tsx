@@ -1,14 +1,11 @@
-import React, {FC, RefObject, useCallback, useEffect, useMemo} from 'react'
+import React, {FC, RefObject, useEffect} from 'react'
 import {TaskInfoModalProps} from '../types'
-import {Modal, ModalBody, ModalFooter, ModalHeader} from '../../Modal/Modal'
+import {Modal, ModalBody, ModalHeader} from '../../Modal/Modal'
 import {FlexBlock} from '../../LayoutComponents/FlexBlock'
-import {StyledButton} from '../../Buttons/Buttons.styled'
-import {defaultColor} from '../../../common/constants'
 import {useLazyGetTaskInfoQuery} from "../../../store/api/taskApi/taskApi";
 import {useParams} from "react-router";
 import {ErrorBoundary} from "../../Errors/ErrorBoundary";
 import {Loader} from "../../Loaders/Loader";
-import {DropDownButton} from "../../Buttons/DropDownButton";
 import {DropDown} from "../../Dropdown/DropDown";
 import {EmptyButtonStyled} from '../../Buttons/EmptyButton.styled'
 import {SelectListContainer} from "../../Input/SelectInput/SelectListContainer";

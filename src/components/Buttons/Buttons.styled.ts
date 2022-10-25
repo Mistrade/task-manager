@@ -1,4 +1,4 @@
-import styled from 'styled-components'
+import styled, {css} from 'styled-components'
 import {currentColor, defaultColor} from '../../common/constants'
 
 export const StyledButton = styled('button')<{ fillColor?: string, textColor?: string }>`
@@ -62,7 +62,7 @@ export const LinkButton = styled('a')`
   }
 `
 
-export const WhiteButton = styled('button')`
+export const WhiteButton = styled('button')<{ withHover?: boolean }>`
   & {
     padding: 4px 8px;
     font-size: 16px;
@@ -77,13 +77,19 @@ export const WhiteButton = styled('button')`
     vertical-align: middle;
   }
 
-  &:hover {
-    color: ${currentColor};
-    background-color: #fff;
-    border: 1px solid ${currentColor};
-    box-shadow: 0 0 8px 0px ${currentColor};
-  }
+  ${_ => _.withHover && css`
+    &:hover {
+      color: ${currentColor};
+      background-color: #fff;
+      border: 1px solid ${currentColor};
+      box-shadow: 0 0 8px 0px ${currentColor};
+    }
+  `}
 `
+
+WhiteButton.defaultProps = {
+	withHover: true
+}
 
 export const JoinToEventButton = styled('a')`
   font-size: 14px;

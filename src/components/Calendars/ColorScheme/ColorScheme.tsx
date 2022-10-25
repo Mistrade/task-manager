@@ -1,5 +1,4 @@
 import {FC} from "react";
-import {pxToCssValue} from "../../LayoutComponents/FlexBlock";
 import {colorPalette, disabledColor, errorColor} from "../../../common/constants";
 import {EmptyButtonStyled} from "../../Buttons/EmptyButton.styled";
 import {CalendarIdentifier} from "../CalendarList/CalendarList.styled";

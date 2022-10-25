@@ -28,7 +28,6 @@ function App() {
 			issueDate: new Date()
 		})
 		
-		console.log(res)
 	}, [])
 	
 	

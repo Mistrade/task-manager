@@ -2,7 +2,7 @@ import React, {useCallback, useRef, useState} from "react";
 import {FlexBlock} from "../LayoutComponents/FlexBlock";
 import {useDebounce} from "../../hooks/useDebounce";
 import {StyledDropDownContainer} from "./DropDown.styled";
-import {DropDownAdditionalMethods, DropDownElementsSupport, DropDownProps} from "./types";
+import {DropDownAdditionalMethods, DropDownProps} from "./types";
 
 export function DropDown<T extends HTMLElement = HTMLElement>({
 																																								 renderElement,

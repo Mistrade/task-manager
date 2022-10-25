@@ -5,30 +5,32 @@ import {DropDownButton} from "../../../Buttons/DropDownButton";
 import {currentColor, PRIORITY_LIST, PRIORITY_TITLES, TASK_STATUSES} from "../../../../common/constants";
 import {EmptyButtonStyled} from "../../../Buttons/EmptyButton.styled";
 import {EventIcon} from "../../../Icons/EventIcon";
-import {convertEventStatus} from "../../../../common/functions";
+import {convertEventStatus, Delay} from "../../../../common/functions";
 import {ArrowIndicator} from "../../Cell";
 import {FlexBlock} from "../../../LayoutComponents/FlexBlock";
 import {CalendarNameItem} from "../../CalendarList/CalendarNameListItem";
-import {useChangeSelectCalendarMutation, useGetCalendarsQuery} from "../../../../store/api/taskApi/taskApi";
+import {useGetCalendarsQuery} from "../../../../store/api/taskApi/taskApi";
 import {CalendarIdentifier} from "../../CalendarList/CalendarList.styled";
-import {LoaderIcon} from "../../../Icons/Icons";
+import {IconProps, LoaderIcon} from "../../../Icons/Icons";
 
-export type TaskInformerUpdateFn = (field: keyof EventItem, data: string | EventLinkItem) => Promise<void>
+export type TaskInformerUpdateFn = (field: keyof EventItem, data: string | EventLinkItem | boolean) => Promise<void>
 
 export interface ToggleEventButtonProps<T> {
 	value: T,
 	onChange?: TaskInformerUpdateFn,
 	elementId?: string,
 	stopPropagation?: boolean,
-	renderText?: boolean
+	renderText?: boolean,
+	iconProps?: Partial<IconProps>
 }
 
 export const ToggleEventCalendar: FC<ToggleEventButtonProps<CalendarNameItem>> = ({
 																																										value,
 																																										elementId,
 																																										stopPropagation,
-																																										renderText,
-																																										onChange
+																																										renderText = true,
+																																										onChange,
+																																										iconProps
 																																									}) => {
 	const {data: calendarsList, isLoading} = useGetCalendarsQuery({exclude: ['Invite']}, {
 		refetchOnFocus: true,
@@ -42,10 +44,14 @@ export const ToggleEventCalendar: FC<ToggleEventButtonProps<CalendarNameItem>> =
 			focusElementId={elementId || 'change__event_calendar'}
 			button={
 				<DropDownButton
+					stopPropagation={stopPropagation}
 					onChange={async (element, e) => {
 						if (onChange && !mutationLoading && !isLoading && value._id !== element.id) {
 							setMutationLoading(true)
-							await onChange('calendar', element.id).finally(() => setMutationLoading(false))
+							await onChange('calendar', element.id).finally(async () => {
+								await Delay(500)
+								setMutationLoading(false)
+							})
 						}
 					}}
 					data={
@@ -56,11 +62,16 @@ export const ToggleEventCalendar: FC<ToggleEventButtonProps<CalendarNameItem>> =
 							icon: <CalendarIdentifier color={item.color}/>
 						})) || []}
 					renderElement={({ref, onElementFocused, onElementBlur}) => (
-						<EmptyButtonStyled ref={ref} onFocus={onElementFocused} onBlur={onElementBlur}>
+						<EmptyButtonStyled
+							ref={ref}
+							onFocus={onElementFocused}
+							onBlur={onElementBlur}
+							onClick={(e) => stopPropagation && e.stopPropagation()}
+						>
 							{mutationLoading ? (
-								<LoaderIcon size={20} color={currentColor}/>
+								<LoaderIcon size={20} {...iconProps} color={currentColor}/>
 							) : (
-								<CalendarIdentifier color={value.color}/>
+								<CalendarIdentifier color={value.color} {...iconProps}/>
 							)}
 						</EmptyButtonStyled>
 					)}
@@ -72,11 +83,19 @@ export const ToggleEventCalendar: FC<ToggleEventButtonProps<CalendarNameItem>> =
 	)
 }
 
-export const ToggleEventStatus: FC<ToggleEventButtonProps<TaskStatusesType>> = ({value, onChange}) => {
+export const ToggleEventStatus: FC<ToggleEventButtonProps<TaskStatusesType>> = ({
+																																									value,
+																																									onChange,
+																																									elementId,
+																																									stopPropagation,
+																																									renderText = true,
+																																									iconProps
+																																								}) => {
 	return (
 		<ToggleButtonContainer
-			focusElementId={'change__status'}
+			focusElementId={elementId || `change__status_${Date.now() * Math.random()}`}
 			button={<DropDownButton
+				stopPropagation={stopPropagation}
 				onChange={async (element) => {
 					if (onChange) {
 						await onChange('status', element.id)
@@ -88,13 +107,18 @@ export const ToggleEventStatus: FC<ToggleEventButtonProps<TaskStatusesType>> = (
 					icon: item.icon
 				}))}
 				renderElement={({ref, onElementFocused, onElementBlur}) => (
-					<EmptyButtonStyled ref={ref} onFocus={onElementFocused} onBlur={onElementBlur}>
-						<EventIcon status={value}/>
+					<EmptyButtonStyled
+						ref={ref}
+						onFocus={onElementFocused}
+						onBlur={onElementBlur}
+						onClick={(e) => stopPropagation && e.stopPropagation()}
+					>
+						<EventIcon  {...iconProps} status={value}/>
 					</EmptyButtonStyled>
 				)}
 				selectedId={value}
 			/>}
-			text={convertEventStatus(value)}
+			text={renderText && convertEventStatus(value)}
 		/>
 	)
 }
@@ -104,7 +128,8 @@ export const ToggleEventPriority: FC<ToggleEventButtonProps<CalendarPriorityKeys
 																																												onChange,
 																																												elementId,
 																																												stopPropagation,
-																																												renderText = true
+																																												renderText = true,
+																																												iconProps
 																																											}) => {
 	return (
 		<ToggleButtonContainer
@@ -129,6 +154,7 @@ export const ToggleEventPriority: FC<ToggleEventButtonProps<CalendarPriorityKeys
 						onClick={(e) => stopPropagation && e.stopPropagation()}
 					>
 						<ArrowIndicator
+							{...iconProps}
 							priorityKey={value}
 						/>
 					</EmptyButtonStyled>

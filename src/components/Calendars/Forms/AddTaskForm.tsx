@@ -1,4 +1,4 @@
-import {FC, useCallback, useEffect, useMemo} from 'react'
+import {FC, useEffect, useMemo} from 'react'
 import {CalendarTaskItem} from '../types'
 import {useFormik} from 'formik'
 import dayjs from 'dayjs'
@@ -77,7 +77,7 @@ export const AddTaskForm: FC<AddTaskFormProps> = ({date, onComplete, onCancel, i
 					onComplete && onComplete(values, response?.data?.taskId)
 				})
 				.catch((response: ServerResponse<null>) => {
-					if(response.info){
+					if (response.info) {
 						toast(response.info?.message, {
 							type: response.info.type
 						})
@@ -164,6 +164,7 @@ export const AddTaskForm: FC<AddTaskFormProps> = ({date, onComplete, onCancel, i
 										<>
 											{data.map((item) => (
 												<SelectItemContainer
+													key={item._id}
 													onClick={() => {
 														formik.setFieldValue('calendar', item._id)
 														methods.focusOut()

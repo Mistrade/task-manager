@@ -1,5 +1,5 @@
 import styled from "styled-components";
-import {defaultColor} from "../../../../common/constants";
+import {defaultColor} from "../../../../../common/constants";
 
 export const TaskPreviewDescription = styled('p')`
   & {

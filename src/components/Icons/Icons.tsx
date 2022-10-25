@@ -1,5 +1,5 @@
 import React, {FC} from 'react'
-import {currentColor, defaultColor, disabledColor, priorityColors} from '../../common/constants'
+import {currentColor, defaultColor, priorityColors} from '../../common/constants'
 import {FlexBlock, FlexBlockProps} from '../LayoutComponents/FlexBlock'
 
 export interface IconProps {
@@ -44,6 +44,73 @@ export const Female: FC<IconProps> = ({size = 20, color = '#000'}) => {
 		</svg>
 	)
 }
+
+export const StarIcon: FC<IconProps & { fillColor?: string }> = ({size = 20, color = '#000', fillColor = 'none'}) => {
+	return (
+		<svg
+			xmlns="http://www.w3.org/2000/svg"
+			width={size}
+			height={size}
+			preserveAspectRatio="xMidYMid meet"
+			viewBox="0 0 24 24"
+		>
+			<path
+				fill={fillColor}
+				stroke={color}
+				strokeLinecap="round"
+				strokeLinejoin="round"
+				strokeWidth="2"
+				d="M11.074 2.633c.32-.844 1.531-.844 1.852 0l2.07 5.734a.99.99 0 0 0 .926.633h5.087c.94 0 1.35 1.17.611 1.743L18 14a.968.968 0 0 0-.322 1.092L19 20.695c.322.9-.72 1.673-1.508 1.119l-4.917-3.12a1 1 0 0 0-1.15 0l-4.917 3.12c-.787.554-1.83-.22-1.508-1.119l1.322-5.603A.968.968 0 0 0 6 14l-3.62-3.257C1.64 10.17 2.052 9 2.99 9h5.087a.989.989 0 0 0 .926-.633l2.07-5.734Z"
+			/>
+		</svg>
+	)
+}
+
+export const ArrowRightIcon: FC<IconProps & { fillColor?: string }> = ({
+																																				 size = 20,
+																																				 color = '#000',
+																																				 fillColor = 'none'
+																																			 }) => {
+	return (
+		<svg
+			xmlns="http://www.w3.org/2000/svg"
+			width={size}
+			height={size}
+			preserveAspectRatio="xMidYMid meet"
+			viewBox="0 0 32 32"
+		>
+			<path
+				fill="none"
+				stroke={color}
+				strokeLinecap="round"
+				strokeLinejoin="round"
+				strokeWidth="2"
+				d="m22 6l8 10l-8 10m8-10H2"
+			/>
+		</svg>
+	)
+}
+
+export const ArchiveIcon: FC<IconProps> = ({
+																																			size = 20,
+																																			color = currentColor,
+																																		}) => {
+	return (
+		<svg
+			xmlns="http://www.w3.org/2000/svg"
+			width={size}
+			height={size}
+			preserveAspectRatio="xMidYMid meet"
+			viewBox="0 0 1536 1792"
+		>
+			<path
+				fill={color}
+				d="M640 384V256H512v128h128zm128 128V384H640v128h128zM640 640V512H512v128h128zm128 128V640H640v128h128zm700-388q28 28 48 76t20 88v1152q0 40-28 68t-68 28H96q-40 0-68-28t-28-68V96q0-40 28-68T96 0h896q40 0 88 20t76 48zm-444-244v376h376q-10-29-22-41l-313-313q-12-12-41-22zm384 1528V640H992q-40 0-68-28t-28-68V128H768v128H640V128H128v1536h1280zM781 943l107 349q8 27 8 52q0 83-72.5 137.5T640 1536t-183.5-54.5T384 1344q0-25 8-52q21-63 120-396V768h128v128h79q22 0 39 13t23 34zm-141 465q53 0 90.5-19t37.5-45t-37.5-45t-90.5-19t-90.5 19t-37.5 45t37.5 45t90.5 19z"
+			/>
+		</svg>
+	)
+}
+
 export const SadSmile: FC<IconProps> = ({size = 100, color = 'darkorange'}) => {
 	return (
 		<svg

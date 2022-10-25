@@ -61,7 +61,6 @@ export const getYearScope = (current: CalendarCurrentYear, options?: DateScopeOp
 
 
 export const getTaskSchemeScope = (date: Date, pattern: 'month' | 'year', onlyIncludesDays?: boolean) => {
-	console.log('getTaskSchemeScope', date, pattern, onlyIncludesDays)
 	if (pattern === 'month') {
 		const startDateOfMonth = dayjs(date).startOf('month')
 		

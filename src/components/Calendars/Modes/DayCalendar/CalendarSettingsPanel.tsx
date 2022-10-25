@@ -1,18 +1,16 @@
 import React, {FC, useCallback, useMemo} from 'react'
-import {FlexBlock} from '../../LayoutComponents/FlexBlock'
-import {DaySettingsPanelProps} from '../types'
-import {css} from 'styled-components'
-import {Button} from '../../Buttons/Buttons.styled'
-import {SmallCalendarMonthTitle} from '../SmallMotnCalendar/SmallCalendarMonthTitle'
+import {FlexBlock} from '../../../LayoutComponents/FlexBlock'
+import {DaySettingsPanelProps} from '../../types'
+import {SmallCalendarMonthTitle} from '../../SmallMotnCalendar/SmallCalendarMonthTitle'
 import dayjs from 'dayjs'
-import {Tooltip} from '../../Tooltip/Tooltip'
-import {GetTaskSchemeRequest, useGetTaskSchemeQuery} from "../../../store/api/taskApi/taskApi";
-import {getTaskSchemeScope} from "../../../common/calendarSupport/scopes";
-import {CalendarList} from "../CalendarList/CalendarList";
-import {PourDatesProps, SmallMonth} from "../SmallMotnCalendar/SmallMonth";
-import {CalendarTodaySwitchers} from "../Header/CalendarTodaySwitchers";
-import {ShortChangeCurrentPattern} from "../../../common/commonTypes";
-import {changeCurrentModeHandler} from "../../../common/functions";
+import {Tooltip} from '../../../Tooltip/Tooltip'
+import {GetTaskSchemeRequest, useGetTaskSchemeQuery} from "../../../../store/api/taskApi/taskApi";
+import {getTaskSchemeScope} from "../../../../common/calendarSupport/scopes";
+import {CalendarList} from "../../CalendarList/CalendarList";
+import {PourDatesProps, SmallMonth} from "../../SmallMotnCalendar/SmallMonth";
+import {CalendarTodaySwitchers} from "../../Header/CalendarTodaySwitchers";
+import {ShortChangeCurrentPattern} from "../../../../common/commonTypes";
+import {changeCurrentModeHandler} from "../../../../common/functions";
 
 
 export const CalendarSettingsPanel: FC<DaySettingsPanelProps> = ({
@@ -34,7 +32,10 @@ export const CalendarSettingsPanel: FC<DaySettingsPanelProps> = ({
 		isFetching: isFetchingTaskScheme,
 		refetch: refetchTaskScheme,
 		isError
-	} = useGetTaskSchemeQuery(datesForScheme, {refetchOnMountOrArgChange: true})
+	} = useGetTaskSchemeQuery(datesForScheme, {
+		refetchOnMountOrArgChange: true,
+		skip: !dayjs(datesForScheme.fromDate).isValid() || !dayjs(datesForScheme.toDate).isValid()
+	})
 	
 	const currentDate: Date = useMemo(() => {
 		switch (current.layout) {
@@ -52,6 +53,8 @@ export const CalendarSettingsPanel: FC<DaySettingsPanelProps> = ({
 				return dayjs().set('year', current.year).set('month', current.month).startOf('month').toDate()
 			case "year":
 				return dayjs().startOf('month').toDate()
+			case "list":
+				return current.fromDate
 		}
 	}, [current])
 	
@@ -86,9 +89,9 @@ export const CalendarSettingsPanel: FC<DaySettingsPanelProps> = ({
 			position={'relative'}
 		>
 			<FlexBlock pl={24} mb={24}>
-			<CalendarTodaySwitchers
-				onChange={onChangeCurrentHandler}
-			/>
+				<CalendarTodaySwitchers
+					onChange={onChangeCurrentHandler}
+				/>
 			</FlexBlock>
 			<FlexBlock minHeight={200} mb={24} style={{zIndex: 1}}>
 				<SmallMonth
