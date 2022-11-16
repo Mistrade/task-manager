@@ -6,14 +6,14 @@ interface DefaultInformerProps {
 	type: ErrorTypes
 }
 
-const StyledInformer = styled('div')<DefaultInformerProps>`
+export const StyledInformer = styled('div')<DefaultInformerProps>`
   display: flex;
   padding: 8px;
 	flex-direction: column;
 	gap: 8px;
 `
 
-const StyledInformerHeader = styled('h4')`
+export const StyledInformerHeader = styled('h4')`
   width: 100%;
   font-size: 17px;
   font-weight: bold;
@@ -21,7 +21,7 @@ const StyledInformerHeader = styled('h4')`
   font-family: Helvetica, sans-serif;
 `
 
-const StyledInformerText = styled('p')`
+export const StyledInformerText = styled('p')`
   width: 100%;
   font-size: 14px;
   font-weight: 400;
@@ -31,7 +31,8 @@ const StyledInformerText = styled('p')`
 
 interface InformerProps extends DefaultInformerProps {
 	header?: ReactNode,
-	text: ReactNode
+	text: ReactNode,
+	"data-testid"?: any  //todo
 }
 
 export const Informer: FC<InformerProps> = ({type, header, text}) => {

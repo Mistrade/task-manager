@@ -1,7 +1,7 @@
 import React, {FC, useEffect, useMemo} from "react";
 import {FlexBlock} from "../LayoutComponents/FlexBlock";
 import {MainHeaderUserInfo, MainHeaderUserInfoProps} from "./MainHeaderUserInfo";
-import {HeaderLinkStyled} from "./HeaderLink.styled.";
+import {HeaderLinkStyled} from "./HeaderLink.styled";
 import {useLocation} from "react-router";
 import {NavigationContainer} from "./MainHeader.styled";
 import {useAppSelector} from "../../store/hooks/hooks";

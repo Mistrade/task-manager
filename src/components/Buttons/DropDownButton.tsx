@@ -1,8 +1,8 @@
-import React, {ReactNode} from "react";
-import {DropDown} from "../Dropdown/DropDown";
-import {SelectItemContainer} from "../Input/SelectInput/SelectItemContainer";
-import {SelectListContainer} from "../Input/SelectInput/SelectListContainer";
-import {DropDownRenderElementObject} from "../Dropdown/types";
+import React, { ReactNode } from "react";
+import { DropDown } from "../Dropdown/DropDown";
+import { SelectItemContainer } from "../Input/SelectInput/SelectItemContainer";
+import { SelectListContainer } from "../Input/SelectInput/SelectListContainer";
+import { DropDownRenderElementObject } from "../Dropdown/types";
 
 interface DefaultDataElement {
 	title: string,
@@ -19,19 +19,21 @@ interface DropDownButtonProps<T extends DefaultDataElement> {
 }
 
 export function DropDownButton<T extends DefaultDataElement>({
-																															 data,
-																															 renderElement,
-																															 selectedId,
-																															 onChange,
-																															 stopPropagation
-																														 }: DropDownButtonProps<T>): JSX.Element {
+	data,
+	renderElement,
+	selectedId,
+	onChange,
+	stopPropagation
+}: DropDownButtonProps<T>): JSX.Element {
 	return (
 		<DropDown
-			containerProps={{width: 'fit-content'}}
+			containerProps={{ width: 'fit-content' }}
 			renderElement={renderElement}
 			dropDownChildren={(methods) => (
 				<>
-					<SelectListContainer>
+					<SelectListContainer
+						data-testid="dropdownButton--list--container"
+					>
 						{data.map(item => (
 							<SelectItemContainer
 								isSelected={item.id === selectedId}
@@ -41,10 +43,10 @@ export function DropDownButton<T extends DefaultDataElement>({
 									methods.focusOut()
 								}}
 							>
-								{item.icon ? item.icon : <></>}
+								{item.icon || <></>}
 								<span>
-                  {item.title}
-                </span>
+									{item.title}
+								</span>
 							</SelectItemContainer>
 						))}
 					</SelectListContainer>

@@ -1,0 +1,12 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`All Informer TestGroup test-StyledInformerText 1`] = `
+<div>
+  <p
+    class="sc-hKMtZM jOypbF"
+    data-testid="StyledInformerText"
+  >
+    test-text
+  </p>
+</div>
+`;
