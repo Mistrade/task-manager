@@ -1,6 +1,6 @@
 import React, {FC, useCallback} from "react";
 import dayjs from "dayjs";
-import {ServerResponse, taskApi, useUpdateTaskMutation} from "../../../../../store/api/taskApi/taskApi";
+import {MyServerResponse, taskApi, useUpdateTaskMutation} from "../../../../../store/api/taskApi/taskApi";
 import {FlexBlock} from "../../../../LayoutComponents/FlexBlock";
 import {
 	borderRadiusSize,
@@ -98,7 +98,7 @@ export const DayTaskItem: FC<DayTaskItemProps> = ({
 					})
 				}
 			})
-			.catch((r: { data?: ServerResponse<null>, status: number }) => {
+			.catch((r: { data?: MyServerResponse<null>, status: number }) => {
 				if (r.data?.info) {
 					toast(r.data?.info?.message, {
 						type: r.data.info.type

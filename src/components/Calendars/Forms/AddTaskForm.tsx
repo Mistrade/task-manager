@@ -23,7 +23,7 @@ import {CompleteIcon, CreatedIcon} from '../../Icons/Icons'
 import {Button, StyledButton, WhiteButton} from '../../Buttons/Buttons.styled'
 import {SelectLinks} from '../../Input/SelectInput/CalendarSelectInputs/SelectLinks'
 import {Tooltip} from '../../Tooltip/Tooltip'
-import {ServerResponse, useAddTaskMutation, useGetCalendarsQuery} from "../../../store/api/taskApi/taskApi";
+import {MyServerResponse, useAddTaskMutation, useGetCalendarsQuery} from "../../../store/api/taskApi/taskApi";
 import {TextAreaInput} from "../../Input/TextAreaInput/TextAreaInput";
 import {CalendarNameItem} from "../CalendarList/CalendarNameListItem";
 import {SelectItemContainer} from "../../Input/SelectInput/SelectItemContainer";
@@ -80,7 +80,7 @@ export const AddTaskForm: FC<AddTaskFormProps> = ({date, onComplete, onCancel, i
 				.then((response) => {
 					onComplete && onComplete(values, response?.data?.taskId)
 				})
-				.catch((response: ServerResponse<null>) => {
+				.catch((response: MyServerResponse<null>) => {
 					if (response.info) {
 						toast(response.info?.message, {
 							type: response.info.type

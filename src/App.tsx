@@ -18,14 +18,6 @@ const GlobalStyled = createGlobalStyle({}, css`
   }
 `)
 
-// export class HttpServerError extends Error {
-// 	constructor(msg?: string) {
-// 		super(msg);
-// 		Object.setPrototypeOf(this, HttpServerError.prototype)
-// 		this.name = 'HttpServerError'
-// 	}
-// }
-
 function App() {
 	const {data: userInfo, isFetching, isError} = useConfirmSessionQuery()
 	

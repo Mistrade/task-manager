@@ -1,6 +1,6 @@
 import {createApi, fetchBaseQuery} from "@reduxjs/toolkit/dist/query/react";
 import {RegistrationFormType} from "../../components/Session/Registration";
-import {ServerResponse} from "./taskApi/taskApi";
+import {MyServerResponse} from "./taskApi/taskApi";
 import {AuthorizationProps} from "../../components/Session/AuthorizationForm";
 import {baseServerUrl} from "./defaultApiConfig";
 
@@ -13,14 +13,14 @@ export const sessionApi = createApi({
 		cache: 'no-cache'
 	}),
 	endpoints: (build) => ({
-		registration: build.mutation<ServerResponse, RegistrationFormType>({
+		registration: build.mutation<MyServerResponse, RegistrationFormType>({
 			query: (args) => ({
 				url: '/reg',
 				method: 'POST',
 				body: args,
 			}),
 		}),
-		login: build.mutation<ServerResponse, AuthorizationProps>({
+		login: build.mutation<MyServerResponse, AuthorizationProps>({
 			query: (args) => ({
 				url: '/auth',
 				method: 'POST',
@@ -36,7 +36,7 @@ export const sessionApi = createApi({
 			}),
 			providesTags: ['Session']
 		}),
-		logout: build.mutation<ServerResponse, void>({
+		logout: build.mutation<MyServerResponse, void>({
 			query: (args: void) => ({
 				url: '/logout',
 				method: 'POST',

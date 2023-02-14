@@ -44,6 +44,7 @@ export interface FullResponseEventModel {
 	link: EventLinkItem | null,
 	linkedFrom?: ObjectId,
 	parentId?: ObjectId,
+	childOf: Array<ObjectId>,
 	members: Array<UserModelResponse>,
 	priority: CalendarPriorityKeys,
 	status: TaskStatusesType,

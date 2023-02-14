@@ -8,7 +8,7 @@ import * as yup from 'yup'
 import {ColorScheme} from "../ColorScheme/ColorScheme";
 import {TextInput} from "../../Input/TextInput/TextInput";
 import {
-	ServerResponse,
+	MyServerResponse,
 	useCreateCalendarMutation,
 	useGetCalendarsQuery,
 	useUpdateCalendarInfoMutation
@@ -88,26 +88,26 @@ export const ChangeCalendarModal: FC<ChangeCalendarModalProps> = ({onClose, isEd
 			if (!isEditing) {
 				return await create(values)
 					.unwrap()
-					.then((r: ServerResponse) => {
+					.then((r: MyServerResponse) => {
 						if (r.info) {
 							toast(r.info.message, {type: r.info.type})
 						}
 						return onClose && onClose()
 					})
-					.catch((e: ServerResponse) => {
+					.catch((e: MyServerResponse) => {
 						return e.info ? toast(e.info.message, {type: e.info.type}) : null
 					})
 			}
 			
 			return await update(values)
 				.unwrap()
-				.then((r: ServerResponse) => {
+				.then((r: MyServerResponse) => {
 					if (r.info) {
 						toast(r.info.message, {type: r.info.type})
 					}
 					return onClose && onClose()
 				})
-				.catch((e: ServerResponse) => {
+				.catch((e: MyServerResponse) => {
 					return e.info ? toast(e.info.message, {type: e.info.type}) : null
 				})
 			

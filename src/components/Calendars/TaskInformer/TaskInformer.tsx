@@ -2,7 +2,7 @@ import {FC, useCallback, useMemo} from 'react'
 import {TaskInformerMainProps, TaskInformerProps} from '../types'
 import dayjs from 'dayjs'
 import {FlexBlock} from '../../LayoutComponents/FlexBlock'
-import {ServerResponse, useUpdateTaskMutation} from "../../../store/api/taskApi/taskApi";
+import {MyServerResponse, useUpdateTaskMutation} from "../../../store/api/taskApi/taskApi";
 import {toast} from "react-toastify";
 import {TaskInformerUpdateFn} from "./SupportsComponent/ToggleTaskInformerButtons";
 import {TaskInformerRightBar} from "./RightBar/TaskInformerRightBar";
@@ -37,7 +37,7 @@ const TaskInformerMain: FC<TaskInformerMainProps> = ({taskItem, openClonedTask})
 					})
 				}
 			})
-			.catch((r: { data?: ServerResponse<null>, status: number }) => {
+			.catch((r: { data?: MyServerResponse<null>, status: number }) => {
 				if (r.data?.info) {
 					toast(r.data?.info?.message, {
 						type: r.data.info.type

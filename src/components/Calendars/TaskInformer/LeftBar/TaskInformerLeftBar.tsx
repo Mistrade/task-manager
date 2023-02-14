@@ -43,10 +43,12 @@ export const TaskInformerLeftBar: FC<TaskInformerLeftBarProps> = ({taskItem, upd
 					<TaskInformerAboutTab taskItem={taskItem} updateFn={updateFn}/>
 				) : switcher === 'chains' ? (
 					<TaskChainsTab
+						taskItem={taskItem}
 						updateFn={updateFn}
 						chains={{
 							clonedBy: taskItem.linkedFrom,
 							parentId: taskItem.parentId,
+							childOf: taskItem.childOf
 						}}
 					/>
 				) : (<>{switcher}</>)}
