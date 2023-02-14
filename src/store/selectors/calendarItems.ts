@@ -42,6 +42,12 @@ export const CalendarCurrentSelector: CreateSelectorReturnType<CalendarMode> = c
 					layout: 'week',
 					aroundDate: new Date(state.aroundDate)
 				}
+			case "list":
+				return {
+					layout: 'list',
+					fromDate: new Date(state.fromDate),
+					toDate: new Date(state.toDate)
+				}
 			default:
 				return state
 		}

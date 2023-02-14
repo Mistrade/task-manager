@@ -90,10 +90,6 @@ export const Tooltip: FC<TooltipProps & IconProps> = ({
 		}
 	}, [isHover, ref, containerRef, placement])
 	
-	useEffect(() => {
-		console.log(options)
-	}, [options])
-	
 	return (
 		<TooltipWrapper
 			ref={containerRef}

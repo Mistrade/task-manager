@@ -1,18 +1,55 @@
 import React, {FC} from 'react'
-import {AddTaskModalProps} from '../types'
+import {AddTaskModalProps, CalendarTaskItem} from '../types'
 import {Modal, ModalBody, ModalHeader} from '../../Modal/Modal'
-import {ERROR_DESCRIPTIONS, ERROR_TITLES, getHumanizeDateValue, TaskStatusesObject} from '../../../common/constants'
+import {ERROR_DESCRIPTIONS, ERROR_TITLES, getHumanizeDateValue} from '../../../common/constants'
 import {FlexBlock} from '../../LayoutComponents/FlexBlock'
 import {Tooltip} from '../../Tooltip/Tooltip'
 import {ErrorBoundary} from "../../Errors/ErrorBoundary";
 import dayjs from "dayjs";
+import {FullResponseEventModel} from "../../../store/api/taskApi/types";
 
 const Form = React.lazy(() => import('../Forms/AddTaskForm')
 	.then(({AddTaskForm}) => ({default: AddTaskForm}))
 )
 
-export const AddTaskModal: FC<AddTaskModalProps> = ({date, onClose, clonedEventInfo, onSuccessClonedEvent}) => {
-	console.log(clonedEventInfo)
+export const AddTaskModal: FC<AddTaskModalProps> = ({
+																											date,
+																											onClose,
+																											clonedEventInfo,
+																											onSuccessClonedEvent,
+																											onComplete
+																										}) => {
+	
+	const getInitialValues = (data: Partial<FullResponseEventModel> | null | undefined): CalendarTaskItem | undefined => {
+		if (!data) {
+			return undefined
+		}
+		
+		const time = data.time
+			? dayjs(data.time).toDate()
+			: dayjs().toDate()
+		
+		const timeEnd = data.timeEnd
+			? dayjs(data.timeEnd).toDate()
+			: dayjs().add(1, 'hour').toDate()
+		
+		return {
+			description: clonedEventInfo?.description || '',
+			timeEnd,
+			time,
+			status: 'created',
+			priority: data.priority || "medium",
+			calendar: data.calendar?._id || "",
+			createdAt: '',
+			type: 'event',
+			title: data.title || "",
+			members: [],
+			link: data.link || null,
+			linkedFrom: data.id || "",
+			parentId: data.parentId || "",
+		}
+	}
+	
 	return (
 		<Modal
 			isView={true}
@@ -35,27 +72,13 @@ export const AddTaskModal: FC<AddTaskModalProps> = ({date, onClose, clonedEventI
 						<React.Suspense fallback={'Загрузка формы...'}>
 							<Form
 								onComplete={(value, taskId) => {
-									console.log('onComplete')
-									if (value.linkedFrom) {
+									if (value.linkedFrom || value.parentId) {
 										onSuccessClonedEvent && onSuccessClonedEvent(value.time, 'created', taskId)
 									} else {
 										onClose && onClose()
 									}
 								}}
-								initialValues={clonedEventInfo ? {
-									description: clonedEventInfo?.description || '',
-									timeEnd: dayjs(clonedEventInfo?.timeEnd).toDate(),
-									time: dayjs(clonedEventInfo.time).toDate(),
-									status: 'created',
-									priority: clonedEventInfo.priority,
-									calendar: clonedEventInfo.calendar._id,
-									createdAt: '',
-									type: 'event',
-									title: `CLONE - ${clonedEventInfo.title}`,
-									members: [],
-									link: clonedEventInfo.link,
-									linkedFrom: clonedEventInfo.id,
-								} : undefined}
+								initialValues={getInitialValues(clonedEventInfo)}
 								onCancel={(value) => onClose && onClose()}
 								date={date}
 							/>

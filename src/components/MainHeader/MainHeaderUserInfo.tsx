@@ -2,11 +2,11 @@ import {FC} from "react";
 import {UserModel} from "../Calendars/types";
 import {FlexBlock} from "../LayoutComponents/FlexBlock";
 import {HeaderDefaultLink} from "./HeaderLink.styled.";
-import {useNavigate} from "react-router-dom";
 import {useLogoutMutation} from "../../store/api/sessionApi";
 import {LogoutIcon} from "../Icons/Session/LogoutIcon";
 import {css} from "styled-components";
 import {EmptyButtonStyled} from "../Buttons/EmptyButton.styled";
+import {useSearchNavigate} from "../../hooks/useSearchNavigate";
 
 export interface MainHeaderUserInfoProps {
 	userInfo?: UserModel | null
@@ -14,7 +14,7 @@ export interface MainHeaderUserInfoProps {
 
 export const MainHeaderUserInfo: FC<MainHeaderUserInfoProps> = ({userInfo}) => {
 	const [logoutUser] = useLogoutMutation()
-	const navigate = useNavigate()
+	const navigate = useSearchNavigate()
 	return (
 		<FlexBlock width={'100%'} justify={'flex-end'}>
 			{!userInfo ? (

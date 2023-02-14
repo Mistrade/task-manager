@@ -10,12 +10,12 @@ import {
 	YearItem
 } from '../components/Calendars/types'
 import dayjs from 'dayjs'
-import {CompleteIcon, CreatedIcon, ProcessIcon, TrashIcon, WaitIcon} from '../components/Icons/Icons'
+import {ArchiveIcon, CompleteIcon, CreatedIcon, ProcessIcon, WaitIcon} from '../components/Icons/Icons'
 import {ErrorImagesType, InitialCurrentCalendarModeType} from "./types";
 import {SystemErrorImg} from "../components/Icons/Errors/SystemError";
 import {ErrorBadRequestImg} from "../components/Icons/Errors/ErrorBadRequest";
 import {ErrorForbiddenImg} from "../components/Icons/Errors/ErrorForbidden";
-import {FilterTaskStatuses} from "../components/Calendars/DayCalendar/EventFilter";
+import {FilterTaskStatuses} from "../components/Calendars/Modes/DayCalendar/EventFilter";
 
 export const MonthList = [
 	'Январь', 'Февраль', 'Март', 'Апрель', 'Май', 'Июнь', 'Июль', 'Август', 'Сентябрь', 'Октябрь', 'Ноябрь', 'Декабрь'
@@ -23,6 +23,10 @@ export const MonthList = [
 
 export const DeclinationMonthList = [
 	'Января', 'Февраля', 'Марта', 'Апреля', 'Мая', 'Июня', 'Июля', 'Августа', 'Сентября', 'Октября', 'Ноября', 'Декабря'
+]
+
+export const ShortMonthList = [
+	'Янв', 'Фев', 'Март', "Апр", "Май", "Июнь", "Июль", "Авг", "Сент", "Окт", "Нояб", "Дек"
 ]
 
 export const WeekDaysList = [
@@ -45,6 +49,13 @@ export const orangeColor = 'rgba(255,117,66, 1)'
 export const lightHoverColor = 'rgba(220, 220, 220, .4)'
 export const errorColor = '#FF6666'
 export const completeColor = '#c6fcda'
+
+export const borderRadiusSize = {
+	xs: "4px",
+	sm: "10px",
+	md: "16px",
+	xl: "20px",
+}
 
 export const colorRegExpDefault = /#[a-fA-F0-9]{3,6}$/gi
 export const colorRegExpRGBA = /rgba?\(((25[0-5]|2[0-4]\d|1\d{1,2}|\d\d?)\s*,\s*?){2}(25[0-5]|2[0-4]\d|1\d{1,2}|\d\d?)\s*,?\s*([01]\.?\d*?)?\)/gi
@@ -80,7 +91,39 @@ export const TaskStatusesObject: TaskStatusesObjectProps = {
 	created: ['created'],
 	in_work: ['in_progress', 'review'],
 	completed: ['completed'],
-	archive: ['archive']
+	archive: ['archive'],
+	all: ['created', 'completed', 'review', 'in_progress']
+}
+
+interface ContinueTaskObject {
+	title: string,
+	nextStatus: TaskStatusesType,
+}
+
+export const ContinueWorkTaskButtonName: { [key in TaskStatusesType]: Array<ContinueTaskObject> } = {
+	archive: [{
+		title: 'Восстановить',
+		nextStatus: 'created',
+	}],
+	review: [{
+		title: 'Выполнить',
+		nextStatus: 'completed',
+	}],
+	completed: [],
+	in_progress: [
+		{
+			title: 'На проверку',
+			nextStatus: 'review',
+		},
+		{
+			title: 'Выполнить',
+			nextStatus: 'completed'
+		}
+	],
+	created: [{
+		title: 'Взять в работу',
+		nextStatus: 'in_progress'
+	}]
 }
 
 export const TASK_STATUSES: { [key in TaskStatusesType]: TaskStatusInfo } = {
@@ -112,7 +155,7 @@ export const TASK_STATUSES: { [key in TaskStatusesType]: TaskStatusInfo } = {
 		value: false,
 		key: 'archive',
 		title: 'Перенести в архив',
-		icon: <TrashIcon size={16} color={currentColor}/>
+		icon: <ArchiveIcon size={16} color={currentColor}/>
 	}
 }
 
@@ -144,7 +187,7 @@ export const ERROR_IMAGES: ErrorImagesType = {
 }
 
 export const getHumanizeDateValue = (date: Date, withTime: boolean = true) => {
-	return dayjs(date).format(`DD ${DeclinationMonthList[date.getMonth()]} YYYY${withTime ? ' в HH:mm' : ''}`)
+	return dayjs(date).format(`DD ${ShortMonthList[date.getMonth()]} YYYY${withTime ? ' в HH:mm' : ''}`)
 }
 
 export const defaultYearItem: YearItem = {
@@ -237,6 +280,5 @@ export const colorPalette = [
 	'#CCCC33',
 	'#999966',
 	'#999999'
-
 ]
 

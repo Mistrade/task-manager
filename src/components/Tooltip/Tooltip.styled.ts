@@ -1,5 +1,5 @@
 import styled, {css} from 'styled-components'
-import {currentColorWithoutBlur, defaultColor} from '../../common/constants'
+import {borderRadiusSize, currentColorWithoutBlur, defaultColor} from '../../common/constants'
 import {pxToCssValue} from '../LayoutComponents/FlexBlock'
 import {OptionsTooltip} from './Tooltip'
 
@@ -27,7 +27,7 @@ export const TooltipContent = styled('span')<{ isVisible: boolean, left: number 
     min-width: 50px;
     max-width: 400px;
     flex-shrink: 1;
-    border-radius: 4px;
+    border-radius: ${borderRadiusSize.xs};
     background-color: ${currentColorWithoutBlur};
     color: #fff;
     text-align: center;

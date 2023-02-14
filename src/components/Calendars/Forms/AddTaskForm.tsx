@@ -1,4 +1,4 @@
-import {FC, useCallback, useEffect, useMemo} from 'react'
+import {FC, useEffect, useMemo} from 'react'
 import {CalendarTaskItem} from '../types'
 import {useFormik} from 'formik'
 import dayjs from 'dayjs'
@@ -7,6 +7,7 @@ import {TextInput} from '../../Input/TextInput/TextInput'
 import {SelectPriorityInput} from '../../Input/SelectInput/CalendarSelectInputs/SelectPriorityInput'
 import {SelectBooleanInput} from '../../Input/SelectInput/SelectBooleanInput'
 import {
+	borderRadiusSize,
 	currentColor,
 	defaultColor,
 	getHumanizeDateValue,
@@ -19,7 +20,7 @@ import {DatePickerPaper} from '../DatePicker/DatePickerPaper'
 import {SelectListContainer} from '../../Input/SelectInput/SelectListContainer'
 import * as yup from 'yup'
 import {CompleteIcon, CreatedIcon} from '../../Icons/Icons'
-import {Button, StyledButton} from '../../Buttons/Buttons.styled'
+import {Button, StyledButton, WhiteButton} from '../../Buttons/Buttons.styled'
 import {SelectLinks} from '../../Input/SelectInput/CalendarSelectInputs/SelectLinks'
 import {Tooltip} from '../../Tooltip/Tooltip'
 import {ServerResponse, useAddTaskMutation, useGetCalendarsQuery} from "../../../store/api/taskApi/taskApi";
@@ -28,6 +29,9 @@ import {CalendarNameItem} from "../CalendarList/CalendarNameListItem";
 import {SelectItemContainer} from "../../Input/SelectInput/SelectItemContainer";
 import {ObjectId} from "../../../store/api/taskApi/types";
 import {toast} from "react-toastify";
+import {Informer} from "../../Inform/Informer";
+import {LinkStyled} from '../../Buttons/Link.styled'
+import {EmptyButtonStyled} from '../../Buttons/EmptyButton.styled'
 
 interface AddTaskFormProps {
 	onComplete?: (data: CalendarTaskItem, taskId?: ObjectId) => void,
@@ -77,7 +81,7 @@ export const AddTaskForm: FC<AddTaskFormProps> = ({date, onComplete, onCancel, i
 					onComplete && onComplete(values, response?.data?.taskId)
 				})
 				.catch((response: ServerResponse<null>) => {
-					if(response.info){
+					if (response.info) {
 						toast(response.info?.message, {
 							type: response.info.type
 						})
@@ -88,6 +92,7 @@ export const AddTaskForm: FC<AddTaskFormProps> = ({date, onComplete, onCancel, i
 		initialValues: initialValues || {
 			title: '',
 			linkedFrom: '',
+			parentId: '',
 			type: 'event',
 			createdAt: '',
 			description: '',
@@ -130,6 +135,32 @@ export const AddTaskForm: FC<AddTaskFormProps> = ({date, onComplete, onCancel, i
 						placeholder={'Позвонить заказчику'}
 					/>
 				</FlexBlock>
+				{formik.values.parentId && (
+					<Informer>
+						<FlexBlock
+							fSize={15}
+							direction={'row'}
+							justify={'space-between'}
+							wrap={'nowrap'}
+							gap={12}
+							align={'center'}
+							width={'100%'}
+						>
+							<span>
+							Данное событие будет создано как дочернее для <LinkStyled
+								target={'_blank'}
+								style={{fontSize: 15}}
+								to={`/calendar/day/all/${formik.values.parentId}`}>этого события</LinkStyled>
+							</span>
+							<WhiteButton
+								type={'button'}
+								onClick={() => formik.setFieldValue('parentId', undefined)}
+							>
+								Удалить связь
+							</WhiteButton>
+						</FlexBlock>
+					</Informer>
+				)}
 				<FlexBlock mb={12} wrap={'nowrap'} width={'100%'}>
 					<SelectLinks
 						inputId={'select__link'}
@@ -151,7 +182,7 @@ export const AddTaskForm: FC<AddTaskFormProps> = ({date, onComplete, onCancel, i
 							placeholder={'Выберите из выпадающего списка'}
 							label={'Выберите календарь'}
 							icon={calendarItem &&
-              <FlexBlock width={20} height={20} bgColor={calendarItem?.color} borderRadius={4}/>}
+                  <FlexBlock width={20} height={20} bgColor={calendarItem?.color} borderRadius={borderRadiusSize.xs}/>}
 							iconPlacement={'right'}
 							value={calendarItem?.title || ''}
 							errorMessage={formik.errors.calendar}
@@ -164,12 +195,13 @@ export const AddTaskForm: FC<AddTaskFormProps> = ({date, onComplete, onCancel, i
 										<>
 											{data.map((item) => (
 												<SelectItemContainer
+													key={item._id}
 													onClick={() => {
 														formik.setFieldValue('calendar', item._id)
 														methods.focusOut()
 													}}
 												>
-													<FlexBlock width={20} height={20} bgColor={item.color} borderRadius={4}/>
+													<FlexBlock width={20} height={20} bgColor={item.color} borderRadius={borderRadiusSize.xs}/>
 													{item.title}
 												</SelectItemContainer>
 											))}
@@ -284,21 +316,12 @@ export const AddTaskForm: FC<AddTaskFormProps> = ({date, onComplete, onCancel, i
 					/>
 				</FlexBlock>
 				{formik.values.time.getDate() !== formik.values.timeEnd.getDate() && (
-					<FlexBlock
-						mb={12}
-						justify={'flex-start'}
-						width={'100%'}
-						maxWidth={'100%'}
-						borderRadius={4}
-						p={16}
-						border={`1px solid ${currentColor}`}
-						bgColor={hoverColor}
-					>
+					<Informer>
 						Это событие будет создано в карточках нескольких дней, так как оно начинается и
 						завершается в разные дни.
 						<br/>
 						Так происходит потому что мы стараемся показывать актуальную информацию на каждый день.
-					</FlexBlock>
+					</Informer>
 				)}
 				<FlexBlock mb={12} direction={'row'}>
 					<TextAreaInput

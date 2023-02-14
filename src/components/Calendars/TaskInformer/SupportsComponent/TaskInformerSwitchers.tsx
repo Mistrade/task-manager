@@ -4,7 +4,7 @@ import {disabledColor} from "../../../../common/constants";
 import {SwitchCalendarModeTab} from "../../Calendar.styled";
 import {Badge} from "../../../Badge/Badge";
 
-export type TaskInformerSwitchersKeys = 'about' | 'history' | 'comments' | 'members'
+export type TaskInformerSwitchersKeys = 'about' | 'history' | 'comments' | 'members' | 'chains'
 
 export interface TaskInformerSwitchersItem {
 	title: string,
@@ -19,9 +19,10 @@ interface TaskInformerSwitchers {
 
 const taskInformerSwitcherList: Array<TaskInformerSwitchersItem> = [
 	{title: 'О событии', key: 'about'},
-	{title: 'История', key: 'history'},
-	{title: 'Комментарии', key: 'comments', badgeCount: 3},
-	{title: 'Участники', key: 'members'}
+	{title: 'История (Dev)', key: 'history'},
+	{title: 'Комментарии (Dev)', key: 'comments', badgeCount: 3},
+	{title: 'Участники (Dev)', key: 'members'},
+	{title: 'Связи', key: 'chains'}
 ]
 export const TaskInformerSwitchers: FC<TaskInformerSwitchers> = ({selected, onChange}) => {
 	

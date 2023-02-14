@@ -76,6 +76,9 @@ export const TextInput = forwardRef<HTMLInputElement, TextInputProps>(({
 						onFocus={onFocus}
 						readOnly={!!readOnly}
 						onClick={onClick}
+						onPaste={(e) => {
+							console.log(e)
+						}}
 					/>
 					<InputIconContainer icon={icon} iconPlacement={iconPlacement} isLoading={isLoading}/>
 					{children && (

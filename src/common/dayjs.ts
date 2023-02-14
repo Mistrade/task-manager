@@ -11,7 +11,6 @@ import updateLocale from 'dayjs/plugin/updateLocale'
 import duration from 'dayjs/plugin/duration'
 import utc from 'dayjs/plugin/utc'
 import tz from 'dayjs/plugin/timezone'
-import {CalendarTaskItem, CalendarTaskList, EventItem} from '../components/Calendars/types'
 
 dayjs.extend(isBetween)
 dayjs.extend(isToday)
@@ -30,23 +29,3 @@ dayjs.updateLocale('en', {
 	weekStart: 1,
 	yearStart: 4
 })
-
-export const sortTask = (initialList: Array<EventItem>): Array<EventItem> => {
-	const list = [...initialList]
-	
-	if (!!list.length) {
-		list.sort((prev, cur) => {
-			if (dayjs(cur.time).isBefore(prev.time)) {
-				return 1
-			}
-			
-			if (dayjs(cur.time).isAfter(prev.time)) {
-				return -1
-			}
-			
-			return 0
-		})
-	}
-	
-	return list
-}

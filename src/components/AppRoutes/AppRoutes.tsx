@@ -36,6 +36,10 @@ export const AppRoutes: FC<OnlyAuthRoutes> = ({userInfo}) => {
 					/>
 				</Route>
 				<Route
+					path={'profile/:id'}
+					element={'Тут будет профиль пользователя'}
+				/>
+				<Route
 					path={'*'}
 					element={<NotFoundPage/>}
 				/>

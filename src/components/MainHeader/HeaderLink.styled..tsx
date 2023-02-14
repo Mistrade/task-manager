@@ -5,7 +5,6 @@ import {currentColor, defaultColor} from "../../common/constants";
 export const HeaderDefaultLink = styled(LinkStyled)`
   font-size: 16px;
   border: 1px solid ${defaultColor};
-  border-radius: 4px;
   padding: 6px 16px;
   outline: none;
   cursor: pointer;

@@ -1,6 +1,6 @@
-import styled from 'styled-components'
+import styled, {css} from 'styled-components'
 import {CalendarCellDateProps} from './types'
-import {currentColor, defaultColor, hoverColor} from '../../common/constants'
+import {borderRadiusSize, currentColor, defaultColor, hoverColor} from '../../common/constants'
 
 export const CalendarDesktopContainer = styled('div')`
   & {
@@ -73,7 +73,7 @@ export const SwitchCalendarMode = styled('button')<{ isSelected?: boolean }>`
     padding: 6px 16px;
     font-size: 16px;
     border: 1px solid ${defaultColor};
-    border-radius: 4px;
+    border-radius: ${borderRadiusSize.sm};
     cursor: pointer;
     transition: all .3s ease-in-out;
     background-color: ${props => props.isSelected ? currentColor : '#fff'};
@@ -99,14 +99,31 @@ export const SwitchCalendarModeTab = styled('button')<{ isSelected?: boolean }>`
     border: none;
     cursor: pointer;
     transition: all .3s ease-in-out;
-    border-bottom: 3px solid ${props => props.isSelected ? currentColor : 'transparent'};
     color: ${defaultColor};
     min-width: 30px;
+    position: relative;
+    border-radius: ${borderRadiusSize.sm};
   }
 
+  ${props => {
+    if (props.isSelected) {
+      return css`
+        &:after {
+          content: '';
+          position: absolute;
+          bottom: -2px;
+          left: 0;
+          width: 100%;
+          height: 4px;
+          border-radius: ${borderRadiusSize.xl};
+          background-color: ${currentColor};
+        }
+      `
+    }
+  }}
   &:hover {
     background-color: ${hoverColor};
-    border-radius: 4px 4px 0px 0px;
+    border-radius: ${borderRadiusSize.xs} ${borderRadiusSize.xs} 0px 0px;
   }
 
   &:not(:last-child) {

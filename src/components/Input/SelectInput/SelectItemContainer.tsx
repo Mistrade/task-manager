@@ -2,7 +2,7 @@ import {FCWithChildren} from '../../Calendars/types'
 import {FlexBlock} from '../../LayoutComponents/FlexBlock'
 import {css} from 'styled-components'
 import {HoverElementMixin} from '../../../common/cssMixins'
-import {hoverColor} from '../../../common/constants'
+import {borderRadiusSize, hoverColor} from '../../../common/constants'
 import React from "react";
 
 export const SelectItemContainer: FCWithChildren<{ onClick?: (e: React.MouseEvent<HTMLDivElement>) => void, isSelected?: boolean }> = ( {
@@ -14,7 +14,7 @@ export const SelectItemContainer: FCWithChildren<{ onClick?: (e: React.MouseEven
     return (
       <FlexBlock
         p={'4px 8px'}
-        borderRadius={4}
+        borderRadius={borderRadiusSize.xs}
         additionalCss={css`
           ${isSelected && css`
             color: #000;

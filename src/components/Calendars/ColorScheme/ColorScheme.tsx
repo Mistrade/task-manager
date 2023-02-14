@@ -1,6 +1,5 @@
 import {FC} from "react";
-import {pxToCssValue} from "../../LayoutComponents/FlexBlock";
-import {colorPalette, disabledColor, errorColor} from "../../../common/constants";
+import {borderRadiusSize, colorPalette, disabledColor, errorColor} from "../../../common/constants";
 import {EmptyButtonStyled} from "../../Buttons/EmptyButton.styled";
 import {CalendarIdentifier} from "../CalendarList/CalendarList.styled";
 import styled, {css} from "styled-components";
@@ -18,7 +17,7 @@ const Grid = styled('div')<{ gap?: number | string, borderColor?: string }>`
   display: grid;
   grid-template-columns: repeat(6, 1fr);
   padding: 8px;
-  border-radius: 4px;
+  border-radius: ${borderRadiusSize.xs};
   border: 1px solid ${_ => _.borderColor || disabledColor};
   width: 100%;
   justify-items: center;

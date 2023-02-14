@@ -1,26 +1,27 @@
 import {
-	CalendarMode, CalendarTaskItem,
+	CalendarMode,
 	OnAddTaskFnType,
 	OnChangeCurrentFnType,
 	OnCloseTaskInfoFnType,
 	OnSelectTaskFnType,
 	SelectedTaskType
 } from '../components/Calendars/types'
-import React, {useCallback, useEffect, useMemo, useState} from 'react'
+import React, {useCallback, useMemo, useState} from 'react'
 import {useAppDispatch, useAppSelector} from "../store/hooks/hooks";
 import {
 	changeAddTaskDate,
 	changeCalendarCurrent,
-	changeCalendarRemoveCandidate, changeTaskStatuses,
+	changeCalendarRemoveCandidate,
+	changeTaskStatuses,
 	setClonedParentEvent
 } from "../store/reducers/calendar";
 import {CalendarCurrentSelector} from "../store/selectors/calendarItems";
-import {useNavigate} from "react-router-dom";
 import dayjs from "dayjs";
 import {CalendarNameItem} from "../components/Calendars/CalendarList/CalendarNameListItem";
 import {FullResponseEventModel, ObjectId} from "../store/api/taskApi/types";
 import {toast} from "react-toastify";
-import {FilterTaskStatuses} from "../components/Calendars/DayCalendar/EventFilter";
+import {FilterTaskStatuses} from "../components/Calendars/Modes/DayCalendar/EventFilter";
+import {useSearchNavigate} from "./useSearchNavigate";
 
 export interface UseCalendarReturned {
 	current: CalendarMode,
@@ -36,8 +37,8 @@ export interface UseCalendarReturned {
 	onCloseAddCalendarModal: () => void,
 	onSelectToRemoveCalendar: (item: CalendarNameItem | null) => void,
 	calendarRemoveCandidate: CalendarNameItem | null,
-	onCloneEvent: (initialValues: FullResponseEventModel) => void,
-	clonedEventInfo: FullResponseEventModel | null,
+	onCloneEvent: (initialValues: Partial<FullResponseEventModel>) => void,
+	clonedEventInfo: Partial<FullResponseEventModel> | null,
 	onSuccessClonedEvent: (date: Date, taskStatus: FilterTaskStatuses, taskId?: ObjectId) => void,
 	onAddCalendar: (calendarId?: ObjectId) => void
 }
@@ -47,13 +48,13 @@ export type UseCalendarType = () => UseCalendarReturned
 export const useCalendar: UseCalendarType = () => {
 	
 	const current = useAppSelector(CalendarCurrentSelector)
-	const navigate = useNavigate()
+	const navigate = useSearchNavigate()
 	const {calendarRemoveCandidate, addTaskDate, clonedParentEvent, statuses} = useAppSelector(state => state.calendar)
 	
 	const [selectedTask, setSelectedTask] = useState<SelectedTaskType>(null)
 	const dispatch = useAppDispatch()
 	
-	const updateAddTaskState = useCallback((value: Date | null, initialValues?: FullResponseEventModel | null) => {
+	const updateAddTaskState = useCallback((value: Date | null, initialValues?: Partial<FullResponseEventModel> | null) => {
 		const date = dayjs(value)
 		if (date.isValid()) {
 			dispatch(changeAddTaskDate(date.toString()))
@@ -99,9 +100,20 @@ export const useCalendar: UseCalendarType = () => {
 		updateAddTaskState(date, initialValues || null)
 	}, [current.layout, statuses])
 	
-	const onChangeCurrent = useCallback((date: Date, l: CalendarMode['layout']) => {
+	const onChangeCurrent: UseCalendarReturned['onChangeCurrent'] = useCallback((date, l) => {
 		navigate(`/calendar/${l}/${statuses}`, {replace: true})
-		dispatch(changeCalendarCurrent({layout: l, date: date.toString()}))
+		if ('fromDate' in date || 'toDate' in date) {
+			dispatch(changeCalendarCurrent({
+				layout: date.layout,
+				date: {
+					layout: date.layout,
+					fromDate: date.fromDate.toString(),
+					toDate: date.toDate.toString(),
+				}
+			}))
+		} else {
+			dispatch(changeCalendarCurrent({layout: l, date: date.toString()}))
+		}
 	}, [statuses])
 	
 	const onCloseTaskInfo = useCallback(() => {
@@ -114,7 +126,7 @@ export const useCalendar: UseCalendarType = () => {
 		navigate(taskId ? `${defaultPath}/${taskId}` : defaultPath, {replace: true})
 	}, [current.layout, statuses])
 	
-	const onCloneEvent = useCallback((event: FullResponseEventModel) => {
+	const onCloneEvent = useCallback((event: Partial<FullResponseEventModel>) => {
 		const date = dayjs(event.time)
 		if (date.isValid()) {
 			onAddTask(dayjs(event.time).toDate(), event)

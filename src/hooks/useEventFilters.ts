@@ -1,26 +1,25 @@
-import {EventFilterOnChangeHandle, FilterTaskStatuses} from "../components/Calendars/DayCalendar/EventFilter";
-import {useCallback, useEffect, useMemo, useState} from "react";
+import {EventFilterOnChangeHandle, FilterTaskStatuses} from "../components/Calendars/Modes/DayCalendar/EventFilter";
+import {useCallback, useMemo, useState} from "react";
 import {useDebounce} from "./useDebounce";
 import {CalendarMode, CalendarPriorityKeys} from "../components/Calendars/types";
-import {useGetTasksAtDayQuery} from "../store/api/taskApi/taskApi";
 import dayjs from "dayjs";
-import {current} from "@reduxjs/toolkit";
-import {useNavigate} from "react-router-dom";
 import {useAppDispatch} from "../store/hooks/hooks";
 import {changeTaskStatuses} from "../store/reducers/calendar";
+import {useSearchNavigate} from "./useSearchNavigate";
 
 export interface EventFilters {
 	title: string | null,
 	priority: null | CalendarPriorityKeys,
 	start: Date,
 	end: Date,
-	taskStatus: FilterTaskStatuses
+	taskStatus: FilterTaskStatuses,
+	onlyFavorites?: boolean
 }
 
 
 export interface UseEventFiltersProps {
 	initialValues: EventFilters,
-	layout: CalendarMode['layout']
+	layout: CalendarMode['layout'],
 }
 
 export interface UseEventFiltersReturned {
@@ -44,7 +43,7 @@ export const useEventFilters: UseEventFiltersType = ({
 																											 initialValues,
 																											 layout
 																										 }) => {
-	const navigate = useNavigate()
+	const navigate = useSearchNavigate()
 	const dispatch = useAppDispatch()
 	const [filters, setFilters] = useState<EventFilters>(initialValues)
 	
