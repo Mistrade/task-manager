@@ -1,8 +1,8 @@
 import {CalendarListStyled} from "./CalendarList.styled";
 import {CalendarNameListItem} from "./CalendarNameListItem";
-import {useEffect} from "react";
 import {useGetCalendarsQuery} from "../../../store/api/taskApi/taskApi";
 import {useCalendar} from "../../../hooks/useCalendar";
+import {Delay} from "../../../common/functions";
 
 export const CalendarList = () => {
 	const {currentData, isFetching, refetch} = useGetCalendarsQuery({})
@@ -18,6 +18,7 @@ export const CalendarList = () => {
 						onDelete={onSelectToRemoveCalendar}
 						isChecked={item.isSelected}
 						onEdit={onAddCalendar}
+						onSuccessChangeSelect={async () => await Delay(1000)}
 					/>
 				)
 			})}

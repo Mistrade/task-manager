@@ -4,6 +4,7 @@ import {disabledColor, hoverColor} from "../../common/constants";
 import {css} from "styled-components";
 import {MainHeaderBody, MainHeaderBodyProps} from "./MainHeaderBody";
 import {CalendarHeaderProps} from "../Calendars/types";
+import {TestIdList} from "../../utils/test/testid-list";
 
 const CalendarHeader = React.lazy(() => import('../Calendars/Header/CalendarHeader').then(({CalendarHeader}) => ({default: CalendarHeader})))
 
@@ -16,6 +17,7 @@ export interface MainHeaderProps extends MainHeaderBodyProps {
 export const MainHeader: FC<MainHeaderProps> = ({userInfo, msOptions}) => {
 	return (
 		<FlexBlock
+			data-testid={TestIdList["MAIN_HEADER"]}
 			direction={'column'}
 			bgColor={hoverColor}
 			borderBottom={`1px solid ${disabledColor}`}

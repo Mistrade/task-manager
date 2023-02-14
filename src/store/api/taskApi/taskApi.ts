@@ -1,7 +1,13 @@
 import {createApi, fetchBaseQuery} from "@reduxjs/toolkit/dist/query/react";
-import {CalendarPriorityKeys, CalendarTaskItem, EventItem, TaskStorage} from "../../../components/Calendars/types";
+import {
+	CalendarMode,
+	CalendarPriorityKeys,
+	CalendarTaskItem,
+	EventItem,
+	TaskStorageType
+} from "../../../components/Calendars/types";
 import {baseServerUrl} from "../defaultApiConfig";
-import {FilterTaskStatuses} from "../../../components/Calendars/DayCalendar/EventFilter";
+import {FilterTaskStatuses} from "../../../components/Calendars/Modes/DayCalendar/EventFilter";
 import {CalendarNameItem} from "../../../components/Calendars/CalendarList/CalendarNameListItem";
 import {CalendarsModelType, FullResponseEventModel, ObjectId, ShortEventItem} from "./types";
 import {CreateCalendarFormData} from "../../../components/Calendars/CalendarModals/CreateCalendar";
@@ -13,7 +19,9 @@ interface GetTaskQueryProps {
 	toDate: string,
 	title: string | null,
 	priority: CalendarPriorityKeys | null,
-	taskStatus: FilterTaskStatuses
+	taskStatus: FilterTaskStatuses,
+	onlyFavorites?: boolean,
+	layout?: CalendarMode['layout']
 }
 
 export type GetTaskSchemeRequest = Pick<GetTaskQueryProps, 'fromDate' | 'toDate'>
@@ -56,7 +64,7 @@ export const taskApi = createApi({
 					body: args,
 					method: 'POST',
 				}),
-				invalidatesTags: ['Calendars', 'Tasks', 'TaskScheme', 'TaskCount']
+				invalidatesTags: (result, error, arg, meta) => error ? [] : ['Calendars', 'Tasks', 'TaskScheme', 'TaskCount']
 			}),
 			createCalendar: build.mutation<ServerResponse<null>, CreateCalendarFormData>({
 				query: (args) => ({
@@ -80,7 +88,7 @@ export const taskApi = createApi({
 					method: 'POST',
 					body: args
 				}),
-				invalidatesTags: ['Tasks', 'Calendars', 'TaskCount']
+				invalidatesTags: (result, error, arg, meta) => error ? [] : ['Tasks', 'Calendars', 'TaskCount']
 			}),
 			getTaskInfo: build
 				.query<ServerResponse<FullResponseEventModel>, string>({
@@ -98,16 +106,16 @@ export const taskApi = createApi({
 						method: 'POST',
 						body: props,
 					}),
-					providesTags: ['Tasks', 'TaskInfo'],
+					providesTags: ['Tasks'],
 				}),
 			getTasksAtScope: build
-				.query<TaskStorage<ShortEventItem>, GetTaskQueryProps>({
+				.query<TaskStorageType<ShortEventItem>, GetTaskQueryProps>({
 					query: (props) => ({
 						url: `/getTaskAtScope`,
 						method: 'POST',
 						body: props,
 					}),
-					providesTags: ['Tasks', 'TaskInfo'],
+					providesTags: ['Tasks'],
 				}),
 			addTask: build
 				.mutation<ServerResponse<{ taskId: ObjectId }>, CalendarTaskItem>({
@@ -116,16 +124,16 @@ export const taskApi = createApi({
 						method: "POST",
 						body
 					}),
-					invalidatesTags: ['Tasks', 'TaskScheme', 'TaskCount']
+					invalidatesTags: (result, error, arg, meta) => error ? [] : ['Tasks', 'TaskScheme', 'TaskCount']
 				}),
 			removeTask: build
 				.mutation({
-					query: (arg: { id: string }) => ({
+					query: (arg: { id: string, remove?: boolean }) => ({
 						url: '/remove',
 						method: 'POST',
 						body: arg
 					}),
-					invalidatesTags: ['Tasks', 'TaskScheme', 'TaskCount']
+					invalidatesTags: (result, error, arg, meta) => error ? [] : ['Tasks', 'TaskScheme', 'TaskCount']
 				}),
 			getTaskScheme: build
 				.query<GetTaskSchemeResponse, GetTaskSchemeRequest>({
@@ -141,7 +149,7 @@ export const taskApi = createApi({
 						
 						return baseQueryReturnValue.data || {}
 					},
-					providesTags: ['TaskScheme', 'TaskInfo']
+					providesTags: ['TaskScheme']
 				}),
 			updateTask: build.mutation<ServerResponse<null>, { id: string, field: keyof EventItem, data: any }>({
 				query: (args) => ({
@@ -149,7 +157,21 @@ export const taskApi = createApi({
 					method: 'POST',
 					body: args,
 				}),
-				invalidatesTags: ['TaskInfo', 'TaskScheme', 'Tasks', 'TaskCount']
+				invalidatesTags: (result, error, arg, meta) => {
+					if (result?.info?.type !== 'success' || error) {
+						return []
+					}
+					
+					if (arg.field === 'time' || arg.field === 'timeEnd' || arg.field === 'calendar') {
+						return ['TaskInfo', 'Tasks', 'TaskCount', 'TaskScheme']
+					}
+					
+					if (arg.field === 'status') {
+						return ['TaskInfo', 'TaskCount', 'Tasks']
+					}
+					
+					return ['TaskInfo', 'Tasks']
+				}
 			}),
 			getTaskCountOfStatus: build.query<SwitcherBadges<FilterTaskStatuses>, Omit<GetTaskQueryProps, 'taskStatus'>>({
 				query: (args) => ({
@@ -172,11 +194,12 @@ export const taskApi = createApi({
 					method: 'POST',
 					body: args
 				}),
-				invalidatesTags: ['Calendars', 'Tasks']
+				invalidatesTags: (result, error, arg, meta) => error ? [] : ['Calendars', 'Tasks']
 			})
 		}
 	}
 })
+
 
 export const {
 	useGetTasksAtDayQuery,
@@ -187,6 +210,7 @@ export const {
 	useLazyGetTaskInfoQuery,
 	useUpdateTaskMutation,
 	useGetCalendarsQuery,
+	useGetTaskInfoQuery,
 	useChangeSelectCalendarMutation,
 	useCreateCalendarMutation,
 	useHasTasksInCalendarQuery,

@@ -16,7 +16,6 @@ export const RegistrationUser = createAsyncThunk<RegistrationNextAction, { data:
 		})
 		
 		if (res.status >= 400) {
-			console.log(res.data.message || 'Сообщения об ошибке нет')
 			return thunkApi.rejectWithValue({
 				message: res.data.message || 'Произошла ошибка',
 				errorCode: "SERVER_ERROR"

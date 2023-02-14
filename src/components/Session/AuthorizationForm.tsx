@@ -1,7 +1,6 @@
 import {TextInput} from "../Input/TextInput/TextInput";
 import {useFormik} from "formik";
 import {Button} from "../Buttons/Buttons.styled";
-import {useNavigate} from "react-router-dom";
 import {SessionFormContainer} from "./SessionFormContainer";
 import {Heading} from "../Text/Heading";
 import {FlexBlock} from "../LayoutComponents/FlexBlock";
@@ -11,6 +10,7 @@ import {toast} from "react-toastify";
 import {defaultColor} from "../../common/constants";
 import {AuthValidationScheme} from "../../common/validation/session";
 import {useAppSelector} from "../../store/hooks/hooks";
+import {useSearchNavigate} from "../../hooks/useSearchNavigate";
 
 export interface AuthorizationProps {
 	phone: string,
@@ -23,7 +23,7 @@ const initialValues: AuthorizationProps = {
 }
 
 export const AuthorizationForm = () => {
-	const navigate = useNavigate()
+	const navigate = useSearchNavigate()
 	const [loginUser] = useLoginMutation()
 	const {statuses} = useAppSelector(state => state.calendar)
 	const {

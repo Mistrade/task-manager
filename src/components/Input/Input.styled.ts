@@ -1,5 +1,5 @@
 import styled, {css} from 'styled-components'
-import {currentColor, disabledColor, errorColor} from '../../common/constants'
+import {borderRadiusSize, currentColor, disabledColor, errorColor} from '../../common/constants'
 import {DefaultTextInputProps} from "./TextInput/TextInput";
 
 const LeftIconPadding = css`
@@ -28,7 +28,7 @@ interface InputStyledProps {
 export const StyledInput = styled('input')<InputStyledProps>`
   width: 100%;
   border: 2px solid ${_ => _.isError ? errorColor : disabledColor};
-  border-radius: 6px;
+  border-radius: ${borderRadiusSize.sm};
   outline: none;
   transition: all .3s ease-in;
   cursor: pointer;
@@ -49,7 +49,8 @@ export const StyledLabel = styled('label')`
   & {
     width: fit-content;
     font-size: 16px;
-    font-family: Helvetica, sans-serif;
+		padding-left: 4px;
+    font-family: "Helvetica Neue", sans-serif;
     font-weight: normal;
     color: ${currentColor};
     line-height: 1;
@@ -64,7 +65,7 @@ export const StyledTextAreaInput = styled('textarea')`
 	& {
 		width: 100%;
 		border: 2px solid ${disabledColor};
-		border-radius: 6px;
+		border-radius: ${borderRadiusSize.sm};
 		outline: none;
     -moz-appearance: none;
 		resize: none;

@@ -1,6 +1,7 @@
 import {MonthItem, UsageTaskItemBaseProps} from "../../types";
 import {
-	TaskInformerUpdateFn, ToggleEventCalendar,
+	TaskInformerUpdateFn,
+	ToggleEventCalendar,
 	ToggleEventPriority,
 	ToggleEventStatus
 } from "../SupportsComponent/ToggleTaskInformerButtons";
@@ -60,17 +61,6 @@ export const TaskInformerRightBar: FC<TaskInformerRightBarProps> = ({
 				monthItem={monthItem}
 			/>
 			<TaskCreatedMessage taskItem={taskItem}/>
-			{taskItem.linkedFrom && (
-				<FlexBlock>
-					<EmptyButtonStyled
-						onClick={() => {
-							taskItem.linkedFrom && openClonedTask && openClonedTask(taskItem.linkedFrom)
-						}}
-					>
-						Смотреть исходное событие
-					</EmptyButtonStyled>
-				</FlexBlock>
-			)}
 		</FlexBlock>
 	)
 }

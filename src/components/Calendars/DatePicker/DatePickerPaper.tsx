@@ -2,12 +2,12 @@ import {FC, useEffect, useMemo, useState} from 'react'
 import {FlexBlock} from '../../LayoutComponents/FlexBlock'
 import {CalendarCurrentMonth, CalendarDisabledOptions, MonthItem} from '../types'
 import {CalendarTodaySwitchers} from '../Header/CalendarTodaySwitchers'
-import {getMonthDays} from '../../../common/calendarSupport/getters'
 import {changeMonthCurrentHandler} from '../../../common/functions'
 import dayjs from 'dayjs'
 import {SmallCalendarMonthTitle} from '../SmallMotnCalendar/SmallCalendarMonthTitle'
 import {TimeSelector} from './TimeSelector'
 import {SmallMonth} from '../SmallMotnCalendar/SmallMonth'
+import {DateListGenerator} from "../../../common/calendarSupport/generators";
 
 interface DatePickerPaperProps {
 	disabledOptions?: CalendarDisabledOptions,
@@ -27,7 +27,8 @@ export const DatePickerPaper: FC<DatePickerPaperProps> = ({
 	})
 	
 	const monthItem: MonthItem = useMemo(() => {
-		return getMonthDays(current, {useOtherDays: true, disabled: disabledOptions})
+		return new DateListGenerator({useOtherDays: true, disabled: disabledOptions})
+			.getMonthItem(new Date(current.year, current.month))
 	}, [current, disabledOptions])
 	
 	const [value, setValue] = useState<Date>(currentDate)

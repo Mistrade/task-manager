@@ -1,5 +1,5 @@
 import styled from "styled-components";
-import {lightHoverColor} from "../../common/constants";
+import {borderRadiusSize, lightHoverColor} from "../../common/constants";
 
 export const EmptyButtonStyled = styled('button')`
   & {
@@ -14,17 +14,17 @@ export const EmptyButtonStyled = styled('button')`
     align-items: center;
     justify-content: flex-start;
     gap: 8px;
-    padding: 4px 12px;
+    padding: 4px 6px;
   }
-	
-	&:focus {
-    border-radius: 4px;
+
+  &:focus {
+    border-radius: ${borderRadiusSize.sm};
     background-color: ${lightHoverColor};
-	}
+  }
 
 
   &:hover {
-    border-radius: 4px;
+    border-radius: ${borderRadiusSize.sm};
     background-color: ${lightHoverColor};
   }
 `
@@ -32,3 +32,32 @@ export const EmptyButtonStyled = styled('button')`
 EmptyButtonStyled.defaultProps = {
 	type: 'button'
 }
+
+export const EmptyLink = styled('a')`
+  & {
+    position: relative;
+    outline: none;
+    border: none;
+    background-color: transparent;
+    text-decoration: none;
+    font-size: 16px;
+    display: flex;
+    flex-wrap: nowrap;
+    cursor: pointer;
+    align-items: center;
+    justify-content: flex-start;
+    gap: 8px;
+    padding: 4px 6px;
+  }
+
+  &:focus {
+    border-radius: ${borderRadiusSize.sm};
+    background-color: ${lightHoverColor};
+  }
+
+
+  &:hover {
+    border-radius: ${borderRadiusSize.sm};
+    background-color: ${lightHoverColor};
+  }
+`

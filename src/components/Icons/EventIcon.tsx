@@ -1,5 +1,5 @@
 import React, {FC} from 'react'
-import {CompleteIcon, CreatedIcon, IconProps, ProcessIcon, TrashIcon, WaitIcon} from './Icons'
+import {ArchiveIcon, CompleteIcon, CreatedIcon, IconProps, ProcessIcon, WaitIcon} from './Icons'
 import {FlexBlockProps} from '../LayoutComponents/FlexBlock'
 import {EventItem} from '../Calendars/types'
 
@@ -14,6 +14,6 @@ export const EventIcon: FC<IconProps & FlexBlockProps & { status: EventItem['sta
 		case 'completed':
 			return <CompleteIcon {...props} />
 		case 'archive':
-			return <TrashIcon {...props} />
+			return <ArchiveIcon {...props} />
 	}
 }

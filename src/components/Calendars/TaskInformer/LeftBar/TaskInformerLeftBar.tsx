@@ -7,6 +7,7 @@ import {disabledColor} from "../../../../common/constants";
 import {TaskInformerLinkButton} from "../SupportsComponent/TaskInformerLinkButton";
 import {TaskInformerAboutTab} from "../SupportsComponent/TaskInformerAboutTab";
 import {TaskInformerTitle} from "../SupportsComponent/TaskInformerTitle";
+import {TaskChainsTab} from "../SupportsComponent/TaskChains/TaskChainsTab";
 
 interface TaskInformerLeftBarProps extends UsageTaskItemBaseProps {
 	updateFn: TaskInformerUpdateFn
@@ -26,6 +27,8 @@ export const TaskInformerLeftBar: FC<TaskInformerLeftBarProps> = ({taskItem, upd
 			<TaskInformerTitle
 				title={taskItem.title}
 				onChange={async (value) => await updateFn('title', value)}
+				isLiked={taskItem.isLiked}
+				onChangeLiked={async (value) => await updateFn('isLiked', value)}
 			/>
 			<TaskInformerLinkButton
 				link={taskItem.link}
@@ -38,7 +41,15 @@ export const TaskInformerLeftBar: FC<TaskInformerLeftBarProps> = ({taskItem, upd
 			<FlexBlock direction={'column'}>
 				{switcher === 'about' ? (
 					<TaskInformerAboutTab taskItem={taskItem} updateFn={updateFn}/>
-				) : <>{switcher}</>}
+				) : switcher === 'chains' ? (
+					<TaskChainsTab
+						updateFn={updateFn}
+						chains={{
+							clonedBy: taskItem.linkedFrom,
+							parentId: taskItem.parentId,
+						}}
+					/>
+				) : (<>{switcher}</>)}
 			</FlexBlock>
 		</FlexBlock>
 	)

@@ -122,7 +122,7 @@ export const ChangeCalendarModal: FC<ChangeCalendarModalProps> = ({onClose, isEd
 	
 	useEffect(() => {
 		console.log(errors, values)
-	}, [errors])
+	}, [errors, values])
 	
 	const list: Array<CreateCalendarFormData> = useMemo(() => {
 		const item = {

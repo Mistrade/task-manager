@@ -1,6 +1,6 @@
 import * as React from "react";
 import {FC, ReactNode} from "react";
-import {currentColor, defaultColor} from "../../common/constants";
+import {borderRadiusSize, currentColor, defaultColor} from "../../common/constants";
 import {css} from "styled-components";
 import {FlexBlock} from "../LayoutComponents/FlexBlock";
 
@@ -21,7 +21,7 @@ export const SessionFormContainer: FC<SessionFormContainerProps> = ({children, h
 					minWidth={'30rem'}
 					p={'24px 16px'}
 					border={`1px solid ${currentColor}`}
-					borderRadius={4}
+					borderRadius={borderRadiusSize.xs}
 					additionalCss={css`
             box-shadow: 0px 2px 5px ${defaultColor};
 					`}
