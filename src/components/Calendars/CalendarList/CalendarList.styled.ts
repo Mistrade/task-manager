@@ -10,7 +10,8 @@ export const CalendarListStyled = styled('ul')`
   background-color: transparent;
   width: 100%;
   max-height: 300px;
-  overflow: scroll;
+  overflow-y: auto;
+	overflow-x: hidden;
 	gap: 8px;
 
   & li {

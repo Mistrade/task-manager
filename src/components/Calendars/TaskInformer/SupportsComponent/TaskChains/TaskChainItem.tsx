@@ -1,4 +1,4 @@
-import {borderRadiusSize, darkColor, defaultColor, disabledColor} from "../../../../../common/constants";
+import {borderRadiusSize, darkColor, defaultColor, disabledColor, hoverColor} from "../../../../../common/constants";
 import {FlexBlock} from "../../../../LayoutComponents/FlexBlock";
 import {TaskInformerUpdateFn, ToggleEventPriority, ToggleEventStatus} from "../ToggleTaskInformerButtons";
 import {LinkStyled} from "../../../../Buttons/Link.styled";
@@ -6,42 +6,49 @@ import {FC} from "react";
 import {FullResponseEventModel} from "../../../../../store/api/taskApi/types";
 import {useAppSelector} from "../../../../../store/hooks/hooks";
 import {CalendarSelectors} from "../../../../../store/selectors/calendarItems";
+import {EventIcon} from "../../../../Icons/EventIcon";
+import {ArrowIndicator} from "../../../Cell";
+import {Badge} from "../../../../Badge/Badge";
+import styled from "styled-components";
 
 export interface TaskChainItemProps {
 	taskChainItem: FullResponseEventModel,
 	taskItem?: FullResponseEventModel,
 	updateFn: TaskInformerUpdateFn,
-	suffix: string
+	suffix: string,
 }
 
+export const TaskChainBadge = styled(Badge)`
+	font-size: 15px;
+	color: ${darkColor};
+	background-color: ${hoverColor};
+	padding: 3px 6px;
+`
+
 export const TaskChainItem: FC<TaskChainItemProps> = ({taskChainItem, taskItem, updateFn, suffix}) => {
-	const {statuses,current} = useAppSelector(CalendarSelectors.dataForURL)
+	const {statuses, current} = useAppSelector(CalendarSelectors.dataForURL)
 	
 	return (
 		<FlexBlock
 			direction={'row'}
 			align={'center'}
 			wrap={'nowrap'}
-			width={'100%'}
+			width={'calc(100% - 12px)'}
 			justify={'flex-start'}
 			p={'6px'}
 			border={`1px solid ${disabledColor}`}
 			borderRadius={borderRadiusSize.sm}
 			gap={12}
+			ml={12}
 		>
 			<FlexBlock gap={6}>
-				<ToggleEventStatus
-					elementId={`status_${suffix}_${taskChainItem.id}`}
-					value={taskChainItem.status}
-					onChange={(field, value) => updateFn(field, value, taskChainItem.id)}
-					renderText={false}
-				/>
-				<ToggleEventPriority
-					value={taskChainItem.priority}
-					elementId={`priority_${suffix}_${taskChainItem.id}`}
-					onChange={(field, value) => updateFn(field, value, taskChainItem.id)}
-					renderText={false}
-				/>
+				<EventIcon status={taskChainItem.status} size={20}/>
+				<ArrowIndicator priorityKey={taskChainItem.priority} size={20}/>
+				{taskChainItem.childOf.length > 0 && (
+					<TaskChainBadge>
+						{taskChainItem.childOf.length}
+					</TaskChainBadge>
+				)}
 			</FlexBlock>
 			<LinkStyled
 				style={{cursor: "pointer", color: darkColor, fontSize: 16}}

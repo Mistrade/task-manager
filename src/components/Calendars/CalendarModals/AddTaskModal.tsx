@@ -7,18 +7,21 @@ import {Tooltip} from '../../Tooltip/Tooltip'
 import {ErrorBoundary} from "../../Errors/ErrorBoundary";
 import dayjs from "dayjs";
 import {FullResponseEventModel} from "../../../store/api/taskApi/types";
+import {useSearchNavigate} from "../../../hooks/useSearchNavigate";
 
 const Form = React.lazy(() => import('../Forms/AddTaskForm')
 	.then(({AddTaskForm}) => ({default: AddTaskForm}))
 )
 
 export const AddTaskModal: FC<AddTaskModalProps> = ({
-																											date,
-																											onClose,
-																											clonedEventInfo,
-																											onSuccessClonedEvent,
-																											onComplete
-																										}) => {
+	                                                    date,
+	                                                    onClose,
+	                                                    clonedEventInfo,
+	                                                    onSuccessClonedEvent,
+	                                                    onComplete
+                                                    }) => {
+	
+	const navigate = useSearchNavigate()
 	
 	const getInitialValues = (data: Partial<FullResponseEventModel> | null | undefined): CalendarTaskItem | undefined => {
 		if (!data) {
@@ -53,7 +56,6 @@ export const AddTaskModal: FC<AddTaskModalProps> = ({
 	return (
 		<Modal
 			isView={true}
-			onClose={onClose}
 		>
 			<ModalHeader>
 				<Tooltip
@@ -79,7 +81,12 @@ export const AddTaskModal: FC<AddTaskModalProps> = ({
 									}
 								}}
 								initialValues={getInitialValues(clonedEventInfo)}
-								onCancel={(value) => onClose && onClose()}
+								onCancel={(value) => {
+									onClose && onClose()
+									if (clonedEventInfo?.parentId) {
+										history.back()
+									}
+								}}
 								date={date}
 							/>
 						</React.Suspense>

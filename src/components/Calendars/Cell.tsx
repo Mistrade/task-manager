@@ -195,7 +195,8 @@ const TaskTileContainer = styled('div')`
     flex-direction: column;
     width: 100%;
     //max-height: 30vh;
-    overflow: scroll;
+    overflow-y: auto;
+	  overflow-x: hidden;
     scroll-behavior: unset;
     transition: all .3s ease;
   }

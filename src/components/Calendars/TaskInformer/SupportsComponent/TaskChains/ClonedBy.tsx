@@ -11,6 +11,9 @@ import {TaskInformerUpdateFn, ToggleEventPriority, ToggleEventStatus} from "../T
 import {TaskChainItem} from "./TaskChainItem";
 import {ThreeDots} from "react-loader-spinner";
 import {Loader} from "../../../../Loaders/Loader";
+import {TaskChainTitle} from "./TaskChainTitle";
+import {TaskChainItemsWrapper} from "./TaskChainItemsWrapper";
+import {useBoolean} from "../../../../../hooks/useBoolean";
 
 
 export interface TaskClonedByProps {
@@ -21,20 +24,21 @@ export interface TaskClonedByProps {
 }
 
 export const TaskClonedBy: FC<TaskClonedByProps> = ({fromTaskId, updateFn, title, suffix}) => {
-	const {data, isFetching, isError} = useGetTaskInfoQuery(fromTaskId)
+	const {data: taskInfo, isFetching, isError} = useGetTaskInfoQuery(fromTaskId)
+	const {state, toggleState} = useBoolean(true)
 	
-	if (data?.data || isFetching) {
+	if (taskInfo?.data) {
 		return (
-			<FlexBlock width={'100%'} direction={'column'} gap={6}>
-				<FlexBlock fSize={16} color={currentColor} pl={4} fWeight={'normal'}>
-					{title}
-				</FlexBlock>
-				{!data?.data ? (
-					<Loader isActive={isFetching} />
-				) : (
-					<TaskChainItem taskChainItem={data.data} suffix={suffix} updateFn={updateFn}/>
-				)}
-			</FlexBlock>
+			<TaskChainTitle
+				title={title}
+				isWrap={state}
+				onWrapTitle={toggleState}
+				content={
+					<TaskChainItemsWrapper wrapState={state}>
+						<TaskChainItem taskChainItem={taskInfo.data} suffix={suffix} updateFn={updateFn}/>
+					</TaskChainItemsWrapper>
+				}
+			/>
 		)
 	}
 	

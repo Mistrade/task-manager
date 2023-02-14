@@ -5,7 +5,7 @@ export const Badge = styled('span')`
 	line-height: 1;
 	padding: 2px 4px;
 	border-radius: ${borderRadiusSize.xs};
-	font-size: 14px;
+	font-size: 15px;
 	color: ${defaultColor};
 	background-color: ${pageHeaderColor};
 `

@@ -94,7 +94,8 @@ export const TaskInformerDescription: FC<TaskInformerDescriptionProps> = ({taskI
 							fSize={16}
 							additionalCss={css`
                 max-height: 300px;
-                overflow-y: scroll;
+                overflow-y: auto;
+                overflow-x: hidden;
                 -webkit-scroll-snap-type: none;
 							`}
 						>

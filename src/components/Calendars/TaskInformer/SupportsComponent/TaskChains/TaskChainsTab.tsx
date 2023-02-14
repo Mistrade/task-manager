@@ -20,23 +20,19 @@ interface TaskChainsTabProps {
 
 export const TaskChainsTab: FC<TaskChainsTabProps> = ({taskItem, chains, updateFn}) => {
 	const hasChains = useMemo(() => {
-		return !!Object.keys(chains).filter((item) => !!item).length
+		return !!Object.keys(chains).filter((item) => !!item).length || chains.childOf.length > 0
 	}, [chains])
 	
 	
 	return (
-		<FlexBlock width={'100%'}>
+		<FlexBlock direction={'column'} gap={12} justify={'flex-start'} align={'flex-start'}>
 			{hasChains ? (
 				<>
-					{chains.childOf && <TaskChildOf taskId={taskItem.id} updateFn={updateFn} />}
+					{chains.childOf && <TaskChildOf taskInfo={taskItem} updateFn={updateFn} title={'Вложенные:'} />}
+					{chains.parentId && <TaskClonedBy fromTaskId={chains.parentId} updateFn={updateFn} title={'Вложено в:'} suffix={'childOf'}/>}
 					{chains.clonedBy && <TaskClonedBy fromTaskId={chains.clonedBy} updateFn={updateFn} title={'Клонировано от:'} suffix={'cloneOf'}/>}
-					{chains.parentId && <TaskClonedBy fromTaskId={chains.parentId} updateFn={updateFn} title={'Дочерняя для:'} suffix={'childOf'}/>}
 				</>
-			) : (
-				<>
-					Связи по этому событию не найдены
-				</>
-			)}
+			) : "Связи по этому событию не найдены"}
 		</FlexBlock>
 	)
 }
