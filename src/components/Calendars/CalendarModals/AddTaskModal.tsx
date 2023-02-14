@@ -8,7 +8,7 @@ import {ErrorBoundary} from "../../Errors/ErrorBoundary";
 import dayjs from "dayjs";
 import {FullResponseEventModel} from "../../../store/api/taskApi/types";
 
-const Form = React.lazy(() => import('./../Forms/AddTaskForm')
+const Form = React.lazy(() => import('../Forms/AddTaskForm')
 	.then(({AddTaskForm}) => ({default: AddTaskForm}))
 )
 
