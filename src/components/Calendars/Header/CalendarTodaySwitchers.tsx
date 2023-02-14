@@ -6,12 +6,12 @@ import {CalendarTodaySwitchersProps} from '../types'
 import {EmptyButtonStyled} from '../../Buttons/EmptyButton.styled'
 
 
-export const CalendarTodaySwitchers: FC<CalendarTodaySwitchersProps> = ({onChange}) => {
+export const CalendarTodaySwitchers: FC<CalendarTodaySwitchersProps> = ({onChangeSwitcherState}) => {
 	return (
-		<FlexBlock width={'100%'} justify={'flex-start'} align={'center'} gap={2}>
+		<FlexBlock width={'100%'} justify={'center'} align={'center'} gap={2}>
 			<EmptyButtonStyled
 				style={{padding: '4px'}}
-				onClick={() => onChange('--')}
+				onClick={() => onChangeSwitcherState('--')}
 			>
 				<DoubleArrow
 					size={16}
@@ -20,7 +20,7 @@ export const CalendarTodaySwitchers: FC<CalendarTodaySwitchersProps> = ({onChang
 			</EmptyButtonStyled>
 			<EmptyButtonStyled
 				style={{padding: '4px'}}
-				onClick={() => onChange('-')}
+				onClick={() => onChangeSwitcherState('-')}
 			>
 				<Arrow
 					size={16}
@@ -28,14 +28,15 @@ export const CalendarTodaySwitchers: FC<CalendarTodaySwitchersProps> = ({onChang
 				/>
 			</EmptyButtonStyled>
 			<SwitchCalendarMode
+				style={{background: 'transparent'}}
 				type={'button'}
-				onClick={() => onChange('today')}
+				onClick={() => onChangeSwitcherState('today')}
 			>
 				Сегодня
 			</SwitchCalendarMode>
 			<EmptyButtonStyled
 				style={{padding: '4px'}}
-				onClick={() => onChange('+')}
+				onClick={() => onChangeSwitcherState('+')}
 			>
 				<Arrow
 					size={16}
@@ -43,7 +44,7 @@ export const CalendarTodaySwitchers: FC<CalendarTodaySwitchersProps> = ({onChang
 			</EmptyButtonStyled>
 			<EmptyButtonStyled
 				style={{padding: '4px'}}
-				onClick={() => onChange('++')}
+				onClick={() => onChangeSwitcherState('++')}
 			>
 				<DoubleArrow
 					size={16}

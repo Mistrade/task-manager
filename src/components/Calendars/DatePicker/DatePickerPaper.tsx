@@ -47,7 +47,7 @@ export const DatePickerPaper: FC<DatePickerPaperProps> = ({
 		<FlexBlock width={'100%'} direction={'column'} align={'center'} p={8}>
 			<FlexBlock mb={24}>
 				<CalendarTodaySwitchers
-					onChange={(pattern) => {
+					onChangeSwitcherState={(pattern) => {
 						const v = dayjs().set('year', current.year).set('month', current.month)
 						const t = dayjs()
 						const m = v.isSame(t, 'month')

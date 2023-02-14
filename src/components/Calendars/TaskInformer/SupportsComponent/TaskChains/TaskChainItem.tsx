@@ -10,6 +10,7 @@ import {EventIcon} from "../../../../Icons/EventIcon";
 import {ArrowIndicator} from "../../../Cell";
 import {Badge} from "../../../../Badge/Badge";
 import styled from "styled-components";
+import {convertEventStatus} from "../../../../../common/functions";
 
 export interface TaskChainItemProps {
 	taskChainItem: FullResponseEventModel,
@@ -42,7 +43,10 @@ export const TaskChainItem: FC<TaskChainItemProps> = ({taskChainItem, taskItem, 
 			ml={12}
 		>
 			<FlexBlock gap={6}>
-				<EventIcon status={taskChainItem.status} size={20}/>
+				{/*<EventIcon status={taskChainItem.status} size={20}/>*/}
+				<TaskChainBadge>
+					{convertEventStatus(taskChainItem.status)}
+				</TaskChainBadge>
 				<ArrowIndicator priorityKey={taskChainItem.priority} size={20}/>
 				{taskChainItem.childOf.length > 0 && (
 					<TaskChainBadge>

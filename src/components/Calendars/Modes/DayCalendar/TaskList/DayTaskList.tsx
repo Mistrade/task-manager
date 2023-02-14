@@ -58,6 +58,7 @@ export const DayTaskList: FC<DayTaskListProps> = ({
 					: dayjs(day).add(23, 'hour').add(59, 'minute').utc().toString(),
 			title: debounceValue.title,
 			priority: debounceValue.priority === 'not_selected' ? null : debounceValue.priority,
+			utcOffset: dayjs().utcOffset()
 		}
 	}, [debounceValue])
 	
@@ -104,7 +105,8 @@ export const DayTaskList: FC<DayTaskListProps> = ({
 			/>
 			<FlexBlock
 				direction={'column'}
-				overflow={'scroll'}
+				overflowY={'auto'}
+				overflowX={'hidden'}
 				height={'100vh'}
 				wrap={'nowrap'}
 				additionalCss={css`
@@ -133,7 +135,7 @@ export const DayTaskList: FC<DayTaskListProps> = ({
 					<NotFoundTask
 						onAddTask={onAddTask}
 						day={day}
-						text={<>Событий по указанным фильтрам<br/>не найдено!</>}
+						text={<>По указанным фильтрам <br/>ничего не найдено!</>}
 						actions={<Button onClick={clearFiltersHandle}>Очистить фильтры</Button>}
 					/>
 				)}

@@ -38,8 +38,8 @@ const TaskInformerTitleInput: FC<TaskInformerTitleInputProps> = ({oldValue, onSa
 	return (
 		<StyledTaskInformerLinkForm onSubmit={handleSubmit}>
 			<TextInput
-				placeholder={'Введите здесь название события'}
-				label={'Название события'}
+				placeholder={'Введите здесь название'}
+				label={'Название'}
 				value={values.title}
 				isDirty={touched.title}
 				errorMessage={errors.title}

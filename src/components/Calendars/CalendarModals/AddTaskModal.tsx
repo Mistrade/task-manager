@@ -60,7 +60,7 @@ export const AddTaskModal: FC<AddTaskModalProps> = ({
 			<ModalHeader>
 				<Tooltip
 					text={'Дата выбирается автоматически, когда вы нажимаете "Добавить задание".\nЕсли дата была в прошлом, выберется текущий календарный день и время.'}
-					children={`Добавить событие ${getHumanizeDateValue(date || new Date(), false)}`}
+					children={`Добавить на ${getHumanizeDateValue(date || new Date(), false)}`}
 					placement={'right'}
 				/>
 			</ModalHeader>

@@ -12,7 +12,6 @@ import {CalendarNameItem} from "../../../components/Calendars/CalendarList/Calen
 import {CalendarsModelType, FullResponseEventModel, ObjectId, ShortEventItem} from "./types";
 import {CreateCalendarFormData} from "../../../components/Calendars/CalendarModals/CreateCalendar";
 import {SwitcherBadges} from "../../../components/Switcher/Switcher";
-import {ServerResponse} from "http";
 
 interface GetTaskQueryProps {
 	limit?: number,
@@ -22,7 +21,8 @@ interface GetTaskQueryProps {
 	priority: CalendarPriorityKeys | null,
 	taskStatus: FilterTaskStatuses,
 	onlyFavorites?: boolean,
-	layout?: CalendarMode['layout']
+	layout?: CalendarMode['layout'],
+	utcOffset: number
 }
 
 export type GetTaskSchemeRequest = Pick<GetTaskQueryProps, 'fromDate' | 'toDate'>

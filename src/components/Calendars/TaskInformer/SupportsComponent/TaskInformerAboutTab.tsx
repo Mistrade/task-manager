@@ -17,7 +17,7 @@ export const TaskInformerAboutTab: FC<TaskInformerAboutTabProps> = ({taskItem, u
 		<FlexBlock direction={'column'} gap={12}>
 			<FlexBlock direction={'row'} gap={12}>
 				<DatePicker
-					label={'Дата начала события'}
+					label={'Дата начала'}
 					currentDate={dayjs(taskItem.time).toDate()}
 					onChange={async (date) => {
 						await updateFn('time', dayjs(date).toString())
@@ -25,7 +25,7 @@ export const TaskInformerAboutTab: FC<TaskInformerAboutTabProps> = ({taskItem, u
 					useForceUpdateValue={true}
 				/>
 				<DatePicker
-					label={'Дата завершения события'}
+					label={'Дата завершения'}
 					currentDate={dayjs(taskItem.timeEnd).toDate()}
 					onChange={async (date) => {
 						await updateFn('timeEnd', dayjs(date).toString())

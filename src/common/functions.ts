@@ -263,11 +263,11 @@ export const generateMinuteArray = ({step}: { step: number }) => {
 export const convertEventStatus = (status: EventItem['status']) => {
 	switch (status) {
 		case 'created':
-			return 'Событие создано'
+			return 'Создано'
 		case 'in_progress':
-			return 'В процессе'
+			return 'В работе'
 		case 'review':
-			return 'Ожидает проверки'
+			return "На проверке"
 		case 'completed':
 			return 'Выполнено'
 		case "archive":

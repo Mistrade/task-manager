@@ -41,8 +41,8 @@ const TaskInformerDescriptionInput: FC<TaskInformerDescriptionInputProps> = ({va
 					rows={18}
 					value={formik.values.description}
 					onChange={(v) => formik.setFieldValue('description', v)}
-					label={'Подробное описание события'}
-					placeholder={'Постарайтесь объяснить, что нужно сделать в этом событии'}
+					label={'Подробное описание'}
+					placeholder={'Постарайтесь объяснить, что нужно сделать'}
 				/>
 				<FlexBlock direction={'row'} width={'fit-content'} gap={6}>
 					<EditableFieldsButtons isLoading={loading} onDecline={onDecline}/>
@@ -82,10 +82,10 @@ export const TaskInformerDescription: FC<TaskInformerDescriptionProps> = ({taskI
 						pl={8}
 						additionalCss={css`color: ${currentColor};`}
 					>
-						Описание события
+						Описание
 						<Tooltip
 							size={16}
-							text={'Зачастую описание события не помещается в выделенную для него область, попробуйте скроллить блок ниже, для получения дополнительной информации'}
+							text={'Зачастую описание не помещается в выделенную для него область, попробуйте скроллить блок ниже, для получения дополнительной информации'}
 							placement={'top'}
 						/>
 					</FlexBlock>
@@ -107,7 +107,7 @@ export const TaskInformerDescription: FC<TaskInformerDescriptionProps> = ({taskI
                   word-wrap: anywhere;
 								`}
 							>
-								{taskItem.description || 'У данного события нет описания'}
+								{taskItem.description || 'Описание отсутствует'}
 							</FlexBlock>
 						</FlexBlock>
 						<FlexBlock

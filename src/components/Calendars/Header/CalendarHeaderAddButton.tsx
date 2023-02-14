@@ -7,6 +7,7 @@ import {DropDown} from "../../Dropdown/DropDown";
 import {useSearchNavigate} from "../../../hooks/useSearchNavigate";
 import {CalendarMode} from "../types";
 import {FilterTaskStatuses} from "../Modes/DayCalendar/EventFilter";
+import { WhiteButton } from "../../Buttons/Buttons.styled";
 
 export interface CalendarHeaderAddButtonProps {
 	current: CalendarMode,
@@ -20,13 +21,13 @@ export const CalendarHeaderAddButton: FC<CalendarHeaderAddButtonProps> = ({curre
 	const items = useMemo(() => {
 		return [
 			{
-				title: 'Добавить событие',
+				title: 'Создать событие',
 				onClick() {
 					onAddTask && onAddTask()
 				}
 			},
 			{
-				title: 'Создать новый календарь',
+				title: 'Создать календарь',
 				onClick() {
 					navigate(`/calendar/${current.layout}/${statuses}/calendar`)
 				}
@@ -37,6 +38,7 @@ export const CalendarHeaderAddButton: FC<CalendarHeaderAddButtonProps> = ({curre
 	
 	return (
 		<DropDown
+			containerProps={{justify: 'center', width: '100%'}}
 			dropDownChildren={(methods) => (
 				<SelectListContainer>
 					{items.map((item) => (
@@ -53,7 +55,7 @@ export const CalendarHeaderAddButton: FC<CalendarHeaderAddButtonProps> = ({curre
 			)}
 			renderElement={({ref, onElementFocused, onElementBlur}) => (
 				<EmptyButtonStyled
-					style={{padding: '2px'}}
+					style={{width: '100%', display: 'flex', justifyContent: 'center'}}
 					ref={ref as RefObject<HTMLButtonElement>}
 					onFocus={onElementFocused}
 					onBlur={onElementBlur}

@@ -8,6 +8,7 @@ import {TaskInformerLinkButton} from "../SupportsComponent/TaskInformerLinkButto
 import {TaskInformerAboutTab} from "../SupportsComponent/TaskInformerAboutTab";
 import {TaskInformerTitle} from "../SupportsComponent/TaskInformerTitle";
 import {TaskChainsTab} from "../SupportsComponent/TaskChains/TaskChainsTab";
+import {TaskHistory} from "../SupportsComponent/TaskHistory/TaskHistory";
 
 interface TaskInformerLeftBarProps extends UsageTaskItemBaseProps {
 	updateFn: TaskInformerUpdateFn
@@ -51,6 +52,8 @@ export const TaskInformerLeftBar: FC<TaskInformerLeftBarProps> = ({taskItem, upd
 							childOf: taskItem.childOf
 						}}
 					/>
+				) : switcher === 'history' ? (
+					<TaskHistory taskInfo={taskItem}/>
 				) : (<>{switcher}</>)}
 			</FlexBlock>
 		</FlexBlock>

@@ -17,7 +17,8 @@ export const SelectListContainer: FCWithChildren<FlexBlockProps> = ( {
         borderRadius={borderRadiusSize.xs}
         p={4}
         border={`1px solid ${defaultColor}`}
-        overflow={'scroll'}
+        overflowY={'auto'}
+        overflowX={'hidden'}
         additionalCss={css` box-shadow: 4px 2px 4px ${defaultColor}`}
         direction={'column'}
       >

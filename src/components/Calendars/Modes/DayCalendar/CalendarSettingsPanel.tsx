@@ -14,20 +14,21 @@ import {changeCurrentModeHandler, getCalendarTitle} from "../../../../common/fun
 import {CalendarTitle} from '../../Calendar.styled'
 import {CalendarHeaderAddButton} from "../../Header/CalendarHeaderAddButton";
 import {useAppSelector} from "../../../../store/hooks/hooks";
+import {CalendarCurrentTitle} from "../../Header/CalendarCurrentTitle";
 
 
 export const CalendarSettingsPanel: FC<DaySettingsPanelProps> = ({
-																																	 onSelectDate,
-																																	 current,
-																																	 monthItem,
-																																	 onChangeCurrent,
-																																	 onAddTask
-																																 }) => {
+	                                                                 onSelectDate,
+	                                                                 current,
+	                                                                 monthItem,
+	                                                                 onChangeCurrent,
+	                                                                 onAddTask
+                                                                 }) => {
 	
 	
 	const datesForScheme: GetTaskSchemeRequest = useMemo(() => {
 		return new DateScopeHelper({useOtherDays: true})
-			.getDateScopeForTaskScheme(new Date(monthItem.year, monthItem.monthOfYear), 'month')
+		.getDateScopeForTaskScheme(new Date(monthItem.year, monthItem.monthOfYear), 'month')
 	}, [monthItem.monthOfYear])
 	
 	const {statuses, addTaskDate} = useAppSelector(state => state.calendar)
@@ -108,19 +109,13 @@ export const CalendarSettingsPanel: FC<DaySettingsPanelProps> = ({
 			align={'flex-start'}
 			position={'relative'}
 		>
-			<FlexBlock justify={'flex-start'} align={'center'} gap={12} mb={6}>
-				<CalendarTitle>
-					{title}
-				</CalendarTitle>
-				<CalendarHeaderAddButton
+			<FlexBlock mb={24} width={'100%'} justify={'center'}>
+				<CalendarCurrentTitle
+					title={title}
 					current={current}
 					statuses={statuses}
 					onAddTask={addTaskHandler}
-				/>
-			</FlexBlock>
-			<FlexBlock mb={24}>
-				<CalendarTodaySwitchers
-					onChange={onChangeCurrentHandler}
+					onChangeSwitcherState={onChangeCurrentHandler}
 				/>
 			</FlexBlock>
 			<FlexBlock minHeight={200} mb={24} style={{zIndex: 1}}>

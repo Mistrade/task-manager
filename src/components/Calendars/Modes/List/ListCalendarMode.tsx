@@ -65,13 +65,16 @@ export const ListCalendarMode: FC<ListCalendarModeProps> = ({current, onSelectTa
 				/>
 			</FlexBlock>
 			<FlexBlock
-				overflow={'scroll'}
+				overflowY={'auto'}
+				overflowX={'hidden'}
 				position={'relative'}
 				direction={'column'}
 				height={'100vh'}
 				width={'100%'}
-				ml={-8} mr={-8}
-				pl={8} pr={8}
+				ml={-8}
+				mr={-8}
+				pl={8}
+				pr={8}
 			>
 				<ListModeTaskController
 					eventStorage={TaskStorage as TaskStorageType<ShortEventItem>}

@@ -47,11 +47,11 @@ export const URLTaskStatuses: { [key in FilterTaskStatuses]: FilterTaskStatuses 
 }
 
 export const dayTaskListTabsArray: Array<DayTaskListTabObject> = [
-	{title: 'Все события', key: URLTaskStatuses.all},
+	{title: 'Все', key: URLTaskStatuses.all},
 	{title: 'Запланировано', key: URLTaskStatuses.created},
 	{title: 'В работе', key: URLTaskStatuses.in_work},
 	{title: 'Выполнено', key: URLTaskStatuses.completed},
-	{title: 'Архив событий', key: URLTaskStatuses.archive},
+	{title: 'Архив', key: URLTaskStatuses.archive},
 ]
 
 
@@ -98,8 +98,8 @@ export const EventFilter: FC<EventFilterProps> = ({
 							selected={values.priority}
 							onChange={onChangeHandlers.priority}
 							onFocus={(e) => onFocusHandlers && onFocusHandlers('priority', e)}
-							label={'Приоритет события'}
-							placeholder={'Приоритет сужает поиск событий'}
+							label={'Приоритет'}
+							placeholder={'Приоритет сужает поиск'}
 						/>
 					</FlexBlock>
 					<FlexBlock flex={'1 0 calc(25% - 6px)'} maxWidth={'25%'}>
@@ -107,7 +107,7 @@ export const EventFilter: FC<EventFilterProps> = ({
 							value={values.title || ''}
 							onChange={(e) => onChangeHandlers.title(e.target.value)}
 							onFocus={(e) => onFocusHandlers && onFocusHandlers('title', e)}
-							label={'Название события'}
+							label={'Название'}
 							placeholder={'Найдем совпадения по названию'}
 						/>
 					</FlexBlock>

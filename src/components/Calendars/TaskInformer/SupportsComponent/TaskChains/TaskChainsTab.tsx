@@ -32,7 +32,7 @@ export const TaskChainsTab: FC<TaskChainsTabProps> = ({taskItem, chains, updateF
 					{chains.parentId && <TaskClonedBy fromTaskId={chains.parentId} updateFn={updateFn} title={'Вложено в:'} suffix={'childOf'}/>}
 					{chains.clonedBy && <TaskClonedBy fromTaskId={chains.clonedBy} updateFn={updateFn} title={'Клонировано от:'} suffix={'cloneOf'}/>}
 				</>
-			) : "Связи по этому событию не найдены"}
+			) : "Связи не найдены"}
 		</FlexBlock>
 	)
 }

@@ -18,7 +18,7 @@ interface TaskInformerSwitchers {
 }
 
 const taskInformerSwitcherList: Array<TaskInformerSwitchersItem> = [
-	{title: 'О событии', key: 'about'},
+	{title: 'Инфо', key: 'about'},
 	{title: 'История (Dev)', key: 'history'},
 	{title: 'Комментарии (Dev)', key: 'comments', badgeCount: 3},
 	{title: 'Участники (Dev)', key: 'members'},

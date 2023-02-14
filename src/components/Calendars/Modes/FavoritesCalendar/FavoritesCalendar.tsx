@@ -42,7 +42,8 @@ export const FavoritesCalendar: FC<FavoritesCalendarModeProps> = ({current, onSe
 				/>
 			</FlexBlock>
 			<FlexBlock
-				overflow={'scroll'}
+				overflowY={'auto'}
+				overflowX={'hidden'}
 				position={'relative'}
 				direction={'column'}
 				height={'100vh'}

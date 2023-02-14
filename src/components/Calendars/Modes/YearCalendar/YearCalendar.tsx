@@ -23,8 +23,8 @@ export const YearCalendar: FC<YearCalendarProps> = ({
 	
 	
 	return (
-		<FlexBlock mt={4} mb={4} width={'100%'} overflow={'scroll'}>
-			<Loader title={'Загрузка схемы событий...'} isActive={isFetching}>
+		<FlexBlock mt={4} mb={4} width={'100%'} overflowY={'auto'} overflowX={'hidden'}>
+			<Loader title={'Загрузка схемы...'} isActive={isFetching}>
 				<FlexBlock gap={8} wrap={'wrap'} justify={'flex-start'} align={'flex-start'}>
 					{yearItem.months.map((monthItem) => {
 						return (

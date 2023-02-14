@@ -46,7 +46,7 @@ export const TaskInfoModal: FC<TaskInfoModalProps> = ({onClose, onCloneEvent, on
 					width={'100%'}
 				>
 					<FlexBlock fSize={15}>
-						Режим просмотра и редактирования события
+						Режим просмотра и редактирования
 					</FlexBlock>
 					{taskInfo?.data && (
 						<FlexBlock>
@@ -73,7 +73,7 @@ export const TaskInfoModal: FC<TaskInfoModalProps> = ({onClose, onCloneEvent, on
 												methods.focusOut()
 											}}
 										>
-											Клонировать событие
+											Клонировать
 										</SelectItemContainer>
 										<SelectItemContainer
 											onClick={() => {
@@ -87,7 +87,7 @@ export const TaskInfoModal: FC<TaskInfoModalProps> = ({onClose, onCloneEvent, on
 												methods.focusOut()
 											}}
 										>
-											Создать дочернее событие
+											Создать вложенное
 										</SelectItemContainer>
 										<SelectItemContainer
 											onClick={() => {
@@ -101,7 +101,7 @@ export const TaskInfoModal: FC<TaskInfoModalProps> = ({onClose, onCloneEvent, on
 												methods.focusOut()
 											}}
 										>
-											Завершить событие
+											Завершить
 										</SelectItemContainer>
 										<SelectItemContainer
 											onClick={() => {
@@ -110,7 +110,7 @@ export const TaskInfoModal: FC<TaskInfoModalProps> = ({onClose, onCloneEvent, on
 												methods.focusOut()
 											}}
 										>
-											Удалить событие
+											Удалить
 										</SelectItemContainer>
 									</SelectListContainer>
 								)}
@@ -121,10 +121,10 @@ export const TaskInfoModal: FC<TaskInfoModalProps> = ({onClose, onCloneEvent, on
 			</ModalHeader>
 			<ModalBody>
 				<ErrorBoundary
-					title={'Произошла ошибка при отрисовке события, мы уже работаем над этим'}
+					title={'Произошла ошибка при отрисовке, мы уже работаем над этим'}
 					errorType={'SYSTEM_ERROR'}
 				>
-					<Loader title={'Загрузка информации события...'} isActive={isLoading}>
+					<Loader title={'Загрузка информации...'} isActive={isLoading}>
 						<React.Suspense fallback={<Loader title={'Загрузка дополнительных скриптов...'} isActive={true}/>}>
 							<Informer
 								taskItem={taskInfo?.data || null}

@@ -51,18 +51,18 @@ export const LinkValidationSchema = yup
 const addTaskValidationSchema = yup.object({
 	title: yup.string()
 		.min(3, 'Заголовок не может быть короче 3 символов')
-		.max(100, 'Постарайтесь более коротко изложить суть события')
+		.max(100, 'Постарайтесь более коротко изложить суть')
 		.required('Заголовок обязателен для заполнения'),
-	time: yup.date().required('Время начала события обязательно для заполнения'),
+	time: yup.date().required('Время начала обязательно для заполнения'),
 	timeEnd: yup.date()
 		.min(
 			yup.ref('time'),
-			'Время завершения должно быть позже начала события'
+			'Время завершения должно быть позже начала'
 		)
-		.required('Время завершения события обязательно для заполнения'),
+		.required('Время завершения обязательно для заполнения'),
 	link: LinkValidationSchema,
-	priority: yup.string().oneOf(Object.keys(PRIORITY_TITLES)).required('Пожалуйста, выберите приоритет события'),
-	status: yup.string().oneOf(Object.keys(TASK_STATUSES)).required('Пожалуйста, укажите статус события'),
+	priority: yup.string().oneOf(Object.keys(PRIORITY_TITLES)).required('Пожалуйста, выберите приоритет'),
+	status: yup.string().oneOf(Object.keys(TASK_STATUSES)).required('Пожалуйста, укажите статус'),
 	calendar: yup.string()
 		.required('Это поле обязательно для заполнения')
 		.min(10, 'Выберите элемент из выпадающего списка')
@@ -147,7 +147,7 @@ export const AddTaskForm: FC<AddTaskFormProps> = ({date, onComplete, onCancel, i
 							width={'100%'}
 						>
 							<span>
-							Данное событие будет создано как дочернее для <LinkStyled
+							Событие будет создано как дочернее для <LinkStyled
 								target={'_blank'}
 								style={{fontSize: 15}}
 								to={`/calendar/day/all/${formik.values.parentId}`}>этого события</LinkStyled>
@@ -166,7 +166,7 @@ export const AddTaskForm: FC<AddTaskFormProps> = ({date, onComplete, onCancel, i
 						inputId={'select__link'}
 						tooltip={
 							<Tooltip
-								text={'Укажите ссылку, по которой любой участник события может подключиться в режиме онлайн'}
+								text={'Укажите ссылку, по которой любой участник может подключиться в режиме онлайн'}
 								size={14}
 							/>
 						}
@@ -221,7 +221,7 @@ export const AddTaskForm: FC<AddTaskFormProps> = ({date, onComplete, onCancel, i
 						inputId={'task__priority'}
 						tooltip={
 							<Tooltip
-								text={'Приоритет события обозначает важность его выполнения'}
+								text={'Приоритет обозначает важность его выполнения'}
 								size={14}
 							/>
 						}
@@ -317,7 +317,7 @@ export const AddTaskForm: FC<AddTaskFormProps> = ({date, onComplete, onCancel, i
 				</FlexBlock>
 				{formik.values.time.getDate() !== formik.values.timeEnd.getDate() && (
 					<Informer>
-						Это событие будет создано в карточках нескольких дней, так как оно начинается и
+						Событие будет создано в карточках нескольких дней, так как оно начинается и
 						завершается в разные дни.
 						<br/>
 						Так происходит потому что мы стараемся показывать актуальную информацию на каждый день.
@@ -331,7 +331,7 @@ export const AddTaskForm: FC<AddTaskFormProps> = ({date, onComplete, onCancel, i
 						errorMessage={formik.errors.description}
 						isDirty={formik.touched.description}
 						inputId={'task__description'}
-						label={'Добавьте описание к событию'}
+						label={'Добавьте описание'}
 						placeholder={'Произвольный текст, на заметку...'}
 					/>
 				</FlexBlock>

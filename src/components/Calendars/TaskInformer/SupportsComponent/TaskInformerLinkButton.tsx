@@ -84,7 +84,7 @@ export const TaskInformerLinkButton: FC<TaskInformerLinkButtonProps> = ({link, u
 				</>
 			) : (
 				<WhiteButton onClick={() => setEditMode(true)}>
-					Добавить ссылку для события
+					Добавить ссылку
 				</WhiteButton>
 			)}
 		</FlexBlock>

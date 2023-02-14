@@ -6,6 +6,7 @@ import {EventFilters, useEventFilters, UseEventFiltersReturned} from "./useEvent
 import {FilterTaskStatuses} from "../components/Calendars/Modes/DayCalendar/EventFilter";
 import {useGetTaskCountOfStatusQuery, useGetTasksAtScopeQuery} from "../store/api/taskApi/taskApi";
 import {SwitcherBadges} from "../components/Switcher/Switcher";
+import dayjs from "dayjs";
 
 interface Scope {
 	start: Date,
@@ -34,7 +35,8 @@ interface GetTaskStorageQueryArgs {
 	toDate: string,
 	priority: EventFilters['priority'],
 	taskStatus: EventFilters['taskStatus'],
-	onlyFavorites?: boolean
+	onlyFavorites?: boolean,
+	utcOffset: number
 }
 
 const getQueryArgs = (values: EventFilters): GetTaskStorageQueryArgs => {
@@ -45,6 +47,7 @@ const getQueryArgs = (values: EventFilters): GetTaskStorageQueryArgs => {
 		priority: values.priority,
 		taskStatus: values.taskStatus,
 		onlyFavorites: !!values.onlyFavorites,
+		utcOffset: dayjs().utcOffset()
 	}
 }
 
@@ -88,7 +91,8 @@ export const useTaskStorageQueryArgs: UseTaskStorageQueryArgsHookType = (props) 
 		fromDate: queryArgs.fromDate,
 		toDate: queryArgs.toDate,
 		priority: queryArgs.priority,
-		onlyFavorites: queryArgs.onlyFavorites
+		onlyFavorites: queryArgs.onlyFavorites,
+		utcOffset: queryArgs.utcOffset
 	})
 	
 	return {

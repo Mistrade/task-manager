@@ -36,13 +36,13 @@ export const NotFoundTask: FC<NotFoundTaskProps> = ({onAddTask, day, text, actio
 				<NotFoundIcon/>
 			</FlexBlock>
 			<NotFoundTitle>
-				{text || <>Событий, назначенных на текущую дату,<br/> не найдено</>}
+				{text || <>На текущую дату <br/>ничего не найдено</>}
 			</NotFoundTitle>
 			<FlexBlock direction={'column'} gap={16}>
 				<Button
 					onClick={() => onAddTask && day && onAddTask(day)}
 				>
-					Добавить событие
+					Создать событие
 				</Button>
 				{actions}
 			</FlexBlock>

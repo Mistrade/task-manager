@@ -106,7 +106,7 @@ export interface CalendarHeaderSwitchersProps {
 }
 
 export interface CalendarTodaySwitchersProps {
-	onChange: (pattern: ShortChangeCurrentPattern) => void
+	onChangeSwitcherState: (pattern: ShortChangeCurrentPattern) => void
 }
 
 export type OnSelectDateFromCalendarFn = (data: CalendarItem) => void
