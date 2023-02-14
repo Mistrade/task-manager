@@ -1,5 +1,5 @@
 import React, {FC, useCallback} from "react";
-import {ListCalendarModeProps, TaskStorage} from "../../types";
+import {ListCalendarModeProps, TaskStorageType} from "../../types";
 import {FlexBlock} from "../../../LayoutComponents/FlexBlock";
 import {EventFilter} from "../DayCalendar/EventFilter";
 import {useAppDispatch} from "../../../../store/hooks/hooks";
@@ -13,7 +13,7 @@ export const ListCalendarMode: FC<ListCalendarModeProps> = ({current, onSelectTa
 	
 	
 	const dispatch = useAppDispatch()
-	const {TaskStorage, SwitcherBadges, handlers, filters, debounceValue} = useTaskStorageQueryArgs({
+	const {TaskStorage, SwitcherBadges, handlers, filters, debounceValue, isFetching} = useTaskStorageQueryArgs({
 		layout: 'list',
 		scope: {
 			start: current.fromDate,
@@ -49,8 +49,8 @@ export const ListCalendarMode: FC<ListCalendarModeProps> = ({current, onSelectTa
 		<FlexBlock
 			width={'100%'}
 			direction={'column'}
-			mt={16}
-			mb={16}
+			mt={4}
+			mb={4}
 		>
 			<FlexBlock width={'100%'} mb={8}>
 				<EventFilter
@@ -61,6 +61,7 @@ export const ListCalendarMode: FC<ListCalendarModeProps> = ({current, onSelectTa
 						end: (date) => onChangeDate(date, 'end'),
 					}}
 					statusBadges={SwitcherBadges}
+					isLoading={isFetching}
 				/>
 			</FlexBlock>
 			<FlexBlock
@@ -73,7 +74,7 @@ export const ListCalendarMode: FC<ListCalendarModeProps> = ({current, onSelectTa
 				pl={8} pr={8}
 			>
 				<ListModeTaskController
-					eventStorage={TaskStorage as TaskStorage<ShortEventItem>}
+					eventStorage={TaskStorage as TaskStorageType<ShortEventItem>}
 					fromDate={debounceValue.start}
 					toDate={debounceValue.end}
 					onSelectTask={onSelectTask}

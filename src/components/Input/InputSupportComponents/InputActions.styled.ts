@@ -1,5 +1,6 @@
 import styled from "styled-components";
 import {SwitchCalendarMode} from "../../Calendars/Calendar.styled";
+import {borderRadiusSize} from "../../../common/constants";
 
 export const InputActionsStyledContainer = styled('div')`
   display: flex;
@@ -27,7 +28,7 @@ export const InputActionStyledItem = styled(SwitchCalendarMode)<InputActionsStyl
 
 export const InputActionDeleteElementContainer = styled('span')`
   padding: 2px 4px;
-  border-radius: 4px;
+  border-radius: ${borderRadiusSize.xs};
 
   &:hover {
     background-color: #fff;

@@ -1,4 +1,4 @@
-import {TaskStorage} from "../../types";
+import {TaskStorageType} from "../../types";
 import {ShortEventItem} from "../../../../store/api/taskApi/types";
 import {FC, useMemo} from "react";
 import dayjs from "dayjs";
@@ -11,7 +11,7 @@ import {useRemoveTaskMutation} from "../../../../store/api/taskApi/taskApi";
 import {DeclinationMonthList} from "../../../../common/constants";
 
 export interface ListModeTaskController {
-	eventStorage?: TaskStorage<ShortEventItem>,
+	eventStorage?: TaskStorageType<ShortEventItem>,
 	fromDate: Date,
 	toDate: Date,
 	onSelectTask: UseCalendarReturned['onSelectTask']

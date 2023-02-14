@@ -1,5 +1,5 @@
 import React, {FC} from 'react'
-import {ArchiveIcon, CompleteIcon, CreatedIcon, IconProps, ProcessIcon, TrashIcon, WaitIcon} from './Icons'
+import {ArchiveIcon, CompleteIcon, CreatedIcon, IconProps, ProcessIcon, WaitIcon} from './Icons'
 import {FlexBlockProps} from '../LayoutComponents/FlexBlock'
 import {EventItem} from '../Calendars/types'
 

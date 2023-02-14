@@ -15,7 +15,6 @@ import {TaskListMainContainer} from "./TaskList.styled";
 import {css} from "styled-components";
 import {initialFiltersValues, useEventFilters} from "../../../../../hooks/useEventFilters";
 import {useAppSelector} from "../../../../../store/hooks/hooks";
-import {Delay} from "../../../../../common/functions";
 import {Loader} from "../../../../Loaders/Loader";
 
 interface DayTaskListProps extends GlobalTaskListProps {
@@ -62,12 +61,23 @@ export const DayTaskList: FC<DayTaskListProps> = ({
 		}
 	}, [debounceValue])
 	
-	const {data, isLoading, isError, isSuccess, isFetching, refetch: refetchTaskList} = useGetTasksAtDayQuery({
+	const {
+		data,
+		isLoading,
+		isError,
+		isSuccess,
+		isFetching: isFetchingTasks,
+		refetch: refetchTaskList
+	} = useGetTasksAtDayQuery({
 		...queryArgs,
 		taskStatus: debounceValue.taskStatus
 	}, {refetchOnMountOrArgChange: true})
 	
-	const {data: SwitcherBadges, refetch: refetchTaskCount} = useGetTaskCountOfStatusQuery(queryArgs)
+	const {
+		data: SwitcherBadges,
+		refetch: refetchTaskCount,
+		isFetching: isFetchingStatuses
+	} = useGetTaskCountOfStatusQuery(queryArgs)
 	
 	const [removeTask, {isSuccess: isRemoveSuccess, isError: isRemoveError}] = useRemoveTaskMutation()
 	
@@ -83,21 +93,13 @@ export const DayTaskList: FC<DayTaskListProps> = ({
 		await refetchTaskCount()
 	}, [])
 	
-	const [fetching, setFetching] = useState(false)
-	
-	// useEffect(() => {
-	// 	if (isFetching) {
-	// 		setFetching(true)
-	// 	} else {
-	// 		Delay(250).then(() => setFetching(false))
-	// 	}
-	// }, [isFetching])
 	
 	return (
 		<TaskListMainContainer>
 			<EventFilter
 				statusBadges={SwitcherBadges}
 				values={filters}
+				isLoading={isFetchingTasks || isFetchingStatuses}
 				onChangeHandlers={handlers}
 			/>
 			<FlexBlock
@@ -113,33 +115,28 @@ export const DayTaskList: FC<DayTaskListProps> = ({
 				mr={-8}
 				pr={8}
 			>
-				<Loader
-					title={'Обновляем список событий'}
-					isActive={fetching}
-				>
-					{!!data?.length ? (
-						<FlexBlock direction={'column'} width={'100%'} height={'max-content'} pt={4}>
-							{data.map((task, index) => (
-								<DayTaskItem
-									key={task.time.toString() + index}
-									taskInfo={task}
-									day={day}
-									tabIndex={index + 1}
-									onSelectTask={onSelectTask}
-									onDelete={async (id) => await removeTask({id}).unwrap()}
-									refetchTaskList={memoRefetchTaskCount}
-								/>
-							))}
-						</FlexBlock>
-					) : (
-						<NotFoundTask
-							onAddTask={onAddTask}
-							day={day}
-							text={<>Событий по указанным фильтрам<br/>не найдено!</>}
-							actions={<Button onClick={clearFiltersHandle}>Очистить фильтры</Button>}
-						/>
-					)}
-				</Loader>
+				{!!data?.length ? (
+					<FlexBlock direction={'column'} width={'100%'} height={'max-content'} pt={4}>
+						{data.map((task, index) => (
+							<DayTaskItem
+								key={task.time.toString() + index}
+								taskInfo={task}
+								day={day}
+								tabIndex={index + 1}
+								onSelectTask={onSelectTask}
+								onDelete={async (id) => await removeTask({id}).unwrap()}
+								refetchTaskList={memoRefetchTaskCount}
+							/>
+						))}
+					</FlexBlock>
+				) : (
+					<NotFoundTask
+						onAddTask={onAddTask}
+						day={day}
+						text={<>Событий по указанным фильтрам<br/>не найдено!</>}
+						actions={<Button onClick={clearFiltersHandle}>Очистить фильтры</Button>}
+					/>
+				)}
 			</FlexBlock>
 		</TaskListMainContainer>
 	)

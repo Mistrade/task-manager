@@ -10,7 +10,7 @@ import {
 	YearItem
 } from '../components/Calendars/types'
 import dayjs from 'dayjs'
-import {ArchiveIcon, CompleteIcon, CreatedIcon, ProcessIcon, TrashIcon, WaitIcon} from '../components/Icons/Icons'
+import {ArchiveIcon, CompleteIcon, CreatedIcon, ProcessIcon, WaitIcon} from '../components/Icons/Icons'
 import {ErrorImagesType, InitialCurrentCalendarModeType} from "./types";
 import {SystemErrorImg} from "../components/Icons/Errors/SystemError";
 import {ErrorBadRequestImg} from "../components/Icons/Errors/ErrorBadRequest";
@@ -49,6 +49,13 @@ export const orangeColor = 'rgba(255,117,66, 1)'
 export const lightHoverColor = 'rgba(220, 220, 220, .4)'
 export const errorColor = '#FF6666'
 export const completeColor = '#c6fcda'
+
+export const borderRadiusSize = {
+	xs: "4px",
+	sm: "10px",
+	md: "16px",
+	xl: "20px",
+}
 
 export const colorRegExpDefault = /#[a-fA-F0-9]{3,6}$/gi
 export const colorRegExpRGBA = /rgba?\(((25[0-5]|2[0-4]\d|1\d{1,2}|\d\d?)\s*,\s*?){2}(25[0-5]|2[0-4]\d|1\d{1,2}|\d\d?)\s*,?\s*([01]\.?\d*?)?\)/gi
@@ -180,7 +187,7 @@ export const ERROR_IMAGES: ErrorImagesType = {
 }
 
 export const getHumanizeDateValue = (date: Date, withTime: boolean = true) => {
-	return dayjs(date).format(`DD ${DeclinationMonthList[date.getMonth()]} YYYY${withTime ? ' в HH:mm' : ''}`)
+	return dayjs(date).format(`DD ${ShortMonthList[date.getMonth()]} YYYY${withTime ? ' в HH:mm' : ''}`)
 }
 
 export const defaultYearItem: YearItem = {
@@ -273,6 +280,5 @@ export const colorPalette = [
 	'#CCCC33',
 	'#999966',
 	'#999999'
-
 ]
 

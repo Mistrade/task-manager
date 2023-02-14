@@ -1,14 +1,14 @@
 import {createSlice, PayloadAction} from '@reduxjs/toolkit'
-import {TaskStorage} from '../../components/Calendars/types'
+import {TaskStorageType} from '../../components/Calendars/types'
 import {getFromLocalStorage} from '../../common/localStorage'
 import {LS_KEYS} from '../../common/constants'
 
 export interface EventsStateProps {
-	all: TaskStorage
+	all: TaskStorageType
 }
 
 const initialState: EventsStateProps = {
-	all: getFromLocalStorage<TaskStorage>(LS_KEYS['EVENTS']) || {}
+	all: getFromLocalStorage<TaskStorageType>(LS_KEYS['EVENTS']) || {}
 }
 
 const eventSlice = createSlice({

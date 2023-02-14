@@ -1,5 +1,5 @@
 import styled, {css} from 'styled-components'
-import {currentColor, defaultColor} from '../../common/constants'
+import {borderRadiusSize, currentColor, defaultColor} from '../../common/constants'
 
 export const StyledButton = styled('button')<{ fillColor?: string, textColor?: string }>`
   & {
@@ -8,7 +8,7 @@ export const StyledButton = styled('button')<{ fillColor?: string, textColor?: s
     color: ${props => props.textColor || '#fff'};
     background-color: ${props => props.fillColor || currentColor};
     border: none;
-    border-radius: 4px;
+    border-radius: ${borderRadiusSize.sm};
     outline: none;
     cursor: pointer;
   }
@@ -26,7 +26,7 @@ export const Button = styled('button')`
     background-color: ${currentColor};
     outline: none;
     border: 1px solid #fff;
-    border-radius: 8px;
+    border-radius: ${borderRadiusSize.sm};
     cursor: pointer;
     transition: all .3s ease-in-out;
   }
@@ -47,7 +47,7 @@ export const LinkButton = styled('a')`
     background-color: #fff;
     outline: none;
     border: 1px solid ${defaultColor};
-    border-radius: 8px;
+    border-radius: ${borderRadiusSize.sm};
     text-decoration: none;
     cursor: pointer;
     transition: all .3s ease-in-out;
@@ -70,7 +70,7 @@ export const WhiteButton = styled('button')<{ withHover?: boolean }>`
     background-color: #fff;
     outline: none;
     border: 1px solid ${defaultColor};
-    border-radius: 8px;
+    border-radius: ${borderRadiusSize.sm};
     text-decoration: none;
     cursor: pointer;
     transition: all .3s ease-in-out;
@@ -97,7 +97,7 @@ export const JoinToEventButton = styled('a')`
   border-width: 1px;
   border-style: solid;
   border-color: ${defaultColor};
-  border-radius: 4px;
+  border-radius: ${borderRadiusSize.sm};
   color: ${defaultColor};
   text-decoration: none;
   outline: none;

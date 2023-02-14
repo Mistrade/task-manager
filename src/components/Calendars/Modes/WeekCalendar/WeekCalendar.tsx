@@ -3,7 +3,7 @@ import {CalendarItem, WeekCalendarProps, WeekItem} from '../../types'
 import dayjs from 'dayjs'
 import {CalendarCell} from '../../Cell'
 import styled, {css} from 'styled-components'
-import {defaultColor, disabledColor, lightHoverColor} from '../../../../common/constants'
+import {borderRadiusSize, defaultColor, disabledColor, lightHoverColor} from '../../../../common/constants'
 import {getTaskListOfDay} from "../../../../common/functions";
 import {FlexBlock} from '../../../LayoutComponents/FlexBlock'
 import {EmptyButtonStyled} from "../../../Buttons/EmptyButton.styled";
@@ -23,7 +23,7 @@ const WeekContainer = styled('div')<{ isVisible?: boolean }>`
   ${_ => !_.isVisible ? css`
             border: 1px solid ${defaultColor};
             overflow: hidden;
-            border-radius: 4px;
+            border-radius: ${borderRadiusSize.xs};
           `
           : 'none'}
 `
@@ -40,7 +40,7 @@ const DaysContainer = styled('div')`
 const WeekOfYearTitle = styled('h3')`
   & {
     font-size: 20px;
-    width: 100%;
+    width: calc(100% + 16px);
     text-align: left;
     gap: 8px;
     color: ${disabledColor};
@@ -51,6 +51,10 @@ const WeekOfYearTitle = styled('h3')`
     left: 0;
     cursor: pointer;
     transition: all .3s ease-in-out;
+		margin-left: -8px;
+		margin-right: -8px;
+		padding-left: 8px;
+		padding-right: 8px;
   }
 `
 
@@ -96,7 +100,7 @@ export const WeeKCalendar: FC<WeekCalendarProps> = ({
 
                 &:hover {
                   background-color: ${lightHoverColor};
-                  border-radius: 4px;
+                  border-radius: ${borderRadiusSize.xs};
                 }
 							`}
 						>

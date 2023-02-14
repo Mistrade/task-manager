@@ -12,6 +12,7 @@ import {useAppSelector} from "../../../../store/hooks/hooks";
 
 interface EventFilterProps extends FormHandle {
 	statusBadges?: SwitcherBadges<FilterTaskStatuses>
+	isLoading?: boolean,
 }
 
 interface FormHandle {
@@ -58,7 +59,9 @@ export const EventFilter: FC<EventFilterProps> = ({
 																										values,
 																										onChangeHandlers,
 																										onFocusHandlers,
-																										statusBadges
+																										statusBadges,
+																										isLoading
+	
 																									}) => {
 	const {statuses} = useAppSelector(state => state.calendar)
 	
@@ -66,7 +69,7 @@ export const EventFilter: FC<EventFilterProps> = ({
 		<TaskListEventFiltersContainer>
 			<FlexBlock
 				width={'100%'}
-				gap={12}
+				gap={2}
 				position={'relative'}
 				direction={'column'}
 			>
@@ -110,6 +113,7 @@ export const EventFilter: FC<EventFilterProps> = ({
 					</FlexBlock>
 				</FlexBlock>
 				<Switcher
+					isLoading={isLoading}
 					switchersList={dayTaskListTabsArray}
 					onClick={(item) => onChangeHandlers.taskStatus(item.key)}
 					selected={statuses}

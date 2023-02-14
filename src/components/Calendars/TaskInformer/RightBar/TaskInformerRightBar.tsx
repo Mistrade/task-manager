@@ -61,17 +61,6 @@ export const TaskInformerRightBar: FC<TaskInformerRightBarProps> = ({
 				monthItem={monthItem}
 			/>
 			<TaskCreatedMessage taskItem={taskItem}/>
-			{taskItem.linkedFrom && (
-				<FlexBlock>
-					<EmptyButtonStyled
-						onClick={() => {
-							taskItem.linkedFrom && openClonedTask && openClonedTask(taskItem.linkedFrom)
-						}}
-					>
-						Смотреть исходное событие
-					</EmptyButtonStyled>
-				</FlexBlock>
-			)}
 		</FlexBlock>
 	)
 }

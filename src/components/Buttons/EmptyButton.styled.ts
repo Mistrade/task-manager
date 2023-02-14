@@ -1,5 +1,5 @@
 import styled from "styled-components";
-import {lightHoverColor} from "../../common/constants";
+import {borderRadiusSize, lightHoverColor} from "../../common/constants";
 
 export const EmptyButtonStyled = styled('button')`
   & {
@@ -18,13 +18,13 @@ export const EmptyButtonStyled = styled('button')`
   }
 
   &:focus {
-    border-radius: 4px;
+    border-radius: ${borderRadiusSize.sm};
     background-color: ${lightHoverColor};
   }
 
 
   &:hover {
-    border-radius: 4px;
+    border-radius: ${borderRadiusSize.sm};
     background-color: ${lightHoverColor};
   }
 `
@@ -51,13 +51,13 @@ export const EmptyLink = styled('a')`
   }
 
   &:focus {
-    border-radius: 4px;
+    border-radius: ${borderRadiusSize.sm};
     background-color: ${lightHoverColor};
   }
 
 
   &:hover {
-    border-radius: 4px;
+    border-radius: ${borderRadiusSize.sm};
     background-color: ${lightHoverColor};
   }
 `

@@ -1,5 +1,6 @@
 import styled, {css} from "styled-components";
 import {
+	borderRadiusSize,
 	currentColor,
 	darkColor,
 	defaultColor,
@@ -37,7 +38,7 @@ export interface SmallMonthRowProps {
 
 export const isPouredWeekCountItem = css`
   & {
-    border-radius: 4px;
+    border-radius: ${borderRadiusSize.xs};
       //background-color: ${lightHoverColor};
     box-shadow: 0px 0px 10px 2px ${lightHoverColor};
     border: 1px solid ${defaultColor};
@@ -58,7 +59,7 @@ export const isFirstPouredCss = css`
     width: calc(100% + 3px);
     height: 100%;
     padding: 6px 0px;
-    border-radius: 4px 0px 0px 4px;
+    border-radius: ${borderRadiusSize.xs} 0px 0px ${borderRadiusSize.xs};
       //background-color: ${lightHoverColor};
     box-shadow: -2px 0px 10px 2px ${lightHoverColor};
     border-top: 1px solid ${defaultColor};
@@ -96,7 +97,7 @@ export const isLastPouredCss = css`
     width: calc(100% + 3px);
     height: 100%;
     padding: 6px 0px;
-    border-radius: 0px 4px 4px 0px;
+    border-radius: 0px ${borderRadiusSize.xs} ${borderRadiusSize.xs} 0px;
       //background-color: ${lightHoverColor};
     box-shadow: 2px 0px 10px 2px ${lightHoverColor};
     border-top: 1px solid ${defaultColor};
@@ -124,7 +125,7 @@ export const isPouredDate = ({
 
 export const isSelectRowItem = css`
   & {
-    border-radius: 4px;
+    border-radius: ${borderRadiusSize.xs};
     color: #fff;
     background-color: ${currentColor};
   }
@@ -132,7 +133,7 @@ export const isSelectRowItem = css`
 
 export const isTodayRowItem = css`
   & {
-    border-radius: 4px;
+    border-radius: ${borderRadiusSize.xs};
     color: #fff;
     background-color: ${orangeColor};
   }
@@ -140,7 +141,7 @@ export const isTodayRowItem = css`
 
 export const hasTasksRowItem = css`
   & {
-    border-radius: 4px;
+    border-radius: ${borderRadiusSize.xs};
     background-color: ${hoverColor};
   }
 `

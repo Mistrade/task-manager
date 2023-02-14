@@ -1,7 +1,7 @@
 import {FlexBlock} from '../../../LayoutComponents/FlexBlock'
 import React, {useRef, useState} from 'react'
 import {DefaultTextInputProps, TextInput} from '../../TextInput/TextInput'
-import {currentColor, hoverColor} from '../../../../common/constants'
+import {borderRadiusSize, currentColor, hoverColor} from '../../../../common/constants'
 import * as yup from 'yup'
 import {Button, LinkButton, WhiteButton} from '../../../Buttons/Buttons.styled'
 import {DefaultWebIcon} from '../../../Icons/SocialNetworkIcons/DefaultWeb'
@@ -195,7 +195,7 @@ export function SelectLinks<T>({
 					border={`1px solid ${currentColor}`}
 					bgColor={hoverColor}
 					width={'100%'}
-					borderRadius={4}
+					borderRadius={borderRadiusSize.xs}
 					p={16}
 					wrap={'nowrap'}
 					align={'flex-start'}

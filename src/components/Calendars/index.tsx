@@ -9,7 +9,7 @@ import dayjs from "dayjs";
 import {useSearchNavigate} from "../../hooks/useSearchNavigate";
 
 const layouts: Array<CalendarMode['layout']> = [
-	'day', 'week', 'month', 'year', 'list'
+	'day', 'week', 'month', 'year', 'list', 'favorites'
 ]
 
 export const CalendarMain: FC = () => {

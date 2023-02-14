@@ -5,12 +5,14 @@ import {FlexBlock} from "../../../LayoutComponents/FlexBlock";
 import {DatePicker} from "../../DatePicker/DatePicker";
 import dayjs from "dayjs";
 import {TaskInformerDescription} from "./TaskInformerDescription";
+import {useSearchNavigate} from "../../../../hooks/useSearchNavigate";
 
 interface TaskInformerAboutTabProps extends UsageTaskItemBaseProps {
 	updateFn: TaskInformerUpdateFn
 }
 
 export const TaskInformerAboutTab: FC<TaskInformerAboutTabProps> = ({taskItem, updateFn}) => {
+	const navigate = useSearchNavigate()
 	return (
 		<FlexBlock direction={'column'} gap={12}>
 			<FlexBlock direction={'row'} gap={12}>

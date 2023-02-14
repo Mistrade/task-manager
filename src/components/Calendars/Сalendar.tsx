@@ -1,4 +1,5 @@
 import {
+	CalendarCurrentFavorites,
 	CalendarCurrentList,
 	CalendarDisabledOptions,
 	CalendarMode,
@@ -9,7 +10,6 @@ import {
 	YearItem
 } from './types'
 import React, {FC, useEffect, useState} from 'react'
-import {CurrentObserver} from '../../common/functions'
 import {useCalendar} from '../../hooks/useCalendar'
 import {CalendarHeader} from './Header/CalendarHeader'
 import {TaskInfoModal} from './CalendarModals/TaskInfoModal'
@@ -29,18 +29,19 @@ import {ErrorBoundary} from "../Errors/ErrorBoundary";
 import {Loader} from "../Loaders/Loader";
 import {Route, Routes} from 'react-router-dom'
 import {CalendarSettingsPanel} from "./Modes/DayCalendar/CalendarSettingsPanel";
-import dayjs from "dayjs";
-import {getMonthDays} from "../../common/calendarSupport/getters";
 import {ChangeCalendarModal} from "./CalendarModals/CreateCalendar";
 import {RemoveCalendarHock} from "./CalendarModals/RemoveCalendarModal";
 import {css} from "styled-components";
 import {ChangeCalendarHock} from "./CalendarList/ChangeCalendarHock";
+import {DateListGenerator} from "../../common/calendarSupport/generators";
+import {CalendarObserver} from "../../common/calendarSupport/observer";
 
 const DayCalendar = React.lazy(() => import('./Modes/DayCalendar/DayCalendar').then(({DayCalendar}) => ({default: DayCalendar})))
 const WeekCalendar = React.lazy(() => import('./Modes/WeekCalendar/WeekCalendarController').then(({WeekCalendarController}) => ({default: WeekCalendarController})))
 const MonthCalendar = React.lazy(() => import('./Modes/MonthCalendar/MonthCalendar').then(({MonthCalendar}) => ({default: MonthCalendar})))
 const YearCalendar = React.lazy(() => import('./Modes/YearCalendar/YearCalendar').then(({YearCalendar}) => ({default: YearCalendar})))
 const ListCalendar = React.lazy(() => import('./Modes/List/ListCalendarMode').then(({ListCalendarMode}) => ({default: ListCalendarMode})))
+const FavoritesCalendar = React.lazy(() => import('./Modes/FavoritesCalendar/FavoritesCalendar').then(({FavoritesCalendar}) => ({default: FavoritesCalendar})))
 
 export const Calendar: FC<CalendarProps> = ({
 																							layout,
@@ -61,16 +62,26 @@ export const Calendar: FC<CalendarProps> = ({
 	
 	const changeCurrentObserver = (current: CalendarMode, disabledOptions?: CalendarDisabledOptions) => {
 		const {layout} = current
+		const observer = new CalendarObserver(disabledOptions)
+		
 		
 		switch (layout) {
 			case 'year':
-				return setYearItem(prev => CurrentObserver.year(prev, current, disabledOptions))
+				return setYearItem(
+					prev => observer.getYearItem(prev, new Date(current.year, 0, 1))
+				)
 			case 'month':
-				return setMonthItem(prev => CurrentObserver.month(prev, current, disabledOptions))
+				return setMonthItem(
+					prev => observer.getMonthItem(prev, new Date(current.year, current.month))
+				)
 			case 'week':
-				return setWeekItem(prev => CurrentObserver.week(prev, current, disabledOptions))
+				return setWeekItem(
+					observer.getWeekItem(current.aroundDate)
+				)
 			case 'day':
-				return setDateItem(prev => CurrentObserver.date(prev, current, disabledOptions))
+				return setDateItem(
+					prev => observer.getDateItem(prev, current)
+				)
 		}
 	}
 	
@@ -79,27 +90,19 @@ export const Calendar: FC<CalendarProps> = ({
 			case "day":
 				return dateItem.settingPanel.monthItem
 			case "week":
-				const date = dayjs(current.aroundDate)
-				return getMonthDays({
-					layout: 'month',
-					month: date.month(),
-					year: date.year()
-				}, {useOtherDays: true})
+				return new DateListGenerator({useOtherDays: true})
+					.getMonthItem(current.aroundDate)
 			case "month":
 				return monthItem
 			case "year":
-				const d = dayjs()
-				return getMonthDays({
-					layout: 'month',
-					month: d.month(),
-					year: d.year()
-				}, {useOtherDays: true})
+				return new DateListGenerator({useOtherDays: true})
+					.getMonthItem()
 			case "list":
-				return getMonthDays({
-					layout: 'month',
-					month: current.fromDate.getMonth(),
-					year: current.fromDate.getFullYear()
-				}, {useOtherDays: true})
+				return new DateListGenerator({useOtherDays: true})
+					.getMonthItem(current.fromDate)
+			case "favorites":
+				return new DateListGenerator({useOtherDays: true})
+					.getMonthItem()
 		}
 	}
 	
@@ -133,7 +136,7 @@ export const Calendar: FC<CalendarProps> = ({
 						bgColor={pageHeaderColor}
 						pr={12}
 						pl={24}
-						pt={24}
+						pt={12}
 						flex={'1 0 20%'}
 						borderRight={`1px solid ${disabledColor}`}
 					>
@@ -142,10 +145,20 @@ export const Calendar: FC<CalendarProps> = ({
 							monthItem={checkMonthItemSettingsPanel(calendar.current)}
 							current={calendar.current}
 							onSelectDate={(data) => calendar.onChangeCurrent(data.value, 'day')}
+							onAddTask={calendar.onAddTask}
 						/>
 					</FlexBlock>
 					<FlexBlock flex={'1 0 80%'} pr={24} height={'100%'} additionalCss={css`z-index: 0`}>
-						{layout === 'list' ? (
+						{layout === 'favorites' ? (
+							<Interceptor shouldRenderChildren={calendar.current.layout === 'favorites'}>
+								<React.Suspense fallback={<Loader title={'Загружаем избранные, секундочку...'} isActive={true}/>}>
+									<FavoritesCalendar
+										current={calendar.current as CalendarCurrentFavorites}
+										onSelectTask={calendar.onSelectTask}
+									/>
+								</React.Suspense>
+							</Interceptor>
+						) : layout === 'list' ? (
 							<Interceptor shouldRenderChildren={calendar.current.layout === 'list'}>
 								<React.Suspense fallback={<Loader title={'Загружаем ваш календарь, секундочку...'} isActive={true}/>}>
 									<ListCalendar
@@ -246,6 +259,7 @@ export const Calendar: FC<CalendarProps> = ({
 									onClose={calendar.onCloseAddTaskModal}
 									clonedEventInfo={calendar.clonedEventInfo}
 									onSuccessClonedEvent={calendar.onSuccessClonedEvent}
+									onComplete={calendar.onSelectTask}
 								/>
 							}
 						/>

@@ -20,8 +20,8 @@ export const DayCalendar: FC<DayCalendarProps> = ({
 			align={'stretch'}
 			wrap={'nowrap'}
 			grow={10}
-			mt={16}
-			mb={16}
+			mt={4}
+			mb={4}
 			additionalCss={css`gap: 20px`}
 			height={'100%'}
 		>

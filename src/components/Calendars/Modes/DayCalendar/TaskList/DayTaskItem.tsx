@@ -1,11 +1,12 @@
 import React, {FC, useCallback} from "react";
 import dayjs from "dayjs";
-import {ServerResponse, useUpdateTaskMutation} from "../../../../../store/api/taskApi/taskApi";
+import {ServerResponse, taskApi, useUpdateTaskMutation} from "../../../../../store/api/taskApi/taskApi";
 import {FlexBlock} from "../../../../LayoutComponents/FlexBlock";
 import {
-	currentColor,
+	borderRadiusSize,
 	darkColor,
-	defaultColor, disabledColor,
+	defaultColor,
+	disabledColor,
 	hoverColor,
 	orangeColor,
 	pageHeaderColor,
@@ -13,23 +14,20 @@ import {
 import {css} from "styled-components";
 import {toast} from "react-toastify";
 import {TaskPreviewDescription} from "./TaskList.styled";
-import {JoinToEventButton} from "../../../../Buttons/Buttons.styled";
 import {ShortEventItem} from "../../../../../store/api/taskApi/types";
 import {OnSelectTaskFnType} from "../../../types";
-import {CalendarIdentifier} from "../../../CalendarList/CalendarList.styled";
 import {
-	TaskInformerUpdateFn, ToggleEventCalendar,
+	TaskInformerUpdateFn,
+	ToggleEventCalendar,
 	ToggleEventPriority,
 	ToggleEventStatus
 } from "../../../TaskInformer/SupportsComponent/ToggleTaskInformerButtons";
 import {ContinueTaskButtonGroup} from "../../../../Buttons/ContinueTaskButtons/ContinueTaskButtonGroup";
-import {EventIcon} from "../../../../Icons/EventIcon";
 import {LikeButton} from "../../../../Buttons/LikeButton";
 import {UrlIcon} from "../../../../Icons/SocialNetworkIcons";
-import {TrashIcon} from "../../../../Icons/Icons";
 import {CalendarUserIndicator} from "../../../Users/UserIndicator";
-import {EmptyButtonStyled, EmptyLink} from "../../../../Buttons/EmptyButton.styled";
-import {MemoryRouter} from "react-router";
+import {EmptyLink} from "../../../../Buttons/EmptyButton.styled";
+import {useAppDispatch, useAppSelector} from "../../../../../store/hooks/hooks";
 
 interface DayTaskItemProps {
 	taskInfo: ShortEventItem,
@@ -64,9 +62,11 @@ export const DayTaskItem: FC<DayTaskItemProps> = ({
 																										onDelete,
 																										refetchTaskList
 																									}) => {
+	const dispatch = useAppDispatch()
 	const start = dayjs(taskInfo.time).format('DD-MM HH:mm')
 	const end = dayjs(taskInfo.timeEnd).format('DD-MM HH:mm')
 	const [updateTask] = useUpdateTaskMutation()
+	const {layout} = useAppSelector((state) => state.calendar.current)
 	
 	const setTaskInfo = useCallback(() => {
 		if (onSelectTask) {
@@ -113,7 +113,7 @@ export const DayTaskItem: FC<DayTaskItemProps> = ({
 			align={'flex-start'}
 			wrap={'nowrap'}
 			width={'100%'}
-			borderRadius={4}
+			borderRadius={borderRadiusSize.md}
 			role={'button'}
 			tabIndex={tabIndex}
 			bgColor={pageHeaderColor}
@@ -156,6 +156,9 @@ export const DayTaskItem: FC<DayTaskItemProps> = ({
 								isChecked={taskInfo.isLiked}
 								onChange={async (isChecked) => {
 									await updateTask({id: taskInfo.id, data: !taskInfo.isLiked, field: 'isLiked'})
+									if (layout === 'favorites') {
+										dispatch(taskApi.util.invalidateTags(['TaskCount']))
+									}
 								}}
 							/>
 							<ToggleEventPriority

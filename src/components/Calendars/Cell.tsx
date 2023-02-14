@@ -9,6 +9,7 @@ import {
 } from './types'
 import {addNull} from '../../common/functions'
 import {
+	borderRadiusSize,
 	currentColor,
 	defaultColor,
 	disabledColor,
@@ -65,7 +66,7 @@ export const CellContainer = styled('div')<CellComponentProps>`
     justify-content: flex-start;
     flex-direction: column;
     align-items: flex-start;
-    border-radius: 4px;
+    border-radius: ${borderRadiusSize.sm};
     box-shadow: none;
     border: 1px solid ${defaultColor};
     //transition: all .3s ease-in;
@@ -90,7 +91,7 @@ export const CellContainer = styled('div')<CellComponentProps>`
       ${!disabled && css`
         &:hover {
           cursor: pointer;
-          box-shadow: 0 0 8px 4px ${disabledColor};
+          box-shadow: 0 4px 8px 6px ${disabledColor};
         }
       `}
     `
@@ -130,7 +131,7 @@ const AddTask = styled('div')`
     color: #fff;
     width: 100%;
     height: 100%;
-    border-radius: 4px;
+    border-radius: ${borderRadiusSize.xs};
     animation: .3s ease-in-out ${addTaskAnimation} forwards;
   }
 `
@@ -140,9 +141,9 @@ const TaskTile = styled('div')<CellComponentProps & { withFill?: boolean }>`
     gap: 4px;
     background-color: ${props => props.withFill ? hoverColor : ''};
     width: 100%;
-    padding: 3px 6px;
+    padding: 5px 7px;
     text-align: center;
-    border-radius: 4px;
+    border-radius: ${borderRadiusSize.sm};
     margin-top: 4px;
     opacity: ${props => props.disabled ? .2 : 1};
     display: flex;
@@ -261,6 +262,7 @@ export const CalendarCell: FC<CalendarCellProps> = ({
 				position={'relative'}
 				width={'100%'}
 				height={50}
+				borderRadius={borderRadiusSize.sm}
 				justify={'flex-end'}
 				wrap={'nowrap'}
 				align={'center'}
@@ -329,7 +331,7 @@ export const TaskTileItem: FC<TaskTileItemProps> = ({taskInfo, onSelect, date}) 
 	const [isHover, setIsHover] = useState(false)
 	
 	const condition = useMemo(() => {
-		return date.meta.isCurrent && !date.meta.isDisabled
+		return !date.meta.isDisabled
 	}, [date, taskInfo])
 	
 	return (

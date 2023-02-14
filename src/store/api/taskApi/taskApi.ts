@@ -1,5 +1,11 @@
 import {createApi, fetchBaseQuery} from "@reduxjs/toolkit/dist/query/react";
-import {CalendarPriorityKeys, CalendarTaskItem, EventItem, TaskStorage} from "../../../components/Calendars/types";
+import {
+	CalendarMode,
+	CalendarPriorityKeys,
+	CalendarTaskItem,
+	EventItem,
+	TaskStorageType
+} from "../../../components/Calendars/types";
 import {baseServerUrl} from "../defaultApiConfig";
 import {FilterTaskStatuses} from "../../../components/Calendars/Modes/DayCalendar/EventFilter";
 import {CalendarNameItem} from "../../../components/Calendars/CalendarList/CalendarNameListItem";
@@ -13,7 +19,9 @@ interface GetTaskQueryProps {
 	toDate: string,
 	title: string | null,
 	priority: CalendarPriorityKeys | null,
-	taskStatus: FilterTaskStatuses
+	taskStatus: FilterTaskStatuses,
+	onlyFavorites?: boolean,
+	layout?: CalendarMode['layout']
 }
 
 export type GetTaskSchemeRequest = Pick<GetTaskQueryProps, 'fromDate' | 'toDate'>
@@ -101,7 +109,7 @@ export const taskApi = createApi({
 					providesTags: ['Tasks'],
 				}),
 			getTasksAtScope: build
-				.query<TaskStorage<ShortEventItem>, GetTaskQueryProps>({
+				.query<TaskStorageType<ShortEventItem>, GetTaskQueryProps>({
 					query: (props) => ({
 						url: `/getTaskAtScope`,
 						method: 'POST',
@@ -120,7 +128,7 @@ export const taskApi = createApi({
 				}),
 			removeTask: build
 				.mutation({
-					query: (arg: { id: string }) => ({
+					query: (arg: { id: string, remove?: boolean }) => ({
 						url: '/remove',
 						method: 'POST',
 						body: arg
@@ -202,6 +210,7 @@ export const {
 	useLazyGetTaskInfoQuery,
 	useUpdateTaskMutation,
 	useGetCalendarsQuery,
+	useGetTaskInfoQuery,
 	useChangeSelectCalendarMutation,
 	useCreateCalendarMutation,
 	useHasTasksInCalendarQuery,

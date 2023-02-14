@@ -22,7 +22,7 @@ export interface TextAreaInputProps extends ExtendableTextInputProps {
 	onChange?: (value: string) => void,
 	onFocus?: (e: React.FocusEvent<HTMLTextAreaElement>) => void,
 	onBlur?: (e: React.FocusEvent<HTMLTextAreaElement>) => void,
-	
+	rows?: number
 }
 
 export const TextAreaInput: FC<TextAreaInputProps> = ({
@@ -39,7 +39,8 @@ export const TextAreaInput: FC<TextAreaInputProps> = ({
 																												isDirty,
 																												tooltip,
 																												readOnly,
-																												onChange
+																												onChange,
+																												rows
 																											}) => {
 	
 	return (
@@ -64,11 +65,11 @@ export const TextAreaInput: FC<TextAreaInputProps> = ({
 					placeholder={placeholder}
 					id={inputId}
 					readOnly={readOnly}
-					rows={6}
+					rows={rows || 6}
 					disabled={isLoading}
 				/>
 			</FlexBlock>
-			<InputErrorMessage errorMessage={errorMessage} isDirty={isDirty} />
+			<InputErrorMessage errorMessage={errorMessage} isDirty={isDirty}/>
 		</FlexBlock>
 	)
 }

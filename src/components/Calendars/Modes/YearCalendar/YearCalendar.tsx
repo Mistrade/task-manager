@@ -4,25 +4,26 @@ import {css} from 'styled-components'
 import {FlexBlock} from '../../../LayoutComponents/FlexBlock'
 import {SmallCalendarMonthTitle} from '../../SmallMotnCalendar/SmallCalendarMonthTitle'
 import {useGetTaskSchemeQuery} from "../../../../store/api/taskApi/taskApi";
-import {getTaskSchemeScope} from "../../../../common/calendarSupport/scopes";
-import dayjs from 'dayjs'
+import {DateScopeHelper, TaskSchemeDateScopeInterface} from "../../../../common/calendarSupport/scopes";
 import {Loader} from "../../../Loaders/Loader";
-import {pageHeaderColor} from '../../../../common/constants'
+import {borderRadiusSize, pageHeaderColor} from '../../../../common/constants'
 import {SmallMonth} from "../../SmallMotnCalendar/SmallMonth";
 
 export const YearCalendar: FC<YearCalendarProps> = ({
 																											yearItem,
 																											onChangeCurrent,
 																										}) => {
-	const dateForScheme: Date = useMemo(() => {
-		return dayjs().set('year', yearItem.year).startOf('year').toDate()
+	const schemeScope: TaskSchemeDateScopeInterface = useMemo(() => {
+		return new DateScopeHelper({useOtherDays: false})
+			.getDateScopeForTaskScheme(new Date(yearItem.year), 'year')
 	}, [yearItem.year])
 	
-	const {data: taskScheme, isFetching} = useGetTaskSchemeQuery(getTaskSchemeScope(dateForScheme, 'year', true))
+	
+	const {data: taskScheme, isFetching} = useGetTaskSchemeQuery(schemeScope)
 	
 	
 	return (
-		<FlexBlock mt={16} mb={16} width={'100%'} overflow={'scroll'}>
+		<FlexBlock mt={4} mb={4} width={'100%'} overflow={'scroll'}>
 			<Loader title={'Загрузка схемы событий...'} isActive={isFetching}>
 				<FlexBlock gap={8} wrap={'wrap'} justify={'flex-start'} align={'flex-start'}>
 					{yearItem.months.map((monthItem) => {
@@ -30,7 +31,7 @@ export const YearCalendar: FC<YearCalendarProps> = ({
 							<FlexBlock
 								key={`monthItem_year_${monthItem.year}_month_${monthItem.monthOfYear}`}
 								p={4}
-								borderRadius={4}
+								borderRadius={borderRadiusSize.xs}
 								justify={'center'}
 								align={'center'}
 								width={'calc(25% - 8px)'}

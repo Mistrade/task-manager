@@ -1,25 +1,26 @@
 import {FC, useState} from "react";
 import {FlexBlock} from "../../LayoutComponents/FlexBlock";
-import {currentColor, defaultColor, hoverColor} from "../../../common/constants";
+import {currentColor} from "../../../common/constants";
 import {EmptyButtonStyled} from "../../Buttons/EmptyButton.styled";
-import {useSearchNavigate} from "../../../hooks/useSearchNavigate";
 import {Modal} from "../../Modal/Modal";
 
 interface CalendarUserIndicator {
 	name: string,
 	surname: string,
-	id: string
+	id: string,
+	onClick?: (id: string) => void
 }
 
-export const CalendarUserIndicator: FC<CalendarUserIndicator> = ({name, surname}) => {
+export const CalendarUserIndicator: FC<CalendarUserIndicator> = ({name, surname, id, onClick}) => {
 	const [isOpen, setIsOpen] = useState(false)
 	
 	return (
 		<EmptyButtonStyled
 			onClick={(e) => {
 				e.stopPropagation()
+				onClick && onClick(id)
 			}}
-			style={{padding: '4px 2px'}}
+			style={{padding: '6px 4px', width: '100%'}}
 		>
 			<FlexBlock direction={'row'} gap={8} width={'100%'} align={'center'}>
 				<FlexBlock
@@ -43,7 +44,6 @@ export const CalendarUserIndicator: FC<CalendarUserIndicator> = ({name, surname}
 					</FlexBlock>
 				</FlexBlock>
 			</FlexBlock>
-			<Modal isView={isOpen}/>
 		</EmptyButtonStyled>
 	)
 }

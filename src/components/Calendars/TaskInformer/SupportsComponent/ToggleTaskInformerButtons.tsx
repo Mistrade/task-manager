@@ -1,4 +1,4 @@
-import {CalendarPriorityKeys, EventItem, EventLinkItem, TaskStatusesType} from "../../types";
+import {CalendarPriorityKeys, EventItem, EventLinkItem, TaskStatusesType, UUID} from "../../types";
 import {FC, useState} from "react";
 import {ToggleButtonContainer} from "./ToggleButtonContainer";
 import {DropDownButton} from "../../../Buttons/DropDownButton";
@@ -13,7 +13,7 @@ import {useGetCalendarsQuery} from "../../../../store/api/taskApi/taskApi";
 import {CalendarIdentifier} from "../../CalendarList/CalendarList.styled";
 import {IconProps, LoaderIcon} from "../../../Icons/Icons";
 
-export type TaskInformerUpdateFn = (field: keyof EventItem, data: string | EventLinkItem | boolean) => Promise<void>
+export type TaskInformerUpdateFn = (field: keyof EventItem, data: string | EventLinkItem | boolean, taskId?: UUID) => Promise<void>
 
 export interface ToggleEventButtonProps<T> {
 	value: T,

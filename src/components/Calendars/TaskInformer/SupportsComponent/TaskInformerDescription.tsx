@@ -6,7 +6,7 @@ import {EditableFieldsButtons} from "./EditableFieldsButtons";
 import {UsageTaskItemBaseProps} from "../../types";
 import {TaskInformerUpdateFn} from "./ToggleTaskInformerButtons";
 import styled, {css} from "styled-components";
-import {currentColor, disabledColor} from "../../../../common/constants";
+import {borderRadiusSize, currentColor, disabledColor} from "../../../../common/constants";
 import {Tooltip} from "../../../Tooltip/Tooltip";
 import {EmptyButtonStyled} from "../../../Buttons/EmptyButton.styled";
 import {PencilIcon} from "../../../Icons/Icons";
@@ -38,6 +38,7 @@ const TaskInformerDescriptionInput: FC<TaskInformerDescriptionInputProps> = ({va
 		<StyledTaskInformerLinkForm onSubmit={formik.handleSubmit}>
 			<FlexBlock direction={'column'} gap={6} width={'100%'}>
 				<TextAreaInput
+					rows={18}
 					value={formik.values.description}
 					onChange={(v) => formik.setFieldValue('description', v)}
 					label={'Подробное описание события'}
@@ -58,7 +59,7 @@ const TaskInformerDescriptionContainer = styled('div')`
   align-items: flex-start;
   position: relative;
   padding: 12px 8px;
-  border-radius: 4px;
+  border-radius: ${borderRadiusSize.sm};
   border: 2px solid ${disabledColor};
 
 `
@@ -92,7 +93,7 @@ export const TaskInformerDescription: FC<TaskInformerDescriptionProps> = ({taskI
 						<FlexBlock
 							fSize={16}
 							additionalCss={css`
-                max-height: 127px;
+                max-height: 300px;
                 overflow-y: scroll;
                 -webkit-scroll-snap-type: none;
 							`}

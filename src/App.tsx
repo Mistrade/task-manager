@@ -1,4 +1,4 @@
-import React, {useEffect} from 'react'
+import React from 'react'
 import {createGlobalStyle, css} from 'styled-components'
 import './common/dayjs'
 import {FlexBlock} from './components/LayoutComponents/FlexBlock'
@@ -8,7 +8,6 @@ import {ToastContainer} from "react-toastify";
 import 'react-toastify/dist/ReactToastify.css';
 import {useConfirmSessionQuery} from "./store/api/sessionApi";
 import {Loader} from "./components/Loaders/Loader";
-import {checkPassportIssueDate} from "./common/functions";
 
 const GlobalStyled = createGlobalStyle({}, css`
   * {
@@ -19,17 +18,16 @@ const GlobalStyled = createGlobalStyle({}, css`
   }
 `)
 
+// export class HttpServerError extends Error {
+// 	constructor(msg?: string) {
+// 		super(msg);
+// 		Object.setPrototypeOf(this, HttpServerError.prototype)
+// 		this.name = 'HttpServerError'
+// 	}
+// }
+
 function App() {
 	const {data: userInfo, isFetching, isError} = useConfirmSessionQuery()
-	
-	useEffect(() => {
-		const res = checkPassportIssueDate({
-			dateBirthday: new Date(2012, 8, 25),
-			issueDate: new Date()
-		})
-		
-	}, [])
-	
 	
 	return (
 		<>

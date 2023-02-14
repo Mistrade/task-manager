@@ -1,34 +1,31 @@
 import {FC, useCallback, useMemo} from 'react'
-import {CalendarCurrentMonth, TaskInformerMainProps, TaskInformerProps} from '../types'
+import {TaskInformerMainProps, TaskInformerProps} from '../types'
 import dayjs from 'dayjs'
 import {FlexBlock} from '../../LayoutComponents/FlexBlock'
-import {getMonthDays} from '../../../common/calendarSupport/getters'
 import {ServerResponse, useUpdateTaskMutation} from "../../../store/api/taskApi/taskApi";
 import {toast} from "react-toastify";
 import {TaskInformerUpdateFn} from "./SupportsComponent/ToggleTaskInformerButtons";
 import {TaskInformerRightBar} from "./RightBar/TaskInformerRightBar";
 import {TaskInformerLeftBar} from "./LeftBar/TaskInformerLeftBar";
 import {TaskInfoNotFound} from "./SupportsComponent/TaskInfoNotFound";
+import {DateListGenerator} from "../../../common/calendarSupport/generators";
 
 const TaskInformerMain: FC<TaskInformerMainProps> = ({taskItem, openClonedTask}) => {
 	const options = useMemo(() => {
 		const start = dayjs(taskItem.time)
-		const current: CalendarCurrentMonth = {
-			layout: 'month',
-			month: start.month(),
-			year: start.year()
-		}
+		const monthItem = new DateListGenerator({useOtherDays: true}).getMonthItem(start.toDate())
+		
 		return {
-			monthItem: getMonthDays(current, {useOtherDays: true}),
+			monthItem,
 			currentDate: start.toDate(),
 		}
 	}, [taskItem.time])
 	
 	const [updateTask, {data}] = useUpdateTaskMutation()
 	
-	const updateTaskHandler: TaskInformerUpdateFn = useCallback(async (field, data) => {
+	const updateTaskHandler: TaskInformerUpdateFn = useCallback(async (field, data, taskId) => {
 		return await updateTask({
-			id: taskItem.id,
+			id: taskId || taskItem.id,
 			field,
 			data
 		})

@@ -5,7 +5,7 @@ import {disabledColor, pageHeaderColor} from "../../../common/constants";
 export const CalendarHeaderContainer = styled(FlexBlock)`
 	flex-direction: column;
 	align-items: flex-start;
-	flex: 1 0 80px;
+	flex: 1 0;
 	width: 100%;
 	gap: 20px;
 	background-color: ${pageHeaderColor};

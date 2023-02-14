@@ -1,6 +1,7 @@
 import {createSlice, PayloadAction} from "@reduxjs/toolkit";
 import {
 	CalendarCurrentDay,
+	CalendarCurrentFavorites,
 	CalendarCurrentList,
 	CalendarCurrentMonth,
 	CalendarCurrentWeek,
@@ -35,13 +36,14 @@ export type CalendarModeForState =
 	| CalendarWeekCurrentForState
 	| CalendarDateCurrentForState
 	| CalendarListCurrentForState
+	| CalendarCurrentFavorites
 
 interface CalendarState {
 	current: CalendarModeForState,
 	statuses: FilterTaskStatuses,
 	addTaskDate: null | string,
 	calendarRemoveCandidate: null | CalendarNameItem,
-	clonedParentEvent: FullResponseEventModel | null,
+	clonedParentEvent: Partial<FullResponseEventModel> | null,
 }
 
 const initialState: CalendarState = {
@@ -91,6 +93,10 @@ const CalendarSlice = createSlice({
 							year: date.getFullYear()
 						}
 						break;
+					case "favorites":
+						state.current = {
+							layout: 'favorites',
+						}
 				}
 			}
 		},
@@ -100,7 +106,7 @@ const CalendarSlice = createSlice({
 		changeCalendarRemoveCandidate(state, data: PayloadAction<CalendarState['calendarRemoveCandidate']>) {
 			state.calendarRemoveCandidate = data.payload
 		},
-		setClonedParentEvent(state, data: PayloadAction<FullResponseEventModel | null>) {
+		setClonedParentEvent(state, data: PayloadAction<Partial<FullResponseEventModel> | null>) {
 			state.clonedParentEvent = data.payload
 		},
 		changeTaskStatuses(state, data: PayloadAction<FilterTaskStatuses>) {

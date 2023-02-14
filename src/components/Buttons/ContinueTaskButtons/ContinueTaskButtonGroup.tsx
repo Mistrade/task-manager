@@ -1,7 +1,7 @@
 import {FC, useMemo} from "react";
 import {TaskStatusesType} from "../../Calendars/types";
 import {FlexBlock} from "../../LayoutComponents/FlexBlock";
-import {ContinueWorkTaskButtonName, darkColor, defaultColor} from "../../../common/constants";
+import {ContinueWorkTaskButtonName, darkColor} from "../../../common/constants";
 import {WhiteButton} from "../Buttons.styled";
 import {convertEventStatus} from "../../../common/functions";
 import {ArrowRightIcon} from "../../Icons/Icons";

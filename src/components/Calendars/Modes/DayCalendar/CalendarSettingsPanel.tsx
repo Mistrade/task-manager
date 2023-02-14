@@ -5,26 +5,32 @@ import {SmallCalendarMonthTitle} from '../../SmallMotnCalendar/SmallCalendarMont
 import dayjs from 'dayjs'
 import {Tooltip} from '../../../Tooltip/Tooltip'
 import {GetTaskSchemeRequest, useGetTaskSchemeQuery} from "../../../../store/api/taskApi/taskApi";
-import {getTaskSchemeScope} from "../../../../common/calendarSupport/scopes";
+import {DateScopeHelper} from "../../../../common/calendarSupport/scopes";
 import {CalendarList} from "../../CalendarList/CalendarList";
 import {PourDatesProps, SmallMonth} from "../../SmallMotnCalendar/SmallMonth";
 import {CalendarTodaySwitchers} from "../../Header/CalendarTodaySwitchers";
 import {ShortChangeCurrentPattern} from "../../../../common/commonTypes";
-import {changeCurrentModeHandler} from "../../../../common/functions";
+import {changeCurrentModeHandler, getCalendarTitle} from "../../../../common/functions";
+import {CalendarTitle} from '../../Calendar.styled'
+import {CalendarHeaderAddButton} from "../../Header/CalendarHeaderAddButton";
+import {useAppSelector} from "../../../../store/hooks/hooks";
 
 
 export const CalendarSettingsPanel: FC<DaySettingsPanelProps> = ({
 																																	 onSelectDate,
 																																	 current,
 																																	 monthItem,
-																																	 onChangeCurrent
+																																	 onChangeCurrent,
+																																	 onAddTask
 																																 }) => {
 	
+	
 	const datesForScheme: GetTaskSchemeRequest = useMemo(() => {
-		const {monthOfYear, year} = monthItem
-		const d = dayjs().set('year', year).set('month', monthOfYear).toDate()
-		return getTaskSchemeScope(d, 'month', false)
+		return new DateScopeHelper({useOtherDays: true})
+			.getDateScopeForTaskScheme(new Date(monthItem.year, monthItem.monthOfYear), 'month')
 	}, [monthItem.monthOfYear])
+	
+	const {statuses, addTaskDate} = useAppSelector(state => state.calendar)
 	
 	const {
 		data: taskScheme,
@@ -55,6 +61,8 @@ export const CalendarSettingsPanel: FC<DaySettingsPanelProps> = ({
 				return dayjs().startOf('month').toDate()
 			case "list":
 				return current.fromDate
+			case "favorites":
+				return dayjs().toDate()
 		}
 	}, [current])
 	
@@ -81,6 +89,18 @@ export const CalendarSettingsPanel: FC<DaySettingsPanelProps> = ({
 		onChangeCurrent && onChangeCurrent(changeCurrentModeHandler(current, pattern), current.layout)
 	}, [current, onChangeCurrent])
 	
+	const title: string = useMemo(() => {
+		return getCalendarTitle(current)
+	}, [current])
+	
+	const addTaskHandler = useCallback(() => {
+		if (current.layout !== 'day') {
+			return onAddTask(new Date())
+		}
+		
+		return onAddTask(current.date)
+	}, [current, addTaskDate])
+	
 	return (
 		<FlexBlock
 			direction={'column'}
@@ -88,7 +108,17 @@ export const CalendarSettingsPanel: FC<DaySettingsPanelProps> = ({
 			align={'flex-start'}
 			position={'relative'}
 		>
-			<FlexBlock pl={24} mb={24}>
+			<FlexBlock justify={'flex-start'} align={'center'} gap={12} mb={6}>
+				<CalendarTitle>
+					{title}
+				</CalendarTitle>
+				<CalendarHeaderAddButton
+					current={current}
+					statuses={statuses}
+					onAddTask={addTaskHandler}
+				/>
+			</FlexBlock>
+			<FlexBlock mb={24}>
 				<CalendarTodaySwitchers
 					onChange={onChangeCurrentHandler}
 				/>

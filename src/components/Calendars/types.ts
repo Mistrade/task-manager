@@ -55,9 +55,14 @@ export interface ListCalendarModeProps {
 	onSelectTask: OnSelectTaskFnType,
 }
 
+export interface FavoritesCalendarModeProps {
+	current: CalendarCurrentFavorites,
+	onSelectTask: OnSelectTaskFnType
+}
+
 export interface WeekCalendarProps extends Omit<MonthCalendarProps, 'monthItem' | 'renderWeekPattern'> {
 	weekItem: WeekItem
-	taskStorage: TaskStorage<ShortEventItem>
+	taskStorage: TaskStorageType<ShortEventItem>
 }
 
 export interface DayCalendarProps extends GlobalTaskListProps {
@@ -110,7 +115,8 @@ export interface DaySettingsPanelProps {
 	monthItem: MonthItem
 	onSelectDate?: OnSelectDateFromCalendarFn,
 	current: CalendarMode,
-	onChangeCurrent: UseCalendarReturned['onChangeCurrent']
+	onChangeCurrent: UseCalendarReturned['onChangeCurrent'],
+	onAddTask: OnAddTaskFnType
 }
 
 export interface SmallCalendarDayItemProps {
@@ -145,6 +151,7 @@ export interface TaskTileClickArguments {
 
 export type CalendarList = Array<CalendarItem>
 export type CalendarWeekList = Array<WeekItem>
+export type CalendarMonthList = Array<MonthItem>
 export type WeekItem = {
 	weekOfYear: number,
 	month: number,
@@ -160,7 +167,7 @@ export type MonthItem = {
 
 export type CalendarCurrentContext = {
 	year: number,
-	month: number,
+	month?: number,
 	week?: number
 }
 
@@ -216,6 +223,7 @@ export interface CalendarTaskItem {
 	type: 'event',
 	createdAt: string,
 	linkedFrom?: UUID,
+	parentId?: UUID,
 	title: string,
 	description: string,
 	priority: CalendarPriorityKeys,
@@ -300,14 +308,14 @@ export type TaskMembersListType = Array<TaskMemberItemType>
 export type CustomObject<T = any> = { [key in string]: T }
 export type PartialCustomObject<T = any> = Partial<{ [key in string]: T }>
 
-export type TaskStorage<EVENT = EventItem> = CustomObject<TaskYear<EVENT>>
+export type TaskStorageType<EVENT = EventItem> = CustomObject<TaskYear<EVENT>>
 export type TaskYear<EVENT = EventItem> = CustomObject<TaskMonth<EVENT>>
 export type TaskMonth<EVENT = EventItem> = CustomObject<TaskDate<EVENT>>
 export type TaskDate<EVENT = EventItem> = Array<EVENT>
 
 export interface TaskSetResult {
 	status: boolean,
-	storage: TaskStorage
+	storage: TaskStorageType
 }
 
 export type CalendarTaskList = Array<CalendarTaskItem>
@@ -328,15 +336,15 @@ export type TaskInformerMainProps = UsageTaskItemBaseProps
 
 export interface TaskInfoModalProps {
 	onClose: () => void,
-	onCloneEvent?: (event: FullResponseEventModel) => void,
+	onCloneEvent?: (event: Partial<FullResponseEventModel>) => void,
 	onOpenClonedEvent?: (taskId: ObjectId) => void
 }
 
 export interface AddTaskModalProps {
 	date: Date | null,
 	onClose?: () => void,
-	onComplete?: () => void,
-	clonedEventInfo?: FullResponseEventModel | null,
+	onComplete?: (taskId: UUID) => void,
+	clonedEventInfo?: Partial<FullResponseEventModel> | null,
 	onSuccessClonedEvent?: UseCalendarReturned['onSuccessClonedEvent']
 }
 
@@ -367,6 +375,10 @@ export interface CalendarCurrentList {
 	toDate: Date,
 }
 
+export interface CalendarCurrentFavorites {
+	layout: 'favorites',
+}
+
 export interface CalendarCurrentThreeDays {
 	layout: 'three_days',
 	fromDate: Date,
@@ -378,6 +390,7 @@ export type CalendarMode =
 	| CalendarCurrentWeek
 	| CalendarCurrentDay
 	| CalendarCurrentList
+	| CalendarCurrentFavorites
 
 export interface DateItem {
 	current: CalendarCurrentDay,
@@ -391,7 +404,7 @@ export interface DateSettingPanelOptions {
 
 
 export type OnCloseTaskInfoFnType = () => void
-export type OnAddTaskFnType = (date: Date, initialValues?: FullResponseEventModel) => void
+export type OnAddTaskFnType = (date: Date, initialValues?: Partial<FullResponseEventModel>) => void
 export type OnChangeCurrentFnType = (date: Date | CalendarCurrentList, layout: CalendarMode['layout']) => void
 export type OnSelectTaskFnType = (taskId: string) => any
 export type AddTaskDateType = CalendarItem | null

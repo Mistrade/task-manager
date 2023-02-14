@@ -1,12 +1,9 @@
 import {WeekCalendarProps, WeekItem} from "../../types";
 import React, {FC, useMemo} from "react";
 import {WeeKCalendar} from "./WeekCalendar";
-import {useGetTaskCountOfStatusQuery, useGetTasksAtScopeQuery} from "../../../../store/api/taskApi/taskApi";
 import dayjs from "dayjs";
 import {FlexBlock} from "../../../LayoutComponents/FlexBlock";
 import {EventFilter} from "../DayCalendar/EventFilter";
-import {useEventFilters} from "../../../../hooks/useEventFilters";
-import {useAppSelector} from "../../../../store/hooks/hooks";
 import {WeekDays} from "./WeekDays/WeekDays";
 import {WeekDaysList} from "../../../../common/constants";
 import {useTaskStorageQueryArgs} from "../../../../hooks/useTaskStorageScope";
@@ -32,18 +29,19 @@ function getScope(weekItem: WeekItem): Scope {
 
 export const WeekCalendarController: FC<WeekCalendarControllerProps> = (props) => {
 	const scope = useMemo(() => getScope(props.weekItem), [props.weekItem.weekOfYear, props.weekItem.month, props.weekItem.year])
-	const {queryArgs, taskStatus, handlers, filters, TaskStorage, SwitcherBadges} = useTaskStorageQueryArgs({
+	const {queryArgs, taskStatus, handlers, filters, TaskStorage, SwitcherBadges, isFetching} = useTaskStorageQueryArgs({
 		scope,
 		layout: props.current.layout
 	})
 	
 	return (
-		<FlexBlock mt={16} mb={16} height={'100%'} width={'100%'} direction={'column'}>
+		<FlexBlock mt={4} mb={4} height={'100%'} width={'100%'} direction={'column'}>
 			<FlexBlock width={'100%'} mb={8}>
 				<EventFilter
 					statusBadges={SwitcherBadges}
 					values={filters}
 					onChangeHandlers={handlers}
+					isLoading={isFetching}
 				/>
 			</FlexBlock>
 			<FlexBlock width={'100%'} mb={6} pt={6}>

@@ -1,10 +1,9 @@
-import {CalendarMode, TaskStorage, WeekItem} from "../components/Calendars/types";
+import {CalendarMode, TaskStorageType} from "../components/Calendars/types";
 import {ShortEventItem} from "../store/api/taskApi/types";
-import {useCallback, useEffect, useMemo, useState} from "react";
-import {useAppSelector} from "../store/hooks/hooks";
-import dayjs from "dayjs";
+import {useEffect, useState} from "react";
+import {useAppDispatch, useAppSelector} from "../store/hooks/hooks";
 import {EventFilters, useEventFilters, UseEventFiltersReturned} from "./useEventFilters";
-import {EventFilterOnChangeHandle, FilterTaskStatuses} from "../components/Calendars/Modes/DayCalendar/EventFilter";
+import {FilterTaskStatuses} from "../components/Calendars/Modes/DayCalendar/EventFilter";
 import {useGetTaskCountOfStatusQuery, useGetTasksAtScopeQuery} from "../store/api/taskApi/taskApi";
 import {SwitcherBadges} from "../components/Switcher/Switcher";
 
@@ -15,14 +14,16 @@ interface Scope {
 
 interface UseTaskStorageProps {
 	scope: Scope,
-	layout: CalendarMode['layout']
+	layout: CalendarMode['layout'],
+	onlyFavorites?: boolean
 }
 
 interface UseTaskStorageQueryArgsReturned extends UseEventFiltersReturned {
 	queryArgs: GetTaskStorageQueryArgs,
 	taskStatus: EventFilters['taskStatus'],
-	TaskStorage?: TaskStorage<ShortEventItem>,
-	SwitcherBadges?: SwitcherBadges<FilterTaskStatuses>
+	TaskStorage?: TaskStorageType<ShortEventItem>,
+	SwitcherBadges?: SwitcherBadges<FilterTaskStatuses>,
+	isFetching: boolean
 }
 
 type UseTaskStorageQueryArgsHookType = (props: UseTaskStorageProps) => UseTaskStorageQueryArgsReturned
@@ -32,7 +33,8 @@ interface GetTaskStorageQueryArgs {
 	fromDate: string,
 	toDate: string,
 	priority: EventFilters['priority'],
-	taskStatus: EventFilters['taskStatus']
+	taskStatus: EventFilters['taskStatus'],
+	onlyFavorites?: boolean
 }
 
 const getQueryArgs = (values: EventFilters): GetTaskStorageQueryArgs => {
@@ -42,10 +44,12 @@ const getQueryArgs = (values: EventFilters): GetTaskStorageQueryArgs => {
 		toDate: values.end.toString(),
 		priority: values.priority,
 		taskStatus: values.taskStatus,
+		onlyFavorites: !!values.onlyFavorites,
 	}
 }
 
 export const useTaskStorageQueryArgs: UseTaskStorageQueryArgsHookType = (props) => {
+	const dispatch = useAppDispatch()
 	const {statuses: taskStatus} = useAppSelector(state => state.calendar)
 	
 	const filtersReturned = useEventFilters({
@@ -55,6 +59,7 @@ export const useTaskStorageQueryArgs: UseTaskStorageQueryArgsHookType = (props) 
 			start: props.scope.start,
 			end: props.scope.end,
 			priority: null,
+			onlyFavorites: !!props.onlyFavorites
 		},
 		layout: props.layout
 	})
@@ -73,21 +78,25 @@ export const useTaskStorageQueryArgs: UseTaskStorageQueryArgsHookType = (props) 
 	
 	const [queryArgs, setQueryArgs] = useState(getQueryArgs(filtersReturned.filters))
 	
-	const {data: TaskStorage} = useGetTasksAtScopeQuery(queryArgs)
+	const {data: TaskStorage, refetch, isFetching: isFetchingStorage} = useGetTasksAtScopeQuery({
+		...queryArgs,
+		layout: props.layout
+	}, {refetchOnMountOrArgChange: true})
 	
-	const {data: SwitcherBadges} = useGetTaskCountOfStatusQuery({
+	const {data: SwitcherBadges, refetch: refetchBadges, isFetching: isFetchingBadges} = useGetTaskCountOfStatusQuery({
 		title: queryArgs.title,
 		fromDate: queryArgs.fromDate,
 		toDate: queryArgs.toDate,
 		priority: queryArgs.priority,
+		onlyFavorites: queryArgs.onlyFavorites
 	})
-	
 	
 	return {
 		queryArgs,
 		taskStatus: filtersReturned.debounceValue.taskStatus,
 		TaskStorage,
 		SwitcherBadges,
-		...filtersReturned
+		...filtersReturned,
+		isFetching: isFetchingBadges || isFetchingStorage
 	}
 }

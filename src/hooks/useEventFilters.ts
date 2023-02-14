@@ -12,7 +12,8 @@ export interface EventFilters {
 	priority: null | CalendarPriorityKeys,
 	start: Date,
 	end: Date,
-	taskStatus: FilterTaskStatuses
+	taskStatus: FilterTaskStatuses,
+	onlyFavorites?: boolean
 }
 
 

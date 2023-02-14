@@ -43,6 +43,7 @@ export interface FullResponseEventModel {
 	description: string,
 	link: EventLinkItem | null,
 	linkedFrom?: ObjectId,
+	parentId?: ObjectId,
 	members: Array<UserModelResponse>,
 	priority: CalendarPriorityKeys,
 	status: TaskStatusesType,
@@ -54,7 +55,7 @@ export interface FullResponseEventModel {
 	lastChange: UtcDate,
 	history: Array<EventHistoryResponse>,
 	calendar: CalendarResponse,
-	isLiked: boolean
+	isLiked: boolean,
 }
 
 export type ShortUserModel = Pick<UserModel, 'name' | 'surname' | '_id'>

@@ -68,8 +68,8 @@ export const CalendarModeSwitchers: FC<CalendarHeaderSwitchersProps> = ({
 				</FlexBlock>
 			</SwitchCalendarModeTab>
 			<SwitchCalendarModeTab
-				// isSelected={layout === 'year'}
-				// onClick={() => onChange('year')}
+				isSelected={layout === 'favorites'}
+				onClick={() => onChange('favorites')}
 			>
 				<FlexBlock align={'center'} gap={6}>
 					<StarsListIcon size={24} color={currentColor}/>

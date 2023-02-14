@@ -4,20 +4,13 @@ import {
 	CalendarCurrentMonth,
 	CalendarCurrentWeek,
 	CalendarCurrentYear,
-	CalendarDisabledOptions,
 	CalendarMode,
-	DateItem,
 	EventItem,
-	MonthItem,
-	SelectTaskItem,
 	TaskDate,
 	TaskMonth,
 	TaskSetResult,
-	TaskStorage,
-	TaskTileClickArguments,
-	TaskYear,
-	WeekItem,
-	YearItem
+	TaskStorageType,
+	TaskYear
 } from '../components/Calendars/types'
 import dayjs from 'dayjs'
 import {
@@ -28,153 +21,15 @@ import {
 	ChangeYearCurrentFn,
 	ShortChangeCurrentPattern
 } from './commonTypes'
-import {getHumanizeDateValue, MonthList, ShortMonthList, WeekDaysList} from './constants'
-import {getMonthDays, getWeekDays, getYearDays} from './calendarSupport/getters'
+import {getHumanizeDateValue, MonthList, ShortMonthList, WeekDaysShortList} from './constants'
 import {ShortEventItem} from "../store/api/taskApi/types";
 
 export const addNull = (value: number): string => value < 10 ? `0${value}` : value.toString()
 
-export const generateTaskInformerObject = (taskItem: TaskTileClickArguments) => {
-	const {taskInfo, date, event} = taskItem
-}
-
-
-export const checkTaskStatus = (taskItem: SelectTaskItem): string => {
-	if (taskItem.taskInfo.status === 'completed') {
-		return 'Завершено'
-	}
-	
-	if (dayjs(taskItem.taskInfo.time).isBefore(dayjs(), 'minute')) {
-		return 'Просрочено'
-	}
-	
-	if (dayjs(taskItem.taskInfo.time).isAfter(dayjs(), 'minute')) {
-		return 'В работе'
-	}
-	
-	return 'В работе'
-}
-
-export const getTaskListOfDay = <EVENT = EventItem | ShortEventItem>(day: Date, storage: TaskStorage<EVENT>): Array<EVENT> => {
+export const getTaskListOfDay = <EVENT = EventItem | ShortEventItem>(day: Date, storage: TaskStorageType<EVENT>): Array<EVENT> => {
 	const y = storage[dayjs(day).year()] || {}
 	const m = y[dayjs(day).month()] || {}
 	return m[dayjs(day).date()] || []
-}
-
-
-export const setTaskListToDay = (storage: TaskStorage, event: EventItem): TaskStorage => {
-	const start = dayjs(event.time)
-	const end = dayjs(event.timeEnd)
-	
-	let taskStorage = storage
-	
-	if (start.isSame(end, 'day')) {
-		let y = storage[start.year()]
-		
-		if (y) {
-			let m = y[start.month()]
-			
-			if (m) {
-				let d = m[start.date()]
-				
-				if (d) {
-					d.push(event)
-				} else {
-					m = {
-						...m,
-						[`${start.date()}`]: [event]
-					}
-				}
-			} else {
-				y = {
-					...y,
-					[`${start.month()}`]: {
-						[`${start.date()}`]: [event]
-					}
-				}
-			}
-		} else {
-			taskStorage = {
-				...taskStorage,
-				[`${start.year()}`]: {
-					[`${start.month()}`]: {
-						[`${start.date()}`]: [event]
-					}
-				}
-			}
-		}
-		return taskStorage
-	}
-	
-	return storage
-}
-
-export const setTaskAtDay = (storage: TaskStorage, day: Date, event: EventItem): TaskStorage => {
-	let newStorage = {
-		...storage
-	}
-	
-	const y: number = day.getFullYear()
-	const m: number = day.getMonth()
-	const d: number = day.getDate()
-	
-	const currentYear: TaskYear = newStorage[y] || {}
-	const currentMonth: TaskMonth = currentYear[m] || {}
-	const currentDate: TaskDate = currentMonth[d] || []
-	
-	const date: TaskDate = [...currentDate]
-	date.push(event)
-	
-	const month = {
-		...currentMonth,
-		[`${d}`]: date
-	}
-	
-	const year = {
-		...currentYear,
-		[`${m}`]: month
-	}
-	
-	newStorage = {
-		...newStorage,
-		[`${y}`]: year
-	}
-	
-	return newStorage
-}
-
-export const setTask = (storage: TaskStorage, event: EventItem): TaskSetResult => {
-	try {
-		
-		const isOneDay = dayjs(event.time).isSame(dayjs(event.timeEnd), 'day')
-		
-		if (isOneDay) {
-			storage = setTaskAtDay(storage, dayjs(event.time).toDate(), event)
-			return {status: true, storage}
-		} else {
-			let i = dayjs(event.time)
-			while (i.isSameOrBefore(dayjs(event.timeEnd), 'day')) {
-				storage = setTaskAtDay(storage, i.toDate(), event)
-				i = i.add(1, 'day')
-			}
-			return {status: true, storage}
-		}
-	} catch (e) {
-		return {
-			status: false,
-			storage
-		}
-	}
-}
-
-export const getTaskStorage = (tasks: Array<EventItem>): TaskStorage => {
-	const r: TaskStorage = {}
-	
-	tasks.forEach((task) => {
-		setTask(r, task)
-	})
-	
-	return r || {}
 }
 
 export const changeYearCurrentHandler: ChangeYearCurrentFn = (current, pattern) => {
@@ -317,7 +172,7 @@ const getWeekCalendarTitle = (current: CalendarCurrentWeek): string => {
 		year: d.year(),
 		month: d.month()
 	}
-	return `Неделя ${w}, ${getMonthCalendarTitle(m, false)}`
+	return `Неделя ${w}, ${m.year}г.`
 }
 
 const getYearCalendarTitle = (current: CalendarCurrentYear) => {
@@ -328,15 +183,15 @@ const getYearCalendarTitle = (current: CalendarCurrentYear) => {
 const getDayCalendarTitle = (current: CalendarCurrentDay) => {
 	const {date} = current
 	const d = dayjs(date)
-	const dayOfWeek = WeekDaysList[d.weekday()]
-	return `${dayOfWeek} - ${getHumanizeDateValue(d.toDate(), false)}`
+	const dayOfWeek = WeekDaysShortList[d.weekday()]
+	return `${getHumanizeDateValue(d.toDate(), false)}`
 }
 
 const getListCalendarTitle = (current: CalendarCurrentList) => {
 	const start = dayjs(current.fromDate).format(`DD ${ShortMonthList[current.fromDate.getMonth()]}`)
 	const end = dayjs(current.toDate).format(`DD ${ShortMonthList[current.toDate.getMonth()]}`)
 	
-	return `Список событий ${start} - ${end}`
+	return `${start} - ${end}`
 }
 
 export const getCalendarTitle = (current: CalendarMode) => {
@@ -351,6 +206,8 @@ export const getCalendarTitle = (current: CalendarMode) => {
 			return getYearCalendarTitle(current)
 		case "list":
 			return getListCalendarTitle(current)
+		case "favorites":
+			return 'Избранное'
 	}
 }
 
@@ -368,6 +225,8 @@ export const changeCurrentModeHandler = (current: CalendarMode, pattern: ShortCh
 			return changeYearCurrentHandler(current, pattern)
 		case 'list':
 			return changeListCurrentHandler(current, pattern)
+		case "favorites":
+			return dayjs().toDate()
 	}
 }
 
@@ -401,78 +260,6 @@ export const generateMinuteArray = ({step}: { step: number }) => {
 	
 }
 
-export const CurrentObserver = {
-	year(prev: YearItem, current: CalendarCurrentYear, disabledOptions?: CalendarDisabledOptions): YearItem {
-		const {year: prevYear} = prev
-		
-		if (current.year !== prevYear) {
-			return getYearDays(current, {useOtherDays: false, disabled: disabledOptions})
-		}
-		
-		return prev
-	},
-	month(prev: MonthItem, current: CalendarCurrentMonth, disabledOptions?: CalendarDisabledOptions): MonthItem {
-		const prevMonth = prev.monthOfYear
-		const prevYear = prev.year
-		
-		if (prevMonth !== current.month || prevYear !== current.year) {
-			return getMonthDays(current, {useOtherDays: true, disabled: disabledOptions})
-		}
-		
-		return prev
-	},
-	week(prev: WeekItem, current: CalendarCurrentWeek, disabledOptions?: CalendarDisabledOptions): WeekItem {
-		const {aroundDate} = current
-		const curDate = dayjs(aroundDate)
-		const c = {
-			y: curDate.year(),
-			m: curDate.month(),
-			w: curDate.week()
-		}
-		
-		if (prev.year !== c.y || prev.month !== c.m || prev.weekOfYear !== c.w) {
-			return getWeekDays(
-				current,
-				{year: c.y, month: c.m},
-				{useOtherDays: true, disabled: disabledOptions}
-			)
-		}
-		
-		return prev
-	},
-	date(prev: DateItem, current: CalendarCurrentDay, disabledOptions?: CalendarDisabledOptions): DateItem {
-		
-		
-		const prevDate = dayjs(prev.current.date)
-		const currentDate = dayjs(current.date)
-		
-		const hasSettingPanelInfo = prev.settingPanel.monthItem.monthOfYear >= 0
-		
-		if (prevDate.isSame(currentDate, 'month') && hasSettingPanelInfo) {
-			return {
-				...prev,
-				current
-			}
-		}
-		
-		const monthItemCurrent: CalendarCurrentMonth = {
-			layout: 'month',
-			month: current.date.getMonth(),
-			year: current.date.getFullYear()
-		}
-		return {
-			current,
-			settingPanel: {
-				monthItem: getMonthDays(monthItemCurrent, {
-					useOtherDays: true,
-					disabled: disabledOptions
-				}),
-				monthCurrent: monthItemCurrent
-			}
-		}
-	}
-}
-
 export const convertEventStatus = (status: EventItem['status']) => {
 	switch (status) {
 		case 'created':
@@ -485,181 +272,6 @@ export const convertEventStatus = (status: EventItem['status']) => {
 			return 'Выполнено'
 		case "archive":
 			return 'В архиве'
-	}
-}
-
-interface CheckPassportIssueDate {
-	dateBirthday: Date,
-	issueDate: Date
-}
-
-export const getUserAge = (date: Date) => {
-	const today = new Date()
-	const todayStart = new Date(today.getFullYear(), today.getMonth(), today.getDate())
-	const birthdayInCurrentYear = new Date(today.getFullYear(), date.getMonth(), date.getDate())
-	let age = today.getFullYear() - date.getFullYear()
-	if (birthdayInCurrentYear.getTime() > todayStart.getTime()) {
-		age--
-	}
-	return age
-}
-
-interface GetPassportIssueDateScopeReturned {
-	min: Date | null,
-	max: Date | null
-}
-
-export const getAgeBirthday = (birthday: Date, age: number) => {
-	return new Date(birthday.getFullYear() + age, birthday.getMonth(), birthday.getDate())
-}
-
-export const getPassportIssueDateScope = ({
-																						dateBirthday,
-																						issueDate
-																					}: CheckPassportIssueDate): GetPassportIssueDateScopeReturned => {
-	const age = getUserAge(dateBirthday)
-	
-	if (age < 14) {
-		return {
-			min: null,
-			max: null
-		}
-	}
-	
-	if (age >= 14 && age < 20) {
-		return {
-			min: getAgeBirthday(dateBirthday, 14),
-			max: getAgeBirthday(dateBirthday, 20)
-		}
-	}
-	
-	if (age >= 20 && age < 45) {
-		return {
-			min: getAgeBirthday(dateBirthday, 20),
-			max: getAgeBirthday(dateBirthday, 45),
-		}
-	}
-	
-	return {
-		min: getAgeBirthday(dateBirthday, 45),
-		max: null
-	}
-}
-
-
-type ComparePatterns = '===' | '>=' | '>' | '<' | '<='
-
-export const compareDates = (first: Date, second: Date, pattern: ComparePatterns) => {
-	if (pattern === '>') {
-		if (first.getFullYear() > second.getFullYear()) return true
-		
-		if (first.getFullYear() === second.getFullYear()) {
-			if (first.getMonth() > second.getMonth()) return true
-			
-			if (first.getMonth() === second.getMonth()) {
-				if (first.getDate() > second.getDate()) return true
-			}
-		}
-		
-		return false
-	}
-	
-	if (pattern === '>=') {
-		if (first.getFullYear() > second.getFullYear()) return true
-		
-		if (first.getFullYear() === second.getFullYear()) {
-			if (first.getMonth() > second.getMonth()) return true
-			
-			if (first.getMonth() === second.getMonth()) {
-				if (first.getDate() > second.getDate()) return true
-				if (first.getDate() === second.getDate()) return true
-			}
-		}
-		
-		return false
-	}
-	
-	if (pattern === '<') {
-		if (first.getFullYear() < second.getFullYear()) return true
-		
-		if (first.getFullYear() === second.getFullYear()) {
-			if (first.getMonth() < second.getMonth()) return true
-			
-			if (first.getMonth() === second.getMonth()) {
-				if (first.getDate() < second.getDate()) return true
-			}
-		}
-		
-		return false
-	}
-	
-	if (pattern === '<=') {
-		if (first.getFullYear() < second.getFullYear()) return true
-		
-		if (first.getFullYear() === second.getFullYear()) {
-			if (first.getMonth() < second.getMonth()) return true
-			
-			if (first.getMonth() === second.getMonth()) {
-				if (first.getDate() < second.getDate()) return true
-				if (first.getDate() === second.getDate()) return true
-			}
-		}
-		
-		return false
-	}
-	
-	return first.getFullYear() === second.getFullYear()
-		&& first.getMonth() === second.getMonth()
-		&& first.getDate() === second.getDate()
-}
-
-export const getHumanizeDate = (date: Date) => {
-	const arr = [
-		`${date.getDate() < 10 ? `0${date.getDate()}` : date.getDate()}`, //дата
-		`${(date.getMonth() + 1) < 10 ? `0${date.getMonth() + 1}` : date.getMonth() + 1}`, //месяц
-		`${date.getFullYear()}` //год
-	]
-	return arr.join('-')
-}
-
-export const checkPassportIssueDate = (options: CheckPassportIssueDate) => {
-	const {issueDate} = options
-	if (compareDates(issueDate, new Date(), '>')) {
-		return {
-			test: false,
-			errorMessage: 'Дата выдачи не может быть в будущем'
-		}
-	}
-	
-	const scope = getPassportIssueDateScope(options)
-	let minTest = true
-	let maxTest = true
-	let errorMessage = ''
-	
-	if (!scope.min && !scope.max) {
-		return {
-			test: false,
-			errorMessage: 'Вы младше 14 лет.'
-		}
-	}
-	
-	if (scope.min) {
-		minTest = compareDates(scope.min, issueDate, '<=')
-		if (!errorMessage && !minTest) {
-			errorMessage = `Дата выдачи паспорта должна быть после ${getHumanizeDate(scope.min)}`
-		}
-	}
-	
-	if (scope.max) {
-		maxTest = compareDates(scope.max, issueDate, '>')
-		if (!errorMessage && !maxTest) {
-			errorMessage = `Дата выдачи паспорта не может быть позже ${getHumanizeDate(scope.max)}`
-		}
-	}
-	
-	return {
-		test: minTest && maxTest,
-		errorMessage
 	}
 }
 

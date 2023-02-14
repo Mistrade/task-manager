@@ -1,5 +1,5 @@
 import {FC, ReactNode} from "react";
-import {MagnifyingGlass, ThreeDots} from "react-loader-spinner";
+import {ThreeDots} from "react-loader-spinner";
 import {currentColor} from "../../common/constants";
 import {FlexBlock} from "../LayoutComponents/FlexBlock";
 

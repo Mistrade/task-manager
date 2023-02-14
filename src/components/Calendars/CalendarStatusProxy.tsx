@@ -16,7 +16,7 @@ export const CalendarStatusProxy: FC<{ layout: CalendarMode["layout"] }> = ({lay
 	const isCorrectTaskStatus = (status: FilterTaskStatuses | undefined) => {
 		return status && URLTaskStatuses[status]
 	}
-	const {statuses} = useAppSelector(state => state.calendar)
+	const {statuses} = useAppSelector((state) => state.calendar)
 	
 	useEffect(() => {
 		if (!taskStatus || !isCorrectTaskStatus(taskStatus)) {
