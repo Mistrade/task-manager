@@ -9,6 +9,7 @@ import {TaskInformerAboutTab} from "../SupportsComponent/TaskInformerAboutTab";
 import {TaskInformerTitle} from "../SupportsComponent/TaskInformerTitle";
 import {TaskChainsTab} from "../SupportsComponent/TaskChains/TaskChainsTab";
 import {TaskHistory} from "../SupportsComponent/TaskHistory/TaskHistory";
+import {TaskMembers} from "../SupportsComponent/TaskMembers/TaskMembers";
 
 interface TaskInformerLeftBarProps extends UsageTaskItemBaseProps {
 	updateFn: TaskInformerUpdateFn
@@ -45,8 +46,6 @@ export const TaskInformerLeftBar: FC<TaskInformerLeftBarProps> = ({taskItem, upd
 			</FlexBlock>
 			<FlexBlock
 				direction={'column'}
-				// minHeight={'70vh'}
-				// maxHeight={'90vh'}
 				height={'60vh'}
 				overflowY={'auto'}
 				overflowX={"hidden"}
@@ -66,6 +65,8 @@ export const TaskInformerLeftBar: FC<TaskInformerLeftBarProps> = ({taskItem, upd
 					/>
 				) : switcher === 'history' ? (
 					<TaskHistory taskInfo={taskItem}/>
+				) : switcher === 'members' ? (
+					<TaskMembers taskItem={taskItem}/>
 				) : (<>{switcher}</>)}
 			</FlexBlock>
 		</FlexBlock>

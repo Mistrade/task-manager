@@ -49,14 +49,16 @@ const TaskInformerMain: FC<TaskInformerMainProps> = ({taskItem, openClonedTask})
 	return (
 		<FlexBlock
 			direction={'column'}
-			minWidth={'70vw'}
-			maxWidth={'85vw'}
+			width={'80vw'}
 			p={'12px 20px'}
-			height={'100vh'}
+			height={'100%'}
 			gap={20}
 		>
 			<FlexBlock direction={'row'} width={'100%'} height={'100%'} gap={12}>
-				<TaskInformerLeftBar taskItem={taskItem} updateFn={updateTaskHandler}/>
+				<TaskInformerLeftBar
+					taskItem={taskItem}
+					updateFn={updateTaskHandler}
+				/>
 				<TaskInformerRightBar
 					taskItem={taskItem}
 					monthItem={options.monthItem}
