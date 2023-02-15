@@ -135,7 +135,7 @@ export const taskApi = createApi({
 					method: 'POST',
 					body: arg
 				}),
-				invalidatesTags: (result, error, arg, meta) => error ? [] : ['Tasks', 'TaskScheme', 'TaskCount']
+				invalidatesTags: (result, error, arg, meta) => error ? [] : ['Tasks', 'TaskScheme', 'TaskCount', 'ChildOfList']
 			}),
 			getTaskScheme: build
 			.query<GetTaskSchemeResponse, GetTaskSchemeRequest>({
