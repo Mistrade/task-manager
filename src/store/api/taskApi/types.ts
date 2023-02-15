@@ -54,7 +54,6 @@ export interface FullResponseEventModel {
 	type: string,
 	userId: UserModelResponse,
 	lastChange: UtcDate,
-	history: Array<EventHistoryResponse>,
 	calendar: CalendarResponse,
 	isLiked: boolean,
 }

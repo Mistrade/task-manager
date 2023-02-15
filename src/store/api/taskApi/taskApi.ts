@@ -9,7 +9,7 @@ import {
 import {baseServerUrl} from "../defaultApiConfig";
 import {FilterTaskStatuses} from "../../../components/Calendars/Modes/DayCalendar/EventFilter";
 import {CalendarNameItem} from "../../../components/Calendars/CalendarList/CalendarNameListItem";
-import {CalendarsModelType, FullResponseEventModel, ObjectId, ShortEventItem} from "./types";
+import {CalendarsModelType, FullResponseEventModel, ObjectId, ShortEventItem, UserModelResponse} from "./types";
 import {CreateCalendarFormData} from "../../../components/Calendars/CalendarModals/CreateCalendar";
 import {SwitcherBadges} from "../../../components/Switcher/Switcher";
 
@@ -41,6 +41,19 @@ interface ServerErrorType {
 export interface MyServerResponse<T = null> {
 	data?: T | null,
 	info?: ServerErrorType
+}
+
+export interface EventHistoryPopulatedItem {
+	date: Date,
+	fieldName: keyof FullResponseEventModel,
+	changeUserId: UserModelResponse,
+	eventId: ObjectId,
+	snapshotDescription: string,
+	eventSnapshot: FullResponseEventModel,
+}
+
+export interface EventHistoryResponseItem extends Omit<EventHistoryPopulatedItem, 'eventSnapshot'> {
+	eventSnapshot: FullResponseEventModel
 }
 
 export const taskApi = createApi({
@@ -92,68 +105,68 @@ export const taskApi = createApi({
 				invalidatesTags: (result, error, arg, meta) => error ? [] : ['Tasks', 'Calendars', 'TaskCount']
 			}),
 			getTaskInfo: build
-			.query<MyServerResponse<FullResponseEventModel>, string>({
-				query: (id: string) => ({
-					url: `/taskInfo/${id}`,
-					method: 'GET',
-					cache: 'no-store'
+				.query<MyServerResponse<FullResponseEventModel>, string>({
+					query: (id: string) => ({
+						url: `/taskInfo/${id}`,
+						method: 'GET',
+						cache: 'no-store'
+					}),
+					providesTags: ['TaskInfo'],
+					// invalidatesTags: ['ChildOfList']
 				}),
-				providesTags: ['TaskInfo'],
-				// invalidatesTags: ['ChildOfList']
-			}),
 			getTasksAtDay: build
-			.query<Array<ShortEventItem>, GetTaskQueryProps>({
-				query: (props) => ({
-					url: `/getTaskAtDay`,
-					method: 'POST',
-					body: props,
+				.query<Array<ShortEventItem>, GetTaskQueryProps>({
+					query: (props) => ({
+						url: `/getTaskAtDay`,
+						method: 'POST',
+						body: props,
+					}),
+					providesTags: ['Tasks'],
 				}),
-				providesTags: ['Tasks'],
-			}),
 			getTasksAtScope: build
-			.query<TaskStorageType<ShortEventItem>, GetTaskQueryProps>({
-				query: (props) => ({
-					url: `/getTaskAtScope`,
-					method: 'POST',
-					body: props,
+				.query<TaskStorageType<ShortEventItem>, GetTaskQueryProps>({
+					query: (props) => ({
+						url: `/getTaskAtScope`,
+						method: 'POST',
+						body: props,
+					}),
+					providesTags: ['Tasks'],
 				}),
-				providesTags: ['Tasks'],
-			}),
 			addTask: build
-			.mutation<MyServerResponse<{ taskId: ObjectId }>, CalendarTaskItem>({
-				query: (body) => ({
-					url: `/add`,
-					method: "POST",
-					body
+				.mutation<MyServerResponse<{ taskId: ObjectId }>, CalendarTaskItem>({
+					query: (body) => ({
+						url: `/add`,
+						method: "POST",
+						body
+					}),
+					invalidatesTags: (result, error, arg, meta) => error ? [] : ['Tasks', 'TaskScheme', 'TaskCount', "ChildOfList", "EventHistory"]
 				}),
-				invalidatesTags: (result, error, arg, meta) => error ? [] : ['Tasks', 'TaskScheme', 'TaskCount']
-			}),
 			removeTask: build
-			.mutation({
-				query: (arg: { id: string, remove?: boolean }) => ({
-					url: '/remove',
-					method: 'POST',
-					body: arg
+				.mutation({
+					query: (arg: { id: string, remove?: boolean }) => ({
+						url: '/remove',
+						method: 'POST',
+						body: arg
+					}),
+					invalidatesTags: (result, error, arg, meta) => error ? [] : ['Tasks', 'TaskScheme', 'TaskCount', 'ChildOfList', "EventHistory"]
 				}),
-				invalidatesTags: (result, error, arg, meta) => error ? [] : ['Tasks', 'TaskScheme', 'TaskCount', 'ChildOfList']
-			}),
 			getTaskScheme: build
-			.query<GetTaskSchemeResponse, GetTaskSchemeRequest>({
-				query: (args) => ({
-					url: '/getTasksScheme',
-					method: 'POST',
-					body: args,
+				.query<GetTaskSchemeResponse, GetTaskSchemeRequest>({
+					query: (args) => ({
+						url: '/getTasksScheme',
+						method: 'POST',
+						body: args,
+					}),
+					transformResponse: (baseQueryReturnValue: MyServerResponse<GetTaskSchemeResponse>, meta, arg): GetTaskSchemeResponse => {
+						if (!baseQueryReturnValue.data || baseQueryReturnValue?.info?.type === 'error') {
+							return {}
+						}
+						
+						return baseQueryReturnValue.data || {}
+					},
+					providesTags: ['TaskScheme']
 				}),
-				transformResponse: (baseQueryReturnValue: MyServerResponse<GetTaskSchemeResponse>, meta, arg): GetTaskSchemeResponse => {
-					if (!baseQueryReturnValue.data || baseQueryReturnValue?.info?.type === 'error') {
-						return {}
-					}
-					
-					return baseQueryReturnValue.data || {}
-				},
-				providesTags: ['TaskScheme']
-			}),
-			getEventHistory: build.query<MyServerResponse<any>, string>({
+			getEventHistory: build.query<MyServerResponse<Array<EventHistoryResponseItem>>, string>({
 				query: (taskId) => ({
 					url: `/getEventHistory/${taskId}`,
 					method: "GET"
@@ -161,14 +174,14 @@ export const taskApi = createApi({
 				providesTags: ["EventHistory"]
 			}),
 			getChildOfList: build
-			.query<MyServerResponse<Array<FullResponseEventModel>>, string>({
-				query: (taskId) => ({
-					url: `/getChildOfList/${taskId}`,
-					method: 'GET',
-					cache: 'no-cache'
+				.query<MyServerResponse<Array<FullResponseEventModel>>, string>({
+					query: (taskId) => ({
+						url: `/getChildOfList/${taskId}`,
+						method: 'GET',
+						cache: 'no-cache'
+					}),
+					providesTags: ['ChildOfList']
 				}),
-				providesTags: ['ChildOfList']
-			}),
 			updateTask: build.mutation<MyServerResponse<null>, { id: string, field: keyof EventItem, data: any }>({
 				query: (args) => ({
 					url: '/taskInfo/update',
@@ -181,14 +194,14 @@ export const taskApi = createApi({
 					}
 					
 					if (arg.field === 'time' || arg.field === 'timeEnd' || arg.field === 'calendar') {
-						return ['TaskInfo', 'Tasks', 'TaskCount', 'TaskScheme', 'ChildOfList']
+						return ['TaskInfo', 'Tasks', 'TaskCount', 'TaskScheme', 'ChildOfList', "EventHistory"]
 					}
 					
 					if (arg.field === 'status') {
-						return ['TaskInfo', 'TaskCount', 'Tasks', 'ChildOfList']
+						return ['TaskInfo', 'TaskCount', 'Tasks', 'ChildOfList', "EventHistory"]
 					}
 					
-					return ['TaskInfo', 'Tasks', 'ChildOfList']
+					return ['TaskInfo', 'Tasks', 'ChildOfList', "EventHistory"]
 				}
 			}),
 			getTaskCountOfStatus: build.query<SwitcherBadges<FilterTaskStatuses>, Omit<GetTaskQueryProps, 'taskStatus'>>({

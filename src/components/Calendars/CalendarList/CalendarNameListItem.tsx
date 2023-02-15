@@ -27,7 +27,7 @@ interface CalendarNameListItemProps {
 	onEdit?: UseCalendarReturned['onAddCalendar'],
 }
 
-const Label = styled('label')`
+export const CalendarItemLabel = styled('label')`
   width: 100%;
   gap: 6px;
   overflow: hidden;
@@ -86,7 +86,7 @@ export const CalendarNameListItem: FC<CalendarNameListItemProps> = ({
 							onChange={(e) => changeHandler(e.target.checked)}
 						/>
 					)}
-					<Label htmlFor={item._id}>{item.title}</Label>
+					<CalendarItemLabel htmlFor={item._id}>{item.title}</CalendarItemLabel>
 				</FlexBlock>
 				{isHover && (
 					<FlexBlock shrink={0} grow={0}>

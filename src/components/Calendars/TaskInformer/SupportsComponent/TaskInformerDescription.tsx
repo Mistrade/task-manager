@@ -22,6 +22,51 @@ interface TaskInformerDescriptionInputProps {
 	onDecline: () => void
 }
 
+export interface TaskInformerDescriptionTextProps {
+	description: string,
+	onEdit?: (value: boolean) => void
+}
+
+export const TaskInformerDescriptionText: FC<TaskInformerDescriptionTextProps> = ({description, onEdit}) => {
+	return (
+		<TaskInformerDescriptionContainer>
+			<FlexBlock
+				fSize={16}
+				additionalCss={css`
+          max-height: 300px;
+          overflow-y: auto;
+          overflow-x: hidden;
+          -webkit-scroll-snap-type: none;
+				`}
+			>
+				<FlexBlock
+					fSize={16}
+					additionalCss={css`
+            white-space: pre-wrap;
+            padding-right: 42px;
+            word-wrap: anywhere;
+					`}
+				>
+					{description || 'Описание отсутствует'}
+				</FlexBlock>
+			</FlexBlock>
+			{onEdit && (
+				<FlexBlock
+					position={'absolute'}
+					additionalCss={css`
+            top: 4px;
+            right: 4px
+					`}
+				>
+					<EmptyButtonStyled onClick={() => onEdit(true)}>
+						<PencilIcon size={22}/>
+					</EmptyButtonStyled>
+				</FlexBlock>
+			)}
+		</TaskInformerDescriptionContainer>
+	)
+}
+
 const TaskInformerDescriptionInput: FC<TaskInformerDescriptionInputProps> = ({value, updateFn, onDecline}) => {
 	const [loading, setLoading] = useState(false)
 	const formik = useFormik({
@@ -89,39 +134,7 @@ export const TaskInformerDescription: FC<TaskInformerDescriptionProps> = ({taskI
 							placement={'top'}
 						/>
 					</FlexBlock>
-					<TaskInformerDescriptionContainer>
-						<FlexBlock
-							fSize={16}
-							additionalCss={css`
-                max-height: 300px;
-                overflow-y: auto;
-                overflow-x: hidden;
-                -webkit-scroll-snap-type: none;
-							`}
-						>
-							<FlexBlock
-								fSize={16}
-								additionalCss={css`
-                  white-space: pre-wrap;
-                  padding-right: 42px;
-                  word-wrap: anywhere;
-								`}
-							>
-								{taskItem.description || 'Описание отсутствует'}
-							</FlexBlock>
-						</FlexBlock>
-						<FlexBlock
-							position={'absolute'}
-							additionalCss={css`
-                top: 4px;
-                right: 4px
-							`}
-						>
-							<EmptyButtonStyled onClick={() => setEditMode(true)}>
-								<PencilIcon size={22}/>
-							</EmptyButtonStyled>
-						</FlexBlock>
-					</TaskInformerDescriptionContainer>
+					<TaskInformerDescriptionText description={taskItem.description || ""} onEdit={(value) => setEditMode(value)}/>
 				</FlexBlock>
 			)}
 		</FlexBlock>

@@ -160,7 +160,9 @@ export const TASK_STATUSES: { [key in TaskStatusesType]: TaskStatusInfo } = {
 }
 
 export const DATE_RENDER_FORMAT = 'DD-MM-YYYY HH:mm'
+export const DATE_RENDER_FORMAT_WITH_SEC = 'DD-MM-YYYY HH:mm:ss'
 export const DATE_HOURS_FORMAT = 'HH:mm'
+export const DATE_HOURS_MINUTES_SECONDS_FORMAT = 'HH:mm:ss'
 export const DEFAULT_TASK_STATUS: TaskStatusesType = 'created'
 export const DEFAULT_TASK_PRIORITY: CalendarPriorityKeys = 'medium'
 export const Members: TaskMembersListType = [

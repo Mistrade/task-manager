@@ -23,23 +23,35 @@ export const TaskInformerLeftBar: FC<TaskInformerLeftBarProps> = ({taskItem, upd
 			borderRight={`1px solid ${disabledColor}`}
 			pr={20}
 			direction={'column'}
+			maxHeight={'100vh'}
+			justify={'flex-start'}
 			gap={12}
 		>
-			<TaskInformerTitle
-				title={taskItem.title}
-				onChange={async (value) => await updateFn('title', value)}
-				isLiked={taskItem.isLiked}
-				onChangeLiked={async (value) => await updateFn('isLiked', value)}
-			/>
-			<TaskInformerLinkButton
-				link={taskItem.link}
-				updateFn={updateFn}
-			/>
-			<TaskInformerSwitchers
-				selected={switcher}
-				onChange={(value) => setSwitcher(value.key)}
-			/>
-			<FlexBlock direction={'column'}>
+			<FlexBlock minHeight={'10vh'} maxHeight={'30vh'} gap={12} direction={'column'}>
+				<TaskInformerTitle
+					title={taskItem.title}
+					onChange={async (value) => await updateFn('title', value)}
+					isLiked={taskItem.isLiked}
+					onChangeLiked={async (value) => await updateFn('isLiked', value)}
+				/>
+				<TaskInformerLinkButton
+					link={taskItem.link}
+					updateFn={updateFn}
+				/>
+				<TaskInformerSwitchers
+					selected={switcher}
+					onChange={(value) => setSwitcher(value.key)}
+				/>
+			</FlexBlock>
+			<FlexBlock
+				direction={'column'}
+				// minHeight={'70vh'}
+				// maxHeight={'90vh'}
+				height={'60vh'}
+				overflowY={'auto'}
+				overflowX={"hidden"}
+				className={'123'}
+			>
 				{switcher === 'about' ? (
 					<TaskInformerAboutTab taskItem={taskItem} updateFn={updateFn}/>
 				) : switcher === 'chains' ? (

@@ -15,18 +15,25 @@ import {convertEventStatus} from "../../../../../common/functions";
 export interface TaskChainItemProps {
 	taskChainItem: FullResponseEventModel,
 	taskItem?: FullResponseEventModel,
-	updateFn: TaskInformerUpdateFn,
-	suffix: string,
+	updateFn?: TaskInformerUpdateFn,
+	suffix?: string,
+	withMarginLeft?: boolean
 }
 
 export const TaskChainBadge = styled(Badge)`
-	font-size: 15px;
-	color: ${darkColor};
-	background-color: ${hoverColor};
-	padding: 3px 6px;
+  font-size: 15px;
+  color: ${darkColor};
+  background-color: ${hoverColor};
+  padding: 3px 6px;
 `
 
-export const TaskChainItem: FC<TaskChainItemProps> = ({taskChainItem, taskItem, updateFn, suffix}) => {
+export const TaskChainItem: FC<TaskChainItemProps> = ({
+																												taskChainItem,
+																												taskItem,
+																												updateFn,
+																												suffix,
+																												withMarginLeft = true
+																											}) => {
 	const {statuses, current} = useAppSelector(CalendarSelectors.dataForURL)
 	
 	return (
@@ -40,7 +47,7 @@ export const TaskChainItem: FC<TaskChainItemProps> = ({taskChainItem, taskItem, 
 			border={`1px solid ${disabledColor}`}
 			borderRadius={borderRadiusSize.sm}
 			gap={12}
-			ml={12}
+			ml={withMarginLeft ? 12 : undefined}
 		>
 			<FlexBlock gap={6}>
 				{/*<EventIcon status={taskChainItem.status} size={20}/>*/}
