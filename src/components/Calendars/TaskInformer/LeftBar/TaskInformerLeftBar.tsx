@@ -32,11 +32,11 @@ export const TaskInformerLeftBar: FC<TaskInformerLeftBarProps> = ({taskItem, upd
 	useEffect(() => {
 		const path = `/calendar/${current.layout}/${statuses}/${taskItem.id}`
 		if (!tabName || !isCorrectTaskInformerSwitcherName(tabName)) {
-			return navigate(path + '/about')
+			return navigate(path + '/about', {replace: true})
 		}
 		
 		if (tabName !== switcher) {
-			return navigate(path + '/' + switcher)
+			return navigate(path + '/' + switcher, {replace: true})
 		}
 	}, [tabName, switcher])
 	
