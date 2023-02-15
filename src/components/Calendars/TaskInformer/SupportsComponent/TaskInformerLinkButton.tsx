@@ -8,7 +8,7 @@ import {SelectLinks} from "../../../Input/SelectInput/CalendarSelectInputs/Selec
 import {FlexBlock} from "../../../LayoutComponents/FlexBlock";
 import {JoinToEventButton, WhiteButton} from "../../../Buttons/Buttons.styled";
 import {EmptyButtonStyled} from "../../../Buttons/EmptyButton.styled";
-import {PencilIcon} from "../../../Icons/Icons";
+import {PencilIcon, TrashIcon} from "../../../Icons/Icons";
 import {EditableFieldsButtons} from "./EditableFieldsButtons";
 import {StyledTaskInformerLinkForm} from "../TaskInformer.styled";
 
@@ -80,6 +80,9 @@ export const TaskInformerLinkButton: FC<TaskInformerLinkButtonProps> = ({link, u
 					</JoinToEventButton>
 					<EmptyButtonStyled onClick={() => setEditMode(true)}>
 						<PencilIcon size={22}/>
+					</EmptyButtonStyled>
+					<EmptyButtonStyled onClick={() => updateFn('link', null)}>
+						<TrashIcon size={22}/>
 					</EmptyButtonStyled>
 				</>
 			) : (

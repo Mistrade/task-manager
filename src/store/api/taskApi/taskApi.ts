@@ -45,7 +45,7 @@ export interface MyServerResponse<T = null> {
 
 export const taskApi = createApi({
 	reducerPath: 'taskApi',
-	tagTypes: ['Tasks', 'TaskInfo', 'Calendars', 'TaskScheme', 'CalendarInfo', 'TaskCount', 'ChildOfList'],
+	tagTypes: ['Tasks', 'TaskInfo', 'Calendars', 'TaskScheme', 'CalendarInfo', 'TaskCount', 'ChildOfList', "EventHistory"],
 	baseQuery: fetchBaseQuery({
 		baseUrl: `${baseServerUrl}/events`,
 		credentials: 'include',
@@ -153,6 +153,13 @@ export const taskApi = createApi({
 				},
 				providesTags: ['TaskScheme']
 			}),
+			getEventHistory: build.query<MyServerResponse<any>, string>({
+				query: (taskId) => ({
+					url: `/getEventHistory/${taskId}`,
+					method: "GET"
+				}),
+				providesTags: ["EventHistory"]
+			}),
 			getChildOfList: build
 			.query<MyServerResponse<Array<FullResponseEventModel>>, string>({
 				query: (taskId) => ({
@@ -231,5 +238,6 @@ export const {
 	useGetTaskCountOfStatusQuery,
 	useGetCalendarInfoQuery,
 	useUpdateCalendarInfoMutation,
-	useGetChildOfListQuery
+	useGetChildOfListQuery,
+	useGetEventHistoryQuery
 } = taskApi

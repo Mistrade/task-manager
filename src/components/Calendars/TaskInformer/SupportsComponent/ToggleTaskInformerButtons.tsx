@@ -13,7 +13,7 @@ import {useGetCalendarsQuery} from "../../../../store/api/taskApi/taskApi";
 import {CalendarIdentifier} from "../../CalendarList/CalendarList.styled";
 import {IconProps, LoaderIcon} from "../../../Icons/Icons";
 
-export type TaskInformerUpdateFn = (field: keyof EventItem, data: string | EventLinkItem | boolean, taskId?: UUID) => Promise<void>
+export type TaskInformerUpdateFn = (field: keyof EventItem, data: string | EventLinkItem | boolean | null, taskId?: UUID) => Promise<void>
 
 export interface ToggleEventButtonProps<T> {
 	value: T,
