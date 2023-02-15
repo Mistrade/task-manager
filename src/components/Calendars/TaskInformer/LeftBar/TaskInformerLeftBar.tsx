@@ -1,7 +1,11 @@
 import {UsageTaskItemBaseProps} from "../../types";
 import {TaskInformerUpdateFn} from "../SupportsComponent/ToggleTaskInformerButtons";
-import {FC, useState} from "react";
-import {TaskInformerSwitchers, TaskInformerSwitchersKeys} from "../SupportsComponent/TaskInformerSwitchers";
+import {FC, useEffect, useState} from "react";
+import {
+	isCorrectTaskInformerSwitcherName,
+	TaskInformerSwitchers,
+	TaskInformerSwitchersKeys
+} from "../SupportsComponent/TaskInformerSwitchers";
 import {FlexBlock} from "../../../LayoutComponents/FlexBlock";
 import {disabledColor} from "../../../../common/constants";
 import {TaskInformerLinkButton} from "../SupportsComponent/TaskInformerLinkButton";
@@ -10,13 +14,32 @@ import {TaskInformerTitle} from "../SupportsComponent/TaskInformerTitle";
 import {TaskChainsTab} from "../SupportsComponent/TaskChains/TaskChainsTab";
 import {TaskHistory} from "../SupportsComponent/TaskHistory/TaskHistory";
 import {TaskMembers} from "../SupportsComponent/TaskMembers/TaskMembers";
+import {useParams} from "react-router";
+import {useAppSelector} from "../../../../store/hooks/hooks";
+import {CalendarSelectors} from "../../../../store/selectors/calendarItems";
+import {useSearchNavigate} from "../../../../hooks/useSearchNavigate";
 
 interface TaskInformerLeftBarProps extends UsageTaskItemBaseProps {
 	updateFn: TaskInformerUpdateFn
 }
 
 export const TaskInformerLeftBar: FC<TaskInformerLeftBarProps> = ({taskItem, updateFn}) => {
-	const [switcher, setSwitcher] = useState<TaskInformerSwitchersKeys>('about')
+	const {tabName} = useParams<{ tabName?: TaskInformerSwitchersKeys }>()
+	const [switcher, setSwitcher] = useState<TaskInformerSwitchersKeys>(tabName && isCorrectTaskInformerSwitcherName(tabName) ? tabName : 'about')
+	const {current, statuses} = useAppSelector(CalendarSelectors.dataForURL)
+	const navigate = useSearchNavigate()
+	
+	useEffect(() => {
+		const path = `/calendar/${current.layout}/${statuses}/${taskItem.id}`
+		if (!tabName || !isCorrectTaskInformerSwitcherName(tabName)) {
+			return navigate(path + '/about')
+		}
+		
+		if (tabName !== switcher) {
+			return navigate(path + '/' + switcher)
+		}
+	}, [tabName, switcher])
+	
 	
 	return (
 		<FlexBlock
@@ -50,6 +73,7 @@ export const TaskInformerLeftBar: FC<TaskInformerLeftBarProps> = ({taskItem, upd
 				overflowY={'auto'}
 				overflowX={"hidden"}
 				className={'123'}
+				pr={12}
 			>
 				{switcher === 'about' ? (
 					<TaskInformerAboutTab taskItem={taskItem} updateFn={updateFn}/>

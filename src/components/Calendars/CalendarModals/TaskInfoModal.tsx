@@ -15,15 +15,16 @@ import {EmptyButtonStyled} from '../../Buttons/EmptyButton.styled'
 import {SelectListContainer} from "../../Input/SelectInput/SelectListContainer";
 import {SelectItemContainer} from '../../Input/SelectInput/SelectItemContainer'
 import {TASK_STATUSES} from "../../../common/constants";
+import {TaskInformerSwitchersKeys} from "../TaskInformer/SupportsComponent/TaskInformerSwitchers";
 
 const Informer = React.lazy(() => import('../TaskInformer/TaskInformer').then(({TaskInformer}) => ({default: TaskInformer})))
 
 export const TaskInfoModal: FC<TaskInfoModalProps> = ({onClose, onCloneEvent, onOpenClonedEvent}) => {
+	
 	const {taskId} = useParams<{ taskId: string }>()
 	const [getTaskInfo, {data: taskInfo, isLoading}] = useLazyGetTaskInfoQuery()
 	const [removeTask, {data: removeTaskData, isLoading: isFetchingRemoveTask}] = useRemoveTaskMutation()
 	const [updateTask, {data: updateTaskData, isLoading: isFetchingUpdateTask}] = useUpdateTaskMutation()
-	
 	
 	useEffect(() => {
 		taskId && getTaskInfo(taskId)

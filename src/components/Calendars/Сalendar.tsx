@@ -265,14 +265,28 @@ export const Calendar: FC<CalendarProps> = ({
 						/>
 						<Route
 							path={':taskId'}
-							element={
-								<TaskInfoModal
-									onClose={calendar.onCloseTaskInfo}
-									onCloneEvent={calendar.onCloneEvent}
-									onOpenClonedEvent={calendar.onSelectTask}
-								/>
-							}
-						/>
+						>
+							<Route
+								index
+								element={
+									<TaskInfoModal
+										onClose={calendar.onCloseTaskInfo}
+										onCloneEvent={calendar.onCloneEvent}
+										onOpenClonedEvent={calendar.onSelectTask}
+									/>
+								}
+							/>
+							<Route
+								path={':tabName'}
+								element={
+									<TaskInfoModal
+										onClose={calendar.onCloseTaskInfo}
+										onCloneEvent={calendar.onCloneEvent}
+										onOpenClonedEvent={calendar.onSelectTask}
+									/>
+								}
+							/>
+						</Route>
 					</Routes>
 				</ErrorBoundary>
 			</FlexBlock>

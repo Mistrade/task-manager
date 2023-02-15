@@ -17,7 +17,13 @@ interface TaskInformerSwitchers {
 	selected: TaskInformerSwitchersKeys
 }
 
-const taskInformerSwitcherList: Array<TaskInformerSwitchersItem> = [
+export const isCorrectTaskInformerSwitcherName = (switcherName: string) => {
+	return !!taskInformerSwitcherList.filter((item) => {
+		return item.key === switcherName
+	}).length
+}
+
+export const taskInformerSwitcherList: Array<TaskInformerSwitchersItem> = [
 	{title: 'Инфо', key: 'about'},
 	{title: 'История', key: 'history'},
 	{title: 'Комментарии', key: 'comments', badgeCount: 3},
