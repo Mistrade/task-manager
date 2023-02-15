@@ -379,11 +379,6 @@ export interface CalendarCurrentFavorites {
 	layout: 'favorites',
 }
 
-export interface CalendarCurrentThreeDays {
-	layout: 'three_days',
-	fromDate: Date,
-}
-
 export type CalendarMode =
 	CalendarCurrentYear
 	| CalendarCurrentMonth
@@ -401,7 +396,6 @@ export interface DateSettingPanelOptions {
 	monthItem: MonthItem,
 	monthCurrent: CalendarCurrentMonth
 }
-
 
 export type OnCloseTaskInfoFnType = () => void
 export type OnAddTaskFnType = (date: Date, initialValues?: Partial<FullResponseEventModel>) => void

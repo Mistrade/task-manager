@@ -8,9 +8,9 @@ import {ListIcon} from "../../Icons/AppIcon/ListIcon";
 import {CalendarIcon} from "../../Icons/AppIcon/CalendarIcon";
 
 export const CalendarModeSwitchers: FC<CalendarHeaderSwitchersProps> = ({
-																																					layout,
-																																					onChange
-																																				}) => {
+	                                                                        layout,
+	                                                                        onChange
+                                                                        }) => {
 	return (
 		<FlexBlock width={'100%'} align={'flex-end'} justify={'center'}>
 			<SwitchCalendarModeTab
@@ -56,15 +56,6 @@ export const CalendarModeSwitchers: FC<CalendarHeaderSwitchersProps> = ({
 				<FlexBlock align={'center'} gap={6}>
 					<ListIcon size={24} color={currentColor}/>
 					Список
-				</FlexBlock>
-			</SwitchCalendarModeTab>
-			<SwitchCalendarModeTab
-				// isSelected={layout === 'year'}
-				// onClick={() => onChange('year')}
-			>
-				<FlexBlock align={'center'} gap={6}>
-					<ListIcon size={24} color={currentColor}/>
-					3 дня
 				</FlexBlock>
 			</SwitchCalendarModeTab>
 			<SwitchCalendarModeTab
