@@ -1,12 +1,12 @@
-import React, {FC, useCallback} from "react";
+import React, {FC, useCallback, useMemo} from "react";
 import dayjs from "dayjs";
 import {MyServerResponse, taskApi, useUpdateTaskMutation} from "../../../../../store/api/taskApi/taskApi";
 import {FlexBlock} from "../../../../LayoutComponents/FlexBlock";
 import {
 	borderRadiusSize,
-	darkColor,
+	darkColor, DATE_HOURS_FORMAT,
 	defaultColor,
-	disabledColor,
+	disabledColor, getHumanizeDateValue,
 	hoverColor,
 	orangeColor,
 	pageHeaderColor,
@@ -55,13 +55,13 @@ const TileMixin = css`
 `
 
 export const DayTaskItem: FC<DayTaskItemProps> = ({
-																										taskInfo,
-																										tabIndex,
-																										onSelectTask,
-																										day,
-																										onDelete,
-																										refetchTaskList
-																									}) => {
+	                                                  taskInfo,
+	                                                  tabIndex,
+	                                                  onSelectTask,
+	                                                  day,
+	                                                  onDelete,
+	                                                  refetchTaskList
+                                                  }) => {
 	const dispatch = useAppDispatch()
 	const start = dayjs(taskInfo.time).format('DD-MM HH:mm')
 	const end = dayjs(taskInfo.timeEnd).format('DD-MM HH:mm')
@@ -90,22 +90,38 @@ export const DayTaskItem: FC<DayTaskItemProps> = ({
 			field,
 			data
 		})
-			.unwrap()
-			.then(r => {
-				if (r.info) {
-					toast(r.info.message, {
-						type: r.info.type
-					})
-				}
-			})
-			.catch((r: { data?: MyServerResponse<null>, status: number }) => {
-				if (r.data?.info) {
-					toast(r.data?.info?.message, {
-						type: r.data.info.type
-					})
-				}
-			})
+		.unwrap()
+		.then(r => {
+			if (r.info) {
+				toast(r.info.message, {
+					type: r.info.type
+				})
+			}
+		})
+		.catch((r: { data?: MyServerResponse<null>, status: number }) => {
+			if (r.data?.info) {
+				toast(r.data?.info?.message, {
+					type: r.data.info.type
+				})
+			}
+		})
 	}, [taskInfo.id])
+	
+	const timeRenderObject = useMemo(() => {
+		const start = dayjs(taskInfo.time)
+		const end = dayjs(taskInfo.timeEnd)
+		if (start.isSame(end, 'date')) {
+			return {
+				start: start.format(DATE_HOURS_FORMAT),
+				end: end.format(DATE_HOURS_FORMAT)
+			}
+		}
+		
+		return {
+			start: getHumanizeDateValue(start.toDate(), true),
+			end: getHumanizeDateValue(end.toDate(), true)
+		}
+	}, [taskInfo])
 	
 	return (
 		<FlexBlock
@@ -122,7 +138,6 @@ export const DayTaskItem: FC<DayTaskItemProps> = ({
 			onClick={clickHandler}
 			additionalCss={css`
         ${TileMixin};
-        scroll-snap-align: end;
 			`}
 			p={'8px 12px'}
 			gap={8}
@@ -242,8 +257,10 @@ export const DayTaskItem: FC<DayTaskItemProps> = ({
 									{taskInfo.title}
 								</FlexBlock>
 								<FlexBlock grow={1} shrink={0} align={'center'} gap={8}>
-									<span style={{color: defaultColor}}>с <span style={{fontWeight: 500, color: darkColor}}>{start}</span></span>
-									<span style={{color: defaultColor}}>до <span style={{fontWeight: 500, color: darkColor}}>{end}</span></span>
+									<span style={{color: defaultColor}}>с <span
+										style={{fontWeight: 500, color: darkColor}}>{timeRenderObject.start}</span></span>
+									<span style={{color: defaultColor}}>до <span
+										style={{fontWeight: 500, color: darkColor}}>{timeRenderObject.end}</span></span>
 								</FlexBlock>
 								<FlexBlock>
 									<ContinueTaskButtonGroup

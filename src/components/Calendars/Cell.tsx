@@ -10,9 +10,9 @@ import {
 import {addNull} from '../../common/functions'
 import {
 	borderRadiusSize,
-	currentColor,
+	currentColor, DATE_HOURS_FORMAT,
 	defaultColor,
-	disabledColor,
+	disabledColor, getHumanizeDateValue,
 	hoverColor,
 	orangeColor,
 	priorityColors
@@ -196,7 +196,7 @@ const TaskTileContainer = styled('div')`
     width: 100%;
     //max-height: 30vh;
     overflow-y: auto;
-	  overflow-x: hidden;
+    overflow-x: hidden;
     scroll-behavior: unset;
     transition: all .3s ease;
   }
@@ -215,10 +215,10 @@ const Indicator = styled('span')<{ color: string }>`
 `
 
 export const ArrowIndicator: FC<{ priorityKey: CalendarPriorityKeys, isCompleted?: boolean } & IconProps & FlexBlockProps> = ({
-																																																																priorityKey,
-																																																																isCompleted,
-																																																																...props
-																																																															}) => {
+	                                                                                                                              priorityKey,
+	                                                                                                                              isCompleted,
+	                                                                                                                              ...props
+                                                                                                                              }) => {
 	
 	if (isCompleted) {
 		return <CompleteIcon size={20} {...props}/>
@@ -244,14 +244,14 @@ export const ArrowIndicator: FC<{ priorityKey: CalendarPriorityKeys, isCompleted
 
 
 export const CalendarCell: FC<CalendarCellProps> = ({
-																											value,
-																											tasks = [],
-																											onAddTask,
-																											renderTaskCount,
-																											onSelectTask,
-																											onClickToDate,
-																											isVisible
-																										}) => {
+	                                                    value,
+	                                                    tasks = [],
+	                                                    onAddTask,
+	                                                    renderTaskCount,
+	                                                    onSelectTask,
+	                                                    onClickToDate,
+	                                                    isVisible
+                                                    }) => {
 	
 	return (
 		<CellContainer
@@ -293,11 +293,11 @@ export const CalendarCell: FC<CalendarCellProps> = ({
 }
 
 export const TaskTileList: FC<TaskTileListProps> = ({
-																											tasks = [],
-																											date,
-																											onSelect,
-																											renderTaskCount = 'all'
-																										}) => {
+	                                                    tasks = [],
+	                                                    date,
+	                                                    onSelect,
+	                                                    renderTaskCount = 'all'
+                                                    }) => {
 	if (!!tasks?.length) {
 		return (
 			<TaskTileContainer>
@@ -317,9 +317,9 @@ export const TaskTileList: FC<TaskTileListProps> = ({
 }
 
 export const TaskTilePriorityIndicator: FC<TaskTilePriorityIndicatorProps> = ({
-																																								priority,
-																																								isCompleted
-																																							}) => {
+	                                                                              priority,
+	                                                                              isCompleted
+                                                                              }) => {
 	if (isCompleted) {
 		return <Indicator color={'#9fd962'}/>
 	}
@@ -363,7 +363,12 @@ export const TaskTileItem: FC<TaskTileItemProps> = ({taskInfo, onSelect, date}) 
 					/>
 					<FlexBlock width={'calc(100% - 16px)'}>
 						<TaskTimeValue>
-							{addNull(dayjs(taskInfo.time).hour())}:{addNull(dayjs(taskInfo.time).minute())} - {addNull(dayjs(taskInfo.timeEnd).hour())}:{addNull(dayjs(taskInfo.timeEnd).minute())}
+							
+							{
+								dayjs(taskInfo.time).isSame(taskInfo.timeEnd, 'date')
+									? `${dayjs(taskInfo.time).format(DATE_HOURS_FORMAT)} - ${dayjs(taskInfo.timeEnd).format(DATE_HOURS_FORMAT)}`
+									: `${getHumanizeDateValue(dayjs(taskInfo.time).toDate(), false)} - ${getHumanizeDateValue(dayjs(taskInfo.timeEnd).toDate(), false)}`
+							}
 						</TaskTimeValue>
 					</FlexBlock>
 				</FlexBlock>

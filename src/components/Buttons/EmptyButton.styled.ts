@@ -16,13 +16,7 @@ export const EmptyButtonStyled = styled('button')`
     gap: 8px;
     padding: 4px 6px;
   }
-
-  &:focus {
-    border-radius: ${borderRadiusSize.sm};
-    background-color: ${lightHoverColor};
-  }
-
-
+	
   &:hover {
     border-radius: ${borderRadiusSize.sm};
     background-color: ${lightHoverColor};

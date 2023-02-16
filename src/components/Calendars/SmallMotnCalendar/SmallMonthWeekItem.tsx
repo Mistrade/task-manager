@@ -78,6 +78,7 @@ export const SmallMonthWeekItem: FC<SmallMonthWeekItemProps> = ({
 						? 'flex-end'
 						: 'flex-start'
 				}
+				align={'center'}
 				width={'100%'}
 				gap={4}
 			>

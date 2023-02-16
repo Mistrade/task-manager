@@ -235,7 +235,7 @@ export const TaskComments: FC<TaskCommentsProps> = ({taskInfo}) => {
 												})
 										}}
 									/>
-									<FlexBlock className={'comment--message'}>
+									<FlexBlock className={'comment--message'} fSize={14}>
 										{item.message}
 									</FlexBlock>
 								</MessageItemContainer>
