@@ -4,6 +4,7 @@ import {SessionReducer} from "./reducers/session";
 import {CalendarReducer} from "./reducers/calendar";
 import {taskApi} from "./api/taskApi/taskApi";
 import {sessionApi} from "./api/sessionApi";
+import {setupListeners} from "@reduxjs/toolkit/query";
 
 const rootReducer = combineReducers({
 	events: eventReducer,
@@ -22,7 +23,10 @@ export const createAppStore = (preloadedState?: RootState) => {
 	})
 }
 
+
 export const store = createAppStore()
+
+setupListeners(store.dispatch)
 
 export type RootState = ReturnType<typeof rootReducer>
 export type RootDispatch = typeof store.dispatch

@@ -47,11 +47,11 @@ export const TaskInformerLeftBar: FC<TaskInformerLeftBarProps> = ({taskItem, upd
 			borderRight={`1px solid ${disabledColor}`}
 			pr={20}
 			direction={'column'}
-			maxHeight={'100vh'}
+			height={'100%'}
 			justify={'flex-start'}
 			gap={12}
 		>
-			<FlexBlock minHeight={'10vh'} maxHeight={'30vh'} gap={12} direction={'column'}>
+			<FlexBlock gap={12} direction={'column'}>
 				<TaskInformerTitle
 					title={taskItem.title}
 					onChange={async (value) => await updateFn('title', value)}
@@ -69,10 +69,9 @@ export const TaskInformerLeftBar: FC<TaskInformerLeftBarProps> = ({taskItem, upd
 			</FlexBlock>
 			<FlexBlock
 				direction={'column'}
-				height={'60vh'}
+				height={'100%'}
 				overflowY={'auto'}
 				overflowX={"hidden"}
-				className={'123'}
 				pr={12}
 			>
 				{switcher === 'about' ? (

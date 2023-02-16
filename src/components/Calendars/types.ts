@@ -325,6 +325,7 @@ export type SelectTaskItem = Omit<TaskTileClickArguments, 'event'>
 export interface TaskInformerProps {
 	taskItem: FullResponseEventModel | null,
 	openClonedTask?: (taskId: ObjectId) => void,
+	taskErrorInfo?: string
 }
 
 export interface UsageTaskItemBaseProps {

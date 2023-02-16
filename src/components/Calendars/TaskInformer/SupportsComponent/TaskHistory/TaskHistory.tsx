@@ -5,6 +5,7 @@ import {EventHistoryResponseItem, useGetEventHistoryQuery} from "../../../../../
 import {Loader} from "../../../../Loaders/Loader";
 import {TaskHistoryItem} from "./TaskHistoryItem";
 import {TaskHistoryFieldController} from "./Fields";
+import {TaskInfoNotFound} from "../TaskInfoNotFound";
 
 
 export interface TaskHistoryProps {
@@ -12,7 +13,7 @@ export interface TaskHistoryProps {
 }
 
 export const TaskHistory: FC<TaskHistoryProps> = ({taskInfo}) => {
-	const {data: history, isFetching} = useGetEventHistoryQuery(taskInfo.id, {refetchOnMountOrArgChange: true})
+	const {data: history, isFetching, error} = useGetEventHistoryQuery(taskInfo.id, {refetchOnMountOrArgChange: true})
 	
 	if (isFetching) {
 		return <Loader
@@ -21,16 +22,20 @@ export const TaskHistory: FC<TaskHistoryProps> = ({taskInfo}) => {
 		/>
 	}
 	
+	if (error && 'data' in error && error.data?.info?.message) {
+		return <TaskInfoNotFound message={error.data?.info?.message}/>
+	}
+	
 	if (!history?.data) {
-		return <FlexBlock width={'100%'}>
-			Не удалось найти историю события
-		</FlexBlock>
+		return <TaskInfoNotFound
+			message={'Не удалось найти историю события'}
+		/>
 	}
 	
 	if (history.data.length === 0) {
-		return <FlexBlock width={'100%'}>
-			Не удалось найти историю события
-		</FlexBlock>
+		return <TaskInfoNotFound
+			message={'Не удалось найти историю события'}
+		/>
 	}
 	
 	

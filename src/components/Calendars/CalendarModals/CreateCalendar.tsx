@@ -151,6 +151,9 @@ export const ChangeCalendarModal: FC<ChangeCalendarModalProps> = ({onClose, isEd
 		<form onSubmit={handleSubmit}>
 			
 			<Modal
+				style={{
+					height: 'fit-content'
+				}}
 				isView={true}
 				onClose={onClose}
 			>

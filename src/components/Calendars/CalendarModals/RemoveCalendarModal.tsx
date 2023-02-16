@@ -53,6 +53,7 @@ export const RemoveCalendarModal: FC<RemoveCalendarModalProps> = ({calendarItem,
 	const [removeCalendar, {data}] = useDeleteCalendarMutation()
 	return (
 		<Modal
+			style={{height: "fit-content"}}
 			isView={true}
 			onClose={onClose}
 		>
@@ -66,7 +67,7 @@ export const RemoveCalendarModal: FC<RemoveCalendarModalProps> = ({calendarItem,
 						justify={'center'}
 						direction={'column'}
 					>
-						Вы уверены, что хотите удалить календарь ""?<br/>
+						Вы уверены, что хотите удалить календарь "{calendarItem.title}"?<br/>
 						<strong>Все события, закрепленные за данным календарем, будут так же удалены.</strong>
 					</FlexBlock>
 				</FlexBlock>

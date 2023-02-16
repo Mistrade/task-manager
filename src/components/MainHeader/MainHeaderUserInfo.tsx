@@ -7,6 +7,7 @@ import {LogoutIcon} from "../Icons/Session/LogoutIcon";
 import {css} from "styled-components";
 import {EmptyButtonStyled} from "../Buttons/EmptyButton.styled";
 import {useSearchNavigate} from "../../hooks/useSearchNavigate";
+import {useRefetchAllTaskApiMutation} from "../../store/api/taskApi/taskApi";
 
 export interface MainHeaderUserInfoProps {
 	userInfo?: UserModel | null
@@ -14,6 +15,7 @@ export interface MainHeaderUserInfoProps {
 
 export const MainHeaderUserInfo: FC<MainHeaderUserInfoProps> = ({userInfo}) => {
 	const [logoutUser] = useLogoutMutation()
+	const [refetchTaskApi] = useRefetchAllTaskApiMutation()
 	const navigate = useSearchNavigate()
 	return (
 		<FlexBlock width={'100%'} justify={'flex-end'}>
@@ -35,7 +37,11 @@ export const MainHeaderUserInfo: FC<MainHeaderUserInfoProps> = ({userInfo}) => {
 						<LogoutIcon
 							size={36}
 							additionalCss={css`cursor: pointer`}
-							onClick={async () => await logoutUser().then(() => navigate('/session/login', {replace: true}))}
+							onClick={async () => await logoutUser()
+								.then(() => {
+									refetchTaskApi('')
+									navigate('/session/login', {replace: true})
+								})}
 						>
 							Выход
 						</LogoutIcon>

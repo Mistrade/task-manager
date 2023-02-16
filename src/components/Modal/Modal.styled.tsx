@@ -31,7 +31,7 @@ export const ModalContainer = styled('div')`
     position: relative;
     background-color: #fff;
     max-width: 90%;
-    max-height: 90%;
+    height: 90%;
     min-width: 400px;
     opacity: 1;
     border: 1px solid ${defaultColor};
@@ -83,5 +83,6 @@ export const StyledModalBodyContainer = styled('div')`
     flex-wrap: wrap;
     width: 100%;
     min-height: 150px;
+		height: 100%;
   }
 `

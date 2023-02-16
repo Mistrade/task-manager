@@ -1,4 +1,4 @@
-import {createApi, fetchBaseQuery} from "@reduxjs/toolkit/dist/query/react";
+import {BaseQueryFn, createApi, FetchArgs, fetchBaseQuery} from "@reduxjs/toolkit/dist/query/react";
 import {
 	CalendarMode,
 	CalendarPriorityKeys,
@@ -38,6 +38,11 @@ interface ServerErrorType {
 	type: ErrorTypes
 }
 
+interface CustomRtkError {
+	data: MyServerResponse<null>,
+	status: number
+}
+
 export interface MyServerResponse<T = null> {
 	data?: T | null,
 	info?: ServerErrorType
@@ -62,8 +67,10 @@ export const taskApi = createApi({
 	baseQuery: fetchBaseQuery({
 		baseUrl: `${baseServerUrl}/events`,
 		credentials: 'include',
-		cache: 'no-cache'
-	}),
+		cache: 'no-cache',
+	}) as BaseQueryFn<string | FetchArgs, unknown, CustomRtkError, {}>,
+	refetchOnFocus: true,
+	refetchOnReconnect: true,
 	endpoints(build) {
 		return {
 			hasTasksInCalendar: build.query<MyServerResponse<number>, { id: string }>({
@@ -106,6 +113,12 @@ export const taskApi = createApi({
 			}),
 			getTaskInfo: build
 				.query<MyServerResponse<FullResponseEventModel>, string>({
+					async onQueryStarted(args, {queryFulfilled}) {
+						console.log('args', args)
+						if (args) {
+							await queryFulfilled
+						}
+					},
 					query: (id: string) => ({
 						url: `/taskInfo/${id}`,
 						method: 'GET',
@@ -226,6 +239,10 @@ export const taskApi = createApi({
 					body: args
 				}),
 				invalidatesTags: (result, error, arg, meta) => error ? [] : ['Calendars', 'Tasks']
+			}),
+			refetchAllTaskApi: build.mutation({
+				queryFn: () => ({data: null}),
+				invalidatesTags: ['Tasks', 'TaskInfo', 'Calendars', 'TaskScheme', 'CalendarInfo', 'TaskCount', 'ChildOfList', "EventHistory"]
 			})
 		}
 	}
@@ -252,5 +269,6 @@ export const {
 	useGetCalendarInfoQuery,
 	useUpdateCalendarInfoMutation,
 	useGetChildOfListQuery,
-	useGetEventHistoryQuery
+	useGetEventHistoryQuery,
+	useRefetchAllTaskApiMutation
 } = taskApi

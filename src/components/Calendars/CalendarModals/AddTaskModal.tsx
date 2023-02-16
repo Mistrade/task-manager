@@ -65,7 +65,7 @@ export const AddTaskModal: FC<AddTaskModalProps> = ({
 				/>
 			</ModalHeader>
 			<ModalBody>
-				<FlexBlock minWidth={'50vw'} maxWidth={'60vw'} grow={10}>
+				<FlexBlock minWidth={'50vw'} maxWidth={'60vw'} grow={10} height={'100%'}>
 					<ErrorBoundary
 						title={ERROR_TITLES['SUSPENSE']}
 						description={ERROR_DESCRIPTIONS['SUSPENSE']}

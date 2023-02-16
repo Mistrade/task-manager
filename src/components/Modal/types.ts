@@ -1,4 +1,4 @@
-import {ReactNode} from 'react'
+import {CSSProperties, ReactNode} from 'react'
 
 export interface ModalProps {
   children?: ReactNode
@@ -6,5 +6,6 @@ export interface ModalProps {
   isView: boolean
   modalBody?: ReactNode
   modalFooter?: ReactNode
-  onClose?: () => any
+  onClose?: () => any,
+  style?: CSSProperties
 }

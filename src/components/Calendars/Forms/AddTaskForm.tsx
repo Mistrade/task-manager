@@ -115,251 +115,255 @@ export const AddTaskForm: FC<AddTaskFormProps> = ({date, onComplete, onCancel, i
 	}, [formik.errors])
 	
 	return (
-		<form onSubmit={formik.handleSubmit} style={{width: '100%'}}>
-			<FlexBlock direction={'column'} p={'12px 20px 0px 20px'}>
-				<FlexBlock mb={12} gap={12} width={'100%'}>
-					<TextInput
-						inputId={'task__title'}
-						tooltip={
-							<Tooltip
-								text={'Название отображается на доске заданий'}
-								size={14}
-							/>
-						}
-						onChange={(e) => formik.setFieldValue('title', e.target.value)}
-						onFocus={(e) => !formik.touched.title && formik.setFieldTouched('title', true)}
-						errorMessage={formik.errors.title}
-						isDirty={formik.touched.title}
-						value={formik.values.title || ''}
-						label={'Укажите название'}
-						placeholder={'Позвонить заказчику'}
-					/>
-				</FlexBlock>
-				{formik.values.parentId && (
-					<Informer>
-						<FlexBlock
-							fSize={15}
-							direction={'row'}
-							justify={'space-between'}
-							wrap={'nowrap'}
-							gap={12}
-							align={'center'}
-							width={'100%'}
-						>
+		<form onSubmit={formik.handleSubmit} style={{width: '100%', height: '100%'}}>
+			<FlexBlock direction={'column'} gap={12} height={'100%'}>
+				
+				<FlexBlock direction={'column'} p={'12px 20px 0px 20px'} height={'100%'}>
+					<FlexBlock mb={12} gap={12} width={'100%'}>
+						<TextInput
+							inputId={'task__title'}
+							tooltip={
+								<Tooltip
+									text={'Название отображается на доске заданий'}
+									size={14}
+								/>
+							}
+							onChange={(e) => formik.setFieldValue('title', e.target.value)}
+							onFocus={(e) => !formik.touched.title && formik.setFieldTouched('title', true)}
+							errorMessage={formik.errors.title}
+							isDirty={formik.touched.title}
+							value={formik.values.title || ''}
+							label={'Укажите название'}
+							placeholder={'Позвонить заказчику'}
+						/>
+					</FlexBlock>
+					{formik.values.parentId && (
+						<Informer>
+							<FlexBlock
+								fSize={15}
+								direction={'row'}
+								justify={'space-between'}
+								wrap={'nowrap'}
+								gap={12}
+								align={'center'}
+								width={'100%'}
+							>
 							<span>
 							Событие будет создано как дочернее для <LinkStyled
 								target={'_blank'}
 								style={{fontSize: 15}}
 								to={`/calendar/day/all/${formik.values.parentId}`}>этого события</LinkStyled>
 							</span>
-							<WhiteButton
-								type={'button'}
-								onClick={() => formik.setFieldValue('parentId', undefined)}
-							>
-								Удалить связь
-							</WhiteButton>
-						</FlexBlock>
-					</Informer>
-				)}
-				<FlexBlock mb={12} wrap={'nowrap'} width={'100%'}>
-					<SelectLinks
-						inputId={'select__link'}
-						tooltip={
-							<Tooltip
-								text={'Укажите ссылку, по которой любой участник может подключиться в режиме онлайн'}
-								size={14}
+								<WhiteButton
+									type={'button'}
+									onClick={() => formik.setFieldValue('parentId', undefined)}
+								>
+									Удалить связь
+								</WhiteButton>
+							</FlexBlock>
+						</Informer>
+					)}
+					<FlexBlock mb={12} wrap={'nowrap'} width={'100%'}>
+						<SelectLinks
+							inputId={'select__link'}
+							tooltip={
+								<Tooltip
+									text={'Укажите ссылку, по которой любой участник может подключиться в режиме онлайн'}
+									size={14}
+								/>
+							}
+							label={'Укажите ссылку на встречу'}
+							onChange={(value) => {
+								formik.setFieldValue('link', value)
+							}}
+						/>
+					</FlexBlock>
+					<FlexBlock mb={12} wrap={'nowrap'} width={'100%'} gap={12}>
+						<FlexBlock width={'calc(50% - 6px)'}>
+							<SelectInput
+								placeholder={'Выберите из выпадающего списка'}
+								label={'Выберите календарь'}
+								icon={calendarItem &&
+                    <FlexBlock width={20} height={20} bgColor={calendarItem?.color}
+                               borderRadius={borderRadiusSize.xs}/>}
+								iconPlacement={'right'}
+								value={calendarItem?.title || ''}
+								errorMessage={formik.errors.calendar}
+								isDirty={formik.touched.calendar}
+								data={calendarsList?.data || [] as Array<CalendarNameItem>}
+								onFocus={() => formik.setFieldTouched('calendar', true, false)}
+								renderData={(data, methods) => (
+									<SelectListContainer>
+										{!!data.length ? (
+											<>
+												{data.map((item) => (
+													<SelectItemContainer
+														key={item._id}
+														onClick={() => {
+															formik.setFieldValue('calendar', item._id)
+															methods.focusOut()
+														}}
+													>
+														<FlexBlock width={20} height={20} bgColor={item.color} borderRadius={borderRadiusSize.xs}/>
+														{item.title}
+													</SelectItemContainer>
+												))}
+											</>
+										) : (
+											<SelectItemContainer>
+												Не удалось загрузить данные
+											</SelectItemContainer>
+										)}
+									</SelectListContainer>
+								)}
 							/>
-						}
-						label={'Укажите ссылку на встречу'}
-						onChange={(value) => {
-							formik.setFieldValue('link', value)
-						}}
-					/>
-				</FlexBlock>
-				<FlexBlock mb={12} wrap={'nowrap'} width={'100%'} gap={12}>
-					<FlexBlock width={'calc(50% - 6px)'}>
+						</FlexBlock>
+					</FlexBlock>
+					<FlexBlock mb={12} gap={12}>
+						<SelectPriorityInput
+							inputId={'task__priority'}
+							tooltip={
+								<Tooltip
+									text={'Приоритет обозначает важность его выполнения'}
+									size={14}
+								/>
+							}
+							selected={formik.values.priority || 'medium'}
+							onChange={(key) => formik.setFieldValue('priority' as keyof CalendarTaskItem, key as CalendarTaskItem['priority'])}
+							onFocus={() => !formik.touched.priority && formik.setFieldTouched('priority', true)}
+						/>
+						<SelectBooleanInput
+							label={'Укажите статус'}
+							inputId={'select_status'}
+							data={Object.values(TASK_STATUSES)}
+							selected={TASK_STATUSES[formik.values.status || 'created']}
+							onChange={(data) => formik.setFieldValue('status', data.key)}
+							onFocus={() => !formik.touched.status && formik.setFieldTouched('status', true)}
+						/>
+					</FlexBlock>
+					<FlexBlock mb={12} gap={12} direction={'row'}>
 						<SelectInput
-							placeholder={'Выберите из выпадающего списка'}
-							label={'Выберите календарь'}
-							icon={calendarItem &&
-                  <FlexBlock width={20} height={20} bgColor={calendarItem?.color} borderRadius={borderRadiusSize.xs}/>}
-							iconPlacement={'right'}
-							value={calendarItem?.title || ''}
-							errorMessage={formik.errors.calendar}
-							isDirty={formik.touched.calendar}
-							data={calendarsList?.data || [] as Array<CalendarNameItem>}
-							onFocus={() => formik.setFieldTouched('calendar', true, false)}
-							renderData={(data, methods) => (
-								<SelectListContainer>
-									{!!data.length ? (
-										<>
-											{data.map((item) => (
-												<SelectItemContainer
-													key={item._id}
-													onClick={() => {
-														formik.setFieldValue('calendar', item._id)
-														methods.focusOut()
-													}}
-												>
-													<FlexBlock width={20} height={20} bgColor={item.color} borderRadius={borderRadiusSize.xs}/>
-													{item.title}
-												</SelectItemContainer>
-											))}
-										</>
-									) : (
-										<SelectItemContainer>
-											Не удалось загрузить данные
-										</SelectItemContainer>
-									)}
+							inputId={'start__date'}
+							onFocus={() => !formik.touched.time && formik.setFieldTouched('time', true)}
+							data={[]}
+							renderData={() => (
+								<SelectListContainer maxHeight={500} width={'200%'}>
+									<DatePickerPaper
+										currentDate={formik.values.time || new Date()}
+										onChange={(date) => {
+											formik.setFieldValue('time', date)
+											formik.setFieldValue('timeEnd', dayjs(date).add(1, 'hour').toDate())
+										}}
+									/>
 								</SelectListContainer>
 							)}
+							value={getHumanizeDateValue(formik.values.time || date || new Date())}
+							label={'Выберите время начала'}
+							containerProps={{flex: '1 0 calc(50% - 6px)', maxWidth: '50%'}}
+							isDirty={!!formik.touched.time}
+							errorMessage={`${formik.errors.time || ''}`}
+							actionHandler={(action) => {
+								let d = dayjs()
+								if (action.actionKey !== '0') {
+									d = d.add(+action.actionKey, 'minute')
+								}
+								formik.setFieldValue('time', d.toDate())
+								return formik.setFieldValue('timeEnd', d.add(1, 'hour').toDate())
+							}}
+							readOnly={true}
+							icon={<CreatedIcon size={20}/>}
+							iconPlacement={'left'}
+							actions={[
+								{title: 'сейчас', actionKey: '0'},
+								{title: 'через час', actionKey: '60'},
+								{title: 'через 3 часа', actionKey: '180'}
+							]}
+						/>
+						<SelectInput
+							inputId={'end__date'}
+							iconPlacement={'left'}
+							data={[]}
+							onFocus={() => !formik.touched.timeEnd && formik.setFieldTouched('timeEnd', true)}
+							readOnly={true}
+							renderData={() => (
+								<SelectListContainer maxHeight={500} width={'200%'}>
+									<DatePickerPaper
+										disabledOptions={{min: formik.values.time || new Date(), includeMin: true}}
+										currentDate={formik.values.timeEnd}
+										onChange={(date) => {
+											formik.setFieldValue('timeEnd', date)
+										}}
+									/>
+								</SelectListContainer>
+							)}
+							value={getHumanizeDateValue(formik.values.timeEnd || date || new Date())}
+							label={'Выберите время завершения'}
+							containerProps={{flex: '1 0 calc(50% - 6px)', maxWidth: '50%'}}
+							isDirty={!!formik.touched.timeEnd}
+							errorMessage={`${formik.errors.timeEnd || ''}`}
+							icon={<CompleteIcon size={20}/>}
+							actionHandler={(action) => {
+								let d = dayjs(formik.values.time)
+								if (action.actionKey === 'all-day') {
+									d = d.set('hour', 23).set('minute', 55)
+									return formik.setFieldValue('timeEnd', d.toDate())
+								}
+								formik.setFieldValue('timeEnd', d.add(+action.actionKey, 'minute').toDate())
+							}}
+							actions={[
+								{title: '30 мин', actionKey: '30'},
+								{title: 'час', actionKey: '60'},
+								{title: '3 часа', actionKey: '180'},
+								{title: '6 часов', actionKey: (6 * 60).toString()},
+							]}
+						/>
+					</FlexBlock>
+					{formik.values.time.getDate() !== formik.values.timeEnd.getDate() && (
+						<Informer>
+							Событие будет создано в карточках нескольких дней, так как оно начинается и
+							завершается в разные дни.
+							<br/>
+							Так происходит потому что мы стараемся показывать актуальную информацию на каждый день.
+						</Informer>
+					)}
+					<FlexBlock mb={12} direction={'row'}>
+						<TextAreaInput
+							value={formik.values.description}
+							onChange={(value) => formik.setFieldValue('description', value)}
+							onFocus={() => formik.setFieldTouched('description', true)}
+							errorMessage={formik.errors.description}
+							isDirty={formik.touched.description}
+							inputId={'task__description'}
+							label={'Добавьте описание'}
+							placeholder={'Произвольный текст, на заметку...'}
 						/>
 					</FlexBlock>
 				</FlexBlock>
-				<FlexBlock mb={12} gap={12}>
-					<SelectPriorityInput
-						inputId={'task__priority'}
-						tooltip={
-							<Tooltip
-								text={'Приоритет обозначает важность его выполнения'}
-								size={14}
-							/>
-						}
-						selected={formik.values.priority || 'medium'}
-						onChange={(key) => formik.setFieldValue('priority' as keyof CalendarTaskItem, key as CalendarTaskItem['priority'])}
-						onFocus={() => !formik.touched.priority && formik.setFieldTouched('priority', true)}
-					/>
-					<SelectBooleanInput
-						label={'Укажите статус'}
-						inputId={'select_status'}
-						data={Object.values(TASK_STATUSES)}
-						selected={TASK_STATUSES[formik.values.status || 'created']}
-						onChange={(data) => formik.setFieldValue('status', data.key)}
-						onFocus={() => !formik.touched.status && formik.setFieldTouched('status', true)}
-					/>
+				
+				<FlexBlock
+					width={'100%'}
+					justify={'flex-end'}
+					align={'center'}
+					pl={20}
+					pr={20}
+					pt={12}
+					pb={12}
+					gap={12}
+					borderTop={`1px solid ${defaultColor}`}
+				>
+					<Button type={'submit'}>
+						Добавить
+					</Button>
+					<Tooltip text={'Изменения не будут сохранены'} placement={'top'}>
+						<StyledButton
+							onClick={() => onCancel && onCancel(formik.values)}
+							fillColor={'#fff'}
+							textColor={defaultColor}
+						>
+							Отменить
+						</StyledButton>
+					</Tooltip>
 				</FlexBlock>
-				<FlexBlock mb={12} gap={12} direction={'row'}>
-					<SelectInput
-						inputId={'start__date'}
-						onFocus={() => !formik.touched.time && formik.setFieldTouched('time', true)}
-						data={[]}
-						renderData={() => (
-							<SelectListContainer maxHeight={500} width={'200%'}>
-								<DatePickerPaper
-									currentDate={formik.values.time || new Date()}
-									onChange={(date) => {
-										formik.setFieldValue('time', date)
-										formik.setFieldValue('timeEnd', dayjs(date).add(1, 'hour').toDate())
-									}}
-								/>
-							</SelectListContainer>
-						)}
-						value={getHumanizeDateValue(formik.values.time || date || new Date())}
-						label={'Выберите время начала'}
-						containerProps={{flex: '1 0 calc(50% - 6px)', maxWidth: '50%'}}
-						isDirty={!!formik.touched.time}
-						errorMessage={`${formik.errors.time || ''}`}
-						actionHandler={(action) => {
-							let d = dayjs()
-							if (action.actionKey !== '0') {
-								d = d.add(+action.actionKey, 'minute')
-							}
-							formik.setFieldValue('time', d.toDate())
-							return formik.setFieldValue('timeEnd', d.add(1, 'hour').toDate())
-						}}
-						readOnly={true}
-						icon={<CreatedIcon size={20}/>}
-						iconPlacement={'left'}
-						actions={[
-							{title: 'сейчас', actionKey: '0'},
-							{title: 'через час', actionKey: '60'},
-							{title: 'через 3 часа', actionKey: '180'}
-						]}
-					/>
-					<SelectInput
-						inputId={'end__date'}
-						iconPlacement={'left'}
-						data={[]}
-						onFocus={() => !formik.touched.timeEnd && formik.setFieldTouched('timeEnd', true)}
-						readOnly={true}
-						renderData={() => (
-							<SelectListContainer maxHeight={500} width={'200%'}>
-								<DatePickerPaper
-									disabledOptions={{min: formik.values.time || new Date(), includeMin: true}}
-									currentDate={formik.values.timeEnd}
-									onChange={(date) => {
-										formik.setFieldValue('timeEnd', date)
-									}}
-								/>
-							</SelectListContainer>
-						)}
-						value={getHumanizeDateValue(formik.values.timeEnd || date || new Date())}
-						label={'Выберите время завершения'}
-						containerProps={{flex: '1 0 calc(50% - 6px)', maxWidth: '50%'}}
-						isDirty={!!formik.touched.timeEnd}
-						errorMessage={`${formik.errors.timeEnd || ''}`}
-						icon={<CompleteIcon size={20}/>}
-						actionHandler={(action) => {
-							let d = dayjs(formik.values.time)
-							if (action.actionKey === 'all-day') {
-								d = d.set('hour', 23).set('minute', 55)
-								return formik.setFieldValue('timeEnd', d.toDate())
-							}
-							formik.setFieldValue('timeEnd', d.add(+action.actionKey, 'minute').toDate())
-						}}
-						actions={[
-							{title: '30 мин', actionKey: '30'},
-							{title: 'час', actionKey: '60'},
-							{title: '3 часа', actionKey: '180'},
-							{title: '6 часов', actionKey: (6 * 60).toString()},
-						]}
-					/>
-				</FlexBlock>
-				{formik.values.time.getDate() !== formik.values.timeEnd.getDate() && (
-					<Informer>
-						Событие будет создано в карточках нескольких дней, так как оно начинается и
-						завершается в разные дни.
-						<br/>
-						Так происходит потому что мы стараемся показывать актуальную информацию на каждый день.
-					</Informer>
-				)}
-				<FlexBlock mb={12} direction={'row'}>
-					<TextAreaInput
-						value={formik.values.description}
-						onChange={(value) => formik.setFieldValue('description', value)}
-						onFocus={() => formik.setFieldTouched('description', true)}
-						errorMessage={formik.errors.description}
-						isDirty={formik.touched.description}
-						inputId={'task__description'}
-						label={'Добавьте описание'}
-						placeholder={'Произвольный текст, на заметку...'}
-					/>
-				</FlexBlock>
-			</FlexBlock>
-			
-			<FlexBlock
-				width={'100%'}
-				justify={'flex-end'}
-				align={'center'}
-				pl={20}
-				pr={20}
-				pt={12}
-				pb={12}
-				gap={12}
-				borderTop={`1px solid ${defaultColor}`}
-			>
-				<Button type={'submit'}>
-					Добавить
-				</Button>
-				<Tooltip text={'Изменения не будут сохранены'} placement={'top'}>
-					<StyledButton
-						onClick={() => onCancel && onCancel(formik.values)}
-						fillColor={'#fff'}
-						textColor={defaultColor}
-					>
-						Отменить
-					</StyledButton>
-				</Tooltip>
 			</FlexBlock>
 		</form>
 	)

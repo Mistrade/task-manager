@@ -70,6 +70,8 @@ const TaskInformerMain: FC<TaskInformerMainProps> = ({taskItem, openClonedTask})
 	)
 }
 
-export const TaskInformer: FC<TaskInformerProps> = ({taskItem, openClonedTask}) => {
-	return !taskItem ? <TaskInfoNotFound/> : <TaskInformerMain taskItem={taskItem} openClonedTask={openClonedTask}/>
+export const TaskInformer: FC<TaskInformerProps> = ({taskItem, openClonedTask, taskErrorInfo}) => {
+	return !taskItem
+		? <TaskInfoNotFound message={taskErrorInfo}/>
+		: <TaskInformerMain taskItem={taskItem} openClonedTask={openClonedTask}/>
 }

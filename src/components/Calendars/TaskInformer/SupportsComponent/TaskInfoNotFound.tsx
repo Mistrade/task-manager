@@ -2,7 +2,7 @@ import {FC} from "react";
 import {FlexBlock} from "../../../LayoutComponents/FlexBlock";
 import {SadSmile} from "../../../Icons/Icons";
 
-export const TaskInfoNotFound: FC = () => (
+export const TaskInfoNotFound: FC<{ message?: string }> = ({message}) => (
 	<FlexBlock
 		height={'100%'}
 		width={'100%'}
@@ -23,7 +23,7 @@ export const TaskInfoNotFound: FC = () => (
 			width={'100%'}
 			justify={'center'}
 		>
-			К сожалению, не удалось загрузить информацию по данному заданию.
+			{message || 'К сожалению, не удалось загрузить информацию по данному заданию.'}
 		</FlexBlock>
 	</FlexBlock>
 )
