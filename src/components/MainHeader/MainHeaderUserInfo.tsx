@@ -8,9 +8,10 @@ import {css} from "styled-components";
 import {EmptyButtonStyled} from "../Buttons/EmptyButton.styled";
 import {useSearchNavigate} from "../../hooks/useSearchNavigate";
 import {useRefetchAllTaskApiMutation} from "../../store/api/taskApi/taskApi";
+import {UserModelResponse} from "../../store/api/taskApi/types";
 
 export interface MainHeaderUserInfoProps {
-	userInfo?: UserModel | null
+	userInfo?: UserModelResponse | null
 }
 
 export const MainHeaderUserInfo: FC<MainHeaderUserInfoProps> = ({userInfo}) => {

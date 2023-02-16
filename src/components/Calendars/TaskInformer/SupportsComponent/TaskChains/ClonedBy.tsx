@@ -14,20 +14,20 @@ import {Loader} from "../../../../Loaders/Loader";
 import {TaskChainTitle} from "./TaskChainTitle";
 import {TaskChainItemsWrapper} from "./TaskChainItemsWrapper";
 import {useBoolean} from "../../../../../hooks/useBoolean";
+import {FullResponseEventModel} from "../../../../../store/api/taskApi/types";
 
 
 export interface TaskClonedByProps {
-	fromTaskId: UUID,
+	fromTask: FullResponseEventModel | null | undefined,
 	updateFn: TaskInformerUpdateFn,
 	title: string,
 	suffix: string
 }
 
-export const TaskClonedBy: FC<TaskClonedByProps> = ({fromTaskId, updateFn, title, suffix}) => {
-	const {data: taskInfo, isFetching, isError} = useGetTaskInfoQuery(fromTaskId)
+export const TaskSingleChain: FC<TaskClonedByProps> = ({fromTask, updateFn, title, suffix}) => {
 	const {state, toggleState} = useBoolean(true)
 	
-	if (taskInfo?.data) {
+	if (fromTask) {
 		return (
 			<TaskChainTitle
 				title={title}
@@ -35,7 +35,7 @@ export const TaskClonedBy: FC<TaskClonedByProps> = ({fromTaskId, updateFn, title
 				onWrapTitle={toggleState}
 				content={
 					<TaskChainItemsWrapper wrapState={state}>
-						<TaskChainItem taskChainItem={taskInfo.data} suffix={suffix} updateFn={updateFn}/>
+						<TaskChainItem taskChainItem={fromTask} suffix={suffix} updateFn={updateFn}/>
 					</TaskChainItemsWrapper>
 				}
 			/>

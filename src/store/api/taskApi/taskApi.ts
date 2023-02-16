@@ -9,7 +9,14 @@ import {
 import {baseServerUrl} from "../defaultApiConfig";
 import {FilterTaskStatuses} from "../../../components/Calendars/Modes/DayCalendar/EventFilter";
 import {CalendarNameItem} from "../../../components/Calendars/CalendarList/CalendarNameListItem";
-import {CalendarsModelType, FullResponseEventModel, ObjectId, ShortEventItem, UserModelResponse} from "./types";
+import {
+	CalendarsModelType,
+	CommentModel,
+	FullResponseEventModel,
+	ObjectId,
+	ShortEventItem,
+	UserModelResponse
+} from "./types";
 import {CreateCalendarFormData} from "../../../components/Calendars/CalendarModals/CreateCalendar";
 import {SwitcherBadges} from "../../../components/Switcher/Switcher";
 
@@ -38,7 +45,7 @@ interface ServerErrorType {
 	type: ErrorTypes
 }
 
-interface CustomRtkError {
+export interface CustomRtkError {
 	data: MyServerResponse<null>,
 	status: number
 }
@@ -61,9 +68,22 @@ export interface EventHistoryResponseItem extends Omit<EventHistoryPopulatedItem
 	eventSnapshot: FullResponseEventModel
 }
 
+export interface RequestCommentAddProps {
+	message: string,
+	eventId: ObjectId
+}
+
+export interface EventChainsObject {
+	parentEvent: null | FullResponseEventModel,
+	childrenEvents: null | Array<FullResponseEventModel>,
+	linkedFromEvent: null | FullResponseEventModel
+}
+
+export const TaskApiTagTypes = ['Tasks', 'TaskInfo', 'Calendars', 'TaskScheme', 'CalendarInfo', 'TaskCount', 'ChildOfList', "EventHistory", "Comments"]
+
 export const taskApi = createApi({
 	reducerPath: 'taskApi',
-	tagTypes: ['Tasks', 'TaskInfo', 'Calendars', 'TaskScheme', 'CalendarInfo', 'TaskCount', 'ChildOfList', "EventHistory"],
+	tagTypes: TaskApiTagTypes,
 	baseQuery: fetchBaseQuery({
 		baseUrl: `${baseServerUrl}/events`,
 		credentials: 'include',
@@ -186,10 +206,10 @@ export const taskApi = createApi({
 				}),
 				providesTags: ["EventHistory"]
 			}),
-			getChildOfList: build
-				.query<MyServerResponse<Array<FullResponseEventModel>>, string>({
+			getEventChains: build
+				.query<MyServerResponse<EventChainsObject>, string>({
 					query: (taskId) => ({
-						url: `/getChildOfList/${taskId}`,
+						url: `/getEventChains/${taskId}`,
 						method: 'GET',
 						cache: 'no-cache'
 					}),
@@ -240,9 +260,34 @@ export const taskApi = createApi({
 				}),
 				invalidatesTags: (result, error, arg, meta) => error ? [] : ['Calendars', 'Tasks']
 			}),
+			addComment: build.mutation<MyServerResponse<null>, RequestCommentAddProps>({
+				query: (commentInfo) => ({
+					url: "/comments/add",
+					method: "POST",
+					body: commentInfo,
+				}),
+				invalidatesTags: (result, error, arg, meta) => error ? [] : ["Comments"]
+			}),
+			getCommentsList: build.query<MyServerResponse<Array<CommentModel>>, ObjectId>({
+				query: (taskId) => ({
+					url: `/comments/${taskId}`,
+					method: "GET",
+				}),
+				providesTags: ["Comments"]
+			}),
+			removeComment: build.mutation<MyServerResponse<null>, ObjectId>({
+				query: (commentId) => ({
+					url: `/comments/remove`,
+					method: "POST",
+					body: {
+						commentId,
+					}
+				}),
+				invalidatesTags: (result, error, arg, meta) => error ? [] : ["Comments"]
+			}),
 			refetchAllTaskApi: build.mutation({
 				queryFn: () => ({data: null}),
-				invalidatesTags: ['Tasks', 'TaskInfo', 'Calendars', 'TaskScheme', 'CalendarInfo', 'TaskCount', 'ChildOfList', "EventHistory"]
+				invalidatesTags: TaskApiTagTypes
 			})
 		}
 	}
@@ -268,7 +313,10 @@ export const {
 	useGetTaskCountOfStatusQuery,
 	useGetCalendarInfoQuery,
 	useUpdateCalendarInfoMutation,
-	useGetChildOfListQuery,
+	useGetEventChainsQuery,
 	useGetEventHistoryQuery,
-	useRefetchAllTaskApiMutation
+	useRefetchAllTaskApiMutation,
+	useAddCommentMutation,
+	useGetCommentsListQuery,
+	useRemoveCommentMutation
 } = taskApi

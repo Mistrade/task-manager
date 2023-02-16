@@ -49,7 +49,7 @@ const TaskInformerMain: FC<TaskInformerMainProps> = ({taskItem, openClonedTask})
 	return (
 		<FlexBlock
 			direction={'column'}
-			width={'80vw'}
+			width={'100%'}
 			p={'12px 20px'}
 			height={'100%'}
 			gap={20}

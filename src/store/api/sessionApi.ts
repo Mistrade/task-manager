@@ -3,6 +3,7 @@ import {RegistrationFormType} from "../../components/Session/Registration";
 import {MyServerResponse} from "./taskApi/taskApi";
 import {AuthorizationProps} from "../../components/Session/AuthorizationForm";
 import {baseServerUrl} from "./defaultApiConfig";
+import {ShortUserModel, UserModelResponse} from "./taskApi/types";
 
 export const sessionApi = createApi({
 	reducerPath: 'sessionApi',
@@ -28,7 +29,7 @@ export const sessionApi = createApi({
 			}),
 			invalidatesTags: ['Session']
 		}),
-		confirmSession: build.query({
+		confirmSession: build.query<MyServerResponse<UserModelResponse>, void>({
 			query: (args: void) => ({
 				url: '/confirm',
 				method: "POST",

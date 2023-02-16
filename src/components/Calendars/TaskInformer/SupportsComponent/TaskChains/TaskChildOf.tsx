@@ -1,9 +1,4 @@
-import {UUID} from "../../../types";
-import {FC, useEffect, useRef, useState} from "react";
-import {useGetChildOfListQuery} from "../../../../../store/api/taskApi/taskApi";
-import {FlexBlock} from "../../../../LayoutComponents/FlexBlock";
-import {currentColor, disabledColor} from "../../../../../common/constants";
-import {Loader} from "../../../../Loaders/Loader";
+import {FC} from "react";
 import {TaskChainItem} from "./TaskChainItem";
 import {TaskInformerUpdateFn} from "../ToggleTaskInformerButtons";
 import {TaskChainTitle} from "./TaskChainTitle";
@@ -17,6 +12,7 @@ interface TaskChildOfProps {
 	taskInfo: FullResponseEventModel,
 	updateFn: TaskInformerUpdateFn,
 	title: string,
+	childOfList: Array<FullResponseEventModel> | null | undefined
 }
 
 const startAnimation = keyframes`
@@ -37,25 +33,20 @@ const listAnimation = (isWrap: boolean) => {
 	`
 }
 
-export const TaskChildOf: FC<TaskChildOfProps> = ({taskInfo, updateFn, title}) => {
-	const {
-		data: childOfList,
-		isFetching,
-		isError,
-		isSuccess
-	} = useGetChildOfListQuery(taskInfo.id, {refetchOnMountOrArgChange: true})
+export const TaskChildOf: FC<TaskChildOfProps> = ({taskInfo, updateFn, title, childOfList}) => {
 	const {state, toggleState} = useBoolean(true)
 	const {onCloneEvent} = useCalendar()
 	
 	
-	if (childOfList?.data && childOfList.data.length > 0) {
+	if (childOfList && childOfList.length > 0) {
 		return (
 			<TaskChainTitle
-				titleBadge={childOfList?.data.length}
+				titleBadge={childOfList.length}
 				title={title}
 				isWrap={state}
 				onClickOnAction={() => {
-					onCloneEvent && onCloneEvent({
+					onCloneEvent
+					&& onCloneEvent({
 						calendar: taskInfo.calendar,
 						title: `ChildOf - `,
 						parentId: taskInfo.id,
@@ -65,10 +56,9 @@ export const TaskChildOf: FC<TaskChildOfProps> = ({taskInfo, updateFn, title}) =
 				content={
 					<TaskChainItemsWrapper wrapState={state}>
 						{childOfList
-						.data
-						.map(
-							(item) => <TaskChainItem suffix={'parentOf'} taskChainItem={item} updateFn={updateFn}/>
-						)}
+							.map(
+								(item) => <TaskChainItem suffix={'parentOf'} taskChainItem={item} updateFn={updateFn}/>
+							)}
 					</TaskChainItemsWrapper>
 				}
 			/>

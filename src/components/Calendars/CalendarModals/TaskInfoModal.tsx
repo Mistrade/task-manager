@@ -33,6 +33,7 @@ export const TaskInfoModal: FC<TaskInfoModalProps> = ({onClose, onCloneEvent, on
 	
 	return (
 		<Modal
+			style={{width: '90%'}}
 			isView={!!taskId}
 			onClose={() => onClose()}
 		>

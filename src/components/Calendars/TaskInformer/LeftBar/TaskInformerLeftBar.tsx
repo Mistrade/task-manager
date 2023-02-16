@@ -18,6 +18,7 @@ import {useParams} from "react-router";
 import {useAppSelector} from "../../../../store/hooks/hooks";
 import {CalendarSelectors} from "../../../../store/selectors/calendarItems";
 import {useSearchNavigate} from "../../../../hooks/useSearchNavigate";
+import {TaskComments} from "../SupportsComponent/TaskComments/TaskComments";
 
 interface TaskInformerLeftBarProps extends UsageTaskItemBaseProps {
 	updateFn: TaskInformerUpdateFn
@@ -68,29 +69,32 @@ export const TaskInformerLeftBar: FC<TaskInformerLeftBarProps> = ({taskItem, upd
 				/>
 			</FlexBlock>
 			<FlexBlock
-				direction={'column'}
 				height={'100%'}
 				overflowY={'auto'}
 				overflowX={"hidden"}
-				pr={12}
+				direction={'column'}
+				// pr={switcher === 'comments' ? 0 : 12}
+				p={'4px 8px'}
 			>
 				{switcher === 'about' ? (
-					<TaskInformerAboutTab taskItem={taskItem} updateFn={updateFn}/>
+					<TaskInformerAboutTab
+						taskItem={taskItem}
+						updateFn={updateFn}
+					/>
 				) : switcher === 'chains' ? (
 					<TaskChainsTab
 						taskItem={taskItem}
 						updateFn={updateFn}
-						chains={{
-							clonedBy: taskItem.linkedFrom,
-							parentId: taskItem.parentId,
-							childOf: taskItem.childOf
-						}}
 					/>
 				) : switcher === 'history' ? (
 					<TaskHistory taskInfo={taskItem}/>
 				) : switcher === 'members' ? (
 					<TaskMembers taskItem={taskItem}/>
-				) : (<>{switcher}</>)}
+				) : switcher === 'comments' ? (
+					<TaskComments taskInfo={taskItem}/>
+				) : (
+					<>{switcher}</>
+				)}
 			</FlexBlock>
 		</FlexBlock>
 	)

@@ -58,10 +58,18 @@ export interface FullResponseEventModel {
 	isLiked: boolean,
 }
 
-export type ShortUserModel = Pick<UserModel, 'name' | 'surname' | '_id'>
+export type ShortUserModel = Pick<UserModel, 'name' | 'surname' | '_id' | 'phone' | 'created'>
 
 export type ShortEventItemWithoutUserId = Pick<FullResponseEventModel, 'title' | 'time' | 'timeEnd' | 'link' | 'id' | 'priority' | 'description' | 'status' | 'calendar' | 'isLiked'>
 
-export interface ShortEventItem  extends  ShortEventItemWithoutUserId {
+export interface ShortEventItem extends ShortEventItemWithoutUserId {
 	userId: ShortUserModel
+}
+
+export interface CommentModel {
+	_id: ObjectId,
+	eventId: ObjectId,
+	userId: UserModelResponse,
+	date: UtcDate,
+	message: string
 }

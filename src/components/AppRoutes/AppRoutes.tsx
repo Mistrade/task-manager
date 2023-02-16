@@ -5,9 +5,10 @@ import {Navigate, Route} from "react-router";
 import {NotFoundPage} from "./NotFoundRoutes";
 import {Loader} from "../Loaders/Loader";
 import {WithSuspense} from "../Loaders/WithSuspense";
+import {UserModelResponse} from "../../store/api/taskApi/types";
 
 interface OnlyAuthRoutes {
-	userInfo?: UserModel | null,
+	userInfo?: UserModelResponse | null,
 }
 
 const CalendarController = React.lazy(() => import('../Calendars/index').then(({CalendarMain}) => ({default: CalendarMain})))

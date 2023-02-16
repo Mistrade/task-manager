@@ -5,7 +5,7 @@ import {EventHistoryResponseItem, useGetEventHistoryQuery} from "../../../../../
 import {Loader} from "../../../../Loaders/Loader";
 import {TaskHistoryItem} from "./TaskHistoryItem";
 import {TaskHistoryFieldController} from "./Fields";
-import {TaskInfoNotFound} from "../TaskInfoNotFound";
+import {ErrorScreen} from "../../../../Errors/ErrorScreen";
 
 
 export interface TaskHistoryProps {
@@ -15,27 +15,62 @@ export interface TaskHistoryProps {
 export const TaskHistory: FC<TaskHistoryProps> = ({taskInfo}) => {
 	const {data: history, isFetching, error} = useGetEventHistoryQuery(taskInfo.id, {refetchOnMountOrArgChange: true})
 	
-	if (isFetching) {
+	if (!history?.data && isFetching) {
 		return <Loader
 			isActive={true}
 			title={'Загрузка истории события'}
 		/>
 	}
 	
-	if (error && 'data' in error && error.data?.info?.message) {
-		return <TaskInfoNotFound message={error.data?.info?.message}/>
+	if (error && 'data' in error) {
+		return (
+			<FlexBlock
+				width={'100%'}
+				height={'100%'}
+				justify={'center'}
+				align={'center'}
+			>
+				<ErrorScreen
+					title={"Не удалось загрузить историю события"}
+					errorType={"ERR_FORBIDDEN"}
+					description={error.data.info?.message || "Произошла непредвиденная ошибка"}
+				/>
+			</FlexBlock>
+		)
 	}
 	
 	if (!history?.data) {
-		return <TaskInfoNotFound
-			message={'Не удалось найти историю события'}
-		/>
+		return (
+			<FlexBlock
+				width={'100%'}
+				height={'100%'}
+				justify={'center'}
+				align={'center'}
+			>
+				<ErrorScreen
+					title={"Не удалось загрузить историю события"}
+					errorType={"ERR_FORBIDDEN"}
+					description={"История данного события не найдена"}
+				/>
+			</FlexBlock>
+		)
 	}
 	
 	if (history.data.length === 0) {
-		return <TaskInfoNotFound
-			message={'Не удалось найти историю события'}
-		/>
+		return (
+			<FlexBlock
+				width={'100%'}
+				height={'100%'}
+				justify={'center'}
+				align={'center'}
+			>
+				<ErrorScreen
+					title={"Записи не найдены"}
+					errorType={"ERR_FORBIDDEN"}
+					description={"Записи в истории этого события не найдены"}
+				/>
+			</FlexBlock>
+		)
 	}
 	
 	

@@ -26,7 +26,7 @@ export const isCorrectTaskInformerSwitcherName = (switcherName: string) => {
 export const taskInformerSwitcherList: Array<TaskInformerSwitchersItem> = [
 	{title: 'Инфо', key: 'about'},
 	{title: 'История', key: 'history'},
-	{title: 'Комментарии', key: 'comments', badgeCount: 3},
+	{title: 'Комментарии', key: 'comments'},
 	{title: 'Участники', key: 'members'},
 	{title: 'Связи', key: 'chains'}
 ]

@@ -1,6 +1,7 @@
 import {FC} from "react";
 import {FlexBlock} from "../../../LayoutComponents/FlexBlock";
 import {SadSmile} from "../../../Icons/Icons";
+import {ErrorScreen} from "../../../Errors/ErrorScreen";
 
 export const TaskInfoNotFound: FC<{ message?: string }> = ({message}) => (
 	<FlexBlock
@@ -8,22 +9,18 @@ export const TaskInfoNotFound: FC<{ message?: string }> = ({message}) => (
 		width={'100%'}
 		justify={'center'}
 		align={'center'}
-		wrap={'wrap'}
-		p={'24px 0'}
+		p={24}
 	>
-		<FlexBlock
-			width={'100%'}
-			justify={'center'}
-			align={'center'}
-			mb={24}
-		>
-			<SadSmile color={'darkorange'}/>
-		</FlexBlock>
-		<FlexBlock
-			width={'100%'}
-			justify={'center'}
-		>
-			{message || 'К сожалению, не удалось загрузить информацию по данному заданию.'}
-		</FlexBlock>
+		<ErrorScreen
+			title={'Не удалось загрузить информацию по событию'}
+			errorType={'SYSTEM_ERROR'}
+			description={message || ''}
+			action={{
+				title: "Вернуться назад",
+				onClick() {
+					history.back()
+				}
+			}}
+		/>
 	</FlexBlock>
 )

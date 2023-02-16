@@ -11,15 +11,23 @@ import {Tooltip} from "../../../Tooltip/Tooltip";
 import {EmptyButtonStyled} from "../../../Buttons/EmptyButton.styled";
 import {PencilIcon} from "../../../Icons/Icons";
 import {StyledTaskInformerLinkForm} from "../TaskInformer.styled";
+import {InputLabel} from "../../../Input/InputSupportComponents/InputLabel";
 
 interface TaskInformerDescriptionProps extends UsageTaskItemBaseProps {
 	updateFn: TaskInformerUpdateFn,
 }
 
 interface TaskInformerDescriptionInputProps {
-	value: string,
-	updateFn: TaskInformerUpdateFn,
-	onDecline: () => void
+	initialValue: string,
+	updateFn: (value: string) => Promise<void>,
+	onDecline?: () => void,
+	onComplete?: () => void,
+	clearOnDecline?: boolean,
+	clearOnComplete?: boolean
+	inputLabel?: string,
+	inputPlaceholder?: string,
+	rows?: number,
+	inputId?: string
 }
 
 export interface TaskInformerDescriptionTextProps {
@@ -67,30 +75,65 @@ export const TaskInformerDescriptionText: FC<TaskInformerDescriptionTextProps> =
 	)
 }
 
-const TaskInformerDescriptionInput: FC<TaskInformerDescriptionInputProps> = ({value, updateFn, onDecline}) => {
+export const TaskInformerDescriptionInput: FC<TaskInformerDescriptionInputProps> = ({
+																																											initialValue,
+																																											updateFn,
+																																											onDecline,
+																																											clearOnDecline,
+																																											inputPlaceholder,
+																																											inputLabel,
+																																											rows = 3,
+																																											inputId,
+																																											onComplete,
+																																											clearOnComplete
+																																										}) => {
 	const [loading, setLoading] = useState(false)
 	const formik = useFormik({
-		initialValues: {description: value},
+		initialValues: {description: initialValue},
 		async onSubmit(values) {
-			if (!!values.description && values.description !== value) {
+			if (!!values.description && values.description !== initialValue) {
 				setLoading(true)
-				await updateFn('description', values.description).then(() => onDecline()).finally(() => setLoading(false))
+				await updateFn(values.description)
+					.then(() => {
+						onComplete && onComplete()
+						if (clearOnComplete) {
+							formik.setFieldValue('description', '')
+						}
+					})
+					.finally(() => setLoading(false))
 			}
 		}
 	})
 	
 	return (
-		<StyledTaskInformerLinkForm onSubmit={formik.handleSubmit}>
+		<StyledTaskInformerLinkForm
+			onSubmit={formik.handleSubmit}
+		>
 			<FlexBlock direction={'column'} gap={6} width={'100%'}>
-				<TextAreaInput
-					rows={18}
-					value={formik.values.description}
-					onChange={(v) => formik.setFieldValue('description', v)}
-					label={'Подробное описание'}
-					placeholder={'Постарайтесь объяснить, что нужно сделать'}
-				/>
-				<FlexBlock direction={'row'} width={'fit-content'} gap={6}>
-					<EditableFieldsButtons isLoading={loading} onDecline={onDecline}/>
+				<InputLabel label={inputLabel} inputId={inputId}/>
+				<FlexBlock direction={'row'} gap={12} width={'100%'}>
+					<TextAreaInput
+						rows={rows}
+						value={formik.values.description}
+						onChange={(v) => formik.setFieldValue('description', v)}
+						placeholder={inputPlaceholder}
+					/>
+					<FlexBlock
+						direction={'column'}
+						width={'fit-content'}
+						justify={'flex-start'}
+						gap={12}
+					>
+						<EditableFieldsButtons
+							isLoading={loading}
+							onDecline={() => {
+								onDecline && onDecline()
+								if (clearOnDecline) {
+									formik.setFieldValue('description', '')
+								}
+							}}
+						/>
+					</FlexBlock>
 				</FlexBlock>
 			</FlexBlock>
 		</StyledTaskInformerLinkForm>
@@ -115,9 +158,13 @@ export const TaskInformerDescription: FC<TaskInformerDescriptionProps> = ({taskI
 		<FlexBlock direction={'column'}>
 			{editMode ? (
 				<TaskInformerDescriptionInput
-					value={taskItem.description}
-					updateFn={updateFn}
+					initialValue={taskItem.description}
+					updateFn={(value) => updateFn('description', value)}
 					onDecline={() => setEditMode(false)}
+					onComplete={() => setEditMode(false)}
+					rows={18}
+					inputLabel={'Подробное описание'}
+					inputPlaceholder={'Постарайтесь объяснить, что нужно сделать'}
 				/>
 			) : (
 				<FlexBlock width={'100%'} direction={'column'} gap={6}>

@@ -1,5 +1,12 @@
 import styled, {css} from 'styled-components'
-import {borderRadiusSize, currentColor, disabledColor, errorColor} from '../../common/constants'
+import {
+	borderRadiusSize,
+	currentColor,
+	darkColor,
+	defaultColor,
+	disabledColor,
+	errorColor
+} from '../../common/constants'
 import {DefaultTextInputProps} from "./TextInput/TextInput";
 
 const LeftIconPadding = css`
@@ -49,7 +56,7 @@ export const StyledLabel = styled('label')`
   & {
     width: fit-content;
     font-size: 16px;
-		padding-left: 4px;
+    padding-left: 4px;
     font-family: "Helvetica Neue", sans-serif;
     font-weight: normal;
     color: ${currentColor};
@@ -62,20 +69,21 @@ export const StyledLabel = styled('label')`
 `
 
 export const StyledTextAreaInput = styled('textarea')`
-	& {
-		width: 100%;
-		border: 2px solid ${disabledColor};
-		border-radius: ${borderRadiusSize.sm};
-		outline: none;
+  & {
+    width: 100%;
+    color: ${darkColor};
+    border: 2px solid ${disabledColor};
+    border-radius: ${borderRadiusSize.sm};
+    outline: none;
     -moz-appearance: none;
-		resize: none;
-		transition: all .3s ease-in;
-		cursor: pointer;
-		font-size: 16px;
-		font-family: Helvetica, sans-serif;
-	}
-	
-	${DefaultPadding};
+    resize: none;
+    transition: all .3s ease-in;
+    cursor: pointer;
+    font-size: 16px;
+    font-family: Helvetica, sans-serif;
+  }
+
+  ${DefaultPadding};
 
   &:focus {
     border: 2px solid ${currentColor};
@@ -83,5 +91,9 @@ export const StyledTextAreaInput = styled('textarea')`
 
   &:hover {
     box-shadow: 0 0 8px 0px ${currentColor};
+  }
+
+  &::placeholder {
+    color: ${defaultColor};
   }
 `
