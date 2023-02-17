@@ -1,9 +1,9 @@
-import {currentColor, disabledColor, hoverColor} from "../../common/constants";
+import {currentColor, disabledColor} from "../../common/constants";
 import {SwitchCalendarModeTab} from "../Calendars/Calendar.styled";
 import {FlexBlock} from "../LayoutComponents/FlexBlock";
 import React from "react";
 import {Badge} from "../Badge/Badge";
-import {ColorRing, InfinitySpin, ProgressBar, ThreeDots} from "react-loader-spinner";
+import {ColorRing} from "react-loader-spinner";
 
 export interface SwitcherItem<KEY> {
 	title: string,

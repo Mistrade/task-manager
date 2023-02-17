@@ -1,16 +1,15 @@
-import {borderRadiusSize, darkColor, defaultColor, disabledColor, hoverColor} from "../../../../../common/constants";
+import {borderRadiusSize, darkColor, disabledColor, hoverColor} from "../../../../../common/constants";
 import {FlexBlock} from "../../../../LayoutComponents/FlexBlock";
-import {TaskInformerUpdateFn, ToggleEventPriority, ToggleEventStatus} from "../ToggleTaskInformerButtons";
+import {TaskInformerUpdateFn} from "../ToggleTaskInformerButtons";
 import {LinkStyled} from "../../../../Buttons/Link.styled";
 import {FC} from "react";
 import {FullResponseEventModel} from "../../../../../store/api/taskApi/types";
 import {useAppSelector} from "../../../../../store/hooks/hooks";
 import {CalendarSelectors} from "../../../../../store/selectors/calendarItems";
-import {EventIcon} from "../../../../Icons/EventIcon";
-import {ArrowIndicator} from "../../../Cell";
 import {Badge} from "../../../../Badge/Badge";
 import styled from "styled-components";
 import {convertEventStatus} from "../../../../../common/functions";
+import {PriorityCalendarIcon} from "../../../../Icons/CalendarIcons/PriorityCalendarIcon";
 
 export interface TaskChainItemProps {
 	taskChainItem: FullResponseEventModel,
@@ -54,7 +53,7 @@ export const TaskChainItem: FC<TaskChainItemProps> = ({
 				<TaskChainBadge>
 					{convertEventStatus(taskChainItem.status)}
 				</TaskChainBadge>
-				<ArrowIndicator priorityKey={taskChainItem.priority} size={20}/>
+				<PriorityCalendarIcon priorityKey={taskChainItem.priority} size={20}/>
 				{taskChainItem.childOf.length > 0 && (
 					<TaskChainBadge>
 						{taskChainItem.childOf.length}

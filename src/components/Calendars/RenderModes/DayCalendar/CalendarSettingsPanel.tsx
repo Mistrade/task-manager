@@ -8,11 +8,8 @@ import {GetTaskSchemeRequest, useGetTaskSchemeQuery} from "../../../../store/api
 import {DateScopeHelper} from "../../../../common/calendarSupport/scopes";
 import {CalendarList} from "../../CalendarList/CalendarList";
 import {PourDatesProps, SmallMonth} from "../../SmallMotnCalendar/SmallMonth";
-import {CalendarTodaySwitchers} from "../../Header/CalendarTodaySwitchers";
 import {ShortChangeCurrentPattern} from "../../../../common/commonTypes";
 import {changeCurrentModeHandler, getCalendarTitle} from "../../../../common/functions";
-import {CalendarTitle} from '../../Calendar.styled'
-import {CalendarHeaderAddButton} from "../../Header/CalendarHeaderAddButton";
 import {useAppSelector} from "../../../../store/hooks/hooks";
 import {CalendarCurrentTitle} from "../../Header/CalendarCurrentTitle";
 

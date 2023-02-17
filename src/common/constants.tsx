@@ -3,7 +3,6 @@ import {
 	CalendarPriorityList,
 	DateItem,
 	MonthItem,
-	TaskMembersListType,
 	TaskStatusesType,
 	TaskStatusInfo,
 	WeekItem,
@@ -11,11 +10,11 @@ import {
 } from '../components/Calendars/types'
 import dayjs from 'dayjs'
 import {ArchiveIcon, CompleteIcon, CreatedIcon, ProcessIcon, WaitIcon} from '../components/Icons/Icons'
-import {ErrorImagesType, InitialCurrentCalendarModeType} from "./types";
+import {ErrorImagesType} from "./types";
 import {SystemErrorImg} from "../components/Icons/Errors/SystemError";
 import {ErrorBadRequestImg} from "../components/Icons/Errors/ErrorBadRequest";
 import {ErrorForbiddenImg} from "../components/Icons/Errors/ErrorForbidden";
-import {FilterTaskStatuses} from "../components/Calendars/Modes/DayCalendar/EventFilter";
+import {FilterTaskStatuses} from "../components/Calendars/RenderModes/DayCalendar/EventFilter";
 
 export const MonthList = [
 	'Январь', 'Февраль', 'Март', 'Апрель', 'Май', 'Июнь', 'Июль', 'Август', 'Сентябрь', 'Октябрь', 'Ноябрь', 'Декабрь'
@@ -165,31 +164,12 @@ export const DATE_HOURS_FORMAT = 'HH:mm'
 export const DATE_HOURS_MINUTES_SECONDS_FORMAT = 'HH:mm:ss'
 export const DEFAULT_TASK_STATUS: TaskStatusesType = 'created'
 export const DEFAULT_TASK_PRIORITY: CalendarPriorityKeys = 'medium'
-export const Members: TaskMembersListType = [
-	{
-		name: 'Владос',
-		surname: 'Валеев',
-		patronymic: 'Ринатович',
-		id: '1',
-		gender: 'man',
-		socialNetworks: [
-			{
-				networkName: 'vk',
-				link: 'https://vk.com/yudakov2014'
-			}
-		]
-	}
-]
 
 export const ERROR_IMAGES: ErrorImagesType = {
 	SYSTEM_ERROR: <SystemErrorImg/>,
 	BAD_REQUEST: <ErrorBadRequestImg/>,
 	ERR_FORBIDDEN: <ErrorForbiddenImg/>,
 	ERR_NOT_VALID_RESPONSE: <SystemErrorImg/>
-}
-
-export const getHumanizeDateValue = (date: Date, withTime: boolean = true) => {
-	return dayjs(date).format(`DD ${ShortMonthList[date.getMonth()]} YYYY${withTime ? ' в HH:mm' : ''}`)
 }
 
 export const defaultYearItem: YearItem = {
@@ -233,28 +213,6 @@ export enum ERROR_DESCRIPTIONS {
 export enum ERROR_TITLES {
 	'SUSPENSE' = 'Не удалось загрузить запрашиваемый ресурс ленивой загрузки, попробуйте снова, позже...',
 	'CALENDAR_RENDER' = 'Произошла критическая ошибка рендера во время работы календаря.'
-}
-
-
-const currentDate = new Date()
-export const initialCurrentMap: InitialCurrentCalendarModeType = {
-	day: {
-		layout: 'day',
-		date: currentDate,
-	},
-	week: {
-		layout: 'week',
-		aroundDate: currentDate
-	},
-	month: {
-		layout: 'month',
-		year: currentDate.getFullYear(),
-		month: currentDate.getMonth()
-	},
-	year: {
-		layout: 'year',
-		year: currentDate.getFullYear()
-	}
 }
 
 export const colorPalette = [

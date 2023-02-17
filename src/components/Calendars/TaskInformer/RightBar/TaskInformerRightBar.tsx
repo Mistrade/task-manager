@@ -12,7 +12,6 @@ import {SmallMonth} from "../../SmallMotnCalendar/SmallMonth";
 import {SmallCalendarMonthTitle} from "../../SmallMotnCalendar/SmallCalendarMonthTitle";
 import dayjs from "dayjs";
 import {TaskCreatedMessage} from "../TaskCreatedMessage";
-import {EmptyButtonStyled} from "../../../Buttons/EmptyButton.styled";
 
 interface TaskInformerRightBarProps extends UsageTaskItemBaseProps {
 	monthItem: MonthItem,

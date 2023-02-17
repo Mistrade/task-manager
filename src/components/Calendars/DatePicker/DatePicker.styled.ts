@@ -1,5 +1,5 @@
 import styled from 'styled-components'
-import {CalendarDate} from '../Cell'
+import {CalendarDate} from '../RenderModes/WeekCalendar/CalendarCell/Cell'
 import {darkColor, defaultColor, disabledColor} from '../../../common/constants'
 
 export const DateItem = styled( CalendarDate )`

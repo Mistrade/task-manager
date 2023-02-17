@@ -4,8 +4,9 @@ import {FlexBlockProps} from '../LayoutComponents/FlexBlock'
 import {DefaultTextInputProps} from '../Input/TextInput/TextInput'
 import {GetTaskSchemeResponse} from "../../store/api/taskApi/taskApi";
 import {FullResponseEventModel, ObjectId, ShortEventItem} from "../../store/api/taskApi/types";
-import {FilterTaskStatuses} from "./Modes/DayCalendar/EventFilter";
+import {FilterTaskStatuses} from "./RenderModes/DayCalendar/EventFilter";
 import {UseCalendarReturned} from "../../hooks/useCalendar";
+import {CalendarCellEventsListProps} from "./RenderModes/WeekCalendar/CalendarCell/EventList/List";
 
 export type FCWithChildren<T = any> = FC<{ children?: ReactNode } & T>
 
@@ -83,16 +84,10 @@ export interface CalendarCellProps extends GlobalTaskListProps {
 	onClickToDate?: (date: CalendarItem) => void
 }
 
-export interface TaskTileListProps extends GlobalTaskListProps {
-	tasks?: Array<ShortEventItem>,
-	date: CalendarItem,
-	onSelect?: OnSelectTaskFnType,
-}
-
 export interface TaskTileItemProps {
 	taskInfo: ShortEventItem,
 	date: CalendarItem,
-	onSelect?: TaskTileListProps['onSelect']
+	onSelect?: CalendarCellEventsListProps['onSelect']
 }
 
 export interface TaskTilePriorityIndicatorProps {

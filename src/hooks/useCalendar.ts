@@ -20,7 +20,7 @@ import dayjs from "dayjs";
 import {CalendarNameItem} from "../components/Calendars/CalendarList/CalendarNameListItem";
 import {FullResponseEventModel, ObjectId} from "../store/api/taskApi/types";
 import {toast} from "react-toastify";
-import {FilterTaskStatuses} from "../components/Calendars/Modes/DayCalendar/EventFilter";
+import {FilterTaskStatuses} from "../components/Calendars/RenderModes/DayCalendar/EventFilter";
 import {useSearchNavigate} from "./useSearchNavigate";
 
 export interface UseCalendarReturned {

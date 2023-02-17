@@ -8,10 +8,10 @@ import {
 	currentColor,
 	darkColor,
 	DATE_HOURS_MINUTES_SECONDS_FORMAT,
-	DATE_RENDER_FORMAT_WITH_SEC,
-	disabledColor, getHumanizeDateValue
+	disabledColor
 } from "../../../../../common/constants";
 import {css} from "styled-components";
+import {DateHelper} from "../../../../../common/calendarSupport/dateHelper";
 
 export interface TaskHistoryItemProps {
 	user: UserModelResponse,
@@ -37,7 +37,7 @@ export const getDateDescription = (date: Date, withTime: boolean = true): string
 		return `Вчера, ${formattedHours}`
 	}
 	
-	return getHumanizeDateValue(d.toDate(), withTime)
+	return DateHelper.getHumanizeDateValue(d.toDate(), {withTime})
 }
 
 export const TaskHistoryItem: FC<TaskHistoryItemProps> = ({user, date, description, children}) => {

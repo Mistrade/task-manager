@@ -4,7 +4,6 @@ import {EmptyButtonStyled} from "../../../../Buttons/EmptyButton.styled";
 import {FlexBlock} from "../../../../LayoutComponents/FlexBlock";
 import {Arrow, PlusIcon} from "../../../../Icons/Icons";
 import {css} from "styled-components";
-import {SwitcherBadges} from "../../../../Switcher/Switcher";
 import {Badge} from "../../../../Badge/Badge";
 
 interface TaskChainTitleProps {

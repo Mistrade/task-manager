@@ -6,10 +6,9 @@ import {DateScopeHelper} from "../../../../common/calendarSupport/scopes";
 import dayjs from "dayjs";
 import {EventFilter} from "../DayCalendar/EventFilter";
 import {FlexBlock} from "../../../LayoutComponents/FlexBlock";
-import {WeekDays} from "../WeekCalendar/WeekDays/WeekDays";
+import {DaysOfWeekList} from "../WeekCalendar/SupportComponents/DaysOfWeekList";
 import {WeekDaysList} from "../../../../common/constants";
 import {useTaskStorageQueryArgs} from "../../../../hooks/useTaskStorageScope";
-import {Loader} from "../../../Loaders/Loader";
 
 export const MonthCalendar: FC<MonthCalendarProps> = ({
 																												monthItem,
@@ -52,7 +51,7 @@ export const MonthCalendar: FC<MonthCalendarProps> = ({
 				/>
 			</FlexBlock>
 			<FlexBlock width={'100%'} mb={6} pt={6}>
-				<WeekDays list={WeekDaysList} gap={4}/>
+				<DaysOfWeekList list={WeekDaysList} gap={4}/>
 			</FlexBlock>
 			<FlexBlock
 				overflowX={'hidden'}

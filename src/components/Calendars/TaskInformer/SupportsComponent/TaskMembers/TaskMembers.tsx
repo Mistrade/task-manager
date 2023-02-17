@@ -3,7 +3,6 @@ import {FC} from "react";
 import {FlexBlock} from "../../../../LayoutComponents/FlexBlock";
 import {borderRadiusSize, currentColor, darkColor, disabledColor} from "../../../../../common/constants";
 import {JoinToEventButton} from "../../../../Buttons/Buttons.styled";
-import {LinkStyled} from "../../../../Buttons/Link.styled";
 
 
 export interface TaskMembersProps {

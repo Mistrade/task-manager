@@ -1,5 +1,5 @@
 import styled, {keyframes} from 'styled-components'
-import {borderRadiusSize, currentColor, defaultColor, hoverColor, lightHoverColor} from '../../common/constants'
+import {borderRadiusSize, defaultColor} from '../../common/constants'
 
 export const ModalLayout = styled('div')`
   & {

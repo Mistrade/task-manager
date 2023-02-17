@@ -1,5 +1,4 @@
 import {FC} from "react";
-import {UserModel} from "../Calendars/types";
 import {FlexBlock} from "../LayoutComponents/FlexBlock";
 import {HeaderDefaultLink} from "./HeaderLink.styled.";
 import {useLogoutMutation} from "../../store/api/sessionApi";

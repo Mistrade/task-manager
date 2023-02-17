@@ -3,7 +3,7 @@ import {ShortEventItem} from "../store/api/taskApi/types";
 import {useEffect, useState} from "react";
 import {useAppDispatch, useAppSelector} from "../store/hooks/hooks";
 import {EventFilters, useEventFilters, UseEventFiltersReturned} from "./useEventFilters";
-import {FilterTaskStatuses} from "../components/Calendars/Modes/DayCalendar/EventFilter";
+import {FilterTaskStatuses} from "../components/Calendars/RenderModes/DayCalendar/EventFilter";
 import {useGetTaskCountOfStatusQuery, useGetTasksAtScopeQuery} from "../store/api/taskApi/taskApi";
 import {SwitcherBadges} from "../components/Switcher/Switcher";
 import dayjs from "dayjs";

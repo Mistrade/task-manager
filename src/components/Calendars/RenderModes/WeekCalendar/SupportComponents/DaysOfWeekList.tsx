@@ -2,12 +2,12 @@ import {FC} from "react";
 import {FlexBlock} from "../../../../LayoutComponents/FlexBlock";
 import {disabledColor} from "../../../../../common/constants";
 
-interface WeekDaysProps {
+interface DaysOfWeekListProps {
 	gap?: number,
 	list: Array<string>
 }
 
-export const WeekDays: FC<WeekDaysProps> = ({gap = 4, list}) => {
+export const DaysOfWeekList: FC<DaysOfWeekListProps> = ({gap = 4, list}) => {
 	return (
 		<FlexBlock gap={gap} width={'100%'} direction={'row'} justify={'flex-start'} align={'flex-end'}>
 			{list.map((weekDay) => (

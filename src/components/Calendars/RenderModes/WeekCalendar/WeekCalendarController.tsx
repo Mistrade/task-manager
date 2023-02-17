@@ -4,7 +4,7 @@ import {WeeKCalendar} from "./WeekCalendar";
 import dayjs from "dayjs";
 import {FlexBlock} from "../../../LayoutComponents/FlexBlock";
 import {EventFilter} from "../DayCalendar/EventFilter";
-import {WeekDays} from "./WeekDays/WeekDays";
+import {DaysOfWeekList} from "./SupportComponents/DaysOfWeekList";
 import {WeekDaysList} from "../../../../common/constants";
 import {useTaskStorageQueryArgs} from "../../../../hooks/useTaskStorageScope";
 
@@ -28,14 +28,30 @@ function getScope(weekItem: WeekItem): Scope {
 }
 
 export const WeekCalendarController: FC<WeekCalendarControllerProps> = (props) => {
-	const scope = useMemo(() => getScope(props.weekItem), [props.weekItem.weekOfYear, props.weekItem.month, props.weekItem.year])
-	const {queryArgs, taskStatus, handlers, filters, TaskStorage, SwitcherBadges, isFetching} = useTaskStorageQueryArgs({
+	const scope = useMemo(
+		() => getScope(props.weekItem),
+		[props.weekItem.weekOfYear, props.weekItem.month, props.weekItem.year]
+	)
+	
+	const {
+		handlers,
+		filters,
+		TaskStorage,
+		SwitcherBadges,
+		isFetching
+	} = useTaskStorageQueryArgs({
 		scope,
 		layout: props.current.layout
 	})
 	
 	return (
-		<FlexBlock mt={4} mb={4} height={'100%'} width={'100%'} direction={'column'}>
+		<FlexBlock
+			mt={4}
+			mb={4}
+			height={'100%'}
+			width={'100%'}
+			direction={'column'}
+		>
 			<FlexBlock width={'100%'} mb={8}>
 				<EventFilter
 					statusBadges={SwitcherBadges}
@@ -45,7 +61,10 @@ export const WeekCalendarController: FC<WeekCalendarControllerProps> = (props) =
 				/>
 			</FlexBlock>
 			<FlexBlock width={'100%'} mb={6} pt={6}>
-				<WeekDays list={WeekDaysList} gap={4}/>
+				<DaysOfWeekList
+					list={WeekDaysList}
+					gap={4}
+				/>
 			</FlexBlock>
 			<WeeKCalendar
 				taskStorage={TaskStorage || {}}

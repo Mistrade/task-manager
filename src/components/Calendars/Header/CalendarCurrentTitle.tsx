@@ -1,10 +1,10 @@
-import { FlexBlock } from "../../LayoutComponents/FlexBlock"
-import {borderRadiusSize, currentColor, disabledColor} from "../../../common/constants";
+import {FlexBlock} from "../../LayoutComponents/FlexBlock"
+import {borderRadiusSize, disabledColor} from "../../../common/constants";
 import {CalendarHeaderAddButton, CalendarHeaderAddButtonProps} from "./CalendarHeaderAddButton";
 import React, {FC} from "react";
 import {CalendarTodaySwitchers} from "./CalendarTodaySwitchers";
 import {css} from "styled-components";
-import { CalendarTitle } from "../Calendar.styled";
+import {CalendarTitle} from "../Calendar.styled";
 import {CalendarTodaySwitchersProps} from "../types";
 
 export interface CalendarCurrentTitleProps extends CalendarTodaySwitchersProps, CalendarHeaderAddButtonProps {

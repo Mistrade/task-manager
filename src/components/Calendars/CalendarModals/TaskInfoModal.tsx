@@ -1,12 +1,8 @@
-import React, {FC, RefObject, useEffect} from 'react'
+import React, {FC, RefObject} from 'react'
 import {TaskInfoModalProps} from '../types'
 import {Modal, ModalBody, ModalHeader} from '../../Modal/Modal'
 import {FlexBlock} from '../../LayoutComponents/FlexBlock'
-import {
-	useGetTaskInfoQuery,
-	useRemoveTaskMutation,
-	useUpdateTaskMutation
-} from "../../../store/api/taskApi/taskApi";
+import {useGetTaskInfoQuery, useRemoveTaskMutation, useUpdateTaskMutation} from "../../../store/api/taskApi/taskApi";
 import {useParams} from "react-router";
 import {ErrorBoundary} from "../../Errors/ErrorBoundary";
 import {Loader} from "../../Loaders/Loader";

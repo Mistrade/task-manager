@@ -1,5 +1,5 @@
 import {FC, ReactNode} from "react";
-import { FlexBlock } from "../../../../LayoutComponents/FlexBlock";
+import {FlexBlock} from "../../../../LayoutComponents/FlexBlock";
 
 export interface TaskChainItemsWrapperProps {
 	wrapState: boolean,

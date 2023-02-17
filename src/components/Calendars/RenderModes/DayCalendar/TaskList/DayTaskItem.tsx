@@ -4,9 +4,10 @@ import {MyServerResponse, taskApi, useUpdateTaskMutation} from "../../../../../s
 import {FlexBlock} from "../../../../LayoutComponents/FlexBlock";
 import {
 	borderRadiusSize,
-	darkColor, DATE_HOURS_FORMAT,
+	darkColor,
+	DATE_HOURS_FORMAT,
 	defaultColor,
-	disabledColor, getHumanizeDateValue,
+	disabledColor,
 	hoverColor,
 	orangeColor,
 	pageHeaderColor,
@@ -28,6 +29,7 @@ import {UrlIcon} from "../../../../Icons/SocialNetworkIcons";
 import {CalendarUserIndicator} from "../../../Users/UserIndicator";
 import {EmptyLink} from "../../../../Buttons/EmptyButton.styled";
 import {useAppDispatch, useAppSelector} from "../../../../../store/hooks/hooks";
+import {DateHelper} from "../../../../../common/calendarSupport/dateHelper";
 
 interface DayTaskItemProps {
 	taskInfo: ShortEventItem,
@@ -55,13 +57,13 @@ const TileMixin = css`
 `
 
 export const DayTaskItem: FC<DayTaskItemProps> = ({
-	                                                  taskInfo,
-	                                                  tabIndex,
-	                                                  onSelectTask,
-	                                                  day,
-	                                                  onDelete,
-	                                                  refetchTaskList
-                                                  }) => {
+																										taskInfo,
+																										tabIndex,
+																										onSelectTask,
+																										day,
+																										onDelete,
+																										refetchTaskList
+																									}) => {
 	const dispatch = useAppDispatch()
 	const start = dayjs(taskInfo.time).format('DD-MM HH:mm')
 	const end = dayjs(taskInfo.timeEnd).format('DD-MM HH:mm')
@@ -90,21 +92,21 @@ export const DayTaskItem: FC<DayTaskItemProps> = ({
 			field,
 			data
 		})
-		.unwrap()
-		.then(r => {
-			if (r.info) {
-				toast(r.info.message, {
-					type: r.info.type
-				})
-			}
-		})
-		.catch((r: { data?: MyServerResponse<null>, status: number }) => {
-			if (r.data?.info) {
-				toast(r.data?.info?.message, {
-					type: r.data.info.type
-				})
-			}
-		})
+			.unwrap()
+			.then(r => {
+				if (r.info) {
+					toast(r.info.message, {
+						type: r.info.type
+					})
+				}
+			})
+			.catch((r: { data?: MyServerResponse<null>, status: number }) => {
+				if (r.data?.info) {
+					toast(r.data?.info?.message, {
+						type: r.data.info.type
+					})
+				}
+			})
 	}, [taskInfo.id])
 	
 	const timeRenderObject = useMemo(() => {
@@ -118,8 +120,8 @@ export const DayTaskItem: FC<DayTaskItemProps> = ({
 		}
 		
 		return {
-			start: getHumanizeDateValue(start.toDate(), true),
-			end: getHumanizeDateValue(end.toDate(), true)
+			start: DateHelper.getHumanizeDateValue(start.toDate()),
+			end: DateHelper.getHumanizeDateValue(end.toDate())
 		}
 	}, [taskInfo])
 	

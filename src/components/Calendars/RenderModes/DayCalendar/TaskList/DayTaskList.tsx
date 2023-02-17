@@ -1,4 +1,4 @@
-import React, {FC, useCallback, useEffect, useMemo, useState} from 'react'
+import React, {FC, useCallback, useEffect, useMemo} from 'react'
 import {FlexBlock} from '../../../../LayoutComponents/FlexBlock'
 import {CalendarCurrentDay, CalendarPriorityKeys, GlobalTaskListProps, OnSelectTaskFnType} from '../../../types'
 import dayjs from 'dayjs'
@@ -12,11 +12,9 @@ import {
 import {DayTaskItem} from "./DayTaskItem";
 import {NotFoundTask} from "./NotFoundTasks";
 import {TaskListMainContainer} from "./TaskList.styled";
-import {css} from "styled-components";
 import {initialFiltersValues, useEventFilters} from "../../../../../hooks/useEventFilters";
 import {useAppSelector} from "../../../../../store/hooks/hooks";
-import {Loader} from "../../../../Loaders/Loader";
-import {currentColor, darkColor, defaultColor} from "../../../../../common/constants";
+import {currentColor, defaultColor} from "../../../../../common/constants";
 import {Accordion} from "../../../../Accordion/Accordion";
 import {Badge} from "../../../../Badge/Badge";
 

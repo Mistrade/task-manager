@@ -1,5 +1,6 @@
 import {
-	CustomRtkError, MyServerResponse,
+	CustomRtkError,
+	MyServerResponse,
 	useAddCommentMutation,
 	useGetCommentsListQuery,
 	useRemoveCommentMutation
@@ -8,26 +9,24 @@ import {FC, useEffect, useRef, useState} from "react";
 import {CommentModel, FullResponseEventModel, UserModelResponse} from "../../../../../store/api/taskApi/types";
 import {FlexBlock} from "../../../../LayoutComponents/FlexBlock";
 import styled from "styled-components";
-import {TextAreaInput} from "../../../../Input/TextAreaInput/TextAreaInput";
 import {TaskInformerDescriptionInput} from "../TaskInformerDescription";
 import {toast} from "react-toastify";
 import dayjs from "dayjs";
 import {
 	borderRadiusSize,
 	currentColor,
-	DATE_RENDER_FORMAT,
-	DATE_RENDER_FORMAT_WITH_SEC, defaultColor,
-	disabledColor, getHumanizeDateValue, lightHoverColor, pageHeaderColor
+	defaultColor,
+	disabledColor,
+	pageHeaderColor
 } from "../../../../../common/constants";
 import {EmptyButtonStyled} from "../../../../Buttons/EmptyButton.styled";
 import {TrashIcon} from "../../../../Icons/Icons";
 import {useAppSelector} from "../../../../../store/hooks/hooks";
 import {sessionApi} from "../../../../../store/api/sessionApi";
-import {Button, WhiteButton} from "../../../../Buttons/Buttons.styled";
+import {WhiteButton} from "../../../../Buttons/Buttons.styled";
 import {ErrorScreen} from "../../../../Errors/ErrorScreen";
 import {Loader} from "../../../../Loaders/Loader";
 import {LinkStyled} from "../../../../Buttons/Link.styled";
-import {CopyIcon} from "../../../../Icons/AppIcon/CopyIcon";
 import {CopyToClipboardButton} from "../../../../Buttons/CopyToClipboardButton";
 import {getDateDescription} from "../TaskHistory/TaskHistoryItem";
 

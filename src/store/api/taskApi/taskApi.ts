@@ -7,7 +7,7 @@ import {
 	TaskStorageType
 } from "../../../components/Calendars/types";
 import {baseServerUrl} from "../defaultApiConfig";
-import {FilterTaskStatuses} from "../../../components/Calendars/Modes/DayCalendar/EventFilter";
+import {FilterTaskStatuses} from "../../../components/Calendars/RenderModes/DayCalendar/EventFilter";
 import {CalendarNameItem} from "../../../components/Calendars/CalendarList/CalendarNameListItem";
 import {
 	CalendarsModelType,
@@ -19,7 +19,6 @@ import {
 } from "./types";
 import {CreateCalendarFormData} from "../../../components/Calendars/CalendarModals/CreateCalendar";
 import {SwitcherBadges} from "../../../components/Switcher/Switcher";
-import {BaseQueryResult} from "@reduxjs/toolkit/dist/query/baseQueryTypes";
 import dayjs from "dayjs";
 
 interface GetTaskQueryProps {

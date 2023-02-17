@@ -6,8 +6,7 @@ import {PlusIcon} from "../../Icons/Icons";
 import {DropDown} from "../../Dropdown/DropDown";
 import {useSearchNavigate} from "../../../hooks/useSearchNavigate";
 import {CalendarMode} from "../types";
-import {FilterTaskStatuses} from "../Modes/DayCalendar/EventFilter";
-import { WhiteButton } from "../../Buttons/Buttons.styled";
+import {FilterTaskStatuses} from "../RenderModes/DayCalendar/EventFilter";
 
 export interface CalendarHeaderAddButtonProps {
 	current: CalendarMode,

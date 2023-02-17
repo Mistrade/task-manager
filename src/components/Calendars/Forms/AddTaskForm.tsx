@@ -6,15 +6,7 @@ import {FlexBlock} from '../../LayoutComponents/FlexBlock'
 import {TextInput} from '../../Input/TextInput/TextInput'
 import {SelectPriorityInput} from '../../Input/SelectInput/CalendarSelectInputs/SelectPriorityInput'
 import {SelectBooleanInput} from '../../Input/SelectInput/SelectBooleanInput'
-import {
-	borderRadiusSize,
-	currentColor,
-	defaultColor,
-	getHumanizeDateValue,
-	hoverColor,
-	PRIORITY_TITLES,
-	TASK_STATUSES
-} from '../../../common/constants'
+import {borderRadiusSize, defaultColor, PRIORITY_TITLES, TASK_STATUSES} from '../../../common/constants'
 import {SelectInput} from '../../Input/SelectInput/SelectInput'
 import {DatePickerPaper} from '../DatePicker/DatePickerPaper'
 import {SelectListContainer} from '../../Input/SelectInput/SelectListContainer'
@@ -31,7 +23,7 @@ import {ObjectId} from "../../../store/api/taskApi/types";
 import {toast} from "react-toastify";
 import {Informer} from "../../Inform/Informer";
 import {LinkStyled} from '../../Buttons/Link.styled'
-import {EmptyButtonStyled} from '../../Buttons/EmptyButton.styled'
+import {DateHelper} from "../../../common/calendarSupport/dateHelper";
 
 interface AddTaskFormProps {
 	onComplete?: (data: CalendarTaskItem, taskId?: ObjectId) => void,
@@ -257,7 +249,7 @@ export const AddTaskForm: FC<AddTaskFormProps> = ({date, onComplete, onCancel, i
 									/>
 								</SelectListContainer>
 							)}
-							value={getHumanizeDateValue(formik.values.time || date || new Date())}
+							value={DateHelper.getHumanizeDateValue(formik.values.time || date || new Date())}
 							label={'Выберите время начала'}
 							containerProps={{flex: '1 0 calc(50% - 6px)', maxWidth: '50%'}}
 							isDirty={!!formik.touched.time}
@@ -296,7 +288,7 @@ export const AddTaskForm: FC<AddTaskFormProps> = ({date, onComplete, onCancel, i
 									/>
 								</SelectListContainer>
 							)}
-							value={getHumanizeDateValue(formik.values.timeEnd || date || new Date())}
+							value={DateHelper.getHumanizeDateValue(formik.values.timeEnd || date || new Date())}
 							label={'Выберите время завершения'}
 							containerProps={{flex: '1 0 calc(50% - 6px)', maxWidth: '50%'}}
 							isDirty={!!formik.touched.timeEnd}

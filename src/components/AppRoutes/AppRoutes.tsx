@@ -1,5 +1,4 @@
 import React, {FC} from "react";
-import {UserModel} from "../Calendars/types";
 import {Routes} from 'react-router-dom'
 import {Navigate, Route} from "react-router";
 import {NotFoundPage} from "./NotFoundRoutes";

@@ -1,6 +1,5 @@
 import {FC} from "react";
 import {FlexBlock} from "../../../LayoutComponents/FlexBlock";
-import {SadSmile} from "../../../Icons/Icons";
 import {ErrorScreen} from "../../../Errors/ErrorScreen";
 
 export const TaskInfoNotFound: FC<{ message?: string }> = ({message}) => (

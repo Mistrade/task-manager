@@ -3,7 +3,7 @@ import {RegistrationFormType} from "../../components/Session/Registration";
 import {MyServerResponse} from "./taskApi/taskApi";
 import {AuthorizationProps} from "../../components/Session/AuthorizationForm";
 import {baseServerUrl} from "./defaultApiConfig";
-import {ShortUserModel, UserModelResponse} from "./taskApi/types";
+import {UserModelResponse} from "./taskApi/types";
 
 export const sessionApi = createApi({
 	reducerPath: 'sessionApi',

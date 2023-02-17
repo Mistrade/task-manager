@@ -2,12 +2,12 @@ import React, {FC, memo, useCallback, useEffect, useState} from 'react'
 import {DatePickerProps} from '../types'
 import {SelectListContainer} from '../../Input/SelectInput/SelectListContainer'
 import {DatePickerPaper} from './DatePickerPaper'
-import {getHumanizeDateValue} from '../../../common/constants'
 import {SelectInput} from '../../Input/SelectInput/SelectInput'
 import {FlexBlock} from '../../LayoutComponents/FlexBlock'
 import {Button} from '../../Buttons/Buttons.styled'
 import {EmptyButtonStyled} from '../../Buttons/EmptyButton.styled'
 import dayjs from "dayjs";
+import {DateHelper} from "../../../common/calendarSupport/dateHelper";
 
 
 export const DatePicker: FC<DatePickerProps> = memo(({
@@ -80,7 +80,7 @@ export const DatePicker: FC<DatePickerProps> = memo(({
 					</FlexBlock>
 				</SelectListContainer>
 			)}
-			value={stateValue ? getHumanizeDateValue(stateValue) : ''}
+			value={stateValue ? DateHelper.getHumanizeDateValue(stateValue) : ''}
 			label={label}
 			containerProps={containerProps}
 			isDirty={!!isDirty}

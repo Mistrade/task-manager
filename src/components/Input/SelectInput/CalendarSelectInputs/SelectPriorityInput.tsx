@@ -4,9 +4,9 @@ import {SelectListContainer} from '../SelectListContainer'
 import {SelectItemContainer} from '../SelectItemContainer'
 import {CalendarPriorityKeys, CalendarPriorityList} from '../../../Calendars/types'
 import {FlexBlockProps} from '../../../LayoutComponents/FlexBlock'
-import {ArrowIndicator} from '../../../Calendars/Cell'
 import {SelectInput} from '../SelectInput'
 import {DefaultTextInputProps} from '../../TextInput/TextInput'
+import {PriorityCalendarIcon} from "../../../Icons/CalendarIcons/PriorityCalendarIcon";
 
 interface SelectPriorityInputProps extends Partial<Omit<DefaultTextInputProps, 'onChange'>> {
   selected: CalendarPriorityKeys | null,
@@ -37,7 +37,7 @@ export const SelectPriorityInput: FC<SelectPriorityInputProps> = ( {
       inputId={inputId || 'select_priority'}
       data={PRIORITY}
       label={'Выберите приоритет'}
-      icon={selected && <ArrowIndicator priorityKey={selected}/>}
+      icon={selected && <PriorityCalendarIcon priorityKey={selected}/>}
       renderData={( data, { focusOut } ) => (
         <>
           <SelectListContainer>
@@ -49,7 +49,7 @@ export const SelectPriorityInput: FC<SelectPriorityInputProps> = ( {
                   focusOut()
                 }}
               >
-                <ArrowIndicator priorityKey={item.type} isCompleted={false}/>
+                <PriorityCalendarIcon priorityKey={item.type} isCompleted={false}/>
                 <span>
                   {item.title}
                 </span>

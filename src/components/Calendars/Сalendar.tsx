@@ -28,7 +28,7 @@ import {Interceptor} from './Interceptor'
 import {ErrorBoundary} from "../Errors/ErrorBoundary";
 import {Loader} from "../Loaders/Loader";
 import {Route, Routes} from 'react-router-dom'
-import {CalendarSettingsPanel} from "./Modes/DayCalendar/CalendarSettingsPanel";
+import {CalendarSettingsPanel} from "./RenderModes/DayCalendar/CalendarSettingsPanel";
 import {ChangeCalendarModal} from "./CalendarModals/CreateCalendar";
 import {RemoveCalendarHock} from "./CalendarModals/RemoveCalendarModal";
 import {css} from "styled-components";
@@ -36,12 +36,12 @@ import {ChangeCalendarHock} from "./CalendarList/ChangeCalendarHock";
 import {DateListGenerator} from "../../common/calendarSupport/generators";
 import {CalendarObserver} from "../../common/calendarSupport/observer";
 
-const DayCalendar = React.lazy(() => import('./Modes/DayCalendar/DayCalendar').then(({DayCalendar}) => ({default: DayCalendar})))
-const WeekCalendar = React.lazy(() => import('./Modes/WeekCalendar/WeekCalendarController').then(({WeekCalendarController}) => ({default: WeekCalendarController})))
-const MonthCalendar = React.lazy(() => import('./Modes/MonthCalendar/MonthCalendar').then(({MonthCalendar}) => ({default: MonthCalendar})))
-const YearCalendar = React.lazy(() => import('./Modes/YearCalendar/YearCalendar').then(({YearCalendar}) => ({default: YearCalendar})))
-const ListCalendar = React.lazy(() => import('./Modes/List/ListCalendarMode').then(({ListCalendarMode}) => ({default: ListCalendarMode})))
-const FavoritesCalendar = React.lazy(() => import('./Modes/FavoritesCalendar/FavoritesCalendar').then(({FavoritesCalendar}) => ({default: FavoritesCalendar})))
+const DayCalendar = React.lazy(() => import('./RenderModes/DayCalendar/DayCalendar').then(({DayCalendar}) => ({default: DayCalendar})))
+const WeekCalendar = React.lazy(() => import('./RenderModes/WeekCalendar/WeekCalendarController').then(({WeekCalendarController}) => ({default: WeekCalendarController})))
+const MonthCalendar = React.lazy(() => import('./RenderModes/MonthCalendar/MonthCalendar').then(({MonthCalendar}) => ({default: MonthCalendar})))
+const YearCalendar = React.lazy(() => import('./RenderModes/YearCalendar/YearCalendar').then(({YearCalendar}) => ({default: YearCalendar})))
+const ListCalendar = React.lazy(() => import('./RenderModes/List/ListCalendarMode').then(({ListCalendarMode}) => ({default: ListCalendarMode})))
+const FavoritesCalendar = React.lazy(() => import('./RenderModes/FavoritesCalendar/FavoritesCalendar').then(({FavoritesCalendar}) => ({default: FavoritesCalendar})))
 
 export const Calendar: FC<CalendarProps> = ({
 																							layout,

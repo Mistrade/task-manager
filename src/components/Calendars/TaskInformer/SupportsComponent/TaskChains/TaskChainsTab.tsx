@@ -1,6 +1,5 @@
-import {FC, useMemo} from "react";
+import {FC} from "react";
 import {FlexBlock} from "../../../../LayoutComponents/FlexBlock";
-import {UUID} from "../../../types";
 import {TaskSingleChain} from "./ClonedBy";
 import {TaskInformerUpdateFn} from "../ToggleTaskInformerButtons";
 import {FullResponseEventModel} from "../../../../../store/api/taskApi/types";

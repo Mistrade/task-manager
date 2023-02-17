@@ -1,4 +1,7 @@
-import {EventFilterOnChangeHandle, FilterTaskStatuses} from "../components/Calendars/Modes/DayCalendar/EventFilter";
+import {
+	EventFilterOnChangeHandle,
+	FilterTaskStatuses
+} from "../components/Calendars/RenderModes/DayCalendar/EventFilter";
 import {useCallback, useMemo, useState} from "react";
 import {useDebounce} from "./useDebounce";
 import {CalendarMode, CalendarPriorityKeys} from "../components/Calendars/types";

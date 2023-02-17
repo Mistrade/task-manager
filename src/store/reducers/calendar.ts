@@ -14,7 +14,7 @@ import {
 } from "../../components/Calendars/types";
 import {FullResponseEventModel, UtcDate} from "../api/taskApi/types";
 import {CalendarNameItem} from "../../components/Calendars/CalendarList/CalendarNameListItem";
-import {FilterTaskStatuses} from "../../components/Calendars/Modes/DayCalendar/EventFilter";
+import {FilterTaskStatuses} from "../../components/Calendars/RenderModes/DayCalendar/EventFilter";
 
 export interface CalendarStateData {
 	day: DateItem,

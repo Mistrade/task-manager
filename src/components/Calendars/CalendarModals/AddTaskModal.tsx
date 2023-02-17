@@ -1,13 +1,14 @@
 import React, {FC} from 'react'
 import {AddTaskModalProps, CalendarTaskItem} from '../types'
 import {Modal, ModalBody, ModalHeader} from '../../Modal/Modal'
-import {ERROR_DESCRIPTIONS, ERROR_TITLES, getHumanizeDateValue} from '../../../common/constants'
+import {ERROR_DESCRIPTIONS, ERROR_TITLES} from '../../../common/constants'
 import {FlexBlock} from '../../LayoutComponents/FlexBlock'
 import {Tooltip} from '../../Tooltip/Tooltip'
 import {ErrorBoundary} from "../../Errors/ErrorBoundary";
 import dayjs from "dayjs";
 import {FullResponseEventModel} from "../../../store/api/taskApi/types";
 import {useSearchNavigate} from "../../../hooks/useSearchNavigate";
+import {DateHelper} from "../../../common/calendarSupport/dateHelper";
 
 const Form = React.lazy(() => import('../Forms/AddTaskForm')
 	.then(({AddTaskForm}) => ({default: AddTaskForm}))
@@ -60,7 +61,7 @@ export const AddTaskModal: FC<AddTaskModalProps> = ({
 			<ModalHeader>
 				<Tooltip
 					text={'Дата выбирается автоматически, когда вы нажимаете "Добавить задание".\nЕсли дата была в прошлом, выберется текущий календарный день и время.'}
-					children={`Добавить на ${getHumanizeDateValue(date || new Date(), false)}`}
+					children={`Добавить на ${DateHelper.getHumanizeDateValue(date || new Date())}`}
 					placement={'right'}
 				/>
 			</ModalHeader>

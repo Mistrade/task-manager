@@ -6,11 +6,7 @@ import {
 	CalendarCurrentYear,
 	CalendarMode,
 	EventItem,
-	TaskDate,
-	TaskMonth,
-	TaskSetResult,
-	TaskStorageType,
-	TaskYear
+	TaskStorageType
 } from '../components/Calendars/types'
 import dayjs from 'dayjs'
 import {
@@ -21,8 +17,9 @@ import {
 	ChangeYearCurrentFn,
 	ShortChangeCurrentPattern
 } from './commonTypes'
-import {getHumanizeDateValue, MonthList, ShortMonthList, WeekDaysShortList} from './constants'
+import {MonthList} from './constants'
 import {ShortEventItem} from "../store/api/taskApi/types";
+import {DateHelper} from "./calendarSupport/dateHelper";
 
 export const addNull = (value: number): string => value < 10 ? `0${value}` : value.toString()
 
@@ -183,13 +180,12 @@ const getYearCalendarTitle = (current: CalendarCurrentYear) => {
 const getDayCalendarTitle = (current: CalendarCurrentDay) => {
 	const {date} = current
 	const d = dayjs(date)
-	const dayOfWeek = WeekDaysShortList[d.weekday()]
-	return `${getHumanizeDateValue(d.toDate(), false)}`
+	return DateHelper.getHumanizeDateValue(d.toDate(), {withTime: false})
 }
 
 const getListCalendarTitle = (current: CalendarCurrentList) => {
-	const start = dayjs(current.fromDate).format(`DD ${ShortMonthList[current.fromDate.getMonth()]}`)
-	const end = dayjs(current.toDate).format(`DD ${ShortMonthList[current.toDate.getMonth()]}`)
+	const start = DateHelper.getHumanizeDateValue(current.fromDate, {withYear: false, withTime: false})
+	const end = DateHelper.getHumanizeDateValue(current.toDate, {withYear: false, withTime: false})
 	
 	return `${start} - ${end}`
 }

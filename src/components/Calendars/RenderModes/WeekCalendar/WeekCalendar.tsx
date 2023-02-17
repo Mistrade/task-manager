@@ -1,14 +1,17 @@
 import {FC, useCallback, useState} from 'react'
 import {CalendarItem, WeekCalendarProps, WeekItem} from '../../types'
 import dayjs from 'dayjs'
-import {CalendarCell} from '../../Cell'
+import {CalendarCell} from './CalendarCell/Cell'
 import styled, {css} from 'styled-components'
-import {borderRadiusSize, defaultColor, disabledColor, lightHoverColor} from '../../../../common/constants'
+import {borderRadiusSize, defaultColor, disabledColor} from '../../../../common/constants'
 import {getTaskListOfDay} from "../../../../common/functions";
-import {FlexBlock} from '../../../LayoutComponents/FlexBlock'
-import {EmptyButtonStyled} from "../../../Buttons/EmptyButton.styled";
+import {WeekNumberTitle} from "./SupportComponents/WeekNumberTitle";
 
-const WeekContainer = styled('div')<{ isVisible?: boolean }>`
+interface StyledProps {
+	isVisible?: boolean
+}
+
+const WeekContainer = styled('div')<StyledProps>`
   position: relative;
   grid-column-start: 1;
   grid-column-end: 8;
@@ -20,21 +23,24 @@ const WeekContainer = styled('div')<{ isVisible?: boolean }>`
   transition: all .3s ease-in;
   border: 1px solid transparent;
 
-  ${_ => !_.isVisible ? css`
+  ${_ => !_.isVisible
+          ? css`
             border: 1px solid ${defaultColor};
             overflow: hidden;
             border-radius: ${borderRadiusSize.xs};
           `
-          : 'none'}
+          : 'none'
+  }
 `
 
-const DaysContainer = styled('div')`
+const DaysContainer = styled('div')<StyledProps>`
   display: grid;
   grid-template-columns: repeat(7, minmax(80px, 1fr));
   grid-column-gap: 4px;
   width: 100%;
-  max-height: fit-content;
+  max-height: ${_ => _.isVisible ? 'fit-content' : "0px"};
   transition: all .3s ease-in;
+
 `
 
 const WeekOfYearTitle = styled('h3')`
@@ -51,10 +57,10 @@ const WeekOfYearTitle = styled('h3')`
     left: 0;
     cursor: pointer;
     transition: all .3s ease-in-out;
-		margin-left: -8px;
-		margin-right: -8px;
-		padding-left: 8px;
-		padding-right: 8px;
+    margin-left: -8px;
+    margin-right: -8px;
+    padding-left: 8px;
+    padding-right: 8px;
   }
 `
 
@@ -69,9 +75,9 @@ export const WeeKCalendar: FC<WeekCalendarProps> = ({
 																										}) => {
 	
 	const onSelectWeek = useCallback((item: WeekItem) => {
-		if (current.layout === 'month' && onChangeCurrent) {
-			onChangeCurrent(dayjs().set('year', current.year).week(item.weekOfYear).toDate(), 'week')
-		}
+		current.layout === 'month'
+		&& onChangeCurrent
+		&& onChangeCurrent(dayjs().set('year', current.year).week(item.weekOfYear).toDate(), 'week')
 	}, [onChangeCurrent, current.layout])
 	
 	const onClickToDate = useCallback((date: CalendarItem) => {
@@ -81,44 +87,20 @@ export const WeeKCalendar: FC<WeekCalendarProps> = ({
 	const [isVisible, setIsVisible] = useState(true)
 	
 	return (
-		<WeekContainer isVisible={isVisible}>
+		<WeekContainer
+			isVisible={isVisible}
+		>
 			{current.layout === 'month' && (
-				<WeekOfYearTitle
-					onClick={() => onSelectWeek(weekItem)}
-				>
-					<FlexBlock align={'center'} justify={'space-between'} gap={8} mb={isVisible ? 8 : 0}>
-						<FlexBlock
-							width={'100%'}
-							pl={8}
-							pt={4}
-							pb={4}
-							color={defaultColor}
-							additionalCss={css`
-                & {
-                  color: ${defaultColor};
-                }
-
-                &:hover {
-                  background-color: ${lightHoverColor};
-                  border-radius: ${borderRadiusSize.xs};
-                }
-							`}
-						>
-							неделя {weekItem.weekOfYear}
-						</FlexBlock>
-						<EmptyButtonStyled
-							style={{color: defaultColor}}
-							onClick={(e) => {
-								e.stopPropagation()
-								setIsVisible((prev) => !prev)
-							}}
-						>
-							{isVisible ? 'Скрыть' : 'Показать'}
-						</EmptyButtonStyled>
-					</FlexBlock>
-				</WeekOfYearTitle>
+				<WeekNumberTitle
+					isVisibleState={isVisible}
+					onClickTitle={() => onSelectWeek(weekItem)}
+					onHideOrShow={() => setIsVisible((prev) => !prev)}
+					weekItem={weekItem}
+				/>
 			)}
-			<DaysContainer style={{maxHeight: isVisible ? 'fit-content' : 0}}>
+			<DaysContainer
+				isVisible={isVisible}
+			>
 				{weekItem.days.map((day) => (
 					<CalendarCell
 						isVisible={isVisible}

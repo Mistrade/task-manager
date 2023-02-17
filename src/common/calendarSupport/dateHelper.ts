@@ -7,8 +7,50 @@ import {
 	CalendarCurrentYear,
 	CalendarDisabledOptions
 } from "../../components/Calendars/types";
+import {MonthList, ShortMonthList} from "../constants";
+
+export interface HumanizeDateValueOptions {
+	withTime?: boolean,
+	withYear?: boolean,
+	monthPattern?: 'short' | 'full',
+	yearPattern?: 'short' | 'full',
+}
 
 export class DateHelper {
+	public static getHumanizeDateValue(date: Date, options: HumanizeDateValueOptions = {}) {
+		const {
+			withTime = true,
+			withYear = true,
+			monthPattern = 'short',
+			yearPattern = 'full',
+		} = options
+		
+		
+		const d = dayjs(date)
+		let format: Array<string> = [
+			`DD`,
+			monthPattern === 'short'
+				? ShortMonthList[d.month()]
+				: MonthList[d.month()]
+		]
+		
+		if (withYear) {
+			format.push(
+				yearPattern === 'short'
+					? 'YYг.'
+					: 'YYYY'
+			)
+		}
+		
+		if (withTime) {
+			format.push(
+				'в HH:mm'
+			)
+		}
+		
+		return d.format(format.join(' '))
+	}
+	
 	public static getFirstDayInMonth(dateInMonth: Date | Dayjs): Dayjs {
 		return dayjs(dateInMonth).startOf('month')
 	}

@@ -2,7 +2,6 @@ import {FC, useState} from "react";
 import {FlexBlock} from "../../LayoutComponents/FlexBlock";
 import {currentColor} from "../../../common/constants";
 import {EmptyButtonStyled} from "../../Buttons/EmptyButton.styled";
-import {Modal} from "../../Modal/Modal";
 
 interface CalendarUserIndicator {
 	name: string,

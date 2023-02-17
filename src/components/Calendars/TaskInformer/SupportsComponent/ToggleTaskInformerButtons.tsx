@@ -6,12 +6,12 @@ import {currentColor, PRIORITY_LIST, PRIORITY_TITLES, TASK_STATUSES} from "../..
 import {EmptyButtonStyled} from "../../../Buttons/EmptyButton.styled";
 import {EventIcon} from "../../../Icons/EventIcon";
 import {convertEventStatus, Delay} from "../../../../common/functions";
-import {ArrowIndicator} from "../../Cell";
 import {FlexBlock} from "../../../LayoutComponents/FlexBlock";
 import {CalendarNameItem} from "../../CalendarList/CalendarNameListItem";
 import {useGetCalendarsQuery} from "../../../../store/api/taskApi/taskApi";
 import {CalendarIdentifier} from "../../CalendarList/CalendarList.styled";
 import {IconProps, LoaderIcon} from "../../../Icons/Icons";
+import {PriorityCalendarIcon} from "../../../Icons/CalendarIcons/PriorityCalendarIcon";
 
 export type TaskInformerUpdateFn = (field: keyof EventItem, data: string | EventLinkItem | boolean | null, taskId?: UUID) => Promise<void>
 
@@ -143,7 +143,7 @@ export const ToggleEventPriority: FC<ToggleEventButtonProps<CalendarPriorityKeys
 				data={PRIORITY_LIST.map(item => ({
 					id: item.type,
 					title: item.title,
-					icon: <ArrowIndicator priorityKey={item.type} isCompleted={false}/>
+					icon: <PriorityCalendarIcon priorityKey={item.type} isCompleted={false}/>
 				}))}
 				renderElement={({ref, onElementFocused, onElementBlur}) => (
 					<EmptyButtonStyled
@@ -153,7 +153,7 @@ export const ToggleEventPriority: FC<ToggleEventButtonProps<CalendarPriorityKeys
 						onBlur={onElementBlur}
 						onClick={(e) => stopPropagation && e.stopPropagation()}
 					>
-						<ArrowIndicator
+						<PriorityCalendarIcon
 							{...iconProps}
 							priorityKey={value}
 						/>

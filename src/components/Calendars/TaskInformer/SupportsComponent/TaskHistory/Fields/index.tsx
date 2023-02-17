@@ -2,23 +2,17 @@ import {FC} from "react";
 import {EventHistoryResponseItem} from "../../../../../../store/api/taskApi/taskApi";
 import {convertEventStatus} from "../../../../../../common/functions";
 import {TaskChainBadge, TaskChainItem} from "../../TaskChains/TaskChainItem";
-import {
-	currentColor,
-	darkColor, DATE_RENDER_FORMAT,
-	DATE_RENDER_FORMAT_WITH_SEC,
-	PRIORITY_TITLES
-} from "../../../../../../common/constants";
+import {currentColor, DATE_RENDER_FORMAT, PRIORITY_TITLES} from "../../../../../../common/constants";
 import {FlexBlock} from "../../../../../LayoutComponents/FlexBlock";
-import {ArrowIndicator} from "../../../../Cell";
 import {EventIcon} from "../../../../../Icons/EventIcon";
-import {TaskChainTitle} from "../../TaskChains/TaskChainTitle";
 import {FullResponseEventModel} from "../../../../../../store/api/taskApi/types";
 import {TaskChainItemsWrapper} from "../../TaskChains/TaskChainItemsWrapper";
 import dayjs from "dayjs";
 import {TaskInformerDescriptionText} from "../../TaskInformerDescription";
-import {CalendarItemLabel, CalendarNameListItem} from "../../../../CalendarList/CalendarNameListItem";
+import {CalendarItemLabel} from "../../../../CalendarList/CalendarNameListItem";
 import {CalendarNameCheckbox} from "../../../../CalendarList/CalendarList.styled";
 import {JoinToEventButton} from "../../../../../Buttons/Buttons.styled";
+import {PriorityCalendarIcon} from "../../../../../Icons/CalendarIcons/PriorityCalendarIcon";
 
 export interface TaskHistoryFieldControllerProps {
 	historyItem: EventHistoryResponseItem,
@@ -42,7 +36,7 @@ export const TaskHistoryFieldController: FC<TaskHistoryFieldControllerProps> = (
 		return (
 			<TaskChainBadge>
 				<FlexBlock gap={6} align={'center'} fSize={16}>
-					<ArrowIndicator priorityKey={eventSnapshot.priority} size={20}/>
+					<PriorityCalendarIcon priorityKey={eventSnapshot.priority} size={20}/>
 					{PRIORITY_TITLES[eventSnapshot.priority]}
 				</FlexBlock>
 			</TaskChainBadge>

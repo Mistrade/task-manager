@@ -1,10 +1,8 @@
 import React, {FC} from "react";
 import {UsageTaskItemBaseProps} from "../types";
 import {FlexBlock} from "../../LayoutComponents/FlexBlock";
-import {getHumanizeDateValue} from "../../../common/constants";
 import dayjs from "dayjs";
 import {Heading} from "../../Text/Heading";
-import {LinkStyled} from "../../Buttons/Link.styled";
 import {CalendarUserIndicator} from "../Users/UserIndicator";
 import {openUrlInNewTab} from "../../../common/url";
 import {getDateDescription} from "./SupportsComponent/TaskHistory/TaskHistoryItem";
