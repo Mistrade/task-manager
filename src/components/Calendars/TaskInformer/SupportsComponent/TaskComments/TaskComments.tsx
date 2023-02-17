@@ -17,7 +17,7 @@ import {
 	currentColor,
 	DATE_RENDER_FORMAT,
 	DATE_RENDER_FORMAT_WITH_SEC, defaultColor,
-	disabledColor, lightHoverColor, pageHeaderColor
+	disabledColor, getHumanizeDateValue, lightHoverColor, pageHeaderColor
 } from "../../../../../common/constants";
 import {EmptyButtonStyled} from "../../../../Buttons/EmptyButton.styled";
 import {TrashIcon} from "../../../../Icons/Icons";
@@ -29,6 +29,7 @@ import {Loader} from "../../../../Loaders/Loader";
 import {LinkStyled} from "../../../../Buttons/Link.styled";
 import {CopyIcon} from "../../../../Icons/AppIcon/CopyIcon";
 import {CopyToClipboardButton} from "../../../../Buttons/CopyToClipboardButton";
+import {getDateDescription} from "../TaskHistory/TaskHistoryItem";
 
 export interface TaskCommentsProps {
 	taskInfo: FullResponseEventModel,
@@ -109,7 +110,7 @@ const MessageItemHeader: FC<MessageItemHeaderProps> = ({item, canIDelete, onDele
 					>
 						{`${item.userId.name} ${item.userId.surname}`}
 					</LinkStyled>
-					{dayjs(item.date).format(DATE_RENDER_FORMAT_WITH_SEC)}
+					{getDateDescription(dayjs(item.date).toDate())}
 				</FlexBlock>
 				<FlexBlock gap={6} align={'center'}>
 					<CopyToClipboardButton

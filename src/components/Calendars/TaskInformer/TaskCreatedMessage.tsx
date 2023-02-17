@@ -7,6 +7,7 @@ import {Heading} from "../../Text/Heading";
 import {LinkStyled} from "../../Buttons/Link.styled";
 import {CalendarUserIndicator} from "../Users/UserIndicator";
 import {openUrlInNewTab} from "../../../common/url";
+import {getDateDescription} from "./SupportsComponent/TaskHistory/TaskHistoryItem";
 
 
 export const TaskCreatedMessage: FC<UsageTaskItemBaseProps> = ({taskItem}) => {
@@ -23,14 +24,7 @@ export const TaskCreatedMessage: FC<UsageTaskItemBaseProps> = ({taskItem}) => {
 					}}
 				/>
 				<span>
-					{/*<LinkStyled*/}
-					{/*	style={{fontSize: 16}}*/}
-					{/*	to={`/profile/${taskItem.userId._id}`}*/}
-					{/*	target={"_blank"}*/}
-					{/*>*/}
-					{/*	{`${[taskItem.userId.surname, taskItem.userId.name, taskItem.userId.patronymic].filter((item) => !!item).join(' ')}`}*/}
-					{/*</LinkStyled>, */}
-					{getHumanizeDateValue(dayjs(taskItem.createdAt).toDate(), true)}
+					{getDateDescription(dayjs(taskItem.createdAt).toDate(), true)}
 				</span>
 			</FlexBlock>
 		</FlexBlock>

@@ -9,7 +9,7 @@ import {
 	darkColor,
 	DATE_HOURS_MINUTES_SECONDS_FORMAT,
 	DATE_RENDER_FORMAT_WITH_SEC,
-	disabledColor
+	disabledColor, getHumanizeDateValue
 } from "../../../../../common/constants";
 import {css} from "styled-components";
 
@@ -20,10 +20,14 @@ export interface TaskHistoryItemProps {
 	children: ReactNode
 }
 
-export const getTaskHistoryItemHumanizeDate = (date: Date): string => {
+export const getDateDescription = (date: Date, withTime: boolean = true): string => {
 	const d = dayjs(date)
 	
 	const formattedHours = d.format(DATE_HOURS_MINUTES_SECONDS_FORMAT)
+	
+	if (d.isTomorrow()) {
+		return `Завтра, ${formattedHours}`
+	}
 	
 	if (d.isToday()) {
 		return `Сегодня, ${formattedHours}`
@@ -33,7 +37,7 @@ export const getTaskHistoryItemHumanizeDate = (date: Date): string => {
 		return `Вчера, ${formattedHours}`
 	}
 	
-	return `${d.format(DATE_RENDER_FORMAT_WITH_SEC)}`
+	return getHumanizeDateValue(d.toDate(), withTime)
 }
 
 export const TaskHistoryItem: FC<TaskHistoryItemProps> = ({user, date, description, children}) => {
@@ -57,7 +61,7 @@ export const TaskHistoryItem: FC<TaskHistoryItemProps> = ({user, date, descripti
 				`}
 				bgColor={'#fff'}
 			>
-				{getTaskHistoryItemHumanizeDate(date)}
+				{getDateDescription(date)}
 			</FlexBlock>
 			<FlexBlock pl={24} width={'100%'}>
 				<FlexBlock
