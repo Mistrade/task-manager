@@ -81,6 +81,7 @@ export const TimeSelector: FC<TimeSelectorProps> = ( {
       >
         {hours.map( ( value, index, array ) => (
           <TimeSelectorButton
+            key={value}
             data-title={`hour_${value}`}
             isSelected={currentDate.getHours() === value}
             type={'button'}
@@ -103,6 +104,7 @@ export const TimeSelector: FC<TimeSelectorProps> = ( {
       >
         {minutes.map( ( value, index, array ) => (
           <TimeSelectorButton
+            key={value}
             data-title={`minute_${value}`}
             isSelected={currentDate.getMinutes() === value}
             type={'button'}

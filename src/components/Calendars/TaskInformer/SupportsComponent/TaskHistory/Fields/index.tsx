@@ -2,7 +2,7 @@ import {FC} from "react";
 import {EventHistoryResponseItem} from "../../../../../../store/api/taskApi/taskApi";
 import {convertEventStatus} from "../../../../../../common/functions";
 import {TaskChainBadge, TaskChainItem} from "../../TaskChains/TaskChainItem";
-import {currentColor, DATE_RENDER_FORMAT, PRIORITY_TITLES} from "../../../../../../common/constants";
+import {currentColor, darkColor, DATE_RENDER_FORMAT, PRIORITY_TITLES} from "../../../../../../common/constants";
 import {FlexBlock} from "../../../../../LayoutComponents/FlexBlock";
 import {EventIcon} from "../../../../../Icons/EventIcon";
 import {FullResponseEventModel} from "../../../../../../store/api/taskApi/types";
@@ -13,6 +13,7 @@ import {CalendarItemLabel} from "../../../../CalendarList/CalendarNameListItem";
 import {CalendarNameCheckbox} from "../../../../CalendarList/CalendarList.styled";
 import {JoinToEventButton} from "../../../../../Buttons/Buttons.styled";
 import {PriorityCalendarIcon} from "../../../../../Icons/CalendarIcons/PriorityCalendarIcon";
+import {TrashIcon} from "../../../../../Icons/Icons";
 
 export interface TaskHistoryFieldControllerProps {
 	historyItem: EventHistoryResponseItem,
@@ -97,18 +98,30 @@ export const TaskHistoryFieldController: FC<TaskHistoryFieldControllerProps> = (
 	}
 	
 	if (fieldName === 'calendar') {
+		
 		const d = date.toString()
 		return (
 			<TaskChainBadge>
 				<FlexBlock gap={6}>
-					<CalendarNameCheckbox
-						type={'checkbox'}
-						id={`history_label_${d}_${eventSnapshot.calendar._id}`}
-						color={eventSnapshot.calendar.color}
-						checked={true}
-						// disabled={true}
-					/>
-					<CalendarItemLabel>{eventSnapshot.calendar.title}</CalendarItemLabel>
+					{eventSnapshot.calendar
+						? (
+							<>
+								<CalendarNameCheckbox
+									type={'checkbox'}
+									id={`history_label_${d}_${eventSnapshot.calendar._id}`}
+									color={eventSnapshot.calendar.color}
+									checked={true}
+									// disabled={true}
+								/>
+								<CalendarItemLabel>{eventSnapshot.calendar.title}</CalendarItemLabel>
+							</>
+						) : (
+							<>
+								<TrashIcon size={16} color={darkColor}/>
+								<CalendarItemLabel>Календарь удален</CalendarItemLabel>
+							</>
+						)}
+				
 				</FlexBlock>
 			</TaskChainBadge>
 		)

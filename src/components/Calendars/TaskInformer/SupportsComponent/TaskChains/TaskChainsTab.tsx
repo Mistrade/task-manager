@@ -7,6 +7,7 @@ import {TaskChildOf} from "./TaskChildOf";
 import {ErrorScreen} from "../../../../Errors/ErrorScreen";
 import {useGetEventChainsQuery} from "../../../../../store/api/taskApi/taskApi";
 import {Loader} from "../../../../Loaders/Loader";
+import {ScrollVerticalView} from "../../../../ScrollView/ScrollVerticalView";
 
 interface TaskChainsTabProps {
 	taskItem: FullResponseEventModel,
@@ -66,25 +67,27 @@ export const TaskChainsTab: FC<TaskChainsTabProps> = ({taskItem, updateFn}) => {
 	}
 	
 	return (
-		<FlexBlock direction={'column'} gap={12} justify={'flex-start'} align={'flex-start'}>
-			<TaskChildOf
-				childOfList={chainsObject?.data?.childrenEvents || []}
-				taskInfo={taskItem}
-				updateFn={updateFn}
-				title={'Вложенные:'}
-			/>
-			<TaskSingleChain
-				fromTask={chainsObject.data?.parentEvent}
-				updateFn={updateFn}
-				title={'Вложено в:'}
-				suffix={'childOf'}
-			/>
-			<TaskSingleChain
-				fromTask={chainsObject.data?.linkedFromEvent}
-				updateFn={updateFn}
-				title={'Клонировано от:'}
-				suffix={'cloneOf'}
-			/>
-		</FlexBlock>
+		<ScrollVerticalView>
+			<FlexBlock height={'100%'} direction={'column'} gap={12} justify={'flex-start'} align={'flex-start'}>
+				<TaskChildOf
+					childOfList={chainsObject?.data?.childrenEvents || []}
+					taskInfo={taskItem}
+					updateFn={updateFn}
+					title={'Вложенные:'}
+				/>
+				<TaskSingleChain
+					fromTask={chainsObject.data?.parentEvent}
+					updateFn={updateFn}
+					title={'Вложено в:'}
+					suffix={'childOf'}
+				/>
+				<TaskSingleChain
+					fromTask={chainsObject.data?.linkedFromEvent}
+					updateFn={updateFn}
+					title={'Клонировано от:'}
+					suffix={'cloneOf'}
+				/>
+			</FlexBlock>
+		</ScrollVerticalView>
 	)
 }

@@ -56,6 +56,9 @@ export interface FullResponseEventModel {
 	lastChange: UtcDate,
 	calendar: CalendarResponse,
 	isLiked: boolean,
+	chainsCount?: number,
+	commentsCount?: number,
+	historyItemsCount?: number
 }
 
 export type ShortUserModel = Pick<UserModel, 'name' | 'surname' | '_id' | 'phone' | 'created'>
@@ -71,5 +74,6 @@ export interface CommentModel {
 	eventId: ObjectId,
 	userId: UserModelResponse,
 	date: UtcDate,
-	message: string
+	message: string,
+	sourceComment: CommentModel | null
 }

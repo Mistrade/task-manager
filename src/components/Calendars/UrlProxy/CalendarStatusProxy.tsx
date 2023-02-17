@@ -1,11 +1,11 @@
-import {CalendarMode} from "./types";
+import {CalendarMode} from "../types";
 import {FC, useEffect} from "react";
-import {FilterTaskStatuses, URLTaskStatuses} from "./RenderModes/DayCalendar/EventFilter";
+import {FilterTaskStatuses, URLTaskStatuses} from "../RenderModes/DayCalendar/EventFilter";
 import {useParams} from "react-router";
-import {useAppDispatch, useAppSelector} from "../../store/hooks/hooks";
-import {changeTaskStatuses} from "../../store/reducers/calendar";
-import {Calendar} from "./Сalendar";
-import {useSearchNavigate} from "../../hooks/useSearchNavigate";
+import {useAppDispatch, useAppSelector} from "../../../store/hooks/hooks";
+import {changeTaskStatuses} from "../../../store/reducers/calendar";
+import {Calendar} from "../Сalendar";
+import {useSearchNavigate} from "../../../hooks/useSearchNavigate";
 
 
 export const CalendarStatusProxy: FC<{ layout: CalendarMode["layout"] }> = ({layout}) => {

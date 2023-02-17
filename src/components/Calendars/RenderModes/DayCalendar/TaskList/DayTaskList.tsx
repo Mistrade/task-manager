@@ -152,7 +152,7 @@ export const DayTaskList: FC<DayTaskListProps> = ({
 							>
 								{data.throughEvents.map((task, index) => (
 									<DayTaskItem
-										key={task.time.toString() + index}
+										key={task.id}
 										taskInfo={task}
 										day={day}
 										tabIndex={index + 1}
@@ -188,7 +188,7 @@ export const DayTaskList: FC<DayTaskListProps> = ({
 							>
 								{data.baseEvents.map((task, index) => (
 									<DayTaskItem
-										key={task.time.toString() + index}
+										key={task.id}
 										taskInfo={task}
 										day={day}
 										tabIndex={index + 1}

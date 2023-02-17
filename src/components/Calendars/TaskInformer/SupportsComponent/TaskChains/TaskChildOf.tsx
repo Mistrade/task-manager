@@ -57,7 +57,7 @@ export const TaskChildOf: FC<TaskChildOfProps> = ({taskInfo, updateFn, title, ch
 					<TaskChainItemsWrapper wrapState={state}>
 						{childOfList
 							.map(
-								(item) => <TaskChainItem suffix={'parentOf'} taskChainItem={item} updateFn={updateFn}/>
+								(item) => <TaskChainItem key={item.id} suffix={'parentOf'} taskChainItem={item} updateFn={updateFn}/>
 							)}
 					</TaskChainItemsWrapper>
 				}

@@ -27,7 +27,7 @@ interface TaskInformerDescriptionInputProps {
 	inputLabel?: string,
 	inputPlaceholder?: string,
 	rows?: number,
-	inputId?: string
+	inputId?: string,
 }
 
 export interface TaskInformerDescriptionTextProps {

@@ -22,7 +22,9 @@ export function SelectBooleanInput<T extends SelectBooleanInputDataItem>( props:
       renderData={( data, { focusOut } ) => (
         <SelectListContainer>
           {data.map( item => (
+            
             <SelectItemContainer
+              key={item.title}
               onClick={() => onChange && onChange( item ) && focusOut()}
               isSelected={item.title.toLowerCase() === selected?.title.toLowerCase()}
             >

@@ -217,6 +217,7 @@ export const ChangeCalendarModal: FC<ChangeCalendarModalProps> = ({onClose, isEd
 								<CalendarListStyled>
 									{list.map((item) => (
 										<CalendarNameListItem
+											key={item.id}
 											item={{
 												color: item.color,
 												title: `${item.title || 'Название календаря'}`,

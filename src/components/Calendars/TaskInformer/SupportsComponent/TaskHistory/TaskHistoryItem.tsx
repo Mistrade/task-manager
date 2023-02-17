@@ -25,6 +25,31 @@ export const getDateDescription = (date: Date, withTime: boolean = true): string
 	
 	const formattedHours = d.format(DATE_HOURS_MINUTES_SECONDS_FORMAT)
 	
+	const diffMinutes = Math.abs(d.diff(dayjs(), 'minute'))
+	
+	if (diffMinutes < 2) {
+		return `Только что`
+	}
+	
+	if (diffMinutes < 60) {
+		if (diffMinutes <= 20 && diffMinutes >= 5) {
+			return `${diffMinutes} минут назад`
+		}
+		
+		const divisionRemainder = diffMinutes % 10
+		
+		
+		if (divisionRemainder === 1) {
+			return `${diffMinutes} минуту назад`
+		}
+		
+		if (divisionRemainder >= 2 && divisionRemainder <= 4) {
+			return `${diffMinutes} минуты назад`
+		}
+		
+		return `${diffMinutes} минут назад`
+	}
+	
 	if (d.isTomorrow()) {
 		return `Завтра, ${formattedHours}`
 	}

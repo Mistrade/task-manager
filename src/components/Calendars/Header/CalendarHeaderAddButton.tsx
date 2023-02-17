@@ -42,6 +42,7 @@ export const CalendarHeaderAddButton: FC<CalendarHeaderAddButtonProps> = ({curre
 				<SelectListContainer>
 					{items.map((item) => (
 						<SelectItemContainer
+							key={item.title}
 							onClick={() => {
 								item.onClick()
 								methods.focusOut()

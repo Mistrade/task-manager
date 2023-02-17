@@ -34,6 +34,7 @@ export function DropDownButton<T extends DefaultDataElement>({
 					<SelectListContainer>
 						{data.map(item => (
 							<SelectItemContainer
+								key={item.id}
 								isSelected={item.id === selectedId}
 								onClick={(e) => {
 									!!stopPropagation && e.stopPropagation()

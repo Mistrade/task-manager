@@ -10,9 +10,10 @@ import {Badge} from "../../../../Badge/Badge";
 import styled from "styled-components";
 import {convertEventStatus} from "../../../../../common/functions";
 import {PriorityCalendarIcon} from "../../../../Icons/CalendarIcons/PriorityCalendarIcon";
+import {EventSnapshot} from "../../../../../store/api/taskApi/taskApi";
 
 export interface TaskChainItemProps {
-	taskChainItem: FullResponseEventModel,
+	taskChainItem: EventSnapshot,
 	taskItem?: FullResponseEventModel,
 	updateFn?: TaskInformerUpdateFn,
 	suffix?: string,

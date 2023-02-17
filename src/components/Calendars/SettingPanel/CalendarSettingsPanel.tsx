@@ -1,17 +1,17 @@
 import React, {FC, useCallback, useMemo} from 'react'
-import {FlexBlock} from '../../../LayoutComponents/FlexBlock'
-import {DaySettingsPanelProps} from '../../types'
-import {SmallCalendarMonthTitle} from '../../SmallMotnCalendar/SmallCalendarMonthTitle'
+import {FlexBlock} from '../../LayoutComponents/FlexBlock'
+import {DaySettingsPanelProps} from '../types'
+import {SmallCalendarMonthTitle} from '../SmallMotnCalendar/SmallCalendarMonthTitle'
 import dayjs from 'dayjs'
-import {Tooltip} from '../../../Tooltip/Tooltip'
-import {GetTaskSchemeRequest, useGetTaskSchemeQuery} from "../../../../store/api/taskApi/taskApi";
-import {DateScopeHelper} from "../../../../common/calendarSupport/scopes";
-import {CalendarList} from "../../CalendarList/CalendarList";
-import {PourDatesProps, SmallMonth} from "../../SmallMotnCalendar/SmallMonth";
-import {ShortChangeCurrentPattern} from "../../../../common/commonTypes";
-import {changeCurrentModeHandler, getCalendarTitle} from "../../../../common/functions";
-import {useAppSelector} from "../../../../store/hooks/hooks";
-import {CalendarCurrentTitle} from "../../Header/CalendarCurrentTitle";
+import {Tooltip} from '../../Tooltip/Tooltip'
+import {GetTaskSchemeRequest, useGetTaskSchemeQuery} from "../../../store/api/taskApi/taskApi";
+import {DateScopeHelper} from "../../../common/calendarSupport/scopes";
+import {CalendarList} from "../CalendarList/CalendarList";
+import {PourDatesProps, SmallMonth} from "../SmallMotnCalendar/SmallMonth";
+import {ShortChangeCurrentPattern} from "../../../common/commonTypes";
+import {changeCurrentModeHandler, getCalendarTitle} from "../../../common/functions";
+import {useAppSelector} from "../../../store/hooks/hooks";
+import {CalendarCurrentTitle} from "../Header/CalendarCurrentTitle";
 
 
 export const CalendarSettingsPanel: FC<DaySettingsPanelProps> = ({

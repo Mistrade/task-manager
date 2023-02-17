@@ -43,6 +43,7 @@ export const SelectPriorityInput: FC<SelectPriorityInputProps> = ( {
           <SelectListContainer>
             {data.map( item => (
               <SelectItemContainer
+                key={'priority_' + item.type}
                 isSelected={item.type === selected}
                 onClick={() => {
                   onChange && onChange( item.type )

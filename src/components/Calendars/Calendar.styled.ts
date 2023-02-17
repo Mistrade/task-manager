@@ -27,26 +27,7 @@ export const CalendarDateListContainer = styled('div')<{ rowsCount?: number }>`
     grid-template-columns: repeat(7, minmax(80px, 1fr));
     grid-column-gap: 4px;
     grid-row-gap: 8px;
-  }
-`
-
-export const CalendarCellDateFullSize = styled('div')<CalendarCellDateProps>`
-  & {
-    font-size: ${props => {
-      if (props.selected) {
-        return '18px'
-      }
-
-      return '16px'
-    }};
-
-    color: ${props => {
-      if (props.selected) {
-        return 'rgba(15,15,15,.6)'
-      }
-
-      return 'rgba(30,30,30,.4)'
-    }}
+    padding-bottom: 100px;
   }
 `
 

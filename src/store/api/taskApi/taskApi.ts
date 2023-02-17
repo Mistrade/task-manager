@@ -57,6 +57,7 @@ export interface MyServerResponse<T = null> {
 }
 
 export interface EventHistoryPopulatedItem {
+	_id: ObjectId,
 	date: Date,
 	fieldName: keyof FullResponseEventModel,
 	changeUserId: UserModelResponse,
@@ -65,13 +66,18 @@ export interface EventHistoryPopulatedItem {
 	eventSnapshot: FullResponseEventModel,
 }
 
+export interface EventSnapshot extends Omit<FullResponseEventModel, 'calendar'> {
+	calendar: null | FullResponseEventModel['calendar']
+}
+
 export interface EventHistoryResponseItem extends Omit<EventHistoryPopulatedItem, 'eventSnapshot'> {
-	eventSnapshot: FullResponseEventModel
+	eventSnapshot: EventSnapshot
 }
 
 export interface RequestCommentAddProps {
 	message: string,
-	eventId: ObjectId
+	eventId: ObjectId,
+	sourceCommentId?: ObjectId
 }
 
 export interface EventChainsObject {
@@ -90,7 +96,6 @@ export const taskApi = createApi({
 		credentials: 'include',
 		cache: 'no-cache',
 	}) as BaseQueryFn<string | FetchArgs, unknown, CustomRtkError, {}>,
-	refetchOnFocus: true,
 	refetchOnReconnect: true,
 	endpoints(build) {
 		return {
@@ -130,103 +135,103 @@ export const taskApi = createApi({
 					method: 'POST',
 					body: args
 				}),
-				invalidatesTags: (result, error, arg, meta) => error ? [] : ['Tasks', 'Calendars', 'TaskCount']
+				invalidatesTags: (result, error, arg, meta) => error ? [] : ['Tasks', 'Calendars', 'TaskCount', "TaskScheme"]
 			}),
 			getTaskInfo: build
-			.query<MyServerResponse<FullResponseEventModel>, string>({
-				async onQueryStarted(args, {queryFulfilled}) {
-					console.log('args', args)
-					if (args) {
-						await queryFulfilled
-					}
-				},
-				query: (id: string) => ({
-					url: `/taskInfo/${id}`,
-					method: 'GET',
-					cache: 'no-store'
+				.query<MyServerResponse<FullResponseEventModel>, string>({
+					async onQueryStarted(args, {queryFulfilled}) {
+						console.log('args', args)
+						if (args) {
+							await queryFulfilled
+						}
+					},
+					query: (id: string) => ({
+						url: `/taskInfo/${id}`,
+						method: 'GET',
+						cache: 'no-store'
+					}),
+					providesTags: ['TaskInfo'],
+					// invalidatesTags: ['ChildOfList']
 				}),
-				providesTags: ['TaskInfo'],
-				// invalidatesTags: ['ChildOfList']
-			}),
 			getTasksAtDay: build
-			.query<{ throughEvents: Array<ShortEventItem>, baseEvents: Array<ShortEventItem> }, GetTaskQueryProps>({
-				query: (props) => ({
-					url: `/getTaskAtDay`,
-					method: 'POST',
-					body: props,
-				}),
-				providesTags: ['Tasks'],
-				transformResponse(value: Array<ShortEventItem>, meta, arg) {
-					const throughEvents: Array<ShortEventItem> = []
-					const baseEvents: Array<ShortEventItem> = []
-					
-					const from = dayjs(arg.fromDate)
-					const to = dayjs(arg.toDate)
-					
-					value.forEach((event) => {
-						const start = dayjs(event.time)
-						const end = dayjs(event.timeEnd)
+				.query<{ throughEvents: Array<ShortEventItem>, baseEvents: Array<ShortEventItem> }, GetTaskQueryProps>({
+					query: (props) => ({
+						url: `/getTaskAtDay`,
+						method: 'POST',
+						body: props,
+					}),
+					providesTags: ['Tasks'],
+					transformResponse(value: Array<ShortEventItem>, meta, arg) {
+						const throughEvents: Array<ShortEventItem> = []
+						const baseEvents: Array<ShortEventItem> = []
 						
-						if (!start.isBetween(from, to, 'date', '[]')) {
-							return throughEvents.push(event)
+						const from = dayjs(arg.fromDate)
+						const to = dayjs(arg.toDate)
+						
+						value.forEach((event) => {
+							const start = dayjs(event.time)
+							const end = dayjs(event.timeEnd)
+							
+							if (!start.isBetween(from, to, 'date', '[]')) {
+								return throughEvents.push(event)
+							}
+							
+							if (!end.isBetween(from, to, 'date', '[]')) {
+								return throughEvents.push(event)
+							}
+							
+							return baseEvents.push(event)
+						})
+						
+						return {
+							throughEvents,
+							baseEvents
 						}
-						
-						if (!end.isBetween(from, to, 'date', '[]')) {
-							return throughEvents.push(event)
-						}
-						
-						return baseEvents.push(event)
-					})
-					
-					return {
-						throughEvents,
-						baseEvents
 					}
-				}
-			}),
+				}),
 			getTasksAtScope: build
-			.query<TaskStorageType<ShortEventItem>, GetTaskQueryProps>({
-				query: (props) => ({
-					url: `/getTaskAtScope`,
-					method: 'POST',
-					body: props,
+				.query<TaskStorageType<ShortEventItem>, GetTaskQueryProps>({
+					query: (props) => ({
+						url: `/getTaskAtScope`,
+						method: 'POST',
+						body: props,
+					}),
+					providesTags: ['Tasks'],
 				}),
-				providesTags: ['Tasks'],
-			}),
 			addTask: build
-			.mutation<MyServerResponse<{ taskId: ObjectId }>, CalendarTaskItem>({
-				query: (body) => ({
-					url: `/add`,
-					method: "POST",
-					body
+				.mutation<MyServerResponse<{ taskId: ObjectId }>, CalendarTaskItem>({
+					query: (body) => ({
+						url: `/add`,
+						method: "POST",
+						body
+					}),
+					invalidatesTags: (result, error, arg, meta) => error ? [] : ['Tasks', 'TaskScheme', 'TaskCount', "ChildOfList", "EventHistory"]
 				}),
-				invalidatesTags: (result, error, arg, meta) => error ? [] : ['Tasks', 'TaskScheme', 'TaskCount', "ChildOfList", "EventHistory"]
-			}),
 			removeTask: build
-			.mutation({
-				query: (arg: { id: string, remove?: boolean }) => ({
-					url: '/remove',
-					method: 'POST',
-					body: arg
+				.mutation({
+					query: (arg: { id: string, remove?: boolean }) => ({
+						url: '/remove',
+						method: 'POST',
+						body: arg
+					}),
+					invalidatesTags: (result, error, arg, meta) => error ? [] : ['Tasks', 'TaskScheme', 'TaskCount', 'ChildOfList', "EventHistory"]
 				}),
-				invalidatesTags: (result, error, arg, meta) => error ? [] : ['Tasks', 'TaskScheme', 'TaskCount', 'ChildOfList', "EventHistory"]
-			}),
 			getTaskScheme: build
-			.query<GetTaskSchemeResponse, GetTaskSchemeRequest>({
-				query: (args) => ({
-					url: '/getTasksScheme',
-					method: 'POST',
-					body: args,
+				.query<GetTaskSchemeResponse, GetTaskSchemeRequest>({
+					query: (args) => ({
+						url: '/getTasksScheme',
+						method: 'POST',
+						body: args,
+					}),
+					transformResponse: (baseQueryReturnValue: MyServerResponse<GetTaskSchemeResponse>, meta, arg): GetTaskSchemeResponse => {
+						if (!baseQueryReturnValue.data || baseQueryReturnValue?.info?.type === 'error') {
+							return {}
+						}
+						
+						return baseQueryReturnValue.data || {}
+					},
+					providesTags: ['TaskScheme']
 				}),
-				transformResponse: (baseQueryReturnValue: MyServerResponse<GetTaskSchemeResponse>, meta, arg): GetTaskSchemeResponse => {
-					if (!baseQueryReturnValue.data || baseQueryReturnValue?.info?.type === 'error') {
-						return {}
-					}
-					
-					return baseQueryReturnValue.data || {}
-				},
-				providesTags: ['TaskScheme']
-			}),
 			getEventHistory: build.query<MyServerResponse<Array<EventHistoryResponseItem>>, string>({
 				query: (taskId) => ({
 					url: `/getEventHistory/${taskId}`,
@@ -235,14 +240,14 @@ export const taskApi = createApi({
 				providesTags: ["EventHistory"]
 			}),
 			getEventChains: build
-			.query<MyServerResponse<EventChainsObject>, string>({
-				query: (taskId) => ({
-					url: `/getEventChains/${taskId}`,
-					method: 'GET',
-					cache: 'no-cache'
+				.query<MyServerResponse<EventChainsObject>, string>({
+					query: (taskId) => ({
+						url: `/getEventChains/${taskId}`,
+						method: 'GET',
+						cache: 'no-cache'
+					}),
+					providesTags: ['ChildOfList']
 				}),
-				providesTags: ['ChildOfList']
-			}),
 			updateTask: build.mutation<MyServerResponse<null>, { id: string, field: keyof EventItem, data: any }>({
 				query: (args) => ({
 					url: '/taskInfo/update',

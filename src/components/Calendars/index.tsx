@@ -3,7 +3,7 @@ import {CalendarMode} from "./types";
 import {useAppDispatch, useAppSelector} from "../../store/hooks/hooks";
 import {changeCalendarCurrent} from "../../store/reducers/calendar";
 import {Route, Routes, useParams} from "react-router-dom";
-import {CalendarStatusProxy} from "./CalendarStatusProxy";
+import {CalendarStatusProxy} from "./UrlProxy/CalendarStatusProxy";
 import {useLocation} from "react-router";
 import dayjs from "dayjs";
 import {useSearchNavigate} from "../../hooks/useSearchNavigate";

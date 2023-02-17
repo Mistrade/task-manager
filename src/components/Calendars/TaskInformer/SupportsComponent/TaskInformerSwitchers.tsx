@@ -1,4 +1,4 @@
-import {FC} from "react";
+import {FC, useMemo} from "react";
 import {FlexBlock} from "../../../LayoutComponents/FlexBlock";
 import {disabledColor} from "../../../../common/constants";
 import {SwitchCalendarModeTab} from "../../Calendar.styled";
@@ -12,9 +12,14 @@ export interface TaskInformerSwitchersItem {
 	badgeCount?: number
 }
 
+type TaskInformerSwitcherBadges = {
+	[key in TaskInformerSwitchersKeys]?: number
+}
+
 interface TaskInformerSwitchers {
 	onChange?: (value: TaskInformerSwitchersItem) => void,
-	selected: TaskInformerSwitchersKeys
+	selected: TaskInformerSwitchersKeys,
+	badges: TaskInformerSwitcherBadges
 }
 
 export const isCorrectTaskInformerSwitcherName = (switcherName: string) => {
@@ -30,7 +35,16 @@ export const taskInformerSwitcherList: Array<TaskInformerSwitchersItem> = [
 	{title: 'Участники', key: 'members'},
 	{title: 'Связи', key: 'chains'}
 ]
-export const TaskInformerSwitchers: FC<TaskInformerSwitchers> = ({selected, onChange}) => {
+export const TaskInformerSwitchers: FC<TaskInformerSwitchers> = ({selected, onChange, badges}) => {
+	const badgesCount = useMemo((): Required<TaskInformerSwitcherBadges> => {
+		return {
+			comments: badges?.comments || 0,
+			members: badges?.members || 0,
+			about: badges?.about || 0,
+			chains: badges?.chains || 0,
+			history: badges?.history || 0
+		}
+	}, [badges])
 	
 	return (
 		<FlexBlock borderBottom={`1px solid ${disabledColor}`} justify={'flex-start'} align={'flex-end'}>
@@ -44,9 +58,9 @@ export const TaskInformerSwitchers: FC<TaskInformerSwitchers> = ({selected, onCh
 					<span>
 					{item.title}
 					</span>
-					{item.badgeCount && item.badgeCount > 0 && (
-						<Badge>{item.badgeCount}</Badge>
-					)}
+					{(badgesCount[item.key] && badgesCount[item.key] > 0 && (
+						<Badge>{badgesCount[item.key]}</Badge>
+					)) || ""}
 				</SwitchCalendarModeTab>
 			))}
 		</FlexBlock>

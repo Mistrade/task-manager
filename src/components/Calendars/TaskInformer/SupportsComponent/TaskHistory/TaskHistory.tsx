@@ -6,6 +6,7 @@ import {Loader} from "../../../../Loaders/Loader";
 import {TaskHistoryItem} from "./TaskHistoryItem";
 import {TaskHistoryFieldController} from "./Fields";
 import {ErrorScreen} from "../../../../Errors/ErrorScreen";
+import {ScrollVerticalView} from "../../../../ScrollView/ScrollVerticalView";
 
 
 export interface TaskHistoryProps {
@@ -13,7 +14,10 @@ export interface TaskHistoryProps {
 }
 
 export const TaskHistory: FC<TaskHistoryProps> = ({taskInfo}) => {
-	const {data: history, isFetching, error} = useGetEventHistoryQuery(taskInfo.id, {refetchOnMountOrArgChange: true})
+	const {data: history, isFetching, error} = useGetEventHistoryQuery(taskInfo.id, {
+		refetchOnMountOrArgChange: 60,
+		pollingInterval: 60 * 1000
+	})
 	
 	if (!history?.data && isFetching) {
 		return <Loader
@@ -75,12 +79,19 @@ export const TaskHistory: FC<TaskHistoryProps> = ({taskInfo}) => {
 	
 	
 	return (
-		<FlexBlock width={'100%'} gap={12} direction={'column'}>
-			{history.data.map((item: EventHistoryResponseItem) => (
-				<TaskHistoryItem user={item.changeUserId} date={item.date} description={item.snapshotDescription}>
-					<TaskHistoryFieldController historyItem={item}/>
-				</TaskHistoryItem>
-			))}
-		</FlexBlock>
+		<ScrollVerticalView>
+			<FlexBlock width={'100%'} height={'100%'} gap={12} direction={'column'}>
+				{history.data.map((item: EventHistoryResponseItem) => (
+					<TaskHistoryItem
+						key={item._id}
+						user={item.changeUserId}
+						date={item.date}
+						description={item.snapshotDescription}
+					>
+						<TaskHistoryFieldController historyItem={item}/>
+					</TaskHistoryItem>
+				))}
+			</FlexBlock>
+		</ScrollVerticalView>
 	)
 }

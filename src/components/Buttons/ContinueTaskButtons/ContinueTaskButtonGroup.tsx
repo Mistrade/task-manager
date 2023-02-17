@@ -30,6 +30,7 @@ export const ContinueTaskButtonGroup: FC<ContinueTaskButtonGroupProps> = ({statu
 					<FlexBlock gap={4} align={'center'} direction={'row'}>
 						{buttons.map((continueItem) => (
 							<WhiteButton
+								key={continueItem.nextStatus + continueItem.title}
 								onClick={async (e) => {
 									e.stopPropagation()
 									await updateFn(continueItem.nextStatus)

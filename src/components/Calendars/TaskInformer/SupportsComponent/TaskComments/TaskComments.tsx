@@ -5,10 +5,15 @@ import {
 	useGetCommentsListQuery,
 	useRemoveCommentMutation
 } from "../../../../../store/api/taskApi/taskApi";
-import {FC, useEffect, useRef, useState} from "react";
-import {CommentModel, FullResponseEventModel, UserModelResponse} from "../../../../../store/api/taskApi/types";
+import {FC, useCallback, useEffect, useRef, useState} from "react";
+import {
+	CommentModel,
+	FullResponseEventModel,
+	ObjectId,
+	UserModelResponse
+} from "../../../../../store/api/taskApi/types";
 import {FlexBlock} from "../../../../LayoutComponents/FlexBlock";
-import styled from "styled-components";
+import styled, {css} from "styled-components";
 import {TaskInformerDescriptionInput} from "../TaskInformerDescription";
 import {toast} from "react-toastify";
 import dayjs from "dayjs";
@@ -16,7 +21,7 @@ import {
 	borderRadiusSize,
 	currentColor,
 	defaultColor,
-	disabledColor,
+	disabledColor, lightHoverColor,
 	pageHeaderColor
 } from "../../../../../common/constants";
 import {EmptyButtonStyled} from "../../../../Buttons/EmptyButton.styled";
@@ -29,6 +34,11 @@ import {Loader} from "../../../../Loaders/Loader";
 import {LinkStyled} from "../../../../Buttons/Link.styled";
 import {CopyToClipboardButton} from "../../../../Buttons/CopyToClipboardButton";
 import {getDateDescription} from "../TaskHistory/TaskHistoryItem";
+import {AnswerOnMessageButton, AnswerOnMessageButtonProps} from "../../../../Buttons/AnswerOnMessageButton";
+import {AnswerIcon} from "../../../../Icons/CalendarIcons/AnswerIcon";
+import {ScrollVerticalView} from "../../../../ScrollView/ScrollVerticalView";
+import {TaskPreviewDescription} from "../../../RenderModes/DayCalendar/TaskList/TaskList.styled";
+import {AnsweredComment} from "./SupportComponents/AnsweredComment";
 
 export interface TaskCommentsProps {
 	taskInfo: FullResponseEventModel,
@@ -36,18 +46,18 @@ export interface TaskCommentsProps {
 
 
 export const TaskCommentsContainer = styled('div')`
-  height: calc(100% - 120px);
   width: 100%;
   display: flex;
   flex-direction: column;
   justify-content: flex-end;
   position: relative;
+  flex-grow: 3;
+  overflow-y: auto;
+  overflow-x: hidden;
 `
 
 export const ScrollContainer = styled('div')`
   height: 100%;
-  overflow-y: auto;
-  overflow-x: hidden;
   position: relative;
 `
 
@@ -89,10 +99,16 @@ export const NonViewScroller = styled('div')`
 export interface MessageItemHeaderProps {
 	item: CommentModel,
 	canIDelete?: boolean,
-	onDelete?: (id: string) => Promise<void>
+	onDelete?: (id: string) => Promise<void>,
+	onAnswerToComment?: AnswerOnMessageButtonProps['onClick']
 }
 
-const MessageItemHeader: FC<MessageItemHeaderProps> = ({item, canIDelete, onDelete}) => {
+const MessageItemHeader: FC<MessageItemHeaderProps> = ({
+																												 item,
+																												 canIDelete,
+																												 onDelete,
+																												 onAnswerToComment
+																											 }) => {
 	const [isDeleteState, setIsDeleteState] = useState(false)
 	return (
 		<FlexBlock
@@ -112,6 +128,9 @@ const MessageItemHeader: FC<MessageItemHeaderProps> = ({item, canIDelete, onDele
 					{getDateDescription(dayjs(item.date).toDate())}
 				</FlexBlock>
 				<FlexBlock gap={6} align={'center'}>
+					<AnswerOnMessageButton
+						onClick={onAnswerToComment}
+					/>
 					<CopyToClipboardButton
 						content={item.message}
 					/>
@@ -151,7 +170,9 @@ export const TaskComments: FC<TaskCommentsProps> = ({taskInfo}) => {
 		data: comments,
 		error: commentsError,
 		isFetching: commentsIsFetching
-	} = useGetCommentsListQuery(taskInfo.id, {pollingInterval: 5000})
+	} = useGetCommentsListQuery(taskInfo.id, {pollingInterval: 5000, refetchOnMountOrArgChange: 5})
+	const [inResponseToCommentItem, setInResponseToCommentItem] = useState<null | CommentModel>(null)
+	
 	const ref = useRef<HTMLDivElement>(null)
 	
 	
@@ -182,6 +203,35 @@ export const TaskComments: FC<TaskCommentsProps> = ({taskInfo}) => {
 		return false
 	}
 	
+	const removeCommentHandler = useCallback(async (commentId: ObjectId): Promise<void> => {
+		return await removeComment(commentId)
+			.unwrap()
+			.then((r: MyServerResponse<null>) => {
+				toast(r.info?.message, {type: r.info?.type})
+			})
+			.catch((r: CustomRtkError) => {
+				toast(r.data?.info?.message, {type: r.data?.info?.type})
+			})
+	}, [taskInfo])
+	
+	const addCommentHandler = useCallback(async (message: string) => {
+		return await addComment({
+			eventId: taskInfo.id,
+			message: message,
+			sourceCommentId: inResponseToCommentItem?._id || undefined
+		})
+			.unwrap()
+			.then(() => {
+				setInResponseToCommentItem(null)
+			})
+			.catch((r: CustomRtkError) => {
+				toast(r.data.info?.message, {
+						type: r.data.info?.type
+					}
+				)
+			})
+	}, [taskInfo, inResponseToCommentItem])
+	
 	if (!comments?.data && commentsIsFetching) {
 		return (
 			<FlexBlock width={'100%'} height={'100%'} justify={'center'} align={'center'}>
@@ -207,75 +257,64 @@ export const TaskComments: FC<TaskCommentsProps> = ({taskInfo}) => {
 	
 	
 	return (
-		<FlexBlock
-			width={'100%'}
-			height={'100%'}
-			maxHeight={'100%'}
-			direction={'column'}
-			position={'relative'}
-			gap={6}
+		<ScrollVerticalView
+			placementStatic={'bottom'}
+			gap={12}
+			staticContent={
+				<FlexBlock
+					direction={'column'}
+					gap={6}
+					pt={6}
+					pb={6}
+					additionalCss={css`
+            width: 100%;
+            border-top: 1px solid ${disabledColor}
+					`}
+				>
+					<AnsweredComment
+						commentItem={inResponseToCommentItem}
+						onDelete={() => setInResponseToCommentItem(null)}
+					/>
+					<TaskInformerDescriptionInput
+						rows={4}
+						inputPlaceholder={`Напишите свой комментарий к событию "${taskInfo.title}"`}
+						updateFn={addCommentHandler}
+						initialValue={''}
+						clearOnDecline={true}
+						clearOnComplete={true}
+					/>
+				</FlexBlock>
+			}
 		>
-			<TaskCommentsContainer>
-				{comments?.data && comments?.data?.length > 0 ? (
-					<ScrollContainer>
-						<MessagesContainer>
-							{comments?.data?.map((item: CommentModel) => (
-								<MessageItemContainer key={item._id}>
-									<MessageItemHeader
-										item={item}
-										canIDelete={checkCanIDelete(item, userInfo?.data, taskInfo)}
-										onDelete={async (commentId) => {
-											return await removeComment(commentId)
-												.unwrap()
-												.then((r: MyServerResponse<null>) => {
-													toast(r.info?.message, {type: r.info?.type})
-												})
-												.catch((r: CustomRtkError) => {
-													toast(r.data?.info?.message, {type: r.data?.info?.type})
-												})
-										}}
-									/>
-									<FlexBlock className={'comment--message'} fSize={14}>
-										{item.message}
-									</FlexBlock>
-								</MessageItemContainer>
-							))}
-						</MessagesContainer>
-						<NonViewScroller ref={ref}/>
-					</ScrollContainer>
-				) : (
-					<FlexBlock height={'100%'} width={"100%"} align={'center'} justify={'center'}>
-						<ErrorScreen
-							title={'Комментариев пока нет...'}
-							errorType={'ERR_FORBIDDEN'}
-							description={'Напишите первый, каждый участник сможет его увидеть!'}
-						/>
-					</FlexBlock>
-				)}
-			</TaskCommentsContainer>
-			<TaskInformerDescriptionInput
-				rows={4}
-				inputPlaceholder={`Напишите свой комментарий к событию "${taskInfo.title}"`}
-				updateFn={async (value) => {
-					return await addComment({
-						eventId: taskInfo.id,
-						message: value
-					})
-						.unwrap()
-						.then(() => {
-						
-						})
-						.catch((r: CustomRtkError) => {
-							toast(r.data.info?.message, {
-									type: r.data.info?.type
-								}
-							)
-						})
-				}}
-				initialValue={''}
-				clearOnDecline={true}
-				clearOnComplete={true}
-			/>
-		</FlexBlock>
+			{comments?.data && comments?.data?.length > 0 ? (
+				<ScrollContainer>
+					<MessagesContainer>
+						{comments?.data?.map((item: CommentModel) => (
+							<MessageItemContainer key={item._id}>
+								<MessageItemHeader
+									item={item}
+									canIDelete={checkCanIDelete(item, userInfo?.data, taskInfo)}
+									onDelete={removeCommentHandler}
+									onAnswerToComment={() => setInResponseToCommentItem(item)}
+								/>
+								<AnsweredComment commentItem={item.sourceComment}/>
+								<FlexBlock className={'comment--message'} fSize={14}>
+									{item.message}
+								</FlexBlock>
+							</MessageItemContainer>
+						))}
+					</MessagesContainer>
+					<NonViewScroller ref={ref}/>
+				</ScrollContainer>
+			) : (
+				<FlexBlock height={'100%'} width={"100%"} align={'center'} justify={'center'}>
+					<ErrorScreen
+						title={'Комментариев пока нет...'}
+						errorType={'ERR_FORBIDDEN'}
+						description={'Напишите первый, каждый участник сможет его увидеть!'}
+					/>
+				</FlexBlock>
+			)}
+		</ScrollVerticalView>
 	)
 }

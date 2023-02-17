@@ -19,8 +19,13 @@ export const MonthCalendar: FC<MonthCalendarProps> = ({
 																												renderTaskCount,
 																											}) => {
 	const scope = useMemo(() => {
-		const v = new DateScopeHelper({useOtherDays: true})
-			.getDateScopeForTaskScheme(new Date(monthItem.year, monthItem.monthOfYear,), 'month')
+		const v = new DateScopeHelper(
+			{useOtherDays: true}
+		).getDateScopeForTaskScheme(
+			new Date(monthItem.year, monthItem.monthOfYear),
+			'month'
+		)
+		
 		return {
 			fromDate: dayjs(v.fromDate).toDate(),
 			toDate: dayjs(v.toDate).toDate()
@@ -60,6 +65,7 @@ export const MonthCalendar: FC<MonthCalendarProps> = ({
 				pl={8}
 				mr={-8}
 				pr={8}
+				position={'relative'}
 			>
 				<CalendarDesktopContainer>
 					<CalendarDateListContainer rowsCount={6}>

@@ -27,6 +27,7 @@ export const Accordion: FC<AccordionProps> = ({title, zIndex, iconProps, childre
 				pl={6}
 				pr={6}
 				position={'sticky'}
+				align={'center'}
 				style={{top: 0, left: 0, zIndex: 3 * (zIndex || 1)}}
 				bgColor={'#fff'}
 			>

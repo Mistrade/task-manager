@@ -40,7 +40,19 @@ interface DayTaskItemProps {
 	refetchTaskList?: () => void
 }
 
-const TileMixin = css`
+export const DayEventItemBoxShadowMixin = css`
+  & {
+    cursor: pointer;
+    box-shadow: none;
+    transition: box-shadow .3s ease-in-out;
+  }
+
+  &:hover {
+    box-shadow: 0px 0px 4px ${defaultColor};
+  }
+`
+
+const DayEventItemMixin = css`
   & {
     cursor: pointer;
     box-shadow: none;
@@ -139,7 +151,7 @@ export const DayTaskItem: FC<DayTaskItemProps> = ({
 			onKeyPress={keyPressHandler}
 			onClick={clickHandler}
 			additionalCss={css`
-        ${TileMixin};
+        ${DayEventItemMixin};
 			`}
 			p={'8px 12px'}
 			gap={8}

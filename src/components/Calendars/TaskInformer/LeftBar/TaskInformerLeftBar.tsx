@@ -64,37 +64,47 @@ export const TaskInformerLeftBar: FC<TaskInformerLeftBarProps> = ({taskItem, upd
 					updateFn={updateFn}
 				/>
 				<TaskInformerSwitchers
+					badges={{
+						members: (taskItem.members.length || 0) + 1,
+						history: taskItem.historyItemsCount,
+						chains: taskItem.chainsCount,
+						comments: taskItem.commentsCount
+					}}
 					selected={switcher}
 					onChange={(value) => setSwitcher(value.key)}
 				/>
 			</FlexBlock>
 			<FlexBlock
 				height={'100%'}
-				overflowY={'auto'}
-				overflowX={"hidden"}
-				direction={'column'}
-				// pr={switcher === 'comments' ? 0 : 12}
-				p={'4px 8px'}
+				overflow={'hidden'}
+				mt={4}
 			>
-				{switcher === 'about' ? (
-					<TaskInformerAboutTab
-						taskItem={taskItem}
-						updateFn={updateFn}
-					/>
-				) : switcher === 'chains' ? (
-					<TaskChainsTab
-						taskItem={taskItem}
-						updateFn={updateFn}
-					/>
-				) : switcher === 'history' ? (
-					<TaskHistory taskInfo={taskItem}/>
-				) : switcher === 'members' ? (
-					<TaskMembers taskItem={taskItem}/>
-				) : switcher === 'comments' ? (
-					<TaskComments taskInfo={taskItem}/>
-				) : (
-					<>{switcher}</>
-				)}
+				<FlexBlock
+					width={'100%'}
+					height={'100%'}
+					direction={'column'}
+					p={'0px 8px'}
+				>
+					{switcher === 'about' ? (
+						<TaskInformerAboutTab
+							taskItem={taskItem}
+							updateFn={updateFn}
+						/>
+					) : switcher === 'chains' ? (
+						<TaskChainsTab
+							taskItem={taskItem}
+							updateFn={updateFn}
+						/>
+					) : switcher === 'history' ? (
+						<TaskHistory taskInfo={taskItem}/>
+					) : switcher === 'members' ? (
+						<TaskMembers taskItem={taskItem}/>
+					) : switcher === 'comments' ? (
+						<TaskComments taskInfo={taskItem}/>
+					) : (
+						<>{switcher}</>
+					)}
+				</FlexBlock>
 			</FlexBlock>
 		</FlexBlock>
 	)

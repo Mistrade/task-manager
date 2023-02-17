@@ -90,11 +90,6 @@ export interface TaskTileItemProps {
 	onSelect?: CalendarCellEventsListProps['onSelect']
 }
 
-export interface TaskTilePriorityIndicatorProps {
-	priority: CalendarPriorityKeys,
-	isCompleted: boolean
-}
-
 export interface CalendarHeaderSwitchersProps {
 	layout?: CalendarMode['layout']
 	onChange: (newLayout: CalendarMode['layout']) => void
@@ -112,22 +107,6 @@ export interface DaySettingsPanelProps {
 	current: CalendarMode,
 	onChangeCurrent: UseCalendarReturned['onChangeCurrent'],
 	onAddTask: OnAddTaskFnType
-}
-
-export interface SmallCalendarDayItemProps {
-	onSelectDate?: (date: CalendarItem) => void,
-	date: CalendarItem,
-	weekIndex: number,
-	currentDate?: Date,
-	includesTasks?: GetTaskSchemeResponse,
-}
-
-export interface SmallMonthCalendarWeekItemProps {
-	monthItem: MonthItem,
-	onSelectDate?: (date: CalendarItem) => void,
-	currentDate?: Date
-	includesTasks?: GetTaskSchemeResponse,
-	pourWeeks?: Array<number>
 }
 
 export interface SmallCalendarMonthTitleProps {
@@ -182,11 +161,6 @@ export interface CalendarItemMetaData {
 	isYesterday: boolean,
 	isDisabled: boolean,
 	isCurrent: boolean
-}
-
-export interface CalendarCurrentData {
-	month: number,
-	year: number
 }
 
 export interface CalendarDisabledOptions {
@@ -301,19 +275,11 @@ export type TaskMembersListType = Array<TaskMemberItemType>
 
 
 export type CustomObject<T = any> = { [key in string]: T }
-export type PartialCustomObject<T = any> = Partial<{ [key in string]: T }>
 
 export type TaskStorageType<EVENT = EventItem> = CustomObject<TaskYear<EVENT>>
 export type TaskYear<EVENT = EventItem> = CustomObject<TaskMonth<EVENT>>
 export type TaskMonth<EVENT = EventItem> = CustomObject<TaskDate<EVENT>>
 export type TaskDate<EVENT = EventItem> = Array<EVENT>
-
-export interface TaskSetResult {
-	status: boolean,
-	storage: TaskStorageType
-}
-
-export type CalendarTaskList = Array<CalendarTaskItem>
 
 export type SelectTaskItem = Omit<TaskTileClickArguments, 'event'>
 
@@ -397,5 +363,4 @@ export type OnCloseTaskInfoFnType = () => void
 export type OnAddTaskFnType = (date: Date, initialValues?: Partial<FullResponseEventModel>) => void
 export type OnChangeCurrentFnType = (date: Date | CalendarCurrentList, layout: CalendarMode['layout']) => void
 export type OnSelectTaskFnType = (taskId: string) => any
-export type AddTaskDateType = CalendarItem | null
 export type SelectedTaskType = SelectTaskItem | null
