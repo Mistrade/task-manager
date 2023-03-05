@@ -6,7 +6,7 @@ import * as yup from 'yup'
 import {Button, LinkButton, WhiteButton} from '../../../Buttons/Buttons.styled'
 import {DefaultWebIcon} from '../../../Icons/SocialNetworkIcons/DefaultWeb'
 import {UrlIcon} from '../../../Icons/SocialNetworkIcons'
-import {EventLinkItem} from "../../../Calendars/types";
+import {EventLinkItem} from "../../../../pages/Planner/planner.types";
 
 export interface SelectLinksProps extends Omit<DefaultTextInputProps, 'onChange' | 'value'> {
 	label?: string,

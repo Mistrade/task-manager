@@ -4,13 +4,13 @@ import {Navigate, Route} from "react-router";
 import {NotFoundPage} from "./NotFoundRoutes";
 import {Loader} from "../Loaders/Loader";
 import {WithSuspense} from "../Loaders/WithSuspense";
-import {UserModelResponse} from "../../store/api/taskApi/types";
+import {UserModel} from "../../store/api/session-api/session-api.types";
 
 interface OnlyAuthRoutes {
-	userInfo?: UserModelResponse | null,
+	userInfo?: UserModel | null,
 }
 
-const CalendarController = React.lazy(() => import('../Calendars/index').then(({CalendarMain}) => ({default: CalendarMain})))
+const CalendarController = React.lazy(() => import('../../pages/Planner/index').then(({PlannerController}) => ({default: PlannerController})))
 const RegistrationForm = React.lazy(() => import('../Session/Registration').then(({Registration}) => ({default: Registration})))
 const AuthorizationForm = React.lazy(() => import('../Session/AuthorizationForm').then(({AuthorizationForm}) => ({default: AuthorizationForm})))
 
@@ -20,11 +20,11 @@ export const AppRoutes: FC<OnlyAuthRoutes> = ({userInfo}) => {
 		return (
 			<Routes>
 				<Route
-					path={'calendar'}
+					path={'planner'}
 				>
 					<Route
 						index
-						element={<Navigate to={'/calendar/day/in_work'}/>}
+						element={<Navigate to={'/planner/day/in_progress'}/>}
 					/>
 					<Route
 						path={':layout/*'}

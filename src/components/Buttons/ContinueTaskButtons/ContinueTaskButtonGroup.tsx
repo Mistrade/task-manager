@@ -1,5 +1,5 @@
 import {FC, useMemo} from "react";
-import {TaskStatusesType} from "../../Calendars/types";
+import {TaskStatusesType} from "../../../pages/Planner/planner.types";
 import {FlexBlock} from "../../LayoutComponents/FlexBlock";
 import {ContinueWorkTaskButtonName, darkColor} from "../../../common/constants";
 import {WhiteButton} from "../Buttons.styled";

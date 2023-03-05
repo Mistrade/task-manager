@@ -6,7 +6,7 @@ import {
 	MonthItem,
 	WeekItem,
 	YearItem
-} from '../../components/Calendars/types'
+} from '../../pages/Planner/planner.types'
 import {DateScopeHelper, DateScopeInterface, DateScopeOptions} from './scopes'
 import dayjs from 'dayjs'
 import {CalendarDateItem} from "./calendarDateItem";

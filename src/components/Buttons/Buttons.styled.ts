@@ -82,7 +82,6 @@ export const WhiteButton = styled('button')<{ withHover?: boolean }>`
       color: ${currentColor};
       background-color: #fff;
       border: 1px solid ${currentColor};
-      box-shadow: 0 0 8px 0px ${currentColor};
     }
   `}
 `
@@ -91,7 +90,16 @@ WhiteButton.defaultProps = {
 	withHover: true
 }
 
-export const JoinToEventButton = styled('a')`
+export const TransparentButton = styled(WhiteButton)`
+	& {
+		width: max-content;
+		line-height: 20px;
+		font-size: 14px;
+		background-color: transparent;
+	}
+`
+
+export const JoinToEventButton = styled("a")`
   font-size: 14px;
   padding: 4px 8px;
   border-width: 1px;
@@ -101,10 +109,12 @@ export const JoinToEventButton = styled('a')`
   color: ${defaultColor};
   text-decoration: none;
   outline: none;
+	line-height: 20px;
   background-color: transparent;
   transition: all .3s ease-in;
 
   &:hover {
+    background-color: #fff;
     border-color: ${currentColor};
     color: ${currentColor}
   }

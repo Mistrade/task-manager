@@ -1,0 +1,57 @@
+import {FlexBlock} from "../../../../../components/LayoutComponents/FlexBlock"
+import {TextInput} from "../../../../../components/Input/TextInput/TextInput";
+import {DatePicker} from "../../../../../components/DatePicker/DatePicker";
+import dayjs from "dayjs";
+import React, {FC} from "react";
+import {SelectPriorityInput} from "../../../../../components/Input/SelectInput/CalendarSelectInputs/SelectPriorityInput";
+import {SelectStatusInput} from "../../../../../components/Input/SelectInput/CalendarSelectInputs/SelectStatusInput";
+import {FormHandle} from "../../../RenderModes/FindEventFilter/find-event-filters.types";
+
+export const SmartFindEventFilters: FC<FormHandle> = ({values, onChangeHandlers, onFocusHandlers}) => {
+	return (
+		<FlexBlock gap={6} direction={'column'} width={'100%'}>
+			<FlexBlock direction={'row'} gap={6}>
+				<SelectPriorityInput
+					useClearItem={true}
+					selected={values.priority || null}
+					onChange={onChangeHandlers.priority}
+					onFocus={(e) => onFocusHandlers && onFocusHandlers('priority', e)}
+					label={'Приоритет'}
+					placeholder={'Приоритет сужает поиск'}
+				/>
+				<TextInput
+					value={values.title || ''}
+					onChange={(e) => onChangeHandlers.title(e.target.value)}
+					onFocus={(e) => onFocusHandlers && onFocusHandlers('title', e)}
+					label={'Название'}
+					placeholder={'Найдем совпадения по названию'}
+				/>
+				<SelectStatusInput
+					selected={values.taskStatus || null}
+					onChange={onChangeHandlers.taskStatus}
+					onFocus={(e) => onFocusHandlers && onFocusHandlers('taskStatus', e)}
+					label={'Статус'}
+					placeholder={'Статус сужает поиск'}
+				/>
+			</FlexBlock>
+			<FlexBlock direction={'row'} gap={6}>
+				<DatePicker
+					onDecline={() => onChangeHandlers.start(null)}
+					useForceUpdateValue={true}
+					currentDate={values.start}
+					onChange={onChangeHandlers.start}
+					onFocus={(e) => onFocusHandlers && onFocusHandlers('start', e)}
+					label={'Начало события'}
+				/>
+				<DatePicker
+					onDecline={() => onChangeHandlers.end(null)}
+					useForceUpdateValue={true}
+					currentDate={values.end}
+					onChange={onChangeHandlers.end}
+					onFocus={(e) => onFocusHandlers && onFocusHandlers('end', e)}
+					label={'Конец события'}
+				/>
+			</FlexBlock>
+		</FlexBlock>
+	)
+}

@@ -2,12 +2,16 @@ import React from 'react'
 import {createGlobalStyle, css} from 'styled-components'
 import './common/dayjs'
 import {FlexBlock} from './components/LayoutComponents/FlexBlock'
-import {MainHeader} from "./components/MainHeader/MainHeader";
+import {MainHeader} from "./components/LayoutComponents/MainHeader/MainHeader";
 import {AppRoutes} from "./components/AppRoutes/AppRoutes";
 import {ToastContainer} from "react-toastify";
 import 'react-toastify/dist/ReactToastify.css';
-import {useConfirmSessionQuery} from "./store/api/sessionApi";
+import {useConfirmSessionQuery} from "./store/api/session-api";
 import {Loader} from "./components/Loaders/Loader";
+import 'tippy.js/dist/tippy.css';
+import 'tippy.js/animations/perspective.css';
+import 'tippy.js/animations/shift-away.css';
+import {TooltipStyled} from "./components/Tooltip/Tooltip.styled";
 
 const GlobalStyled = createGlobalStyle({}, css`
   * {
@@ -26,6 +30,7 @@ function App() {
 			<Loader title={'Проверка сессии пользователя...'} isActive={isFetching}>
 				<FlexBlock width={'100%'} direction={'column'} height={'100vh'}>
 					<GlobalStyled/>
+					<TooltipStyled/>
 					<MainHeader
 						userInfo={isError ? undefined : userInfo?.data}
 						msOptions={{
@@ -37,7 +42,7 @@ function App() {
 					</FlexBlock>
 				</FlexBlock>
 			</Loader>
-			<ToastContainer pauseOnHover={true} position={'top-right'} autoClose={4000} limit={2} newestOnTop={true}/>
+			<ToastContainer pauseOnHover={true} position={'top-right'} autoClose={2000} limit={2} newestOnTop={true} />
 		</>
 	)
 }

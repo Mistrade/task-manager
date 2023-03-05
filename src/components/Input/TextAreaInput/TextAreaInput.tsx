@@ -1,5 +1,5 @@
 import {TextInputProps} from "../TextInput/TextInput";
-import React, {FC} from "react";
+import React, {FC, useEffect, useRef} from "react";
 import {FlexBlock} from "../../LayoutComponents/FlexBlock";
 import {StyledTextAreaInput} from "../Input.styled";
 import {InputLabel} from "../InputSupportComponents/InputLabel";
@@ -22,7 +22,8 @@ export interface TextAreaInputProps extends ExtendableTextInputProps {
 	onChange?: (value: string) => void,
 	onFocus?: (e: React.FocusEvent<HTMLTextAreaElement>) => void,
 	onBlur?: (e: React.FocusEvent<HTMLTextAreaElement>) => void,
-	rows?: number
+	rows?: number,
+	maxHeight?: number
 }
 
 export const TextAreaInput: FC<TextAreaInputProps> = ({
@@ -40,8 +41,19 @@ export const TextAreaInput: FC<TextAreaInputProps> = ({
 																												tooltip,
 																												readOnly,
 																												onChange,
-																												rows
+																												rows,
+																												maxHeight = 300
 																											}) => {
+	
+	const ref = useRef<HTMLTextAreaElement>(null)
+	
+	useEffect(() => {
+		const target = ref.current as HTMLTextAreaElement
+		
+		if (target && target.textLength === 0) {
+			target.style.height = 12 + (16 * (rows || 4)) + 'px'
+		}
+	}, [value])
 	
 	return (
 		<FlexBlock
@@ -59,13 +71,23 @@ export const TextAreaInput: FC<TextAreaInputProps> = ({
 			>
 				<StyledTextAreaInput
 					value={value}
-					onChange={(e) => onChange && onChange(e.target.value)}
+					ref={ref}
+					onChange={(e) => {
+						onChange && onChange(e.target.value)
+					}}
 					onFocus={(e) => onFocus && onFocus(e)}
 					onBlur={(e) => onBlur && onBlur(e)}
 					placeholder={placeholder}
+					onKeyUp={(e) => {
+						const target = e.target as HTMLTextAreaElement
+						
+						if (target.scrollTop > 0) {
+							target.style.height = target.scrollHeight < maxHeight ? target.scrollHeight + 'px' : maxHeight + 'px'
+						}
+					}}
 					id={inputId}
 					readOnly={readOnly}
-					rows={rows || 6}
+					rows={rows || 4}
 					disabled={isLoading}
 				/>
 			</FlexBlock>

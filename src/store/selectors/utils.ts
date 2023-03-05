@@ -1,7 +1,7 @@
-import {CalendarMode} from "../../components/Calendars/types";
-import {CalendarModeForState} from "../reducers/calendar";
+import {PlannerMode} from "../../pages/Planner/planner.types";
+import {CalendarModeForState} from "../reducers/planner-reducer";
 
-export const currentFromStoreToDefault = (current: CalendarModeForState): CalendarMode => {
+export const currentFromStoreToDefault = (current: CalendarModeForState): PlannerMode => {
 	const {layout} = current
 	
 	switch (layout) {

@@ -1,58 +1,60 @@
-import {
-	EventFilterOnChangeHandle,
-	FilterTaskStatuses
-} from "../components/Calendars/RenderModes/DayCalendar/EventFilter";
 import {useCallback, useMemo, useState} from "react";
 import {useDebounce} from "./useDebounce";
-import {CalendarMode, CalendarPriorityKeys} from "../components/Calendars/types";
+import {PlannerMode, CalendarPriorityKeys} from "../pages/Planner/planner.types";
 import dayjs from "dayjs";
 import {useAppDispatch} from "../store/hooks/hooks";
-import {changeTaskStatuses} from "../store/reducers/calendar";
+import {changeEventStatuses} from "../store/reducers/planner-reducer";
 import {useSearchNavigate} from "./useSearchNavigate";
+import {ObjectId} from "../store/api/rtk-api.types";
+import {GetEventsFiltersRequestProps} from "../store/api/planning-api/types/event-info.types";
+import {
+	EventFilterOnChangeHandle,
+	EventFilterTaskStatuses
+} from "../pages/Planner/RenderModes/FindEventFilter/find-event-filters.types";
 
-export interface EventFilters {
-	title: string | null,
-	priority: null | CalendarPriorityKeys,
-	start: Date,
-	end: Date,
-	taskStatus: FilterTaskStatuses,
-	onlyFavorites?: boolean
+export interface EventFiltersProps extends Omit<GetEventsFiltersRequestProps, 'fromDate' | 'toDate'> {
+	start: Date | null,
+	end: Date | null,
 }
 
-
 export interface UseEventFiltersProps {
-	initialValues: EventFilters,
-	layout: CalendarMode['layout'],
+	initialValues: EventFiltersProps,
+	layout: PlannerMode['layout'],
+	useNavigate?: boolean,
+	debounceTimeout?: number
 }
 
 export interface UseEventFiltersReturned {
 	handlers: EventFilterOnChangeHandle,
-	setFiltersState: (values: EventFilters) => void,
-	filters: EventFilters,
-	debounceValue: EventFilters,
+	setFiltersState: (values: EventFiltersProps) => void,
+	filters: EventFiltersProps,
+	debounceValue: EventFiltersProps,
 }
 
 export type UseEventFiltersType = (options: UseEventFiltersProps) => UseEventFiltersReturned
 
-export const initialFiltersValues: (day: Date, taskStatus: FilterTaskStatuses) => EventFilters = (day, taskStatus) => ({
+export const initialFiltersValues: (day: Date, taskStatus: EventFiltersProps['taskStatus']) => EventFiltersProps = (day, taskStatus) => ({
 	title: null,
 	priority: null,
 	start: dayjs(day).startOf('day').toDate(),
 	end: dayjs(day).endOf('day').toDate(),
-	taskStatus
+	taskStatus,
+	utcOffset: dayjs().utcOffset()
 })
 
 export const useEventFilters: UseEventFiltersType = ({
 																											 initialValues,
-																											 layout
+																											 layout,
+																											 useNavigate = true,
+																											 debounceTimeout
 																										 }) => {
 	const navigate = useSearchNavigate()
 	const dispatch = useAppDispatch()
-	const [filters, setFilters] = useState<EventFilters>(initialValues)
+	const [filters, setFilters] = useState<EventFiltersProps>(initialValues)
 	
-	const debounceValue = useDebounce(filters, 300)
+	const debounceValue = useDebounce(filters, debounceTimeout || 300)
 	
-	const changeFiltersStateHandler = <T extends keyof EventFilters>(fieldName: T, value: EventFilters[T]) => {
+	const changeFiltersStateHandler = <T extends keyof EventFiltersProps>(fieldName: T, value: EventFiltersProps[T]) => {
 		setFilters((prev) => {
 			return {
 				...prev,
@@ -67,13 +69,15 @@ export const useEventFilters: UseEventFiltersType = ({
 		title: (value) => changeFiltersStateHandler('title', value),
 		priority: (key) => changeFiltersStateHandler('priority', key === 'not_selected' ? null : key),
 		taskStatus: (value) => {
-			navigate(`/calendar/${layout}/${value}`)
-			dispatch(changeTaskStatuses(value))
+			if (useNavigate) {
+				navigate(`/planner/${layout}/${value}`)
+				dispatch(changeEventStatuses(value || 'all'))
+			}
 			changeFiltersStateHandler('taskStatus', value)
 		}
-	}), [layout])
+	}), [layout, useNavigate])
 	
-	const setFiltersState = useCallback((values: EventFilters) => {
+	const setFiltersState = useCallback((values: EventFiltersProps) => {
 		setFilters(values)
 	}, [])
 	

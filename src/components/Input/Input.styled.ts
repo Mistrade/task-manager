@@ -34,7 +34,7 @@ interface InputStyledProps {
 
 export const StyledInput = styled('input')<InputStyledProps>`
   width: 100%;
-  border: 2px solid ${_ => _.isError ? errorColor : disabledColor};
+  border: 1px solid ${_ => _.isError ? errorColor : disabledColor};
   border-radius: ${borderRadiusSize.sm};
   outline: none;
   transition: all .3s ease-in;
@@ -44,11 +44,11 @@ export const StyledInput = styled('input')<InputStyledProps>`
 
   ${_ => _.hasIcon ? IconPlacement[_.iconPlacement || 'right'] : DefaultPadding}
   &:focus {
-    border: 2px solid ${currentColor};
+    border: 1px solid ${currentColor};
   }
 
-  &:hover {
-    box-shadow: 0 0 8px 0px ${currentColor};
+  &::placeholder {
+    color: ${defaultColor};
   }
 `
 
@@ -72,25 +72,23 @@ export const StyledTextAreaInput = styled('textarea')`
   & {
     width: 100%;
     color: ${darkColor};
-    border: 2px solid ${disabledColor};
+    border: 1px solid ${disabledColor};
     border-radius: ${borderRadiusSize.sm};
     outline: none;
+    overflow: hidden;
     -moz-appearance: none;
     resize: none;
-    transition: all .3s ease-in;
+    transition: all .3s ease-in, height .05s ease-in-out;
     cursor: pointer;
     font-size: 16px;
+    line-height: 16px;
     font-family: Helvetica, sans-serif;
   }
 
   ${DefaultPadding};
 
   &:focus {
-    border: 2px solid ${currentColor};
-  }
-
-  &:hover {
-    box-shadow: 0 0 8px 0px ${currentColor};
+    border: 1px solid ${currentColor};
   }
 
   &::placeholder {

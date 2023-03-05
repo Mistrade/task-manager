@@ -2,7 +2,7 @@ import {TextInputProps} from '../TextInput/TextInput'
 import {SelectInput} from './SelectInput'
 import {SelectListContainer} from './SelectListContainer'
 import {SelectItemContainer} from './SelectItemContainer'
-import {SelectBooleanInputDataItem} from '../../Calendars/types'
+import {SelectBooleanInputDataItem} from '../../../pages/Planner/planner.types'
 
 interface SelectBooleanInputProps<T extends SelectBooleanInputDataItem> extends Omit<TextInputProps, 'onChange' | 'readOnly' | 'value'> {
   onChange?: ( data: T ) => void,
@@ -19,13 +19,13 @@ export function SelectBooleanInput<T extends SelectBooleanInputDataItem>( props:
       data={data}
       icon={selected?.icon}
       value={selected?.title || ''}
-      renderData={( data, { focusOut } ) => (
+      renderData={( data ) => (
         <SelectListContainer>
           {data.map( item => (
             
             <SelectItemContainer
               key={item.title}
-              onClick={() => onChange && onChange( item ) && focusOut()}
+              onClick={() => onChange && onChange( item )}
               isSelected={item.title.toLowerCase() === selected?.title.toLowerCase()}
             >
               {item.icon || ''}

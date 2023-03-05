@@ -7,14 +7,16 @@ import {
 	TaskStatusInfo,
 	WeekItem,
 	YearItem
-} from '../components/Calendars/types'
-import dayjs from 'dayjs'
-import {ArchiveIcon, CompleteIcon, CreatedIcon, ProcessIcon, WaitIcon} from '../components/Icons/Icons'
+} from '../pages/Planner/planner.types'
+import {ArchiveIcon, CompleteIcon, CreatedIcon, ProcessIcon, ReviewIcon, WaitIcon} from '../components/Icons/Icons'
 import {ErrorImagesType} from "./types";
 import {SystemErrorImg} from "../components/Icons/Errors/SystemError";
 import {ErrorBadRequestImg} from "../components/Icons/Errors/ErrorBadRequest";
 import {ErrorForbiddenImg} from "../components/Icons/Errors/ErrorForbidden";
-import {FilterTaskStatuses} from "../components/Calendars/RenderModes/DayCalendar/EventFilter";
+import {
+	EventFilterTaskStatuses,
+	StatusesTabsObject
+} from "../pages/Planner/RenderModes/FindEventFilter/find-event-filters.types";
 
 export const MonthList = [
 	'Январь', 'Февраль', 'Март', 'Апрель', 'Май', 'Июнь', 'Июль', 'Август', 'Сентябрь', 'Октябрь', 'Ноябрь', 'Декабрь'
@@ -38,6 +40,7 @@ export const WeekDaysShortList = [
 
 export const disabledColor = 'rgba(30,30,30,.1)'
 export const defaultColor = 'rgba(30,30,30,.45)'
+export const shadowColor = 'rgba(30,30,30,.35)'
 export const currentColor = 'rgba(100,149,237,.9)'
 export const currentColorWithoutBlur = 'rgb(100,149,237)'
 export const hoverColor = 'rgba(100,149,237,.15)'
@@ -84,7 +87,7 @@ export const PRIORITY_LIST: CalendarPriorityList = [
 ]
 
 type TaskStatusesObjectProps = {
-	[key in FilterTaskStatuses]: Array<TaskStatusesType>
+	[key in EventFilterTaskStatuses]: Array<TaskStatusesType>
 }
 export const TaskStatusesObject: TaskStatusesObjectProps = {
 	created: ['created'],
@@ -123,39 +126,6 @@ export const ContinueWorkTaskButtonName: { [key in TaskStatusesType]: Array<Cont
 		title: 'Взять в работу',
 		nextStatus: 'in_progress'
 	}]
-}
-
-export const TASK_STATUSES: { [key in TaskStatusesType]: TaskStatusInfo } = {
-	created: {
-		value: false,
-		key: 'created',
-		title: 'Запланировано к выполнению',
-		icon: <CreatedIcon size={16}/>
-	},
-	in_progress: {
-		value: false,
-		key: 'in_progress',
-		title: 'В процессе выполнения',
-		icon: <ProcessIcon size={16}/>
-	},
-	review: {
-		value: false,
-		key: 'review',
-		title: 'Ожидает подтверждения',
-		icon: <WaitIcon size={16}/>
-	},
-	completed: {
-		value: true,
-		key: 'completed',
-		title: 'Выполнено',
-		icon: <CompleteIcon size={16}/>
-	},
-	archive: {
-		value: false,
-		key: 'archive',
-		title: 'Перенести в архив',
-		icon: <ArchiveIcon size={16} color={currentColor}/>
-	}
 }
 
 export const DATE_RENDER_FORMAT = 'DD-MM-YYYY HH:mm'
@@ -242,3 +212,58 @@ export const colorPalette = [
 	'#999999'
 ]
 
+export const URLTaskStatuses: { [key in EventFilterTaskStatuses]: EventFilterTaskStatuses } = {
+	created: 'created',
+	in_work: 'in_work',
+	completed: 'completed',
+	archive: 'archive',
+	all: 'all'
+}
+export const TaskStatusesTitles: { [key in EventFilterTaskStatuses]: string } = {
+	created: "Запланировано",
+	in_work: "В работе",
+	completed: 'Выполнено',
+	archive: 'В архиве',
+	all: 'Любой'
+}
+
+export const TASK_STATUSES: { [key in TaskStatusesType]: TaskStatusInfo } = {
+	created: {
+		value: false,
+		key: 'created',
+		title: 'Запланировано',
+		icon: <CreatedIcon size={16}/>
+	},
+	in_progress: {
+		value: false,
+		key: 'in_progress',
+		title: 'В работе',
+		icon: <ProcessIcon size={16}/>
+	},
+	review: {
+		value: false,
+		key: 'review',
+		title: 'На проверке',
+		icon: <ReviewIcon size={16}/>
+	},
+	completed: {
+		value: true,
+		key: 'completed',
+		title: 'Выполнено',
+		icon: <CompleteIcon size={16}/>
+	},
+	archive: {
+		value: false,
+		key: 'archive',
+		title: 'В архиве',
+		icon: <ArchiveIcon size={16} color={currentColor}/>
+	}
+}
+
+export const TaskStatusesList: Array<StatusesTabsObject> = [
+	{title: 'Все', type: URLTaskStatuses.all},
+	{title: 'Запланировано', type: URLTaskStatuses.created},
+	{title: 'В работе', type: URLTaskStatuses.in_work},
+	{title: 'Выполнено', type: URLTaskStatuses.completed},
+	{title: 'Архив', type: URLTaskStatuses.archive},
+]

@@ -1,16 +1,16 @@
 import {combineReducers, configureStore} from '@reduxjs/toolkit'
 import {eventReducer} from './reducers/events'
 import {SessionReducer} from "./reducers/session";
-import {CalendarReducer} from "./reducers/calendar";
-import {taskApi} from "./api/taskApi/taskApi";
-import {sessionApi} from "./api/sessionApi";
+import {CalendarReducer} from "./reducers/planner-reducer";
+import {planningApi} from "./api/planning-api";
+import {sessionApi} from "./api/session-api";
 import {setupListeners} from "@reduxjs/toolkit/query";
 
 const rootReducer = combineReducers({
 	events: eventReducer,
 	session: SessionReducer,
-	calendar: CalendarReducer,
-	[taskApi.reducerPath]: taskApi.reducer,
+	planner: CalendarReducer,
+	[planningApi.reducerPath]: planningApi.reducer,
 	[sessionApi.reducerPath]: sessionApi.reducer
 })
 
@@ -18,7 +18,7 @@ export const createAppStore = (preloadedState?: RootState) => {
 	return configureStore({
 		reducer: rootReducer,
 		middleware: (getDefaultMiddleware) => getDefaultMiddleware()
-			.concat(taskApi.middleware, sessionApi.middleware),
+			.concat(planningApi.middleware, sessionApi.middleware),
 		preloadedState
 	})
 }

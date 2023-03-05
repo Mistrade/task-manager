@@ -26,10 +26,8 @@ export const Accordion: FC<AccordionProps> = ({title, zIndex, iconProps, childre
 				gap={6}
 				pl={6}
 				pr={6}
-				position={'sticky'}
 				align={'center'}
-				style={{top: 0, left: 0, zIndex: 3 * (zIndex || 1)}}
-				bgColor={'#fff'}
+				bgColor={'inherit'}
 			>
 				<FlexBlock direction={'row'} gap={6} align={'center'} justify={'flex-end'}>
 					<EmptyButtonStyled
@@ -50,7 +48,7 @@ export const Accordion: FC<AccordionProps> = ({title, zIndex, iconProps, childre
 			<FlexBlock
 				direction={'column'}
 				width={'100%'}
-				style={{height: isOpen ? "fit-content" : "0px", zIndex: 2 * (zIndex || 1)}}
+				style={{height: isOpen ? "fit-content" : "0px"}}
 				p={isOpen ? 6 : 0}
 				overflow={isOpen ? 'unset' : 'hidden'}
 			>

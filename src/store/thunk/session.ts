@@ -1,11 +1,11 @@
 import {createAsyncThunk} from "@reduxjs/toolkit";
-import {RegistrationFormType} from "../../components/Session/Registration";
 import {ThunkErrorObject} from "./types";
 import {api} from "../../Api/api";
+import {RegUserRequestProps} from "../api/session-api/session-api.types";
 
 export type RegistrationNextAction = 'login' | 'try_again'
 
-export const RegistrationUser = createAsyncThunk<RegistrationNextAction, { data: RegistrationFormType }, { rejectValue: ThunkErrorObject }>(
+export const RegistrationUser = createAsyncThunk<RegistrationNextAction, { data: RegUserRequestProps }, { rejectValue: ThunkErrorObject }>(
 	'session/registration',
 	async ({data}, thunkApi) => {
 		const res = await api.post<{ message?: string }>('/session/reg', {

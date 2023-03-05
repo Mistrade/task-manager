@@ -1,5 +1,5 @@
 import styled from "styled-components";
-import {SwitchCalendarMode} from "../../Calendars/Calendar.styled";
+import {SwitchCalendarMode} from "../../../pages/Planner/Planner.styled";
 import {borderRadiusSize} from "../../../common/constants";
 
 export const InputActionsStyledContainer = styled('div')`

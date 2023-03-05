@@ -5,19 +5,15 @@ import {SessionFormContainer} from "./SessionFormContainer";
 import {Heading} from "../Text/Heading";
 import {FlexBlock} from "../LayoutComponents/FlexBlock";
 import {PasswordInput} from "../Input/PasswordInput/PasswordInput";
-import {useLoginMutation} from "../../store/api/sessionApi";
+import {useLoginMutation} from "../../store/api/session-api";
 import {toast} from "react-toastify";
 import {defaultColor} from "../../common/constants";
 import {AuthValidationScheme} from "../../common/validation/session";
 import {useAppSelector} from "../../store/hooks/hooks";
 import {useSearchNavigate} from "../../hooks/useSearchNavigate";
+import {AuthUserRequestProps} from "../../store/api/session-api/session-api.types";
 
-export interface AuthorizationProps {
-	phone: string,
-	password: string
-}
-
-const initialValues: AuthorizationProps = {
+const initialValues: AuthUserRequestProps = {
 	phone: '',
 	password: ''
 }
@@ -25,7 +21,7 @@ const initialValues: AuthorizationProps = {
 export const AuthorizationForm = () => {
 	const navigate = useSearchNavigate()
 	const [loginUser] = useLoginMutation()
-	const {statuses} = useAppSelector(state => state.calendar)
+	const {statuses} = useAppSelector(state => state.planner)
 	const {
 		values,
 		setFieldValue,
@@ -45,7 +41,7 @@ export const AuthorizationForm = () => {
 				})
 				
 				if (result.info.type === 'success') {
-					navigate(`/calendar/day/${statuses}`, {replace: true})
+					navigate(`/planner/day/${statuses}`, {replace: true})
 				}
 			}
 		}

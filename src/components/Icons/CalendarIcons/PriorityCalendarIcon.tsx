@@ -1,5 +1,5 @@
 import React, {FC} from "react";
-import {CalendarPriorityKeys} from "../../Calendars/types";
+import {CalendarPriorityKeys} from "../../../pages/Planner/planner.types";
 import {Arrow, BurgerIcon, CompleteIcon, DoubleArrow, IconProps, SadSmile} from "../Icons";
 import {FlexBlockProps} from "../../LayoutComponents/FlexBlock";
 import {currentColor, priorityColors} from "../../../common/constants";

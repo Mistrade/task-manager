@@ -2,7 +2,7 @@ import {FC, useMemo} from 'react'
 import {PRIORITY_LIST, PRIORITY_TITLES} from '../../../../common/constants'
 import {SelectListContainer} from '../SelectListContainer'
 import {SelectItemContainer} from '../SelectItemContainer'
-import {CalendarPriorityKeys, CalendarPriorityList} from '../../../Calendars/types'
+import {CalendarPriorityKeys, CalendarPriorityList} from '../../../../pages/Planner/planner.types'
 import {FlexBlockProps} from '../../../LayoutComponents/FlexBlock'
 import {SelectInput} from '../SelectInput'
 import {DefaultTextInputProps} from '../../TextInput/TextInput'
@@ -36,9 +36,9 @@ export const SelectPriorityInput: FC<SelectPriorityInputProps> = ( {
       containerProps={containerProps}
       inputId={inputId || 'select_priority'}
       data={PRIORITY}
-      label={'Выберите приоритет'}
+      label={'Приоритет'}
       icon={selected && <PriorityCalendarIcon priorityKey={selected}/>}
-      renderData={( data, { focusOut } ) => (
+      renderData={( data) => (
         <>
           <SelectListContainer>
             {data.map( item => (
@@ -47,7 +47,6 @@ export const SelectPriorityInput: FC<SelectPriorityInputProps> = ( {
                 isSelected={item.type === selected}
                 onClick={() => {
                   onChange && onChange( item.type )
-                  focusOut()
                 }}
               >
                 <PriorityCalendarIcon priorityKey={item.type} isCompleted={false}/>

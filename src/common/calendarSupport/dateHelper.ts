@@ -1,13 +1,13 @@
 import dayjs, {Dayjs} from "dayjs";
 import {
 	CalendarCurrentContext,
-	CalendarCurrentDay,
-	CalendarCurrentMonth,
-	CalendarCurrentWeek,
-	CalendarCurrentYear,
+	PlannerDateMode,
+	PlannerMonthMode,
+	PlannerWeekMode,
+	PlannerYearMode,
 	CalendarDisabledOptions
-} from "../../components/Calendars/types";
-import {MonthList, ShortMonthList} from "../constants";
+} from "../../pages/Planner/planner.types";
+import {DeclinationMonthList, MonthList, ShortMonthList} from "../constants";
 
 export interface HumanizeDateValueOptions {
 	withTime?: boolean,
@@ -17,7 +17,7 @@ export interface HumanizeDateValueOptions {
 }
 
 export class DateHelper {
-	public static getHumanizeDateValue(date: Date, options: HumanizeDateValueOptions = {}) {
+	public static getHumanizeDateValue(date: Date | string, options: HumanizeDateValueOptions = {}) {
 		const {
 			withTime = true,
 			withYear = true,
@@ -31,7 +31,7 @@ export class DateHelper {
 			`DD`,
 			monthPattern === 'short'
 				? ShortMonthList[d.month()]
-				: MonthList[d.month()]
+				: DeclinationMonthList[d.month()]
 		]
 		
 		if (withYear) {
@@ -178,7 +178,7 @@ export class DateHelper {
 		}
 	}
 	
-	public static createMonthCurrent(date: Date): CalendarCurrentMonth {
+	public static createMonthCurrent(date: Date): PlannerMonthMode {
 		return {
 			layout: "month",
 			month: date.getMonth(),
@@ -186,21 +186,21 @@ export class DateHelper {
 		}
 	}
 	
-	public static createWeekCurrent(date: Date): CalendarCurrentWeek {
+	public static createWeekCurrent(date: Date): PlannerWeekMode {
 		return {
 			layout: 'week',
 			aroundDate: date
 		}
 	}
 	
-	public static createYearCurrent(date: Date): CalendarCurrentYear {
+	public static createYearCurrent(date: Date): PlannerYearMode {
 		return {
 			layout: 'year',
 			year: date.getFullYear(),
 		}
 	}
 	
-	public static createDateCurrent(date: Date): CalendarCurrentDay {
+	public static createDateCurrent(date: Date): PlannerDateMode {
 		return {
 			layout: 'day',
 			date: date

@@ -1,4 +1,4 @@
-import {CalendarCurrentContext, CalendarDisabledOptions, CalendarItem} from "../../components/Calendars/types";
+import {CalendarCurrentContext, CalendarDisabledOptions, CalendarItem} from "../../pages/Planner/planner.types";
 import dayjs, {Dayjs} from "dayjs";
 import {DateHelper} from "./dateHelper";
 

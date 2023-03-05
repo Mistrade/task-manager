@@ -1,6 +1,6 @@
 import styled from "styled-components";
-import {ErrorTypes} from "../../store/api/taskApi/taskApi";
 import React, {FC, ReactNode} from "react";
+import {ErrorTypes} from "../../store/api/rtk-api.types";
 
 interface DefaultInformerProps {
 	type: ErrorTypes

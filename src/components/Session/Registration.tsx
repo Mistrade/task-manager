@@ -9,19 +9,12 @@ import {Button} from "../Buttons/Buttons.styled";
 import {LinkStyled} from "../Buttons/Link.styled";
 import {SessionFormContainer} from "./SessionFormContainer";
 import {PasswordInput} from "../Input/PasswordInput/PasswordInput";
-import {useRegistrationMutation} from "../../store/api/sessionApi";
+import {useRegistrationMutation} from "../../store/api/session-api";
 import {toast} from "react-toastify";
 import {RegistrationValidationScheme} from "../../common/validation/session";
 import {useSearchNavigate} from "../../hooks/useSearchNavigate";
+import {RegUserRequestProps} from "../../store/api/session-api/session-api.types";
 
-
-export interface RegistrationFormType {
-	phone: string,
-	password: string,
-	confirmPassword: string,
-	name: string,
-	surname: string
-}
 
 export const Registration: FC = () => {
 	const [regUser, {data, isSuccess, isLoading, status, isError}] = useRegistrationMutation()
@@ -32,7 +25,7 @@ export const Registration: FC = () => {
 		setFieldValue,
 		setFieldTouched,
 		handleSubmit
-	} = useFormik<RegistrationFormType>({
+	} = useFormik<RegUserRequestProps>({
 		initialValues: {
 			phone: '',
 			password: '',
@@ -90,7 +83,7 @@ export const Registration: FC = () => {
 					errorMessage={errors.phone}
 					placeholder={'Например: 79119119191'}
 					tooltip={
-						<Tooltip size={20} text={'Используется для входа в систему'} placement={'top'}/>
+						<Tooltip size={20} content={'Используется для входа в систему'} placement={'top'}/>
 					}
 				/>
 			</FlexBlock>

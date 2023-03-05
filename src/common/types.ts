@@ -1,17 +1,17 @@
 import {ReactNode} from "react";
 import {
-	CalendarCurrentDay,
-	CalendarCurrentMonth,
-	CalendarCurrentWeek,
-	CalendarCurrentYear
-} from "../components/Calendars/types";
+	PlannerDateMode,
+	PlannerMonthMode,
+	PlannerWeekMode,
+	PlannerYearMode
+} from "../pages/Planner/planner.types";
 
 export type DocumentErrorTypes = 'ERR_FORBIDDEN' | 'SYSTEM_ERROR' | 'BAD_REQUEST' | 'ERR_NOT_VALID_RESPONSE'
 export type ErrorImagesType = { [key in DocumentErrorTypes]: ReactNode }
 
 export interface InitialCurrentCalendarModeType {
-	day: CalendarCurrentDay,
-	week: CalendarCurrentWeek,
-	month: CalendarCurrentMonth,
-	year: CalendarCurrentYear
+	day: PlannerDateMode,
+	week: PlannerWeekMode,
+	month: PlannerMonthMode,
+	year: PlannerYearMode
 }

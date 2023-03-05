@@ -1,17 +1,17 @@
 import {
-	CalendarCurrentDay,
-	CalendarCurrentMonth,
+	PlannerDateMode,
+	PlannerMonthMode,
 	CalendarDisabledOptions,
 	DateItem,
 	MonthItem,
 	WeekItem,
 	YearItem
-} from "../../components/Calendars/types";
+} from "../../pages/Planner/planner.types";
 import dayjs from "dayjs";
 import {DateListGenerator} from "./generators";
 import {DateHelper} from "./dateHelper";
 
-export class CalendarObserver {
+export class PlannerObserver {
 	public disabledOptions?: CalendarDisabledOptions;
 	
 	constructor(disabledOptions?: CalendarDisabledOptions) {
@@ -35,7 +35,7 @@ export class CalendarObserver {
 			.getWeekItem(newDate)
 	}
 	
-	public getDateItem(prev: DateItem, current: CalendarCurrentDay): DateItem {
+	public getDateItem(prev: DateItem, current: PlannerDateMode): DateItem {
 		const prevDate = dayjs(prev.current.date)
 		const currentDate = dayjs(current.date)
 		
@@ -48,7 +48,7 @@ export class CalendarObserver {
 			}
 		}
 		
-		const monthItemCurrent: CalendarCurrentMonth = DateHelper.createMonthCurrent(current.date)
+		const monthItemCurrent: PlannerMonthMode = DateHelper.createMonthCurrent(current.date)
 		return {
 			current,
 			settingPanel: {

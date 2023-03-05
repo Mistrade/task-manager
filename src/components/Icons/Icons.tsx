@@ -92,9 +92,9 @@ export const ArrowRightIcon: FC<IconProps & { fillColor?: string }> = ({
 }
 
 export const ArchiveIcon: FC<IconProps> = ({
-																																			size = 20,
-																																			color = currentColor,
-																																		}) => {
+																						 size = 20,
+																						 color = currentColor,
+																					 }) => {
 	return (
 		<svg
 			xmlns="http://www.w3.org/2000/svg"
@@ -372,6 +372,68 @@ export const WaitIcon: FC<IconProps & FlexBlockProps> = ({
 				</g>
 			</svg>
 		
+		</FlexBlock>
+	)
+}
+
+export const ReviewIcon: FC<IconProps & FlexBlockProps> = ({
+																														 size = 24,
+																														 color = currentColor,
+																														 ...props
+																													 }) => {
+	return (
+		<FlexBlock {...props} align={'center'} justify={'center'}>
+			<svg
+				xmlns="http://www.w3.org/2000/svg"
+				width={size}
+				height={size}
+				viewBox="0 0 48 48"
+			>
+				<path
+					fill={color}
+					fillRule="evenodd"
+					d="M39 13a3 3 0 0 0-3 3v2h6v-2a3 3 0 0 0-3-3Zm3 7h-6v16.5l3 4.5l3-4.5V20ZM6 9v30a3 3 0 0 0 3 3h22a3 3 0 0 0 3-3V9a3 3 0 0 0-3-3H9a3 3 0 0 0-3 3Zm14 6a1 1 0 0 1 1-1h8a1 1 0 1 1 0 2h-8a1 1 0 0 1-1-1Zm1 3a1 1 0 1 0 0 2h8a1 1 0 1 0 0-2h-8Zm-1 10a1 1 0 0 1 1-1h8a1 1 0 1 1 0 2h-8a1 1 0 0 1-1-1Zm1 3a1 1 0 1 0 0 2h8a1 1 0 1 0 0-2h-8Zm-9-3v3h3v-3h-3Zm-1-2h5a1 1 0 0 1 1 1v5a1 1 0 0 1-1 1h-5a1 1 0 0 1-1-1v-5a1 1 0 0 1 1-1Zm6.707-10.293a1 1 0 0 0-1.414-1.414L13 17.586l-1.293-1.293a1 1 0 0 0-1.414 1.414L13 20.414l4.707-4.707Z"
+					clipRule="evenodd"
+				/>
+			</svg>
+		</FlexBlock>
+	)
+}
+
+export const FiltersIcon: FC<IconProps & FlexBlockProps> = ({
+																															size = 24,
+																															color = currentColor,
+																															...props
+																														}) => {
+	return (
+		<FlexBlock {...props} align={'center'} justify={'center'}>
+			<svg
+				xmlns="http://www.w3.org/2000/svg"
+				width={size}
+				height={size}
+				viewBox="0 0 24 24"
+			>
+				<path
+					fill={color}
+					d="M9 5a1 1 0 1 0 0 2a1 1 0 0 0 0-2zM6.17 5a3.001 3.001 0 0 1 5.66 0H19a1 1 0 1 1 0 2h-7.17a3.001 3.001 0 0 1-5.66 0H5a1 1 0 0 1 0-2h1.17zM15 11a1 1 0 1 0 0 2a1 1 0 0 0 0-2zm-2.83 0a3.001 3.001 0 0 1 5.66 0H19a1 1 0 1 1 0 2h-1.17a3.001 3.001 0 0 1-5.66 0H5a1 1 0 1 1 0-2h7.17zM9 17a1 1 0 1 0 0 2a1 1 0 0 0 0-2zm-2.83 0a3.001 3.001 0 0 1 5.66 0H19a1 1 0 1 1 0 2h-7.17a3.001 3.001 0 0 1-5.66 0H5a1 1 0 1 1 0-2h1.17z"
+				/>
+			</svg>
+		</FlexBlock>
+	)
+}
+export const SettingsIcon: FC<IconProps & FlexBlockProps> = ({
+																															 size = 24,
+																															 color = currentColor,
+																															 ...props
+																														 }) => {
+	return (
+		<FlexBlock {...props} align={'center'} justify={'center'}>
+			<svg xmlns="http://www.w3.org/2000/svg" width={size} height={size} viewBox="0 0 32 32">
+				<path fill={color}
+							d="M27 16.76v-1.53l1.92-1.68A2 2 0 0 0 29.3 11l-2.36-4a2 2 0 0 0-1.73-1a2 2 0 0 0-.64.1l-2.43.82a11.35 11.35 0 0 0-1.31-.75l-.51-2.52a2 2 0 0 0-2-1.61h-4.68a2 2 0 0 0-2 1.61l-.51 2.52a11.48 11.48 0 0 0-1.32.75l-2.38-.86A2 2 0 0 0 6.79 6a2 2 0 0 0-1.73 1L2.7 11a2 2 0 0 0 .41 2.51L5 15.24v1.53l-1.89 1.68A2 2 0 0 0 2.7 21l2.36 4a2 2 0 0 0 1.73 1a2 2 0 0 0 .64-.1l2.43-.82a11.35 11.35 0 0 0 1.31.75l.51 2.52a2 2 0 0 0 2 1.61h4.72a2 2 0 0 0 2-1.61l.51-2.52a11.48 11.48 0 0 0 1.32-.75l2.42.82a2 2 0 0 0 .64.1a2 2 0 0 0 1.73-1l2.28-4a2 2 0 0 0-.41-2.51ZM25.21 24l-3.43-1.16a8.86 8.86 0 0 1-2.71 1.57L18.36 28h-4.72l-.71-3.55a9.36 9.36 0 0 1-2.7-1.57L6.79 24l-2.36-4l2.72-2.4a8.9 8.9 0 0 1 0-3.13L4.43 12l2.36-4l3.43 1.16a8.86 8.86 0 0 1 2.71-1.57L13.64 4h4.72l.71 3.55a9.36 9.36 0 0 1 2.7 1.57L25.21 8l2.36 4l-2.72 2.4a8.9 8.9 0 0 1 0 3.13L27.57 20Z"/>
+				<path fill={color}
+							d="M16 22a6 6 0 1 1 6-6a5.94 5.94 0 0 1-6 6Zm0-10a3.91 3.91 0 0 0-4 4a3.91 3.91 0 0 0 4 4a3.91 3.91 0 0 0 4-4a3.91 3.91 0 0 0-4-4Z"/>
+			</svg>
 		</FlexBlock>
 	)
 }

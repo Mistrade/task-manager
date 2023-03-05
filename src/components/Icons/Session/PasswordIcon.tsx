@@ -28,7 +28,7 @@ export const PasswordIcon: FC<PasswordIconProps> = ({
 			? (
 				<Tooltip
 					placement={'top'}
-					text={tooltipMessage.open || 'Нажмите, чтобы скрыть пароль'}
+					content={tooltipMessage.open || 'Нажмите, чтобы скрыть пароль'}
 				>
 					<OpenEyeIcon {...props} />
 				</Tooltip>
@@ -40,7 +40,7 @@ export const PasswordIcon: FC<PasswordIconProps> = ({
 		? (
 			<Tooltip
 				placement={'top'}
-				text={tooltipMessage.close || 'Нажмите, чтобы показать пароль'}
+				content={tooltipMessage.close || 'Нажмите, чтобы показать пароль'}
 			>
 				<CloseEyeIcon {...props} />
 			</Tooltip>

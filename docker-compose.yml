@@ -2,7 +2,7 @@
 version: '3.8'
 services:
   front-react:
-    build: ../task-manager
+    build: ./
     container_name: front-react
     command: serve ./dist -l 8080
     restart: unless-stopped

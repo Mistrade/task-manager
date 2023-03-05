@@ -1,13 +1,13 @@
 import {
-	CalendarCurrentDay,
-	CalendarCurrentList,
-	CalendarCurrentMonth,
-	CalendarCurrentWeek,
-	CalendarCurrentYear,
-	CalendarMode,
+	PlannerDateMode,
+	PlannerListMode,
+	PlannerMonthMode,
+	PlannerWeekMode,
+	PlannerYearMode,
+	PlannerMode,
 	EventItem,
-	TaskStorageType
-} from '../components/Calendars/types'
+	EventsStorage
+} from '../pages/Planner/planner.types'
 import dayjs from 'dayjs'
 import {
 	ChangeDayCurrentFn,
@@ -18,12 +18,12 @@ import {
 	ShortChangeCurrentPattern
 } from './commonTypes'
 import {MonthList} from './constants'
-import {ShortEventItem} from "../store/api/taskApi/types";
 import {DateHelper} from "./calendarSupport/dateHelper";
+import {ShortEventInfoModel} from "../store/api/planning-api/types/event-info.types";
 
 export const addNull = (value: number): string => value < 10 ? `0${value}` : value.toString()
 
-export const getTaskListOfDay = <EVENT = EventItem | ShortEventItem>(day: Date, storage: TaskStorageType<EVENT>): Array<EVENT> => {
+export const getTaskListOfDay = <EVENT = EventItem | ShortEventInfoModel>(day: Date, storage: EventsStorage<EVENT>): Array<EVENT> => {
 	const y = storage[dayjs(day).year()] || {}
 	const m = y[dayjs(day).month()] || {}
 	return m[dayjs(day).date()] || []
@@ -150,7 +150,7 @@ export const changeListCurrentHandler: ChangeListCurrentFn = (current, pattern =
 	}
 }
 
-const getMonthCalendarTitle = (current: CalendarCurrentMonth, withTodayMonth?: boolean): string => {
+const getMonthCalendarTitle = (current: PlannerMonthMode, withTodayMonth?: boolean): string => {
 	const {year, month} = current
 	const m = MonthList[month]
 	const today = dayjs()
@@ -159,12 +159,12 @@ const getMonthCalendarTitle = (current: CalendarCurrentMonth, withTodayMonth?: b
 	return `${m}/${year} г. ${todayTitle}`.trim()
 }
 
-const getWeekCalendarTitle = (current: CalendarCurrentWeek): string => {
+const getWeekCalendarTitle = (current: PlannerWeekMode): string => {
 	const {aroundDate} = current
 	const d = dayjs(aroundDate)
 	const w = d.week()
 	
-	const m: CalendarCurrentMonth = {
+	const m: PlannerMonthMode = {
 		layout: 'month',
 		year: d.year(),
 		month: d.month()
@@ -172,25 +172,25 @@ const getWeekCalendarTitle = (current: CalendarCurrentWeek): string => {
 	return `Неделя ${w}, ${m.year}г.`
 }
 
-const getYearCalendarTitle = (current: CalendarCurrentYear) => {
+const getYearCalendarTitle = (current: PlannerYearMode) => {
 	const {year} = current
 	return `Календарь ${year}г.`
 }
 
-const getDayCalendarTitle = (current: CalendarCurrentDay) => {
+const getDayCalendarTitle = (current: PlannerDateMode) => {
 	const {date} = current
 	const d = dayjs(date)
 	return DateHelper.getHumanizeDateValue(d.toDate(), {withTime: false})
 }
 
-const getListCalendarTitle = (current: CalendarCurrentList) => {
+const getListCalendarTitle = (current: PlannerListMode) => {
 	const start = DateHelper.getHumanizeDateValue(current.fromDate, {withYear: false, withTime: false})
 	const end = DateHelper.getHumanizeDateValue(current.toDate, {withYear: false, withTime: false})
 	
 	return `${start} - ${end}`
 }
 
-export const getCalendarTitle = (current: CalendarMode) => {
+export const getCalendarTitle = (current: PlannerMode) => {
 	switch (current.layout) {
 		case 'month':
 			return getMonthCalendarTitle(current, false)
@@ -207,7 +207,7 @@ export const getCalendarTitle = (current: CalendarMode) => {
 	}
 }
 
-export const changeCurrentModeHandler = (current: CalendarMode, pattern: ShortChangeCurrentPattern) => {
+export const changeCurrentModeHandler = (current: PlannerMode, pattern: ShortChangeCurrentPattern) => {
 	const {layout} = current
 	
 	switch (layout) {

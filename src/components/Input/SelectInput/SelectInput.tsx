@@ -1,16 +1,17 @@
 import React, {ReactNode, RefObject} from 'react'
 import {FlexBlock, FlexBlockProps} from '../../LayoutComponents/FlexBlock'
 import {DefaultTextInputProps, TextInput} from '../TextInput/TextInput'
-import {DropDown} from '../../Dropdown/DropDown'
+import {DropDown} from '../Dropdown/DropDown'
 import {InputActions} from "../InputSupportComponents/InputActions";
 import {InputErrorMessage} from "../InputSupportComponents/InputErrorMessage";
-import {DropDownAdditionalMethods} from "../../Dropdown/types";
+import {DropDownAdditionalMethods} from "../Dropdown/types";
+import {Tooltip} from "../../Tooltip/Tooltip";
 
 type ExtendableFromTextInput = Omit<DefaultTextInputProps, 'children'>
 
 export interface SelectInputProps<T> extends ExtendableFromTextInput {
 	data: T,
-	renderData: (data: T, methods: DropDownAdditionalMethods) => ReactNode,
+	renderData: (data: T) => ReactNode,
 	multiple?: boolean,
 	containerProps?: FlexBlockProps,
 }
@@ -38,25 +39,30 @@ export function SelectInput<T>({
 			direction={'column'}
 			gap={6}
 		>
-			<DropDown
-				dropDownChildren={(methods) => renderData(data, methods)}
-				renderElement={({ref, onElementFocused, onElementBlur}) => (
-					<TextInput
-						ref={ref as RefObject<HTMLInputElement>}
-						readOnly={readOnly}
-						onChange={!!readOnly ? undefined : onChange}
-						{...textInputProps}
-						onFocus={(e) => {
-							onFocus && onFocus(e)
-							onElementFocused(e)
-						}}
-						onBlur={(e) => {
-							onBlur && onBlur(e)
-							onElementBlur(e)
-						}}
-					/>
-				)}
-			/>
+			<Tooltip
+				theme={'light'}
+				delay={100}
+				offset={[0, 15]}
+				maxWidth={500}
+				hideOnClick={true}
+				placement={'bottom'}
+				trigger={'click'}
+				interactive={true}
+				interactiveBorder={20}
+				content={renderData(data)}
+			>
+				<TextInput
+					readOnly={readOnly}
+					onChange={!!readOnly ? undefined : onChange}
+					{...textInputProps}
+					onFocus={(e) => {
+						onFocus && onFocus(e)
+					}}
+					onBlur={(e) => {
+						onBlur && onBlur(e)
+					}}
+				/>
+			</Tooltip>
 			<InputErrorMessage isDirty={isDirty} errorMessage={errorMessage}/>
 			<InputActions onDeleteAction={onDeleteAction} actions={actions} actionHandler={actionHandler}/>
 		</FlexBlock>

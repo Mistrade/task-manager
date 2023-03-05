@@ -1,13 +1,26 @@
-import {FC, ReactNode, useEffect, useRef, useState} from 'react'
-import {TooltipContent, TooltipWrapper} from './Tooltip.styled'
+import {FC, ReactNode, useState} from 'react'
 import {TooltipIcon} from '../Icons/TooltipIcon'
 import {IconProps} from '../Icons/Icons'
-import {FlexBlock} from '../LayoutComponents/FlexBlock'
+import Tippy, {TippyProps, UseSingletonProps} from "@tippyjs/react";
+import {FlexBlock} from '../LayoutComponents/FlexBlock';
+
 
 interface TooltipProps {
 	children?: ReactNode,
-	text: string,
-	placement?: 'top' | 'bottom' | 'right'
+	content: ReactNode,
+	placement?: TippyProps['placement'],
+	singleton?: TippyProps['singleton'],
+	delay?: TippyProps['delay'],
+	trigger?: TippyProps['trigger'],
+	triggerTarget?: TippyProps['triggerTarget'],
+	interactiveBorder?: TippyProps['interactiveBorder'],
+	interactive?: TippyProps['interactive'],
+	theme?: 'current' | 'light' | 'midnight',
+	hideOnClick?: boolean | "toggle",
+	maxWidth?: number | string,
+	offset?: TippyProps['offset'],
+	animation?: TippyProps['animation'],
+	arrow?: TippyProps['arrow']
 }
 
 export interface OptionsTooltip {
@@ -19,98 +32,48 @@ export interface OptionsTooltip {
 
 export const Tooltip: FC<TooltipProps & IconProps> = ({
 																												children,
-																												text,
+																												content,
 																												placement = 'top',
+																												singleton,
+																												delay,
+																												trigger = 'mouseenter',
+																												triggerTarget,
+																												interactiveBorder = 0,
+																												interactive = false,
+																												theme = 'current',
+																												hideOnClick = 'toggle',
+																												maxWidth = 300,
+																												offset,
+																												animation = 'shift-away',
+																												arrow = true,
 																												...iconProps
 																											}) => {
+	const [visible, setVisible] = useState(false)
 	
-	const [isHover, setIsHover] = useState(false)
-	const ref = useRef<HTMLDivElement>(null)
-	const containerRef = useRef<HTMLSpanElement>(null)
-	const [options, setOptions] = useState<OptionsTooltip>({
-		state: false,
-		top: 0,
-		left: 0,
-		placement
-	})
-	
-	useEffect(() => {
-		if (ref.current && isHover && containerRef.current) {
-			const coords = containerRef.current.getBoundingClientRect()
-			if (placement === 'top') {
-				let top: number | string = -1 * (ref.current.offsetHeight + 10)
-				let place: TooltipProps['placement'] = placement
-				if (coords.y < Math.abs(top)) {
-					place = 'bottom'
-					top = containerRef.current.offsetHeight + 10
-				}
-				
-				return setOptions({
-					state: true,
-					placement: place,
-					top,
-					left: (containerRef.current.offsetWidth / 2) - (ref.current.offsetWidth / 2) - 2
-				})
-			}
-			
-			if (placement === 'bottom') {
-				let top: number | string = containerRef.current.offsetHeight + 10
-				let place: TooltipProps['placement'] = placement
-				
-				if ((window.innerHeight - coords.bottom) < ref.current.offsetHeight) {
-					place = 'top'
-					top = -1 * (ref.current.offsetHeight + 10)
-				}
-				
-				return setOptions({
-					placement: place,
-					top,
-					left: (containerRef.current.offsetWidth / 2) - (ref.current.offsetWidth / 2) - 2,
-					state: true
-				})
-			}
-			
-			if (placement === 'right') {
-				let top = -10
-				let left = containerRef.current.offsetWidth + 20
-				
-				return setOptions({
-					placement,
-					state: true,
-					left,
-					top
-				})
-			}
-			
-		} else {
-			setOptions(prev => ({
-				...prev,
-				state: false
-			}))
-		}
-	}, [isHover, ref, containerRef, placement])
 	
 	return (
-		<TooltipWrapper
-			ref={containerRef}
-			onMouseEnter={() => {
-				setIsHover(true)
+		<Tippy
+			hideOnClick={hideOnClick}
+			content={content}
+			offset={offset}
+			theme={theme}
+			arrow={arrow}
+			interactive={interactive}
+			interactiveBorder={interactiveBorder}
+			singleton={singleton}
+			delay={delay}
+			maxWidth={maxWidth}
+			animation={animation}
+			trigger={trigger}
+			triggerTarget={triggerTarget}
+			placement={placement || 'top'}
+			popperOptions={{
+				strategy: "fixed"
 			}}
-			onMouseLeave={() => setIsHover(false)}
 		>
-			{children ? children : <TooltipIcon {...iconProps} />}
-			<TooltipContent
-				placement={options.placement}
-				opacity={options.state ? 1 : 0}
-				ref={ref}
-				isVisible={isHover}
-				top={options?.top || 0}
-				left={options?.left || 0}
-			>
-				<FlexBlock width={'100%'}>
-					{text}
-				</FlexBlock>
-			</TooltipContent>
-		</TooltipWrapper>
+			<span>
+				{children ? children : <TooltipIcon {...iconProps} />}
+			</span>
+		</Tippy>
 	)
 }

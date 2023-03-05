@@ -1,5 +1,11 @@
-import styled, {css} from 'styled-components'
-import {borderRadiusSize, currentColorWithoutBlur, defaultColor} from '../../common/constants'
+import styled, {createGlobalStyle, css} from 'styled-components'
+import {
+	borderRadiusSize,
+	currentColor,
+	currentColorWithoutBlur, darkColor,
+	defaultColor,
+	disabledColor, hoverColor, lightHoverColor, pageHeaderColor, shadowColor
+} from '../../common/constants'
 import {pxToCssValue} from '../LayoutComponents/FlexBlock'
 import {OptionsTooltip} from './Tooltip'
 
@@ -31,13 +37,14 @@ export const TooltipContent = styled('span')<{ isVisible: boolean, left: number 
     background-color: ${currentColorWithoutBlur};
     color: #fff;
     text-align: center;
-    padding: 10px 12px;
+    padding: 4px 6px;
     box-shadow: 0px 0px 6px ${defaultColor};
     opacity: ${_ => _.opacity};
     transition: opacity .3s ease-in, visibility .3s ease-in;
     -webkit-user-select: none;
     -moz-user-select: none;
     -ms-user-select: none;
+    font-size: 12px;
   }
 
   &::after {
@@ -65,3 +72,96 @@ export const TooltipContent = styled('span')<{ isVisible: boolean, left: number 
     }
     }
 `
+
+
+export const TooltipStyled = createGlobalStyle({}, css`
+  [data-tippy-root] {
+    opacity: 1;
+
+    [data-theme="current"] {
+      background-color: ${currentColorWithoutBlur};
+      border-radius: ${borderRadiusSize.sm};
+      opacity: 1;
+    }
+
+    [data-theme="light"] {
+      background-color: #fff;
+      border-radius: ${borderRadiusSize.sm};
+      color: ${darkColor};
+      z-index: 99999;
+      opacity: 1;
+    }
+
+    [data-theme="midnight"] {
+      background-color: ${pageHeaderColor};
+      border-radius: ${borderRadiusSize.sm};
+      color: ${darkColor};
+      z-index: 99999;
+      opacity: 1;
+    }
+
+    [data-placement^="right"][data-theme="light"] {
+      box-shadow: 12px 12px 25px 4px ${shadowColor};
+    }
+
+    [data-placement^="top"][data-theme="light"] {
+      box-shadow: 0px -18px 40px 4px ${shadowColor};
+    }
+
+    [data-placement^="bottom"][data-theme="light"] {
+      box-shadow: 0px 18px 40px 4px ${shadowColor};
+    }
+
+    [data-placement^="left"][data-theme="light"] {
+      box-shadow: -12px 12px 25px 4px ${shadowColor};
+    }
+
+    [data-theme="current"][data-placement^="right"] > .tippy-arrow::before {
+      border-right-color: ${currentColorWithoutBlur};
+    }
+
+    [data-theme="current"][data-placement^="left"] > .tippy-arrow::before {
+      border-left-color: ${currentColorWithoutBlur};
+    }
+
+    [data-theme="current"][data-placement^="top"] > .tippy-arrow::before {
+      border-top-color: ${currentColorWithoutBlur};
+    }
+
+    [data-theme="current"][data-placement^="bottom"] > .tippy-arrow::before {
+      border-bottom-color: ${currentColorWithoutBlur};
+    }
+
+    [data-theme="light"][data-placement^="right"] > .tippy-arrow::before {
+      border-right-color: #fff;
+    }
+
+    [data-theme="light"][data-placement^="left"] > .tippy-arrow::before {
+      border-left-color: #fff
+    }
+
+    [data-theme="light"][data-placement^="top"] > .tippy-arrow::before {
+      border-top-color: #fff;
+    }
+
+    [data-theme="light"][data-placement^="bottom"] > .tippy-arrow::before {
+      border-bottom-color: #fff
+    }
+
+    [data-theme="midnight"][data-placement^="right"] > .tippy-arrow::before {
+      border-right-color: ${pageHeaderColor};
+    }
+
+    [data-theme="midnight"][data-placement^="left"] > .tippy-arrow::before {
+      border-left-color: ${pageHeaderColor};
+    }
+
+    [data-theme="midnight"][data-placement^="top"] > .tippy-arrow::before {
+      border-top-color: ${pageHeaderColor};
+    }
+
+    [data-theme="midnight"][data-placement^="bottom"] > .tippy-arrow::before {
+      border-bottom-color: ${pageHeaderColor};
+    }
+  }
+`)
