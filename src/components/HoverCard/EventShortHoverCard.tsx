@@ -12,6 +12,7 @@ import {ShortEventInfoModel} from "../../store/api/planning-api/types/event-info
 import {JoinToEventButton} from "../Buttons/Buttons.styled";
 import {UrlIcon} from "../Icons/SocialNetworkIcons";
 import {UserAvatar} from "../../pages/Planner/Users/UserAvatar";
+import {PreviewDescription} from "../../pages/Planner/RenderModes/DayCalendar/TaskList/TaskList.styled";
 
 export interface EventShortHoverCardProps {
 	event: ShortEventInfoModel
@@ -66,6 +67,11 @@ export const EventShortHoverCard: FC<EventShortHoverCardProps> = ({event}) => {
 				/>
 				{event.group?.title || ''}
 			</FlexBlock>
+			{event.description && (
+				<PreviewDescription>
+					{event.description}
+				</PreviewDescription>
+			)}
 			{event.link && (
 				<FlexBlock width={'100%'} justify={'center'} mt={12}>
 					<JoinToEventButton

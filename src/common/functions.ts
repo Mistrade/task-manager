@@ -1,12 +1,12 @@
 import {
+	EventItem,
+	EventsStorage,
 	PlannerDateMode,
 	PlannerListMode,
+	PlannerMode,
 	PlannerMonthMode,
 	PlannerWeekMode,
-	PlannerYearMode,
-	PlannerMode,
-	EventItem,
-	EventsStorage
+	PlannerYearMode
 } from '../pages/Planner/planner.types'
 import dayjs from 'dayjs'
 import {
@@ -20,6 +20,9 @@ import {
 import {MonthList} from './constants'
 import {DateHelper} from "./calendarSupport/dateHelper";
 import {ShortEventInfoModel} from "../store/api/planning-api/types/event-info.types";
+import {CommentModel} from "../store/api/planning-api/types/comments.types";
+import {MergedComment} from "../pages/Planner/TaskInformer/LeftBar/Tabs/TaskComments/SupportComponents/CommentsList";
+import {UserModel} from "../store/api/session-api/session-api.types";
 
 export const addNull = (value: number): string => value < 10 ? `0${value}` : value.toString()
 
@@ -276,4 +279,30 @@ export async function Delay(delayCountMs: number = 500): Promise<void> {
 	return new Promise((resolve, reject) => setTimeout(() => {
 		resolve()
 	}, delayCountMs))
+}
+
+export interface MergedObject<InitialType extends Record<string, any>, fieldName extends keyof InitialType, ResultType extends Record<fieldName, InitialType[fieldName]>> {
+	user: UserModel,
+	arr: Array<InitialType>
+}
+
+export const mergeArrayWithUserId = <InitialType extends Record<string, any>, fieldName extends keyof InitialType, ResultType extends Record<fieldName, InitialType[fieldName]>>(
+	list: Array<InitialType>,
+	userField: fieldName
+): Array<MergedObject<InitialType, fieldName, ResultType>> => {
+	const arr: Array<MergedObject<InitialType, fieldName, ResultType>> = []
+	
+	
+	list.forEach((item) => {
+		const arrIndex = arr.length - 1
+		if (arrIndex >= 0 && arr[arrIndex]?.user._id === item[userField]._id) {
+			return arr[arrIndex].arr.push(item)
+		}
+		
+		return arr.push({
+			arr: [item], user: item[userField]
+		})
+	})
+	
+	return arr
 }

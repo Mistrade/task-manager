@@ -1,7 +1,7 @@
 import styled from "styled-components";
 import {borderRadiusSize, lightHoverColor} from "../../common/constants";
 
-export const EmptyButtonStyled = styled('button')`
+export const DontHoveredButton = styled('button')`
   & {
     position: relative;
     outline: none;
@@ -16,7 +16,13 @@ export const EmptyButtonStyled = styled('button')`
     gap: 8px;
     padding: 4px 6px;
   }
-	
+`
+
+DontHoveredButton.defaultProps = {
+	type: 'button'
+}
+
+export const EmptyButtonStyled = styled(DontHoveredButton)`
   &:hover {
     border-radius: ${borderRadiusSize.sm};
     background-color: ${lightHoverColor};

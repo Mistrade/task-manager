@@ -25,3 +25,9 @@ export interface UpdateCommentIsImportantRequestData {
 	fieldName: "isImportant",
 	state: "toggle" | boolean
 }
+
+export interface UpdateCommentMessageState {
+	commentId: ObjectId,
+	fieldName: 'content',
+	state: Omit<CreateCommentRequestProps, 'eventId'>
+}

@@ -1,11 +1,11 @@
 import React, {FC} from "react";
-import {EventInfoBaseProps} from "../planner.types";
-import {FlexBlock} from "../../../components/LayoutComponents/FlexBlock";
+import {EventInfoBaseProps} from "../../planner.types";
+import {FlexBlock} from "../../../../components/LayoutComponents/FlexBlock";
 import dayjs from "dayjs";
-import {Heading} from "../../../components/Text/Heading";
-import {CalendarUserIndicator} from "../Users/UserIndicator";
-import {openUrlInNewTab} from "../../../common/url";
-import {getDateDescription} from "./LeftBar/Tabs/TaskHistory/TaskHistoryItem";
+import {Heading} from "../../../../components/Text/Heading";
+import {CalendarUserIndicator} from "../../Users/UserIndicator";
+import {openUrlInNewTab} from "../../../../common/url";
+import {getDateDescription} from "../../../../common/calendarSupport/dateHelper";
 
 
 export const TaskCreatedMessage: FC<EventInfoBaseProps> = ({eventInfo}) => {

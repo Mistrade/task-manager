@@ -1,7 +1,6 @@
 import {AnswerIcon} from "../../../../../../../components/Icons/CalendarIcons/AnswerIcon";
 import {FlexBlock} from "../../../../../../../components/LayoutComponents/FlexBlock";
-import {TaskPreviewDescription} from "../../../../../RenderModes/DayCalendar/TaskList/TaskList.styled";
-import {MessageContainer, MessagesListContainer} from "../TaskComments";
+import {PreviewDescription} from "../../../../../RenderModes/DayCalendar/TaskList/TaskList.styled";
 import React, {FC} from "react";
 import {LinkStyled} from "../../../../../../../components/Buttons/Link.styled";
 import {EmptyButtonStyled} from "../../../../../../../components/Buttons/EmptyButton.styled";
@@ -11,6 +10,7 @@ import {DateHelper} from "../../../../../../../common/calendarSupport/dateHelper
 import dayjs from "dayjs";
 import {CommentModel} from "../../../../../../../store/api/planning-api/types/comments.types";
 import {ObjectId} from "../../../../../../../store/api/rtk-api.types";
+import {MessageContainer, MessagesListContainer} from "../comments.styled";
 
 export interface AnsweredCommentProps {
 	commentItem?: CommentModel | null,
@@ -59,9 +59,9 @@ export const AnsweredComment: FC<AnsweredCommentProps> = ({commentItem, onDelete
 						bgColor={'#fff !important'}
 						onClick={(e) => onClick && commentItem && onClick(e, commentItem?._id)}
 					>
-						<TaskPreviewDescription>
+						<PreviewDescription>
 							{commentItem.message}
-						</TaskPreviewDescription>
+						</PreviewDescription>
 					</FlexBlock>
 				</MessageContainer>
 			</MessagesListContainer>

@@ -42,13 +42,15 @@ export const DatePicker: FC<DatePickerProps> = memo(({
 		if (d.isValid()) {
 			const isSame = d.isSame(stateValue, 'minute')
 			if (currentDate && useForceUpdateValue && !isSame) {
+				console.log('123')
 				setStateValue(currentDate)
 			}
 		}
-	}, [currentDate, useForceUpdateValue])
+	}, [currentDate?.toString(), useForceUpdateValue])
 	
 	return (
 		<SelectInput
+			placeholder={'Выберите дату'}
 			onFocus={onFocus}
 			data={[]}
 			renderData={(data) => (
@@ -56,7 +58,7 @@ export const DatePicker: FC<DatePickerProps> = memo(({
 					<FlexBlock direction={'column'} width={'100%'} pb={4}>
 						<DatePickerPaper
 							disabledOptions={disabledOptions}
-							currentDate={currentDate || dayjs().toDate()}
+							currentDate={stateValue || dayjs().toDate()}
 							onChange={(date) => {
 								setStateValue(date)
 							}}

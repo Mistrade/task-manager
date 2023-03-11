@@ -1,10 +1,12 @@
-import React, {FC} from "react";
+import React, {FC, useCallback} from "react";
 import {Routes} from 'react-router-dom'
 import {Navigate, Route} from "react-router";
 import {NotFoundPage} from "./NotFoundRoutes";
 import {Loader} from "../Loaders/Loader";
 import {WithSuspense} from "../Loaders/WithSuspense";
 import {UserModel} from "../../store/api/session-api/session-api.types";
+import {ErrorScreen} from "../Errors/ErrorScreen";
+import {FlexBlock} from "../LayoutComponents/FlexBlock";
 
 interface OnlyAuthRoutes {
 	userInfo?: UserModel | null,
@@ -15,6 +17,10 @@ const RegistrationForm = React.lazy(() => import('../Session/Registration').then
 const AuthorizationForm = React.lazy(() => import('../Session/AuthorizationForm').then(({AuthorizationForm}) => ({default: AuthorizationForm})))
 
 export const AppRoutes: FC<OnlyAuthRoutes> = ({userInfo}) => {
+	
+	const goBack = useCallback(() => {
+		history.back()
+	}, [])
 	
 	if (userInfo) {
 		return (
@@ -37,11 +43,59 @@ export const AppRoutes: FC<OnlyAuthRoutes> = ({userInfo}) => {
 				</Route>
 				<Route
 					path={'profile/:id'}
-					element={'Тут будет профиль пользователя'}
+					element={
+						<FlexBlock width={'100%'} grow={3} justify={'center'} align={'center'}>
+							<ErrorScreen
+								title={'Профили пользователей временно недоступны'}
+								errorType={'BAD_REQUEST'}
+								description={'Этот раздел находится в разработке и на данный момент недоступен для просмотра'}
+								action={{
+									title: "Вернуться назад",
+									onClick: goBack
+								}}
+							/>
+						</FlexBlock>
+					}
+				/>
+				<Route
+					path={'/faq/*'}
+					element={
+						<FlexBlock width={'100%'} grow={3} justify={'center'} align={'center'}>
+							<ErrorScreen
+								title={'FAQ временно недоступен'}
+								errorType={'BAD_REQUEST'}
+								description={'Этот раздел находится в разработке и на данный момент недоступен для просмотра'}
+								action={{
+									title: "Вернуться назад",
+									onClick: goBack
+								}}
+							/>
+						</FlexBlock>
+					}
+				/>
+				<Route
+					path={'/contacts/*'}
+					element={
+						<FlexBlock width={'100%'} grow={3} justify={'center'} align={'center'}>
+							<ErrorScreen
+								title={'Сервис "Контакты" временно недоступен'}
+								errorType={'BAD_REQUEST'}
+								description={'Этот раздел находится в разработке и на данный момент недоступен для просмотра'}
+								action={{
+									title: "Вернуться назад",
+									onClick: goBack
+								}}
+							/>
+						</FlexBlock>
+					}
 				/>
 				<Route
 					path={'*'}
-					element={<NotFoundPage/>}
+					element={
+						<FlexBlock width={'100%'} grow={3} justify={'center'} align={'center'}>
+							<NotFoundPage/>
+						</FlexBlock>
+					}
 				/>
 			</Routes>
 		)

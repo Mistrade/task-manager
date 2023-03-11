@@ -20,12 +20,19 @@ import {
 	SortedEventsObject,
 	UpdateEventRequestProps
 } from "./types/event-info.types";
-import {CommentModel, CreateCommentRequestProps, UpdateCommentIsImportantRequestData} from "./types/comments.types";
+import {
+	CommentModel,
+	CreateCommentRequestProps,
+	UpdateCommentIsImportantRequestData,
+	UpdateCommentMessageState
+} from "./types/comments.types";
 import {EventHistoryQueryResult} from "./types/event-history.types";
 import {CustomRtkError, MyServerResponse, ObjectId} from "../rtk-api.types";
 import {AddChainsRequestData, EventChainsObject} from "./types/event-chains.types";
 import {EventFilterTaskStatuses} from "../../../pages/Planner/RenderModes/FindEventFilter/find-event-filters.types";
 import {CreateGroupProps} from "../../../pages/Planner/Groups/groups.types";
+import {UserModel} from "../session-api/session-api.types";
+import {mergeArrayWithUserId, MergedObject} from "../../../common/functions";
 
 export const PlanningApiTagTypes = ['Events', 'EventInfo', 'Groups', 'EventsScheme', 'CalendarInfo', 'EventsCount', 'Chains', "EventHistory", "Comments"]
 
@@ -164,11 +171,18 @@ export const planningApi = createApi({
 				},
 				providesTags: ['EventsScheme']
 			}),
-			getEventHistory: query<MyServerResponse<Array<EventHistoryQueryResult>>, ObjectId>({
+			getEventHistory: query<Array<MergedObject<EventHistoryQueryResult, 'changeUserId', EventHistoryQueryResult>>, ObjectId>({
 				query: (taskId) => ({
 					url: `/history/${taskId}`,
 					method: "GET"
 				}),
+				transformResponse(value: MyServerResponse<Array<EventHistoryQueryResult>>, meta, arg: ObjectId): Array<MergedObject<EventHistoryQueryResult, 'changeUserId', EventHistoryQueryResult>> {
+					if (!value.data) {
+						return []
+					}
+					
+					return mergeArrayWithUserId(value.data || [], 'changeUserId')
+				},
 				providesTags: ["EventHistory"]
 			}),
 			getEventChains: query<MyServerResponse<EventChainsObject>, ObjectId>({
@@ -265,6 +279,16 @@ export const planningApi = createApi({
 					? ['Comments']
 					: []
 			}),
+			updateComment: mutation<MyServerResponse, UpdateCommentMessageState>({
+				query: (data) => ({
+					url: '/comments/update',
+					method: "POST",
+					body: data
+				}),
+				invalidatesTags: (result, error, arg, meta) => !error
+					? ['Comments']
+					: []
+			}),
 			connectChains: mutation<MyServerResponse, AddChainsRequestData>({
 				query: (body) => ({
 					url: "/chains/add",
@@ -305,5 +329,6 @@ export const {
 	useGetCommentsListQuery,
 	useRemoveCommentMutation,
 	useConnectChainsMutation,
-	useToggleIsImportantCommentStateMutation
+	useToggleIsImportantCommentStateMutation,
+	useUpdateCommentMutation
 } = planningApi

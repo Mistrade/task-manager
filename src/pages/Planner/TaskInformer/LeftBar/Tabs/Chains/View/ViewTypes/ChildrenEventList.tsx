@@ -23,7 +23,7 @@ export const ChildrenEventList: FC<ChildrenEventsListProps> = ({eventInfo, updat
 					<TaskChainItemsWrapper wrapState={state}>
 						{childrenEvents
 							.map(
-								(item) => <TaskChainItem key={item?._id} suffix={'parentOf'} chainItem={item} updateFn={updateFn}/>
+								(item) => <TaskChainItem key={item?._id} suffix={'childOf'} chainItem={item} updateFn={updateFn}/>
 							)}
 					</TaskChainItemsWrapper>
 				}

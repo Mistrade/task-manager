@@ -1,13 +1,13 @@
 import dayjs, {Dayjs} from "dayjs";
 import {
 	CalendarCurrentContext,
+	CalendarDisabledOptions,
 	PlannerDateMode,
 	PlannerMonthMode,
 	PlannerWeekMode,
-	PlannerYearMode,
-	CalendarDisabledOptions
+	PlannerYearMode
 } from "../../pages/Planner/planner.types";
-import {DeclinationMonthList, MonthList, ShortMonthList} from "../constants";
+import {DATE_HOURS_MINUTES_SECONDS_FORMAT, DeclinationMonthList, ShortMonthList} from "../constants";
 
 export interface HumanizeDateValueOptions {
 	withTime?: boolean,
@@ -16,7 +16,7 @@ export interface HumanizeDateValueOptions {
 	yearPattern?: 'short' | 'full',
 }
 
-export class DateHelper {
+export abstract class DateHelper {
 	public static getHumanizeDateValue(date: Date | string, options: HumanizeDateValueOptions = {}) {
 		const {
 			withTime = true,
@@ -207,4 +207,49 @@ export class DateHelper {
 		}
 	}
 	
+}
+
+export const getDateDescription = (date: Date, withTime: boolean = true): string => {
+	const d = dayjs(date)
+	
+	const formattedHours = d.format(DATE_HOURS_MINUTES_SECONDS_FORMAT)
+	
+	const diffMinutes = Math.abs(d.diff(dayjs(), 'minute'))
+	
+	if (diffMinutes < 2) {
+		return `Менее 2 минут назад`
+	}
+	
+	if (diffMinutes < 60) {
+		if (diffMinutes <= 20 && diffMinutes >= 5) {
+			return `${diffMinutes} минут назад`
+		}
+		
+		const divisionRemainder = diffMinutes % 10
+		
+		
+		if (divisionRemainder === 1) {
+			return `${diffMinutes} минуту назад`
+		}
+		
+		if (divisionRemainder >= 2 && divisionRemainder <= 4) {
+			return `${diffMinutes} минуты назад`
+		}
+		
+		return `${diffMinutes} минут назад`
+	}
+	
+	if (d.isTomorrow()) {
+		return `Завтра в ${formattedHours}`
+	}
+	
+	if (d.isToday()) {
+		return `Сегодня в ${formattedHours}`
+	}
+	
+	if (d.isYesterday()) {
+		return `Вчера в ${formattedHours}`
+	}
+	
+	return DateHelper.getHumanizeDateValue(d.toDate(), {withTime, monthPattern: 'full'})
 }

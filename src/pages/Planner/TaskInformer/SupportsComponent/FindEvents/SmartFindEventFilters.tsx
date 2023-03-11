@@ -3,7 +3,9 @@ import {TextInput} from "../../../../../components/Input/TextInput/TextInput";
 import {DatePicker} from "../../../../../components/DatePicker/DatePicker";
 import dayjs from "dayjs";
 import React, {FC} from "react";
-import {SelectPriorityInput} from "../../../../../components/Input/SelectInput/CalendarSelectInputs/SelectPriorityInput";
+import {
+	SelectPriorityInput
+} from "../../../../../components/Input/SelectInput/CalendarSelectInputs/SelectPriorityInput";
 import {SelectStatusInput} from "../../../../../components/Input/SelectInput/CalendarSelectInputs/SelectStatusInput";
 import {FormHandle} from "../../../RenderModes/FindEventFilter/find-event-filters.types";
 
@@ -37,7 +39,7 @@ export const SmartFindEventFilters: FC<FormHandle> = ({values, onChangeHandlers,
 			<FlexBlock direction={'row'} gap={6}>
 				<DatePicker
 					onDecline={() => onChangeHandlers.start(null)}
-					useForceUpdateValue={true}
+					useForceUpdateValue={false}
 					currentDate={values.start}
 					onChange={onChangeHandlers.start}
 					onFocus={(e) => onFocusHandlers && onFocusHandlers('start', e)}
@@ -45,7 +47,7 @@ export const SmartFindEventFilters: FC<FormHandle> = ({values, onChangeHandlers,
 				/>
 				<DatePicker
 					onDecline={() => onChangeHandlers.end(null)}
-					useForceUpdateValue={true}
+					useForceUpdateValue={false}
 					currentDate={values.end}
 					onChange={onChangeHandlers.end}
 					onFocus={(e) => onFocusHandlers && onFocusHandlers('end', e)}

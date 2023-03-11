@@ -6,6 +6,7 @@ import {DatePicker} from "../../../../../../components/DatePicker/DatePicker";
 import dayjs from "dayjs";
 import {TaskInformerDescription} from "../../../SupportsComponent/TaskInformerDescription";
 import {useSearchNavigate} from "../../../../../../hooks/useSearchNavigate";
+import {ChildOfIcon} from "../../../../../../components/Icons/Icons";
 
 export interface EventInfoAboutTabProps extends EventInfoBaseProps {
 	updateFn: EventInfoUpdateFn

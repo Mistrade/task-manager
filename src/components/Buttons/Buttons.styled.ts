@@ -20,6 +20,8 @@ export const StyledButton = styled('button')<{ fillColor?: string, textColor?: s
 
 export const Button = styled('button')`
   & {
+    display: flex;
+    align-items: center;
     padding: 6px 24px;
     font-size: 16px;
     color: #fff;
@@ -29,6 +31,7 @@ export const Button = styled('button')`
     border-radius: ${borderRadiusSize.sm};
     cursor: pointer;
     transition: all .3s ease-in-out;
+    gap: 6px;
   }
 
   &:hover {
@@ -91,12 +94,12 @@ WhiteButton.defaultProps = {
 }
 
 export const TransparentButton = styled(WhiteButton)`
-	& {
-		width: max-content;
-		line-height: 20px;
-		font-size: 14px;
-		background-color: transparent;
-	}
+  & {
+    width: max-content;
+    line-height: 20px;
+    font-size: 14px;
+    background-color: transparent;
+  }
 `
 
 export const JoinToEventButton = styled("a")`
@@ -109,7 +112,7 @@ export const JoinToEventButton = styled("a")`
   color: ${defaultColor};
   text-decoration: none;
   outline: none;
-	line-height: 20px;
+  line-height: 20px;
   background-color: transparent;
   transition: all .3s ease-in;
 

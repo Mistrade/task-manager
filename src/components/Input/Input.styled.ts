@@ -83,6 +83,7 @@ export const StyledTextAreaInput = styled('textarea')`
     font-size: 16px;
     line-height: 16px;
     font-family: Helvetica, sans-serif;
+    overflow-y: auto;
   }
 
   ${DefaultPadding};

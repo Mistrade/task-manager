@@ -1,11 +1,12 @@
 import styled from "styled-components";
-import {FC, useEffect, useRef} from "react";
+import React, {FC, useEffect, useRef} from "react";
 import {CommentModel} from "../../../../../../../store/api/planning-api/types/comments.types";
 import {UserModel} from "../../../../../../../store/api/session-api/session-api.types";
-import {MergedCommentItem} from "./MergedCommentItem";
-import {BaseCommentActionsProps, CommentGroupProps} from "./CommentGroup";
 import {ErrorScreen} from "../../../../../../../components/Errors/ErrorScreen";
 import {FlexBlock} from "../../../../../../../components/LayoutComponents/FlexBlock";
+import {BaseCommentActionsProps, CommentGroupProps} from "../comments.types";
+import {MergedNote} from "../../TaskHistory/EventHistoryMergedItem";
+import {CommentGroup} from "./CommentGroup";
 
 export const CommentsListContainer = styled('ul')`
   & {
@@ -36,7 +37,8 @@ export const CommentsList: FC<CommentsListProps> = ({
 																											comments,
 																											onRemoveComment,
 																											onReplyToComment,
-																											onClickToReplyComment
+																											onClickToReplyComment,
+																											onUpdateCommentClick
 																										}) => {
 	const invisibleScroller = useRef<HTMLDivElement>(null)
 	
@@ -70,12 +72,17 @@ export const CommentsList: FC<CommentsListProps> = ({
 			{comments.map((comment) => {
 				return !!comment.arr.length
 					? (
-						<MergedCommentItem
-							onRemoveComment={onRemoveComment}
-							onReplyToComment={onReplyToComment}
-							scrollToAnsweredCommentFn={onClickToReplyComment}
-							key={comment.arr[0]._id}
-							comment={comment}
+						<MergedNote
+							mergeItem={comment}
+							renderGroup={(item) => (
+								<CommentGroup
+									onUpdateCommentClick={onUpdateCommentClick}
+									comment={item}
+									onClickToReplyComment={onClickToReplyComment}
+									onRemoveComment={onRemoveComment}
+									onReplyToComment={onReplyToComment}
+								/>
+							)}
 						/>
 					) : <></>
 			})}

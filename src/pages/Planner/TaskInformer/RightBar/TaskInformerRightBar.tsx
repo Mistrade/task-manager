@@ -11,7 +11,7 @@ import {Heading} from "../../../../components/Text/Heading";
 import {SmallMonth} from "../../SmallMotnCalendar/SmallMonth";
 import {SmallCalendarMonthTitle} from "../../SmallMotnCalendar/SmallCalendarMonthTitle";
 import dayjs from "dayjs";
-import {TaskCreatedMessage} from "../TaskCreatedMessage";
+import {TaskCreatedMessage} from "../SupportsComponent/TaskCreatedMessage";
 
 interface TaskInformerRightBarProps extends EventInfoBaseProps {
 	monthItem: MonthItem,

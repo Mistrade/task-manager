@@ -4,10 +4,11 @@ import React, {FC} from "react";
 import {UserAvatar} from "../../../../../Users/UserAvatar";
 import {currentColor, pageHeaderColor} from "../../../../../../../common/constants";
 import {LinkStyled} from "../../../../../../../components/Buttons/Link.styled";
-import {BaseCommentActionsProps, CommentGroup, CommentGroupProps} from "./CommentGroup";
+import {CommentGroup} from "./CommentGroup";
 import {Tooltip} from "../../../../../../../components/Tooltip/Tooltip";
 import {UserHoverCard} from "../../../../../../../components/HoverCard/UserHoverCard";
 import {EventShortHoverCard} from "../../../../../../../components/HoverCard/EventShortHoverCard";
+import {BaseCommentActionsProps, CommentGroupProps} from "../comments.types";
 
 export const MergedCommentContainer = styled('li')`
   & {
@@ -16,7 +17,7 @@ export const MergedCommentContainer = styled('li')`
     flex-direction: row;
     gap: 8px;
     position: relative;
-    align-items: stretch;
+		align-items: stretch;
   }
 `
 
@@ -25,7 +26,7 @@ export const MergedCommentUserInfo = styled('div')`
     width: fit-content;
     display: flex;
     flex-direction: column;
-		z-index: 1;
+    z-index: 1;
   }
 `
 
@@ -35,7 +36,7 @@ export const MergedCommentDataContainer = styled('div')`
     flex-grow: 10;
     flex-direction: column;
     position: relative;
-		//z-index: 0;
+    //z-index: 0;
   }
 `
 
@@ -71,6 +72,7 @@ export const MergedCommentItem: FC<MergedCommentItemProps> = ({
 																																scrollToAnsweredCommentFn,
 																																onRemoveComment,
 																																onReplyToComment,
+																																onUpdateCommentClick
 																															}) => {
 	return (
 		<MergedCommentContainer>
@@ -100,12 +102,7 @@ export const MergedCommentItem: FC<MergedCommentItemProps> = ({
 						{`${comment.user.name} ${comment.user.surname}`}
 					</LinkStyled>
 				</MergedCommentDataUserName>
-				<CommentGroup
-					comment={comment}
-					onClickToReplyComment={scrollToAnsweredCommentFn}
-					onRemoveComment={onRemoveComment}
-					onReplyToComment={onReplyToComment}
-				/>
+				
 			</MergedCommentDataContainer>
 		</MergedCommentContainer>
 	)

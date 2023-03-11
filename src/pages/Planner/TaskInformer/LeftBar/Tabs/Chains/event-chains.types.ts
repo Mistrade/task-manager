@@ -32,7 +32,7 @@ export interface EventChainItemsWrapperProps {
 export interface ChildrenEventsListProps {
 	eventInfo: EventInfoModel,
 	updateFn: EventInfoUpdateFn,
-	title: string,
+	title: ReactNode,
 	childrenEvents: Array<ShortEventInfoModel> | null | undefined,
 	onConnectClick?: () => void
 }
@@ -44,7 +44,7 @@ export interface EventSingleChainProps {
 	suffix: string
 }
 
-export type ConnectChainsType = "childOf" | "parentOf"
+export type ConnectChainsType = 'childOf' | 'parentOf' | 'completed-after' | 'approved-after'
 
 export interface ConnectChainsProps {
 	taskInfo: EventInfoModel,

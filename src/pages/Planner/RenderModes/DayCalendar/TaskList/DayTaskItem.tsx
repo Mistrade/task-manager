@@ -14,7 +14,7 @@ import {
 } from "../../../../../common/constants";
 import {css} from "styled-components";
 import {toast} from "react-toastify";
-import {TaskPreviewDescription} from "./TaskList.styled";
+import {PreviewDescription} from "./TaskList.styled";
 import {OnSelectTaskFnType} from "../../../planner.types";
 import {
 	EventInfoUpdateFn,
@@ -31,6 +31,7 @@ import {useAppDispatch, useAppSelector} from "../../../../../store/hooks/hooks";
 import {DateHelper} from "../../../../../common/calendarSupport/dateHelper";
 import {ShortEventInfoModel} from "../../../../../store/api/planning-api/types/event-info.types";
 import {MyServerResponse} from "../../../../../store/api/rtk-api.types";
+import {Tooltip} from "../../../../../components/Tooltip/Tooltip";
 
 interface DayTaskItemProps {
 	taskInfo: ShortEventInfoModel,
@@ -180,15 +181,19 @@ export const DayTaskItem: FC<DayTaskItemProps> = ({
 							Быстрые действия
 						</FlexBlock>
 						<FlexBlock direction={'row'} gap={6} wrap={'wrap'}>
-							<LikeButton
-								isChecked={taskInfo.isLiked}
-								onChange={async (isChecked) => {
-									await updateTask({id: taskInfo._id, data: !taskInfo.isLiked, field: 'isLiked'})
-									if (layout === 'favorites') {
-										dispatch(planningApi.util.invalidateTags(['EventsCount']))
-									}
-								}}
-							/>
+							<Tooltip
+								content={taskInfo.isLiked ? 'Убрать из избранного' : 'Добавить в избранное'}
+							>
+								<LikeButton
+									isChecked={taskInfo.isLiked}
+									onChange={async (isChecked) => {
+										await updateTask({id: taskInfo._id, data: !taskInfo.isLiked, field: 'isLiked'})
+										if (layout === 'favorites') {
+											dispatch(planningApi.util.invalidateTags(['EventsCount']))
+										}
+									}}
+								/>
+							</Tooltip>
 							<ToggleEventPriority
 								iconProps={{size: 20}}
 								stopPropagation={true}
@@ -213,27 +218,18 @@ export const DayTaskItem: FC<DayTaskItemProps> = ({
 								value={taskInfo.status}
 								onChange={updateTaskHandler}
 							/>
-							
 							{taskInfo.link?.value && (
-								<EmptyLink
-									href={taskInfo.link.value}
-									target={'_blank'}
-									rel={''}
-									onClick={(e) => e.stopPropagation()}
-								>
-									<UrlIcon name={taskInfo.link.key} size={20}/>
-								</EmptyLink>
+								<Tooltip content={'Нажав на иконку вы перейдете по ссылке'}>
+									<EmptyLink
+										href={taskInfo.link.value}
+										target={'_blank'}
+										rel={''}
+										onClick={(e) => e.stopPropagation()}
+									>
+										<UrlIcon name={taskInfo.link.key} size={20}/>
+									</EmptyLink>
+								</Tooltip>
 							)}
-							{/*{taskInfo.id && (*/}
-							{/*	<EmptyButtonStyled*/}
-							{/*		onClick={async (e) => {*/}
-							{/*			e.stopPropagation()*/}
-							{/*			onDelete && onDelete(taskInfo.id)*/}
-							{/*		}}*/}
-							{/*	>*/}
-							{/*		<TrashIcon color={currentColor} size={20}/>*/}
-							{/*	</EmptyButtonStyled>*/}
-							{/*)}*/}
 						</FlexBlock>
 					</FlexBlock>
 				</FlexBlock>
@@ -289,9 +285,9 @@ export const DayTaskItem: FC<DayTaskItemProps> = ({
 							</FlexBlock>
 						</FlexBlock>
 						{taskInfo?.description && (
-							<TaskPreviewDescription>
+							<PreviewDescription>
 								{taskInfo.description}
-							</TaskPreviewDescription>
+							</PreviewDescription>
 						)}
 					</FlexBlock>
 				</FlexBlock>

@@ -5,17 +5,22 @@ import {CompleteIcon, IconProps} from "../Icons/Icons";
 import {FlexBlockProps} from "../LayoutComponents/FlexBlock";
 import {FC, useCallback, useEffect, useState} from "react";
 import {toast} from "react-toastify";
+import {Button} from "./Buttons.styled";
 
 export interface CopyToClipboardButtonProps extends Omit<IconProps, 'onClick'> {
 	iconContainerProps?: FlexBlockProps,
-	content: string
+	content: string,
+	renderText?: string,
+	style?: 'empty' | 'current'
 }
 
 export const CopyToClipboardButton: FC<CopyToClipboardButtonProps> = ({
 																																				size = 16,
 																																				iconContainerProps,
 																																				color = currentColor,
-																																				content
+																																				content,
+																																				renderText = '',
+																																				style = 'empty'
 																																			}) => {
 	const [isCopied, setIsCopied] = useState(false)
 	const [timeoutId, setTimeoutId] = useState<any>(null)
@@ -55,6 +60,30 @@ export const CopyToClipboardButton: FC<CopyToClipboardButtonProps> = ({
 			})
 	}, [content])
 	
+	if (style === 'current') {
+		return (
+			<Button
+				style={{fontSize: 14}}
+				onClick={copiedHandler}
+			>
+				{isCopied
+					? (
+						<CompleteIcon
+							size={16}
+							color={'#fff'}
+						/>
+					) : (
+						<CopyIcon
+							{...iconContainerProps}
+							size={size}
+							color={'#fff'}
+						/>
+					)}
+				{renderText}
+			</Button>
+		)
+	}
+	
 	return (
 		<EmptyButtonStyled
 			onClick={copiedHandler}
@@ -72,6 +101,7 @@ export const CopyToClipboardButton: FC<CopyToClipboardButtonProps> = ({
 						color={color}
 					/>
 				)}
+			{renderText}
 		</EmptyButtonStyled>
 	)
 }

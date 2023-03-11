@@ -19,7 +19,6 @@ export const PreviewEventsList: FC<PreviewEventsListProps> = ({buttons, title, g
 					width={'100%'}
 					direction={'column'}
 					overflow={"hidden"}
-					additionalCss={css`z-index: 0`}
 				>
 					<EventListFromArray
 						{...eventListFromArrayProps}

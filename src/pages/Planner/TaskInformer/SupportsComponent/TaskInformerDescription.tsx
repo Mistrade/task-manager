@@ -1,4 +1,4 @@
-import {FC, useState} from "react";
+import {FC, useEffect, useState} from "react";
 import {useFormik} from "formik";
 import {FlexBlock} from "../../../../components/LayoutComponents/FlexBlock";
 import {TextAreaInput} from "../../../../components/Input/TextAreaInput/TextAreaInput";
@@ -28,7 +28,8 @@ interface TaskInformerDescriptionInputProps {
 	inputPlaceholder?: string,
 	rows?: number,
 	inputId?: string,
-	maxHeight?: number
+	maxHeight?: number,
+	useUpdateInitialValue?: boolean
 }
 
 export interface TaskInformerDescriptionTextProps {
@@ -87,13 +88,21 @@ export const TaskInformerDescriptionInput: FC<TaskInformerDescriptionInputProps>
 																																											inputId,
 																																											onComplete,
 																																											clearOnComplete,
-																																											maxHeight= 300
+																																											maxHeight = 300,
+																																											useUpdateInitialValue = false
 																																										}) => {
+	
+	useEffect(() => {
+		if (useUpdateInitialValue) {
+			formik.setFieldValue('description', initialValue)
+		}
+	}, [initialValue, useUpdateInitialValue])
+	
 	const [loading, setLoading] = useState(false)
 	const formik = useFormik({
 		initialValues: {description: initialValue},
 		async onSubmit(values) {
-			if (!!values.description && values.description !== initialValue) {
+			if (!!values.description) {
 				setLoading(true)
 				await updateFn(values.description)
 					.then(() => {

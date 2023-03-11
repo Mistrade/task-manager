@@ -12,6 +12,16 @@ import {PriorityCalendarIcon} from "../../../../../../../components/Icons/Calend
 import {TrashIcon} from "../../../../../../../components/Icons/Icons";
 import {EventHistoryQueryResult} from "../../../../../../../store/api/planning-api/types/event-history.types";
 import {TaskChainBadge} from "../../Chains/EventChains.styled";
+import {EventStatusButton} from "../../../../SupportsComponent/EventStatusButton";
+import {StyledHistoryDescription} from "../event-history.styled";
+import {HistoryStatusField} from "./HistoryStatusField";
+import {HistoryPriorityField} from "./HistoryPriorityField";
+import {HistoryCreatedAtField} from "./HIstoryCreatedAtField";
+import {HistoryDescriptionField} from "./HistoryDescriptionField";
+import {HistoryTimeField} from "./HistoryTimeField";
+import {HistoryGroupField} from "./HistoryGroupField";
+import {HistoryChildOfField} from "./HistoryChildOfField";
+import {ReplyContent} from "../Essences/EventEssence/event-essence.styled";
 
 export interface TaskHistoryFieldControllerProps {
 	historyItem: EventHistoryQueryResult,
@@ -175,4 +185,38 @@ export const TaskHistoryFieldController: FC<TaskHistoryFieldControllerProps> = (
 	}
 	
 	return <></>
+}
+
+export interface EventHistoryItemControllerProps {
+	historyItem: EventHistoryQueryResult
+}
+
+export const EventHistoryItemController: FC<EventHistoryItemControllerProps> = ({historyItem}) => {
+	
+	switch (historyItem.fieldName) {
+		case "status":
+			return <HistoryStatusField value={historyItem.eventSnapshot.status}/>
+		case "priority":
+			return <HistoryPriorityField value={historyItem.eventSnapshot.priority}/>
+		case "createdAt":
+			return <HistoryCreatedAtField value={historyItem}/>
+		case "description":
+			return (
+				<ReplyContent>
+					<HistoryDescriptionField value={historyItem.eventSnapshot.description || ''}/>
+				</ReplyContent>
+			)
+		case 'time':
+			return <HistoryTimeField value={historyItem.eventSnapshot.time}/>
+		case 'timeEnd':
+			return <HistoryTimeField value={historyItem.eventSnapshot.timeEnd}/>
+		case "group":
+			return <HistoryGroupField value={historyItem.eventSnapshot.group || null}/>
+		case "insertChildOfEvents":
+			return <HistoryChildOfField value={historyItem}/>
+		case "removeChildOfEvents":
+			return <HistoryChildOfField value={historyItem}/>
+		default:
+			return <></>
+	}
 }

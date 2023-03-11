@@ -10,6 +10,9 @@ import {ScrollVerticalView} from "../../../../../../components/LayoutComponents/
 import {ConnectChains} from "./Connect/ConnectChains";
 import {EventInfoModel} from "../../../../../../store/api/planning-api/types/event-info.types";
 import {ConnectChainsType} from "./event-chains.types";
+import {Tooltip} from "../../../../../../components/Tooltip/Tooltip";
+import {TooltipIcon} from "../../../../../../components/Icons/TooltipIcon";
+import {currentColor} from "../../../../../../common/constants";
 
 interface EventChainsTabProps {
 	taskItem: EventInfoModel,
@@ -114,19 +117,37 @@ export const EventChainsTab: FC<EventChainsTabProps> = ({taskItem, updateFn}) =>
 					childrenEvents={chainsObject?.data?.childrenEvents || []}
 					eventInfo={taskItem}
 					updateFn={updateFn}
-					title={'Вложенные:'}
+					title={
+						<FlexBlock gap={6} align={'center'} direction={'row'}>
+							ChildOf - события
+							<Tooltip
+								theme={'current'}
+								placement={'right'}
+								content={
+									<div style={{textAlign: 'center', width: '100%', whiteSpace: 'pre-wrap'}}>
+										<span style={{fontWeight: 'bold', display: 'inline'}}>ChildOf</span> - это вложенные события.<br/>
+										Чаще всего эта связь используется для осуществления вложенности и дробления события. <br/>
+										Например одно большое событие может состоять из нескольких маленьких. <br/>
+										Эти маленькие события и есть - <span style={{fontWeight: 'bold', display: 'inline'}}>ChildOf</span>
+									</div>
+								}
+							>
+								<TooltipIcon size={20} color={currentColor}/>
+							</Tooltip>
+						</FlexBlock>
+					}
 				/>
 				<EventSingleChain
 					fromTask={chainsObject.data?.parentEvent}
 					updateFn={updateFn}
 					title={'Вложено в:'}
-					suffix={'childOf'}
+					suffix={'parentOf'}
 				/>
 				<EventSingleChain
 					fromTask={chainsObject.data?.linkedFromEvent}
 					updateFn={updateFn}
 					title={'Клонировано от:'}
-					suffix={'cloneOf'}
+					suffix={'linkedFrom'}
 				/>
 			</FlexBlock>
 		</ScrollVerticalView>

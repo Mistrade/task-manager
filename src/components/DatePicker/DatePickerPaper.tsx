@@ -39,10 +39,6 @@ export const DatePickerPaper: FC<DatePickerPaperProps> = ({
 		}
 	}, [value])
 	
-	useEffect(() => {
-		setValue(currentDate)
-	}, [currentDate])
-	
 	return (
 		<FlexBlock width={'100%'} direction={'column'} align={'center'} p={8}>
 			<FlexBlock mb={24}>
@@ -102,6 +98,7 @@ export const DatePickerPaper: FC<DatePickerPaperProps> = ({
 					currentDate={value}
 					minuteStep={5}
 					onChange={(date) => {
+						console.log(date)
 						if (disabledOptions?.min) {
 							const min = dayjs(disabledOptions.min)
 							if (min.isSame(date, 'hour')) {

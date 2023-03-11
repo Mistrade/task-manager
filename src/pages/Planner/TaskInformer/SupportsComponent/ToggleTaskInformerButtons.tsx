@@ -12,6 +12,9 @@ import {GroupLogo} from "../../Groups/GroupList.styled";
 import {IconProps, LoaderIcon} from "../../../../components/Icons/Icons";
 import {PriorityCalendarIcon} from "../../../../components/Icons/CalendarIcons/PriorityCalendarIcon";
 import {GroupModelResponse} from "../../../../store/api/planning-api/types/groups.types";
+import {EventStatusButton} from "./EventStatusButton";
+import {EventPriorityButton} from "./EventPriorityButton";
+import {EventGroupButton} from "./EventGroupButton";
 
 export type EventInfoUpdateFn = (field: keyof EventItem, data: string | EventLinkItem | boolean | null, taskId?: UUID) => Promise<void>
 
@@ -63,19 +66,14 @@ export const ToggleEventCalendar: FC<ToggleEventButtonProps<GroupModelResponse>>
 							icon: <GroupLogo color={item.color}/>
 						})) || []}
 					renderElement={
-						<EmptyButtonStyled
-							id={elementId || randomId}
-							onClick={(e) => stopPropagation && e.stopPropagation()}
-						>
-							<FlexBlock gap={6} align={'center'}>
-								{mutationLoading ? (
-									<LoaderIcon size={20} {...iconProps} color={currentColor}/>
-								) : (
-									<GroupLogo color={value?.color || currentColor} {...iconProps}/>
-								)}
-								{renderText && (value?.title || "Выберите группу событий")}
-							</FlexBlock>
-						</EmptyButtonStyled>
+						<EventGroupButton
+							buttonId={elementId || randomId}
+							stopPropagation={true}
+							renderText={renderText}
+							iconProps={iconProps}
+							group={value}
+							isLoading={mutationLoading}
+						/>
 					}
 					selectedId={value?._id}
 				/>
@@ -109,15 +107,13 @@ export const ToggleEventStatus: FC<ToggleEventButtonProps<TaskStatusesType>> = (
 					icon: item.icon
 				}))}
 				renderElement={
-					<EmptyButtonStyled
-						id={elementId || randomId}
-						onClick={(e) => stopPropagation && e.stopPropagation()}
-					>
-						<FlexBlock gap={6} align={'center'}>
-							<EventIcon  {...iconProps} status={value || "all"}/>
-							{renderText && value && TASK_STATUSES[value].title || ''}
-						</FlexBlock>
-					</EmptyButtonStyled>
+					<EventStatusButton
+						iconProps={iconProps}
+						status={value}
+						stopPropagation={true}
+						buttonId={elementId || randomId}
+						renderText={renderText}
+					/>
 				}
 				selectedId={value || ""}
 			/>
@@ -150,22 +146,13 @@ export const ToggleEventPriority: FC<ToggleEventButtonProps<CalendarPriorityKeys
 					icon: <PriorityCalendarIcon priorityKey={item.type} isCompleted={false}/>
 				}))}
 				renderElement={
-					<EmptyButtonStyled
-						id={elementId || randomId}
-						onClick={(e) => stopPropagation && e.stopPropagation()}
-					>
-						<FlexBlock gap={6} align={'center'}>
-							<PriorityCalendarIcon
-								{...iconProps}
-								priorityKey={value || "not_selected"}
-							/>
-							{renderText && value && (
-								<FlexBlock fSize={16}>
-									{PRIORITY_TITLES[value] + ' приоритет'}
-								</FlexBlock>
-							)}
-						</FlexBlock>
-					</EmptyButtonStyled>
+					<EventPriorityButton
+						iconProps={iconProps}
+						priority={value}
+						stopPropagation={true}
+						buttonId={elementId || randomId}
+						renderText={renderText}
+					/>
 				}
 				selectedId={value || ""}
 			/>}

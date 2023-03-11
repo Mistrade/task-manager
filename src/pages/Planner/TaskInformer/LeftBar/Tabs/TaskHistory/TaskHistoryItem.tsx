@@ -1,16 +1,9 @@
 import {FC, ReactNode} from "react";
 import {FlexBlock} from "../../../../../../components/LayoutComponents/FlexBlock";
 import {CalendarUserIndicator} from "../../../../Users/UserIndicator";
-import dayjs from "dayjs";
-import {
-	borderRadiusSize,
-	currentColor,
-	darkColor,
-	DATE_HOURS_MINUTES_SECONDS_FORMAT,
-	disabledColor
-} from "../../../../../../common/constants";
+import {borderRadiusSize, currentColor, darkColor, disabledColor} from "../../../../../../common/constants";
 import {css} from "styled-components";
-import {DateHelper} from "../../../../../../common/calendarSupport/dateHelper";
+import {getDateDescription} from "../../../../../../common/calendarSupport/dateHelper";
 import {UserModel} from "../../../../../../store/api/session-api/session-api.types";
 
 export interface TaskHistoryItemProps {
@@ -18,51 +11,6 @@ export interface TaskHistoryItemProps {
 	date: Date,
 	description: string,
 	children: ReactNode
-}
-
-export const getDateDescription = (date: Date, withTime: boolean = true): string => {
-	const d = dayjs(date)
-	
-	const formattedHours = d.format(DATE_HOURS_MINUTES_SECONDS_FORMAT)
-	
-	const diffMinutes = Math.abs(d.diff(dayjs(), 'minute'))
-	
-	if (diffMinutes < 2) {
-		return `Менее 2 минут назад`
-	}
-	
-	if (diffMinutes < 60) {
-		if (diffMinutes <= 20 && diffMinutes >= 5) {
-			return `${diffMinutes} минут назад`
-		}
-		
-		const divisionRemainder = diffMinutes % 10
-		
-		
-		if (divisionRemainder === 1) {
-			return `${diffMinutes} минуту назад`
-		}
-		
-		if (divisionRemainder >= 2 && divisionRemainder <= 4) {
-			return `${diffMinutes} минуты назад`
-		}
-		
-		return `${diffMinutes} минут назад`
-	}
-	
-	if (d.isTomorrow()) {
-		return `Завтра в ${formattedHours}`
-	}
-	
-	if (d.isToday()) {
-		return `Сегодня в ${formattedHours}`
-	}
-	
-	if (d.isYesterday()) {
-		return `Вчера в ${formattedHours}`
-	}
-	
-	return DateHelper.getHumanizeDateValue(d.toDate(), {withTime, monthPattern: 'full'})
 }
 
 export const TaskHistoryItem: FC<TaskHistoryItemProps> = ({user, date, description, children}) => {

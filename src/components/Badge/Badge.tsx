@@ -1,5 +1,5 @@
 import styled from "styled-components";
-import {borderRadiusSize, defaultColor, pageHeaderColor} from "../../common/constants";
+import {borderRadiusSize, currentColor, defaultColor, pageHeaderColor} from "../../common/constants";
 
 export const Badge = styled('span')`
 	line-height: 1;
@@ -8,4 +8,9 @@ export const Badge = styled('span')`
 	font-size: 15px;
 	color: ${defaultColor};
 	background-color: ${pageHeaderColor};
+`
+
+export const TimeBadge = styled(Badge)`
+	color: #fff;
+	background-color: ${currentColor};
 `

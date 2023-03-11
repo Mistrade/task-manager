@@ -11,7 +11,7 @@ import {Accordion} from "../../../../components/Accordion/Accordion";
 import {Heading} from '../../../../components/Text/Heading'
 import {Badge} from '../../../../components/Badge/Badge'
 import {FlexBlock} from '../../../../components/LayoutComponents/FlexBlock'
-import {NonViewScroller, ScrollContainer} from "../../TaskInformer/LeftBar/Tabs/TaskComments/TaskComments";
+import {NonViewScroller, ScrollContainer} from "../../TaskInformer/LeftBar/Tabs/TaskComments/comments.styled";
 
 interface StyledProps {
 	isVisible?: boolean

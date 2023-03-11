@@ -12,6 +12,7 @@ import {ScrollVerticalView} from "../../../../../components/LayoutComponents/Scr
 import {EmptyCheckboxIcon, FillCheckboxIcon} from "../../../../../components/Icons/InputIcons/Checkbox";
 import {ShortEventInfoModel, SortedEventsObject} from "../../../../../store/api/planning-api/types/event-info.types";
 import {MyServerResponse, ObjectId} from "../../../../../store/api/rtk-api.types";
+import {EventEssence} from "../../LeftBar/Tabs/TaskHistory/Essences/EventEssence/EventEssence";
 
 export interface EventListFromArrayProps extends ExtendSelectableEventListProps {
 	eventsArray?: SortedEventsObject,
@@ -26,11 +27,11 @@ const Container = styled('form')`
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  background-color: ${pageHeaderColor};
-  border-radius: ${borderRadiusSize.sm};
-  border: 1px solid ${disabledColor};
-  padding-top: 8px;
-  padding-bottom: 8px;
+  background-color: #fff;
+    //border-radius: ${borderRadiusSize.sm};
+    // border: 1px solid ${disabledColor};
+  //padding-top: 8px;
+  //padding-bottom: 8px;
   gap: 6px;
 `
 
@@ -72,11 +73,15 @@ export const SelectableEventList: FC<SelectableEventListProps> = ({
 									: <EmptyCheckboxIcon size={24} color={currentColor}/>}
 							</>
 						)}
-						<TaskChainItem
-							withMarginLeft={false}
-							onTitleClick={(e) => e.preventDefault()}
-							bgColor={'#fff'}
-							chainItem={item}
+						<EventEssence
+							title={item.title}
+							status={item.status}
+							priority={item.priority}
+							group={item.group || null}
+							description={item.description}
+							eventId={item._id}
+							time={item.time}
+							timeEnd={item.timeEnd}
 						/>
 					</FlexBlock>
 				</EmptyButtonStyled>

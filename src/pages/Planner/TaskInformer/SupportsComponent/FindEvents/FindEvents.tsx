@@ -52,6 +52,18 @@ export const FindEvents: FC<FindEventsProps> = ({
 	
 	useEffect(() => {
 		const {end, title, priority, onlyFavorites, start, taskStatus, exclude} = debounceValue
+		const startDate = dayjs(start)
+		const endDate = dayjs(end)
+		
+		if (
+			(start && !startDate.isValid())
+			|| (end && !endDate.isValid())
+			|| startDate.isSame(end, 'minutes')
+		) {
+			return
+		}
+		
+		
 		if (title || priority || end || start) {
 			getEventsArray({
 				utcOffset: dayjs().utcOffset(),
@@ -72,9 +84,6 @@ export const FindEvents: FC<FindEventsProps> = ({
 		<PreviewEventsList
 			title={
 				<FlexBlock direction={'column'} gap={12}>
-					<Heading.H3 textColor={'dark'}>
-						Укажите фильтры и выберите нужные события
-					</Heading.H3>
 					<FlexBlock width={'100%'} additionalCss={css`z-index: 1`}>
 						<SmartFindEventFilters
 							values={filters}
