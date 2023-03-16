@@ -1,12 +1,19 @@
-import styled, {css} from 'styled-components'
-import {borderRadiusSize, currentColor, defaultColor} from '../../common/constants'
+import styled, { css } from 'styled-components';
+import {
+  borderRadiusSize,
+  currentColor,
+  defaultColor,
+} from '../../common/constants';
 
-export const StyledButton = styled('button')<{ fillColor?: string, textColor?: string }>`
+export const StyledButton = styled('button')<{
+  fillColor?: string;
+  textColor?: string;
+}>`
   & {
     padding: 6px 24px;
     font-size: 16px;
-    color: ${props => props.textColor || '#fff'};
-    background-color: ${props => props.fillColor || currentColor};
+    color: ${(props) => props.textColor || '#fff'};
+    background-color: ${(props) => props.fillColor || currentColor};
     border: none;
     border-radius: ${borderRadiusSize.sm};
     outline: none;
@@ -16,7 +23,7 @@ export const StyledButton = styled('button')<{ fillColor?: string, textColor?: s
   &:not(:last-child) {
     margin-right: 8px;
   }
-`
+`;
 
 export const Button = styled('button')`
   & {
@@ -30,7 +37,7 @@ export const Button = styled('button')`
     border: 1px solid #fff;
     border-radius: ${borderRadiusSize.sm};
     cursor: pointer;
-    transition: all .3s ease-in-out;
+    transition: all 0.3s ease-in-out;
     gap: 6px;
   }
 
@@ -40,7 +47,7 @@ export const Button = styled('button')`
     border: 1px solid ${currentColor};
     box-shadow: 0 0 8px 0px ${currentColor};
   }
-`
+`;
 
 export const LinkButton = styled('a')`
   & {
@@ -53,7 +60,7 @@ export const LinkButton = styled('a')`
     border-radius: ${borderRadiusSize.sm};
     text-decoration: none;
     cursor: pointer;
-    transition: all .3s ease-in-out;
+    transition: all 0.3s ease-in-out;
     vertical-align: middle;
   }
 
@@ -63,7 +70,7 @@ export const LinkButton = styled('a')`
     border: 1px solid ${currentColor};
     box-shadow: 0 0 8px 0px ${currentColor};
   }
-`
+`;
 
 export const WhiteButton = styled('button')<{ withHover?: boolean }>`
   & {
@@ -76,22 +83,24 @@ export const WhiteButton = styled('button')<{ withHover?: boolean }>`
     border-radius: ${borderRadiusSize.sm};
     text-decoration: none;
     cursor: pointer;
-    transition: all .3s ease-in-out;
+    transition: all 0.3s ease-in-out;
     vertical-align: middle;
   }
 
-  ${_ => _.withHover && css`
-    &:hover {
-      color: ${currentColor};
-      background-color: #fff;
-      border: 1px solid ${currentColor};
-    }
-  `}
-`
+  ${(_) =>
+    _.withHover &&
+    css`
+      &:hover {
+        color: ${currentColor};
+        background-color: #fff;
+        border: 1px solid ${currentColor};
+      }
+    `}
+`;
 
 WhiteButton.defaultProps = {
-	withHover: true
-}
+  withHover: true,
+};
 
 export const TransparentButton = styled(WhiteButton)`
   & {
@@ -100,9 +109,11 @@ export const TransparentButton = styled(WhiteButton)`
     font-size: 14px;
     background-color: transparent;
   }
-`
+`;
 
-export const JoinToEventButton = styled("a")`
+export const JoinToEventButton = styled('a')`
+  display: inline;
+  width: fit-content;
   font-size: 14px;
   padding: 4px 8px;
   border-width: 1px;
@@ -114,11 +125,11 @@ export const JoinToEventButton = styled("a")`
   outline: none;
   line-height: 20px;
   background-color: transparent;
-  transition: all .3s ease-in;
+  transition: all 0.3s ease-in;
 
   &:hover {
     background-color: #fff;
     border-color: ${currentColor};
-    color: ${currentColor}
+    color: ${currentColor};
   }
-`
+`;

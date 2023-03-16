@@ -1,6 +1,6 @@
-import styled from "styled-components";
-import {SwitchCalendarMode} from "../../../pages/Planner/Planner.styled";
-import {borderRadiusSize} from "../../../common/constants";
+import styled from 'styled-components';
+import { SwitchCalendarMode } from '../../../pages/Planner/Planner.styled';
+import { borderRadiusSize } from '../../../common/constants';
 
 export const InputActionsStyledContainer = styled('div')`
   display: flex;
@@ -11,20 +11,22 @@ export const InputActionsStyledContainer = styled('div')`
   width: 100%;
   justify-content: flex-start;
   flex-wrap: wrap;
-`
+`;
 
 export interface InputActionsStyledItemProps {
-	withDelete?: boolean
+  withDelete?: boolean;
 }
 
-export const InputActionStyledItem = styled(SwitchCalendarMode)<InputActionsStyledItemProps>`
+export const InputActionStyledItem = styled(
+  SwitchCalendarMode
+)<InputActionsStyledItemProps>`
   display: flex;
   flex-wrap: nowrap;
   justify-content: flex-start;
   align-items: center;
   gap: 6px;
   margin: 0;
-`
+`;
 
 export const InputActionDeleteElementContainer = styled('span')`
   padding: 2px 4px;
@@ -33,4 +35,4 @@ export const InputActionDeleteElementContainer = styled('span')`
   &:hover {
     background-color: #fff;
   }
-`
+`;

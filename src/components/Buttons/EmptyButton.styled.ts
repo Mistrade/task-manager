@@ -1,5 +1,5 @@
-import styled from "styled-components";
-import {borderRadiusSize, lightHoverColor} from "../../common/constants";
+import styled from 'styled-components';
+import { borderRadiusSize, lightHoverColor } from '../../common/constants';
 
 export const DontHoveredButton = styled('button')`
   & {
@@ -16,22 +16,22 @@ export const DontHoveredButton = styled('button')`
     gap: 8px;
     padding: 4px 6px;
   }
-`
+`;
 
 DontHoveredButton.defaultProps = {
-	type: 'button'
-}
+  type: 'button',
+};
 
 export const EmptyButtonStyled = styled(DontHoveredButton)`
   &:hover {
     border-radius: ${borderRadiusSize.sm};
     background-color: ${lightHoverColor};
   }
-`
+`;
 
 EmptyButtonStyled.defaultProps = {
-	type: 'button'
-}
+  type: 'button',
+};
 
 export const EmptyLink = styled('a')`
   & {
@@ -55,9 +55,8 @@ export const EmptyLink = styled('a')`
     background-color: ${lightHoverColor};
   }
 
-
   &:hover {
     border-radius: ${borderRadiusSize.sm};
     background-color: ${lightHoverColor};
   }
-`
+`;

@@ -1,22 +1,25 @@
-import {ObjectId} from "../../rtk-api.types";
-import {ShortEventInfoModel} from "./event-info.types";
+import { ObjectId } from '../../rtk-api.types';
+import { ShortEventInfoModel } from './event-info.types';
 
 export interface EventChainsObject {
-	parentEvent: null | ShortEventInfoModel,
-	childrenEvents: null | Array<ShortEventInfoModel>,
-	linkedFromEvent: null | ShortEventInfoModel
+  parentEvent: null | ShortEventInfoModel;
+  childrenEvents: null | Array<ShortEventInfoModel>;
+  linkedFromEvent: null | ShortEventInfoModel;
 }
 
-export interface AddEventChildOfProps {
-	chainType: "childOf",
-	taskId: ObjectId,
-	eventsToAdd: Array<ObjectId>
+export interface AddChainsRequestData {
+  eventId: ObjectId;
+  eventsToAdd: Array<ObjectId>;
 }
 
-export interface AddEventParentIdProps {
-	chainType: 'parentId',
-	taskId: ObjectId,
-	eventToAdd: ObjectId
-}
+export type ProblemEventsSchema = {
+  [key: string]: {
+    _id: string;
+    description: string;
+    reqNodeId: string;
+  };
+};
 
-export type AddChainsRequestData = AddEventChildOfProps | AddEventParentIdProps
+export interface ConnectChildResponse {
+  problemEventIds: ProblemEventsSchema;
+}

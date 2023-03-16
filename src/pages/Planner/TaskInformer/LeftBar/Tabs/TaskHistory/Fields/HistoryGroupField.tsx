@@ -1,23 +1,22 @@
-import {FC} from "react";
-import {BaseEventHistoryFieldProps} from "../event-history.types";
-import {GroupModelResponse} from "../../../../../../../store/api/planning-api/types/groups.types";
-import {EventGroupButton} from "../../../../SupportsComponent/EventGroupButton";
-import {FlexBlock} from "../../../../../../../components/LayoutComponents/FlexBlock";
-import {TimeBadge} from "../../../../../../../components/Badge/Badge";
+import { FC } from 'react';
+import { BaseEventHistoryFieldProps } from '../event-history.types';
+import { GroupModelResponse } from '../../../../../../../store/api/planning-api/types/groups.types';
+import { EventGroupButton } from '../../../../SupportsComponent/EventGroupButton';
+import { ReplyContent } from '../Essences/EventEssence/event-essence.styled';
+import { Text } from '../../../../../../../components/Text/Text';
 
-export const HistoryGroupField: FC<BaseEventHistoryFieldProps<GroupModelResponse | null>> = ({value}) => {
-	
-	return (
-		<FlexBlock pl={20} gap={6} direction={'row'} align={'center'}>
-			<FlexBlock>
-				Новая группа событий
-			</FlexBlock>
-			<EventGroupButton
-				isDisabled={true}
-				stopPropagation={true}
-				group={value}
-				renderText={true}
-			/>
-		</FlexBlock>
-	)
-}
+export const HistoryGroupField: FC<
+  BaseEventHistoryFieldProps<GroupModelResponse | null>
+> = ({ value }) => {
+  return (
+    <ReplyContent gap={6} align={'center'}>
+      <Text htmlTag={'span'}>Обновленное значение</Text>
+      <EventGroupButton
+        isDisabled={true}
+        stopPropagation={true}
+        group={value}
+        renderText={true}
+      />
+    </ReplyContent>
+  );
+};

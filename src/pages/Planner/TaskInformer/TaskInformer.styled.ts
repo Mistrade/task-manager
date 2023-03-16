@@ -1,4 +1,4 @@
-import styled from 'styled-components'
+import styled from 'styled-components';
 
 export const StyledTaskInformerLinkForm = styled('form')`
   & {
@@ -10,4 +10,4 @@ export const StyledTaskInformerLinkForm = styled('form')`
     width: 100%;
     flex-wrap: nowrap;
   }
-`
+`;

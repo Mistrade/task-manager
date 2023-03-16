@@ -1,10 +1,6 @@
-import React, {FC, useMemo, useState} from "react";
-import {StyledCommentDescription} from "../comments.styled";
+import React, { FC } from 'react';
+import { StyledCommentDescription } from '../comments.styled';
 
-export const CommentDescription: FC<{ text: string }> = ({text}) => {
-	return (
-		<StyledCommentDescription>
-			{text}
-		</StyledCommentDescription>
-	)
-}
+export const CommentDescription: FC<{ text: string }> = ({ text }) => {
+  return <StyledCommentDescription>{text}</StyledCommentDescription>;
+};

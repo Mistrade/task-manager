@@ -1,63 +1,55 @@
-import {ReactNode} from "react";
-import styled from "styled-components";
-import {FCWithChildren} from "../../../pages/Planner/planner.types";
-import {FlexBlock, pxToCssValue} from "../FlexBlock";
+import { ReactNode } from 'react';
+import styled from 'styled-components';
+import { FCWithChildren } from '../../../pages/Planner/planner.types';
+import { FlexBlock } from '../FlexBlock';
 
 export interface ScrollVerticalViewProps {
-	placementStatic?: 'top' | 'bottom',
-	gap?: number,
-	staticContent?: ReactNode
-	renderPattern?: 'bottom-top' | 'top-bottom'
+  placementStatic?: 'top' | 'bottom';
+  gap?: number;
+  staticContent?: ReactNode;
+  renderPattern?: 'bottom-top' | 'top-bottom';
 }
 
-const Container = styled('div')<Pick<ScrollVerticalViewProps, "renderPattern">>`
+const Container = styled('div')<Pick<ScrollVerticalViewProps, 'renderPattern'>>`
   width: 100%;
   //height: 100%;
   flex-grow: 3;
   display: flex;
-  flex-direction: ${_ => _.renderPattern === 'top-bottom' ? 'column' : "column-reverse"};
+  flex-direction: ${(_) =>
+    _.renderPattern === 'top-bottom' ? 'column' : 'column-reverse'};
   overflow-x: hidden;
   overflow-y: auto;
-`
+`;
 
 Container.defaultProps = {
-	className: "scroll__view__horizontal--container"
-}
+  className: 'scroll__view__horizontal--container',
+};
 
 const StaticContainer = styled('div')`
   width: 100%;
   flex-grow: 0;
-`
+`;
 
 StaticContainer.defaultProps = {
-	className: "scroll__static--container"
-}
-
+  className: 'scroll__static--container',
+};
 
 export const ScrollVerticalView: FCWithChildren<ScrollVerticalViewProps> = ({
-																																							children,
-																																							placementStatic,
-																																							staticContent,
-																																							gap,
-																																							renderPattern = 'bottom-top'
-																																						}) => {
-	return (
-		<FlexBlock width={'100%'} height={'100%'} direction={'column'} gap={gap}>
-			{placementStatic === 'top' && staticContent && (
-				<StaticContainer>
-					{staticContent}
-				</StaticContainer>
-			)}
-			<Container
-				renderPattern={renderPattern}
-			>
-				{children}
-			</Container>
-			{placementStatic === 'bottom' && staticContent && (
-				<StaticContainer>
-					{staticContent}
-				</StaticContainer>
-			)}
-		</FlexBlock>
-	)
-}
+  children,
+  placementStatic,
+  staticContent,
+  gap,
+  renderPattern = 'bottom-top',
+}) => {
+  return (
+    <FlexBlock width={'100%'} height={'100%'} direction={'column'} gap={gap}>
+      {placementStatic === 'top' && staticContent && (
+        <StaticContainer>{staticContent}</StaticContainer>
+      )}
+      <Container renderPattern={renderPattern}>{children}</Container>
+      {placementStatic === 'bottom' && staticContent && (
+        <StaticContainer>{staticContent}</StaticContainer>
+      )}
+    </FlexBlock>
+  );
+};

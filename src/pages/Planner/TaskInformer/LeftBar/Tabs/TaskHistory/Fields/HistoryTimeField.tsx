@@ -1,27 +1,33 @@
-import {FC} from "react";
-import dayjs from "dayjs";
-import {FlexBlock} from "../../../../../../../components/LayoutComponents/FlexBlock";
-import {TimeBadge} from "../../../../../../../components/Badge/Badge";
-import {DateHelper} from "../../../../../../../common/calendarSupport/dateHelper";
-import {BaseEventHistoryFieldProps} from "../event-history.types";
+import { FC } from 'react';
+import dayjs from 'dayjs';
+import { TimeBadge } from '../../../../../../../components/Badge/Badge';
+import { DateHelper } from '../../../../../../../common/calendarSupport/dateHelper';
+import { BaseEventHistoryFieldProps } from '../event-history.types';
+import { ReplyContent } from '../Essences/EventEssence/event-essence.styled';
+import { Text } from '../../../../../../../components/Text/Text';
 
-export const HistoryTimeField: FC<BaseEventHistoryFieldProps<Date | null | string | undefined>> = ({value}) => {
-	const date = dayjs(value)
-	
-	if (date.isValid()) {
-		return (
-			<FlexBlock pl={20} fSize={15} align={'center'} gap={6}>
-				<span>Новое значение </span>
-				<TimeBadge>
-					{DateHelper.getHumanizeDateValue(date.toDate(), {withTime: true, monthPattern: 'full'})}
-				</TimeBadge>
-			</FlexBlock>
-		)
-	}
-	
-	return (
-		<FlexBlock pl={20} fSize={15} align={'center'}>
-			Значение невалидно или удалено
-		</FlexBlock>
-	)
-}
+export const HistoryTimeField: FC<
+  BaseEventHistoryFieldProps<Date | null | string | undefined>
+> = ({ value }) => {
+  const date = dayjs(value);
+
+  if (date.isValid()) {
+    return (
+      <ReplyContent align={'center'} gap={6}>
+        <Text htmlTag={'span'}>Обновленное значение</Text>
+        <TimeBadge>
+          {DateHelper.getHumanizeDateValue(date.toDate(), {
+            withTime: true,
+            monthPattern: 'full',
+          })}
+        </TimeBadge>
+      </ReplyContent>
+    );
+  }
+
+  return (
+    <ReplyContent align={'center'}>
+      <Text htmlTag={'span'}>Значение невалидно или удалено</Text>
+    </ReplyContent>
+  );
+};

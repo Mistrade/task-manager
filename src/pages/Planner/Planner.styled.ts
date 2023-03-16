@@ -1,6 +1,11 @@
-import styled, {css} from 'styled-components'
-import {CalendarCellDateProps} from './planner.types'
-import {borderRadiusSize, currentColor, darkColor, defaultColor, hoverColor} from '../../common/constants'
+import styled, { css } from 'styled-components';
+import {
+  borderRadiusSize,
+  currentColor,
+  darkColor,
+  defaultColor,
+  hoverColor,
+} from '../../common/constants';
 
 export const CalendarDesktopContainer = styled('div')`
   & {
@@ -14,29 +19,29 @@ export const CalendarDesktopContainer = styled('div')`
   }
 
   & * {
-    font-family: "Helvetica Neue", sans-serif;
+    font-family: 'Helvetica Neue', sans-serif;
   }
-`
+`;
 
 export const CalendarDateListContainer = styled('div')<{ rowsCount?: number }>`
   & {
     width: 100%;
     height: fit-content;
     display: grid;
-    grid-template-rows: repeat(${_ => _.rowsCount || 1}, minmax(1fr, 12fr));
+    grid-template-rows: repeat(${(_) => _.rowsCount || 1}, minmax(1fr, 12fr));
     grid-template-columns: repeat(7, minmax(80px, 1fr));
     grid-column-gap: 4px;
     grid-row-gap: 8px;
     padding-bottom: 100px;
   }
-`
+`;
 
 export const CalendarTitle = styled('h2')`
   & {
     font-size: 24px;
-    font-family: "Helvetica Neue", sans-serif;
+    font-family: 'Helvetica Neue', sans-serif;
     font-weight: bold;
-    color: rgba(15, 15, 15, .6);
+    color: rgba(15, 15, 15, 0.6);
     margin-top: 0;
     margin-bottom: 0;
     white-space: nowrap;
@@ -45,8 +50,7 @@ export const CalendarTitle = styled('h2')`
     text-align: left;
     flex-shrink: 0;
   }
-`
-
+`;
 
 export const SwitchCalendarMode = styled('button')<{ isSelected?: boolean }>`
   & {
@@ -56,9 +60,9 @@ export const SwitchCalendarMode = styled('button')<{ isSelected?: boolean }>`
     border: 1px solid ${defaultColor};
     border-radius: ${borderRadiusSize.sm};
     cursor: pointer;
-    transition: all .3s ease-in-out;
-    background-color: ${props => props.isSelected ? currentColor : '#fff'};
-    color: ${props => props.isSelected ? '#fff' : defaultColor};
+    transition: all 0.3s ease-in-out;
+    background-color: ${(props) => (props.isSelected ? currentColor : '#fff')};
+    color: ${(props) => (props.isSelected ? '#fff' : defaultColor)};
     min-width: 50px;
   }
 
@@ -69,7 +73,7 @@ export const SwitchCalendarMode = styled('button')<{ isSelected?: boolean }>`
   &:not(:last-child) {
     margin-right: 4px;
   }
-`
+`;
 export const SwitchCalendarModeTab = styled('button')<{ isSelected?: boolean }>`
   & {
     outline: none;
@@ -78,14 +82,14 @@ export const SwitchCalendarModeTab = styled('button')<{ isSelected?: boolean }>`
     background-color: transparent;
     border: none;
     cursor: pointer;
-    transition: all .3s ease-in-out;
+    transition: all 0.3s ease-in-out;
     color: ${defaultColor};
     min-width: 30px;
     position: relative;
     border-radius: ${borderRadiusSize.sm};
   }
 
-  ${props => {
+  ${(props) => {
     if (props.isSelected) {
       return css`
         &:after {
@@ -98,7 +102,7 @@ export const SwitchCalendarModeTab = styled('button')<{ isSelected?: boolean }>`
           border-radius: ${borderRadiusSize.xl};
           background-color: ${currentColor};
         }
-      `
+      `;
     }
   }}
   &:hover {
@@ -109,7 +113,7 @@ export const SwitchCalendarModeTab = styled('button')<{ isSelected?: boolean }>`
   &:not(:last-child) {
     margin-right: 4px;
   }
-`
+`;
 
 export const TimeSelectorButton = styled(SwitchCalendarMode)`
   margin: 0;
@@ -118,4 +122,4 @@ export const TimeSelectorButton = styled(SwitchCalendarMode)`
   &:not(:last-child) {
     margin-bottom: 4px;
   }
-`
+`;

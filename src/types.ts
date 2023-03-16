@@ -1,1 +1,1 @@
-export type Nullable<T extends any = any> = T | null
+export type Nullable<T extends any = any> = T | null;

@@ -1,23 +1,23 @@
-import {FC} from "react";
-import {FlexBlock} from "../../../../../../../components/LayoutComponents/FlexBlock";
-import {BaseEventHistoryFieldProps} from "../event-history.types";
-import {EventPriorityButton} from "../../../../SupportsComponent/EventPriorityButton";
-import {StyledHistoryDescription} from "../event-history.styled";
-import {CalendarPriorityKeys} from "../../../../../planner.types";
+import { FC } from 'react';
+import { BaseEventHistoryFieldProps } from '../event-history.types';
+import { EventPriorityButton } from '../../../../SupportsComponent/EventPriorityButton';
+import { CalendarPriorityKeys } from '../../../../../planner.types';
+import { ReplyContent } from '../Essences/EventEssence/event-essence.styled';
+import { Text } from '../../../../../../../components/Text/Text';
 
-export const HistoryPriorityField: FC<BaseEventHistoryFieldProps<CalendarPriorityKeys | null>> = ({value}) => {
-	return (
-		<FlexBlock gap={12} direction={'row'} align={'center'} pl={24}>
-			<StyledHistoryDescription>
-				Новый приоритет
-			</StyledHistoryDescription>
-			<EventPriorityButton
-				iconProps={{size: 20}}
-				priority={value}
-				renderText={true}
-				isDisabled={true}
-				stopPropagation={true}
-			/>
-		</FlexBlock>
-	)
-}
+export const HistoryPriorityField: FC<
+  BaseEventHistoryFieldProps<CalendarPriorityKeys | null>
+> = ({ value }) => {
+  return (
+    <ReplyContent align={'center'} gap={6}>
+      <Text htmlTag={'span'}>Обновленное значение</Text>
+      <EventPriorityButton
+        iconProps={{ size: 20 }}
+        priority={value}
+        renderText={true}
+        isDisabled={true}
+        stopPropagation={true}
+      />
+    </ReplyContent>
+  );
+};

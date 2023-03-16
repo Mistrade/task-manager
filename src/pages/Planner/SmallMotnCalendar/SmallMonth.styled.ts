@@ -1,16 +1,15 @@
-import styled, {css} from "styled-components";
+import styled, { css } from 'styled-components';
 import {
-	borderRadiusSize,
-	currentColor,
-	darkColor,
-	defaultColor,
-	disabledColor,
-	hoverColor,
-	lightHoverColor,
-	orangeColor
-} from "../../../common/constants";
-import {FlexBlock} from "../../../components/LayoutComponents/FlexBlock";
-
+  borderRadiusSize,
+  currentColor,
+  darkColor,
+  defaultColor,
+  disabledColor,
+  hoverColor,
+  lightHoverColor,
+  orangeColor,
+} from '../../../common/constants';
+import { FlexBlock } from '../../../components/LayoutComponents/FlexBlock';
 
 export const SmallMonthWeekCount = styled(FlexBlock)`
   justify-content: center;
@@ -19,27 +18,26 @@ export const SmallMonthWeekCount = styled(FlexBlock)`
   //height: 25px;
   border-right: 1px solid ${defaultColor};
   background-color: transparent;
-`
+`;
 
 export interface SmallMonthRowItemProps {
-	isDisabled?: boolean,
-	isToday?: boolean,
-	isSelect?: boolean,
-	hasTasks?: boolean,
-	isPoured?: boolean,
-	isLastPoured?: boolean,
-	isFirstPoured?: boolean
+  isDisabled?: boolean;
+  isToday?: boolean;
+  isSelect?: boolean;
+  hasTasks?: boolean;
+  isPoured?: boolean;
+  isLastPoured?: boolean;
+  isFirstPoured?: boolean;
 }
 
 export interface SmallMonthRowProps {
-	isPoured?: boolean,
+  isPoured?: boolean;
 }
-
 
 export const isPouredWeekCountItem = css`
   & {
     border-radius: ${borderRadiusSize.xs};
-      //background-color: ${lightHoverColor};
+    //background-color: ${lightHoverColor};
     box-shadow: 0px 0px 10px 2px ${lightHoverColor};
     border: 1px solid ${defaultColor};
     margin-left: -4px;
@@ -47,7 +45,7 @@ export const isPouredWeekCountItem = css`
     margin-right: -4px;
     padding-right: 4px;
   }
-`
+`;
 export const isFirstPouredCss = css`
   & {
     margin-top: 6px;
@@ -60,14 +58,14 @@ export const isFirstPouredCss = css`
     height: 100%;
     padding: 6px 0px;
     border-radius: ${borderRadiusSize.xs} 0px 0px ${borderRadiusSize.xs};
-      //background-color: ${lightHoverColor};
+    //background-color: ${lightHoverColor};
     box-shadow: -2px 0px 10px 2px ${lightHoverColor};
     border-top: 1px solid ${defaultColor};
     border-bottom: 1px solid ${defaultColor};
     border-left: 1px solid ${defaultColor};
     border-right: none;
   }
-`
+`;
 export const isPouredCss = css`
   & {
     margin-top: 6px;
@@ -78,14 +76,14 @@ export const isPouredCss = css`
     height: 100%;
     padding: 6px 0px;
     border-radius: 0px;
-      //background-color: ${lightHoverColor};
+    //background-color: ${lightHoverColor};
     box-shadow: 0px 0px 10px 2px ${lightHoverColor};
     border-top: 1px solid ${defaultColor};
     border-bottom: 1px solid ${defaultColor};
     border-left: none;
     border-right: none;
   }
-`
+`;
 export const isLastPouredCss = css`
   & {
     margin-top: 6px;
@@ -98,19 +96,22 @@ export const isLastPouredCss = css`
     height: 100%;
     padding: 6px 0px;
     border-radius: 0px ${borderRadiusSize.xs} ${borderRadiusSize.xs} 0px;
-      //background-color: ${lightHoverColor};
+    //background-color: ${lightHoverColor};
     box-shadow: 2px 0px 10px 2px ${lightHoverColor};
     border-top: 1px solid ${defaultColor};
     border-bottom: 1px solid ${defaultColor};
     border-left: none;
     border-right: 1px solid ${defaultColor};
   }
-`
+`;
 export const isPouredDate = ({
-															 isPoured,
-															 isLastPoured,
-															 isFirstPoured
-														 }: Pick<SmallMonthRowItemProps, 'isPoured' | 'isLastPoured' | 'isFirstPoured'>) => css`
+  isPoured,
+  isLastPoured,
+  isFirstPoured,
+}: Pick<
+  SmallMonthRowItemProps,
+  'isPoured' | 'isLastPoured' | 'isFirstPoured'
+>) => css`
   &:before {
     position: absolute;
     top: -6px;
@@ -120,8 +121,10 @@ export const isPouredDate = ({
     height: 100%;
   }
 
-  ${(isFirstPoured && isFirstPouredCss) || (isPoured && isPouredCss) || (isLastPoured && isLastPouredCss)}
-`
+  ${(isFirstPoured && isFirstPouredCss) ||
+  (isPoured && isPouredCss) ||
+  (isLastPoured && isLastPouredCss)}
+`;
 
 export const isSelectRowItem = css`
   & {
@@ -129,7 +132,7 @@ export const isSelectRowItem = css`
     color: #fff;
     background-color: ${currentColor};
   }
-`
+`;
 
 export const isTodayRowItem = css`
   & {
@@ -137,15 +140,14 @@ export const isTodayRowItem = css`
     color: #fff;
     background-color: ${orangeColor};
   }
-`
+`;
 
 export const hasTasksRowItem = css`
   & {
     border-radius: ${borderRadiusSize.xs};
     background-color: ${hoverColor};
   }
-`
-
+`;
 
 export const SmallMonthRowItem = styled('div')<SmallMonthRowItemProps>`
   & {
@@ -160,15 +162,14 @@ export const SmallMonthRowItem = styled('div')<SmallMonthRowItemProps>`
     width: 25px;
     height: 25px;
     cursor: pointer;
-    color: ${_ => _.isDisabled ? disabledColor : darkColor};
+    color: ${(_) => (_.isDisabled ? disabledColor : darkColor)};
   }
 
-  ${_ => _.hasTasks && hasTasksRowItem}
-  ${_ => _.isSelect && isSelectRowItem}
-  ${_ => _.isToday && isTodayRowItem}
-  ${_ => isPouredDate(_)}
-
-`
+  ${(_) => _.hasTasks && hasTasksRowItem}
+  ${(_) => _.isSelect && isSelectRowItem}
+  ${(_) => _.isToday && isTodayRowItem}
+  ${(_) => isPouredDate(_)}
+`;
 
 export const SmallMonthRow = styled('div')<SmallMonthRowProps>`
   & {
@@ -178,7 +179,7 @@ export const SmallMonthRow = styled('div')<SmallMonthRowProps>`
     height: fit-content;
     flex-wrap: nowrap;
     gap: 4px;
-    padding: ${_ => _.isPoured ? '6px 0px' : 'none'};
+    padding: ${(_) => (_.isPoured ? '6px 0px' : 'none')};
     justify-content: flex-start;
     align-items: center;
   }
@@ -191,6 +192,5 @@ export const SmallMonthRow = styled('div')<SmallMonthRowProps>`
     //height: 25px;
   }
 
-  ${_ => _.isPoured && isPouredWeekCountItem}
-
-`
+  ${(_) => _.isPoured && isPouredWeekCountItem}
+`;

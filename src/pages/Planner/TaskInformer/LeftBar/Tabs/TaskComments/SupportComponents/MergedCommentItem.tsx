@@ -1,14 +1,12 @@
-import styled from "styled-components";
-import {MergedComment} from "./CommentsList";
-import React, {FC} from "react";
-import {UserAvatar} from "../../../../../Users/UserAvatar";
-import {currentColor, pageHeaderColor} from "../../../../../../../common/constants";
-import {LinkStyled} from "../../../../../../../components/Buttons/Link.styled";
-import {CommentGroup} from "./CommentGroup";
-import {Tooltip} from "../../../../../../../components/Tooltip/Tooltip";
-import {UserHoverCard} from "../../../../../../../components/HoverCard/UserHoverCard";
-import {EventShortHoverCard} from "../../../../../../../components/HoverCard/EventShortHoverCard";
-import {BaseCommentActionsProps, CommentGroupProps} from "../comments.types";
+import styled from 'styled-components';
+import { MergedComment } from './CommentsList';
+import React, { FC } from 'react';
+import { UserAvatar } from '../../../../../Users/UserAvatar';
+import { currentColor } from '../../../../../../../common/constants';
+import { LinkStyled } from '../../../../../../../components/Buttons/Link.styled';
+import { Tooltip } from '../../../../../../../components/Tooltip/Tooltip';
+import { UserHoverCard } from '../../../../../../../components/HoverCard/UserHoverCard';
+import { BaseCommentActionsProps, CommentGroupProps } from '../comments.types';
 
 export const MergedCommentContainer = styled('li')`
   & {
@@ -17,9 +15,9 @@ export const MergedCommentContainer = styled('li')`
     flex-direction: row;
     gap: 8px;
     position: relative;
-		align-items: stretch;
+    align-items: stretch;
   }
-`
+`;
 
 export const MergedCommentUserInfo = styled('div')`
   & {
@@ -28,7 +26,7 @@ export const MergedCommentUserInfo = styled('div')`
     flex-direction: column;
     z-index: 1;
   }
-`
+`;
 
 export const MergedCommentDataContainer = styled('div')`
   & {
@@ -38,7 +36,7 @@ export const MergedCommentDataContainer = styled('div')`
     position: relative;
     //z-index: 0;
   }
-`
+`;
 
 export const MergedCommentDataUserName = styled('div')`
   & {
@@ -52,58 +50,56 @@ export const MergedCommentDataUserName = styled('div')`
     //top: 0;
     //left: 0;
   }
-`
+`;
 
 export const CommentStickyAvatar = styled('div')`
   position: sticky;
   top: 0;
   left: 0;
   cursor: pointer;
-`
+`;
 
 export interface MergedCommentItemProps extends BaseCommentActionsProps {
-	comment: MergedComment,
-	scrollToAnsweredCommentFn: CommentGroupProps['onClickToReplyComment']
+  comment: MergedComment;
+  scrollToAnsweredCommentFn: CommentGroupProps['onClickToReplyComment'];
 }
-
 
 export const MergedCommentItem: FC<MergedCommentItemProps> = ({
-																																comment,
-																																scrollToAnsweredCommentFn,
-																																onRemoveComment,
-																																onReplyToComment,
-																																onUpdateCommentClick
-																															}) => {
-	return (
-		<MergedCommentContainer>
-			<MergedCommentUserInfo>
-				<CommentStickyAvatar>
-					<Tooltip
-						content={<UserHoverCard user={comment.user}/>}
-						theme={'light'}
-						delay={[500, 100]}
-						placement={'right'}
-						animation={'shift-away'}
-						offset={[0, 15]}
-						interactive={true}
-						interactiveBorder={4}
-					>
-						<UserAvatar user={comment.user}/>
-					</Tooltip>
-				</CommentStickyAvatar>
-			</MergedCommentUserInfo>
-			<MergedCommentDataContainer>
-				<MergedCommentDataUserName>
-					<LinkStyled
-						style={{color: currentColor, fontSize: 16}}
-						to={`/profile/${comment.user._id}`}
-						target={'_blank'}
-					>
-						{`${comment.user.name} ${comment.user.surname}`}
-					</LinkStyled>
-				</MergedCommentDataUserName>
-				
-			</MergedCommentDataContainer>
-		</MergedCommentContainer>
-	)
-}
+  comment,
+  scrollToAnsweredCommentFn,
+  onRemoveComment,
+  onReplyToComment,
+  onUpdateCommentClick,
+}) => {
+  return (
+    <MergedCommentContainer>
+      <MergedCommentUserInfo>
+        <CommentStickyAvatar>
+          <Tooltip
+            content={<UserHoverCard user={comment.user} />}
+            theme={'light'}
+            delay={[500, 100]}
+            placement={'right'}
+            animation={'shift-away'}
+            offset={[0, 15]}
+            interactive={true}
+            interactiveBorder={4}
+          >
+            <UserAvatar user={comment.user} />
+          </Tooltip>
+        </CommentStickyAvatar>
+      </MergedCommentUserInfo>
+      <MergedCommentDataContainer>
+        <MergedCommentDataUserName>
+          <LinkStyled
+            style={{ color: currentColor, fontSize: 16 }}
+            to={`/profile/${comment.user._id}`}
+            target={'_blank'}
+          >
+            {`${comment.user.name} ${comment.user.surname}`}
+          </LinkStyled>
+        </MergedCommentDataUserName>
+      </MergedCommentDataContainer>
+    </MergedCommentContainer>
+  );
+};

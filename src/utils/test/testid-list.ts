@@ -1,3 +1,3 @@
 export enum TestIdList {
-	"MAIN_HEADER" = 'main--header'
+  'MAIN_HEADER' = 'main--header',
 }

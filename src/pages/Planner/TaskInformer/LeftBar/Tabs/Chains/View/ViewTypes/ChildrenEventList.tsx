@@ -1,35 +1,35 @@
-import {FC} from "react";
-import {TaskChainItem} from "../TaskChainItem";
-import {ChainsAccordion} from "../ChainsAccordion";
-import {TaskChainItemsWrapper} from "../TaskChainItemsWrapper";
-import {useBoolean} from "../../../../../../../../hooks/useBoolean";
-import {ChildrenEventsListProps} from "../../event-chains.types";
+import { FC } from 'react';
+import { TaskChainItemsWrapper } from '../TaskChainItemsWrapper';
+import { ChildrenEventsListProps } from '../../event-chains.types';
+import { Accordion } from '../../../../../../../../components/Accordion/Accordion';
+import { EventEssence } from '../../../TaskHistory/Essences/EventEssence/EventEssence';
 
-export const ChildrenEventList: FC<ChildrenEventsListProps> = ({eventInfo, updateFn, title, childrenEvents, onConnectClick}) => {
-	const {state, toggleState} = useBoolean(true)
-	
-	
-	if (childrenEvents && childrenEvents.length > 0) {
-		return (
-			<ChainsAccordion
-				titleBadge={childrenEvents.length}
-				title={title}
-				isWrap={state}
-				onClickOnAction={() => {
-					onConnectClick && onConnectClick()
-				}}
-				onWrapTitle={toggleState}
-				content={
-					<TaskChainItemsWrapper wrapState={state}>
-						{childrenEvents
-							.map(
-								(item) => <TaskChainItem key={item?._id} suffix={'childOf'} chainItem={item} updateFn={updateFn}/>
-							)}
-					</TaskChainItemsWrapper>
-				}
-			/>
-		)
-	}
-	
-	return <></>
-}
+export const ChildrenEventList: FC<ChildrenEventsListProps> = ({
+  eventInfo,
+  title,
+  childrenEvents,
+  onConnectClick,
+}) => {
+  if (childrenEvents && childrenEvents.length > 0) {
+    return (
+      <Accordion
+        initialState={false}
+        title={title}
+        action={{
+          type: 'add',
+          onClick: () => {
+            onConnectClick && onConnectClick();
+          },
+        }}
+      >
+        <TaskChainItemsWrapper>
+          {childrenEvents.map((item) => (
+            <EventEssence key={item._id} {...item} eventId={item._id} />
+          ))}
+        </TaskChainItemsWrapper>
+      </Accordion>
+    );
+  }
+
+  return <></>;
+};

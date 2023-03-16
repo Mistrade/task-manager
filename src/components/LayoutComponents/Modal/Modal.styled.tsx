@@ -1,12 +1,12 @@
-import styled, {keyframes} from 'styled-components'
-import {borderRadiusSize, defaultColor} from '../../../common/constants'
+import styled, { keyframes } from 'styled-components';
+import { borderRadiusSize, defaultColor } from '../../../common/constants';
 
 export const ModalLayout = styled('div')`
   & {
     position: fixed;
     width: 100vw;
     height: 100vh;
-    background-color: rgba(95, 95, 95, .35);
+    background-color: rgba(95, 95, 95, 0.35);
     padding: 30px;
     top: 0;
     left: 0;
@@ -15,16 +15,16 @@ export const ModalLayout = styled('div')`
     justify-content: center;
     align-items: flex-start;
   }
-`
+`;
 
 const animation = keyframes({
-	'0%': {
-		transform: `scale(0.2)`
-	},
-	'100%': {
-		transform: 'scale(1)'
-	}
-})
+  '0%': {
+    transform: `scale(0.2)`,
+  },
+  '100%': {
+    transform: 'scale(1)',
+  },
+});
 
 export const ModalContainer = styled('div')`
   & {
@@ -41,9 +41,9 @@ export const ModalContainer = styled('div')`
     justify-content: space-between;
     flex-direction: column;
     border-radius: ${borderRadiusSize.xl};
-    animation: .25s ${animation} forwards ease-in-out;
+    animation: 0.25s ${animation} forwards ease-in-out;
   }
-`
+`;
 
 export const StyledModalHeaderContainer = styled('div')`
   & {
@@ -57,7 +57,7 @@ export const StyledModalHeaderContainer = styled('div')`
     min-height: 40px;
     max-height: 50px;
   }
-`
+`;
 
 export const StyledModalFooterContainer = styled(StyledModalHeaderContainer)`
   & {
@@ -72,7 +72,7 @@ export const StyledModalFooterContainer = styled(StyledModalHeaderContainer)`
     min-height: 50px;
     max-height: 100px;
   }
-`
+`;
 
 export const StyledModalBodyContainer = styled('div')`
   & {
@@ -83,6 +83,6 @@ export const StyledModalBodyContainer = styled('div')`
     flex-wrap: wrap;
     width: 100%;
     min-height: 150px;
-		height: 100%;
+    height: 100%;
   }
-`
+`;

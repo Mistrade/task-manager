@@ -1,9 +1,5 @@
-import {FC} from "react";
+import { FC } from 'react';
 
 export const ConnectParentEvent: FC = () => {
-	return (
-		<>
-		
-		</>
-	)
-}
+  return <></>;
+};

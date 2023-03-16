@@ -1,38 +1,42 @@
-import React, {FC} from "react";
-import {FlexBlock} from "../FlexBlock";
-import {disabledColor, hoverColor} from "../../../common/constants";
-import {css} from "styled-components";
-import {MainHeaderBody, MainHeaderBodyProps} from "./MainHeaderBody";
-import {CalendarHeaderProps} from "../../../pages/Planner/planner.types";
-import {TestIdList} from "../../../utils/test/testid-list";
+import React, { FC } from 'react';
+import { FlexBlock } from '../FlexBlock';
+import { disabledColor, hoverColor } from '../../../common/constants';
+import { css } from 'styled-components';
+import { MainHeaderBody, MainHeaderBodyProps } from './MainHeaderBody';
+import { CalendarHeaderProps } from '../../../pages/Planner/planner.types';
+import { TestIdList } from '../../../utils/test/testid-list';
 
-const CalendarHeader = React.lazy(() => import('../../../pages/Planner/Header/PlannerHeader').then(({PlannerHeader}) => ({default: PlannerHeader})))
+const CalendarHeader = React.lazy(() =>
+  import('../../../pages/Planner/Header/PlannerHeader').then(
+    ({ PlannerHeader }) => ({ default: PlannerHeader })
+  )
+);
 
 export interface MainHeaderProps extends MainHeaderBodyProps {
-	msOptions: {
-		calendar: CalendarHeaderProps
-	}
+  msOptions: {
+    calendar: CalendarHeaderProps;
+  };
 }
 
-export const MainHeader: FC<MainHeaderProps> = ({userInfo, msOptions}) => {
-	return (
-		<FlexBlock
-			data-testid={TestIdList["MAIN_HEADER"]}
-			direction={'column'}
-			bgColor={hoverColor}
-			borderBottom={`1px solid ${disabledColor}`}
-			additionalCss={css`
+export const MainHeader: FC<MainHeaderProps> = ({ userInfo, msOptions }) => {
+  return (
+    <FlexBlock
+      data-testid={TestIdList['MAIN_HEADER']}
+      direction={'column'}
+      bgColor={hoverColor}
+      borderBottom={`1px solid ${disabledColor}`}
+      additionalCss={css`
         box-shadow: 0px 5px 5px ${disabledColor};
         z-index: 5;
-			`}
-			height={70}
-			pl={24}
-			pr={24}
-			pt={12}
-			pb={12}
-			gap={12}
-		>
-			<MainHeaderBody userInfo={userInfo}/>
-		</FlexBlock>
-	)
-}
+      `}
+      height={70}
+      pl={24}
+      pr={24}
+      pt={12}
+      pb={12}
+      gap={12}
+    >
+      <MainHeaderBody userInfo={userInfo} />
+    </FlexBlock>
+  );
+};

@@ -1,0 +1,8 @@
+.idea
+node_modules
+Dockerfile
+package-lock.json
+package.json
+tsconfig.json
+.gitignore
+README.md

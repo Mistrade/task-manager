@@ -1,16 +1,15 @@
-import styled from "styled-components";
+import styled from 'styled-components';
 import {
-	borderRadiusSize,
-	defaultColor,
-	disabledColor,
-	lightHoverColor,
-	pageHeaderColor
-} from "../../../../../common/constants";
-import {EmptyButtonStyled} from "../../../../../components/Buttons/EmptyButton.styled";
-import {FC} from "react";
-import {Badge} from "../../../../../components/Badge/Badge";
-import {WeekItem} from "../../../planner.types";
-
+  borderRadiusSize,
+  defaultColor,
+  disabledColor,
+  lightHoverColor,
+  pageHeaderColor,
+} from '../../../../../common/constants';
+import { EmptyButtonStyled } from '../../../../../components/Buttons/EmptyButton.styled';
+import { FC } from 'react';
+import { Badge } from '../../../../../components/Badge/Badge';
+import { WeekItem } from '../../../planner.types';
 
 const WeekOfYearTitle = styled('h3')`
   & {
@@ -25,24 +24,26 @@ const WeekOfYearTitle = styled('h3')`
     top: 0;
     left: 0;
     cursor: pointer;
-    transition: all .3s ease-in-out;
+    transition: all 0.3s ease-in-out;
     margin-left: -8px;
     margin-right: -8px;
     padding-left: 8px;
     padding-right: 8px;
     align-items: center;
   }
-`
+`;
 
-const SpaceBetweenContainer = styled('div')<Pick<WeekNumberTitleProps, 'isVisibleState'>>`
+const SpaceBetweenContainer = styled('div')<
+  Pick<WeekNumberTitleProps, 'isVisibleState'>
+>`
   & {
     display: flex;
     justify-content: space-between;
     gap: 8px;
-    margin-bottom: ${_ => _.isVisibleState ? `8px` : `0px`};
+    margin-bottom: ${(_) => (_.isVisibleState ? `8px` : `0px`)};
     align-items: center;
   }
-`
+`;
 
 const WeekNumberTextContainer = styled('div')`
   & {
@@ -62,50 +63,46 @@ const WeekNumberTextContainer = styled('div')`
     background-color: ${lightHoverColor};
     border-radius: ${borderRadiusSize.xs};
   }
-`
+`;
 
 const WeekNumberBadge = styled(Badge)`
   font-size: 18px;
   color: ${defaultColor};
   background-color: ${pageHeaderColor};
-`
+`;
 
 const HideOrShowButton = styled(EmptyButtonStyled)`
-  color: ${defaultColor}
-`
+  color: ${defaultColor};
+`;
 
 interface WeekNumberTitleProps {
-	onClickTitle?: () => void,
-	isVisibleState: boolean,
-	weekItem: WeekItem,
-	onHideOrShow?: () => void
+  onClickTitle?: () => void;
+  isVisibleState: boolean;
+  weekItem: WeekItem;
+  onHideOrShow?: () => void;
 }
 
-export const WeekNumberTitle: FC<WeekNumberTitleProps> = ({onClickTitle, isVisibleState, weekItem, onHideOrShow}) => {
-	return (
-		<WeekOfYearTitle
-			onClick={() => onClickTitle && onClickTitle()}
-		>
-			<SpaceBetweenContainer
-				isVisibleState={isVisibleState}
-			>
-				<WeekNumberTextContainer>
-					{[
-						'неделя',
-						<WeekNumberBadge>
-							{weekItem.weekOfYear}
-						</WeekNumberBadge>
-					]}
-				</WeekNumberTextContainer>
-				<HideOrShowButton
-					onClick={(e) => {
-						e.stopPropagation()
-						onHideOrShow && onHideOrShow()
-					}}
-				>
-					{isVisibleState ? 'Скрыть' : 'Показать'}
-				</HideOrShowButton>
-			</SpaceBetweenContainer>
-		</WeekOfYearTitle>
-	)
-}
+export const WeekNumberTitle: FC<WeekNumberTitleProps> = ({
+  onClickTitle,
+  isVisibleState,
+  weekItem,
+  onHideOrShow,
+}) => {
+  return (
+    <WeekOfYearTitle onClick={() => onClickTitle && onClickTitle()}>
+      <SpaceBetweenContainer isVisibleState={isVisibleState}>
+        <WeekNumberTextContainer>
+          {['неделя', <WeekNumberBadge>{weekItem.weekOfYear}</WeekNumberBadge>]}
+        </WeekNumberTextContainer>
+        <HideOrShowButton
+          onClick={(e) => {
+            e.stopPropagation();
+            onHideOrShow && onHideOrShow();
+          }}
+        >
+          {isVisibleState ? 'Скрыть' : 'Показать'}
+        </HideOrShowButton>
+      </SpaceBetweenContainer>
+    </WeekOfYearTitle>
+  );
+};

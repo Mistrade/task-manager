@@ -1,16 +1,16 @@
-import styled from "styled-components";
-import {defaultColor} from "../../../common/constants";
-import {DropDownContainerProps} from "./types";
+import styled from 'styled-components';
+import { defaultColor } from '../../../common/constants';
+import { DropDownContainerProps } from './types';
 
 export const StyledDropDownContainer = styled('div')<DropDownContainerProps>`
   & {
     display: flex;
     position: absolute;
     width: max-content;
-    visibility: ${_ => _.isOpen ? 'visible' : 'hidden'};
+    visibility: ${(_) => (_.isOpen ? 'visible' : 'hidden')};
     top: calc(100% + 20px);
     left: 0;
-    z-index: ${_ => _.isOpen ? 1 : -1};
+    z-index: ${(_) => (_.isOpen ? 1 : -1)};
   }
 
   &:after {
@@ -26,4 +26,4 @@ export const StyledDropDownContainer = styled('div')<DropDownContainerProps>`
     border-top: solid 1px ${defaultColor};
     z-index: 0;
   }
-`
+`;

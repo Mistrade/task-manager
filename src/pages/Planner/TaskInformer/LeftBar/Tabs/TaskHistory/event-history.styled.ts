@@ -1,10 +1,10 @@
-import {StyledCommentContainer} from "../TaskComments/comments.styled";
-import styled from "styled-components";
+import { StyledCommentContainer } from '../TaskComments/comments.styled';
+import styled from 'styled-components';
 
 export const StyledHistoryList = styled(StyledCommentContainer)`
   flex-direction: column;
   gap: 12px;
-`
+`;
 
 export const StyledHistoryDescription = styled('p')`
   font-size: 16px;
@@ -13,4 +13,4 @@ export const StyledHistoryDescription = styled('p')`
   text-align: left;
   margin: 0;
   padding: 0;
-`
+`;

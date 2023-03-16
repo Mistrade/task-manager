@@ -1,12 +1,12 @@
-import styled from "styled-components";
-import React, {FC, useEffect, useRef} from "react";
-import {CommentModel} from "../../../../../../../store/api/planning-api/types/comments.types";
-import {UserModel} from "../../../../../../../store/api/session-api/session-api.types";
-import {ErrorScreen} from "../../../../../../../components/Errors/ErrorScreen";
-import {FlexBlock} from "../../../../../../../components/LayoutComponents/FlexBlock";
-import {BaseCommentActionsProps, CommentGroupProps} from "../comments.types";
-import {MergedNote} from "../../TaskHistory/EventHistoryMergedItem";
-import {CommentGroup} from "./CommentGroup";
+import styled from 'styled-components';
+import React, { FC, useEffect, useRef } from 'react';
+import { CommentModel } from '../../../../../../../store/api/planning-api/types/comments.types';
+import { UserModel } from '../../../../../../../store/api/session-api/session-api.types';
+import { ErrorScreen } from '../../../../../../../components/Errors/ErrorScreen';
+import { FlexBlock } from '../../../../../../../components/LayoutComponents/FlexBlock';
+import { BaseCommentActionsProps, CommentGroupProps } from '../comments.types';
+import { MergedNote } from '../../TaskHistory/EventHistoryMergedItem';
+import { CommentGroup } from './CommentGroup';
 
 export const CommentsListContainer = styled('ul')`
   & {
@@ -16,76 +16,81 @@ export const CommentsListContainer = styled('ul')`
     position: relative;
     width: 100%;
   }
-`
+`;
 
 export const InvisibleScroller = styled('div')`
   width: 0;
   height: 0;
-`
+`;
 
 export interface MergedComment {
-	arr: Array<CommentModel>,
-	user: UserModel
+  arr: Array<CommentModel>;
+  user: UserModel;
 }
 
 export interface CommentsListProps extends BaseCommentActionsProps {
-	comments: Array<MergedComment>,
-	onClickToReplyComment?: CommentGroupProps['onClickToReplyComment']
+  comments: Array<MergedComment>;
+  onClickToReplyComment?: CommentGroupProps['onClickToReplyComment'];
 }
 
 export const CommentsList: FC<CommentsListProps> = ({
-																											comments,
-																											onRemoveComment,
-																											onReplyToComment,
-																											onClickToReplyComment,
-																											onUpdateCommentClick
-																										}) => {
-	const invisibleScroller = useRef<HTMLDivElement>(null)
-	
-	useEffect(() => {
-		toBottom()
-	}, [invisibleScroller, comments.length])
-	
-	const toBottom = () => {
-		invisibleScroller.current?.scrollIntoView({
-			behavior: 'auto',
-			block: 'end'
-		})
-	}
-	
-	
-	if (!comments.length) {
-		return (
-			<FlexBlock width={'100%'} height={'100%'} justify={'center'} align={'center'}>
-				<ErrorScreen
-					title={'Комментариев пока нет...'}
-					errorType={'ERR_FORBIDDEN'}
-					description={'Напишите первый, каждый участник сможет его увидеть!'}
-				/>
-			</FlexBlock>
-		)
-	}
-	
-	return (
-		<CommentsListContainer>
-			<InvisibleScroller ref={invisibleScroller}/>
-			{comments.map((comment) => {
-				return !!comment.arr.length
-					? (
-						<MergedNote
-							mergeItem={comment}
-							renderGroup={(item) => (
-								<CommentGroup
-									onUpdateCommentClick={onUpdateCommentClick}
-									comment={item}
-									onClickToReplyComment={onClickToReplyComment}
-									onRemoveComment={onRemoveComment}
-									onReplyToComment={onReplyToComment}
-								/>
-							)}
-						/>
-					) : <></>
-			})}
-		</CommentsListContainer>
-	)
-}
+  comments,
+  onRemoveComment,
+  onReplyToComment,
+  onClickToReplyComment,
+  onUpdateCommentClick,
+}) => {
+  const invisibleScroller = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    toBottom();
+  }, [invisibleScroller, comments.length]);
+
+  const toBottom = () => {
+    invisibleScroller.current?.scrollIntoView({
+      behavior: 'auto',
+      block: 'end',
+    });
+  };
+
+  if (!comments.length) {
+    return (
+      <FlexBlock
+        width={'100%'}
+        height={'100%'}
+        justify={'center'}
+        align={'center'}
+      >
+        <ErrorScreen
+          title={'Комментариев пока нет...'}
+          errorType={'ERR_FORBIDDEN'}
+          description={'Напишите первый, каждый участник сможет его увидеть!'}
+        />
+      </FlexBlock>
+    );
+  }
+
+  return (
+    <CommentsListContainer>
+      <InvisibleScroller ref={invisibleScroller} />
+      {comments.map((comment) => {
+        return !!comment.arr.length ? (
+          <MergedNote
+            mergeItem={comment}
+            renderGroup={(item) => (
+              <CommentGroup
+                onUpdateCommentClick={onUpdateCommentClick}
+                comment={item}
+                onClickToReplyComment={onClickToReplyComment}
+                onRemoveComment={onRemoveComment}
+                onReplyToComment={onReplyToComment}
+              />
+            )}
+          />
+        ) : (
+          <></>
+        );
+      })}
+    </CommentsListContainer>
+  );
+};
