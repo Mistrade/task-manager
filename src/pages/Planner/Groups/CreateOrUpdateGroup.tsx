@@ -20,12 +20,11 @@ import {
   WhiteButton,
 } from '../../../components/Buttons/Buttons.styled';
 import { InputErrorMessage } from '../../../components/Input/InputSupportComponents/InputErrorMessage';
-import { toast } from 'react-toastify';
-import {
-  CustomRtkError,
-  MyServerResponse,
-} from '../../../store/api/rtk-api.types';
 import { ChangeGroupModalProps, CreateGroupProps } from './groups.types';
+import {
+  CatchHandleForToast,
+  thenHandleForToast,
+} from '../../../store/api/tools';
 
 const validationSchema = yup.object().shape({
   color: yup
@@ -85,32 +84,14 @@ export const CreateOrUpdateGroupModal: FC<ChangeGroupModalProps> = ({
       if (!isEditing) {
         return await create(values)
           .unwrap()
-          .then((r: MyServerResponse) => {
-            if (r.info) {
-              toast(r.info.message, { type: r.info.type });
-            }
-            return onClose && onClose();
-          })
-          .catch((e: CustomRtkError) => {
-            return e.data.info
-              ? toast(e.data.info.message, { type: e.data.info.type })
-              : null;
-          });
+          .then((data) => thenHandleForToast(data, () => onClose && onClose()))
+          .catch(CatchHandleForToast);
       }
 
       return await update(values)
         .unwrap()
-        .then((r: MyServerResponse) => {
-          if (r.info) {
-            toast(r.info.message, { type: r.info.type });
-          }
-          return onClose && onClose();
-        })
-        .catch((e: CustomRtkError) => {
-          return e.data.info
-            ? toast(e.data.info.message, { type: e.data.info.type })
-            : null;
-        });
+        .then((data) => thenHandleForToast(data, () => onClose && onClose()))
+        .catch(CatchHandleForToast);
     },
   });
 

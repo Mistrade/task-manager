@@ -5,10 +5,10 @@ import {
   darkColor,
   disabledColor,
   pageHeaderColor,
-} from '../../../../../../../../common/constants';
-import { FlexBlock } from '../../../../../../../../components/LayoutComponents/FlexBlock';
+} from '../../../common/constants';
+import { FlexBlock } from '../../LayoutComponents/FlexBlock';
 
-export const EventEssenceContainer = styled('div')`
+export const EssenceContainer = styled(FlexBlock)`
   display: flex;
   width: 100%;
   padding: 8px;

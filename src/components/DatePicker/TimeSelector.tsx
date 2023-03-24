@@ -90,6 +90,8 @@ export const TimeSelector: FC<TimeSelectorProps> = ({
           &::-webkit-scrollbar {
             width: 0;
           }
+
+          scroll-snap-type: y mandatory;
         `}
       >
         {hours.map((value, index, array) => (
@@ -113,6 +115,8 @@ export const TimeSelector: FC<TimeSelectorProps> = ({
           &::-webkit-scrollbar {
             width: 0;
           }
+
+          scroll-snap-type: y mandatory;
         `}
       >
         {minutes.map((value, index, array) => (

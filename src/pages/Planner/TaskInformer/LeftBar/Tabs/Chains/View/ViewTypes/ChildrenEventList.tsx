@@ -2,7 +2,7 @@ import { FC } from 'react';
 import { TaskChainItemsWrapper } from '../TaskChainItemsWrapper';
 import { ChildrenEventsListProps } from '../../event-chains.types';
 import { Accordion } from '../../../../../../../../components/Accordion/Accordion';
-import { EventEssence } from '../../../TaskHistory/Essences/EventEssence/EventEssence';
+import { EventEssence } from '../../../../../../../../components/Essences/EventEssence/EventEssence';
 
 export const ChildrenEventList: FC<ChildrenEventsListProps> = ({
   eventInfo,

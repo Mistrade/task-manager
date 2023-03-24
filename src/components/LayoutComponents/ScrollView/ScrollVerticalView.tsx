@@ -2,6 +2,7 @@ import { ReactNode } from 'react';
 import styled from 'styled-components';
 import { FCWithChildren } from '../../../pages/Planner/planner.types';
 import { FlexBlock } from '../FlexBlock';
+import { hideScrollBar } from '../../Switcher/Switcher';
 
 export interface ScrollVerticalViewProps {
   placementStatic?: 'top' | 'bottom';
@@ -19,6 +20,7 @@ const Container = styled('div')<Pick<ScrollVerticalViewProps, 'renderPattern'>>`
     _.renderPattern === 'top-bottom' ? 'column' : 'column-reverse'};
   overflow-x: hidden;
   overflow-y: auto;
+  ${hideScrollBar}
 `;
 
 Container.defaultProps = {

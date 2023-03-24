@@ -1,9 +1,8 @@
-import React, { FC, useCallback, useEffect, useMemo, useState } from 'react';
+import React, { FC, useCallback, useMemo, useState } from 'react';
 import { EventInformerProps, MainEventInformerProps } from '../planner.types';
 import dayjs from 'dayjs';
 import { FlexBlock } from '../../../components/LayoutComponents/FlexBlock';
 import { useUpdateTaskMutation } from '../../../store/api/planning-api';
-import { toast } from 'react-toastify';
 import {
   EventInfoUpdateFn,
   ToggleEventCalendar,
@@ -14,7 +13,6 @@ import { TaskInformerRightBar } from './RightBar/TaskInformerRightBar';
 import { TaskInformerLeftBar } from './LeftBar/TaskInformerLeftBar';
 import { TaskInfoNotFound } from './SupportsComponent/TaskInfoNotFound';
 import { DateListGenerator } from '../../../common/calendarSupport/generators';
-import { MyServerResponse } from '../../../store/api/rtk-api.types';
 import {
   borderRadiusSize,
   disabledColor,
@@ -23,16 +21,26 @@ import {
 import { TaskInformerTitle } from './SupportsComponent/TaskInformerTitle';
 import { TaskInformerLinkButton } from './SupportsComponent/TaskInformerLinkButton';
 import {
-  isCorrectTaskInformerSwitcherName,
   TaskInformerSwitchers,
   TaskInformerSwitchersKeys,
 } from './SupportsComponent/TaskInformerSwitchers';
-import { useParams } from 'react-router';
 import { useAppSelector } from '../../../store/hooks/hooks';
 import { CalendarSelectors } from '../../../store/selectors/calendarItems';
 import { useSearchNavigate } from '../../../hooks/useSearchNavigate';
 import { TaskInformerMoreActions } from './SupportsComponent/TaskInformerMoreActions';
 import { css } from 'styled-components';
+import {
+  CatchHandleForToast,
+  thenHandleForToast,
+} from '../../../store/api/tools';
+import { useLocation } from 'react-router';
+
+const getInitialSwitcher = (pathname: string): TaskInformerSwitchersKeys => {
+  const pathArr = pathname.split('/');
+  const el = pathArr[6];
+
+  return (el || '') as unknown as TaskInformerSwitchersKeys;
+};
 
 const TaskInformerMain: FC<MainEventInformerProps> = ({
   eventInfo,
@@ -40,23 +48,20 @@ const TaskInformerMain: FC<MainEventInformerProps> = ({
   onOpenClonedEvent,
   onClose,
 }) => {
-  const { planner, statuses } = useAppSelector(CalendarSelectors.dataForURL);
+  const {
+    planner: { layout },
+    statuses,
+  } = useAppSelector(CalendarSelectors.dataForURL);
+
   const navigate = useSearchNavigate();
-  const { tabName } = useParams<{ tabName?: TaskInformerSwitchersKeys }>();
+  const location = useLocation();
   const [switcher, setSwitcher] = useState<TaskInformerSwitchersKeys>(
-    tabName && isCorrectTaskInformerSwitcherName(tabName) ? tabName : 'about'
+    getInitialSwitcher(location.pathname)
   );
 
-  useEffect(() => {
-    const path = `/planner/${planner.layout}/${statuses}/${eventInfo._id}`;
-    if (!tabName || !isCorrectTaskInformerSwitcherName(tabName)) {
-      return navigate(path + '/about', { replace: true });
-    }
-
-    if (tabName !== switcher) {
-      return navigate(path + '/' + switcher, { replace: true });
-    }
-  }, [tabName, switcher]);
+  const prevPath = useMemo(() => {
+    return `/planner/${layout}/${statuses}/info/${eventInfo._id}`;
+  }, [layout, statuses, eventInfo._id]);
 
   const options = useMemo(() => {
     const start = dayjs(eventInfo.time);
@@ -80,20 +85,8 @@ const TaskInformerMain: FC<MainEventInformerProps> = ({
         data,
       })
         .unwrap()
-        .then((r) => {
-          if (r.info) {
-            toast(r.info.message, {
-              type: r.info.type,
-            });
-          }
-        })
-        .catch((r: { data?: MyServerResponse<null>; status: number }) => {
-          if (r.data?.info) {
-            toast(r.data?.info?.message, {
-              type: r.data.info.type,
-            });
-          }
-        });
+        .then(thenHandleForToast)
+        .catch(CatchHandleForToast);
     },
     [eventInfo._id]
   );
@@ -174,7 +167,10 @@ const TaskInformerMain: FC<MainEventInformerProps> = ({
             comments: 0,
           }}
           selected={switcher}
-          onChange={(value) => setSwitcher(value.key)}
+          onChange={(value) => {
+            setSwitcher(value.key);
+            navigate(prevPath + `/${value.key}`);
+          }}
         />
       </FlexBlock>
       <FlexBlock

@@ -14,6 +14,7 @@ import { SmallMonth } from '../../SmallMotnCalendar/SmallMonth';
 import { DayEventItemBoxShadowMixin } from '../DayCalendar/TaskList/DayTaskItem';
 import dayjs from 'dayjs';
 import { GetEventsFiltersRequestProps } from '../../../../store/api/planning-api/types/event-info.types';
+import { hideScrollBar } from '../../../../components/Switcher/Switcher';
 
 const MonthItemContainer = styled('div')`
   padding: 4px;
@@ -64,6 +65,7 @@ export const YearCalendar: FC<YearCalendarProps> = ({
       width={'100%'}
       overflowY={'auto'}
       overflowX={'hidden'}
+      additionalCss={hideScrollBar}
       p={8}
     >
       <Loader title={'Загрузка схемы...'} isActive={isFetching}>

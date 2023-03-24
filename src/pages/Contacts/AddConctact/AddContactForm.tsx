@@ -6,6 +6,11 @@ import { EmptyButtonStyled } from '../../../components/Buttons/EmptyButton.style
 import { Button } from '../../../components/Buttons/Buttons.styled';
 import { useFormik } from 'formik';
 import * as yup from 'yup';
+import { useAddContactMutation } from '../../../store/api/friends-api';
+import {
+  CatchHandleForToast,
+  thenHandleForToast,
+} from '../../../store/api/tools';
 
 const phonePattern = new RegExp(
   /^((8|\+7)[\- ]?)?(\(?\d{3,4}\)?[\- ]?)?[\d\- ]{5,10}$/
@@ -56,20 +61,27 @@ const schema = yup.object().shape({
 });
 
 export const AddContactForm = () => {
+  const [addContact] = useAddContactMutation();
   const formik = useFormik({
     initialValues: {
       value: '',
     },
     validationSchema: schema,
-    onSubmit: (values, formikHelpers) => {},
+    onSubmit: async (values, formikHelpers) => {
+      await addContact({
+        phoneOrEmail: values.value,
+      })
+        .unwrap()
+        .then(thenHandleForToast)
+        .catch(CatchHandleForToast);
+    },
   });
 
   return (
-    <form>
-      <ContactBlock>
+    <form onSubmit={formik.handleSubmit}>
+      <ContactBlock p={'12px 24px'}>
         <FlexBlock width={'100%'} direction={'column'} gap={12}>
           <TextInput
-            label={'Контактная информация'}
             placeholder={'Номер или почта контакта в системе'}
             iconPlacement={'left'}
             icon={<PhoneIcon size={20} />}
@@ -78,16 +90,20 @@ export const AddContactForm = () => {
             isDirty={formik.touched.value}
             errorMessage={formik.errors.value}
             onChange={(e) => formik.setFieldValue('value', e.target.value)}
+            buttons={
+              <FlexBlock
+                direction={'row'}
+                align={'center'}
+                gap={6}
+                justify={'flex-end'}
+              >
+                <Button type={'submit'}>Добавить</Button>
+                <EmptyButtonStyled onClick={() => formik.resetForm()}>
+                  Очистить
+                </EmptyButtonStyled>
+              </FlexBlock>
+            }
           />
-          <FlexBlock
-            direction={'row'}
-            align={'center'}
-            gap={6}
-            justify={'flex-end'}
-          >
-            <Button type={'button'}>Добавить</Button>
-            <EmptyButtonStyled>Очистить</EmptyButtonStyled>
-          </FlexBlock>
         </FlexBlock>
       </ContactBlock>
     </form>

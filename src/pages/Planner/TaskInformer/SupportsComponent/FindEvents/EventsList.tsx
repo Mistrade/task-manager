@@ -24,7 +24,7 @@ import {
   MyServerResponse,
   ObjectId,
 } from '../../../../../store/api/rtk-api.types';
-import { EventEssence } from '../../LeftBar/Tabs/TaskHistory/Essences/EventEssence/EventEssence';
+import { EventEssence } from '../../../../../components/Essences/EventEssence/EventEssence';
 
 export interface EventListFromArrayProps
   extends ExtendSelectableEventListProps {

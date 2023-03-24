@@ -1,5 +1,5 @@
-import { FC, useEffect, useMemo } from 'react';
-import { CalendarTaskItem } from '../../planner.types';
+import { FC, useMemo } from 'react';
+import { CreateEventDataObject } from '../../planner.types';
 import { useFormik } from 'formik';
 import dayjs from 'dayjs';
 import { FlexBlock } from '../../../../components/LayoutComponents/FlexBlock';
@@ -24,9 +24,8 @@ import {
 import { SelectLinks } from '../../../../components/Input/SelectInput/CalendarSelectInputs/SelectLinks';
 import { useCreateEventMutation } from '../../../../store/api/planning-api';
 import { TextAreaInput } from '../../../../components/Input/TextAreaInput/TextAreaInput';
-import { toast } from 'react-toastify';
 import { DateHelper } from '../../../../common/calendarSupport/dateHelper';
-import { CustomRtkError, ObjectId } from '../../../../store/api/rtk-api.types';
+import { ObjectId } from '../../../../store/api/rtk-api.types';
 import { Heading } from '../../../../components/Text/Heading';
 import { Switcher } from '../../../../components/Switcher/Switcher';
 import {
@@ -35,12 +34,13 @@ import {
   ToggleEventStatus,
 } from '../../TaskInformer/SupportsComponent/ToggleTaskInformerButtons';
 import { GroupModelResponse } from '../../../../store/api/planning-api/types/groups.types';
+import { useCreateEvent } from '../../../../hooks/useCreateEvent';
+import { CatchHandleForToast } from '../../../../store/api/tools';
 
 interface CreateEventFormProps {
-  onComplete?: (data: CalendarTaskItem, taskId?: ObjectId) => void;
+  onComplete?: (data: CreateEventDataObject, taskId?: ObjectId) => void;
   date: Date | null;
-  onCancel?: (data: CalendarTaskItem) => void;
-  initialValues?: CalendarTaskItem;
+  onCancel?: (data: CreateEventDataObject) => void;
   groupsList?: Array<GroupModelResponse>;
 }
 
@@ -92,45 +92,31 @@ export const CreateEventForm: FC<CreateEventFormProps> = ({
   date,
   onComplete,
   onCancel,
-  initialValues,
   groupsList,
 }) => {
+  const { initialState, prevUrl, declineModal, clearState } = useCreateEvent(
+    {}
+  );
   const [addTask, { isLoading, status }] = useCreateEventMutation();
 
   //TODO убрать CalendarTaskItem, создать нормальные тип, который будет уходить не сервак
-  const formik = useFormik<CalendarTaskItem>({
+  const formik = useFormik<CreateEventDataObject>({
     async onSubmit(values) {
       await addTask(values)
         .unwrap()
         .then((response) => {
           onComplete && onComplete(values, response?.data?.eventId);
+          clearState();
         })
-        .catch((response: CustomRtkError) => {
-          if (response?.data?.info) {
-            toast(response.data.info.message, {
-              type: response.data.info.type,
-            });
-          }
-        });
+        .catch(CatchHandleForToast);
     },
     validationSchema: addTaskValidationSchema,
-    initialValues: initialValues || {
-      title: '',
-      linkedFrom: '',
-      parentId: '',
-      type: 'event',
-      createdAt: '',
-      description: '',
-      status: 'created',
-      members: [],
-      time: date || dayjs().toDate(),
-      timeEnd:
-        dayjs(date || dayjs())
-          .add(1, 'hour')
-          .toDate() || dayjs().add(1, 'hour').toDate(),
-      priority: 'medium',
-      link: null,
-      group: groupsList?.find((item) => item.type === 'Main')?._id || '',
+    initialValues: {
+      ...initialState,
+      group:
+        initialState.group ||
+        groupsList?.find((item) => item.type === 'Main')?._id ||
+        '',
     },
   });
 
@@ -140,12 +126,6 @@ export const CreateEventForm: FC<CreateEventFormProps> = ({
     }
     return groupsList?.find((item) => item.type === 'Main');
   }, [formik.values.group, groupsList]);
-
-  useEffect(() => {
-    console.log('errors: ', formik.errors);
-    console.log('values: ', formik.values);
-    console.log('touched: ', formik.touched);
-  }, [formik.errors, formik.values, formik.touched]);
 
   return (
     <form
@@ -318,7 +298,7 @@ export const CreateEventForm: FC<CreateEventFormProps> = ({
         >
           <Button type={'submit'}>Создать</Button>
           <StyledButton
-            onClick={() => onCancel && onCancel(formik.values)}
+            onClick={declineModal}
             fillColor={'#fff'}
             textColor={defaultColor}
           >

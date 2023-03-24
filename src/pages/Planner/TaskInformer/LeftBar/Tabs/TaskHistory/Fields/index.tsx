@@ -7,7 +7,7 @@ import { HistoryDescriptionField } from './HistoryDescriptionField';
 import { HistoryTimeField } from './HistoryTimeField';
 import { HistoryGroupField } from './HistoryGroupField';
 import { HistoryChildOfField } from './HistoryChildOfField';
-import { ReplyContent } from '../Essences/EventEssence/event-essence.styled';
+import { ReplyContent } from '../../../../../../../components/Essences/EventEssence/event-essence.styled';
 import { HistorySnapshotField } from './HistorySnapshotField';
 import { HistoryLinkField } from './HistoryLinkField';
 import { HistoryTitleField } from './HistoryTitleField';

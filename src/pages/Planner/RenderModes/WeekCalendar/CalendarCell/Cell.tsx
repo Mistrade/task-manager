@@ -14,6 +14,7 @@ import dayjs from 'dayjs';
 import { FlexBlock } from '../../../../../components/LayoutComponents/FlexBlock';
 import { CalendarCellEventsList } from './EventList/List';
 import { Badge } from '../../../../../components/Badge/Badge';
+import { useCreateEvent } from '../../../../../hooks/useCreateEvent';
 
 export interface CalendarCellStyledComponentProps {
   disabled?: boolean;
@@ -146,6 +147,8 @@ export const CalendarCell: FC<CalendarCellProps> = ({
   onClickToDate,
   isVisible,
 }) => {
+  const { openModal } = useCreateEvent({ useReturnBackOnDecline: true });
+
   return (
     <WeekCellContainer
       isVisible={isVisible}
@@ -161,7 +164,12 @@ export const CalendarCell: FC<CalendarCellProps> = ({
         justify={'flex-end'}
         wrap={'nowrap'}
         align={'center'}
-        onClick={() => onClickToDate && onClickToDate(value)}
+        onClick={() =>
+          openModal({
+            time: dayjs(value.value).format(),
+            timeEnd: dayjs(value.value).add(1, 'hour').format(),
+          })
+        }
         additionalCss={
           onClickToDate &&
           css`

@@ -1,5 +1,6 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 import {
+  CreateEventDataObject,
   PlannerDateMode,
   PlannerFavoritesMode,
   PlannerListMode,
@@ -37,7 +38,26 @@ export interface PlannerReducerState {
   groupRemoved: null | GroupModelResponse;
   clonedEventInfo: Partial<EventInfoModel> | null;
   selectedEvent: ObjectId | null;
+  createEventInitialState: null | CreateEventInitialState;
+  createEventPrevUrl: string | null;
 }
+
+type ReplaceType<
+  Object extends object,
+  ReplaceKeys extends keyof Object,
+  PasteType
+> = Omit<Object, ReplaceKeys> & {
+  [key in ReplaceKeys]: PasteType;
+};
+
+export type CreateEventInitialState = Partial<
+  ReplaceType<CreateEventDataObject, 'time' | 'timeEnd', string>
+>;
+
+type SetCreateEventInitialStatePayload = PayloadAction<{
+  data: Partial<CreateEventInitialState> | null;
+  prevUrl: string | null;
+}>;
 
 const initialState: PlannerReducerState = {
   planner: { layout: 'day', date: new Date().toString() },
@@ -46,6 +66,8 @@ const initialState: PlannerReducerState = {
   groupRemoved: null,
   clonedEventInfo: null,
   selectedEvent: null,
+  createEventInitialState: null,
+  createEventPrevUrl: null,
 };
 
 const CalendarSlice = createSlice({
@@ -117,6 +139,21 @@ const CalendarSlice = createSlice({
     changeEventStatuses(state, data: PayloadAction<EventFilterTaskStatuses>) {
       state.statuses = data.payload;
     },
+    setCreateEventInitialState(
+      state,
+      { payload }: SetCreateEventInitialStatePayload
+    ) {
+      console.log('set initial state: ', payload);
+
+      state.createEventInitialState = payload.data;
+      state.createEventPrevUrl = payload.prevUrl;
+
+      console.log('set initialState is successfully');
+    },
+    clearCreateInitialState(state) {
+      state.createEventInitialState = null;
+      state.createEventPrevUrl = null;
+    },
   },
 });
 
@@ -127,4 +164,6 @@ export const {
   changeGroupRemoved,
   setClonedParentEvent,
   changeEventStatuses,
+  setCreateEventInitialState,
+  clearCreateInitialState,
 } = CalendarSlice.actions;

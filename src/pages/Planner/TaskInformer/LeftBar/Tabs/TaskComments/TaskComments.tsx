@@ -4,7 +4,6 @@ import {
 } from '../../../../../../store/api/planning-api';
 import { FC, useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import { FlexBlock } from '../../../../../../components/LayoutComponents/FlexBlock';
-import { toast } from 'react-toastify';
 import { hoverColor } from '../../../../../../common/constants';
 import { useAppSelector } from '../../../../../../store/hooks/hooks';
 import { sessionApi } from '../../../../../../store/api/session-api';
@@ -12,15 +11,15 @@ import { ErrorScreen } from '../../../../../../components/Errors/ErrorScreen';
 import { Loader } from '../../../../../../components/Loaders/Loader';
 import { ScrollVerticalView } from '../../../../../../components/LayoutComponents/ScrollView/ScrollVerticalView';
 import { CommentModel } from '../../../../../../store/api/planning-api/types/comments.types';
-import {
-  CustomRtkError,
-  MyServerResponse,
-  ObjectId,
-} from '../../../../../../store/api/rtk-api.types';
+import { ObjectId } from '../../../../../../store/api/rtk-api.types';
 import { CommentForm } from './SupportComponents/CommentForm';
 import { CommentsList } from './SupportComponents/CommentsList';
 import { TaskCommentsProps } from './comments.types';
 import { mergeArrayWithUserId } from '../../../../../../common/functions';
+import {
+  CatchHandleForToast,
+  thenHandleForToast,
+} from '../../../../../../store/api/tools';
 
 const keyframe = [
   { backgroundColor: 'transparent' },
@@ -69,12 +68,8 @@ export const TaskComments: FC<TaskCommentsProps> = ({ taskInfo }) => {
       if (item.deletable) {
         return await removeComment(item._id)
           .unwrap()
-          .then((r: MyServerResponse) => {
-            toast(r.info?.message, { type: r.info?.type });
-          })
-          .catch((r: CustomRtkError) => {
-            toast(r.data?.info?.message, { type: r.data?.info?.type });
-          });
+          .then(thenHandleForToast)
+          .catch(CatchHandleForToast);
       }
     },
     [taskInfo, userInfo?.data]

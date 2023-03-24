@@ -10,15 +10,15 @@ import {
 import { DefaultTextInputProps } from './TextInput/TextInput';
 
 const LeftIconPadding = css`
-  padding: 6px 8px 6px 46px;
+  padding: 12px 12px 12px 46px;
 `;
 
 const RightIconPadding = css`
-  padding: 6px 46px 6px 8px;
+  padding: 12px 46px 12px 12px;
 `;
 
 const DefaultPadding = css`
-  padding: 6px 8px;
+  padding: 12px 12px;
 `;
 
 const IconPlacement = {
@@ -34,7 +34,7 @@ interface InputStyledProps {
 
 export const StyledInput = styled('input')<InputStyledProps>`
   width: 100%;
-  border: 1px solid ${(_) => (_.isError ? errorColor : disabledColor)};
+  border: 2px solid ${(_) => (_.isError ? errorColor : disabledColor)};
   border-radius: ${borderRadiusSize.sm};
   outline: none;
   transition: all 0.3s ease-in;
@@ -45,7 +45,7 @@ export const StyledInput = styled('input')<InputStyledProps>`
   ${(_) =>
     _.hasIcon ? IconPlacement[_.iconPlacement || 'right'] : DefaultPadding}
   &:focus {
-    border: 1px solid ${currentColor};
+    border: 2px solid ${currentColor};
   }
 
   &::placeholder {
@@ -73,7 +73,7 @@ export const StyledTextAreaInput = styled('textarea')`
   & {
     width: 100%;
     color: ${darkColor};
-    border: 1px solid ${disabledColor};
+    border: 2px solid ${disabledColor};
     border-radius: ${borderRadiusSize.sm};
     outline: none;
     overflow: hidden;
@@ -90,7 +90,7 @@ export const StyledTextAreaInput = styled('textarea')`
   ${DefaultPadding};
 
   &:focus {
-    border: 1px solid ${currentColor};
+    border: 2px solid ${currentColor};
   }
 
   &::placeholder {

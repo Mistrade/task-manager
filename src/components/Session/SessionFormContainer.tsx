@@ -27,6 +27,7 @@ export const SessionFormContainer: FC<SessionFormContainerProps> = ({
           maxWidth={'50rem'}
           minWidth={'30rem'}
           p={'24px 16px'}
+          bgColor={'#fff'}
           border={`1px solid ${currentColor}`}
           borderRadius={borderRadiusSize.xs}
           additionalCss={css`

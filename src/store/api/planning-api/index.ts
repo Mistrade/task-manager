@@ -5,7 +5,7 @@ import {
   fetchBaseQuery,
 } from '@reduxjs/toolkit/dist/query/react';
 import {
-  CalendarTaskItem,
+  CreateEventDataObject,
   EventsStorage,
 } from '../../../pages/Planner/planner.types';
 import { baseServerUrl } from '../config';
@@ -167,7 +167,10 @@ export const planningApi = createApi({
         }),
         providesTags: ['Events'],
       }),
-      createEvent: mutation<MyServerResponse<EventIdObject>, CalendarTaskItem>({
+      createEvent: mutation<
+        MyServerResponse<EventIdObject>,
+        CreateEventDataObject
+      >({
         query: (body) => ({
           url: `/create`,
           method: 'POST',

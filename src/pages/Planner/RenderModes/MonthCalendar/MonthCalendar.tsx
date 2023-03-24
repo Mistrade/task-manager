@@ -10,6 +10,7 @@ import dayjs from 'dayjs';
 import { FindEventFilter } from '../FindEventFilter/FindEventFilter';
 import { FlexBlock } from '../../../../components/LayoutComponents/FlexBlock';
 import { useEventStorage } from '../../../../hooks/useEventStorage';
+import { hideScrollBar } from '../../../../components/Switcher/Switcher';
 
 export const MonthCalendar: FC<MonthCalendarProps> = ({
   monthItem,
@@ -63,6 +64,7 @@ export const MonthCalendar: FC<MonthCalendarProps> = ({
         mr={-8}
         pr={8}
         position={'relative'}
+        additionalCss={hideScrollBar}
       >
         <CalendarDesktopContainer>
           <CalendarDateListContainer rowsCount={6}>

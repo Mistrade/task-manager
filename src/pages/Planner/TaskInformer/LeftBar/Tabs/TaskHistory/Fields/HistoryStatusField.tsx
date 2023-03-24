@@ -2,7 +2,7 @@ import { FC } from 'react';
 import { BaseEventHistoryFieldProps } from '../event-history.types';
 import { EventStatusButton } from '../../../../SupportsComponent/EventStatusButton';
 import { TaskStatusesType } from '../../../../../planner.types';
-import { ReplyContent } from '../Essences/EventEssence/event-essence.styled';
+import { ReplyContent } from '../../../../../../../components/Essences/EventEssence/event-essence.styled';
 import { Text } from '../../../../../../../components/Text/Text';
 
 export const HistoryStatusField: FC<

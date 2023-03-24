@@ -188,20 +188,26 @@ export function SelectLinks<T>({
             onChange={(e) => {
               setLink((prev) => ({ key: prev.key, value: e.target.value }));
             }}
+            buttons={
+              link.value && (
+                <FlexBlock
+                  justify={'flex-end'}
+                  align={'center'}
+                  height={'100%'}
+                >
+                  <LinkButton
+                    href={link.value}
+                    target={'_blank'}
+                    rel={''}
+                    resource={''}
+                  >
+                    Проверить
+                  </LinkButton>
+                </FlexBlock>
+              )
+            }
           />
         </FlexBlock>
-        {link.value && (
-          <FlexBlock justify={'flex-end'} align={'flex-end'} height={'100%'}>
-            <LinkButton
-              href={link.value}
-              target={'_blank'}
-              rel={''}
-              resource={''}
-            >
-              Проверить
-            </LinkButton>
-          </FlexBlock>
-        )}
       </FlexBlock>
       {!isSecure && showNotification && (
         <FlexBlock

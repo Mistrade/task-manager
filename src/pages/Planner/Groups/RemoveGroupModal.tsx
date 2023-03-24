@@ -11,8 +11,11 @@ import {
   WhiteButton,
 } from '../../../components/Buttons/Buttons.styled';
 import { useRemoveGroupMutation } from '../../../store/api/planning-api';
-import { toast } from 'react-toastify';
 import { RemoveGroupHockProps, RemoveGroupModalProps } from './groups.types';
+import {
+  CatchHandleForToast,
+  thenHandleForToast,
+} from '../../../store/api/tools';
 
 export const RemoveGroupHock: FC<RemoveGroupHockProps> = (props) => {
   if (props.groupInfo !== null) {
@@ -62,12 +65,10 @@ export const RemoveGroupModal: FC<RemoveGroupModalProps> = ({
                 groupId: groupInfo._id,
               })
                 .unwrap()
-                .then((response) => {
-                  if (response.info) {
-                    toast(response.info?.message, { type: response.info.type });
-                  }
-                  onSuccess && onSuccess();
-                });
+                .then((data) =>
+                  thenHandleForToast(data, () => onSuccess && onSuccess())
+                )
+                .catch(CatchHandleForToast);
             }}
           >
             Удалить

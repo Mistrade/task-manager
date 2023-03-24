@@ -1,7 +1,5 @@
 import { FC, useCallback } from 'react';
 import { CalendarHeaderProps, PlannerMode } from '../planner.types';
-import { ShortChangeCurrentPattern } from '../../../common/commonTypes';
-import { changeCurrentModeHandler } from '../../../common/functions';
 import { FlexBlock } from '../../../components/LayoutComponents/FlexBlock';
 import { CalendarModeSwitchers } from './CalendarModeSwitchers';
 import { usePlanner } from '../../../hooks/usePlanner';
@@ -20,17 +18,6 @@ export const PlannerHeader: FC<CalendarHeaderProps> = ({
   const { statuses } = useAppSelector((state) => state.planner);
 
   const navigate = useSearchNavigate();
-
-  const onChangeCurrentHandler = useCallback(
-    (pattern: ShortChangeCurrentPattern = 'today') => {
-      onChangePlanner &&
-        onChangePlanner(
-          changeCurrentModeHandler(planner, pattern),
-          planner.layout
-        );
-    },
-    [planner, onChangePlanner]
-  );
 
   const onChangeCurrentLayoutHandler = useCallback(
     (newLayout: PlannerMode['layout']) => {

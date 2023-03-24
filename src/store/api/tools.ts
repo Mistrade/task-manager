@@ -1,4 +1,4 @@
-import { CustomRtkError } from './rtk-api.types';
+import { CustomRtkError, MyServerResponse } from './rtk-api.types';
 import { toast } from 'react-toastify';
 
 export const CatchHandleForToast = <T>(reason: any | CustomRtkError<T>) => {
@@ -15,4 +15,23 @@ export const CatchHandleForToast = <T>(reason: any | CustomRtkError<T>) => {
       });
     }
   }
+};
+
+export const thenHandleForToast = (
+  data: MyServerResponse<any>,
+  callback?: () => void
+) => {
+  console.log(data);
+
+  if (data.info) {
+    toast(data.info.message, {
+      type: data.info.type,
+      pauseOnHover: true,
+      theme: 'light',
+      icon: true,
+      position: 'bottom-left',
+    });
+  }
+
+  callback && callback();
 };

@@ -1,6 +1,5 @@
 import {
   CalendarPriorityKeys,
-  EventItem,
   EventLinkItem,
   TaskStatusesType,
   UUID,
@@ -18,9 +17,10 @@ import { GroupModelResponse } from '../../../../store/api/planning-api/types/gro
 import { EventStatusButton } from './EventStatusButton';
 import { EventPriorityButton } from './EventPriorityButton';
 import { EventGroupButton } from './EventGroupButton';
+import { EventInfoModel } from '../../../../store/api/planning-api/types/event-info.types';
 
 export type EventInfoUpdateFn = (
-  field: keyof EventItem,
+  field: keyof EventInfoModel,
   data: string | EventLinkItem | boolean | null,
   taskId?: UUID
 ) => Promise<void>;

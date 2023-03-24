@@ -1,5 +1,5 @@
 import { FC } from 'react';
-import { ReplyContent } from '../Essences/EventEssence/event-essence.styled';
+import { ReplyContent } from '../../../../../../../components/Essences/EventEssence/event-essence.styled';
 import { BaseEventHistoryFieldProps } from '../event-history.types';
 import { Text } from '../../../../../../../components/Text/Text';
 import { TimeBadge } from '../../../../../../../components/Badge/Badge';

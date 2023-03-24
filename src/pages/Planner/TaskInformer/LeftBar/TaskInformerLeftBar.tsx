@@ -9,6 +9,9 @@ import { EventChainsTab } from './Tabs/Chains/EventChainsTab';
 import { TaskHistory } from './Tabs/TaskHistory/TaskHistory';
 import { TaskMembers } from './Tabs/TaskMembers/TaskMembers';
 import { TaskComments } from './Tabs/TaskComments/TaskComments';
+import { Routes } from 'react-router-dom';
+import { Route } from 'react-router';
+import { NotFoundPage } from '../../../NotFound/NotFoundPage';
 
 interface TaskInformerLeftBarProps extends EventInfoBaseProps {
   updateFn: EventInfoUpdateFn;
@@ -36,19 +39,46 @@ export const TaskInformerLeftBar: FC<TaskInformerLeftBarProps> = ({
         mt={4}
       >
         <FlexBlock width={'100%'} height={'100%'} direction={'column'}>
-          {switcher === 'about' ? (
-            <EventInfoAboutTab eventInfo={eventInfo} updateFn={updateFn} />
-          ) : switcher === 'chains' ? (
-            <EventChainsTab taskItem={eventInfo} updateFn={updateFn} />
-          ) : switcher === 'history' ? (
-            <TaskHistory taskInfo={eventInfo} />
-          ) : switcher === 'members' ? (
-            <TaskMembers taskItem={eventInfo} />
-          ) : switcher === 'comments' ? (
-            <TaskComments taskInfo={eventInfo} />
-          ) : (
-            <>{switcher}</>
-          )}
+          <Routes>
+            <Route
+              path={'about'}
+              element={
+                <EventInfoAboutTab eventInfo={eventInfo} updateFn={updateFn} />
+              }
+            />
+            <Route
+              path={'chains'}
+              element={
+                <EventChainsTab taskItem={eventInfo} updateFn={updateFn} />
+              }
+            />
+            <Route
+              path={'history'}
+              element={<TaskHistory taskInfo={eventInfo} />}
+            />
+            <Route
+              path={'members'}
+              element={<TaskMembers taskItem={eventInfo} />}
+            />
+            <Route
+              path={'comments'}
+              element={<TaskComments taskInfo={eventInfo} />}
+            />
+            <Route path={'*'} element={<NotFoundPage />} />
+          </Routes>
+          {/*{switcher === 'about' ? (*/}
+          {/*  <EventInfoAboutTab eventInfo={eventInfo} updateFn={updateFn} />*/}
+          {/*) : switcher === 'chains' ? (*/}
+          {/*  <EventChainsTab taskItem={eventInfo} updateFn={updateFn} />*/}
+          {/*) : switcher === 'history' ? (*/}
+          {/*  <TaskHistory taskInfo={eventInfo} />*/}
+          {/*) : switcher === 'members' ? (*/}
+          {/*  <TaskMembers taskItem={eventInfo} />*/}
+          {/*) : switcher === 'comments' ? (*/}
+          {/*  <TaskComments taskInfo={eventInfo} />*/}
+          {/*) : (*/}
+          {/*  <>{switcher}</>*/}
+          {/*)}*/}
         </FlexBlock>
       </FlexBlock>
     </FlexBlock>

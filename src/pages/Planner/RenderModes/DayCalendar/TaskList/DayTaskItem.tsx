@@ -16,7 +16,6 @@ import {
   pageHeaderColor,
 } from '../../../../../common/constants';
 import { css } from 'styled-components';
-import { toast } from 'react-toastify';
 import { PreviewDescription } from './TaskList.styled';
 import { OnSelectTaskFnType } from '../../../planner.types';
 import {
@@ -35,8 +34,11 @@ import {
 } from '../../../../../store/hooks/hooks';
 import { DateHelper } from '../../../../../common/calendarSupport/dateHelper';
 import { ShortEventInfoModel } from '../../../../../store/api/planning-api/types/event-info.types';
-import { MyServerResponse } from '../../../../../store/api/rtk-api.types';
 import { Tooltip } from '../../../../../components/Tooltip/Tooltip';
+import {
+  CatchHandleForToast,
+  thenHandleForToast,
+} from '../../../../../store/api/tools';
 
 interface DayTaskItemProps {
   taskInfo: ShortEventInfoModel;
@@ -99,10 +101,6 @@ export const DayTaskItem: FC<DayTaskItemProps> = ({
     }
   };
 
-  const clickHandler = (e: React.MouseEvent<HTMLDivElement>) => {
-    setTaskInfo();
-  };
-
   const updateTaskHandler: EventInfoUpdateFn = useCallback(
     async (field, data) => {
       return await updateTask({
@@ -111,20 +109,8 @@ export const DayTaskItem: FC<DayTaskItemProps> = ({
         data,
       })
         .unwrap()
-        .then((r) => {
-          if (r.info) {
-            toast(r.info.message, {
-              type: r.info.type,
-            });
-          }
-        })
-        .catch((r: { data?: MyServerResponse<null>; status: number }) => {
-          if (r.data?.info) {
-            toast(r.data?.info?.message, {
-              type: r.data.info.type,
-            });
-          }
-        });
+        .then(thenHandleForToast)
+        .catch(CatchHandleForToast);
     },
     [taskInfo._id]
   );
@@ -157,7 +143,7 @@ export const DayTaskItem: FC<DayTaskItemProps> = ({
       bgColor={pageHeaderColor}
       border={`1px solid ${hoverColor}`}
       onKeyPress={keyPressHandler}
-      onClick={clickHandler}
+      onClick={setTaskInfo}
       additionalCss={css`
         ${DayEventItemMixin};
       `}

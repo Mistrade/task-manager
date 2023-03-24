@@ -68,7 +68,6 @@ const FavoritesCalendar = React.lazy(() =>
 
 export const PlannerPage: FC<CalendarProps> = ({
   layout,
-  taskStatus,
   disabledOptions,
   renderWeekPattern = 'full',
 }) => {
@@ -139,177 +138,182 @@ export const PlannerPage: FC<CalendarProps> = ({
       overflow={'hidden'}
     >
       <PlannerHeader />
-      <FlexBlock
-        width={'100%'}
-        height={'100vh'}
-        direction={'row'}
-        justify={'flex-start'}
-        align={'flex-start'}
-        overflow={'hidden'}
-      >
-        <FlexBlock
-          height={'100%'}
-          grow={0}
-          shrink={0}
-          maxWidth={300}
-          bgColor={pageHeaderColor}
-          pr={12}
-          pl={24}
-          pt={12}
-          flex={'1 0 20%'}
-          borderRight={`1px solid ${disabledColor}`}
-        >
-          <PlannerOptionsPanel
-            onChangeCurrent={calendar.onChangePlanner}
-            monthItem={checkMonthItemSettingsPanel(calendar.planner)}
-            current={calendar.planner}
-            onSelectDate={(data) => calendar.onChangePlanner(data.value, 'day')}
-            onAddTask={calendar.onAddTask}
-          />
-        </FlexBlock>
-        <FlexBlock
-          flex={'1 0 80%'}
-          pl={24}
-          pr={24}
-          height={'100%'}
-          bgColor={'#fff'}
-        >
-          {layout === 'favorites' ? (
-            <Interceptor
-              shouldRenderChildren={calendar.planner.layout === 'favorites'}
-            >
-              <React.Suspense
-                fallback={
-                  <Loader
-                    title={'Загружаем избранные, секундочку...'}
-                    isActive={true}
-                  />
-                }
-              >
-                <FavoritesCalendar
-                  current={calendar.planner as PlannerFavoritesMode}
-                  onSelectTask={calendar.onSelectTask}
-                />
-              </React.Suspense>
-            </Interceptor>
-          ) : layout === 'list' ? (
-            <Interceptor
-              shouldRenderChildren={calendar.planner.layout === 'list'}
-            >
-              <React.Suspense
-                fallback={
-                  <Loader
-                    title={'Загружаем ваш календарь, секундочку...'}
-                    isActive={true}
-                  />
-                }
-              >
-                <ListCalendar
-                  current={calendar.planner as PlannerListMode}
-                  onSelectTask={calendar.onSelectTask}
-                />
-              </React.Suspense>
-            </Interceptor>
-          ) : layout === 'year' ? (
-            <Interceptor
-              shouldRenderChildren={
-                yearItem.year > 0 && yearItem.months.length > 0
-              }
-            >
-              <React.Suspense
-                fallback={
-                  <Loader
-                    title={'Загружаем ваш календарь, секундочку...'}
-                    isActive={true}
-                  />
-                }
-              >
-                <YearCalendar
-                  yearItem={yearItem}
-                  onChangeCurrent={calendar.onChangePlanner}
-                />
-              </React.Suspense>
-            </Interceptor>
-          ) : layout === 'month' ? (
-            <Interceptor
-              shouldRenderChildren={
-                monthItem.monthOfYear >= 0 && monthItem.weeks.length > 0
-              }
-            >
-              <React.Suspense
-                fallback={
-                  <Loader
-                    title={'Загружаем ваш календарь, секундочку...'}
-                    isActive={true}
-                  />
-                }
-              >
-                <MonthCalendar
-                  onChangeCurrent={calendar.onChangePlanner}
-                  renderWeekPattern={renderWeekPattern}
-                  renderTaskCount={5}
-                  current={calendar.planner}
-                  monthItem={monthItem}
-                  onAddTask={calendar.onAddTask}
-                  onSelectTask={calendar.onSelectTask}
-                />
-              </React.Suspense>
-            </Interceptor>
-          ) : layout === 'week' ? (
-            <Interceptor
-              shouldRenderChildren={
-                weekItem.weekOfYear > 0 && weekItem.days.length > 0
-              }
-            >
-              <React.Suspense
-                fallback={
-                  <Loader
-                    title={'Загружаем ваш календарь, секундочку...'}
-                    isActive={true}
-                  />
-                }
-              >
-                <WeekCalendar
-                  onChangeCurrent={calendar.onChangePlanner}
-                  current={calendar.planner}
-                  weekItem={weekItem}
-                  renderTaskCount={'all'}
-                  onAddTask={calendar.onAddTask}
-                  onSelectTask={calendar.onSelectTask}
-                />
-              </React.Suspense>
-            </Interceptor>
-          ) : layout === 'day' ? (
-            <Interceptor
-              shouldRenderChildren={
-                dateItem.settingPanel.monthItem.weeks.length > 0
-              }
-            >
-              <React.Suspense
-                fallback={
-                  <Loader
-                    title={'Загружаем ваш календарь, секундочку...'}
-                    isActive={true}
-                  />
-                }
-              >
-                <DayCalendar
-                  dateItem={dateItem}
-                  onAddTask={calendar.onAddTask}
-                  onSelectTask={calendar.onSelectTask}
-                />
-              </React.Suspense>
-            </Interceptor>
-          ) : (
-            <></>
-          )}
-        </FlexBlock>
-      </FlexBlock>
       <ErrorBoundary
         title={ERROR_TITLES['CALENDAR_RENDER']}
         description={ERROR_TITLES['SUSPENSE']}
         errorType={'SYSTEM_ERROR'}
       >
+        <FlexBlock
+          width={'100%'}
+          height={'100vh'}
+          direction={'row'}
+          justify={'flex-start'}
+          align={'flex-start'}
+          overflow={'hidden'}
+        >
+          <FlexBlock
+            height={'100%'}
+            grow={0}
+            shrink={0}
+            maxWidth={300}
+            bgColor={pageHeaderColor}
+            pr={12}
+            pl={24}
+            pt={12}
+            flex={'1 0 20%'}
+            borderRight={`1px solid ${disabledColor}`}
+          >
+            <PlannerOptionsPanel
+              onChangeCurrent={calendar.onChangePlanner}
+              monthItem={checkMonthItemSettingsPanel(calendar.planner)}
+              current={calendar.planner}
+              onSelectDate={(data) =>
+                calendar.onChangePlanner(data.value, 'day')
+              }
+              onAddTask={calendar.onAddTask}
+            />
+          </FlexBlock>
+
+          <FlexBlock
+            // flex={'1 0 80%'}
+            pl={24}
+            pr={24}
+            grow={3}
+            shrink={0}
+            height={'100%'}
+            bgColor={'#fff'}
+          >
+            {layout === 'favorites' ? (
+              <Interceptor
+                shouldRenderChildren={calendar.planner.layout === 'favorites'}
+              >
+                <React.Suspense
+                  fallback={
+                    <Loader
+                      title={'Загружаем избранные, секундочку...'}
+                      isActive={true}
+                    />
+                  }
+                >
+                  <FavoritesCalendar
+                    current={calendar.planner as PlannerFavoritesMode}
+                    onSelectTask={calendar.onSelectTask}
+                  />
+                </React.Suspense>
+              </Interceptor>
+            ) : layout === 'list' ? (
+              <Interceptor
+                shouldRenderChildren={calendar.planner.layout === 'list'}
+              >
+                <React.Suspense
+                  fallback={
+                    <Loader
+                      title={'Загружаем ваш календарь, секундочку...'}
+                      isActive={true}
+                    />
+                  }
+                >
+                  <ListCalendar
+                    current={calendar.planner as PlannerListMode}
+                    onSelectTask={calendar.onSelectTask}
+                  />
+                </React.Suspense>
+              </Interceptor>
+            ) : layout === 'year' ? (
+              <Interceptor
+                shouldRenderChildren={
+                  yearItem.year > 0 && yearItem.months.length > 0
+                }
+              >
+                <React.Suspense
+                  fallback={
+                    <Loader
+                      title={'Загружаем ваш календарь, секундочку...'}
+                      isActive={true}
+                    />
+                  }
+                >
+                  <YearCalendar
+                    yearItem={yearItem}
+                    onChangeCurrent={calendar.onChangePlanner}
+                  />
+                </React.Suspense>
+              </Interceptor>
+            ) : layout === 'month' ? (
+              <Interceptor
+                shouldRenderChildren={
+                  monthItem.monthOfYear >= 0 && monthItem.weeks.length > 0
+                }
+              >
+                <React.Suspense
+                  fallback={
+                    <Loader
+                      title={'Загружаем ваш календарь, секундочку...'}
+                      isActive={true}
+                    />
+                  }
+                >
+                  <MonthCalendar
+                    onChangeCurrent={calendar.onChangePlanner}
+                    renderWeekPattern={renderWeekPattern}
+                    renderTaskCount={5}
+                    current={calendar.planner}
+                    monthItem={monthItem}
+                    onAddTask={calendar.onAddTask}
+                    onSelectTask={calendar.onSelectTask}
+                  />
+                </React.Suspense>
+              </Interceptor>
+            ) : layout === 'week' ? (
+              <Interceptor
+                shouldRenderChildren={
+                  weekItem.weekOfYear > 0 && weekItem.days.length > 0
+                }
+              >
+                <React.Suspense
+                  fallback={
+                    <Loader
+                      title={'Загружаем ваш календарь, секундочку...'}
+                      isActive={true}
+                    />
+                  }
+                >
+                  <WeekCalendar
+                    onChangeCurrent={calendar.onChangePlanner}
+                    current={calendar.planner}
+                    weekItem={weekItem}
+                    renderTaskCount={'all'}
+                    onAddTask={calendar.onAddTask}
+                    onSelectTask={calendar.onSelectTask}
+                  />
+                </React.Suspense>
+              </Interceptor>
+            ) : layout === 'day' ? (
+              <Interceptor
+                shouldRenderChildren={
+                  dateItem.settingPanel.monthItem.weeks.length > 0
+                }
+              >
+                <React.Suspense
+                  fallback={
+                    <Loader
+                      title={'Загружаем ваш календарь, секундочку...'}
+                      isActive={true}
+                    />
+                  }
+                >
+                  <DayCalendar
+                    dateItem={dateItem}
+                    onAddTask={calendar.onAddTask}
+                    onSelectTask={calendar.onSelectTask}
+                  />
+                </React.Suspense>
+              </Interceptor>
+            ) : (
+              <></>
+            )}
+          </FlexBlock>
+        </FlexBlock>
         <RemoveGroupHock
           groupInfo={calendar.groupRemoved}
           onClose={() => calendar.onSelectRemovedGroup(null)}
@@ -335,7 +339,7 @@ export const PlannerPage: FC<CalendarProps> = ({
             }
           />
           <Route
-            path={'add'}
+            path={'create'}
             element={
               <CreateEventModal
                 date={calendar.createEventDateState}
@@ -346,28 +350,16 @@ export const PlannerPage: FC<CalendarProps> = ({
               />
             }
           />
-          <Route path={':taskId'}>
-            <Route
-              index
-              element={
-                <TaskInfoModal
-                  onClose={calendar.onCloseEventInformer}
-                  onCloneEvent={calendar.onCloneEvent}
-                  onOpenClonedEvent={calendar.onSelectTask}
-                />
-              }
-            />
-            <Route
-              path={':tabName'}
-              element={
-                <TaskInfoModal
-                  onClose={calendar.onCloseEventInformer}
-                  onCloneEvent={calendar.onCloneEvent}
-                  onOpenClonedEvent={calendar.onSelectTask}
-                />
-              }
-            />
-          </Route>
+          <Route
+            path={'info/:taskId/*'}
+            element={
+              <TaskInfoModal
+                onClose={calendar.onCloseEventInformer}
+                onCloneEvent={calendar.onCloneEvent}
+                onOpenClonedEvent={calendar.onSelectTask}
+              />
+            }
+          />
         </Routes>
       </ErrorBoundary>
     </FlexBlock>

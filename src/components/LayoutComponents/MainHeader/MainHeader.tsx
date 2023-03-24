@@ -6,12 +6,6 @@ import { MainHeaderBody, MainHeaderBodyProps } from './MainHeaderBody';
 import { CalendarHeaderProps } from '../../../pages/Planner/planner.types';
 import { TestIdList } from '../../../utils/test/testid-list';
 
-const CalendarHeader = React.lazy(() =>
-  import('../../../pages/Planner/Header/PlannerHeader').then(
-    ({ PlannerHeader }) => ({ default: PlannerHeader })
-  )
-);
-
 export interface MainHeaderProps extends MainHeaderBodyProps {
   msOptions: {
     calendar: CalendarHeaderProps;

@@ -1,9 +1,13 @@
 import { currentColor, disabledColor } from '../../common/constants';
 import { SwitchCalendarModeTab } from '../../pages/Planner/Planner.styled';
 import { FlexBlock } from '../LayoutComponents/FlexBlock';
-import React, { ReactNode } from 'react';
+import React, { ReactNode, useRef, useState } from 'react';
 import { Badge } from '../Badge/Badge';
 import { ColorRing } from 'react-loader-spinner';
+import { useIntersection } from 'react-use';
+import { Arrow } from '../Icons/Icons';
+import { EmptyButtonStyled } from '../Buttons/EmptyButton.styled';
+import { css } from 'styled-components';
 
 export interface SwitcherItem<KEY> {
   title: string;
@@ -23,7 +27,34 @@ export interface SwitcherProps<T extends string = string> {
   children?: ReactNode;
 }
 
+export const hideScrollBar = css`
+  &::-webkit-scrollbar {
+    display: none;
+  }
+
+  & {
+    -ms-overflow-style: none; /* IE и Edge */
+    scrollbar-width: none; /* Firefox */
+  }
+`;
+
 export function Switcher<T extends string = string>(props: SwitcherProps<T>) {
+  const scrollContainerRef = useRef<HTMLDivElement>(null);
+  const nonRightViewRef = useRef<HTMLDivElement>(null);
+  const observerRight = useIntersection(nonRightViewRef, {
+    rootMargin: '0px 32px 0px 0px',
+    threshold: 0,
+    root: scrollContainerRef.current,
+  });
+  const nonViewLeftRef = useRef<HTMLDivElement>(null);
+  const observerLeft = useIntersection(nonViewLeftRef, {
+    rootMargin: '0px 0px 0px 32px',
+    threshold: 0,
+    root: scrollContainerRef.current,
+  });
+
+  const [transformState, setTransformState] = useState<number>(0);
+
   return (
     <FlexBlock
       borderBottom={`1px solid ${disabledColor}`}
@@ -32,25 +63,67 @@ export function Switcher<T extends string = string>(props: SwitcherProps<T>) {
       height={'fit-content'}
       width={'100%'}
     >
-      <FlexBlock>
-        {props.switchersList.map((item) => (
-          <SwitchCalendarModeTab
-            type={'button'}
-            key={item.type}
-            onClick={() => props.onClick(item)}
-            isSelected={item.type === props.selected}
+      <FlexBlock grow={3} overflow={'hidden'} position={'relative'}>
+        {!observerLeft?.isIntersecting && observerLeft?.target && (
+          <FlexBlock
+            position={'absolute'}
+            style={{ left: 0, top: 0, height: '100%', zIndex: 1 }}
+            justify={'center'}
+            align={'center'}
+            bgColor={'#fff'}
           >
-            <span>{item.title}</span>
-            {props.badges &&
-            props.badges[item.type] &&
-            props.badges[item.type] > 0 ? (
-              <Badge style={{ marginLeft: 4 }}>{props.badges[item.type]}</Badge>
-            ) : (
-              <></>
-            )}
-          </SwitchCalendarModeTab>
-        ))}
+            <EmptyButtonStyled onClick={() => {}}>
+              <Arrow size={20} transform={'rotate(180deg)'} />
+            </EmptyButtonStyled>
+          </FlexBlock>
+        )}
+        <FlexBlock
+          width={'100%'}
+          overflowX={'scroll'}
+          overflowY={'hidden'}
+          ref={scrollContainerRef}
+          additionalCss={hideScrollBar}
+        >
+          <FlexBlock width={'fit-content'}>
+            <div style={{ width: 0, height: 0 }} ref={nonViewLeftRef} />
+            {props.switchersList.map((item, index) => (
+              <SwitchCalendarModeTab
+                data-number={index}
+                type={'button'}
+                key={item.type}
+                onClick={() => props.onClick(item)}
+                isSelected={item.type === props.selected}
+              >
+                {item.title}
+                {props.badges &&
+                props.badges[item.type] &&
+                props.badges[item.type] > 0 ? (
+                  <Badge style={{ marginLeft: 4 }}>
+                    {props.badges[item.type]}
+                  </Badge>
+                ) : (
+                  <></>
+                )}
+              </SwitchCalendarModeTab>
+            ))}
+            <div style={{ width: 0, height: 0 }} ref={nonRightViewRef} />
+          </FlexBlock>
+        </FlexBlock>
+        {!observerRight?.isIntersecting && observerRight?.target && (
+          <FlexBlock
+            position={'absolute'}
+            style={{ right: 0, top: 0, height: '100%', zIndex: 1 }}
+            justify={'center'}
+            align={'center'}
+            bgColor={'#fff'}
+          >
+            <EmptyButtonStyled onClick={() => {}}>
+              <Arrow size={20} />
+            </EmptyButtonStyled>
+          </FlexBlock>
+        )}
       </FlexBlock>
+
       <FlexBlock align={'center'} gap={6}>
         {props.isLoading && (
           <ColorRing

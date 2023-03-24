@@ -1,14 +1,13 @@
-import { Heading } from '../../../components/Text/Heading';
-import { AddContactContainer } from './AddContact.styled';
 import { AddContactForm } from './AddContactForm';
 import React from 'react';
+import { Subtitle } from '../Contacts';
 
 export const AddContact = () => {
   return (
-    <AddContactContainer>
-      <Heading.H1 style={{ paddingLeft: 24 }}>Добавить контакт</Heading.H1>
+    <>
+      <Subtitle>Добавить контакт</Subtitle>
       <AddContactForm />
-    </AddContactContainer>
+    </>
   );
 };
 

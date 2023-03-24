@@ -11,6 +11,7 @@ import { SmartFindEventFilters } from './SmartFindEventFilters';
 import { css } from 'styled-components';
 import { PreviewEventsList } from './PreviewEventsList';
 import { EventInfoModel } from '../../../../../store/api/planning-api/types/event-info.types';
+import { CatchHandleForToast } from '../../../../../store/api/tools';
 
 export interface FindEventsProps
   extends Partial<ExtendSelectableEventListProps> {
@@ -92,7 +93,7 @@ export const FindEvents: FC<FindEventsProps> = ({
       })
         .unwrap()
         .then((r) => console.log(r))
-        .catch((e) => console.error(e));
+        .catch(CatchHandleForToast);
     }
   }, [debounceValue]);
 

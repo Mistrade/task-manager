@@ -2,7 +2,7 @@ import { FC } from 'react';
 import { BaseEventHistoryFieldProps } from '../event-history.types';
 import { GroupModelResponse } from '../../../../../../../store/api/planning-api/types/groups.types';
 import { EventGroupButton } from '../../../../SupportsComponent/EventGroupButton';
-import { ReplyContent } from '../Essences/EventEssence/event-essence.styled';
+import { ReplyContent } from '../../../../../../../components/Essences/EventEssence/event-essence.styled';
 import { Text } from '../../../../../../../components/Text/Text';
 
 export const HistoryGroupField: FC<

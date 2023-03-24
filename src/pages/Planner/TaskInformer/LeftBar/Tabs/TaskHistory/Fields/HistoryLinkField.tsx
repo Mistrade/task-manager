@@ -5,7 +5,7 @@ import { Text } from '../../../../../../../components/Text/Text';
 import { JoinToEventButton } from '../../../../../../../components/Buttons/Buttons.styled';
 import { UrlIcon } from '../../../../../../../components/Icons/SocialNetworkIcons';
 import { FlexBlock } from '../../../../../../../components/LayoutComponents/FlexBlock';
-import { ReplyContent } from '../Essences/EventEssence/event-essence.styled';
+import { ReplyContent } from '../../../../../../../components/Essences/EventEssence/event-essence.styled';
 
 export const HistoryLinkField: FC<
   BaseEventHistoryFieldProps<EventLinkItem | null | undefined>

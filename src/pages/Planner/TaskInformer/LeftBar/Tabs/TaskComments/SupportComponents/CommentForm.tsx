@@ -5,10 +5,9 @@ import {
   useCreateCommentMutation,
   useUpdateCommentMutation,
 } from '../../../../../../../store/api/planning-api';
-import { CustomRtkError } from '../../../../../../../store/api/rtk-api.types';
-import { toast } from 'react-toastify';
 import { CreateCommentContainer } from '../comments.styled';
 import { ReplyComment } from './ReplyComment';
+import { CatchHandleForToast } from '../../../../../../../store/api/tools';
 
 export const CommentForm: FC<CreateCommentBarProps> = ({
   replyComment,
@@ -37,11 +36,7 @@ export const CommentForm: FC<CreateCommentBarProps> = ({
           .then(() => {
             onSuccessUpdComment && onSuccessUpdComment();
           })
-          .catch((r: CustomRtkError) => {
-            toast(r.data.info?.message, {
-              type: r.data.info?.type,
-            });
-          });
+          .catch(CatchHandleForToast);
       }
 
       return await create({
@@ -53,11 +48,7 @@ export const CommentForm: FC<CreateCommentBarProps> = ({
         .then(() => {
           onDeleteAnsweredComment && onDeleteAnsweredComment();
         })
-        .catch((r: CustomRtkError) => {
-          toast(r.data.info?.message, {
-            type: r.data.info?.type,
-          });
-        });
+        .catch(CatchHandleForToast);
     },
     [eventInfo, replyComment, updatedComment]
   );

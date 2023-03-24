@@ -1,13 +1,13 @@
 import { FC, useEffect } from 'react';
 import { PlannerMode } from './planner.types';
-import { useAppDispatch, useAppSelector } from '../../store/hooks/hooks';
+import { useAppDispatch } from '../../store/hooks/hooks';
 import { changePlanner } from '../../store/reducers/planner-reducer';
 import { Route, Routes, useParams } from 'react-router-dom';
 import { CalendarStatusProxy } from './UrlProxy/CalendarStatusProxy';
-import { useLocation } from 'react-router';
 import dayjs from 'dayjs';
 import { useSearchNavigate } from '../../hooks/useSearchNavigate';
 import { ErrorScreen } from '../../components/Errors/ErrorScreen';
+import { CenteredContainer } from '../../components/AppRoutes/Interceptors/SessionInterceptor';
 
 const layouts: Array<PlannerMode['layout']> = [
   'day',
@@ -20,15 +20,11 @@ const layouts: Array<PlannerMode['layout']> = [
 
 export const PlannerController: FC = () => {
   const { layout } = useParams<{ layout: PlannerMode['layout'] }>();
-  const { pathname } = useLocation();
   const dispatch = useAppDispatch();
   const navigate = useSearchNavigate();
-  const { statuses } = useAppSelector((state) => state.planner);
 
   useEffect(() => {
-    if (!layout || !isCorrectLayout(layout)) {
-      navigate(`/planner/day/${statuses}`, { replace: true });
-    } else {
+    if (layout && isCorrectLayout(layout)) {
       if (layout === 'list') {
         dispatch(
           changePlanner({
@@ -42,11 +38,6 @@ export const PlannerController: FC = () => {
         );
       } else {
         dispatch(changePlanner({ layout, date: new Date().toString() }));
-      }
-
-      const pathArray = pathname.split('/').filter(Boolean);
-      if (pathArray.length <= 2) {
-        navigate(`/planner/${layout}/${statuses}`, { replace: true });
       }
     }
   }, []);
@@ -67,9 +58,18 @@ export const PlannerController: FC = () => {
   }
 
   return (
-    <ErrorScreen
-      title={'Такого URL не существует'}
-      errorType={'SYSTEM_ERROR'}
-    />
+    <CenteredContainer>
+      <ErrorScreen
+        title={'Такого URL не существует'}
+        description={
+          'В адресной строке допущена ошибка относительно режима отображения событий. Нажмите на кнопку ниже, если вы хотели попасть в "Планировщик"'
+        }
+        errorType={'SYSTEM_ERROR'}
+        action={{
+          title: 'Перейти к планировщику',
+          onClick: () => navigate('/planner/day/all', { replace: true }),
+        }}
+      />
+    </CenteredContainer>
   );
 };

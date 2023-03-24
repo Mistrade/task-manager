@@ -1,6 +1,6 @@
 import { BaseEventHistoryFieldProps } from '../event-history.types';
 import { FC } from 'react';
-import { EventEssence } from '../Essences/EventEssence/EventEssence';
+import { EventEssence } from '../../../../../../../components/Essences/EventEssence/EventEssence';
 import { QuerySnapshotRequiredFields } from '../../../../../../../store/api/planning-api/types/event-history.types';
 
 export const HistorySnapshotField: FC<

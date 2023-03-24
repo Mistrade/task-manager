@@ -10,7 +10,10 @@ import {
 } from '../../../../../../../store/api/planning-api/types/event-chains.types';
 import { MyServerResponse } from '../../../../../../../store/api/rtk-api.types';
 import { ConnectChainsProps } from '../event-chains.types';
-import { CatchHandleForToast } from '../../../../../../../store/api/tools';
+import {
+  CatchHandleForToast,
+  thenHandleForToast,
+} from '../../../../../../../store/api/tools';
 import { toast } from 'react-toastify';
 
 export type ConnectChainsSteps =
@@ -45,9 +48,11 @@ export const useConnectChainsOfTree = (props: UseConnectChainsOfTreeProps) => {
     async (data: AddChainsRequestData) => {
       await addChains(data)
         .unwrap()
-        .then((r: MyServerResponse<ConnectChildResponse>) => {
-          props.onSuccess && props.onSuccess(props.eventInfo);
-        })
+        .then((r: MyServerResponse<ConnectChildResponse>) =>
+          thenHandleForToast(r, () => {
+            props.onSuccess && props.onSuccess(props.eventInfo);
+          })
+        )
         .catch(CatchHandleForToast);
     },
     [props.onSuccess, props.eventInfo]

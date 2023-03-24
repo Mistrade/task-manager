@@ -5,6 +5,7 @@ import { CalendarReducer } from './reducers/planner-reducer';
 import { planningApi } from './api/planning-api';
 import { sessionApi } from './api/session-api';
 import { setupListeners } from '@reduxjs/toolkit/query';
+import { contactsApi } from './api/friends-api';
 
 const rootReducer = combineReducers({
   events: eventReducer,
@@ -12,6 +13,7 @@ const rootReducer = combineReducers({
   planner: CalendarReducer,
   [planningApi.reducerPath]: planningApi.reducer,
   [sessionApi.reducerPath]: sessionApi.reducer,
+  [contactsApi.reducerPath]: contactsApi.reducer,
 });
 
 export const createAppStore = (preloadedState?: RootState) => {
@@ -20,7 +22,8 @@ export const createAppStore = (preloadedState?: RootState) => {
     middleware: (getDefaultMiddleware) =>
       getDefaultMiddleware().concat(
         planningApi.middleware,
-        sessionApi.middleware
+        sessionApi.middleware,
+        contactsApi.middleware
       ),
     preloadedState,
   });

@@ -1,5 +1,5 @@
 import React, { FC } from 'react';
-import { CalendarTaskItem, CreateEventModalProps } from '../../planner.types';
+import { CreateEventModalProps } from '../../planner.types';
 import {
   Modal,
   ModalBody,
@@ -7,8 +7,6 @@ import {
 import { ERROR_DESCRIPTIONS, ERROR_TITLES } from '../../../../common/constants';
 import { FlexBlock } from '../../../../components/LayoutComponents/FlexBlock';
 import { ErrorBoundary } from '../../../../components/Errors/ErrorBoundary';
-import dayjs from 'dayjs';
-import { EventInfoModel } from '../../../../store/api/planning-api/types/event-info.types';
 import { Loader } from '../../../../components/Loaders/Loader';
 import { useGetGroupsListQuery } from '../../../../store/api/planning-api';
 
@@ -28,35 +26,6 @@ export const CreateEventModal: FC<CreateEventModalProps> = ({
   const { data: groupsList, isLoading } = useGetGroupsListQuery({
     exclude: ['Invite'],
   });
-  const getInitialValues = (
-    data: Partial<EventInfoModel> | null | undefined
-  ): CalendarTaskItem | undefined => {
-    if (!data) {
-      return undefined;
-    }
-
-    const time = data.time ? dayjs(data.time).toDate() : dayjs().toDate();
-
-    const timeEnd = data.timeEnd
-      ? dayjs(data.timeEnd).toDate()
-      : dayjs().add(1, 'hour').toDate();
-
-    return {
-      description: clonedEventInfo?.description || '',
-      timeEnd,
-      time,
-      status: 'created',
-      priority: data.priority || 'medium',
-      group: data.group?._id || '',
-      createdAt: '',
-      type: 'event',
-      title: data.title || '',
-      members: [],
-      link: data.link || null,
-      linkedFrom: data._id || '',
-      parentId: data.parentId || '',
-    };
-  };
 
   return (
     <Modal isView={true}>
@@ -88,7 +57,6 @@ export const CreateEventModal: FC<CreateEventModalProps> = ({
                       onClose && onClose();
                     }
                   }}
-                  initialValues={getInitialValues(clonedEventInfo)}
                   onCancel={(value) => {
                     onClose && onClose();
                     if (clonedEventInfo?.parentId) {

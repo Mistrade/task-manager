@@ -196,9 +196,7 @@ export type TaskStatusesType =
   | 'review'
   | 'archive';
 
-export interface CalendarTaskItem {
-  type: 'event';
-  createdAt: string;
+export interface CreateEventDataObject {
   linkedFrom?: UUID;
   parentId?: UUID;
   title: string;
@@ -210,7 +208,6 @@ export interface CalendarTaskItem {
   members: TaskMembersListType;
   link: EventLinkItem | null;
   group: ObjectId;
-  isLiked?: boolean;
 }
 
 export type CalendarPriorityList = Array<{
@@ -223,7 +220,7 @@ export interface EventLinkItem {
   value: string;
 }
 
-export type EventItem = Omit<CalendarTaskItem, 'time' | 'timeEnd'> & {
+export type EventItem = Omit<CreateEventDataObject, 'time' | 'timeEnd'> & {
   time: string;
   timeEnd: string;
   lastChange: string;

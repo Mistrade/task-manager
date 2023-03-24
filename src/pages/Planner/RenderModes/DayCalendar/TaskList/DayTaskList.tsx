@@ -24,6 +24,7 @@ import { useAppSelector } from '../../../../../store/hooks/hooks';
 import { currentColor, defaultColor } from '../../../../../common/constants';
 import { Accordion } from '../../../../../components/Accordion/Accordion';
 import { Badge } from '../../../../../components/Badge/Badge';
+import { hideScrollBar } from '../../../../../components/Switcher/Switcher';
 
 interface DayTaskListProps extends GlobalTaskListProps {
   day: Date;
@@ -112,6 +113,7 @@ export const DayTaskList: FC<DayTaskListProps> = ({
         overflowX={'hidden'}
         height={'100vh'}
         wrap={'nowrap'}
+        additionalCss={hideScrollBar}
         ml={-8}
         pl={8}
         mr={-8}

@@ -3,7 +3,7 @@ import { createGlobalStyle, css } from 'styled-components';
 import './common/dayjs';
 import { FlexBlock } from './components/LayoutComponents/FlexBlock';
 import { MainHeader } from './components/LayoutComponents/MainHeader/MainHeader';
-import { AppRoutes } from './components/AppRoutes/AppRoutes';
+import { AppRoutes } from './components/AppRoutes';
 import { ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import { useConfirmSessionQuery } from './store/api/session-api';

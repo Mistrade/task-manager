@@ -9,6 +9,7 @@ import {
 } from '../../pages/Planner/planner.types';
 import {
   DATE_HOURS_MINUTES_SECONDS_FORMAT,
+  DATE_RENDER_FORMAT_WITH_SEC,
   DeclinationMonthList,
   ShortMonthList,
 } from '../constants';
@@ -238,6 +239,10 @@ export abstract class DateHelper {
       layout: 'day',
       date: date,
     };
+  }
+
+  public static formattedDate(date: Date): string {
+    return dayjs(date).format(DATE_RENDER_FORMAT_WITH_SEC);
   }
 }
 

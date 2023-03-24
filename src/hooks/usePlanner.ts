@@ -103,14 +103,14 @@ export const usePlanner: UsePlannerType = () => {
 
   const onSelectTask: OnSelectTaskFnType = useCallback(
     (taskId: string) => {
-      navigate(`/planner/${planner.layout}/${statuses}/${taskId}`);
+      navigate(`/planner/${planner.layout}/${statuses}/info/${taskId}/about`);
     },
     [planner.layout, statuses]
   );
 
   const onAddTask: OnAddTaskFnType = useCallback(
     (date, initialValues) => {
-      navigate(`/planner/${planner.layout}/${statuses}/add`);
+      navigate(`/planner/${planner.layout}/${statuses}/create`);
       setCreateEventDate(date, initialValues || null);
     },
     [planner.layout, statuses]
@@ -147,7 +147,7 @@ export const usePlanner: UsePlannerType = () => {
       const defaultPath = `/planner/${planner.layout}/${
         taskStatus || statuses
       }`;
-      navigate(taskId ? `${defaultPath}/${taskId}` : defaultPath, {
+      navigate(taskId ? `${defaultPath}/info/${taskId}/about` : defaultPath, {
         replace: true,
       });
     },

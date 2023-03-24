@@ -2,25 +2,22 @@ import React, { FC, useMemo, useState } from 'react';
 import {
   CalendarPriorityKeys,
   TaskStatusesType,
-} from '../../../../../../planner.types';
+} from '../../../pages/Planner/planner.types';
 import dayjs, { Dayjs } from 'dayjs';
-import { GroupModelResponse } from '../../../../../../../../store/api/planning-api/types/groups.types';
-import {
-  EventEssenceContainer,
-  EventEssenceTitle,
-} from './event-essence.styled';
-import { FlexBlock } from '../../../../../../../../components/LayoutComponents/FlexBlock';
-import { EventStatusButton } from '../../../../../SupportsComponent/EventStatusButton';
-import { EventPriorityButton } from '../../../../../SupportsComponent/EventPriorityButton';
-import { EmptyButtonStyled } from '../../../../../../../../components/Buttons/EmptyButton.styled';
-import { Arrow } from '../../../../../../../../components/Icons/Icons';
-import { Tooltip } from '../../../../../../../../components/Tooltip/Tooltip';
-import { DateHelper } from '../../../../../../../../common/calendarSupport/dateHelper';
-import { TimeBadge } from '../../../../../../../../components/Badge/Badge';
-import { ObjectId } from '../../../../../../../../store/api/rtk-api.types';
-import { LinkStyled } from '../../../../../../../../components/Buttons/Link.styled';
-import { HistoryDescriptionField } from '../../Fields/HistoryDescriptionField';
-import { EventGroupButton } from '../../../../../SupportsComponent/EventGroupButton';
+import { GroupModelResponse } from '../../../store/api/planning-api/types/groups.types';
+import { EssenceContainer, EventEssenceTitle } from './event-essence.styled';
+import { FlexBlock } from '../../LayoutComponents/FlexBlock';
+import { EventStatusButton } from '../../../pages/Planner/TaskInformer/SupportsComponent/EventStatusButton';
+import { EventPriorityButton } from '../../../pages/Planner/TaskInformer/SupportsComponent/EventPriorityButton';
+import { EmptyButtonStyled } from '../../Buttons/EmptyButton.styled';
+import { Arrow } from '../../Icons/Icons';
+import { Tooltip } from '../../Tooltip/Tooltip';
+import { DateHelper } from '../../../common/calendarSupport/dateHelper';
+import { TimeBadge } from '../../Badge/Badge';
+import { ObjectId } from '../../../store/api/rtk-api.types';
+import { LinkStyled } from '../../Buttons/Link.styled';
+import { HistoryDescriptionField } from '../../../pages/Planner/TaskInformer/LeftBar/Tabs/TaskHistory/Fields/HistoryDescriptionField';
+import { EventGroupButton } from '../../../pages/Planner/TaskInformer/SupportsComponent/EventGroupButton';
 
 export interface EventEssenceProps {
   status: TaskStatusesType | null;
@@ -51,7 +48,7 @@ export const EventEssence: FC<EventEssenceProps> = ({
   }, [optionalFields]);
 
   return (
-    <EventEssenceContainer {...containerProps}>
+    <EssenceContainer {...containerProps}>
       <FlexBlock gap={6} align={'center'} direction={'row'}>
         {!isOpen && (
           <>
@@ -228,6 +225,6 @@ export const EventEssence: FC<EventEssenceProps> = ({
           )}
         </FlexBlock>
       )}
-    </EventEssenceContainer>
+    </EssenceContainer>
   );
 };

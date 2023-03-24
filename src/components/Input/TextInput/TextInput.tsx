@@ -79,9 +79,10 @@ export const TextInput = forwardRef<HTMLInputElement, TextInputProps>(
           width={'100%'}
           mb={(isDirty && errorMessage) || (actions && actionHandler) ? 6 : 0}
           direction={'row'}
+          align={'center'}
           gap={6}
         >
-          <FlexBlock position={'relative'} width={'100%'}>
+          <FlexBlock position={'relative'} width={'100%'} align={'center'}>
             <StyledInput
               type={type}
               hasIcon={!!icon}

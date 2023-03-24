@@ -79,12 +79,18 @@ export const SwitchCalendarModeTab = styled('button')<{ isSelected?: boolean }>`
     outline: none;
     padding: 6px 16px;
     font-size: 16px;
+    white-space: normal;
+    text-align: center;
+    flex-shrink: 0;
+    vertical-align: middle;
     background-color: transparent;
     border: none;
     cursor: pointer;
     transition: all 0.3s ease-in-out;
     color: ${defaultColor};
+    width: fit-content;
     min-width: 30px;
+    max-width: 300px;
     position: relative;
     border-radius: ${borderRadiusSize.sm};
   }
@@ -109,17 +115,18 @@ export const SwitchCalendarModeTab = styled('button')<{ isSelected?: boolean }>`
     background-color: ${hoverColor};
     border-radius: ${borderRadiusSize.xs} ${borderRadiusSize.xs} 0px 0px;
   }
-
-  &:not(:last-child) {
-    margin-right: 4px;
-  }
 `;
 
 export const TimeSelectorButton = styled(SwitchCalendarMode)`
   margin: 0;
   width: 55px;
+  scroll-snap-align: end;
 
   &:not(:last-child) {
     margin-bottom: 4px;
+  }
+
+  &:last-child {
+    margin-bottom: 100%;
   }
 `;

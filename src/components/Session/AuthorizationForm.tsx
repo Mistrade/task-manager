@@ -12,13 +12,14 @@ import { AuthValidationScheme } from '../../common/validation/session';
 import { useAppSelector } from '../../store/hooks/hooks';
 import { useSearchNavigate } from '../../hooks/useSearchNavigate';
 import { AuthUserRequestProps } from '../../store/api/session-api/session-api.types';
+import { FC } from 'react';
 
 const initialValues: AuthUserRequestProps = {
   phone: '',
   password: '',
 };
 
-export const AuthorizationForm = () => {
+export const AuthorizationForm: FC<{ prevUrl?: string }> = ({ prevUrl }) => {
   const navigate = useSearchNavigate();
   const [loginUser] = useLoginMutation();
   const { statuses } = useAppSelector((state) => state.planner);
@@ -41,7 +42,11 @@ export const AuthorizationForm = () => {
         });
 
         if (result.info.type === 'success') {
-          navigate(`/planner/day/${statuses}`, { replace: true });
+          if (prevUrl) {
+            navigate(prevUrl, { replace: true });
+          } else {
+            navigate(`/planner/day/${statuses}`, { replace: true });
+          }
         }
       }
     },
