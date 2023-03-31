@@ -1,9 +1,9 @@
 import { Route } from 'react-router';
 import { SessionInterceptor } from '../Interceptors/SessionInterceptor';
 import { WithSuspense } from '../../Loaders/WithSuspense';
-import React, { FC } from 'react';
+import React, { FC, useContext } from 'react';
 import { Routes } from 'react-router-dom';
-import { OnlyAuthRoutesProps } from '../index';
+import { UserInfoContext } from '../../../Context/userInfo.context';
 
 const RegistrationForm = React.lazy(() =>
   import('../../Session/Registration').then(({ Registration }) => ({
@@ -16,7 +16,9 @@ const AuthorizationForm = React.lazy(() =>
   }))
 );
 
-export const SessionRoutes: FC<OnlyAuthRoutesProps> = ({ userInfo }) => {
+export const SessionRoutes: FC = () => {
+  const userInfo = useContext(UserInfoContext);
+
   return (
     <Routes>
       <Route

@@ -70,6 +70,7 @@ export interface WeekCalendarProps
   extends Omit<MonthCalendarProps, 'monthItem' | 'renderWeekPattern'> {
   weekItem: WeekItem;
   taskStorage: EventsStorage;
+  animationIndex?: number;
 }
 
 export interface DayCalendarProps extends GlobalTaskListProps {

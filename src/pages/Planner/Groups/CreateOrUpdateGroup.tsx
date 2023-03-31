@@ -103,11 +103,7 @@ export const CreateOrUpdateGroupModal: FC<ChangeGroupModalProps> = ({
 
   return (
     <form onSubmit={handleSubmit}>
-      <Modal
-        style={{ height: 'fit-content' }}
-        isView={true}
-        // onClose={onClose}
-      >
+      <Modal style={{ height: 'fit-content' }} isView={true} onClose={onClose}>
         <ModalHeader>
           <FlexBlock align={'center'} justify={'flex-start'} gap={12}>
             <FlexBlock fSize={20}>

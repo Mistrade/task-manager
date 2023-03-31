@@ -1,4 +1,4 @@
-import { FC, ReactNode, useRef } from 'react';
+import React, { FC, ReactNode, useCallback, useEffect, useRef } from 'react';
 import {
   ModalContainer,
   ModalLayout,
@@ -19,9 +19,22 @@ export const Modal: FC<ModalProps> = ({
 }) => {
   const ref = useRef<HTMLDivElement>(null);
 
+  const escHandler = useCallback((e: KeyboardEvent) => {
+    console.log(e);
+    if (e.key.toLowerCase() === 'escape') {
+      onClose && onClose();
+    }
+  }, []);
+
+  useEffect(() => {
+    window.addEventListener('keyup', escHandler);
+    return () => window.removeEventListener('keyup', escHandler);
+  }, []);
+
   if (isView) {
     return (
       <ModalLayout
+        tabIndex={1}
         onClick={(e) =>
           onClose &&
           ref.current &&

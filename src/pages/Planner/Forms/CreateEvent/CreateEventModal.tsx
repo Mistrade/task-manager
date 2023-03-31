@@ -9,6 +9,7 @@ import { FlexBlock } from '../../../../components/LayoutComponents/FlexBlock';
 import { ErrorBoundary } from '../../../../components/Errors/ErrorBoundary';
 import { Loader } from '../../../../components/Loaders/Loader';
 import { useGetGroupsListQuery } from '../../../../store/api/planning-api';
+import { useCreateEvent } from '../../../../hooks/useCreateEvent';
 
 const CreateEventForm = React.lazy(() =>
   import('./CreateEventForm').then(({ CreateEventForm }) => ({
@@ -27,8 +28,10 @@ export const CreateEventModal: FC<CreateEventModalProps> = ({
     exclude: ['Invite'],
   });
 
+  const { declineModal } = useCreateEvent({});
+
   return (
-    <Modal isView={true}>
+    <Modal isView={true} onClose={declineModal}>
       <ModalBody>
         <FlexBlock
           minWidth={'60vw'}

@@ -1,4 +1,4 @@
-import React, { FC, useMemo } from 'react';
+import React, { FC, useMemo, useRef } from 'react';
 import { MonthCalendarProps } from '../../planner.types';
 import {
   CalendarDateListContainer,
@@ -20,6 +20,8 @@ export const MonthCalendar: FC<MonthCalendarProps> = ({
   onChangeCurrent,
   renderTaskCount,
 }) => {
+  const containerRef = useRef<HTMLDivElement>(null);
+
   const scope = useMemo(() => {
     const v = new DateScopeHelper({
       useOtherDays: true,
@@ -53,9 +55,6 @@ export const MonthCalendar: FC<MonthCalendarProps> = ({
           isLoading={isFetching}
         />
       </FlexBlock>
-      {/*<FlexBlock width={'100%'} mb={6} pt={6}>*/}
-      {/*<DaysOfWeekList list={WeekDaysList} gap={4}/>*/}
-      {/*</FlexBlock>*/}
       <FlexBlock
         overflowX={'hidden'}
         overflowY={'auto'}
@@ -66,10 +65,11 @@ export const MonthCalendar: FC<MonthCalendarProps> = ({
         position={'relative'}
         additionalCss={hideScrollBar}
       >
-        <CalendarDesktopContainer>
+        <CalendarDesktopContainer ref={containerRef}>
           <CalendarDateListContainer rowsCount={6}>
-            {monthItem.weeks.map((week) => (
+            {monthItem.weeks.map((week, index) => (
               <WeeKCalendar
+                animationIndex={index + 1}
                 taskStorage={TaskStorage || {}}
                 key={`monthCalendarWeek_year_${monthItem.year}_month_${monthItem.monthOfYear}_week_${week.weekOfYear}`}
                 weekItem={week}

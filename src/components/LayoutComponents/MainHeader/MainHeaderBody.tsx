@@ -1,9 +1,6 @@
-import React, { FC, useEffect, useMemo } from 'react';
+import React, { FC, useContext, useEffect, useMemo } from 'react';
 import { FlexBlock } from '../FlexBlock';
-import {
-  MainHeaderUserInfo,
-  MainHeaderUserInfoProps,
-} from './MainHeaderUserInfo';
+import { MainHeaderUserInfo } from './MainHeaderUserInfo';
 import { HeaderLinkStyled } from './HeaderLink.styled.';
 import { useLocation } from 'react-router';
 import { NavigationContainer } from './MainHeader.styled';
@@ -14,8 +11,7 @@ import { AppLogoIcon } from '../../Icons/AppIcon/AppLogoIcon';
 import { toast } from 'react-toastify';
 import { Heading } from '../../Text/Heading';
 import { currentColor } from '../../../common/constants';
-
-export interface MainHeaderBodyProps extends MainHeaderUserInfoProps {}
+import { UserInfoContext } from '../../../Context/userInfo.context';
 
 interface NavigationArrayItem {
   title: string;
@@ -27,8 +23,9 @@ const PageHeaderArray = [
   { urlStartWith: '/contacts', title: 'Мои Контакты' },
 ];
 
-export const MainHeaderBody: FC<MainHeaderBodyProps> = ({ userInfo }) => {
+export const MainHeaderBody: FC = () => {
   const { pathname } = useLocation();
+  const userInfo = useContext(UserInfoContext);
 
   const { layout } = useAppSelector(CalendarCurrentSelector);
   const { statuses } = useAppSelector((state) => state.planner);
@@ -98,7 +95,7 @@ export const MainHeaderBody: FC<MainHeaderBodyProps> = ({ userInfo }) => {
           </NavigationContainer>
         </FlexBlock>
         <FlexBlock flex={'1 0 20%'}>
-          <MainHeaderUserInfo userInfo={userInfo} />
+          <MainHeaderUserInfo />
         </FlexBlock>
       </FlexBlock>
     </>

@@ -1,5 +1,5 @@
 import { FC, useCallback, useEffect, useRef } from 'react';
-import { CalendarItem, WeekCalendarProps, WeekItem } from '../../planner.types';
+import { CalendarItem, WeekCalendarProps } from '../../planner.types';
 import dayjs from 'dayjs';
 import { CalendarCell } from './CalendarCell/Cell';
 import styled from 'styled-components';
@@ -31,6 +31,7 @@ const WeekContainer = styled('div')`
   transition: all 0.3s ease-in;
   border: 1px solid transparent;
   padding-top: 12px;
+  //z-index: 0;
 `;
 
 const DaysContainer = styled('div')`
@@ -72,18 +73,6 @@ export const WeeKCalendar: FC<WeekCalendarProps> = ({
   current,
   taskStorage,
 }) => {
-  const onSelectWeek = useCallback(
-    (item: WeekItem) => {
-      current.layout === 'month' &&
-        onChangeCurrent &&
-        onChangeCurrent(
-          dayjs().set('year', current.year).week(item.weekOfYear).toDate(),
-          'week'
-        );
-    },
-    [onChangeCurrent, current.layout]
-  );
-
   const onClickToDate = useCallback(
     (date: CalendarItem) => {
       onChangeCurrent && onChangeCurrent(date.value, 'day');

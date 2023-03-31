@@ -1,9 +1,9 @@
 import { Routes } from 'react-router-dom';
 import { Navigate, Route } from 'react-router';
 import { SessionInterceptor } from '../Interceptors/SessionInterceptor';
-import React, { FC } from 'react';
+import React, { FC, useContext } from 'react';
 import { Loader } from '../../Loaders/Loader';
-import { OnlyAuthRoutesProps } from '../index';
+import { UserInfoContext } from '../../../Context/userInfo.context';
 
 const PlannerPage = React.lazy(() =>
   import('../../../pages/Planner').then(({ PlannerController }) => ({
@@ -11,7 +11,9 @@ const PlannerPage = React.lazy(() =>
   }))
 );
 
-export const PlannerRoutes: FC<OnlyAuthRoutesProps> = ({ userInfo }) => {
+export const PlannerRoutes: FC = () => {
+  const userInfo = useContext(UserInfoContext);
+
   return (
     <SessionInterceptor userInfo={userInfo}>
       <Routes>

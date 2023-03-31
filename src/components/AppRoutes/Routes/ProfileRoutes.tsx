@@ -1,12 +1,14 @@
-import React, { FC } from 'react';
-import { OnlyAuthRoutesProps } from '../index';
+import React, { FC, useContext } from 'react';
 import { FlexBlock } from '../../LayoutComponents/FlexBlock';
 import { ErrorScreen } from '../../Errors/ErrorScreen';
 import { SessionInterceptor } from '../Interceptors/SessionInterceptor';
+import { UserInfoContext } from '../../../Context/userInfo.context';
 
-export const ProfileRoutes: FC<OnlyAuthRoutesProps> = ({ userInfo }) => {
+export const ProfileRoutes: FC = () => {
+  const userInfo = useContext(UserInfoContext);
+
   return (
-    <SessionInterceptor userInfo={userInfo}>
+    <SessionInterceptor userInfo={userInfo} mode={'show'}>
       <FlexBlock width={'100%'} grow={3} justify={'center'} align={'center'}>
         <ErrorScreen
           title={'Профили пользователей временно недоступны'}

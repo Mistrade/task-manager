@@ -1,4 +1,4 @@
-import { FC } from 'react';
+import { FC, useContext } from 'react';
 import { FlexBlock } from '../FlexBlock';
 import { HeaderDefaultLink } from './HeaderLink.styled.';
 import { useLogoutMutation } from '../../../store/api/session-api';
@@ -7,18 +7,14 @@ import { css } from 'styled-components';
 import { EmptyButtonStyled } from '../../Buttons/EmptyButton.styled';
 import { useSearchNavigate } from '../../../hooks/useSearchNavigate';
 import { useRefetchPlanningApiMutation } from '../../../store/api/planning-api';
-import { UserModel } from '../../../store/api/session-api/session-api.types';
+import { UserInfoContext } from '../../../Context/userInfo.context';
 
-export interface MainHeaderUserInfoProps {
-  userInfo?: UserModel | null;
-}
-
-export const MainHeaderUserInfo: FC<MainHeaderUserInfoProps> = ({
-  userInfo,
-}) => {
+export const MainHeaderUserInfo: FC = () => {
   const [logoutUser] = useLogoutMutation();
   const [refetchTaskApi] = useRefetchPlanningApiMutation();
   const navigate = useSearchNavigate();
+  const userInfo = useContext(UserInfoContext);
+
   return (
     <FlexBlock width={'100%'} justify={'flex-end'}>
       {!userInfo ? (
