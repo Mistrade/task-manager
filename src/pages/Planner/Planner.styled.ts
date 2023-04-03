@@ -4,24 +4,10 @@ import {
   currentColor,
   darkColor,
   defaultColor,
+  disabledColor,
   hoverColor,
+  pageHeaderColor,
 } from '../../common/constants';
-
-export const CalendarDesktopContainer = styled('div')`
-  & {
-    position: relative;
-    width: 100%;
-    height: 100%;
-    display: flex;
-    flex-direction: column;
-    align-items: flex-start;
-    justify-content: flex-start;
-  }
-
-  & * {
-    font-family: 'Helvetica Neue', sans-serif;
-  }
-`;
 
 export const CalendarDateListContainer = styled('div')<{ rowsCount?: number }>`
   & {
@@ -128,5 +114,55 @@ export const TimeSelectorButton = styled(SwitchCalendarMode)`
 
   &:last-child {
     margin-bottom: 100%;
+  }
+`;
+
+export const PlannerOptionPanelContainer = styled('div')`
+  & {
+    display: flex;
+    height: 100%;
+    max-width: 300px;
+    background-color: ${pageHeaderColor};
+    padding: 12px 12px 0px 24px;
+    flex: 0 0 20%;
+    border-right: 1px solid ${disabledColor};
+  }
+`;
+
+export const PlannerContainer = styled('div')`
+  & {
+    display: flex;
+    position: relative;
+    align-items: flex-start;
+    flex-direction: column;
+    width: 100%;
+    height: 100%;
+    padding: 0;
+    //overflow: hidden;
+  }
+`;
+
+export const PlannerContentContainer = styled('div')`
+  & {
+    display: flex;
+    width: 100%;
+    height: 100vh;
+    flex-direction: row;
+    justify-content: flex-start;
+    align-items: flex-start;
+    overflow: hidden;
+  }
+`;
+
+export const PlannerLayoutContainer = styled('div')`
+  & {
+    display: flex;
+    padding: 6px 24px 0px 24px;
+    flex-grow: 3;
+    flex-shrink: 0;
+    flex-basis: 80%;
+    //overflow: hidden;
+    height: 100%;
+    background-color: #fff;
   }
 `;

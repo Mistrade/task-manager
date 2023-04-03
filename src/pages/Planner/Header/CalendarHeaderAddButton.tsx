@@ -4,18 +4,19 @@ import { EmptyButtonStyled } from '../../../components/Buttons/EmptyButton.style
 import { FC, useMemo } from 'react';
 import { PlusIcon } from '../../../components/Icons/Icons';
 import { useSearchNavigate } from '../../../hooks/useSearchNavigate';
-import { PlannerMode } from '../planner.types';
 import { EventFilterTaskStatuses } from '../RenderModes/FindEventFilter/find-event-filters.types';
 import { Tooltip } from '../../../components/Tooltip/Tooltip';
+import { PLANNER_LAYOUTS } from '../../../common/constants';
 
 export interface CalendarHeaderAddButtonProps {
-  current: PlannerMode;
+  currentLayout: PLANNER_LAYOUTS;
   statuses: EventFilterTaskStatuses;
   onAddTask?: () => void;
 }
 
 export const CalendarHeaderAddButton: FC<CalendarHeaderAddButtonProps> = ({
-  current,
+  // current,
+  currentLayout,
   statuses,
   onAddTask,
 }) => {
@@ -32,11 +33,11 @@ export const CalendarHeaderAddButton: FC<CalendarHeaderAddButtonProps> = ({
       {
         title: 'Создать календарь',
         onClick() {
-          navigate(`/planner/${current.layout}/${statuses}/create-group`);
+          navigate(`/planner/${currentLayout}/${statuses}/create-group`);
         },
       },
     ];
-  }, [current.layout, statuses]);
+  }, [currentLayout, statuses]);
 
   return (
     <Tooltip

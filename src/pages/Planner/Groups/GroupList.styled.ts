@@ -105,12 +105,18 @@ export const GroupLogo = styled('div')<{ color: string; size?: number }>`
   background-color: ${(_) => _.color};
 `;
 export const CalendarItemLabel = styled('label')`
-  width: 100%;
+  //width: 100%;
   gap: 6px;
+  //flex: 1;
   overflow: hidden;
   white-space: break-spaces;
-  word-wrap: unset;
+  word-wrap: anywhere;
   display: -webkit-box;
-  -webkit-line-clamp: 1;
+  text-overflow: ellipsis;
+  //line-height: 14px;
+  //max-height: 14px;
+  //-webkit-line-clamp: 1;
   -webkit-box-orient: vertical;
+  //-webkit-line-clamp: 1;
+  //-webkit-box-orient: vertical;
 `;

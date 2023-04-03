@@ -1,4 +1,4 @@
-import { FC, useMemo } from 'react';
+import { FC, useContext, useMemo } from 'react';
 import { YearCalendarProps } from '../../planner.types';
 import styled from 'styled-components';
 import { FlexBlock } from '../../../../components/LayoutComponents/FlexBlock';
@@ -9,12 +9,14 @@ import { Loader } from '../../../../components/Loaders/Loader';
 import {
   borderRadiusSize,
   pageHeaderColor,
+  PLANNER_LAYOUTS,
 } from '../../../../common/constants';
 import { SmallMonth } from '../../SmallMotnCalendar/SmallMonth';
 import { DayEventItemBoxShadowMixin } from '../DayCalendar/TaskList/DayTaskItem';
 import dayjs from 'dayjs';
 import { GetEventsFiltersRequestProps } from '../../../../store/api/planning-api/types/event-info.types';
 import { hideScrollBar } from '../../../../components/Switcher/Switcher';
+import { PlannerContext } from '../../../../Context/planner.context';
 
 const MonthItemContainer = styled('div')`
   padding: 4px;
@@ -41,10 +43,11 @@ const MonthTitleWrapper = styled('div')`
   top: 0;
 `;
 
-export const YearCalendar: FC<YearCalendarProps> = ({
-  yearItem,
-  onChangeCurrent,
-}) => {
+export const YearCalendar: FC<YearCalendarProps> = ({ yearItem }) => {
+  const {
+    methods: { updateCurrentLayoutAndNavigate },
+  } = useContext(PlannerContext);
+
   const schemeScope: GetEventsFiltersRequestProps = useMemo(() => {
     const scope = new DateScopeHelper({
       useOtherDays: false,
@@ -93,21 +96,25 @@ export const YearCalendar: FC<YearCalendarProps> = ({
                       <SmallCalendarMonthTitle
                         monthItem={monthItem}
                         onClick={(data) =>
-                          onChangeCurrent &&
-                          onChangeCurrent(
-                            new Date(data.year, data.monthOfYear, 1),
-                            'month'
+                          updateCurrentLayoutAndNavigate(
+                            PLANNER_LAYOUTS.MONTH,
+                            new Date(data.year, data.monthOfYear, 1)
                           )
                         }
                       />
                     </MonthTitleWrapper>
                   }
                   onSelectDate={(data) =>
-                    onChangeCurrent && onChangeCurrent(data.value, 'day')
+                    updateCurrentLayoutAndNavigate(
+                      PLANNER_LAYOUTS.DAY,
+                      data.value
+                    )
                   }
                   onSelectWeek={(current) =>
-                    onChangeCurrent &&
-                    onChangeCurrent(current.aroundDate, 'week')
+                    updateCurrentLayoutAndNavigate(
+                      PLANNER_LAYOUTS.WEEK,
+                      current.aroundDate
+                    )
                   }
                   monthItem={monthItem}
                 />

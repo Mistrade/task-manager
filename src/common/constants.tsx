@@ -23,6 +23,7 @@ import {
   EventFilterTaskStatuses,
   StatusesTabsObject,
 } from '../pages/Planner/RenderModes/FindEventFilter/find-event-filters.types';
+import dayjs from 'dayjs';
 
 export const MonthList = [
   'Январь',
@@ -230,11 +231,12 @@ export enum LS_KEYS {
 
 export enum ERROR_DESCRIPTIONS {
   'SUSPENSE' = 'Это может быть связано с нестабильным интернет-соединением или временной неполадкой.\nНе переживайте, мы уже работаем над этим.',
+  'PLANNER_RENDER' = 'Во время работы сервиса планирования произошла критическая ошибка. Попробуйте обновить страницу.',
 }
 
 export enum ERROR_TITLES {
   'SUSPENSE' = 'Не удалось загрузить запрашиваемый ресурс ленивой загрузки, попробуйте снова, позже...',
-  'CALENDAR_RENDER' = 'Произошла критическая ошибка рендера во время работы календаря.',
+  'CALENDAR_RENDER' = 'Произошла критическая ошибка',
 }
 
 export const colorPalette = [
@@ -273,6 +275,7 @@ export const URLTaskStatuses: {
   archive: 'archive',
   all: 'all',
 };
+
 export const TaskStatusesTitles: { [key in EventFilterTaskStatuses]: string } =
   {
     created: 'Запланировано',
@@ -322,3 +325,17 @@ export const TaskStatusesList: Array<StatusesTabsObject> = [
   { title: 'Выполнено', type: URLTaskStatuses.completed },
   { title: 'Архив', type: URLTaskStatuses.archive },
 ];
+
+export enum PLANNER_LAYOUTS {
+  'DAY' = 'day',
+  'WEEK' = 'week',
+  'MONTH' = 'month',
+  'YEAR' = 'year',
+  'LIST' = 'list',
+  'FAVORITES' = 'favorites',
+}
+
+export const DEFAULT_PLANNER_LAYOUT: PLANNER_LAYOUTS = PLANNER_LAYOUTS.DAY;
+export const DEFAULT_PLANNER_STATUS: EventFilterTaskStatuses = 'in_work';
+
+export const UTC_OFFSET = dayjs().utcOffset();

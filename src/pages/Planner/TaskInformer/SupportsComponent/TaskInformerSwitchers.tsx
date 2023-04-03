@@ -3,6 +3,7 @@ import { FlexBlock } from '../../../../components/LayoutComponents/FlexBlock';
 import { disabledColor } from '../../../../common/constants';
 import { SwitchCalendarModeTab } from '../../Planner.styled';
 import { Badge } from '../../../../components/Badge/Badge';
+import { EVENT_INFORMER_TAB_NAMES } from '../LeftBar/TaskInformerLeftBar';
 
 export type TaskInformerSwitchersKeys =
   | 'about'
@@ -13,7 +14,7 @@ export type TaskInformerSwitchersKeys =
 
 export interface TaskInformerSwitchersItem {
   title: string;
-  key: TaskInformerSwitchersKeys;
+  key: EVENT_INFORMER_TAB_NAMES;
   badgeCount?: number;
 }
 
@@ -34,11 +35,11 @@ export const isCorrectTaskInformerSwitcherName = (switcherName: string) => {
 };
 
 export const taskInformerSwitcherList: Array<TaskInformerSwitchersItem> = [
-  { title: 'Инфо', key: 'about' },
-  { title: 'История', key: 'history' },
-  { title: 'Комментарии', key: 'comments' },
-  { title: 'Участники', key: 'members' },
-  { title: 'Связи', key: 'chains' },
+  { title: 'Инфо', key: EVENT_INFORMER_TAB_NAMES.ABOUT },
+  { title: 'История', key: EVENT_INFORMER_TAB_NAMES.HISTORY },
+  { title: 'Комментарии', key: EVENT_INFORMER_TAB_NAMES.COMMENTS },
+  { title: 'Участники', key: EVENT_INFORMER_TAB_NAMES.MEMBERS },
+  { title: 'Связи', key: EVENT_INFORMER_TAB_NAMES.CHAINS },
 ];
 export const TaskInformerSwitchers: FC<TaskInformerSwitchers> = ({
   selected,

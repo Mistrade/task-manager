@@ -7,12 +7,14 @@ import { sessionApi } from './api/session-api';
 import { setupListeners } from '@reduxjs/toolkit/query';
 import { contactsApi } from './api/friends-api';
 import { plannerReducer } from './reducers/planner';
+import { GlobalReducer } from './reducers/global';
 
 const rootReducer = combineReducers({
   events: eventReducer,
   session: SessionReducer,
   planner: CalendarReducer,
   plannerState: plannerReducer,
+  global: GlobalReducer,
   [planningApi.reducerPath]: planningApi.reducer,
   [sessionApi.reducerPath]: sessionApi.reducer,
   [contactsApi.reducerPath]: contactsApi.reducer,

@@ -1,4 +1,4 @@
-import React, { FC } from 'react';
+import React, { FC, useContext } from 'react';
 import { EventInfoModalProps } from '../planner.types';
 import {
   Modal,
@@ -8,6 +8,7 @@ import { useGetEventInfoQuery } from '../../../store/api/planning-api';
 import { useParams } from 'react-router';
 import { ErrorBoundary } from '../../../components/Errors/ErrorBoundary';
 import { Loader } from '../../../components/Loaders/Loader';
+import { PlannerContext } from '../../../Context/planner.context';
 
 const Informer = React.lazy(() =>
   import('../TaskInformer/TaskInformer').then(({ TaskInformer }) => ({
@@ -16,7 +17,6 @@ const Informer = React.lazy(() =>
 );
 
 export const TaskInfoModal: FC<EventInfoModalProps> = ({
-  onClose,
   onCloneEvent,
   onOpenClonedEvent,
 }) => {
@@ -30,8 +30,12 @@ export const TaskInfoModal: FC<EventInfoModalProps> = ({
     skip: !taskId,
   });
 
+  const {
+    methods: { closeEventInfo },
+  } = useContext(PlannerContext);
+
   return (
-    <Modal style={{ width: '90%' }} isView={!!taskId} onClose={() => onClose()}>
+    <Modal style={{ width: '90%' }} isView={!!taskId} onClose={closeEventInfo}>
       <ModalBody>
         <ErrorBoundary
           title={'Произошла ошибка при отрисовке, мы уже работаем над этим'}
@@ -47,7 +51,6 @@ export const TaskInfoModal: FC<EventInfoModalProps> = ({
               }
             >
               <Informer
-                onClose={onClose}
                 eventInfo={taskInfo?.data || null}
                 onOpenClonedEvent={onOpenClonedEvent}
                 onCloneEvent={onCloneEvent}

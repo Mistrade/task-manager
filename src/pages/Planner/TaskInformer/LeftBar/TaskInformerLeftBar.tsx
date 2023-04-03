@@ -18,6 +18,14 @@ interface TaskInformerLeftBarProps extends EventInfoBaseProps {
   switcher: TaskInformerSwitchersKeys;
 }
 
+export enum EVENT_INFORMER_TAB_NAMES {
+  'ABOUT' = 'about',
+  'CHAINS' = 'chains',
+  'HISTORY' = 'history',
+  'MEMBERS' = 'members',
+  'COMMENTS' = 'comments',
+}
+
 export const TaskInformerLeftBar: FC<TaskInformerLeftBarProps> = ({
   eventInfo,
   updateFn,
@@ -41,27 +49,27 @@ export const TaskInformerLeftBar: FC<TaskInformerLeftBarProps> = ({
         <FlexBlock width={'100%'} height={'100%'} direction={'column'}>
           <Routes>
             <Route
-              path={'about'}
+              path={EVENT_INFORMER_TAB_NAMES.ABOUT}
               element={
                 <EventInfoAboutTab eventInfo={eventInfo} updateFn={updateFn} />
               }
             />
             <Route
-              path={'chains'}
+              path={EVENT_INFORMER_TAB_NAMES.CHAINS}
               element={
                 <EventChainsTab taskItem={eventInfo} updateFn={updateFn} />
               }
             />
             <Route
-              path={'history'}
+              path={EVENT_INFORMER_TAB_NAMES.HISTORY}
               element={<TaskHistory taskInfo={eventInfo} />}
             />
             <Route
-              path={'members'}
+              path={EVENT_INFORMER_TAB_NAMES.MEMBERS}
               element={<TaskMembers taskItem={eventInfo} />}
             />
             <Route
-              path={'comments'}
+              path={EVENT_INFORMER_TAB_NAMES.COMMENTS}
               element={<TaskComments taskInfo={eventInfo} />}
             />
             <Route path={'*'} element={<NotFoundPage />} />

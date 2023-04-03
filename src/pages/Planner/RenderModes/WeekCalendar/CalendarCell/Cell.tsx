@@ -1,4 +1,4 @@
-import styled, { css, keyframes } from 'styled-components';
+import styled, { css } from 'styled-components';
 import React, { FC } from 'react';
 import { CalendarCellProps } from '../../../planner.types';
 import { addNull } from '../../../../../common/functions';
@@ -14,7 +14,7 @@ import dayjs from 'dayjs';
 import { FlexBlock } from '../../../../../components/LayoutComponents/FlexBlock';
 import { CalendarCellEventsList } from './EventList/List';
 import { Badge } from '../../../../../components/Badge/Badge';
-import { useCreateEvent } from '../../../../../hooks/useCreateEvent';
+import { useCreateEventModal } from '../../../../../hooks/useCreateEventModal';
 
 export interface CalendarCellStyledComponentProps {
   disabled?: boolean;
@@ -67,7 +67,7 @@ export const WeekCellContainer = styled(
     border-radius: ${borderRadiusSize.sm};
     box-shadow: none;
     border: 1px solid ${defaultColor};
-    transition: box-shadow 0.3s ease-in-out, height 0.3s ease-in;
+
     ${(_) =>
       'isVisible' in _
         ? !_.isVisible
@@ -94,7 +94,7 @@ export const WeekCellContainer = styled(
       css`
         &:hover {
           cursor: pointer;
-          box-shadow: 0 4px 8px 6px ${disabledColor};
+          //box-shadow: 0 4px 8px 6px ${disabledColor};
         }
       `}
     `;
@@ -113,41 +113,15 @@ export const WeekCellContainer = styled(
   }}
 `;
 
-const addTaskAnimation = keyframes({
-  from: {
-    background: '#fff',
-  },
-  to: {
-    background: currentColor,
-  },
-});
-
-const AddTask = styled('div')`
-  & {
-    font-size: 32px;
-    display: flex;
-    line-height: 1;
-    justify-content: center;
-    z-index: 1;
-    align-items: center;
-    color: #fff;
-    width: 100%;
-    height: 100%;
-    border-radius: ${borderRadiusSize.xs};
-    animation: 0.3s ease-in-out ${addTaskAnimation} forwards;
-  }
-`;
-
 export const CalendarCell: FC<CalendarCellProps> = ({
   value,
   tasks = [],
-  onAddTask,
   renderTaskCount,
   onSelectTask,
   onClickToDate,
   isVisible,
 }) => {
-  const { openModal } = useCreateEvent({ useReturnBackOnDecline: true });
+  const { openModal } = useCreateEventModal({ useReturnBackOnDecline: true });
 
   return (
     <WeekCellContainer
@@ -173,6 +147,8 @@ export const CalendarCell: FC<CalendarCellProps> = ({
         additionalCss={
           onClickToDate &&
           css`
+            transition: background-color 0.3s ease-in;
+
             &:hover {
               background-color: ${hoverColor};
             }

@@ -5,7 +5,6 @@ import { FlexBlock } from '../../../../components/LayoutComponents/FlexBlock';
 import { getTaskListOfDay } from '../../../../common/functions';
 import { DayTaskItem } from '../DayCalendar/TaskList/DayTaskItem';
 import { CalendarTitle } from '../../Planner.styled';
-import { UsePlannerReturned } from '../../../../hooks/usePlanner';
 import { useRemoveEventMutation } from '../../../../store/api/planning-api';
 import { DeclinationMonthList } from '../../../../common/constants';
 import { ShortEventInfoModel } from '../../../../store/api/planning-api/types/event-info.types';
@@ -14,7 +13,6 @@ export interface ListModeTaskController {
   eventStorage?: EventsStorage<ShortEventInfoModel>;
   fromDate: Date | null;
   toDate: Date | null;
-  onSelectTask: UsePlannerReturned['onSelectTask'];
 }
 
 function generator(fromDate: Date | null, toDate: Date | null): Array<Date> {
@@ -35,7 +33,6 @@ export const ListModeTaskController: FC<ListModeTaskController> = ({
   eventStorage,
   fromDate,
   toDate,
-  onSelectTask,
 }) => {
   const dateArray = useMemo(() => {
     return generator(fromDate, toDate);
@@ -83,7 +80,6 @@ export const ListModeTaskController: FC<ListModeTaskController> = ({
                     tabIndex={(dateIndex + 1) * (index + 1)}
                     key={taskInfo._id}
                     day={date}
-                    onSelectTask={onSelectTask}
                     onDelete={async (id) =>
                       await removeTask({ eventId: id }).unwrap()
                     }

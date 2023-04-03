@@ -37,13 +37,12 @@ export interface SmallMonthRowProps {
 export const isPouredWeekCountItem = css`
   & {
     border-radius: ${borderRadiusSize.xs};
-    //background-color: ${lightHoverColor};
     box-shadow: 0px 0px 10px 2px ${lightHoverColor};
     border: 1px solid ${defaultColor};
     margin-left: -4px;
     padding-left: 4px;
-    margin-right: -4px;
-    padding-right: 4px;
+    margin-right: -8px;
+    padding-right: 16px;
   }
 `;
 export const isFirstPouredCss = css`
@@ -179,7 +178,7 @@ export const SmallMonthRow = styled('div')<SmallMonthRowProps>`
     height: fit-content;
     flex-wrap: nowrap;
     gap: 4px;
-    padding: ${(_) => (_.isPoured ? '6px 0px' : 'none')};
+    padding: ${(_) => (_.isPoured ? '8px 0px' : 'none')};
     justify-content: flex-start;
     align-items: center;
   }

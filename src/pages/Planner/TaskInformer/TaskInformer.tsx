@@ -1,4 +1,4 @@
-import React, { FC, useCallback, useMemo, useState } from 'react';
+import React, { FC, useCallback, useContext, useMemo, useState } from 'react';
 import { EventInformerProps, MainEventInformerProps } from '../planner.types';
 import dayjs from 'dayjs';
 import { FlexBlock } from '../../../components/LayoutComponents/FlexBlock';
@@ -34,6 +34,7 @@ import {
   thenHandleForToast,
 } from '../../../store/api/tools';
 import { useLocation } from 'react-router';
+import { PlannerContext } from '../../../Context/planner.context';
 
 const getInitialSwitcher = (pathname: string): TaskInformerSwitchersKeys => {
   const pathArr = pathname.split('/');
@@ -46,7 +47,7 @@ const TaskInformerMain: FC<MainEventInformerProps> = ({
   eventInfo,
   onCloneEvent,
   onOpenClonedEvent,
-  onClose,
+  // onClose,
 }) => {
   const {
     planner: { layout },
@@ -91,6 +92,10 @@ const TaskInformerMain: FC<MainEventInformerProps> = ({
     [eventInfo._id]
   );
 
+  const {
+    methods: { plannerNavigate },
+  } = useContext(PlannerContext);
+
   return (
     <FlexBlock direction={'column'} width={'100%'} height={'100%'}>
       <FlexBlock
@@ -124,7 +129,7 @@ const TaskInformerMain: FC<MainEventInformerProps> = ({
           `}
         >
           <TaskInformerMoreActions
-            onClose={onClose}
+            // onClose={onClose}
             onCloneEvent={onCloneEvent}
             onOpenClonedEvent={onOpenClonedEvent}
             taskItem={eventInfo}
@@ -169,7 +174,7 @@ const TaskInformerMain: FC<MainEventInformerProps> = ({
           selected={switcher}
           onChange={(value) => {
             setSwitcher(value.key);
-            navigate(prevPath + `/${value.key}`);
+            plannerNavigate('eventInfo').go(eventInfo._id, value.key);
           }}
         />
       </FlexBlock>
@@ -206,7 +211,6 @@ export const TaskInformer: FC<EventInformerProps> = ({
   onCloneEvent,
   onOpenClonedEvent,
   eventErrorInfo,
-  onClose,
 }) => {
   return !eventInfo ? (
     <TaskInfoNotFound message={eventErrorInfo} />
@@ -214,7 +218,6 @@ export const TaskInformer: FC<EventInformerProps> = ({
     <TaskInformerMain
       eventInfo={eventInfo}
       onOpenClonedEvent={onOpenClonedEvent}
-      onClose={onClose}
       onCloneEvent={onCloneEvent}
     />
   );

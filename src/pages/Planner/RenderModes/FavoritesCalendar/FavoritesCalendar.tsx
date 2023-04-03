@@ -6,11 +6,9 @@ import { ListModeTaskController } from '../List/ListModeTaskController';
 import React, { FC, useMemo } from 'react';
 import { EventsStorage, FavoritesCalendarModeProps } from '../../planner.types';
 import { ShortEventInfoModel } from '../../../../store/api/planning-api/types/event-info.types';
+import { PLANNER_LAYOUTS } from '../../../../common/constants';
 
-export const FavoritesCalendar: FC<FavoritesCalendarModeProps> = ({
-  current,
-  onSelectTask,
-}) => {
+export const FavoritesCalendar: FC<FavoritesCalendarModeProps> = ({}) => {
   const startDate = useMemo(() => {
     return new Date(2022, 0, 1);
   }, []);
@@ -30,7 +28,7 @@ export const FavoritesCalendar: FC<FavoritesCalendarModeProps> = ({
     debounceValue,
     isFetching,
   } = useEventStorage({
-    layout: 'favorites',
+    layout: PLANNER_LAYOUTS.FAVORITES,
     scope: {
       start: startDate,
       end: toDate,
@@ -62,9 +60,8 @@ export const FavoritesCalendar: FC<FavoritesCalendarModeProps> = ({
       >
         <ListModeTaskController
           eventStorage={TaskStorage as EventsStorage<ShortEventInfoModel>}
-          fromDate={debounceValue.start}
-          toDate={debounceValue.end}
-          onSelectTask={onSelectTask}
+          fromDate={startDate}
+          toDate={toDate}
         />
       </FlexBlock>
     </FlexBlock>

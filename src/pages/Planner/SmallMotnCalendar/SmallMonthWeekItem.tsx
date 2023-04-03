@@ -7,6 +7,7 @@ import { SmallMonthRow, SmallMonthWeekCount } from './SmallMonth.styled';
 import { SmallMonthDateItem } from './SmallMonthDateItem';
 import { FlexBlock } from '../../../components/LayoutComponents/FlexBlock';
 import { GetEventsSchemeResponse } from '../../../store/api/planning-api/types/event-info.types';
+import { EmptyButtonStyled } from '../../../components/Buttons/EmptyButton.styled';
 
 export interface SmallMonthWeekItemProps
   extends Pick<
@@ -71,8 +72,10 @@ export const SmallMonthWeekItem: FC<SmallMonthWeekItemProps> = ({
 
   return (
     <SmallMonthRow isPoured={weekIsPoured}>
-      <SmallMonthWeekCount onClick={selectWeekHandle}>
-        {weekItem.weekOfYear}
+      <SmallMonthWeekCount>
+        <EmptyButtonStyled onClick={selectWeekHandle}>
+          {weekItem.weekOfYear}
+        </EmptyButtonStyled>
       </SmallMonthWeekCount>
       <FlexBlock
         justify={

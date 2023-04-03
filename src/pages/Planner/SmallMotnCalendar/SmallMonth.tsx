@@ -60,6 +60,7 @@ export const SmallMonth: FC<SmallMonthProps> = ({
               className={'row--item'}
               key={`weekDay_${item}_short`}
               borderBottom={`1px solid ${defaultColor}`}
+              style={{ cursor: 'pointer' }}
             >
               {item}
             </FlexBlock>

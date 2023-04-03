@@ -4,12 +4,15 @@ import { FC, useState } from 'react';
 import {
   LoaderIcon,
   PencilIcon,
+  PlusIcon,
   TrashIcon,
 } from '../../../components/Icons/Icons';
-import { defaultColor } from '../../../common/constants';
+import { darkColor, defaultColor } from '../../../common/constants';
 import { EmptyButtonStyled } from '../../../components/Buttons/EmptyButton.styled';
 import { useChangeSelectGroupMutation } from '../../../store/api/planning-api';
 import { GroupItemProps } from './groups.types';
+import { useCreateEventModal } from '../../../hooks/useCreateEventModal';
+import { PreviewDescription } from '../RenderModes/DayCalendar/TaskList/TaskList.styled';
 
 export const GroupItem: FC<GroupItemProps> = ({
   onChange,
@@ -23,6 +26,8 @@ export const GroupItem: FC<GroupItemProps> = ({
   const [isHover, setIsHover] = useState(false);
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const [changeSelect] = useChangeSelectGroupMutation();
+
+  const { openModal } = useCreateEventModal({});
 
   const changeHandler = async (isChecked: boolean) => {
     setIsLoading(true);
@@ -46,7 +51,12 @@ export const GroupItem: FC<GroupItemProps> = ({
       onMouseEnter={() => onDelete && setIsHover(true)}
       onMouseLeave={() => onDelete && setIsHover(false)}
     >
-      <FlexBlock width={'100%'} gap={2} justify={'space-between'}>
+      <FlexBlock
+        width={'100%'}
+        overflow={'hidden'}
+        gap={2}
+        justify={'space-between'}
+      >
         <FlexBlock shrink={1} grow={0} gap={6}>
           {isLoading ? (
             <LoaderIcon size={18} color={item.color} />
@@ -60,10 +70,30 @@ export const GroupItem: FC<GroupItemProps> = ({
               onChange={(e) => changeHandler(e.target.checked)}
             />
           )}
-          <CalendarItemLabel htmlFor={item._id}>{item.title}</CalendarItemLabel>
+          <CalendarItemLabel htmlFor={item._id}>
+            <PreviewDescription
+              rows={1}
+              style={{ maxWidth: '100%', color: darkColor, fontSize: 15 }}
+            >
+              {item.title}
+            </PreviewDescription>
+          </CalendarItemLabel>
         </FlexBlock>
         {isHover && (
           <FlexBlock shrink={0} grow={0}>
+            {item.type !== 'Invite' && (
+              <EmptyButtonStyled
+                style={{ padding: 2 }}
+                onClick={() =>
+                  openModal({
+                    group: item._id,
+                  })
+                }
+              >
+                <PlusIcon size={14} color={defaultColor} />
+              </EmptyButtonStyled>
+            )}
+
             {item.editable && onEdit && (
               <EmptyButtonStyled
                 style={{ padding: 2 }}

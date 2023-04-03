@@ -1,21 +1,23 @@
-import { FC } from 'react';
+import { FC, useContext } from 'react';
 import { SwitchCalendarModeTab } from '../Planner.styled';
 import { FlexBlock } from '../../../components/LayoutComponents/FlexBlock';
-import { CalendarHeaderSwitchersProps } from '../planner.types';
-import { currentColor } from '../../../common/constants';
+import { currentColor, PLANNER_LAYOUTS } from '../../../common/constants';
 import { StarsListIcon } from '../../../components/Icons/AppIcon/StarsListIcon';
 import { ListIcon } from '../../../components/Icons/AppIcon/ListIcon';
 import { CalendarIcon } from '../../../components/Icons/AppIcon/CalendarIcon';
+import { PlannerContext } from '../../../Context/planner.context';
 
-export const CalendarModeSwitchers: FC<CalendarHeaderSwitchersProps> = ({
-  layout,
-  onChange,
-}) => {
+export const CalendarModeSwitchers: FC = ({}) => {
+  const {
+    methods: { updateCurrentLayoutAndNavigate },
+    currentLayout,
+  } = useContext(PlannerContext);
+
   return (
     <FlexBlock width={'100%'} align={'flex-end'} justify={'center'}>
       <SwitchCalendarModeTab
-        isSelected={layout === 'day'}
-        onClick={() => onChange('day')}
+        isSelected={currentLayout === PLANNER_LAYOUTS.DAY}
+        onClick={() => updateCurrentLayoutAndNavigate(PLANNER_LAYOUTS.DAY)}
       >
         <FlexBlock align={'center'} gap={6}>
           <ListIcon size={24} color={currentColor} />
@@ -23,8 +25,8 @@ export const CalendarModeSwitchers: FC<CalendarHeaderSwitchersProps> = ({
         </FlexBlock>
       </SwitchCalendarModeTab>
       <SwitchCalendarModeTab
-        onClick={() => onChange('week')}
-        isSelected={layout === 'week'}
+        onClick={() => updateCurrentLayoutAndNavigate(PLANNER_LAYOUTS.WEEK)}
+        isSelected={currentLayout === PLANNER_LAYOUTS.WEEK}
       >
         <FlexBlock align={'center'} gap={6}>
           <CalendarIcon size={24} color={currentColor} />
@@ -32,8 +34,8 @@ export const CalendarModeSwitchers: FC<CalendarHeaderSwitchersProps> = ({
         </FlexBlock>
       </SwitchCalendarModeTab>
       <SwitchCalendarModeTab
-        onClick={() => onChange('month')}
-        isSelected={layout === 'month'}
+        onClick={() => updateCurrentLayoutAndNavigate(PLANNER_LAYOUTS.MONTH)}
+        isSelected={currentLayout === PLANNER_LAYOUTS.MONTH}
       >
         <FlexBlock align={'center'} gap={6}>
           <CalendarIcon size={24} color={currentColor} />
@@ -41,8 +43,8 @@ export const CalendarModeSwitchers: FC<CalendarHeaderSwitchersProps> = ({
         </FlexBlock>
       </SwitchCalendarModeTab>
       <SwitchCalendarModeTab
-        isSelected={layout === 'year'}
-        onClick={() => onChange('year')}
+        isSelected={currentLayout === PLANNER_LAYOUTS.YEAR}
+        onClick={() => updateCurrentLayoutAndNavigate(PLANNER_LAYOUTS.YEAR)}
       >
         <FlexBlock align={'center'} gap={6}>
           <CalendarIcon size={24} color={currentColor} />
@@ -50,8 +52,8 @@ export const CalendarModeSwitchers: FC<CalendarHeaderSwitchersProps> = ({
         </FlexBlock>
       </SwitchCalendarModeTab>
       <SwitchCalendarModeTab
-        isSelected={layout === 'list'}
-        onClick={() => onChange('list')}
+        isSelected={currentLayout === PLANNER_LAYOUTS.LIST}
+        onClick={() => updateCurrentLayoutAndNavigate(PLANNER_LAYOUTS.LIST)}
       >
         <FlexBlock align={'center'} gap={6}>
           <ListIcon size={24} color={currentColor} />
@@ -59,8 +61,10 @@ export const CalendarModeSwitchers: FC<CalendarHeaderSwitchersProps> = ({
         </FlexBlock>
       </SwitchCalendarModeTab>
       <SwitchCalendarModeTab
-        isSelected={layout === 'favorites'}
-        onClick={() => onChange('favorites')}
+        isSelected={currentLayout === PLANNER_LAYOUTS.FAVORITES}
+        onClick={() =>
+          updateCurrentLayoutAndNavigate(PLANNER_LAYOUTS.FAVORITES)
+        }
       >
         <FlexBlock align={'center'} gap={6}>
           <StarsListIcon size={24} color={currentColor} />

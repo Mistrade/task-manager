@@ -1,4 +1,4 @@
-import React, { FC, useCallback, useMemo } from 'react';
+import React, { FC, useCallback, useContext, useMemo } from 'react';
 import dayjs from 'dayjs';
 import {
   planningApi,
@@ -28,10 +28,7 @@ import { LikeButton } from '../../../../../components/Buttons/LikeButton';
 import { UrlIcon } from '../../../../../components/Icons/SocialNetworkIcons';
 import { CalendarUserIndicator } from '../../../Users/UserIndicator';
 import { EmptyLink } from '../../../../../components/Buttons/EmptyButton.styled';
-import {
-  useAppDispatch,
-  useAppSelector,
-} from '../../../../../store/hooks/hooks';
+import { useAppDispatch } from '../../../../../store/hooks/hooks';
 import { DateHelper } from '../../../../../common/calendarSupport/dateHelper';
 import { ShortEventInfoModel } from '../../../../../store/api/planning-api/types/event-info.types';
 import { Tooltip } from '../../../../../components/Tooltip/Tooltip';
@@ -39,6 +36,7 @@ import {
   CatchHandleForToast,
   thenHandleForToast,
 } from '../../../../../store/api/tools';
+import { PlannerContext } from '../../../../../Context/planner.context';
 
 interface DayTaskItemProps {
   taskInfo: ShortEventInfoModel;
@@ -80,20 +78,22 @@ const DayEventItemMixin = css`
 export const DayTaskItem: FC<DayTaskItemProps> = ({
   taskInfo,
   tabIndex,
-  onSelectTask,
+  // onSelectTask,
   day,
   onDelete,
   refetchTaskList,
 }) => {
   const dispatch = useAppDispatch();
   const [updateTask] = useUpdateTaskMutation();
-  const { layout } = useAppSelector((state) => state.planner.planner);
+
+  const {
+    currentLayout,
+    methods: { openEventInfo },
+  } = useContext(PlannerContext);
 
   const setTaskInfo = useCallback(() => {
-    if (onSelectTask) {
-      onSelectTask(taskInfo._id);
-    }
-  }, [onSelectTask, taskInfo, day]);
+    openEventInfo(taskInfo._id);
+  }, [openEventInfo, taskInfo, day]);
 
   const keyPressHandler = (e: React.KeyboardEvent<HTMLDivElement>) => {
     if (e.key === 'Enter') {
@@ -142,7 +142,7 @@ export const DayTaskItem: FC<DayTaskItemProps> = ({
       tabIndex={tabIndex}
       bgColor={pageHeaderColor}
       border={`1px solid ${hoverColor}`}
-      onKeyPress={keyPressHandler}
+      onKeyUp={keyPressHandler}
       onClick={setTaskInfo}
       additionalCss={css`
         ${DayEventItemMixin};
@@ -187,7 +187,7 @@ export const DayTaskItem: FC<DayTaskItemProps> = ({
                       data: !taskInfo.isLiked,
                       field: 'isLiked',
                     });
-                    if (layout === 'favorites') {
+                    if (currentLayout === 'favorites') {
                       dispatch(
                         planningApi.util.invalidateTags(['EventsCount'])
                       );

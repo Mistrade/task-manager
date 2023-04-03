@@ -1,5 +1,5 @@
-import { FC, useCallback, useEffect, useRef } from 'react';
-import { CalendarItem, WeekCalendarProps } from '../../planner.types';
+import { FC, useContext, useEffect, useRef } from 'react';
+import { WeekCalendarProps } from '../../planner.types';
 import dayjs from 'dayjs';
 import { CalendarCell } from './CalendarCell/Cell';
 import styled from 'styled-components';
@@ -7,6 +7,7 @@ import {
   currentColor,
   disabledColor,
   orangeColor,
+  PLANNER_LAYOUTS,
 } from '../../../../common/constants';
 import { getTaskListOfDay } from '../../../../common/functions';
 import { Accordion } from '../../../../components/Accordion/Accordion';
@@ -14,6 +15,7 @@ import { Heading } from '../../../../components/Text/Heading';
 import { Badge } from '../../../../components/Badge/Badge';
 import { FlexBlock } from '../../../../components/LayoutComponents/FlexBlock';
 import { NonViewScroller } from '../../TaskInformer/LeftBar/Tabs/TaskComments/comments.styled';
+import { PlannerContext } from '../../../../Context/planner.context';
 
 interface StyledProps {
   isVisible?: boolean;
@@ -64,34 +66,53 @@ const WeekOfYearTitle = styled('h3')`
   }
 `;
 
+// const Container: FCWithChildren = ({ children }) => {
+//   const containerRef = useRef<HTMLDivElement>(null);
+//
+//   useEffect(() => {
+//     return () => {
+//       containerRef.current?.animate(
+//         [
+//           { opacity: 1, transform: 'translateX(0)' },
+//           { opacity: 0, transform: 'translateX(100%)' },
+//         ],
+//         {
+//           duration: 500,
+//           easing: 'ease-in',
+//           fill: 'forwards',
+//         }
+//       );
+//     };
+//   }, []);
+//   return <DaysContainer ref={containerRef}>{children}</DaysContainer>;
+// };
+
 export const WeeKCalendar: FC<WeekCalendarProps> = ({
   weekItem,
   renderTaskCount,
-  onSelectTask,
-  onAddTask,
-  onChangeCurrent,
-  current,
   taskStorage,
 }) => {
-  const onClickToDate = useCallback(
-    (date: CalendarItem) => {
-      onChangeCurrent && onChangeCurrent(date.value, 'day');
-    },
-    [onChangeCurrent]
-  );
+  const { currentLayout } = useContext(PlannerContext);
+
+  // const onClickToDate = useCallback(
+  //   (date: CalendarItem) => {
+  //     onChangeCurrent && onChangeCurrent(date.value, 'day');
+  //   },
+  //   [onChangeCurrent]
+  // );
 
   const ref = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
-    if (current.layout === 'month') {
+    if (currentLayout === PLANNER_LAYOUTS.MONTH) {
       ref.current?.scrollIntoView({
         block: 'start',
         behavior: 'auto',
       });
     }
-  }, [current, taskStorage]);
+  }, [currentLayout, taskStorage]);
 
-  if (current.layout === 'month') {
+  if (currentLayout === 'month') {
     const isCurrentWeek = dayjs().week() === weekItem.weekOfYear;
     return (
       <WeekContainer>
@@ -129,10 +150,8 @@ export const WeeKCalendar: FC<WeekCalendarProps> = ({
                 key={`date_year_${weekItem.year}_month_${
                   weekItem.month
                 }_${day.value.getDate()}`}
-                onAddTask={onAddTask}
                 value={day}
-                onClickToDate={onClickToDate}
-                onSelectTask={onSelectTask}
+                // onClickToDate={onClickToDate}
               />
             ))}
           </DaysContainer>
@@ -152,10 +171,8 @@ export const WeeKCalendar: FC<WeekCalendarProps> = ({
             key={`date_year_${weekItem.year}_month_${
               weekItem.month
             }_${day.value.getDate()}`}
-            onAddTask={onAddTask}
             value={day}
-            onClickToDate={onClickToDate}
-            onSelectTask={onSelectTask}
+            // onClickToDate={onClickToDate}
           />
         ))}
       </DaysContainer>

@@ -1,4 +1,4 @@
-import styled, { css } from 'styled-components';
+import styled, { css, keyframes } from 'styled-components';
 import {
   borderRadiusSize,
   DATE_HOURS_FORMAT,
@@ -6,7 +6,7 @@ import {
   hoverColor,
   orangeColor,
 } from '../../../../../../common/constants';
-import React, { FC, useMemo, useState } from 'react';
+import React, { FC, useContext, useMemo, useState } from 'react';
 import { TaskTileItemProps } from '../../../../planner.types';
 import { FlexBlock } from '../../../../../../components/LayoutComponents/FlexBlock';
 import { GroupLogo } from '../../../../Groups/GroupList.styled';
@@ -19,6 +19,7 @@ import {
 } from '../../../../../../common/calendarSupport/dateHelper';
 import { Tooltip } from '../../../../../../components/Tooltip/Tooltip';
 import { EventShortHoverCard } from '../../../../../../components/HoverCard/EventShortHoverCard';
+import { PlannerContext } from '../../../../../../Context/planner.context';
 
 interface EventContainerProps extends CalendarCellStyledComponentProps {
   withFill?: boolean;
@@ -28,6 +29,17 @@ interface EventTextProps {
   isCompleted?: boolean;
   fs?: string;
 }
+
+const EventAnimation = keyframes`
+  from {
+    opacity: .3;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0px);
+  }
+`;
 
 const EventContainer = styled('div')<EventContainerProps>`
   & {
@@ -43,6 +55,8 @@ const EventContainer = styled('div')<EventContainerProps>`
     flex-wrap: nowrap;
     cursor: pointer;
     flex-direction: column;
+    animation: ${EventAnimation} 0.3s ease-in;
+    transition: background-color 0.3s ease-in;
   }
 `;
 
@@ -113,6 +127,10 @@ export const CalendarCellEventItem: FC<TaskTileItemProps> = ({
     return `${humanizeStart} - ${humanizeEnd}`;
   }, [taskInfo]);
 
+  const {
+    methods: { openEventInfo },
+  } = useContext(PlannerContext);
+
   return (
     <Tooltip
       animation={'shift-away'}
@@ -120,7 +138,7 @@ export const CalendarCellEventItem: FC<TaskTileItemProps> = ({
       theme={'light'}
       placement={'left'}
       offset={[0, 15]}
-      delay={[500, 0]}
+      delay={[1000, 500]}
       interactive={true}
       interactiveBorder={4}
     >
@@ -130,7 +148,7 @@ export const CalendarCellEventItem: FC<TaskTileItemProps> = ({
         withFill={isHover}
         disabled={date.meta.isDisabled}
         isCurrent={date.meta.isCurrent}
-        onClick={(event) => condition && onSelect && onSelect(taskInfo._id)}
+        onClick={() => condition && openEventInfo(taskInfo._id)}
       >
         <FlexBlock direction={'column'} gap={4} width={'100%'}>
           <FlexBlock direction={'row'} gap={4} align={'center'}>

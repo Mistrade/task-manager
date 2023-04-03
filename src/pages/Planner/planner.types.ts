@@ -2,7 +2,6 @@ import React, { FC, ReactNode } from 'react';
 import { ShortChangeCurrentPattern } from '../../common/commonTypes';
 import { FlexBlockProps } from '../../components/LayoutComponents/FlexBlock';
 import { DefaultTextInputProps } from '../../components/Input/TextInput/TextInput';
-import { UsePlannerReturned } from '../../hooks/usePlanner';
 import { CalendarCellEventsListProps } from './RenderModes/WeekCalendar/CalendarCell/EventList/List';
 import {
   EventInfoModel,
@@ -10,7 +9,7 @@ import {
 } from '../../store/api/planning-api/types/event-info.types';
 import { UserModel } from '../../store/api/session-api/session-api.types';
 import { ObjectId } from '../../store/api/rtk-api.types';
-import { EventFilterTaskStatuses } from './RenderModes/FindEventFilter/find-event-filters.types';
+import { PLANNER_LAYOUTS } from '../../common/constants';
 
 export type FCWithChildren<T = any> = FC<{ children?: ReactNode } & T>;
 
@@ -31,40 +30,22 @@ export interface DatePickerProps {
   onDecline?: () => void;
 }
 
-export interface CalendarProps {
-  taskStatus: EventFilterTaskStatuses;
-  layout: PlannerMode['layout'];
-  disabledOptions?: CalendarDisabledOptions;
-  renderWeekPattern?: RenderWeekPattern;
-}
-
 export interface GlobalTaskListProps {
-  onAddTask?: OnAddTaskFnType;
+  // onAddTask?: OnAddTaskFnType;
   renderTaskCount?: RenderTaskCountType;
 }
 
 export interface YearCalendarProps {
   yearItem: YearItem;
-  onChangeCurrent?: OnChangeCurrentFnType;
 }
 
 export interface MonthCalendarProps extends GlobalTaskListProps {
-  onChangeCurrent?: OnChangeCurrentFnType;
   monthItem: MonthItem;
-  current: PlannerMode;
-  onSelectTask?: OnSelectTaskFnType;
-  renderWeekPattern?: RenderWeekPattern;
 }
 
-export interface ListCalendarModeProps {
-  current: PlannerListMode;
-  onSelectTask: OnSelectTaskFnType;
-}
+export interface ListCalendarModeProps {}
 
-export interface FavoritesCalendarModeProps {
-  current: PlannerFavoritesMode;
-  onSelectTask: OnSelectTaskFnType;
-}
+export interface FavoritesCalendarModeProps {}
 
 export interface WeekCalendarProps
   extends Omit<MonthCalendarProps, 'monthItem' | 'renderWeekPattern'> {
@@ -75,15 +56,11 @@ export interface WeekCalendarProps
 
 export interface DayCalendarProps extends GlobalTaskListProps {
   //TODO убрать наследование @GlobalTaskListProps
-  dateItem: DateItem;
+  currentDate: Date;
   onSelectTask?: OnSelectTaskFnType;
 }
 
-export type CalendarHeaderProps = Pick<MonthCalendarProps, 'renderWeekPattern'>;
-export type CalendarHeaderWeekListProps = Pick<
-  MonthCalendarProps,
-  'renderWeekPattern' | 'current'
->;
+export type CalendarHeaderProps = {};
 export type RenderTaskCountType = number | 'all';
 
 export interface CalendarCellProps extends GlobalTaskListProps {
@@ -101,8 +78,7 @@ export interface TaskTileItemProps {
 }
 
 export interface CalendarHeaderSwitchersProps {
-  layout?: PlannerMode['layout'];
-  onChange: (newLayout: PlannerMode['layout']) => void;
+  layout?: PLANNER_LAYOUTS;
 }
 
 export interface CalendarTodaySwitchersProps {
@@ -111,13 +87,7 @@ export interface CalendarTodaySwitchersProps {
 
 export type OnSelectDateFromCalendarFn = (data: CalendarItem) => void;
 
-export interface DaySettingsPanelProps {
-  monthItem: MonthItem;
-  onSelectDate?: OnSelectDateFromCalendarFn;
-  current: PlannerMode;
-  onChangeCurrent: UsePlannerReturned['onChangePlanner'];
-  onAddTask: OnAddTaskFnType;
-}
+export interface DaySettingsPanelProps {}
 
 export interface SmallCalendarMonthTitleProps {
   monthItem: MonthItem;
@@ -308,17 +278,13 @@ export interface EventInfoBaseProps {
 export type MainEventInformerProps = EventInfoBaseProps & EventInfoModalProps;
 
 export interface EventInfoModalProps {
-  onClose: () => void;
   onCloneEvent?: (event: Partial<EventInfoModel>) => void;
   onOpenClonedEvent?: (taskId: ObjectId) => void;
 }
 
 export interface CreateEventModalProps {
-  date: Date | null;
   onClose?: () => void;
-  onComplete?: (eventId: UUID) => void;
   clonedEventInfo?: Partial<EventInfoModel> | null;
-  onSuccessClonedEvent?: UsePlannerReturned['onSuccessClonedEvent'];
 }
 
 export interface PlannerYearMode {

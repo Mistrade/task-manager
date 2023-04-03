@@ -1,5 +1,5 @@
 import { EventsStorage, PlannerMode } from '../pages/Planner/planner.types';
-import { useEffect, useState } from 'react';
+import { useMemo } from 'react';
 import { useAppDispatch, useAppSelector } from '../store/hooks/hooks';
 import {
   EventFiltersProps,
@@ -11,9 +11,9 @@ import {
   useGetEventsStorageQuery,
 } from '../store/api/planning-api';
 import { SwitcherBadges } from '../components/Switcher/Switcher';
-import dayjs from 'dayjs';
 import { GetEventsFiltersRequestProps } from '../store/api/planning-api/types/event-info.types';
 import { EventFilterTaskStatuses } from '../pages/Planner/RenderModes/FindEventFilter/find-event-filters.types';
+import { UTC_OFFSET } from '../common/constants';
 
 interface Scope {
   start: Date;
@@ -28,7 +28,7 @@ interface UseTaskStorageProps {
 
 interface UseTaskStorageQueryArgsReturned extends UseEventFiltersReturned {
   queryArgs: GetEventsFiltersRequestProps;
-  taskStatus: EventFiltersProps['taskStatus'];
+  taskStatus: EventFiltersProps['status'];
   TaskStorage?: EventsStorage;
   SwitcherBadges?: SwitcherBadges<EventFilterTaskStatuses> | null;
   isFetching: boolean;
@@ -39,16 +39,17 @@ type UseTaskStorageQueryArgsHookType = (
 ) => UseTaskStorageQueryArgsReturned;
 
 const getQueryArgs = (
-  values: EventFiltersProps
+  values: EventFiltersProps,
+  props: UseTaskStorageProps
 ): GetEventsFiltersRequestProps => {
   return {
     title: values.title,
-    fromDate: values.start?.toString() || '',
-    toDate: values.end?.toString() || '',
+    fromDate: props.scope.start?.toString() || '',
+    toDate: props.scope?.toString() || '',
     priority: values.priority,
-    taskStatus: values.taskStatus,
-    onlyFavorites: !!values.onlyFavorites,
-    utcOffset: dayjs().utcOffset(),
+    taskStatus: values.status,
+    onlyFavorites: !!props.onlyFavorites,
+    utcOffset: UTC_OFFSET,
   };
 };
 
@@ -59,30 +60,15 @@ export const useEventStorage: UseTaskStorageQueryArgsHookType = (props) => {
   const filtersReturned = useEventFilters({
     initialValues: {
       title: null,
-      taskStatus,
-      start: props.scope.start,
-      end: props.scope.end,
+      status: taskStatus,
       priority: null,
-      onlyFavorites: !!props.onlyFavorites,
-      utcOffset: dayjs().utcOffset(),
     },
     layout: props.layout,
   });
 
-  useEffect(() => {
-    filtersReturned.handlers.start(props.scope.start);
-  }, [props.scope.start]);
-
-  useEffect(() => {
-    filtersReturned.handlers.end(props.scope.end);
-  }, [props.scope.end]);
-
-  useEffect(() => {
-    setQueryArgs(getQueryArgs(filtersReturned.debounceValue));
-  }, [filtersReturned.debounceValue]);
-
-  const [queryArgs, setQueryArgs] = useState(
-    getQueryArgs(filtersReturned.filters)
+  const queryArgs = useMemo(
+    () => getQueryArgs(filtersReturned.filters, props),
+    [filtersReturned.filters, props]
   );
 
   const {
@@ -113,7 +99,7 @@ export const useEventStorage: UseTaskStorageQueryArgsHookType = (props) => {
 
   return {
     queryArgs,
-    taskStatus: filtersReturned.debounceValue.taskStatus,
+    taskStatus: filtersReturned.debounceValue.status,
     TaskStorage: TaskStorage?.data || {},
     SwitcherBadges: SwitcherBadges?.data,
     ...filtersReturned,

@@ -1,7 +1,7 @@
 import { SelectListContainer } from '../../../../components/Input/SelectInput/SelectListContainer';
 import { SelectItemContainer } from '../../../../components/Input/SelectInput/SelectItemContainer';
 import { TASK_STATUSES } from '../../../../common/constants';
-import React, { FC, useCallback } from 'react';
+import React, { FC, useCallback, useContext } from 'react';
 import { EventInfoModel } from '../../../../store/api/planning-api/types/event-info.types';
 import {
   useRemoveEventMutation,
@@ -10,12 +10,13 @@ import {
 import { EventInfoModalProps } from '../../planner.types';
 import { TransparentButton } from '../../../../components/Buttons/Buttons.styled';
 import { Tooltip } from '../../../../components/Tooltip/Tooltip';
-import { useCreateEvent } from '../../../../hooks/useCreateEvent';
+import { useCreateEventModal } from '../../../../hooks/useCreateEventModal';
 import dayjs from 'dayjs';
 import {
   CatchHandleForToast,
   thenHandleForToast,
 } from '../../../../store/api/tools';
+import { PlannerContext } from '../../../../Context/planner.context';
 
 export interface TaskInformerMoreActionsProps extends EventInfoModalProps {
   taskItem: EventInfoModel;
@@ -23,14 +24,18 @@ export interface TaskInformerMoreActionsProps extends EventInfoModalProps {
 
 export const TaskInformerMoreActions: FC<TaskInformerMoreActionsProps> = ({
   taskItem,
-  onClose,
+  // onClose,
 }) => {
   const [removeEvent] = useRemoveEventMutation();
   const [updEvent] = useUpdateTaskMutation();
 
-  const { openModal: openCreateEventModal } = useCreateEvent({
+  const { openModal: openCreateEventModal } = useCreateEventModal({
     useReturnBackOnDecline: true,
   });
+
+  const {
+    methods: { closeEventInfo },
+  } = useContext(PlannerContext);
 
   const cloneEventHandler = useCallback(
     (e: React.MouseEvent) => {
@@ -90,12 +95,12 @@ export const TaskInformerMoreActions: FC<TaskInformerMoreActionsProps> = ({
           .then((r) => {
             thenHandleForToast(
               r,
-              () => r?.info?.type === 'success' && onClose && onClose()
+              () => r?.info?.type === 'success' && closeEventInfo()
             );
           })
           .catch(CatchHandleForToast);
     },
-    [removeEvent, taskItem, onClose]
+    [removeEvent, taskItem, closeEventInfo]
   );
 
   return (

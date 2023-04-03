@@ -17,14 +17,14 @@ export interface CalendarCurrentTitleProps
 
 export const CalendarCurrentTitle: FC<CalendarCurrentTitleProps> = ({
   title,
-  current,
+  // current,
   statuses,
   onAddTask,
   onChangeSwitcherState,
+  currentLayout,
 }) => {
   return (
     <FlexBlock
-      // additionalCss={css`z-index: 10`}
       direction={'column'}
       gap={4}
       border={`1px solid ${disabledColor}`}
@@ -35,7 +35,8 @@ export const CalendarCurrentTitle: FC<CalendarCurrentTitleProps> = ({
     >
       <FlexBlock justify={'center'} width={'100%'} p={`3px 12px`}>
         <CalendarHeaderAddButton
-          current={current}
+          // current={current}
+          currentLayout={currentLayout}
           statuses={statuses}
           onAddTask={onAddTask}
         />

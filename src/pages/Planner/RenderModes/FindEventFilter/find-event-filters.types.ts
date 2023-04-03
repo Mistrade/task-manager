@@ -14,11 +14,9 @@ export interface FormHandle {
 }
 
 export interface EventFilterOnChangeHandle {
-  start: (value: EventFiltersProps['start']) => void;
-  end: (value: EventFiltersProps['end']) => void;
   priority: (value: EventFiltersProps['priority']) => void;
   title: (value: EventFiltersProps['title']) => void;
-  taskStatus: (value: EventFiltersProps['taskStatus']) => void;
+  taskStatus: (value: EventFiltersProps['status']) => void;
 }
 
 export type OnFocusEventHandlers = (

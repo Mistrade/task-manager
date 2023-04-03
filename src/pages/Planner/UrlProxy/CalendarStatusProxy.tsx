@@ -1,34 +1,36 @@
-import { PlannerMode } from '../planner.types';
-import { FC, useEffect } from 'react';
+import { FC } from 'react';
 import { useParams } from 'react-router';
-import { useAppDispatch } from '../../../store/hooks/hooks';
-import { changeEventStatuses } from '../../../store/reducers/planner-reducer';
 import { PlannerPage } from '../Planner';
 import { EventFilterTaskStatuses } from '../RenderModes/FindEventFilter/find-event-filters.types';
-import { URLTaskStatuses } from '../../../common/constants';
+import {
+  DEFAULT_PLANNER_LAYOUT,
+  DEFAULT_PLANNER_STATUS,
+  PLANNER_LAYOUTS,
+  URLTaskStatuses,
+} from '../../../common/constants';
 import { ErrorScreen } from '../../../components/Errors/ErrorScreen';
 import { CenteredContainer } from '../../../components/AppRoutes/Interceptors/SessionInterceptor';
+import { PlannerProvider } from '../../../components/ContextProviders/PlannerProvider';
 import { useSearchNavigate } from '../../../hooks/useSearchNavigate';
+import { ServicesNames } from '../../../store/reducers/global';
 
-export const CalendarStatusProxy: FC<{ layout: PlannerMode['layout'] }> = ({
+export const CalendarStatusProxy: FC<{ layout: PLANNER_LAYOUTS }> = ({
   layout,
 }) => {
-  const { taskStatus } = useParams<{ taskStatus: EventFilterTaskStatuses }>();
-  const dispatch = useAppDispatch();
   const navigate = useSearchNavigate();
+
+  const { taskStatus } = useParams<{ taskStatus: EventFilterTaskStatuses }>();
 
   const isCorrectTaskStatus = (status: EventFilterTaskStatuses | undefined) => {
     return status && URLTaskStatuses[status];
   };
 
-  useEffect(() => {
-    if (taskStatus && !isCorrectTaskStatus(taskStatus)) {
-      dispatch(changeEventStatuses(taskStatus));
-    }
-  }, []);
-
   if (taskStatus && isCorrectTaskStatus(taskStatus)) {
-    return <PlannerPage layout={layout} taskStatus={taskStatus} />;
+    return (
+      <PlannerProvider layout={layout} status={taskStatus}>
+        <PlannerPage />
+      </PlannerProvider>
+    );
   }
 
   return (
@@ -40,7 +42,11 @@ export const CalendarStatusProxy: FC<{ layout: PlannerMode['layout'] }> = ({
         }
         action={{
           title: `Перейти в "Планировщик"`,
-          onClick: () => navigate('/planner/day/all'),
+          onClick: () => {
+            navigate(
+              `/${ServicesNames.PLANNER}/${DEFAULT_PLANNER_LAYOUT}/${DEFAULT_PLANNER_STATUS}`
+            );
+          },
         }}
         errorType={'BAD_REQUEST'}
       />

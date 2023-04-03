@@ -1,54 +1,44 @@
-import { FC, useEffect } from 'react';
-import { PlannerMode } from './planner.types';
-import { useAppDispatch } from '../../store/hooks/hooks';
-import { changePlanner } from '../../store/reducers/planner-reducer';
+import { FC } from 'react';
 import { Route, Routes, useParams } from 'react-router-dom';
 import { CalendarStatusProxy } from './UrlProxy/CalendarStatusProxy';
-import dayjs from 'dayjs';
-import { useSearchNavigate } from '../../hooks/useSearchNavigate';
 import { ErrorScreen } from '../../components/Errors/ErrorScreen';
 import { CenteredContainer } from '../../components/AppRoutes/Interceptors/SessionInterceptor';
+import {
+  DEFAULT_PLANNER_LAYOUT,
+  DEFAULT_PLANNER_STATUS,
+  PLANNER_LAYOUTS,
+} from '../../common/constants';
+import { useSearchNavigate } from '../../hooks/useSearchNavigate';
+import { ServicesNames } from '../../store/reducers/global';
+import { Navigate } from 'react-router';
 
-const layouts: Array<PlannerMode['layout']> = [
-  'day',
-  'week',
-  'month',
-  'year',
-  'list',
-  'favorites',
+const layouts: Array<PLANNER_LAYOUTS> = [
+  PLANNER_LAYOUTS.DAY,
+  PLANNER_LAYOUTS.WEEK,
+  PLANNER_LAYOUTS.MONTH,
+  PLANNER_LAYOUTS.YEAR,
+  PLANNER_LAYOUTS.LIST,
+  PLANNER_LAYOUTS.FAVORITES,
 ];
 
 export const PlannerController: FC = () => {
-  const { layout } = useParams<{ layout: PlannerMode['layout'] }>();
-  const dispatch = useAppDispatch();
+  const { layout } = useParams<{ layout: PLANNER_LAYOUTS }>();
   const navigate = useSearchNavigate();
-
-  useEffect(() => {
-    if (layout && isCorrectLayout(layout)) {
-      if (layout === 'list') {
-        dispatch(
-          changePlanner({
-            layout,
-            date: {
-              layout: 'list',
-              fromDate: dayjs().startOf('date').toString(),
-              toDate: dayjs().add(31, 'day').endOf('date').toString(),
-            },
-          })
-        );
-      } else {
-        dispatch(changePlanner({ layout, date: new Date().toString() }));
-      }
-    }
-  }, []);
-
-  const isCorrectLayout = (l: PlannerMode['layout'] | undefined) => {
+  const isCorrectLayout = (l: PLANNER_LAYOUTS | undefined) => {
     return l && layouts.includes(l);
   };
 
   if (isCorrectLayout(layout) && layout) {
     return (
       <Routes>
+        <Route
+          index
+          element={
+            <Navigate
+              to={`/${ServicesNames.PLANNER}/${layout}/${DEFAULT_PLANNER_STATUS}`}
+            />
+          }
+        />
         <Route
           path={':taskStatus/*'}
           element={<CalendarStatusProxy layout={layout} />}
@@ -67,7 +57,11 @@ export const PlannerController: FC = () => {
         errorType={'SYSTEM_ERROR'}
         action={{
           title: 'Перейти к планировщику',
-          onClick: () => navigate('/planner/day/all', { replace: true }),
+          onClick: () => {
+            navigate(
+              `/${ServicesNames.PLANNER}/${DEFAULT_PLANNER_LAYOUT}/${DEFAULT_PLANNER_STATUS}`
+            );
+          },
         }}
       />
     </CenteredContainer>

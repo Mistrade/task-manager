@@ -9,7 +9,7 @@ import { FlexBlock } from '../../../../components/LayoutComponents/FlexBlock';
 import { ErrorBoundary } from '../../../../components/Errors/ErrorBoundary';
 import { Loader } from '../../../../components/Loaders/Loader';
 import { useGetGroupsListQuery } from '../../../../store/api/planning-api';
-import { useCreateEvent } from '../../../../hooks/useCreateEvent';
+import { useCreateEventModal } from '../../../../hooks/useCreateEventModal';
 
 const CreateEventForm = React.lazy(() =>
   import('./CreateEventForm').then(({ CreateEventForm }) => ({
@@ -18,17 +18,14 @@ const CreateEventForm = React.lazy(() =>
 );
 
 export const CreateEventModal: FC<CreateEventModalProps> = ({
-  date,
   onClose,
   clonedEventInfo,
-  onSuccessClonedEvent,
-  onComplete,
 }) => {
   const { data: groupsList, isLoading } = useGetGroupsListQuery({
     exclude: ['Invite'],
   });
 
-  const { declineModal } = useCreateEvent({});
+  const { declineModal } = useCreateEventModal({});
 
   return (
     <Modal isView={true} onClose={declineModal}>
@@ -52,21 +49,12 @@ export const CreateEventModal: FC<CreateEventModalProps> = ({
               >
                 <CreateEventForm
                   groupsList={groupsList?.data || []}
-                  onComplete={(value, taskId) => {
-                    if (value.linkedFrom || value.parentId) {
-                      onSuccessClonedEvent &&
-                        onSuccessClonedEvent(value.time, 'created', taskId);
-                    } else {
-                      onClose && onClose();
-                    }
-                  }}
                   onCancel={(value) => {
                     onClose && onClose();
                     if (clonedEventInfo?.parentId) {
                       history.back();
                     }
                   }}
-                  date={date}
                 />
               </React.Suspense>
             </Loader>

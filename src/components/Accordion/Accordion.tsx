@@ -34,14 +34,14 @@ export const Accordion: FC<AccordionProps> = ({
       additionalCss={css`
         transition: 0.6s ease-in-out;
       `}
-      overflow={'hidden'}
+      // overflow={'hidden'}
     >
       <FlexBlock
         direction={'row'}
         justify={'space-between'}
         gap={6}
-        pl={6}
-        pr={6}
+        // pl={6}
+        // pr={6}
         align={'center'}
         bgColor={'inherit'}
       >
@@ -77,15 +77,18 @@ export const Accordion: FC<AccordionProps> = ({
           </FlexBlock>
         )}
       </FlexBlock>
-      <FlexBlock
-        direction={'column'}
-        width={'100%'}
-        style={{ height: isOpen ? 'fit-content' : '0px' }}
-        p={isOpen ? 6 : 0}
-        overflow={isOpen ? 'unset' : 'hidden'}
-      >
-        {children}
-      </FlexBlock>
+      {isOpen && (
+        <FlexBlock
+          direction={'column'}
+          width={'100%'}
+          style={{ height: isOpen ? 'fit-content' : '0px' }}
+          pt={isOpen ? 6 : 0}
+          pb={isOpen ? 6 : 0}
+          overflow={isOpen ? 'unset' : 'hidden'}
+        >
+          {children}
+        </FlexBlock>
+      )}
     </FlexBlock>
   );
 };

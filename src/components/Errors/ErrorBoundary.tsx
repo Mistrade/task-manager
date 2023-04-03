@@ -1,4 +1,5 @@
 import { Component, ReactNode } from 'react';
+import { FlexBlock } from '../LayoutComponents/FlexBlock';
 import { ErrorScreen, ErrorScreenProps } from './ErrorScreen';
 
 export class ErrorBoundary extends Component<
@@ -18,11 +19,18 @@ export class ErrorBoundary extends Component<
   render(): JSX.Element {
     if (this.state?.error) {
       return (
-        <ErrorScreen
-          title={this.props.title}
-          description={this.props.description}
-          errorType={this.props.errorType}
-        />
+        <FlexBlock
+          width={'100%'}
+          height={'100%'}
+          justify={'100%'}
+          align={'100%'}
+        >
+          <ErrorScreen
+            title={this.props.title}
+            description={this.props.description}
+            errorType={this.props.errorType}
+          />
+        </FlexBlock>
       );
     }
 

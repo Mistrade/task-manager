@@ -5,17 +5,18 @@ import { HeaderLinkStyled } from './HeaderLink.styled.';
 import { useLocation } from 'react-router';
 import { NavigationContainer } from './MainHeader.styled';
 import { useAppSelector } from '../../../store/hooks/hooks';
-import { CalendarCurrentSelector } from '../../../store/selectors/calendarItems';
 import { EmptyButtonStyled } from '../../Buttons/EmptyButton.styled';
 import { AppLogoIcon } from '../../Icons/AppIcon/AppLogoIcon';
 import { toast } from 'react-toastify';
 import { Heading } from '../../Text/Heading';
 import { currentColor } from '../../../common/constants';
 import { UserInfoContext } from '../../../Context/userInfo.context';
+import { ServicesNames } from '../../../store/reducers/global';
 
 interface NavigationArrayItem {
   title: string;
   path: string;
+  serviceName: ServicesNames;
 }
 
 const PageHeaderArray = [
@@ -26,22 +27,24 @@ const PageHeaderArray = [
 export const MainHeaderBody: FC = () => {
   const { pathname } = useLocation();
   const userInfo = useContext(UserInfoContext);
-
-  const { layout } = useAppSelector(CalendarCurrentSelector);
-  const { statuses } = useAppSelector((state) => state.planner);
+  const { serviceName } = useAppSelector((state) => state.global);
 
   const NavigationArray: Array<NavigationArrayItem> = useMemo(
     () => [
       {
-        title: 'Календарь',
-        path: userInfo ? `/planner/${layout}/${statuses}` : '/planner',
+        title: 'Мои дела',
+        path: userInfo
+          ? `/${ServicesNames.PLANNER}/day/all`
+          : `/${ServicesNames.PLANNER}`,
+        serviceName: ServicesNames.PLANNER,
       },
       {
         title: 'Мои контакты',
-        path: '/contacts',
+        path: `/${ServicesNames.FRIENDS}`,
+        serviceName: ServicesNames.FRIENDS,
       },
     ],
-    [layout, statuses]
+    []
   );
 
   useEffect(() => {
@@ -85,9 +88,7 @@ export const MainHeaderBody: FC = () => {
                 key={nav.path}
                 to={nav.path}
                 title={nav.title}
-                isSelected={pathname
-                  .toLowerCase()
-                  .startsWith(nav.path.toLowerCase())}
+                isSelected={nav.serviceName === serviceName}
               >
                 {nav.title}
               </HeaderLinkStyled>

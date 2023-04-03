@@ -1,5 +1,5 @@
 import React from 'react';
-import { createGlobalStyle, css } from 'styled-components';
+import styled, { createGlobalStyle, css } from 'styled-components';
 import './common/dayjs';
 import { FlexBlock } from './components/LayoutComponents/FlexBlock';
 import { MainHeader } from './components/LayoutComponents/MainHeader/MainHeader';
@@ -25,23 +25,24 @@ const GlobalStyled = createGlobalStyle(
   `
 );
 
-function App() {
-  // const { data: userInfo, isFetching, isError } = useConfirmSessionQuery();
+const AppContainer = styled('main')`
+  display: flex;
+  flex-grow: 3;
+  background-color: ${pageHeaderColor};
+  flex-direction: row;
+  overflow: hidden;
+`;
 
+function App() {
   return (
     <UserInfoProvider>
       <FlexBlock width={'100%'} direction={'column'} height={'100vh'}>
         <GlobalStyled />
         <TooltipStyled />
         <MainHeader />
-        <FlexBlock
-          grow={3}
-          direction={'row'}
-          bgColor={pageHeaderColor}
-          overflow={'hidden'}
-        >
+        <AppContainer>
           <AppRoutes />
-        </FlexBlock>
+        </AppContainer>
       </FlexBlock>
       <ToastContainer
         pauseOnHover={true}

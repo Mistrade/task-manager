@@ -25,7 +25,6 @@ import { SelectLinks } from '../../../../components/Input/SelectInput/CalendarSe
 import { useCreateEventMutation } from '../../../../store/api/planning-api';
 import { TextAreaInput } from '../../../../components/Input/TextAreaInput/TextAreaInput';
 import { DateHelper } from '../../../../common/calendarSupport/dateHelper';
-import { ObjectId } from '../../../../store/api/rtk-api.types';
 import { Heading } from '../../../../components/Text/Heading';
 import { Switcher } from '../../../../components/Switcher/Switcher';
 import {
@@ -34,12 +33,14 @@ import {
   ToggleEventStatus,
 } from '../../TaskInformer/SupportsComponent/ToggleTaskInformerButtons';
 import { GroupModelResponse } from '../../../../store/api/planning-api/types/groups.types';
-import { useCreateEvent } from '../../../../hooks/useCreateEvent';
+import { useCreateEventModal } from '../../../../hooks/useCreateEventModal';
 import { CatchHandleForToast } from '../../../../store/api/tools';
+import { useAppSelector } from '../../../../store/hooks/hooks';
+import { createEventInitialStateSelector } from '../../../../store/selectors/calendarItems';
 
 interface CreateEventFormProps {
-  onComplete?: (data: CreateEventDataObject, taskId?: ObjectId) => void;
-  date: Date | null;
+  // onComplete?: (data: CreateEventDataObject, taskId?: ObjectId) => void;
+  // date: Date | null;
   onCancel?: (data: CreateEventDataObject) => void;
   groupsList?: Array<GroupModelResponse>;
 }
@@ -88,15 +89,9 @@ const switcherList = [
   { title: 'Связи', type: 'chains' },
 ];
 
-export const CreateEventForm: FC<CreateEventFormProps> = ({
-  date,
-  onComplete,
-  onCancel,
-  groupsList,
-}) => {
-  const { initialState, prevUrl, declineModal, clearState } = useCreateEvent(
-    {}
-  );
+export const CreateEventForm: FC<CreateEventFormProps> = ({ groupsList }) => {
+  const { declineModal, clearState } = useCreateEventModal({});
+  const initialState = useAppSelector(createEventInitialStateSelector);
   const [addTask, { isLoading, status }] = useCreateEventMutation();
 
   //TODO убрать CalendarTaskItem, создать нормальные тип, который будет уходить не сервак
@@ -105,7 +100,7 @@ export const CreateEventForm: FC<CreateEventFormProps> = ({
       await addTask(values)
         .unwrap()
         .then((response) => {
-          onComplete && onComplete(values, response?.data?.eventId);
+          // onComplete && onComplete(values, response?.data?.eventId);
           clearState();
         })
         .catch(CatchHandleForToast);
@@ -229,7 +224,7 @@ export const CreateEventForm: FC<CreateEventFormProps> = ({
                 </SelectListContainer>
               )}
               value={DateHelper.getHumanizeDateValue(
-                formik.values.time || date || new Date()
+                formik.values.time || new Date()
               )}
               label={'Начало'}
               containerProps={{ flex: '1 0 calc(50% - 6px)', maxWidth: '50%' }}
@@ -263,7 +258,7 @@ export const CreateEventForm: FC<CreateEventFormProps> = ({
                 </SelectListContainer>
               )}
               value={DateHelper.getHumanizeDateValue(
-                formik.values.timeEnd || date || new Date()
+                formik.values.timeEnd || new Date()
               )}
               label={'Завершение'}
               containerProps={{ flex: '1 0 calc(50% - 6px)', maxWidth: '50%' }}

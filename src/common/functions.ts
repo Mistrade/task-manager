@@ -1,12 +1,8 @@
 import {
   EventItem,
   EventsStorage,
-  PlannerDateMode,
-  PlannerListMode,
   PlannerMode,
   PlannerMonthMode,
-  PlannerWeekMode,
-  PlannerYearMode,
 } from '../pages/Planner/planner.types';
 import dayjs from 'dayjs';
 import {
@@ -17,7 +13,7 @@ import {
   ChangeYearCurrentFn,
   ShortChangeCurrentPattern,
 } from './commonTypes';
-import { MonthList } from './constants';
+import { MonthList, PLANNER_LAYOUTS } from './constants';
 import { DateHelper } from './calendarSupport/dateHelper';
 import { ShortEventInfoModel } from '../store/api/planning-api/types/event-info.types';
 import { UserModel } from '../store/api/session-api/session-api.types';
@@ -171,10 +167,11 @@ export const changeListCurrentHandler: ChangeListCurrentFn = (
 };
 
 const getMonthCalendarTitle = (
-  current: PlannerMonthMode,
+  currentDate: Date,
   withTodayMonth?: boolean
 ): string => {
-  const { year, month } = current;
+  const year = currentDate.getFullYear();
+  const month = currentDate.getMonth();
   const m = MonthList[month];
   const today = dayjs();
 
@@ -185,9 +182,8 @@ const getMonthCalendarTitle = (
   return `${m}/${year} г. ${todayTitle}`.trim();
 };
 
-const getWeekCalendarTitle = (current: PlannerWeekMode): string => {
-  const { aroundDate } = current;
-  const d = dayjs(aroundDate);
+const getWeekCalendarTitle = (currentDate: Date): string => {
+  const d = dayjs(currentDate);
   const w = d.week();
 
   const m: PlannerMonthMode = {
@@ -198,43 +194,46 @@ const getWeekCalendarTitle = (current: PlannerWeekMode): string => {
   return `Неделя ${w}, ${m.year}г.`;
 };
 
-const getYearCalendarTitle = (current: PlannerYearMode) => {
-  const { year } = current;
-  return `Календарь ${year}г.`;
+const getYearCalendarTitle = (currentDate: Date) => {
+  return `Календарь ${currentDate.getFullYear()}г.`;
 };
 
-const getDayCalendarTitle = (current: PlannerDateMode) => {
-  const { date } = current;
-  const d = dayjs(date);
-  return DateHelper.getHumanizeDateValue(d.toDate(), { withTime: false });
+const getDayCalendarTitle = (currentDate: Date) => {
+  return DateHelper.getHumanizeDateValue(currentDate, { withTime: false });
 };
 
-const getListCalendarTitle = (current: PlannerListMode) => {
-  const start = DateHelper.getHumanizeDateValue(current.fromDate, {
+const getListCalendarTitle = (currentDate: Date) => {
+  const start = DateHelper.getHumanizeDateValue(currentDate, {
     withYear: false,
     withTime: false,
   });
-  const end = DateHelper.getHumanizeDateValue(current.toDate, {
-    withYear: false,
-    withTime: false,
-  });
+  const end = DateHelper.getHumanizeDateValue(
+    dayjs(currentDate).add(3, 'day').toDate(),
+    {
+      withYear: false,
+      withTime: false,
+    }
+  );
 
   return `${start} - ${end}`;
 };
 
-export const getCalendarTitle = (current: PlannerMode) => {
-  switch (current.layout) {
-    case 'month':
-      return getMonthCalendarTitle(current, false);
-    case 'week':
-      return getWeekCalendarTitle(current);
-    case 'day':
-      return getDayCalendarTitle(current);
-    case 'year':
-      return getYearCalendarTitle(current);
-    case 'list':
-      return getListCalendarTitle(current);
-    case 'favorites':
+export const getCalendarTitle = (
+  currentLayout: PLANNER_LAYOUTS,
+  currentDate: Date
+): string => {
+  switch (currentLayout) {
+    case PLANNER_LAYOUTS.MONTH:
+      return getMonthCalendarTitle(currentDate, false);
+    case PLANNER_LAYOUTS.WEEK:
+      return getWeekCalendarTitle(currentDate);
+    case PLANNER_LAYOUTS.DAY:
+      return getDayCalendarTitle(currentDate);
+    case PLANNER_LAYOUTS.YEAR:
+      return getYearCalendarTitle(currentDate);
+    case PLANNER_LAYOUTS.LIST:
+      return getListCalendarTitle(currentDate);
+    case PLANNER_LAYOUTS.FAVORITES:
       return 'Избранное';
   }
 };

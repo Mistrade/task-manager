@@ -1,15 +1,13 @@
 import { useAppDispatch, useAppSelector } from '../store/hooks/hooks';
-import { useCallback } from 'react';
+import { useCallback, useContext } from 'react';
 import { useLocation } from 'react-router';
-import { CreateEventDataObject } from '../pages/Planner/planner.types';
 import {
   clearCreateInitialState,
   CreateEventInitialState,
-  PlannerReducerState,
   setCreateEventInitialState,
 } from '../store/reducers/planner-reducer';
 import { useSearchNavigate } from './useSearchNavigate';
-import { createEventInitialStateSelector } from '../store/selectors/calendarItems';
+import { PlannerContext } from '../Context/planner.context';
 
 interface UseCreateEventProps {
   useReturnBackOnDecline?: boolean;
@@ -20,10 +18,8 @@ interface UseCreateEventReturned {
 
   navigateToModal(): void;
 
-  initialState: CreateEventDataObject;
-  prevUrl: PlannerReducerState['createEventPrevUrl'];
-
   declineModal(): void;
+
   clearState(): void;
 }
 
@@ -31,29 +27,25 @@ type UseCreateEventHook = (
   props: UseCreateEventProps
 ) => UseCreateEventReturned;
 
-export const useCreateEvent: UseCreateEventHook = ({
+export const useCreateEventModal: UseCreateEventHook = ({
   useReturnBackOnDecline,
 }) => {
-  const {
-    statuses,
-    planner: { layout },
-    createEventPrevUrl,
-  } = useAppSelector((state) => state.planner);
+  const { createEventPrevUrl } = useAppSelector((state) => state.planner);
 
-  const createEventInitialState = useAppSelector(
-    createEventInitialStateSelector
-  );
+  const {
+    methods: { plannerNavigate },
+  } = useContext(PlannerContext);
+
   const location = useLocation();
   const dispatch = useAppDispatch();
   const navigate = useSearchNavigate();
 
   const navigateToModal = useCallback(() => {
-    navigate(`/planner/${layout}/${statuses}/create`);
-  }, [statuses, layout, navigate]);
+    plannerNavigate('createEventModal').go();
+  }, [plannerNavigate]);
 
   const openModal: UseCreateEventReturned['openModal'] = useCallback(
     (initialValues) => {
-      console.log('open Modal with props: ', initialValues);
       dispatch(
         setCreateEventInitialState({
           data: initialValues || null,
@@ -63,7 +55,7 @@ export const useCreateEvent: UseCreateEventHook = ({
 
       navigateToModal();
     },
-    [useReturnBackOnDecline, statuses, layout, navigate]
+    [useReturnBackOnDecline, navigate]
   );
 
   const clearState = useCallback(() => {
@@ -75,16 +67,14 @@ export const useCreateEvent: UseCreateEventHook = ({
       if (createEventPrevUrl) {
         navigate(createEventPrevUrl, { replace: true });
       } else {
-        navigate(`/planner/${layout}/${statuses}`);
+        plannerNavigate('current').go();
       }
       clearState();
-    }, [useReturnBackOnDecline, createEventPrevUrl, statuses, layout]);
+    }, [createEventPrevUrl, plannerNavigate]);
 
   return {
     openModal,
     navigateToModal,
-    initialState: createEventInitialState,
-    prevUrl: createEventPrevUrl,
     declineModal,
     clearState,
   };

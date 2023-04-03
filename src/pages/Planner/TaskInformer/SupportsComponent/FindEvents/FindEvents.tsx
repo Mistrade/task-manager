@@ -1,24 +1,22 @@
 import { FC, ReactNode, useEffect } from 'react';
 import { useLazyGetShortEventsArrayQuery } from '../../../../../store/api/planning-api';
-import dayjs from 'dayjs';
 import { ExtendSelectableEventListProps } from './EventsList';
 import { FlexBlock } from '../../../../../components/LayoutComponents/FlexBlock';
-import {
-  EventFiltersProps,
-  useEventFilters,
-} from '../../../../../hooks/useEventFilters';
+import { useEventFilters } from '../../../../../hooks/useEventFilters';
 import { SmartFindEventFilters } from './SmartFindEventFilters';
 import { css } from 'styled-components';
 import { PreviewEventsList } from './PreviewEventsList';
-import { EventInfoModel } from '../../../../../store/api/planning-api/types/event-info.types';
-import { CatchHandleForToast } from '../../../../../store/api/tools';
+import {
+  EventInfoModel,
+  GetEventsFiltersRequestProps,
+} from '../../../../../store/api/planning-api/types/event-info.types';
 
 export interface FindEventsProps
   extends Partial<ExtendSelectableEventListProps> {
   buttons?: ReactNode;
   taskInfo: EventInfoModel;
-  excludeFromFilters?: EventFiltersProps['exclude'];
-  chainsFilter?: EventFiltersProps['chainsFilter'];
+  excludeFromFilters?: GetEventsFiltersRequestProps['exclude'];
+  chainsFilter?: GetEventsFiltersRequestProps['chainsFilter'];
 }
 
 export const FindEvents: FC<FindEventsProps> = ({
@@ -34,14 +32,11 @@ export const FindEvents: FC<FindEventsProps> = ({
     {
       initialValues: {
         title: null,
-        end: null,
-        start: null,
-        onlyFavorites: false,
-        taskStatus: 'all',
+        status: 'all',
         priority: null,
-        exclude: excludeFromFilters,
-        utcOffset: dayjs().utcOffset(),
-        chainsFilter,
+        // exclude: excludeFromFilters,
+        // utcOffset: dayjs().utcOffset(),
+        // chainsFilter,
       },
       debounceTimeout: 500,
       useNavigate: false,
@@ -58,44 +53,58 @@ export const FindEvents: FC<FindEventsProps> = ({
     { data: eventsArray, isFetching: isFetchingTaskList, error },
   ] = useLazyGetShortEventsArrayQuery();
 
-  useEffect(() => {
-    const {
-      end,
-      title,
-      priority,
-      onlyFavorites,
-      start,
-      taskStatus,
-      exclude,
-      chainsFilter: ch,
-    } = debounceValue;
-    const startDate = dayjs(start);
-    const endDate = dayjs(end);
+  {
+    /*useEffect(() => {*/
+  }
+  {
+    /*  const {*/
+  }
+  //     end,
+  //     title,
+  //     priority,
+  //     onlyFavorites,
+  //     start,
+  //     taskStatus,
+  //     exclude,
+  //     chainsFilter: ch,
+  //   } = debounceValue;
+  {
+    /*  const startDate = dayjs(start);*/
+  }
+  {
+    /*  const endDate = dayjs(end);*/
+  }
+  //
+  //   if (
+  //     (start && !startDate.isValid()) ||
+  //     (end && !endDate.isValid()) ||
+  //     startDate.isSame(end, 'minutes')
+  //   ) {
+  {
+    /*    return;*/
+  }
+  {
+    /*  }*/
+  }
 
-    if (
-      (start && !startDate.isValid()) ||
-      (end && !endDate.isValid()) ||
-      startDate.isSame(end, 'minutes')
-    ) {
-      return;
-    }
-
-    if (title || priority || end || start) {
-      getEventsArray({
-        utcOffset: dayjs().utcOffset(),
-        title,
-        priority,
-        fromDate: start ? dayjs(start).utc().toString() : '',
-        toDate: end ? dayjs(end).utc().toString() : '',
-        taskStatus,
-        exclude,
-        chainsFilter: ch,
-      })
-        .unwrap()
-        .then((r) => console.log(r))
-        .catch(CatchHandleForToast);
-    }
-  }, [debounceValue]);
+  {
+    /*  if (title || priority || end || start) {*/
+  }
+  //     getEventsArray({
+  //       utcOffset: dayjs().utcOffset(),
+  //       title,
+  //       priority,
+  //       fromDate: start ? dayjs(start).utc().toString() : '',
+  //       toDate: end ? dayjs(end).utc().toString() : '',
+  //       taskStatus,
+  //       exclude,
+  //       chainsFilter: ch,
+  //     })
+  //       .unwrap()
+  //       .then((r) => console.log(r))
+  //       .catch(CatchHandleForToast);
+  //   }
+  // }, [debounceValue]);
 
   return (
     <PreviewEventsList

@@ -5,6 +5,7 @@ import { FlexBlock } from '../../../../../components/LayoutComponents/FlexBlock'
 import { NotFoundIcon } from '../../../../../components/Icons/Icons';
 import { Button } from '../../../../../components/Buttons/Buttons.styled';
 import { GlobalTaskListProps } from '../../../planner.types';
+import { useCreateEventModal } from '../../../../../hooks/useCreateEventModal';
 
 export interface NotFoundTaskProps
   extends Omit<GlobalTaskListProps, 'renderTaskCount'> {
@@ -23,12 +24,9 @@ const NotFoundTitle = styled('h2')`
     margin-bottom: 24px;
   }
 `;
-export const NotFoundTask: FC<NotFoundTaskProps> = ({
-  onAddTask,
-  day,
-  text,
-  actions,
-}) => {
+export const NotFoundTask: FC<NotFoundTaskProps> = ({ day, text, actions }) => {
+  const { openModal } = useCreateEventModal({});
+
   return (
     <FlexBlock
       height={400}
@@ -50,7 +48,7 @@ export const NotFoundTask: FC<NotFoundTaskProps> = ({
         )}
       </NotFoundTitle>
       <FlexBlock direction={'column'} gap={16}>
-        <Button onClick={() => onAddTask && day && onAddTask(day)}>
+        <Button onClick={() => openModal({ time: day.toString() })}>
           Создать событие
         </Button>
         {actions}

@@ -1,94 +1,97 @@
-import React, { FC, useCallback, useMemo } from 'react';
+import React, { FC, useCallback, useContext, useMemo } from 'react';
 import { FlexBlock } from '../../../components/LayoutComponents/FlexBlock';
-import { DaySettingsPanelProps } from '../planner.types';
+import { DaySettingsPanelProps, PlannerMode } from '../planner.types';
 import { SmallCalendarMonthTitle } from '../SmallMotnCalendar/SmallCalendarMonthTitle';
 import dayjs from 'dayjs';
 import { Tooltip } from '../../../components/Tooltip/Tooltip';
 import { GroupList } from '../Groups/GroupList';
 import { PourDatesProps, SmallMonth } from '../SmallMotnCalendar/SmallMonth';
-import { ShortChangeCurrentPattern } from '../../../common/commonTypes';
-import {
-  changeCurrentModeHandler,
-  getCalendarTitle,
-} from '../../../common/functions';
-import { useAppSelector } from '../../../store/hooks/hooks';
+import { getCalendarTitle } from '../../../common/functions';
 import { CalendarCurrentTitle } from '../Header/CalendarCurrentTitle';
 import { css } from 'styled-components';
+import { useCreateEventModal } from '../../../hooks/useCreateEventModal';
+import { PlannerContext } from '../../../Context/planner.context';
+import { PLANNER_LAYOUTS } from '../../../common/constants';
 
-export const PlannerOptionsPanel: FC<DaySettingsPanelProps> = ({
-  onSelectDate,
-  current,
-  monthItem,
-  onChangeCurrent,
-  onAddTask,
-}) => {
-  const { statuses, dateOfCreateEvent } = useAppSelector(
-    (state) => state.planner
-  );
+export const PlannerOptionsPanel: FC<DaySettingsPanelProps> = ({}) => {
+  const {
+    methods: { updateCurrentDate, updateCurrentLayoutAndNavigate },
+    currentLayout,
+    currentStatus,
+    currentDate,
+    layoutItems: { optionsPanel: optionsPanelMonthItem },
+  } = useContext(PlannerContext);
+  const { openModal: openCreateEventModal } = useCreateEventModal({});
 
-  const currentDate: Date = useMemo(() => {
-    switch (current.layout) {
-      case 'day':
-        return current.date || dayjs().toDate();
-      case 'week':
-        const d = dayjs(current.aroundDate);
+  const renderDate: Date = useMemo(() => {
+    switch (currentLayout) {
+      case PLANNER_LAYOUTS.DAY:
+        return currentDate.day;
+      case PLANNER_LAYOUTS.WEEK:
+        const d = dayjs(currentDate.week);
 
         if (d.startOf('week').month() !== d.endOf('week').month()) {
           return d.startOf('month').toDate();
         }
 
         return d.startOf('week').toDate();
-      case 'month':
+      case PLANNER_LAYOUTS.MONTH:
         return dayjs()
-          .set('year', current.year)
-          .set('month', current.month)
+          .set('year', currentDate.month.getFullYear())
+          .set('month', currentDate.month.getMonth())
           .startOf('month')
           .toDate();
-      case 'year':
+      case PLANNER_LAYOUTS.YEAR:
         return dayjs().startOf('month').toDate();
-      case 'list':
-        return current.fromDate;
-      case 'favorites':
-        return dayjs().toDate();
+      case PLANNER_LAYOUTS.LIST:
+        return currentDate.list;
+      case PLANNER_LAYOUTS.FAVORITES:
+        return currentDate.favorites;
     }
-  }, [current]);
+  }, [currentLayout, currentDate]);
 
   const pour: PourDatesProps | undefined = useMemo(() => {
-    if (current.layout === 'week') {
+    if (currentLayout === PLANNER_LAYOUTS.WEEK) {
       return {
         type: 'week',
-        date: current.aroundDate,
+        date: currentDate.week,
       };
     }
 
     return undefined;
-  }, [current]);
+  }, [currentLayout, currentDate]);
 
-  const onChangeCurrentHandler = useCallback(
-    (pattern: ShortChangeCurrentPattern = 'today') => {
-      onChangeCurrent &&
-        onChangeCurrent(
-          changeCurrentModeHandler(current, pattern),
-          current.layout
-        );
-    },
-    [current, onChangeCurrent]
+  const title: string = useMemo(
+    () => getCalendarTitle(currentLayout, currentDate[currentLayout]),
+    [currentLayout, currentDate]
   );
 
-  const title: string = useMemo(() => {
-    return getCalendarTitle(current);
-  }, [current]);
-
   const addTaskHandler = useCallback(() => {
-    if (current.layout !== 'day') {
-      return onAddTask(new Date());
+    if (currentLayout !== PLANNER_LAYOUTS.DAY) {
+      return openCreateEventModal({ time: new Date().toString() });
     }
 
-    return onAddTask(current.date);
-  }, [current, dateOfCreateEvent]);
+    return openCreateEventModal({
+      time: currentDate[currentLayout].toString(),
+      timeEnd: dayjs(currentDate[currentLayout])
+        .add(1, 'hour')
+        .toDate()
+        .toString(),
+    });
+  }, [currentDate, currentLayout]);
+
+  const MonthCurrent: PlannerMode = useMemo(
+    () => ({
+      layout: 'month',
+      month: dayjs().month(),
+      year: dayjs().year(),
+    }),
+    []
+  );
 
   return (
     <FlexBlock
+      width={'100%'}
       direction={'column'}
       grow={0}
       align={'flex-start'}
@@ -100,24 +103,38 @@ export const PlannerOptionsPanel: FC<DaySettingsPanelProps> = ({
       <FlexBlock mb={24} width={'100%'} justify={'center'}>
         <CalendarCurrentTitle
           title={title}
-          current={current}
-          statuses={statuses}
+          currentLayout={currentLayout}
+          statuses={currentStatus}
           onAddTask={addTaskHandler}
-          onChangeSwitcherState={onChangeCurrentHandler}
+          onChangeSwitcherState={updateCurrentDate}
         />
       </FlexBlock>
       <FlexBlock minHeight={200} mb={24}>
         <SmallMonth
           pourDates={pour}
-          monthItem={monthItem}
-          title={<SmallCalendarMonthTitle monthItem={monthItem} />}
-          current={{
-            layout: 'month',
-            month: currentDate.getMonth(),
-            year: currentDate.getFullYear(),
-          }}
-          value={currentDate}
-          onSelectDate={onSelectDate}
+          monthItem={optionsPanelMonthItem}
+          title={
+            <SmallCalendarMonthTitle
+              monthItem={optionsPanelMonthItem}
+              onClick={(data) =>
+                updateCurrentLayoutAndNavigate(
+                  PLANNER_LAYOUTS.MONTH,
+                  new Date(data.year, data.monthOfYear, 1)
+                )
+              }
+            />
+          }
+          current={MonthCurrent}
+          value={currentDate[currentLayout]}
+          onSelectDate={(date) =>
+            updateCurrentLayoutAndNavigate(PLANNER_LAYOUTS.DAY, date.value)
+          }
+          onSelectWeek={(date) =>
+            updateCurrentLayoutAndNavigate(
+              PLANNER_LAYOUTS.WEEK,
+              date.aroundDate
+            )
+          }
         />
       </FlexBlock>
       <FlexBlock

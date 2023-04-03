@@ -11,15 +11,16 @@ import {
 import { currentFromStoreToDefault } from './utils';
 import dayjs from 'dayjs';
 
-const rootCalendarSelector: CreateSelectorReturnType<RootState['planner']> =
-  createSelector(
-    (state: RootState) => state,
-    (state) => state.planner
-  );
+export const RootPlannerSelector: CreateSelectorReturnType<
+  RootState['planner']
+> = createSelector(
+  (state: RootState) => state,
+  (state) => state.planner
+);
 
 const rootCalendarCurrentSelector: CreateSelectorReturnType<
   RootState['planner']['planner']
-> = createSelector(rootCalendarSelector, (state) => state.planner);
+> = createSelector(RootPlannerSelector, (state) => state.planner);
 
 export const CalendarCurrentSelector: CreateSelectorReturnType<PlannerMode> =
   createSelector(
@@ -30,12 +31,12 @@ export const CalendarCurrentSelector: CreateSelectorReturnType<PlannerMode> =
 
 const CalendarStatusesSelector: CreateSelectorReturnType<
   RootState['planner']['statuses']
-> = createSelector(rootCalendarSelector, (state) => state.statuses);
+> = createSelector(RootPlannerSelector, (state) => state.statuses);
 
 const CalendarStatusesAndCurrentSelector: CreateSelectorReturnType<{
   planner: PlannerMode;
   statuses: RootState['planner']['statuses'];
-}> = createSelector(rootCalendarSelector, (state) => {
+}> = createSelector(RootPlannerSelector, (state) => {
   return {
     planner: currentFromStoreToDefault(state.planner),
     statuses: state.statuses,
@@ -43,7 +44,7 @@ const CalendarStatusesAndCurrentSelector: CreateSelectorReturnType<{
 });
 
 export const createEventInitialStateSelector: CreateSelectorReturnType<CreateEventDataObject> =
-  createSelector(rootCalendarSelector, (state) => {
+  createSelector(RootPlannerSelector, (state) => {
     const initialState: CreateEventInitialState | null =
       state.createEventInitialState;
 

@@ -1,10 +1,9 @@
-import React, { FC } from 'react';
+import React, { FC, useContext } from 'react';
 import { FlexBlock } from '../../../../components/LayoutComponents/FlexBlock';
 import { SelectPriorityInput } from '../../../../components/Input/SelectInput/CalendarSelectInputs/SelectPriorityInput';
 import { TextInput } from '../../../../components/Input/TextInput/TextInput';
 import { TaskListEventFiltersContainer } from '../DayCalendar/TaskList/TaskList.styled';
 import { Switcher } from '../../../../components/Switcher/Switcher';
-import { useAppSelector } from '../../../../store/hooks/hooks';
 import { IFindEventFilterProps } from './find-event-filters.types';
 import { defaultColor, TaskStatusesList } from '../../../../common/constants';
 import { Tooltip } from '../../../../components/Tooltip/Tooltip';
@@ -12,6 +11,7 @@ import { EmptyButtonStyled } from '../../../../components/Buttons/EmptyButton.st
 import { FiltersIcon, SettingsIcon } from '../../../../components/Icons/Icons';
 import { Checkbox } from '../../../../components/Input/Checkbox/Checkbox';
 import { Button } from '../../../../components/Buttons/Buttons.styled';
+import { PlannerContext } from '../../../../Context/planner.context';
 
 export const FindEventFilter: FC<IFindEventFilterProps> = ({
   values,
@@ -20,7 +20,7 @@ export const FindEventFilter: FC<IFindEventFilterProps> = ({
   statusBadges,
   isLoading,
 }) => {
-  const { statuses } = useAppSelector((state) => state.planner);
+  const { currentStatus } = useContext(PlannerContext);
 
   return (
     <TaskListEventFiltersContainer>
@@ -34,7 +34,7 @@ export const FindEventFilter: FC<IFindEventFilterProps> = ({
           isLoading={isLoading}
           switchersList={TaskStatusesList}
           onClick={(item) => onChangeHandlers.taskStatus(item.type)}
-          selected={statuses}
+          selected={currentStatus}
           badges={statusBadges}
         >
           <Tooltip
