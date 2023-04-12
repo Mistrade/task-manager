@@ -1,9 +1,9 @@
 import { Route } from 'react-router';
-import { SessionInterceptor } from '../Interceptors/SessionInterceptor';
-import { WithSuspense } from '../../Loaders/WithSuspense';
 import React, { FC, useContext } from 'react';
 import { Routes } from 'react-router-dom';
-import { UserInfoContext } from '../../../Context/userInfo.context';
+import { UserInfoContext } from '@src/Context/userInfo.context';
+import { SessionInterceptor } from '@components/AppRoutes/Interceptors/SessionInterceptor';
+import { WithSuspense } from '@components/Loaders/WithSuspense';
 
 const RegistrationForm = React.lazy(() =>
   import('../../Session/Registration').then(({ Registration }) => ({

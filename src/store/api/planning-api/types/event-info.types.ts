@@ -1,12 +1,13 @@
 import {
   CalendarPriorityKeys,
   EventLinkItem,
+  ICheckListItem,
   TaskStatusesType,
-} from '../../../../pages/Planner/planner.types';
-import { UserModel } from '../../session-api/session-api.types';
+} from '@planner/planner.types';
+import { UserModel } from '@api/session-api/session-api.types';
 import { GroupModelResponse } from './groups.types';
-import { ObjectId, UtcDate } from '../../rtk-api.types';
-import { EventFilterTaskStatuses } from '../../../../pages/Planner/RenderModes/FindEventFilter/find-event-filters.types';
+import { ObjectId, UtcDate } from '@api/rtk-api.types';
+import { EventFilterTaskStatuses } from '@planner/RenderModes/FindEventFilter/find-event-filters.types';
 
 export type EventInviteAcceptedStatuses =
   | 'not_accepted'
@@ -14,6 +15,11 @@ export type EventInviteAcceptedStatuses =
   | 'decline';
 export type EventInviteAccessRights = 'viewer' | 'editor' | 'admin';
 export type AccessRightsWithOwner = EventInviteAccessRights | 'owner';
+
+export interface CheckListModel {
+  title: string;
+  data: Array<ICheckListItem>;
+}
 
 export interface EventInfoModel {
   _id: ObjectId;
@@ -36,6 +42,7 @@ export interface EventInfoModel {
   accessRights?: AccessRightsWithOwner;
   acceptedStatus?: EventInviteAcceptedStatuses;
   treeId?: ObjectId | null;
+  checkList?: ObjectId | null;
 }
 
 export type ShortEventItemWithoutUserId = Pick<

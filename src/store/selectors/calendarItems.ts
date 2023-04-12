@@ -1,15 +1,12 @@
+import { CreateEventDataObject, PlannerMode } from '@planner/planner.types';
 import { createSelector } from '@reduxjs/toolkit';
+import dayjs from 'dayjs';
 import { CreateSelectorReturnType, RootState } from '../index';
 import {
   CalendarModeForState,
   CreateEventInitialState,
 } from '../reducers/planner-reducer';
-import {
-  CreateEventDataObject,
-  PlannerMode,
-} from '../../pages/Planner/planner.types';
 import { currentFromStoreToDefault } from './utils';
-import dayjs from 'dayjs';
 
 export const RootPlannerSelector: CreateSelectorReturnType<
   RootState['planner']
@@ -44,7 +41,7 @@ const CalendarStatusesAndCurrentSelector: CreateSelectorReturnType<{
 });
 
 export const createEventInitialStateSelector: CreateSelectorReturnType<CreateEventDataObject> =
-  createSelector(RootPlannerSelector, (state) => {
+  createSelector(RootPlannerSelector, (state): CreateEventDataObject => {
     const initialState: CreateEventInitialState | null =
       state.createEventInitialState;
 
@@ -62,6 +59,13 @@ export const createEventInitialStateSelector: CreateSelectorReturnType<CreateEve
       members: initialState?.members || [],
       link: initialState?.link || null,
       group: initialState?.group || '',
+      parentId: initialState?.parentId,
+      linkedFrom: initialState?.linkedFrom,
+      attachCheckList: initialState?.attachCheckList || false,
+      checkList: {
+        title: initialState?.checkList?.title || 'Чек-лист',
+        data: initialState?.checkList?.data || [],
+      },
     };
   });
 

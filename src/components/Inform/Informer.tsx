@@ -2,8 +2,8 @@ import {
   borderRadiusSize,
   currentColor,
   hoverColor,
-} from '../../common/constants';
-import { FlexBlock } from '../LayoutComponents/FlexBlock';
+} from '@src/common/constants';
+import { FlexBlock } from '@components/LayoutComponents/FlexBlock';
 import { FC, ReactNode } from 'react';
 
 export const Informer: FC<{ children: ReactNode }> = ({ children }) => {

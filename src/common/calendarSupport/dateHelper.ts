@@ -6,13 +6,13 @@ import {
   PlannerMonthMode,
   PlannerWeekMode,
   PlannerYearMode,
-} from '../../pages/Planner/planner.types';
+} from '@pages/planner/planner.types';
 import {
   DATE_HOURS_MINUTES_SECONDS_FORMAT,
   DATE_RENDER_FORMAT_WITH_SEC,
   DeclinationMonthList,
   ShortMonthList,
-} from '../constants';
+} from '@src/common/constants';
 
 export interface HumanizeDateValueOptions {
   withTime?: boolean;

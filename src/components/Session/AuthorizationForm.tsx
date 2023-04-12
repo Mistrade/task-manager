@@ -1,17 +1,17 @@
-import { TextInput } from '../Input/TextInput/TextInput';
+import { TextInput } from '@components/Input/TextInput/TextInput';
 import { useFormik } from 'formik';
-import { Button } from '../Buttons/Buttons.styled';
+import { Button } from '@components/Buttons/Buttons.styled';
 import { SessionFormContainer } from './SessionFormContainer';
-import { Heading } from '../Text/Heading';
-import { FlexBlock } from '../LayoutComponents/FlexBlock';
-import { PasswordInput } from '../Input/PasswordInput/PasswordInput';
-import { useLoginMutation } from '../../store/api/session-api';
+import { Heading } from '@components/Text/Heading';
+import { FlexBlock } from '@components/LayoutComponents/FlexBlock';
+import { PasswordInput } from '@components/Input/PasswordInput/PasswordInput';
+import { useLoginMutation } from '@api/session-api';
 import { toast } from 'react-toastify';
-import { defaultColor } from '../../common/constants';
-import { AuthValidationScheme } from '../../common/validation/session';
-import { useAppSelector } from '../../store/hooks/hooks';
-import { useSearchNavigate } from '../../hooks/useSearchNavigate';
-import { AuthUserRequestProps } from '../../store/api/session-api/session-api.types';
+import { defaultColor } from '@src/common/constants';
+import { AuthValidationScheme } from '@src/common/validation/session';
+import { useAppSelector } from '@redux/hooks/hooks';
+import { useSearchNavigate } from '@hooks/useSearchNavigate';
+import { AuthUserRequestProps } from '@api/session-api/session-api.types';
 import { FC } from 'react';
 
 const initialValues: AuthUserRequestProps = {

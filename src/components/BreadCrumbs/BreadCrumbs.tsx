@@ -1,6 +1,6 @@
-import { BreadCrumbsContainer } from './BreadCrumbs.styled';
-import { TimeBadge } from '../Badge/Badge';
+import { TimeBadge } from '@components/Badge/Badge';
 import React from 'react';
+import { BreadCrumbsContainer } from './BreadCrumbs.styled';
 
 interface BreadCrumbsItem<T> {
   title: string;
@@ -17,7 +17,7 @@ export function BreadCrumbs<T>({ data, onClick }: BreadCrumbsProps<T>) {
   return (
     <BreadCrumbsContainer>
       {data.map((item, index) => (
-        <React.Fragment>
+        <React.Fragment key={item.title}>
           <TimeBadge
             style={{ cursor: 'pointer' }}
             onClick={() => onClick(item.value)}

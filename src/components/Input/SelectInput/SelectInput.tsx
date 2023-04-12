@@ -1,9 +1,15 @@
 import React, { ReactNode } from 'react';
-import { FlexBlock, FlexBlockProps } from '../../LayoutComponents/FlexBlock';
-import { DefaultTextInputProps, TextInput } from '../TextInput/TextInput';
-import { InputActions } from '../InputSupportComponents/InputActions';
-import { InputErrorMessage } from '../InputSupportComponents/InputErrorMessage';
-import { Tooltip } from '../../Tooltip/Tooltip';
+import {
+  FlexBlock,
+  FlexBlockProps,
+} from '@components/LayoutComponents/FlexBlock';
+import {
+  DefaultTextInputProps,
+  TextInput,
+} from '@components/Input/TextInput/TextInput';
+import { InputActions } from '@components/Input/InputSupportComponents/InputActions';
+import { InputErrorMessage } from '@components/Input/InputSupportComponents/InputErrorMessage';
+import { Tooltip } from '@components/Tooltip/Tooltip';
 
 type ExtendableFromTextInput = Omit<DefaultTextInputProps, 'children'>;
 
@@ -34,10 +40,11 @@ export function SelectInput<T>({
       <Tooltip
         theme={'light'}
         delay={100}
-        offset={[0, 15]}
+        offset={[0, 5]}
         maxWidth={500}
         hideOnClick={true}
-        placement={'bottom'}
+        placement={'bottom-start'}
+        arrow={false}
         trigger={'click'}
         interactive={true}
         interactiveBorder={20}

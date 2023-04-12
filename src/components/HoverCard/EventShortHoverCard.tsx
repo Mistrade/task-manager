@@ -1,21 +1,21 @@
-import { FlexBlock } from '../LayoutComponents/FlexBlock';
-import { Badge } from '../Badge/Badge';
 import {
   DateHelper,
   HumanizeDateValueOptions,
-} from '../../common/calendarSupport/dateHelper';
-import { EventIcon } from '../Icons/EventIcon';
-import { convertEventStatus } from '../../common/functions';
-import { PriorityCalendarIcon } from '../Icons/CalendarIcons/PriorityCalendarIcon';
-import { PRIORITY_TITLES } from '../../common/constants';
-import { GroupLogo } from '../../pages/Planner/Groups/GroupList.styled';
+} from '@src/common/calendarSupport/dateHelper';
+import { convertEventStatus } from '@src/common/functions';
+import { PriorityCalendarIcon } from '@components/Icons/CalendarIcons/PriorityCalendarIcon';
+import { PRIORITY_TITLES } from '@src/common/constants';
+import { GroupLogo } from '@pages/planner/Groups/GroupList.styled';
 import React, { FC, useMemo } from 'react';
-import { ShortEventInfoModel } from '../../store/api/planning-api/types/event-info.types';
-import { JoinToEventButton } from '../Buttons/Buttons.styled';
-import { UrlIcon } from '../Icons/SocialNetworkIcons';
-import { UserAvatar } from '../../pages/Planner/Users/UserAvatar';
-import { PreviewDescription } from '../../pages/Planner/RenderModes/DayCalendar/TaskList/TaskList.styled';
-import { TreeIcon } from '../Icons/CalendarIcons/TreeIcon';
+import { ShortEventInfoModel } from '@api/planning-api/types/event-info.types';
+import { JoinToEventButton } from '@components/Buttons/Buttons.styled';
+import { UrlIcon } from '@components/Icons/SocialNetworkIcons';
+import { UserAvatar } from '@pages/planner/Users/UserAvatar';
+import { CutText } from '@pages/planner/RenderModes/DayCalendar/TaskList/TaskList.styled';
+import { TreeIcon } from '@components/Icons/CalendarIcons/TreeIcon';
+import { FlexBlock } from '@components/LayoutComponents/FlexBlock';
+import { Badge } from '@components/Badge/Badge';
+import { EventIcon } from '@components/Icons/EventIcon';
 
 export interface EventShortHoverCardProps {
   event: ShortEventInfoModel;
@@ -35,11 +35,12 @@ export const EventShortHoverCard: FC<EventShortHoverCardProps> = ({
     const end = DateHelper.getHumanizeDateValue(event.timeEnd, options);
 
     return [
-      'c ',
-      <span style={{ fontSize: 14, color: '#000' }}>{start}</span>,
-      '\n',
-      'по ',
-      <span style={{ fontSize: 14, color: '#000' }}>{end}</span>,
+      <span style={{ fontSize: 14, color: '#000' }} key={'0'}>
+        {start}
+      </span>,
+      <span style={{ fontSize: 14, color: '#000' }} key={'1'}>
+        {end}
+      </span>,
     ];
   }, []);
   return (
@@ -82,9 +83,7 @@ export const EventShortHoverCard: FC<EventShortHoverCardProps> = ({
         <GroupLogo color={event.group?.color || ''} size={16} />
         {event.group?.title || ''}
       </FlexBlock>
-      {event.description && (
-        <PreviewDescription>{event.description}</PreviewDescription>
-      )}
+      {event.description && <CutText>{event.description}</CutText>}
       {event.link && (
         <FlexBlock width={'100%'} justify={'center'} mt={12}>
           <JoinToEventButton

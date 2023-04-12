@@ -1,13 +1,13 @@
 import React, { FC, memo, useCallback, useEffect, useState } from 'react';
-import { DatePickerProps } from '../../pages/Planner/planner.types';
-import { SelectListContainer } from '../Input/SelectInput/SelectListContainer';
-import { DatePickerPaper } from './DatePickerPaper';
-import { SelectInput } from '../Input/SelectInput/SelectInput';
-import { FlexBlock } from '../LayoutComponents/FlexBlock';
-import { Button } from '../Buttons/Buttons.styled';
-import { EmptyButtonStyled } from '../Buttons/EmptyButton.styled';
+import { DatePickerProps } from '@pages/planner/planner.types';
 import dayjs from 'dayjs';
-import { DateHelper } from '../../common/calendarSupport/dateHelper';
+import { DateHelper } from '@src/common/calendarSupport/dateHelper';
+import { SelectInput } from '@components/Input/SelectInput/SelectInput';
+import { SelectListContainer } from '@components/Input/SelectInput/SelectListContainer';
+import { FlexBlock } from '@components/LayoutComponents/FlexBlock';
+import { DatePickerPaper } from '@components/DatePicker/DatePickerPaper';
+import { EmptyButtonStyled } from '@components/Buttons/EmptyButton.styled';
+import { Button } from '@components/Buttons/Buttons.styled';
 
 export const DatePicker: FC<DatePickerProps> = memo(
   ({

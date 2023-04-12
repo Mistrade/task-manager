@@ -1,6 +1,6 @@
 import React, { FC, ReactNode } from 'react';
-import { StyledLabel } from '../Input.styled';
-import { FlexBlock } from '../../LayoutComponents/FlexBlock';
+import { StyledLabel } from '@components/Input/Input.styled';
+import { FlexBlock } from '@components/LayoutComponents/FlexBlock';
 
 export interface InputLabelProps {
   inputId?: string;
@@ -17,6 +17,7 @@ export const InputLabel: FC<InputLabelProps> = ({
     return (
       <FlexBlock
         width={'100%'}
+        height={'100%'}
         align={'center'}
         justify={'flex-start'}
         mb={8}

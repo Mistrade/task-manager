@@ -1,14 +1,15 @@
-import { FlexBlock } from '../../LayoutComponents/FlexBlock';
-import { CheckboxStyledInput } from './Checkbox.styled';
+import { FlexBlock } from '@components/LayoutComponents/FlexBlock';
+import { CheckboxStyledInput } from '@components/Input/Checkbox/Checkbox.styled';
 import { ChangeEvent, FC, useRef } from 'react';
 import {
   EmptyCheckboxIcon,
   FillCheckboxIcon,
-} from '../../Icons/InputIcons/Checkbox';
-import { IconProps } from '../../Icons/Icons';
-import { StyledLabel } from '../Input.styled';
-import { EmptyButtonStyled } from '../../Buttons/EmptyButton.styled';
-import { darkColor } from '../../../common/constants';
+} from '@components/Icons/InputIcons/Checkbox';
+import { IconProps } from '@components/Icons/Icons';
+import { EmptyButtonStyled } from '@components/Buttons/EmptyButton.styled';
+import { StyledLabel } from '@components/Input/Input.styled';
+import { darkColor } from '@src/common/constants';
+import { CutText } from '@planner/RenderModes/DayCalendar/TaskList/TaskList.styled';
 
 export interface CheckboxProps {
   type: 'checkbox' | 'radio';
@@ -16,7 +17,7 @@ export interface CheckboxProps {
   onChange?: (e: ChangeEvent<HTMLInputElement>) => void;
   isChecked?: boolean;
   iconProps?: Omit<IconProps, 'onClick'>;
-  id: string;
+  id?: string;
 }
 
 export const Checkbox: FC<CheckboxProps> = ({
@@ -29,7 +30,13 @@ export const Checkbox: FC<CheckboxProps> = ({
 }) => {
   const ref = useRef<HTMLInputElement>(null);
   return (
-    <FlexBlock direction={'row'} justify={'flex-start'} align={'center'}>
+    <FlexBlock
+      direction={'row'}
+      justify={'flex-start'}
+      align={'center'}
+      width={'100%'}
+      overflow={'hidden'}
+    >
       <CheckboxStyledInput
         type={type}
         onChange={onChange}
@@ -46,8 +53,10 @@ export const Checkbox: FC<CheckboxProps> = ({
           <EmptyCheckboxIcon {...iconProps} />
         )}
       </EmptyButtonStyled>
-      <StyledLabel style={{ color: darkColor, fontSize: 14 }}>
-        {title}
+      <StyledLabel>
+        <CutText rows={2} color={darkColor} fontSize={14}>
+          {title}
+        </CutText>
       </StyledLabel>
     </FlexBlock>
   );

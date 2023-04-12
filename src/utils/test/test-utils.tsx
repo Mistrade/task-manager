@@ -1,7 +1,7 @@
+import { createAppStore, RootState } from '@src/store';
 import { render, RenderResult } from '@testing-library/react';
 import React, { ReactElement } from 'react';
 import { Provider } from 'react-redux';
-import { createAppStore, RootState } from '../../store';
 
 export const TestRender = (
   component: ReactElement,

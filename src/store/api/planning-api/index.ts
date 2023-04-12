@@ -1,23 +1,34 @@
+import { SwitcherBadges } from '@components/Switcher/Switcher';
+import { CreateGroupProps } from '@planner/Groups/groups.types';
+import { CreateEventDataObject, EventsStorage } from '@planner/planner.types';
+import { EventFilterTaskStatuses } from '@planner/RenderModes/FindEventFilter/find-event-filters.types';
 import {
   BaseQueryFn,
   createApi,
   FetchArgs,
   fetchBaseQuery,
 } from '@reduxjs/toolkit/dist/query/react';
-import {
-  CreateEventDataObject,
-  EventsStorage,
-} from '../../../pages/Planner/planner.types';
-import { baseServerUrl } from '../config';
-import { SwitcherBadges } from '../../../components/Switcher/Switcher';
+import { mergeArrayWithUserId, MergedObject } from '@src/common/functions';
 import dayjs from 'dayjs';
+import { baseServerUrl } from '../config';
+import { CustomRtkError, MyServerResponse, ObjectId } from '../rtk-api.types';
 import {
-  ArrayOfGroupModel,
-  ChangeSelectGroupRequestProps,
-  GetGroupsListRequestProps,
-  GroupIdObject,
-  GroupModelResponse,
-} from './types/groups.types';
+  CheckListModel,
+  CheckListUpdateRequestData,
+  CreateCheckListRequest,
+} from './types/check-list.types';
+import {
+  CommentModel,
+  CreateCommentRequestProps,
+  UpdateCommentIsImportantRequestData,
+  UpdateCommentMessageState,
+} from './types/comments.types';
+import {
+  AddChainsRequestData,
+  ConnectChildResponse,
+  EventChainsObject,
+} from './types/event-chains.types';
+import { EventHistoryQueryResult } from './types/event-history.types';
 import {
   EventIdObject,
   EventInfoModel,
@@ -29,21 +40,12 @@ import {
   UpdateEventRequestProps,
 } from './types/event-info.types';
 import {
-  CommentModel,
-  CreateCommentRequestProps,
-  UpdateCommentIsImportantRequestData,
-  UpdateCommentMessageState,
-} from './types/comments.types';
-import { EventHistoryQueryResult } from './types/event-history.types';
-import { CustomRtkError, MyServerResponse, ObjectId } from '../rtk-api.types';
-import {
-  AddChainsRequestData,
-  ConnectChildResponse,
-  EventChainsObject,
-} from './types/event-chains.types';
-import { EventFilterTaskStatuses } from '../../../pages/Planner/RenderModes/FindEventFilter/find-event-filters.types';
-import { CreateGroupProps } from '../../../pages/Planner/Groups/groups.types';
-import { mergeArrayWithUserId, MergedObject } from '../../../common/functions';
+  ArrayOfGroupModel,
+  ChangeSelectGroupRequestProps,
+  GetGroupsListRequestProps,
+  GroupIdObject,
+  GroupModelResponse,
+} from './types/groups.types';
 
 export const PlanningApiTagTypes = [
   'Events',
@@ -55,6 +57,7 @@ export const PlanningApiTagTypes = [
   'Chains',
   'EventHistory',
   'Comments',
+  'CheckList',
 ];
 
 export const planningApi = createApi({
@@ -395,6 +398,32 @@ export const planningApi = createApi({
         }),
         invalidatesTags: ['Chains', 'EventHistory'],
       }),
+      createCheckList: mutation<MyServerResponse, CreateCheckListRequest>({
+        query: (arg) => ({
+          url: '/check_list',
+          method: 'POST',
+          body: arg,
+        }),
+        invalidatesTags: ['CheckList'],
+      }),
+      getCheckList: query<
+        MyServerResponse<CheckListModel>,
+        { eventId: ObjectId }
+      >({
+        query: (arg: { eventId: ObjectId }) => ({
+          url: `/check_list/${arg.eventId}`,
+          method: 'GET',
+        }),
+        providesTags: ['CheckList'],
+      }),
+      updateCheckList: mutation<MyServerResponse, CheckListUpdateRequestData>({
+        query: (arg: CheckListUpdateRequestData) => ({
+          url: '/check_list/update',
+          method: 'POST',
+          body: arg,
+        }),
+        invalidatesTags: (result, error) => (error ? [] : ['CheckList']),
+      }),
       refetchPlanningApi: mutation({
         queryFn: () => ({ data: null }),
         invalidatesTags: PlanningApiTagTypes,
@@ -428,4 +457,7 @@ export const {
   useConnectChainsMutation,
   useToggleIsImportantCommentStateMutation,
   useUpdateCommentMutation,
+  useCreateCheckListMutation,
+  useGetCheckListQuery,
+  useUpdateCheckListMutation,
 } = planningApi;

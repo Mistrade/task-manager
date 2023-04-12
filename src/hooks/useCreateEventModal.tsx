@@ -1,13 +1,13 @@
-import { useAppDispatch, useAppSelector } from '../store/hooks/hooks';
+import { useAppDispatch, useAppSelector } from '@redux/hooks/hooks';
 import { useCallback, useContext } from 'react';
 import { useLocation } from 'react-router';
 import {
   clearCreateInitialState,
   CreateEventInitialState,
   setCreateEventInitialState,
-} from '../store/reducers/planner-reducer';
+} from '@redux/reducers/planner-reducer';
 import { useSearchNavigate } from './useSearchNavigate';
-import { PlannerContext } from '../Context/planner.context';
+import { PlannerContext } from '@src/Context/planner.context';
 
 interface UseCreateEventProps {
   useReturnBackOnDecline?: boolean;

@@ -11,15 +11,30 @@
     "esModuleInterop": true,
     "allowSyntheticDefaultImports": true,
     "strict": true,
-    "rootDir": "./src",
     "forceConsistentCasingInFileNames": true,
     "noFallthroughCasesInSwitch": true,
     "module": "esnext",
     "moduleResolution": "node",
     "resolveJsonModule": true,
     "isolatedModules": true,
-    //    "noEmit": true,
-    "jsx": "react-jsx"
+    "jsx": "react-jsx",
+    "baseUrl": "./",
+    "paths": {
+      "@planner/*": [
+        "./src/pages/planner/*"
+      ],
+      "@api/*": ["./src/store/api/*"],
+      "@redux-hooks/*": ["./src/store/hooks"],
+      "@redux/*": ["./src/store/*"],
+      "@selectors/*": ["./src/store/selectors/*"],
+      "@contacts/*": ["./src/pages/Contacts/*"],
+      "@hooks/*": ["./src/hooks/*"],
+      "@pages/*": ["./src/pages/*"],
+      "@components/*": ["./src/components/*"],
+      "@planner-reducer/*": ["./src/store/reducers/planner/*"],
+      "@src/*": ["./src/*"]
+    },
+    "rootDirs": []
   },
   "include": [
     "./src"

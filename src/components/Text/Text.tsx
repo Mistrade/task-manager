@@ -1,7 +1,7 @@
 import React, { createElement, FC, forwardRef } from 'react';
 import styled, { FlattenSimpleInterpolation } from 'styled-components';
-import { darkColor, defaultColor } from '../../common/constants';
-import { pxToCssValue } from '../LayoutComponents/FlexBlock';
+import { darkColor, defaultColor } from '@src/common/constants';
+import { pxToCssValue } from '@components/LayoutComponents/FlexBlock';
 
 interface ReactTextComponentProps
   extends Omit<React.HTMLProps<HTMLParagraphElement | HTMLSpanElement>, 'ref'> {

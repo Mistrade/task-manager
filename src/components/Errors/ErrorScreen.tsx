@@ -1,13 +1,15 @@
-import { FlexBlock } from '../LayoutComponents/FlexBlock';
 import { FC } from 'react';
-import { Heading } from '../Text/Heading';
-import { defaultColor, ERROR_IMAGES } from '../../common/constants';
-import { DocumentErrorTypes } from '../../common/types';
-import { Button } from '../Buttons/Buttons.styled';
+import { defaultColor, ERROR_IMAGES } from '@src/common/constants';
+import { DocumentErrorTypes } from '@src/common/types';
+import { scaleAnimation } from '@src/common/cssMixins';
+import { FlexBlock } from '@components/LayoutComponents/FlexBlock';
+import { Heading } from '@components/Text/Heading';
+import { ButtonWithLoading } from '@components/Buttons/ButtonWithLoading';
 
 export interface ActionItemProps {
   title: string;
   onClick: () => void;
+  isLoading?: boolean;
 }
 
 export interface ErrorScreenProps {
@@ -24,7 +26,13 @@ export const ErrorScreen: FC<ErrorScreenProps> = ({
   action,
 }) => {
   return (
-    <FlexBlock justify={'center'} wrap={'wrap'} width={'100%'} gap={12}>
+    <FlexBlock
+      justify={'center'}
+      wrap={'wrap'}
+      width={'100%'}
+      gap={12}
+      additionalCss={scaleAnimation}
+    >
       <FlexBlock justify={'center'} align={'center'} width={'100%'}>
         {ERROR_IMAGES[errorType]}
       </FlexBlock>
@@ -54,9 +62,14 @@ export const ErrorScreen: FC<ErrorScreenProps> = ({
       </FlexBlock>
       {action && (
         <FlexBlock width={'100%'} justify={'center'}>
-          <Button type={'button'} onClick={action.onClick}>
+          <ButtonWithLoading
+            buttonType={'primary'}
+            type={'button'}
+            isLoading={action.isLoading}
+            onClick={action.onClick}
+          >
             {action.title}
-          </Button>
+          </ButtonWithLoading>
         </FlexBlock>
       )}
     </FlexBlock>

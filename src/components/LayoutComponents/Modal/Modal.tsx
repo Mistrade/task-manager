@@ -20,7 +20,6 @@ export const Modal: FC<ModalProps> = ({
   const ref = useRef<HTMLDivElement>(null);
 
   const escHandler = useCallback((e: KeyboardEvent) => {
-    console.log(e);
     if (e.key.toLowerCase() === 'escape') {
       onClose && onClose();
     }

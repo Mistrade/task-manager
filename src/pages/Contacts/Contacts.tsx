@@ -1,23 +1,20 @@
 import { ContactsContainer, ContactsLayout } from './Contacts.styled';
 import { AddContact } from './AddConctact/AddContact';
-import { UserModel } from '../../store/api/session-api/session-api.types';
+import { UserModel } from '@api/session-api/session-api.types';
 import { FC, useCallback, useState } from 'react';
-import { Heading } from '../../components/Text/Heading';
+import { Heading } from '@components/Text/Heading';
 import { ContactBlock } from './AddConctact/AddContact.styled';
-import { FlexBlock } from '../../components/LayoutComponents/FlexBlock';
-import { ScrollVerticalView } from '../../components/LayoutComponents/ScrollView/ScrollVerticalView';
-import { Switcher } from '../../components/Switcher/Switcher';
+import { FlexBlock } from '@components/LayoutComponents/FlexBlock';
+import { ScrollVerticalView } from '@components/LayoutComponents/ScrollView/ScrollVerticalView';
+import { Switcher } from '@components/Switcher/Switcher';
 import styled from 'styled-components';
 import { Routes } from 'react-router-dom';
 import { Navigate, Route, useLocation } from 'react-router';
-import { useSearchNavigate } from '../../hooks/useSearchNavigate';
-import { ErrorScreen } from '../../components/Errors/ErrorScreen';
-import {
-  CONTACT_TYPES,
-  useGetContactsListQuery,
-} from '../../store/api/friends-api';
+import { useSearchNavigate } from '@hooks/useSearchNavigate';
+import { ErrorScreen } from '@components/Errors/ErrorScreen';
+import { CONTACT_TYPES, useGetContactsListQuery } from '@api/friends-api';
 import { ContactsList } from './Render/ContactsList';
-import { Loader } from '../../components/Loaders/Loader';
+import { Loader } from '@components/Loaders/Loader';
 
 export interface ContactsProps {
   userInfo: UserModel;

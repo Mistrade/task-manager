@@ -3,7 +3,7 @@ import {
   borderRadiusSize,
   currentColor,
   defaultColor,
-} from '../../common/constants';
+} from '@src/common/constants';
 
 export const StyledButton = styled('button')<{
   fillColor?: string;

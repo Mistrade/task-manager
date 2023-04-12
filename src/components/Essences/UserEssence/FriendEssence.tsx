@@ -1,24 +1,18 @@
-import { EssenceContainer } from '../EventEssence/event-essence.styled';
 import { FC } from 'react';
-import { FlexBlock } from '../../LayoutComponents/FlexBlock';
-import { IFriendModel } from '../../../store/api/friends-api/friends-api.types';
-import { Button } from '../../Buttons/Buttons.styled';
-import { EmptyButtonStyled } from '../../Buttons/EmptyButton.styled';
-import { CalendarUserIndicator } from '../../../pages/Planner/Users/UserIndicator';
-import { useSearchNavigate } from '../../../hooks/useSearchNavigate';
-import { ContactAcceptStatuses } from '../../../store/api/friends-api';
-import { ObjectId } from '../../../store/api/rtk-api.types';
+import { IFriendModel } from '@api/friends-api/friends-api.types';
+import { CalendarUserIndicator } from '@pages/planner/Users/UserIndicator';
+import { useSearchNavigate } from '@hooks/useSearchNavigate';
+import { ContactAcceptStatuses } from '@api/friends-api';
+import { ObjectId } from '@api/rtk-api.types';
+import { EssenceContainer } from '../EventEssence/event-essence.styled';
+import { FlexBlock } from '@components/LayoutComponents/FlexBlock';
+import { Button } from '@components/Buttons/Buttons.styled';
+import { EmptyButtonStyled } from '@components/Buttons/EmptyButton.styled';
 
 export interface FriendEssenceProps {
   friendModel: IFriendModel;
-  onAccept?: (
-    status: keyof typeof ContactAcceptStatuses,
-    _id: ObjectId
-  ) => Promise<void>;
-  onDecline?: (
-    status: keyof typeof ContactAcceptStatuses,
-    _id: ObjectId
-  ) => Promise<void>;
+  onAccept?: (status: ContactAcceptStatuses, _id: ObjectId) => Promise<void>;
+  onDecline?: (status: ContactAcceptStatuses, _id: ObjectId) => Promise<void>;
   onRemove?: () => Promise<void>;
 }
 
@@ -47,14 +41,20 @@ export const FriendEssence: FC<FriendEssenceProps> = ({
         >
           {onAccept && (
             <Button
-              onClick={() => onAccept && onAccept('ACCEPTED', friendModel._id)}
+              onClick={() =>
+                onAccept &&
+                onAccept(ContactAcceptStatuses.ACCEPTED, friendModel._id)
+              }
             >
               Принять
             </Button>
           )}
           {onDecline && (
             <EmptyButtonStyled
-              onClick={() => onDecline && onDecline('DECLINE', friendModel._id)}
+              onClick={() =>
+                onDecline &&
+                onDecline(ContactAcceptStatuses.DECLINE, friendModel._id)
+              }
             >
               Отклонить
             </EmptyButtonStyled>

@@ -2,7 +2,8 @@ import styled from 'styled-components';
 
 export const ContactsContainer = styled('div')`
   width: 100%;
-  height: 100%;
+  //height: 100%;
+  flex-grow: 3;
   display: flex;
   flex-direction: column;
   justify-content: flex-start;

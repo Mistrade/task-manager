@@ -1,6 +1,6 @@
 import styled from 'styled-components';
-import { borderRadiusSize, disabledColor } from '../../../common/constants';
-import { FlexBlock } from '../../../components/LayoutComponents/FlexBlock';
+import { borderRadiusSize, disabledColor } from '@src/common/constants';
+import { FlexBlock } from '@components/LayoutComponents/FlexBlock';
 
 export const AddContactContainer = styled('div')`
   gap: 12px;

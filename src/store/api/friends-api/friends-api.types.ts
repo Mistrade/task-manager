@@ -1,5 +1,5 @@
-import { UserModel } from '../session-api/session-api.types';
-import { ObjectId, UtcDate } from '../rtk-api.types';
+import { UserModel } from '@api/session-api/session-api.types';
+import { ObjectId, UtcDate } from '@api/rtk-api.types';
 
 export type TFriendModelAcceptedStatuses = 'CREATED' | 'ACCEPTED' | 'DECLINE';
 

@@ -6,7 +6,7 @@ import {
   disabledColor,
   lightHoverColor,
   pageHeaderColor,
-} from '../../common/constants';
+} from '@src/common/constants';
 
 const HeadingMixin = (props: HeadingProps) => css`
   font-weight: bold;

@@ -1,9 +1,9 @@
-import { FC, ReactNode, useCallback } from 'react';
-import { UserModel } from '../../../store/api/session-api/session-api.types';
-import { AuthorizationForm } from '../../Session/AuthorizationForm';
+import React, { FC, ReactNode, useCallback } from 'react';
+import { UserModel } from '@api/session-api/session-api.types';
 import { useLocation } from 'react-router';
-import { ErrorScreen } from '../../Errors/ErrorScreen';
 import styled from 'styled-components';
+import { AuthorizationForm } from '@components/Session/AuthorizationForm';
+import { ErrorScreen } from '@components/Errors/ErrorScreen';
 
 export const CenteredContainer = styled('div')`
   & {
@@ -19,52 +19,57 @@ export const SessionInterceptor: FC<{
   userInfo?: UserModel | null;
   children: ReactNode;
   mode?: 'hide' | 'show';
-}> = ({ userInfo, children, mode = 'show' }) => {
-  const location = useLocation();
+}> = React.memo(
+  ({ userInfo, children, mode = 'show' }) => {
+    const location = useLocation();
 
-  const goBack = useCallback(() => {
-    history.back();
-  }, []);
+    const goBack = useCallback(() => {
+      history.back();
+    }, []);
 
-  if (mode === 'show') {
-    if (userInfo) {
+    if (mode === 'show') {
+      if (userInfo) {
+        return <>{children}</>;
+      }
+
+      return (
+        <AuthorizationForm prevUrl={`${location.pathname}${location.search}`} />
+      );
+    }
+
+    if (mode === 'hide') {
+      if (userInfo) {
+        return (
+          <CenteredContainer>
+            <ErrorScreen
+              title={'Содержимое недоступно авторизованным пользователям'}
+              errorType={'ERR_FORBIDDEN'}
+              action={{
+                title: 'Вернуться назад',
+                onClick: goBack,
+              }}
+            />
+          </CenteredContainer>
+        );
+      }
+
       return <>{children}</>;
     }
 
     return (
-      <AuthorizationForm prevUrl={`${location.pathname}${location.search}`} />
+      <CenteredContainer>
+        <ErrorScreen
+          title={'Не удалось отобразить запрашиваемый ресурс'}
+          errorType={'BAD_REQUEST'}
+          action={{
+            title: 'Вернуться назад',
+            onClick: goBack,
+          }}
+        />
+      </CenteredContainer>
     );
+  },
+  (prevProps, nextProps) => {
+    return prevProps.userInfo?._id === nextProps.userInfo?._id;
   }
-
-  if (mode === 'hide') {
-    if (userInfo) {
-      return (
-        <CenteredContainer>
-          <ErrorScreen
-            title={'Содержимое недоступно авторизованным пользователям'}
-            errorType={'ERR_FORBIDDEN'}
-            action={{
-              title: 'Вернуться назад',
-              onClick: goBack,
-            }}
-          />
-        </CenteredContainer>
-      );
-    }
-
-    return <>{children}</>;
-  }
-
-  return (
-    <CenteredContainer>
-      <ErrorScreen
-        title={'Не удалось отобразить запрашиваемый ресурс'}
-        errorType={'BAD_REQUEST'}
-        action={{
-          title: 'Вернуться назад',
-          onClick: goBack,
-        }}
-      />
-    </CenteredContainer>
-  );
-};
+);

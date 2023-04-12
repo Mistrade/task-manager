@@ -1,5 +1,5 @@
 import { currentColor, disabledColor } from '../../common/constants';
-import { SwitchCalendarModeTab } from '../../pages/Planner/Planner.styled';
+import { SwitchCalendarModeTab } from '../../pages/planner/Planner.styled';
 import { FlexBlock } from '../LayoutComponents/FlexBlock';
 import React, { ReactNode, useRef, useState } from 'react';
 import { Badge } from '../Badge/Badge';

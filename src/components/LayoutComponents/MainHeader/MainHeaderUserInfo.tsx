@@ -1,18 +1,16 @@
 import { FC, useContext } from 'react';
-import { FlexBlock } from '../FlexBlock';
+import { FlexBlock } from '@components/LayoutComponents/FlexBlock';
 import { HeaderDefaultLink } from './HeaderLink.styled.';
-import { useLogoutMutation } from '../../../store/api/session-api';
-import { LogoutIcon } from '../../Icons/Session/LogoutIcon';
+import { useLogoutMutation } from '@api/session-api';
+import { LogoutIcon } from '@components/Icons/Session/LogoutIcon';
 import { css } from 'styled-components';
-import { EmptyButtonStyled } from '../../Buttons/EmptyButton.styled';
-import { useSearchNavigate } from '../../../hooks/useSearchNavigate';
-import { useRefetchPlanningApiMutation } from '../../../store/api/planning-api';
-import { UserInfoContext } from '../../../Context/userInfo.context';
+import { EmptyButtonStyled } from '@components/Buttons/EmptyButton.styled';
+import { useRefetchPlanningApiMutation } from '@api/planning-api';
+import { UserInfoContext } from '@src/Context/userInfo.context';
 
 export const MainHeaderUserInfo: FC = () => {
   const [logoutUser] = useLogoutMutation();
   const [refetchTaskApi] = useRefetchPlanningApiMutation();
-  const navigate = useSearchNavigate();
   const userInfo = useContext(UserInfoContext);
 
   return (
@@ -40,7 +38,7 @@ export const MainHeaderUserInfo: FC = () => {
               onClick={async () =>
                 await logoutUser().then(() => {
                   refetchTaskApi('');
-                  navigate('/session/login', { replace: true });
+                  // navigate('/session/login', { replace: true });
                 })
               }
             >

@@ -1,16 +1,21 @@
-import { FlexBlock } from '../LayoutComponents/FlexBlock';
-import { UserModel } from '../../store/api/session-api/session-api.types';
-import { FC, useMemo } from 'react';
-import { CalendarUserIndicator } from '../../pages/Planner/Users/UserIndicator';
-import { Button } from '../Buttons/Buttons.styled';
-import { EmailIcon, PhoneIcon } from '../Icons/Session/LogoutIcon';
-import { DateHelper } from '../../common/calendarSupport/dateHelper';
+import { FlexBlock } from '@components/LayoutComponents/FlexBlock';
+import { UserModel } from '@api/session-api/session-api.types';
+import { FC, useCallback, useMemo } from 'react';
+import { CalendarUserIndicator } from '@pages/planner/Users/UserIndicator';
+import { Button } from '@components/Buttons/Buttons.styled';
+import { EmailIcon, PhoneIcon } from '@components/Icons/Session/LogoutIcon';
+import { DateHelper } from '@src/common/calendarSupport/dateHelper';
 
 export interface UserHoverCardProps {
   user: UserModel;
+  action: {
+    title: string;
+    onClick(user: UserModel): void;
+    condition: boolean;
+  };
 }
 
-export const UserHoverCard: FC<UserHoverCardProps> = ({ user }) => {
+export const UserHoverCard: FC<UserHoverCardProps> = ({ user, action }) => {
   const phone = useMemo(() => {
     const first = user.phone.substring(0, 1);
     const second = user.phone.substring(1, 4);
@@ -22,6 +27,10 @@ export const UserHoverCard: FC<UserHoverCardProps> = ({ user }) => {
 
     return result.join('-');
   }, [user.phone]);
+
+  const clickHandler = useCallback(() => {
+    action.onClick(user);
+  }, [action, user]);
 
   return (
     <FlexBlock direction={'column'} gap={8} p={4} width={'100%'}>
@@ -60,9 +69,11 @@ export const UserHoverCard: FC<UserHoverCardProps> = ({ user }) => {
           {user.email}
         </FlexBlock>
       )}
-      <FlexBlock mt={12}>
-        <Button>Запланировать событие</Button>
-      </FlexBlock>
+      {action.condition && (
+        <FlexBlock mt={12}>
+          <Button onClick={clickHandler}>{action.title}</Button>
+        </FlexBlock>
+      )}
     </FlexBlock>
   );
 };

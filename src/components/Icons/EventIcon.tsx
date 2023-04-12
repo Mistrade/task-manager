@@ -6,11 +6,11 @@ import {
   IconProps,
   ProcessIcon,
   ReviewIcon,
-} from './Icons';
-import { FlexBlockProps } from '../LayoutComponents/FlexBlock';
-import { ListIcon } from './AppIcon/ListIcon';
-import { EventInfoModel } from '../../store/api/planning-api/types/event-info.types';
-import { EventFilterTaskStatuses } from '../../pages/Planner/RenderModes/FindEventFilter/find-event-filters.types';
+} from '@components/Icons/Icons';
+import { FlexBlockProps } from '@components/LayoutComponents/FlexBlock';
+import { ListIcon } from '@components/Icons/AppIcon/ListIcon';
+import { EventInfoModel } from '@api/planning-api/types/event-info.types';
+import { EventFilterTaskStatuses } from '@planner/RenderModes/FindEventFilter/find-event-filters.types';
 
 export const EventIcon: FC<
   IconProps &

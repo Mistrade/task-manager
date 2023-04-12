@@ -1,9 +1,9 @@
-import { FC, ReactNode, useState } from 'react';
-import { TooltipIcon } from '../Icons/TooltipIcon';
-import { IconProps } from '../Icons/Icons';
+import { FC, ReactNode, useCallback } from 'react';
+import { TooltipIcon } from '@components/Icons/TooltipIcon';
+import { IconProps } from '@components/Icons/Icons';
 import Tippy, { TippyProps } from '@tippyjs/react';
 
-interface TooltipProps {
+export interface TooltipProps {
   children?: ReactNode;
   content: ReactNode;
   placement?: TippyProps['placement'];
@@ -19,6 +19,8 @@ interface TooltipProps {
   offset?: TippyProps['offset'];
   animation?: TippyProps['animation'];
   arrow?: TippyProps['arrow'];
+  visible?: boolean;
+  onClickOutside?: (event: Event) => void;
 }
 
 export interface OptionsTooltip {
@@ -44,12 +46,20 @@ export const Tooltip: FC<TooltipProps & IconProps> = ({
   offset,
   animation = 'shift-away',
   arrow = true,
+  visible,
+  onClickOutside,
   ...iconProps
 }) => {
-  const [visible, setVisible] = useState(false);
+  const outsideHandler = useCallback(
+    (instance: any, event: Event) => {
+      onClickOutside && onClickOutside(event);
+    },
+    [onClickOutside]
+  );
 
   return (
     <Tippy
+      visible={visible}
       hideOnClick={hideOnClick}
       content={content}
       offset={offset}
@@ -59,6 +69,7 @@ export const Tooltip: FC<TooltipProps & IconProps> = ({
       interactiveBorder={interactiveBorder}
       singleton={singleton}
       delay={delay}
+      onClickOutside={outsideHandler}
       maxWidth={maxWidth}
       animation={animation}
       trigger={trigger}

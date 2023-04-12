@@ -1,23 +1,23 @@
-import React, { FC, useMemo, useState } from 'react';
+import React, { FC, useCallback, useMemo, useState } from 'react';
 import {
   CalendarPriorityKeys,
   TaskStatusesType,
-} from '../../../pages/Planner/planner.types';
+} from '@pages/planner/planner.types';
 import dayjs, { Dayjs } from 'dayjs';
-import { GroupModelResponse } from '../../../store/api/planning-api/types/groups.types';
+import { GroupModelResponse } from '@api/planning-api/types/groups.types';
 import { EssenceContainer, EventEssenceTitle } from './event-essence.styled';
-import { FlexBlock } from '../../LayoutComponents/FlexBlock';
-import { EventStatusButton } from '../../../pages/Planner/TaskInformer/SupportsComponent/EventStatusButton';
-import { EventPriorityButton } from '../../../pages/Planner/TaskInformer/SupportsComponent/EventPriorityButton';
-import { EmptyButtonStyled } from '../../Buttons/EmptyButton.styled';
-import { Arrow } from '../../Icons/Icons';
-import { Tooltip } from '../../Tooltip/Tooltip';
-import { DateHelper } from '../../../common/calendarSupport/dateHelper';
-import { TimeBadge } from '../../Badge/Badge';
-import { ObjectId } from '../../../store/api/rtk-api.types';
-import { LinkStyled } from '../../Buttons/Link.styled';
-import { HistoryDescriptionField } from '../../../pages/Planner/TaskInformer/LeftBar/Tabs/TaskHistory/Fields/HistoryDescriptionField';
-import { EventGroupButton } from '../../../pages/Planner/TaskInformer/SupportsComponent/EventGroupButton';
+import { EventStatusButton } from '@pages/planner/TaskInformer/SupportsComponent/EventStatusButton';
+import { EventPriorityButton } from '@pages/planner/TaskInformer/SupportsComponent/EventPriorityButton';
+import { DateHelper } from '@src/common/calendarSupport/dateHelper';
+import { ObjectId } from '@api/rtk-api.types';
+import { HistoryDescriptionField } from '@pages/planner/TaskInformer/LeftBar/Tabs/TaskHistory/Fields/HistoryDescriptionField';
+import { EventGroupButton } from '@pages/planner/TaskInformer/SupportsComponent/EventGroupButton';
+import { FlexBlock } from '@components/LayoutComponents/FlexBlock';
+import { TimeBadge } from '@components/Badge/Badge';
+import { Tooltip } from '@components/Tooltip/Tooltip';
+import { EmptyButtonStyled } from '@components/Buttons/EmptyButton.styled';
+import { Arrow } from '@components/Icons/Icons';
+import { LinkStyled } from '@components/Buttons/Link.styled';
 
 export interface EventEssenceProps {
   status: TaskStatusesType | null;
@@ -31,6 +31,7 @@ export interface EventEssenceProps {
   eventId?: ObjectId | null;
   isSnapshot?: boolean;
   containerProps?: { id?: string };
+  onTitleClick?: (eventId?: ObjectId | null) => void;
 }
 
 export const EventEssence: FC<EventEssenceProps> = ({
@@ -39,6 +40,7 @@ export const EventEssence: FC<EventEssenceProps> = ({
   title,
   isSnapshot,
   containerProps,
+  onTitleClick,
   ...optionalFields
 }) => {
   const [isOpen, setIsOpen] = useState(false);
@@ -46,6 +48,10 @@ export const EventEssence: FC<EventEssenceProps> = ({
   const hasOptionalInfo = useMemo(() => {
     return Object.keys(optionalFields).length > 0;
   }, [optionalFields]);
+
+  const titleClickHandler = useCallback(() => {
+    onTitleClick && onTitleClick(optionalFields.eventId);
+  }, [onTitleClick, optionalFields.eventId]);
 
   return (
     <EssenceContainer {...containerProps}>
@@ -81,7 +87,9 @@ export const EventEssence: FC<EventEssenceProps> = ({
             )}
           </>
         )}
-        <EventEssenceTitle>{title}</EventEssenceTitle>
+        <EventEssenceTitle onClick={titleClickHandler}>
+          {title}
+        </EventEssenceTitle>
         {isSnapshot && (
           <Tooltip
             content={
@@ -173,7 +181,7 @@ export const EventEssence: FC<EventEssenceProps> = ({
               {optionalFields.eventId && (
                 <FlexBlock>
                   <LinkStyled
-                    to={`/planner/day/all/${optionalFields.eventId}`}
+                    to={`/planner/day/all/event/info/${optionalFields.eventId}/about`}
                     target={'_blank'}
                   >
                     Перейти к оригиналу

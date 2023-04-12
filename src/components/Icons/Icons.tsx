@@ -3,8 +3,11 @@ import {
   currentColor,
   defaultColor,
   priorityColors,
-} from '../../common/constants';
-import { FlexBlock, FlexBlockProps } from '../LayoutComponents/FlexBlock';
+} from '@src/common/constants';
+import {
+  FlexBlock,
+  FlexBlockProps,
+} from '@components/LayoutComponents/FlexBlock';
 
 export interface IconProps {
   size?: number;

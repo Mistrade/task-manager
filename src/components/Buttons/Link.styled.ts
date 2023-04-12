@@ -1,6 +1,6 @@
 import styled from 'styled-components';
 import { Link } from 'react-router-dom';
-import { borderRadiusSize, currentColor } from '../../common/constants';
+import { borderRadiusSize, currentColor } from '@src/common/constants';
 
 export const LinkStyled = styled(Link)`
   border-radius: ${borderRadiusSize.sm};

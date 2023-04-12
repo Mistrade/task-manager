@@ -7,22 +7,22 @@ import {
   TaskStatusInfo,
   WeekItem,
   YearItem,
-} from '../pages/Planner/planner.types';
+} from '@pages/planner/planner.types';
 import {
   ArchiveIcon,
   CompleteIcon,
   CreatedIcon,
   ProcessIcon,
   ReviewIcon,
-} from '../components/Icons/Icons';
+} from '@components/Icons/Icons';
 import { ErrorImagesType } from './types';
-import { SystemErrorImg } from '../components/Icons/Errors/SystemError';
-import { ErrorBadRequestImg } from '../components/Icons/Errors/ErrorBadRequest';
-import { ErrorForbiddenImg } from '../components/Icons/Errors/ErrorForbidden';
+import { SystemErrorImg } from '@components/Icons/Errors/SystemError';
+import { ErrorBadRequestImg } from '@components/Icons/Errors/ErrorBadRequest';
+import { ErrorForbiddenImg } from '@components/Icons/Errors/ErrorForbidden';
 import {
   EventFilterTaskStatuses,
   StatusesTabsObject,
-} from '../pages/Planner/RenderModes/FindEventFilter/find-event-filters.types';
+} from '@pages/planner/RenderModes/FindEventFilter/find-event-filters.types';
 import dayjs from 'dayjs';
 
 export const MonthList = [

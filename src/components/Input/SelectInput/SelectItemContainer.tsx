@@ -1,8 +1,8 @@
-import { FCWithChildren } from '../../../pages/Planner/planner.types';
-import { FlexBlock } from '../../LayoutComponents/FlexBlock';
+import { FCWithChildren } from '@planner/planner.types';
+import { FlexBlock } from '@components/LayoutComponents/FlexBlock';
 import { css } from 'styled-components';
-import { HoverElementMixin } from '../../../common/cssMixins';
-import { borderRadiusSize, hoverColor } from '../../../common/constants';
+import { HoverElementMixin } from '@src/common/cssMixins';
+import { borderRadiusSize, hoverColor } from '@src/common/constants';
 import React from 'react';
 
 export const SelectItemContainer: FCWithChildren<{

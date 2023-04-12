@@ -1,8 +1,11 @@
 import React, { useCallback, useRef, useState } from 'react';
-import { FlexBlock } from '../../LayoutComponents/FlexBlock';
-import { useDebounce } from '../../../hooks/useDebounce';
-import { StyledDropDownContainer } from './DropDown.styled';
-import { DropDownAdditionalMethods, DropDownProps } from './types';
+import { FlexBlock } from '@components/LayoutComponents/FlexBlock';
+import { useDebounce } from '@hooks/useDebounce';
+import { StyledDropDownContainer } from '@components/Input/Dropdown/DropDown.styled';
+import {
+  DropDownAdditionalMethods,
+  DropDownProps,
+} from '@components/Input/Dropdown/types';
 
 export function DropDown<T extends HTMLElement = HTMLElement>({
   renderElement,

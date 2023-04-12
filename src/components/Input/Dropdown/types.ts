@@ -1,5 +1,5 @@
 import React, { ReactNode } from 'react';
-import { FlexBlockProps } from '../../LayoutComponents/FlexBlock';
+import { FlexBlockProps } from '@components/LayoutComponents/FlexBlock';
 
 export type DropDownElementsSupport =
   | HTMLButtonElement

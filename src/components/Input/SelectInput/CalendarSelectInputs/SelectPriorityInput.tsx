@@ -1,15 +1,15 @@
 import { FC, useMemo } from 'react';
-import { PRIORITY_LIST, PRIORITY_TITLES } from '../../../../common/constants';
-import { SelectListContainer } from '../SelectListContainer';
-import { SelectItemContainer } from '../SelectItemContainer';
+import { PRIORITY_LIST, PRIORITY_TITLES } from '@src/common/constants';
+import { SelectListContainer } from '@components/Input/SelectInput/SelectListContainer';
+import { SelectItemContainer } from '@components/Input/SelectInput/SelectItemContainer';
 import {
   CalendarPriorityKeys,
   CalendarPriorityList,
-} from '../../../../pages/Planner/planner.types';
-import { FlexBlockProps } from '../../../LayoutComponents/FlexBlock';
-import { SelectInput } from '../SelectInput';
-import { DefaultTextInputProps } from '../../TextInput/TextInput';
-import { PriorityCalendarIcon } from '../../../Icons/CalendarIcons/PriorityCalendarIcon';
+} from '@planner/planner.types';
+import { FlexBlockProps } from '@components/LayoutComponents/FlexBlock';
+import { SelectInput } from '@components/Input/SelectInput/SelectInput';
+import { DefaultTextInputProps } from '@components/Input/TextInput/TextInput';
+import { PriorityCalendarIcon } from '@components/Icons/CalendarIcons/PriorityCalendarIcon';
 
 interface SelectPriorityInputProps
   extends Partial<Omit<DefaultTextInputProps, 'onChange'>> {

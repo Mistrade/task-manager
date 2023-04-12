@@ -1,7 +1,7 @@
+import { SelectItemContainer } from '@components/Input/SelectInput/SelectItemContainer';
+import { SelectListContainer } from '@components/Input/SelectInput/SelectListContainer';
+import { Tooltip } from '@components/Tooltip/Tooltip';
 import React, { ReactNode } from 'react';
-import { SelectItemContainer } from '../Input/SelectInput/SelectItemContainer';
-import { SelectListContainer } from '../Input/SelectInput/SelectListContainer';
-import { Tooltip } from '../Tooltip/Tooltip';
 
 interface DefaultDataElement {
   title: string;

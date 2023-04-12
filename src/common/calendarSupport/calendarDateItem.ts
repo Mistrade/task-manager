@@ -2,7 +2,7 @@ import {
   CalendarCurrentContext,
   CalendarDisabledOptions,
   CalendarItem,
-} from '../../pages/Planner/planner.types';
+} from '@pages/planner/planner.types';
 import dayjs, { Dayjs } from 'dayjs';
 import { DateHelper } from './dateHelper';
 

@@ -6,19 +6,19 @@ import {
   defaultColor,
   disabledColor,
   errorColor,
-} from '../../common/constants';
+} from '@src/common/constants';
 import { DefaultTextInputProps } from './TextInput/TextInput';
 
 const LeftIconPadding = css`
-  padding: 12px 12px 12px 46px;
+  padding: 8px 12px 8px 46px;
 `;
 
 const RightIconPadding = css`
-  padding: 12px 46px 12px 12px;
+  padding: 8px 46px 8px 12px;
 `;
 
 const DefaultPadding = css`
-  padding: 12px 12px;
+  padding: 8px 12px;
 `;
 
 const IconPlacement = {

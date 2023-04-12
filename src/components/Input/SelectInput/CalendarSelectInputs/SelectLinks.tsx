@@ -1,20 +1,23 @@
-import { FlexBlock } from '../../../LayoutComponents/FlexBlock';
+import { FlexBlock } from '@components/LayoutComponents/FlexBlock';
 import React, { useRef, useState } from 'react';
-import { DefaultTextInputProps, TextInput } from '../../TextInput/TextInput';
+import {
+  DefaultTextInputProps,
+  TextInput,
+} from '@components/Input/TextInput/TextInput';
 import {
   borderRadiusSize,
   currentColor,
   hoverColor,
-} from '../../../../common/constants';
+} from '@src/common/constants';
 import * as yup from 'yup';
 import {
   Button,
   LinkButton,
   WhiteButton,
-} from '../../../Buttons/Buttons.styled';
-import { DefaultWebIcon } from '../../../Icons/SocialNetworkIcons/DefaultWeb';
-import { UrlIcon } from '../../../Icons/SocialNetworkIcons';
-import { EventLinkItem } from '../../../../pages/Planner/planner.types';
+} from '@components/Buttons/Buttons.styled';
+import { DefaultWebIcon } from '@components/Icons/SocialNetworkIcons/DefaultWeb';
+import { UrlIcon } from '@components/Icons/SocialNetworkIcons';
+import { EventLinkItem } from '@planner/planner.types';
 
 export interface SelectLinksProps
   extends Omit<DefaultTextInputProps, 'onChange' | 'value'> {

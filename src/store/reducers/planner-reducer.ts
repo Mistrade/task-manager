@@ -1,4 +1,6 @@
-import { createSlice, PayloadAction } from '@reduxjs/toolkit';
+import { EventInfoModel } from '@api/planning-api/types/event-info.types';
+import { GroupModelResponse } from '@api/planning-api/types/groups.types';
+import { ObjectId, UtcDate } from '@api/rtk-api.types';
 import {
   CreateEventDataObject,
   PlannerDateMode,
@@ -8,11 +10,9 @@ import {
   PlannerMonthMode,
   PlannerWeekMode,
   PlannerYearMode,
-} from '../../pages/Planner/planner.types';
-import { EventInfoModel } from '../api/planning-api/types/event-info.types';
-import { ObjectId, UtcDate } from '../api/rtk-api.types';
-import { EventFilterTaskStatuses } from '../../pages/Planner/RenderModes/FindEventFilter/find-event-filters.types';
-import { GroupModelResponse } from '../api/planning-api/types/groups.types';
+} from '@planner/planner.types';
+import { EventFilterTaskStatuses } from '@planner/RenderModes/FindEventFilter/find-event-filters.types';
+import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 
 type PlannerDateReducerState = Omit<PlannerDateMode, 'date'> & { date: string };
 type PlannerWeekReducerState = Omit<PlannerWeekMode, 'aroundDate'> & {

@@ -1,13 +1,13 @@
 import { FC, useCallback, useEffect, useMemo, useRef, useState } from 'react';
-import { FlexBlock } from '../LayoutComponents/FlexBlock';
 import {
   addNull,
   generateHoursArray,
   generateMinuteArray,
-} from '../../common/functions';
-import { TimeSelectorButton } from '../../pages/Planner/Planner.styled';
+} from '@src/common/functions';
+import { TimeSelectorButton } from '@pages/planner/Planner.styled';
 import dayjs from 'dayjs';
 import { css } from 'styled-components';
+import { FlexBlock } from '@components/LayoutComponents/FlexBlock';
 
 interface TimeSelectorProps {
   currentDate: Date;

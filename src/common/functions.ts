@@ -3,7 +3,7 @@ import {
   EventsStorage,
   PlannerMode,
   PlannerMonthMode,
-} from '../pages/Planner/planner.types';
+} from '@pages/planner/planner.types';
 import dayjs from 'dayjs';
 import {
   ChangeDayCurrentFn,
@@ -15,8 +15,8 @@ import {
 } from './commonTypes';
 import { MonthList, PLANNER_LAYOUTS } from './constants';
 import { DateHelper } from './calendarSupport/dateHelper';
-import { ShortEventInfoModel } from '../store/api/planning-api/types/event-info.types';
-import { UserModel } from '../store/api/session-api/session-api.types';
+import { ShortEventInfoModel } from '@api/planning-api/types/event-info.types';
+import { UserModel } from '@api/session-api/session-api.types';
 
 export const addNull = (value: number): string =>
   value < 10 ? `0${value}` : value.toString();

@@ -1,7 +1,7 @@
 import React, { FC } from 'react';
-import { FlexBlockProps } from '../LayoutComponents/FlexBlock';
-import { currentColor } from '../../common/constants';
-import { IconProps } from './Icons';
+import { IconProps } from '@components/Icons/Icons';
+import { FlexBlockProps } from '@components/LayoutComponents/FlexBlock';
+import { currentColor } from '@src/common/constants';
 
 export const TooltipIcon: FC<IconProps & FlexBlockProps> = ({
   size = 24,

@@ -1,6 +1,5 @@
-import { EventsStorage, PlannerMode } from '../pages/Planner/planner.types';
-import { useMemo } from 'react';
-import { useAppDispatch, useAppSelector } from '../store/hooks/hooks';
+import { EventsStorage, PlannerMode } from '@planner/planner.types';
+import { useContext, useMemo } from 'react';
 import {
   EventFiltersProps,
   useEventFilters,
@@ -9,11 +8,12 @@ import {
 import {
   useGetEventsCountOfStatusQuery,
   useGetEventsStorageQuery,
-} from '../store/api/planning-api';
-import { SwitcherBadges } from '../components/Switcher/Switcher';
-import { GetEventsFiltersRequestProps } from '../store/api/planning-api/types/event-info.types';
-import { EventFilterTaskStatuses } from '../pages/Planner/RenderModes/FindEventFilter/find-event-filters.types';
-import { UTC_OFFSET } from '../common/constants';
+} from '@api/planning-api';
+import { SwitcherBadges } from '@components/Switcher/Switcher';
+import { GetEventsFiltersRequestProps } from '@api/planning-api/types/event-info.types';
+import { EventFilterTaskStatuses } from '@planner/RenderModes/FindEventFilter/find-event-filters.types';
+import { UTC_OFFSET } from '@src/common/constants';
+import { PlannerContext } from '@src/Context/planner.context';
 
 interface Scope {
   start: Date;
@@ -28,7 +28,7 @@ interface UseTaskStorageProps {
 
 interface UseTaskStorageQueryArgsReturned extends UseEventFiltersReturned {
   queryArgs: GetEventsFiltersRequestProps;
-  taskStatus: EventFiltersProps['status'];
+  taskStatus: EventFiltersProps['taskStatus'];
   TaskStorage?: EventsStorage;
   SwitcherBadges?: SwitcherBadges<EventFilterTaskStatuses> | null;
   isFetching: boolean;
@@ -42,64 +42,59 @@ const getQueryArgs = (
   values: EventFiltersProps,
   props: UseTaskStorageProps
 ): GetEventsFiltersRequestProps => {
+  console.log('queryArgs');
   return {
     title: values.title,
     fromDate: props.scope.start?.toString() || '',
-    toDate: props.scope?.toString() || '',
+    toDate: props.scope?.end.toString() || '',
     priority: values.priority,
-    taskStatus: values.status,
+    taskStatus: values.taskStatus,
     onlyFavorites: !!props.onlyFavorites,
     utcOffset: UTC_OFFSET,
   };
 };
 
 export const useEventStorage: UseTaskStorageQueryArgsHookType = (props) => {
-  const dispatch = useAppDispatch();
-  const { statuses: taskStatus } = useAppSelector((state) => state.planner);
+  const { currentStatus } = useContext(PlannerContext);
 
   const filtersReturned = useEventFilters({
     initialValues: {
+      start: null,
+      end: null,
+      utcOffset: UTC_OFFSET,
       title: null,
-      status: taskStatus,
+      taskStatus: currentStatus,
       priority: null,
     },
     layout: props.layout,
   });
 
   const queryArgs = useMemo(
-    () => getQueryArgs(filtersReturned.filters, props),
-    [filtersReturned.filters, props]
+    () => getQueryArgs(filtersReturned.debounceValue, props),
+    [filtersReturned.debounceValue, props]
   );
 
-  const {
-    data: TaskStorage,
-    refetch,
-    isFetching: isFetchingStorage,
-  } = useGetEventsStorageQuery(
-    {
-      ...queryArgs,
-      findOnlyInSelectedGroups: true,
-    },
-    { refetchOnMountOrArgChange: true }
-  );
+  const { data: TaskStorage, isFetching: isFetchingStorage } =
+    useGetEventsStorageQuery(
+      {
+        ...queryArgs,
+        findOnlyInSelectedGroups: true,
+      },
+      { refetchOnMountOrArgChange: true }
+    );
 
   const {
     data: SwitcherBadges,
     refetch: refetchBadges,
     isFetching: isFetchingBadges,
   } = useGetEventsCountOfStatusQuery({
-    title: queryArgs.title,
-    fromDate: queryArgs.fromDate,
-    toDate: queryArgs.toDate,
-    priority: queryArgs.priority,
-    onlyFavorites: queryArgs.onlyFavorites,
-    utcOffset: queryArgs.utcOffset,
+    ...queryArgs,
     findOnlyInSelectedGroups: true,
   });
 
   return {
     queryArgs,
-    taskStatus: filtersReturned.debounceValue.status,
+    taskStatus: filtersReturned.debounceValue.taskStatus,
     TaskStorage: TaskStorage?.data || {},
     SwitcherBadges: SwitcherBadges?.data,
     ...filtersReturned,

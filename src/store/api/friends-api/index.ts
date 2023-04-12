@@ -10,9 +10,9 @@ export enum CONTACT_TYPES {
 }
 
 export enum ContactAcceptStatuses {
-  'CREATED' = 0,
-  'ACCEPTED' = 1,
-  'DECLINE' = 2,
+  'CREATED' = 'created',
+  'ACCEPTED' = 'accepted',
+  'DECLINE' = 'decline',
 }
 
 export const contactsApi = createApi({
@@ -23,14 +23,14 @@ export const contactsApi = createApi({
     CONTACT_TYPES.INCOMING,
   ],
   baseQuery: fetchBaseQuery({
-    baseUrl: `${baseServerUrl}/contacts`,
+    baseUrl: `${baseServerUrl}/friends`,
     credentials: 'include',
     cache: 'no-cache',
   }),
   endpoints: ({ query, mutation }) => ({
     addContact: mutation<MyServerResponse, { phoneOrEmail: string }>({
       query: (args) => ({
-        url: '/add_contact',
+        url: '/create_request',
         method: 'POST',
         body: args,
       }),
@@ -39,17 +39,17 @@ export const contactsApi = createApi({
     }),
     getContactsList: query<MyServerResponse<TFriendsModelList>, CONTACT_TYPES>({
       query: (args) => ({
-        url: `/get_contacts/${args}`,
+        url: `/get_requests_list/${args}`,
         method: 'GET',
       }),
       providesTags: (result, error, arg, meta) => (!error ? [arg] : []),
     }),
     responseOnFriendRequest: mutation<
       MyServerResponse,
-      { acceptedStatus: keyof typeof ContactAcceptStatuses; _id: ObjectId }
+      { acceptedStatus: ContactAcceptStatuses; _id: ObjectId }
     >({
       query: (arg) => ({
-        url: '/response_on_friends_order',
+        url: '/accept_or_decline',
         method: 'POST',
         body: arg,
       }),

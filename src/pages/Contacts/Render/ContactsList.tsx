@@ -1,17 +1,14 @@
-import { TFriendsModelList } from '../../../store/api/friends-api/friends-api.types';
+import { TFriendsModelList } from '@api/friends-api/friends-api.types';
 import { FC, ReactNode, useCallback } from 'react';
-import { FriendEssence } from '../../../components/Essences/UserEssence/FriendEssence';
-import { FlexBlock } from '../../../components/LayoutComponents/FlexBlock';
+import { FriendEssence } from '@components/Essences/UserEssence/FriendEssence';
+import { FlexBlock } from '@components/LayoutComponents/FlexBlock';
 import {
   CONTACT_TYPES,
   ContactAcceptStatuses,
   useResponseOnFriendRequestMutation,
-} from '../../../store/api/friends-api';
-import { ObjectId } from '../../../store/api/rtk-api.types';
-import {
-  CatchHandleForToast,
-  thenHandleForToast,
-} from '../../../store/api/tools';
+} from '@api/friends-api';
+import { ObjectId } from '@api/rtk-api.types';
+import { CatchHandleForToast, thenHandleForToast } from '@api/tools';
 
 export interface IContactsListProps {
   list: TFriendsModelList;
@@ -27,7 +24,7 @@ export const ContactsList: FC<IContactsListProps> = ({
   const [responseOnRequest] = useResponseOnFriendRequestMutation();
 
   const responseOnRequestHandler = useCallback(
-    async (status: keyof typeof ContactAcceptStatuses, _id: ObjectId) => {
+    async (status: ContactAcceptStatuses, _id: ObjectId) => {
       await responseOnRequest({
         acceptedStatus: status,
         _id,

@@ -4,7 +4,7 @@ import {
   currentColor,
   defaultColor,
   pageHeaderColor,
-} from '../../common/constants';
+} from '@src/common/constants';
 
 export const Badge = styled('span')`
   line-height: 1;

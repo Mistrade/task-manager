@@ -1,17 +1,16 @@
-import React, { FC, useContext, useEffect, useMemo } from 'react';
-import { FlexBlock } from '../FlexBlock';
+import React, { FC, useContext, useMemo } from 'react';
+import { FlexBlock } from '@components/LayoutComponents/FlexBlock';
 import { MainHeaderUserInfo } from './MainHeaderUserInfo';
 import { HeaderLinkStyled } from './HeaderLink.styled.';
-import { useLocation } from 'react-router';
 import { NavigationContainer } from './MainHeader.styled';
-import { useAppSelector } from '../../../store/hooks/hooks';
-import { EmptyButtonStyled } from '../../Buttons/EmptyButton.styled';
-import { AppLogoIcon } from '../../Icons/AppIcon/AppLogoIcon';
+import { EmptyButtonStyled } from '@components/Buttons/EmptyButton.styled';
+import { AppLogoIcon } from '@components/Icons/AppIcon/AppLogoIcon';
 import { toast } from 'react-toastify';
-import { Heading } from '../../Text/Heading';
-import { currentColor } from '../../../common/constants';
-import { UserInfoContext } from '../../../Context/userInfo.context';
-import { ServicesNames } from '../../../store/reducers/global';
+import { Heading } from '@components/Text/Heading';
+import { currentColor } from '@src/common/constants';
+import { UserInfoContext } from '@src/Context/userInfo.context';
+import { ServicesNames } from '@redux/reducers/global';
+import { useAppSelector } from '@redux/hooks/hooks';
 
 interface NavigationArrayItem {
   title: string;
@@ -19,50 +18,55 @@ interface NavigationArrayItem {
   serviceName: ServicesNames;
 }
 
-const PageHeaderArray = [
-  { urlStartWith: '/planner', title: 'Мой календарь | Планирование' },
-  { urlStartWith: '/contacts', title: 'Мои Контакты' },
-];
+const Nav = React.memo(
+  () => {
+    const userInfo = useContext(UserInfoContext);
+    const { serviceName } = useAppSelector((state) => state.global);
 
-export const MainHeaderBody: FC = () => {
-  const { pathname } = useLocation();
-  const userInfo = useContext(UserInfoContext);
-  const { serviceName } = useAppSelector((state) => state.global);
+    const NavigationArray: Array<NavigationArrayItem> = useMemo(
+      () => [
+        {
+          title: 'Мои дела',
+          path: userInfo
+            ? `/${ServicesNames.PLANNER}/day/all`
+            : `/${ServicesNames.PLANNER}`,
+          serviceName: ServicesNames.PLANNER,
+        },
+        {
+          title: 'Мои контакты',
+          path: `/${ServicesNames.FRIENDS}`,
+          serviceName: ServicesNames.FRIENDS,
+        },
+      ],
+      []
+    );
 
-  const NavigationArray: Array<NavigationArrayItem> = useMemo(
-    () => [
-      {
-        title: 'Мои дела',
-        path: userInfo
-          ? `/${ServicesNames.PLANNER}/day/all`
-          : `/${ServicesNames.PLANNER}`,
-        serviceName: ServicesNames.PLANNER,
-      },
-      {
-        title: 'Мои контакты',
-        path: `/${ServicesNames.FRIENDS}`,
-        serviceName: ServicesNames.FRIENDS,
-      },
-    ],
-    []
-  );
+    return (
+      <NavigationContainer>
+        {NavigationArray.map((nav) => (
+          <HeaderLinkStyled
+            key={nav.path}
+            to={nav.path}
+            title={nav.title}
+            selected={nav.serviceName === serviceName}
+          >
+            {nav.title}
+          </HeaderLinkStyled>
+        ))}
+      </NavigationContainer>
+    );
+  },
+  () => true
+);
 
-  useEffect(() => {
-    const urlEl = PageHeaderArray.find((urlItem) => {
-      return pathname
-        .toLowerCase()
-        .startsWith(urlItem.urlStartWith.toLowerCase());
-    });
-
-    document.title = urlEl ? urlEl.title : 'Онлайн планировщик дел';
-  }, [pathname]);
-
-  return (
-    <>
+export const MainHeaderBody: FC = React.memo(
+  () => {
+    return (
       <FlexBlock
+        height={'100%'}
         width={'100%'}
         align={'center'}
-        flex={'1 0  auto'}
+        flex={'1 0 auto'}
         direction={'row'}
         justify={'flex-start'}
       >
@@ -82,23 +86,13 @@ export const MainHeaderBody: FC = () => {
           </EmptyButtonStyled>
         </FlexBlock>
         <FlexBlock flex={'1 0 60%'}>
-          <NavigationContainer>
-            {NavigationArray.map((nav) => (
-              <HeaderLinkStyled
-                key={nav.path}
-                to={nav.path}
-                title={nav.title}
-                isSelected={nav.serviceName === serviceName}
-              >
-                {nav.title}
-              </HeaderLinkStyled>
-            ))}
-          </NavigationContainer>
+          <Nav />
         </FlexBlock>
         <FlexBlock flex={'1 0 20%'}>
           <MainHeaderUserInfo />
         </FlexBlock>
       </FlexBlock>
-    </>
-  );
-};
+    );
+  },
+  () => true
+);

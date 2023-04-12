@@ -1,4 +1,4 @@
-import { ObjectId } from '../../rtk-api.types';
+import { ObjectId } from '@api/rtk-api.types';
 import { ShortEventInfoModel } from './event-info.types';
 
 export interface EventChainsObject {

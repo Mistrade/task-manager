@@ -1,16 +1,13 @@
 import { ContactBlock } from './AddContact.styled';
-import { TextInput } from '../../../components/Input/TextInput/TextInput';
-import { PhoneIcon } from '../../../components/Icons/Session/LogoutIcon';
-import { FlexBlock } from '../../../components/LayoutComponents/FlexBlock';
-import { EmptyButtonStyled } from '../../../components/Buttons/EmptyButton.styled';
-import { Button } from '../../../components/Buttons/Buttons.styled';
+import { TextInput } from '@components/Input/TextInput/TextInput';
+import { PhoneIcon } from '@components/Icons/Session/LogoutIcon';
+import { FlexBlock } from '@components/LayoutComponents/FlexBlock';
+import { EmptyButtonStyled } from '@components/Buttons/EmptyButton.styled';
+import { Button } from '@components/Buttons/Buttons.styled';
 import { useFormik } from 'formik';
 import * as yup from 'yup';
-import { useAddContactMutation } from '../../../store/api/friends-api';
-import {
-  CatchHandleForToast,
-  thenHandleForToast,
-} from '../../../store/api/tools';
+import { useAddContactMutation } from '@api/friends-api';
+import { CatchHandleForToast, thenHandleForToast } from '@api/tools';
 
 const phonePattern = new RegExp(
   /^((8|\+7)[\- ]?)?(\(?\d{3,4}\)?[\- ]?)?[\d\- ]{5,10}$/

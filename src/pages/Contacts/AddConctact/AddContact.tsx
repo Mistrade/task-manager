@@ -1,6 +1,6 @@
 import { AddContactForm } from './AddContactForm';
 import React from 'react';
-import { Subtitle } from '../Contacts';
+import { Subtitle } from '@contacts/Contacts';
 
 export const AddContact = () => {
   return (

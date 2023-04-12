@@ -1,6 +1,6 @@
 import styled from 'styled-components';
-import { SwitchCalendarMode } from '../../../pages/Planner/Planner.styled';
-import { borderRadiusSize } from '../../../common/constants';
+import { SwitchCalendarMode } from '@planner/Planner.styled';
+import { borderRadiusSize } from '@src/common/constants';
 
 export const InputActionsStyledContainer = styled('div')`
   display: flex;

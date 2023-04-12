@@ -6,7 +6,7 @@ import {
   MonthItem,
   WeekItem,
   YearItem,
-} from '../../pages/Planner/planner.types';
+} from '@pages/planner/planner.types';
 import {
   DateScopeHelper,
   DateScopeInterface,

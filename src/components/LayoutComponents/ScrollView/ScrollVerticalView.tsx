@@ -1,8 +1,11 @@
 import { ReactNode } from 'react';
 import styled, { css } from 'styled-components';
-import { FCWithChildren } from '../../../pages/Planner/planner.types';
-import { FlexBlock, FlexBlockProps } from '../FlexBlock';
-import { hideScrollBar } from '../../Switcher/Switcher';
+import { FCWithChildren } from '@planner/planner.types';
+import {
+  FlexBlock,
+  FlexBlockProps,
+} from '@components/LayoutComponents/FlexBlock';
+import { hideScrollBar } from '@components/Switcher/Switcher';
 
 export interface ScrollVerticalViewProps {
   placementStatic?: 'top' | 'bottom';
@@ -13,12 +16,12 @@ export interface ScrollVerticalViewProps {
 }
 
 const Container = styled('div')<Pick<ScrollVerticalViewProps, 'renderPattern'>>`
-  flex-grow: 3;
+  height: 100%;
+  flex-grow: 0;
   display: flex;
   margin-left: -6px;
-  padding-left: 6px;
   margin-right: -6px;
-  padding-right: 6px;
+  padding: 10px 6px;
   flex-direction: ${(_) =>
     _.renderPattern === 'top-bottom' ? 'column' : 'column-reverse'};
   overflow-x: hidden;
@@ -63,9 +66,11 @@ export const ScrollVerticalView: FCWithChildren<ScrollVerticalViewProps> = ({
       {placementStatic === 'top' && staticContent && (
         <StaticContainer>{staticContent}</StaticContainer>
       )}
+      {/*<MaxHeightHidden>*/}
       <Container renderPattern={renderPattern || 'bottom-top'}>
         {children}
       </Container>
+      {/*</MaxHeightHidden>*/}
       {placementStatic === 'bottom' && staticContent && (
         <StaticContainer>{staticContent}</StaticContainer>
       )}

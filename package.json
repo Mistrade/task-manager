@@ -32,7 +32,7 @@
     "yup": "^0.32.11"
   },
   "scripts": {
-    "start": "webpack serve --config webpack.dev-config.js --open",
+    "start": "TS_NODE_PROJECT=\"webpack/tsconfig.json\" webpack serve --config=\"webpack/webpack.dev-config.ts\" --open",
     "build": "webpack --config webpack.prod-config.js",
     "test": "react-scripts test",
     "eject": "react-scripts eject"
@@ -65,6 +65,7 @@
     "@types/react-router": "^5.1.18",
     "@types/react-router-dom": "^5.3.3",
     "@types/styled-components": "^5.1.25",
+    "@types/webpack-dev-server": "^4.7.2",
     "@types/yup": "^0.29.14",
     "copy-webpack-plugin": "^11.0.0",
     "css-loader": "^6.7.1",
@@ -75,6 +76,8 @@
     "raw-loader": "^4.0.2",
     "style-loader": "^3.3.1",
     "ts-loader": "^9.3.1",
+    "ts-node": "^10.9.1",
+    "tsc-alias": "^1.8.5",
     "webpack": "^5.74.0",
     "webpack-cli": "^4.10.0",
     "webpack-dev-server": "^4.9.3"

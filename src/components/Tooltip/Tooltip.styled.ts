@@ -6,8 +6,8 @@ import {
   defaultColor,
   pageHeaderColor,
   shadowColor,
-} from '../../common/constants';
-import { pxToCssValue } from '../LayoutComponents/FlexBlock';
+} from '@src/common/constants';
+import { pxToCssValue } from '@components/LayoutComponents/FlexBlock';
 import { OptionsTooltip } from './Tooltip';
 
 export const TooltipWrapper = styled('span')`

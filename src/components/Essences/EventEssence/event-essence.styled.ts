@@ -5,8 +5,8 @@ import {
   darkColor,
   disabledColor,
   pageHeaderColor,
-} from '../../../common/constants';
-import { FlexBlock } from '../../LayoutComponents/FlexBlock';
+} from '@src/common/constants';
+import { FlexBlock } from '@components/LayoutComponents/FlexBlock';
 
 export const EssenceContainer = styled(FlexBlock)`
   display: flex;

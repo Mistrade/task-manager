@@ -1,19 +1,19 @@
 import { FC, useEffect } from 'react';
 import { useFormik } from 'formik';
-import { FlexBlock } from '../LayoutComponents/FlexBlock';
-import { Heading } from '../Text/Heading';
-import { defaultColor } from '../../common/constants';
-import { TextInput } from '../Input/TextInput/TextInput';
-import { Tooltip } from '../Tooltip/Tooltip';
-import { Button } from '../Buttons/Buttons.styled';
-import { LinkStyled } from '../Buttons/Link.styled';
+import { FlexBlock } from '@components/LayoutComponents/FlexBlock';
+import { Heading } from '@components/Text/Heading';
+import { defaultColor } from '@src/common/constants';
+import { TextInput } from '@components/Input/TextInput/TextInput';
+import { Tooltip } from '@components/Tooltip/Tooltip';
+import { Button } from '@components/Buttons/Buttons.styled';
+import { LinkStyled } from '@components/Buttons/Link.styled';
 import { SessionFormContainer } from './SessionFormContainer';
-import { PasswordInput } from '../Input/PasswordInput/PasswordInput';
-import { useRegistrationMutation } from '../../store/api/session-api';
+import { PasswordInput } from '@components/Input/PasswordInput/PasswordInput';
+import { useRegistrationMutation } from '@api/session-api';
 import { toast } from 'react-toastify';
-import { RegistrationValidationScheme } from '../../common/validation/session';
-import { useSearchNavigate } from '../../hooks/useSearchNavigate';
-import { RegUserRequestProps } from '../../store/api/session-api/session-api.types';
+import { RegistrationValidationScheme } from '@src/common/validation/session';
+import { useSearchNavigate } from '@hooks/useSearchNavigate';
+import { RegUserRequestProps } from '@api/session-api/session-api.types';
 
 export const Registration: FC = () => {
   const [regUser, { data, isSuccess, isLoading, status, isError }] =

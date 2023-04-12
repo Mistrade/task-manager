@@ -4,11 +4,11 @@ import {
   colorPalette,
   disabledColor,
   errorColor,
-} from '../../common/constants';
-import { EmptyButtonStyled } from '../Buttons/EmptyButton.styled';
-import { GroupLogo } from '../../pages/Planner/Groups/GroupList.styled';
+} from '@src/common/constants';
+import { GroupLogo } from '@pages/planner/Groups/GroupList.styled';
 import styled, { css } from 'styled-components';
-import { SelectIcon } from '../Icons/Icons';
+import { EmptyButtonStyled } from '@components/Buttons/EmptyButton.styled';
+import { SelectIcon } from '@components/Icons/Icons';
 
 interface ColorSchemeProps {
   gap: number | string;

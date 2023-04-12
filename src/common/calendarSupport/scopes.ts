@@ -1,4 +1,4 @@
-import { CalendarDisabledOptions } from '../../pages/Planner/planner.types';
+import { CalendarDisabledOptions } from '@pages/planner/planner.types';
 import dayjs from 'dayjs';
 import { DateHelper } from './dateHelper';
 

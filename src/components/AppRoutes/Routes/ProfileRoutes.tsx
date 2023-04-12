@@ -1,8 +1,8 @@
 import React, { FC, useContext } from 'react';
-import { FlexBlock } from '../../LayoutComponents/FlexBlock';
-import { ErrorScreen } from '../../Errors/ErrorScreen';
-import { SessionInterceptor } from '../Interceptors/SessionInterceptor';
-import { UserInfoContext } from '../../../Context/userInfo.context';
+import { UserInfoContext } from '@src/Context/userInfo.context';
+import { SessionInterceptor } from '@components/AppRoutes/Interceptors/SessionInterceptor';
+import { FlexBlock } from '@components/LayoutComponents/FlexBlock';
+import { ErrorScreen } from '@components/Errors/ErrorScreen';
 
 export const ProfileRoutes: FC = () => {
   const userInfo = useContext(UserInfoContext);

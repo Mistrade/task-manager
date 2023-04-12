@@ -1,8 +1,8 @@
 import { FC, ReactNode, useState } from 'react';
-import { FlexBlock } from '../LayoutComponents/FlexBlock';
-import { Arrow, IconProps, PlusIcon } from '../Icons/Icons';
-import { EmptyButtonStyled } from '../Buttons/EmptyButton.styled';
-import { currentColor } from '../../common/constants';
+import { Arrow, IconProps, PlusIcon } from '@components/Icons/Icons';
+import { FlexBlock } from '@components/LayoutComponents/FlexBlock';
+import { EmptyButtonStyled } from '@components/Buttons/EmptyButton.styled';
+import { currentColor } from '@src/common/constants';
 import { css } from 'styled-components';
 
 export interface AccordionProps {

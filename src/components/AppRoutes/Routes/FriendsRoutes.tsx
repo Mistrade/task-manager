@@ -1,8 +1,8 @@
 import React, { FC, useContext } from 'react';
-import { Contacts } from '../../../pages/Contacts/Contacts';
-import { UserModel } from '../../../store/api/session-api/session-api.types';
-import { SessionInterceptor } from '../Interceptors/SessionInterceptor';
-import { UserInfoContext } from '../../../Context/userInfo.context';
+import { Contacts } from '@contacts/Contacts';
+import { UserModel } from '@api/session-api/session-api.types';
+import { SessionInterceptor } from '@components/AppRoutes/Interceptors/SessionInterceptor';
+import { UserInfoContext } from '@src/Context/userInfo.context';
 
 export const FriendsRoutes: FC = () => {
   const userInfo = useContext(UserInfoContext);

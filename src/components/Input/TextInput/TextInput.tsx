@@ -1,22 +1,26 @@
 import React, { forwardRef, ReactNode } from 'react';
-import { FlexBlock, FlexBlockProps } from '../../LayoutComponents/FlexBlock';
-import { StyledInput } from '../Input.styled';
+import {
+  FlexBlock,
+  FlexBlockProps,
+} from '@components/LayoutComponents/FlexBlock';
+import { StyledInput } from '@components/Input/Input.styled';
 import {
   InputActions,
   InputActionsProps,
-} from '../InputSupportComponents/InputActions';
+} from '@components/Input/InputSupportComponents/InputActions';
 import {
   InputErrorMessage,
   InputErrorMessageProps,
-} from '../InputSupportComponents/InputErrorMessage';
+} from '@components/Input/InputSupportComponents/InputErrorMessage';
 import {
   InputIconContainer,
   InputIconContainerProps,
-} from '../InputSupportComponents/InputIconContainer';
+} from '@components/Input/InputSupportComponents/InputIconContainer';
 import {
   InputLabel,
   InputLabelProps,
-} from '../InputSupportComponents/InputLabel';
+} from '@components/Input/InputSupportComponents/InputLabel';
+import { css, keyframes } from 'styled-components';
 
 export interface DefaultTextInputProps
   extends InputErrorMessageProps,
@@ -37,7 +41,24 @@ export interface DefaultTextInputProps
 export interface TextInputProps extends DefaultTextInputProps {
   containerProps?: FlexBlockProps;
   onClick?: (e: React.MouseEvent<HTMLInputElement>) => void;
+  onKeyUp?: (e: React.KeyboardEvent<HTMLInputElement>) => void;
+  onKeyDown?: (e: React.KeyboardEvent<HTMLInputElement>) => void;
 }
+
+const InputAnimation = keyframes`
+  from {
+    opacity: .5;
+    transform: translateX(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+`;
+
+export const fromRightToLeftAnimation = css`
+  animation: ${InputAnimation} 0.3s ease-in-out forwards;
+`;
 
 export const TextInput = forwardRef<HTMLInputElement, TextInputProps>(
   (
@@ -64,12 +85,15 @@ export const TextInput = forwardRef<HTMLInputElement, TextInputProps>(
       tooltip,
       onClick,
       buttons,
+      onKeyUp,
+      onKeyDown,
     },
     ref
   ) => {
     return (
       <FlexBlock
         {...containerProps}
+        additionalCss={fromRightToLeftAnimation}
         width={'100%'}
         position={'relative'}
         direction={'column'}
@@ -97,6 +121,8 @@ export const TextInput = forwardRef<HTMLInputElement, TextInputProps>(
               onFocus={onFocus}
               readOnly={!!readOnly}
               onClick={onClick}
+              onKeyUp={onKeyUp}
+              onKeyDown={onKeyDown}
               onPaste={(e) => {
                 console.log(e);
               }}

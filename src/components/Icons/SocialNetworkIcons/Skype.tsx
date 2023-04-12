@@ -1,6 +1,9 @@
 import React, { FC } from 'react';
-import { IconProps } from '../Icons';
-import { FlexBlock, FlexBlockProps } from '../../LayoutComponents/FlexBlock';
+import { IconProps } from '@components/Icons/Icons';
+import {
+  FlexBlock,
+  FlexBlockProps,
+} from '@components/LayoutComponents/FlexBlock';
 
 export const SkypeLogoIcon: FC<IconProps & FlexBlockProps> = ({
   size = 24,

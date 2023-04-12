@@ -1,7 +1,7 @@
-import { StarIcon } from '../Icons/Icons';
 import { EmptyButtonStyled } from './EmptyButton.styled';
 import React, { FC } from 'react';
-import { orangeColor } from '../../common/constants';
+import { orangeColor } from '@src/common/constants';
+import { StarIcon } from '@components/Icons/Icons';
 
 export interface LikeButtonProps {
   isChecked: boolean;

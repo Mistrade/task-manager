@@ -1,5 +1,5 @@
 import React, { FC } from 'react';
-import { CalendarPriorityKeys } from '../../../pages/Planner/planner.types';
+import { CalendarPriorityKeys } from '@planner/planner.types';
 import {
   Arrow,
   BurgerIcon,
@@ -7,9 +7,9 @@ import {
   DoubleArrow,
   IconProps,
   SadSmile,
-} from '../Icons';
-import { FlexBlockProps } from '../../LayoutComponents/FlexBlock';
-import { currentColor, priorityColors } from '../../../common/constants';
+} from '@components/Icons/Icons';
+import { FlexBlockProps } from '@components/LayoutComponents/FlexBlock';
+import { currentColor, priorityColors } from '@src/common/constants';
 
 interface PriorityCalendarIconProps extends IconProps, FlexBlockProps {
   priorityKey: CalendarPriorityKeys;

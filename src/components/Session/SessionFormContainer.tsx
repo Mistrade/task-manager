@@ -4,9 +4,9 @@ import {
   borderRadiusSize,
   currentColor,
   defaultColor,
-} from '../../common/constants';
+} from '@src/common/constants';
 import { css } from 'styled-components';
-import { FlexBlock } from '../LayoutComponents/FlexBlock';
+import { FlexBlock } from '@components/LayoutComponents/FlexBlock';
 
 interface SessionFormContainerProps {
   children: ReactNode;

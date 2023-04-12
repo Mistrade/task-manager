@@ -4,7 +4,7 @@ import {
   MonthItem,
   WeekItem,
   YearItem,
-} from '../../pages/Planner/planner.types';
+} from '@pages/planner/planner.types';
 import { DateListGenerator } from './generators';
 
 export class PlannerObserver {

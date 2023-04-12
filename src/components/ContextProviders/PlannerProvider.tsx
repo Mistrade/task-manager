@@ -1,26 +1,26 @@
-import { PlannerContext } from '../../Context/planner.context';
 import {
   FCWithChildren,
   MonthItem,
   WeekItem,
   YearItem,
-} from '../../pages/Planner/planner.types';
+} from '@pages/planner/planner.types';
 import { useCallback, useEffect, useMemo, useState } from 'react';
-import { EventFilterTaskStatuses } from '../../pages/Planner/RenderModes/FindEventFilter/find-event-filters.types';
-import { PlannerObserver } from '../../common/calendarSupport/observer';
+import { EventFilterTaskStatuses } from '@pages/planner/RenderModes/FindEventFilter/find-event-filters.types';
+import { PlannerObserver } from '@src/common/calendarSupport/observer';
 import {
   defaultMonthItem,
   defaultWeekItem,
   defaultYearItem,
   PLANNER_LAYOUTS,
-} from '../../common/constants';
-import { useSearchNavigate } from '../../hooks/useSearchNavigate';
-import { ShortChangeCurrentPattern } from '../../common/commonTypes';
+} from '@src/common/constants';
+import { useSearchNavigate } from '@hooks/useSearchNavigate';
+import { ShortChangeCurrentPattern } from '@src/common/commonTypes';
 import dayjs from 'dayjs';
-import { ObjectId } from '../../store/api/rtk-api.types';
-import { EVENT_INFORMER_TAB_NAMES } from '../../pages/Planner/TaskInformer/LeftBar/TaskInformerLeftBar';
-import { useAppDispatch } from '../../store/hooks/hooks';
-import { ServicesNames, setServiceName } from '../../store/reducers/global';
+import { ObjectId } from '@api/rtk-api.types';
+import { EVENT_INFORMER_TAB_NAMES } from '@pages/planner/TaskInformer/LeftBar/TaskInformerLeftBar';
+import { useAppDispatch } from '@redux/hooks/hooks';
+import { ServicesNames, setServiceName } from '@redux/reducers/global';
+import { PlannerContext } from '@src/Context/planner.context';
 
 const today = new Date();
 
@@ -42,7 +42,10 @@ export interface IPlannerProviderMethods {
 
   updateCurrentStatus(status: EventFilterTaskStatuses): void;
 
-  updateCurrentDate(pattern: ShortChangeCurrentPattern): void;
+  updateCurrentDate(
+    pattern: ShortChangeCurrentPattern,
+    currentLayout: PLANNER_LAYOUTS
+  ): void;
 
   openEventInfo(_id: ObjectId): void;
 
@@ -135,6 +138,7 @@ export const PlannerProvider: FCWithChildren<{
     ILayoutItemsMap['optionsPanel']
   >(observer.getMonthItem(today));
 
+  //TODO раздробить на несколько методов!!!
   const plannerNavigate: IPlannerProviderMethods['plannerNavigate'] =
     useCallback(
       (essence) => {
@@ -202,6 +206,7 @@ export const PlannerProvider: FCWithChildren<{
 
   const updateCurrentLayout = useCallback(
     (layout: PLANNER_LAYOUTS, date?: Date) => {
+      // flushSync(() => {
       switch (layout) {
         case PLANNER_LAYOUTS.WEEK: {
           setWeekItem((prev) =>
@@ -239,25 +244,18 @@ export const PlannerProvider: FCWithChildren<{
       }
 
       setCurrentLayout(layout);
+      // });
     },
-    [
-      setCurrentDate,
-      setWeekItem,
-      setMonthItem,
-      setYearItem,
-      setCurrentLayout,
-      setCurrentStatus,
-      observer,
-    ]
+    []
   );
 
   const updateCurrentLayoutAndNavigate = useCallback(
     (layout: PLANNER_LAYOUTS, date?: Date) => {
-      console.log('navigate to: ', layout);
+      console.log(layout, date);
       updateCurrentLayout(layout, date);
       plannerNavigate('layout').go(layout);
     },
-    [plannerNavigate, updateCurrentLayout]
+    [plannerNavigate]
   );
 
   const updateCurrentDateOfDateLayout = useCallback(
@@ -294,11 +292,12 @@ export const PlannerProvider: FCWithChildren<{
         };
       });
     },
-    [setCurrentDate]
+    []
   );
 
   const updateCurrentDateOfMonthLayout = useCallback(
     (pattern: ShortChangeCurrentPattern) => {
+      // flushSync(() => {
       let resultDate = new Date();
 
       setCurrentDate((prev) => {
@@ -333,8 +332,9 @@ export const PlannerProvider: FCWithChildren<{
       });
 
       setMonthItem(observer.getMonthItem(resultDate));
+      // });
     },
-    [setCurrentDate]
+    [setCurrentDate, setMonthItem]
   );
 
   const updateCurrentDateOFWeekLayout = useCallback(
@@ -367,7 +367,7 @@ export const PlannerProvider: FCWithChildren<{
 
       setWeekItem(observer.getWeekItem(resultDate));
     },
-    [setCurrentDate]
+    [setCurrentDate, setWeekItem]
   );
 
   const updateCurrentDateOfYearLayout = useCallback(
@@ -402,11 +402,11 @@ export const PlannerProvider: FCWithChildren<{
 
       setYearItem(observer.getYearItem(resultDate));
     },
-    [setCurrentDate]
+    [setCurrentDate, setYearItem]
   );
 
   const updateCurrentDate = useCallback(
-    (pattern: ShortChangeCurrentPattern) => {
+    (pattern: ShortChangeCurrentPattern, currentLayout: PLANNER_LAYOUTS) => {
       switch (currentLayout) {
         case PLANNER_LAYOUTS.DAY:
           return updateCurrentDateOfDateLayout(pattern);
@@ -419,10 +419,9 @@ export const PlannerProvider: FCWithChildren<{
       }
     },
     [
-      currentLayout,
       updateCurrentDateOfDateLayout,
+      updateCurrentDateOFWeekLayout,
       updateCurrentDateOfMonthLayout,
-      updateCurrentDateOfYearLayout,
       updateCurrentDateOfYearLayout,
     ]
   );

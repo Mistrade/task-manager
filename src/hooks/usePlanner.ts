@@ -3,17 +3,17 @@ import {
   OnCloseTaskInfoFnType,
   OnSelectTaskFnType,
   PlannerMode,
-} from '../pages/Planner/planner.types';
+} from '@planner/planner.types';
 import { useCallback } from 'react';
-import { useAppDispatch, useAppSelector } from '../store/hooks/hooks';
+import { useAppDispatch, useAppSelector } from '@redux/hooks/hooks';
 import {
   changeGroupRemoved,
   changePlanner,
-} from '../store/reducers/planner-reducer';
-import { CalendarCurrentSelector } from '../store/selectors/calendarItems';
+} from '@redux/reducers/planner-reducer';
+import { CalendarCurrentSelector } from '@selectors/calendarItems';
 import { useSearchNavigate } from './useSearchNavigate';
-import { ObjectId } from '../store/api/rtk-api.types';
-import { GroupModelResponse } from '../store/api/planning-api/types/groups.types';
+import { ObjectId } from '@api/rtk-api.types';
+import { GroupModelResponse } from '@api/planning-api/types/groups.types';
 
 export interface UsePlannerReturned {
   planner: PlannerMode;

@@ -1,15 +1,12 @@
-import { DefaultTextInputProps } from '../../TextInput/TextInput';
-import { FlexBlockProps } from '../../../LayoutComponents/FlexBlock';
+import { DefaultTextInputProps } from '@components/Input/TextInput/TextInput';
+import { FlexBlockProps } from '@components/LayoutComponents/FlexBlock';
 import { FC, useMemo } from 'react';
-import {
-  TaskStatusesList,
-  TaskStatusesTitles,
-} from '../../../../common/constants';
-import { SelectInput } from '../SelectInput';
-import { SelectListContainer } from '../SelectListContainer';
-import { SelectItemContainer } from '../SelectItemContainer';
-import { EventIcon } from '../../../Icons/EventIcon';
-import { EventFilterTaskStatuses } from '../../../../pages/Planner/RenderModes/FindEventFilter/find-event-filters.types';
+import { TaskStatusesList, TaskStatusesTitles } from '@src/common/constants';
+import { SelectInput } from '@components/Input/SelectInput/SelectInput';
+import { SelectListContainer } from '@components/Input/SelectInput/SelectListContainer';
+import { SelectItemContainer } from '@components/Input/SelectInput/SelectItemContainer';
+import { EventIcon } from '@components/Icons/EventIcon';
+import { EventFilterTaskStatuses } from '@planner/RenderModes/FindEventFilter/find-event-filters.types';
 
 interface SelectStatusInputProps
   extends Partial<Omit<DefaultTextInputProps, 'onChange'>> {

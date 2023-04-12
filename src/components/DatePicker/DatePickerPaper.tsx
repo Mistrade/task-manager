@@ -1,17 +1,18 @@
 import { FC, useEffect, useMemo, useState } from 'react';
-import { FlexBlock } from '../LayoutComponents/FlexBlock';
 import {
   CalendarDisabledOptions,
   MonthItem,
   PlannerMonthMode,
-} from '../../pages/Planner/planner.types';
-import { CalendarTodaySwitchers } from '../../pages/Planner/Header/CalendarTodaySwitchers';
-import { changeMonthCurrentHandler } from '../../common/functions';
+} from '@pages/planner/planner.types';
+import { CalendarTodaySwitchers } from '@pages/planner/Header/CalendarTodaySwitchers';
+import { changeMonthCurrentHandler } from '@src/common/functions';
 import dayjs from 'dayjs';
-import { SmallCalendarMonthTitle } from '../../pages/Planner/SmallMotnCalendar/SmallCalendarMonthTitle';
+import { SmallCalendarMonthTitle } from '@pages/planner/SmallMotnCalendar/SmallCalendarMonthTitle';
 import { TimeSelector } from './TimeSelector';
-import { SmallMonth } from '../../pages/Planner/SmallMotnCalendar/SmallMonth';
-import { DateListGenerator } from '../../common/calendarSupport/generators';
+import { SmallMonth } from '@pages/planner/SmallMotnCalendar/SmallMonth';
+import { DateListGenerator } from '@src/common/calendarSupport/generators';
+import { PLANNER_LAYOUTS } from '@src/common/constants';
+import { FlexBlock } from '@components/LayoutComponents/FlexBlock';
 
 interface DatePickerPaperProps {
   disabledOptions?: CalendarDisabledOptions;
@@ -49,6 +50,7 @@ export const DatePickerPaper: FC<DatePickerPaperProps> = ({
     <FlexBlock width={'100%'} direction={'column'} align={'center'} p={8}>
       <FlexBlock mb={24}>
         <CalendarTodaySwitchers
+          currentLayout={PLANNER_LAYOUTS.MONTH}
           onChangeSwitcherState={(pattern) => {
             const v = dayjs()
               .set('year', current.year)

@@ -1,8 +1,8 @@
-import { TextInputProps } from '../TextInput/TextInput';
+import { TextInputProps } from '@components/Input/TextInput/TextInput';
 import { SelectInput } from './SelectInput';
 import { SelectListContainer } from './SelectListContainer';
 import { SelectItemContainer } from './SelectItemContainer';
-import { SelectBooleanInputDataItem } from '../../../pages/Planner/planner.types';
+import { SelectBooleanInputDataItem } from '@planner/planner.types';
 
 interface SelectBooleanInputProps<T extends SelectBooleanInputDataItem>
   extends Omit<TextInputProps, 'onChange' | 'readOnly' | 'value'> {

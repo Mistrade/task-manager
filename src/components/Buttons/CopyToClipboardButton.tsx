@@ -1,11 +1,11 @@
-import { CopyIcon } from '../Icons/AppIcon/CopyIcon';
-import { currentColor } from '../../common/constants';
+import { currentColor } from '@src/common/constants';
 import { EmptyButtonStyled } from './EmptyButton.styled';
-import { CompleteIcon, IconProps } from '../Icons/Icons';
-import { FlexBlockProps } from '../LayoutComponents/FlexBlock';
 import { FC, useCallback, useEffect, useState } from 'react';
 import { toast } from 'react-toastify';
 import { Button } from './Buttons.styled';
+import { FlexBlockProps } from '@components/LayoutComponents/FlexBlock';
+import { CompleteIcon, IconProps } from '@components/Icons/Icons';
+import { CopyIcon } from '@components/Icons/AppIcon/CopyIcon';
 
 export interface CopyToClipboardButtonProps extends Omit<IconProps, 'onClick'> {
   iconContainerProps?: FlexBlockProps;
@@ -46,7 +46,7 @@ export const CopyToClipboardButton: FC<CopyToClipboardButtonProps> = ({
       .writeText(content)
       .then(() => {
         setIsCopied(true);
-        toast('Скопировано в Буфер обмена', { type: 'success' });
+        toast('Текст скопирован в Буфер обмена', { type: 'success' });
       })
       .catch(() => {
         setTimeoutId((prev: any) => {
@@ -54,7 +54,9 @@ export const CopyToClipboardButton: FC<CopyToClipboardButtonProps> = ({
           return null;
         });
         setIsCopied(false);
-        toast('Не удалось скопировать в буфер обмена', { type: 'warning' });
+        toast('Не удалось скопировать текст в буфер обмена', {
+          type: 'warning',
+        });
       });
   }, [content]);
 

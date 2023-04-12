@@ -1,19 +1,19 @@
 import { FC } from 'react';
-import { VkLogoIcon } from './Vk';
-import { IconProps } from '../Icons';
-import { DefaultWebIcon } from './DefaultWeb';
-import { DiscordLogoIcon } from './Discord';
-import { FacebookLogoIcon } from './Facebook';
-import { FigmaLogoIcon } from './Figma';
-import { GoogleLogoIcon } from './Google';
-import { InstagramLogoIcon } from './Instagram';
-import { MiroLogoIcon } from './Miro';
-import { SkypeLogoIcon } from './Skype';
-import { TelegramLogoIcon } from './Telegram';
-import { TwitchLogoIcon } from './Twitch';
-import { ViberLogoIcon } from './Viber';
-import { WhatsAppLogoIcon } from './WhatsApp';
-import { ZoomLogoIcon } from './Zoom';
+import { VkLogoIcon } from '@components/Icons/SocialNetworkIcons/Vk';
+import { IconProps } from '@components/Icons/Icons';
+import { DefaultWebIcon } from '@components/Icons/SocialNetworkIcons/DefaultWeb';
+import { DiscordLogoIcon } from '@components/Icons/SocialNetworkIcons/Discord';
+import { FacebookLogoIcon } from '@components/Icons/SocialNetworkIcons/Facebook';
+import { FigmaLogoIcon } from '@components/Icons/SocialNetworkIcons/Figma';
+import { GoogleLogoIcon } from '@components/Icons/SocialNetworkIcons/Google';
+import { InstagramLogoIcon } from '@components/Icons/SocialNetworkIcons/Instagram';
+import { MiroLogoIcon } from '@components/Icons/SocialNetworkIcons/Miro';
+import { SkypeLogoIcon } from '@components/Icons/SocialNetworkIcons/Skype';
+import { TelegramLogoIcon } from '@components/Icons/SocialNetworkIcons/Telegram';
+import { TwitchLogoIcon } from '@components/Icons/SocialNetworkIcons/Twitch';
+import { ViberLogoIcon } from '@components/Icons/SocialNetworkIcons/Viber';
+import { WhatsAppLogoIcon } from '@components/Icons/SocialNetworkIcons/WhatsApp';
+import { ZoomLogoIcon } from '@components/Icons/SocialNetworkIcons/Zoom';
 
 export const UrlIcon: FC<{ name: string } & IconProps> = ({
   name,

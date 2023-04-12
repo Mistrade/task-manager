@@ -1,5 +1,5 @@
 import * as yup from 'yup';
-import { passRegExp, PhoneNumberRegExp } from '../regExps';
+import { passRegExp, PhoneNumberRegExp } from '@src/common/regExps';
 
 export const AuthValidationScheme = yup.object().shape({
   phone: yup.string().matches(PhoneNumberRegExp, {

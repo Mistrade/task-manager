@@ -1,7 +1,10 @@
 import React, { FC } from 'react';
-import { FlexBlock, FlexBlockProps } from '../../LayoutComponents/FlexBlock';
-import { currentColor } from '../../../common/constants';
-import { IconProps } from '../Icons';
+import {
+  FlexBlock,
+  FlexBlockProps,
+} from '@components/LayoutComponents/FlexBlock';
+import { currentColor } from '@src/common/constants';
+import { IconProps } from '@components/Icons/Icons';
 
 export const FacebookLogoIcon: FC<IconProps & FlexBlockProps> = ({
   size = 24,

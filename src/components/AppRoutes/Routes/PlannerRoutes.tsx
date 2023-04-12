@@ -1,25 +1,26 @@
 import { Routes } from 'react-router-dom';
 import { Navigate, Route } from 'react-router';
-import { SessionInterceptor } from '../Interceptors/SessionInterceptor';
 import React, { FC, useContext } from 'react';
-import { Loader } from '../../Loaders/Loader';
-import { UserInfoContext } from '../../../Context/userInfo.context';
 import {
   DEFAULT_PLANNER_LAYOUT,
   DEFAULT_PLANNER_STATUS,
   ERROR_DESCRIPTIONS,
   ERROR_TITLES,
-} from '../../../common/constants';
-import { ErrorBoundary } from '../../Errors/ErrorBoundary';
-import { ServicesNames } from '../../../store/reducers/global';
+} from '@src/common/constants';
+import { ServicesNames } from '@redux/reducers/global';
+import { UserInfoContext } from '@src/Context/userInfo.context';
+import { ErrorBoundary } from '@components/Errors/ErrorBoundary';
+import { SessionInterceptor } from '@components/AppRoutes/Interceptors/SessionInterceptor';
+import { Loader } from '@components/Loaders/Loader';
+import { disableReRender } from '@src/common/utils/react-utils';
 
 const PlannerPage = React.lazy(() =>
-  import('../../../pages/Planner').then(({ PlannerController }) => ({
+  import('../../../pages/planner').then(({ PlannerController }) => ({
     default: PlannerController,
   }))
 );
 
-export const PlannerRoutes: FC = () => {
+export const PlannerRoutes: FC = React.memo(() => {
   const userInfo = useContext(UserInfoContext);
 
   return (
@@ -63,4 +64,4 @@ export const PlannerRoutes: FC = () => {
       </SessionInterceptor>
     </ErrorBoundary>
   );
-};
+}, disableReRender);

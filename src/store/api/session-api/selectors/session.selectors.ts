@@ -1,8 +1,8 @@
+import { MyServerResponse } from '@api/rtk-api.types';
 import { createSelector } from '@reduxjs/toolkit';
+import { RootState } from '@src/store';
 import { sessionApi } from '../index';
-import { MyServerResponse } from '../../rtk-api.types';
 import { UserModel } from '../session-api.types';
-import { RootState } from '../../../index';
 
 export const userInfoSelector = createSelector(
   (state: RootState) => sessionApi.useConfirmSessionQuery().currentData,

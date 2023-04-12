@@ -1,5 +1,5 @@
 import { createContext } from 'react';
-import { UserModel } from '../store/api/session-api/session-api.types';
+import { UserModel } from '@api/session-api/session-api.types';
 
 export const UserInfoContext = createContext<null | undefined | UserModel>(
   null

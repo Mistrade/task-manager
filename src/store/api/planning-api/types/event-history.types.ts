@@ -2,10 +2,10 @@ import {
   CalendarPriorityKeys,
   EventLinkItem,
   TaskStatusesType,
-} from '../../../../pages/Planner/planner.types';
-import { UserModel } from '../../session-api/session-api.types';
+} from '@planner/planner.types';
+import { UserModel } from '@api/session-api/session-api.types';
 import { GroupModelResponse } from './groups.types';
-import { ObjectId, UtcDate } from '../../rtk-api.types';
+import { ObjectId, UtcDate } from '@api/rtk-api.types';
 
 export interface QuerySnapshotRequiredFields {
   //id записи

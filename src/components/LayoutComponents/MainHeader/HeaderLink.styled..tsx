@@ -1,6 +1,7 @@
 import styled from 'styled-components';
-import { LinkStyled } from '../../Buttons/Link.styled';
-import { currentColor, defaultColor } from '../../../common/constants';
+import { LinkStyled } from '@components/Buttons/Link.styled';
+import { currentColor, defaultColor } from '@src/common/constants';
+import React from 'react';
 
 export const HeaderDefaultLink = styled(LinkStyled)`
   font-size: 16px;
@@ -10,17 +11,17 @@ export const HeaderDefaultLink = styled(LinkStyled)`
   cursor: pointer;
 `;
 
-export const HeaderLinkStyled = styled(HeaderDefaultLink)<{
-  isSelected: boolean;
+export const HeaderLinkStyled = React.memo(styled(HeaderDefaultLink)<{
+  selected: boolean;
 }>`
   & {
     transition: all 0.3s ease-in-out;
-    background-color: ${(props) => (props.isSelected ? currentColor : '#fff')};
-    color: ${(props) => (props.isSelected ? '#fff' : defaultColor)};
+    background-color: ${(props) => (props.selected ? currentColor : '#fff')};
+    color: ${(props) => (props.selected ? '#fff' : defaultColor)};
   }
 
   &:hover {
     background-color: ${currentColor};
     color: #fff;
   }
-`;
+`);

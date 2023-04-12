@@ -1,21 +1,30 @@
+import { AppRoutes } from '@components/AppRoutes';
+import { UserInfoProvider } from '@components/ContextProviders/UserInfoProvider';
+import { FlexBlock } from '@components/LayoutComponents/FlexBlock';
+import { MainHeader } from '@components/LayoutComponents/MainHeader/MainHeader';
+import { TooltipStyled } from '@components/Tooltip/Tooltip.styled';
 import React from 'react';
-import styled, { createGlobalStyle, css } from 'styled-components';
-import './common/dayjs';
-import { FlexBlock } from './components/LayoutComponents/FlexBlock';
-import { MainHeader } from './components/LayoutComponents/MainHeader/MainHeader';
-import { AppRoutes } from './components/AppRoutes';
+import { Provider } from 'react-redux';
+import { BrowserRouter } from 'react-router-dom';
 import { ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
-import 'tippy.js/dist/tippy.css';
+import styled, { createGlobalStyle, css } from 'styled-components';
 import 'tippy.js/animations/perspective.css';
 import 'tippy.js/animations/shift-away.css';
-import { TooltipStyled } from './components/Tooltip/Tooltip.styled';
-import { pageHeaderColor } from './common/constants';
-import { UserInfoProvider } from './components/ContextProviders/UserInfoProvider';
+import 'tippy.js/dist/tippy.css';
+import './common/dayjs';
+import { store } from './store';
 
 const GlobalStyled = createGlobalStyle(
   {},
   css`
+    html,
+    body,
+    #root {
+      height: 100%;
+      overflow: hidden;
+    }
+
     * {
       box-sizing: border-box;
       margin: 0;
@@ -27,23 +36,38 @@ const GlobalStyled = createGlobalStyle(
 
 const AppContainer = styled('main')`
   display: flex;
-  flex-grow: 3;
-  background-color: ${pageHeaderColor};
-  flex-direction: row;
-  overflow: hidden;
+  height: 100%;
+  background-color: #fff;
+  flex-direction: column;
 `;
 
 function App() {
   return (
-    <UserInfoProvider>
-      <FlexBlock width={'100%'} direction={'column'} height={'100vh'}>
-        <GlobalStyled />
-        <TooltipStyled />
-        <MainHeader />
-        <AppContainer>
-          <AppRoutes />
-        </AppContainer>
-      </FlexBlock>
+    <>
+      <GlobalStyled />
+      <TooltipStyled />
+      <Provider store={store}>
+        <UserInfoProvider>
+          <BrowserRouter>
+            <AppContainer>
+              <MainHeader />
+              <FlexBlock
+                direction={'column'}
+                basis={'100%'}
+                overflow={'hidden'}
+              >
+                <FlexBlock
+                  direction={'column'}
+                  height={'100%'}
+                  overflow={'hidden'}
+                >
+                  <AppRoutes />
+                </FlexBlock>
+              </FlexBlock>
+            </AppContainer>
+          </BrowserRouter>
+        </UserInfoProvider>
+      </Provider>
       <ToastContainer
         pauseOnHover={true}
         position={'top-right'}
@@ -51,7 +75,7 @@ function App() {
         limit={2}
         newestOnTop={true}
       />
-    </UserInfoProvider>
+    </>
   );
 }
 
