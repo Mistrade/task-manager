@@ -1,49 +1,16 @@
-import React, { FC } from 'react';
-import { FlexBlock } from '@components/LayoutComponents/FlexBlock';
-import { Arrow, DoubleArrow } from '@components/Icons/Icons';
-import { SwitchCalendarMode } from '@planner/Planner.styled';
-import { CalendarTodaySwitchersProps } from '@planner/planner.types';
-import { EmptyButtonStyled } from '@components/Buttons/EmptyButton.styled';
+import { changeDateOfPattern } from '@planner-reducer/index';
+import { DatePickerSwitch } from '@planner/Header/DatePickerSwitch';
+import { useAppDispatch } from '@redux/hooks/hooks';
+import { ShortChangeCurrentPattern } from '@src/common/commonTypes';
+import { disableReRender } from '@src/common/utils/react-utils';
+import React, { FC, useCallback } from 'react';
 
-export const CalendarTodaySwitchers: FC<CalendarTodaySwitchersProps> =
-  React.memo(
-    ({ currentLayout, onChangeSwitcherState }) => {
-      return (
-        <FlexBlock width={'100%'} justify={'center'} align={'center'} gap={2}>
-          <EmptyButtonStyled
-            style={{ padding: '4px' }}
-            onClick={() => onChangeSwitcherState('--', currentLayout)}
-          >
-            <DoubleArrow size={16} transform={'rotate(180deg)'} />
-          </EmptyButtonStyled>
-          <EmptyButtonStyled
-            style={{ padding: '4px' }}
-            onClick={() => onChangeSwitcherState('-', currentLayout)}
-          >
-            <Arrow size={16} transform={'rotate(180deg)'} />
-          </EmptyButtonStyled>
-          <SwitchCalendarMode
-            style={{ background: 'transparent' }}
-            type={'button'}
-            onClick={() => onChangeSwitcherState('today', currentLayout)}
-          >
-            Сегодня
-          </SwitchCalendarMode>
-          <EmptyButtonStyled
-            style={{ padding: '4px' }}
-            onClick={() => onChangeSwitcherState('+', currentLayout)}
-          >
-            <Arrow size={16} />
-          </EmptyButtonStyled>
-          <EmptyButtonStyled
-            style={{ padding: '4px' }}
-            onClick={() => onChangeSwitcherState('++', currentLayout)}
-          >
-            <DoubleArrow size={16} />
-          </EmptyButtonStyled>
-        </FlexBlock>
-      );
-    },
-    (prevProps, nextProps) =>
-      prevProps.currentLayout === nextProps.currentLayout
-  );
+export const CalendarTodaySwitchers: FC = React.memo(() => {
+  const dispatch = useAppDispatch();
+
+  const changeHandler = useCallback((pattern: ShortChangeCurrentPattern) => {
+    dispatch(changeDateOfPattern({ pattern }));
+  }, []);
+
+  return <DatePickerSwitch onClick={changeHandler} />;
+}, disableReRender);

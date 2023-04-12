@@ -1,9 +1,6 @@
+import { borderRadiusSize } from '@src/common/borderRadiusSize';
 import styled from 'styled-components';
-import {
-  borderRadiusSize,
-  defaultColor,
-  lightHoverColor,
-} from '@src/common/constants';
+import { defaultColor, lightHoverColor } from '@src/common/constants';
 import { pxToCssValue } from '@components/LayoutComponents/FlexBlock';
 
 export const GroupListStyled = styled('ul')`

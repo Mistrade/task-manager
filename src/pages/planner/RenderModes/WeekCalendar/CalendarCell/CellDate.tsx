@@ -1,19 +1,20 @@
-import { CellDateHoverContainer, CellDateStyledContainer } from './Cell.styled';
-import React, { FC, useState } from 'react';
 import { Badge } from '@components/Badge/Badge';
+import { EmptyButtonStyled } from '@components/Buttons/EmptyButton.styled';
+import { CalendarIcon } from '@components/Icons/AppIcon/CalendarIcon';
+import { PlusIcon } from '@components/Icons/Icons';
+import { FlexBlock } from '@components/LayoutComponents/FlexBlock';
+import { plannerDateToDate } from '@planner-reducer/utils';
+import { CalendarItem } from '@planner/planner.types';
 import {
   currentColor,
   MonthList,
   WeekDaysShortList,
 } from '@src/common/constants';
-import dayjs from 'dayjs';
-import { CalendarDate } from './Cell';
-import { CalendarItem } from '@planner/planner.types';
 import { addNull } from '@src/common/functions';
-import { EmptyButtonStyled } from '@components/Buttons/EmptyButton.styled';
-import { PlusIcon } from '@components/Icons/Icons';
-import { CalendarIcon } from '@components/Icons/AppIcon/CalendarIcon';
-import { FlexBlock } from '@components/LayoutComponents/FlexBlock';
+import dayjs from 'dayjs';
+import React, { FC, useState } from 'react';
+import { CalendarDate } from './Cell';
+import { CellDateHoverContainer, CellDateStyledContainer } from './Cell.styled';
 
 export interface CellDateProps {
   date: CalendarItem;
@@ -64,15 +65,17 @@ export const CellDate: FC<CellDateProps> = ({
       ) : (
         <>
           <FlexBlock grow={3} pl={4}>
-            {renderMonth && MonthList[date.value.getMonth()]}
+            {renderMonth && MonthList[date.value.month]}
           </FlexBlock>
-          <Badge>{WeekDaysShortList[dayjs(date.value).weekday()]}</Badge>
+          <Badge>
+            {WeekDaysShortList[dayjs(plannerDateToDate(date.value)).weekday()]}
+          </Badge>
           <CalendarDate
             isToday={date.meta.isToday}
             disabled={date.meta.isDisabled}
             isCurrent={date.meta.isCurrent}
           >
-            {addNull(dayjs(date.value).date())}
+            {addNull(date.value.day)}
           </CalendarDate>
         </>
       )}

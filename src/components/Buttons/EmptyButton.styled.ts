@@ -1,5 +1,6 @@
+import { borderRadiusSize } from '@src/common/borderRadiusSize';
 import styled from 'styled-components';
-import { borderRadiusSize, lightHoverColor } from '@src/common/constants';
+import { lightHoverColor } from '@src/common/constants';
 
 export const DontHoveredButton = styled('button')`
   & {

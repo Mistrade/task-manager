@@ -1,6 +1,6 @@
+import { borderRadiusSize } from '@src/common/borderRadiusSize';
 import styled, { createGlobalStyle, css } from 'styled-components';
 import {
-  borderRadiusSize,
   currentColorWithoutBlur,
   darkColor,
   defaultColor,

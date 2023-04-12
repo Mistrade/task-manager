@@ -1,3 +1,13 @@
+import { ErrorBadRequestImg } from '@components/Icons/Errors/ErrorBadRequest';
+import { ErrorForbiddenImg } from '@components/Icons/Errors/ErrorForbidden';
+import { SystemErrorImg } from '@components/Icons/Errors/SystemError';
+import {
+  ArchiveIcon,
+  CompleteIcon,
+  CreatedIcon,
+  ProcessIcon,
+  ReviewIcon,
+} from '@components/Icons/Icons';
 import {
   CalendarPriorityKeys,
   CalendarPriorityList,
@@ -9,21 +19,12 @@ import {
   YearItem,
 } from '@pages/planner/planner.types';
 import {
-  ArchiveIcon,
-  CompleteIcon,
-  CreatedIcon,
-  ProcessIcon,
-  ReviewIcon,
-} from '@components/Icons/Icons';
-import { ErrorImagesType } from './types';
-import { SystemErrorImg } from '@components/Icons/Errors/SystemError';
-import { ErrorBadRequestImg } from '@components/Icons/Errors/ErrorBadRequest';
-import { ErrorForbiddenImg } from '@components/Icons/Errors/ErrorForbidden';
-import {
   EventFilterTaskStatuses,
   StatusesTabsObject,
 } from '@pages/planner/RenderModes/FindEventFilter/find-event-filters.types';
+import { ShortChangeCurrentPattern } from '@src/common/commonTypes';
 import dayjs from 'dayjs';
+import { ErrorImagesType } from './types';
 
 export const MonthList = [
   'Январь',
@@ -95,13 +96,6 @@ export const orangeColor = 'rgba(255,117,66, 1)';
 export const lightHoverColor = 'rgba(220, 220, 220, .4)';
 export const errorColor = '#FF6666';
 export const completeColor = '#c6fcda';
-
-export const borderRadiusSize = {
-  xs: '4px',
-  sm: '10px',
-  md: '16px',
-  xl: '20px',
-};
 
 export const colorRegExpDefault = /#[a-fA-F0-9]{3,6}$/gi;
 export const colorRegExpRGBA =
@@ -195,20 +189,83 @@ export const ERROR_IMAGES: ErrorImagesType = {
   ERR_NOT_VALID_RESPONSE: <SystemErrorImg />,
 };
 
+export const today = dayjs();
+export const todayAsDate = today.toDate();
+
 export const defaultYearItem: YearItem = {
+  stateDate: {
+    month: 0,
+    day: 1,
+    year: 2023,
+    week: 1,
+  },
   year: -1,
   months: [],
+  scope: {
+    startDate: {
+      month: 0,
+      day: 1,
+      year: 2023,
+      week: 1,
+    },
+    endDate: {
+      month: 0,
+      day: 1,
+      year: 2023,
+      week: 1,
+    },
+  },
 };
 export const defaultMonthItem: MonthItem = {
   monthOfYear: -1,
   year: -1,
   weeks: [],
+  scope: {
+    startDate: {
+      month: 0,
+      day: 1,
+      year: 2023,
+      week: 1,
+    },
+    endDate: {
+      month: 0,
+      day: 1,
+      year: 2023,
+      week: 1,
+    },
+  },
+  stateDate: {
+    month: 0,
+    day: 1,
+    year: 2023,
+    week: 1,
+  },
 };
 export const defaultWeekItem: WeekItem = {
   weekOfYear: -1,
   month: -1,
   year: -1,
   days: [],
+  scope: {
+    startDate: {
+      month: 0,
+      day: 1,
+      year: 2023,
+      week: 1,
+    },
+    endDate: {
+      month: 0,
+      day: 1,
+      year: 2023,
+      week: 1,
+    },
+  },
+  stateDate: {
+    month: 0,
+    day: 1,
+    year: 2023,
+    week: 1,
+  },
 };
 export const defaultDateItem: DateItem = {
   current: {
@@ -339,3 +396,182 @@ export const DEFAULT_PLANNER_LAYOUT: PLANNER_LAYOUTS = PLANNER_LAYOUTS.DAY;
 export const DEFAULT_PLANNER_STATUS: EventFilterTaskStatuses = 'in_work';
 
 export const UTC_OFFSET = dayjs().utcOffset();
+
+type T = {
+  [key in ShortChangeCurrentPattern]: 'subtract' | 'add';
+};
+
+type TChangeDateOfPatternSignature = {
+  [key in PLANNER_LAYOUTS]: {
+    [key in ShortChangeCurrentPattern]: {
+      method: 'subtract' | 'add';
+      unit: 'day' | 'week' | 'month' | 'year';
+      value: number;
+    };
+  };
+};
+
+export const CHANGE_DATE_OF_PATTERN_SIGNATURE: TChangeDateOfPatternSignature = {
+  [PLANNER_LAYOUTS.DAY]: {
+    '++': {
+      method: 'add',
+      unit: 'day',
+      value: 1,
+    },
+    '+': {
+      method: 'add',
+      unit: 'day',
+      value: 1,
+    },
+    today: {
+      method: 'add',
+      unit: 'day',
+      value: 0,
+    },
+    '-': {
+      method: 'subtract',
+      unit: 'day',
+      value: 1,
+    },
+    '--': {
+      method: 'subtract',
+      unit: 'day',
+      value: 1,
+    },
+  },
+  [PLANNER_LAYOUTS.WEEK]: {
+    '++': {
+      method: 'add',
+      unit: 'week',
+      value: 2,
+    },
+    '+': {
+      method: 'add',
+      unit: 'week',
+      value: 1,
+    },
+    today: {
+      method: 'add',
+      unit: 'day',
+      value: 0,
+    },
+    '-': {
+      method: 'subtract',
+      unit: 'week',
+      value: 1,
+    },
+    '--': {
+      method: 'subtract',
+      unit: 'week',
+      value: 2,
+    },
+  },
+  [PLANNER_LAYOUTS.MONTH]: {
+    '++': {
+      method: 'add',
+      unit: 'month',
+      value: 3,
+    },
+    '+': {
+      method: 'add',
+      unit: 'month',
+      value: 1,
+    },
+    today: {
+      method: 'add',
+      unit: 'day',
+      value: 0,
+    },
+    '-': {
+      method: 'subtract',
+      unit: 'month',
+      value: 1,
+    },
+    '--': {
+      method: 'subtract',
+      unit: 'month',
+      value: 3,
+    },
+  },
+  [PLANNER_LAYOUTS.YEAR]: {
+    '++': {
+      method: 'add',
+      unit: 'year',
+      value: 2,
+    },
+    '+': {
+      method: 'add',
+      unit: 'year',
+      value: 1,
+    },
+    today: {
+      method: 'add',
+      unit: 'day',
+      value: 0,
+    },
+    '-': {
+      method: 'subtract',
+      unit: 'year',
+      value: 1,
+    },
+    '--': {
+      method: 'subtract',
+      unit: 'year',
+      value: 2,
+    },
+  },
+  [PLANNER_LAYOUTS.LIST]: {
+    '++': {
+      method: 'add',
+      unit: 'day',
+      value: 2,
+    },
+    '+': {
+      method: 'add',
+      unit: 'day',
+      value: 1,
+    },
+    today: {
+      method: 'add',
+      unit: 'day',
+      value: 0,
+    },
+    '-': {
+      method: 'subtract',
+      unit: 'day',
+      value: 1,
+    },
+    '--': {
+      method: 'subtract',
+      unit: 'day',
+      value: 2,
+    },
+  },
+  [PLANNER_LAYOUTS.FAVORITES]: {
+    '++': {
+      method: 'add',
+      unit: 'day',
+      value: 0,
+    },
+    '+': {
+      method: 'add',
+      unit: 'day',
+      value: 0,
+    },
+    today: {
+      method: 'add',
+      unit: 'day',
+      value: 0,
+    },
+    '-': {
+      method: 'subtract',
+      unit: 'day',
+      value: 0,
+    },
+    '--': {
+      method: 'subtract',
+      unit: 'day',
+      value: 0,
+    },
+  },
+};

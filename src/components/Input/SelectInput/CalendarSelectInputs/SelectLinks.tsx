@@ -1,14 +1,11 @@
 import { FlexBlock } from '@components/LayoutComponents/FlexBlock';
+import { borderRadiusSize } from '@src/common/borderRadiusSize';
 import React, { useRef, useState } from 'react';
 import {
   DefaultTextInputProps,
   TextInput,
 } from '@components/Input/TextInput/TextInput';
-import {
-  borderRadiusSize,
-  currentColor,
-  hoverColor,
-} from '@src/common/constants';
+import { currentColor, hoverColor } from '@src/common/constants';
 import * as yup from 'yup';
 import {
   Button,

@@ -1,11 +1,7 @@
+import { borderRadiusSize } from '@src/common/borderRadiusSize';
 import { FC } from 'react';
 import { FlexBlock } from '@components/LayoutComponents/FlexBlock';
-import {
-  borderRadiusSize,
-  currentColor,
-  darkColor,
-  disabledColor,
-} from '@src/common/constants';
+import { currentColor, darkColor, disabledColor } from '@src/common/constants';
 import { JoinToEventButton } from '@components/Buttons/Buttons.styled';
 import { EventInfoModel } from '@api/planning-api/types/event-info.types';
 

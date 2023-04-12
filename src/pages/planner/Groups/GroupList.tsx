@@ -1,12 +1,11 @@
-import { GroupListStyled } from './GroupList.styled';
-import { GroupItem } from './GroupItem';
 import { useGetGroupsListQuery } from '@api/planning-api';
-import { usePlanner } from '@hooks/usePlanner';
 import { Delay } from '@src/common/functions';
+import { GroupItem } from './GroupItem';
+import { GroupListStyled } from './GroupList.styled';
 
 export const GroupList = () => {
   const { currentData } = useGetGroupsListQuery({});
-  const { onSelectRemovedGroup, onCreateGroup } = usePlanner();
+  // const { onSelectRemovedGroup, onCreateGroup } = usePlanner();
 
   return (
     <GroupListStyled>
@@ -15,9 +14,9 @@ export const GroupList = () => {
           <GroupItem
             item={item}
             key={item._id}
-            onDelete={onSelectRemovedGroup}
+            // onDelete={onSelectRemovedGroup}
             isChecked={item.isSelected}
-            onEdit={onCreateGroup}
+            // onEdit={onCreateGroup}
             onSuccessChangeSelect={async () => await Delay(1000)}
           />
         );

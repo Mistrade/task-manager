@@ -1,10 +1,10 @@
-import React, { FC } from 'react';
 import { FlexBlock } from '@components/LayoutComponents/FlexBlock';
 import { disabledColor } from '@src/common/constants';
+import { disableReRender } from '@src/common/utils/react-utils';
+import { TestIdList } from '@src/utils/test/testid-list';
+import React, { FC } from 'react';
 import { css } from 'styled-components';
 import { MainHeaderBody } from './MainHeaderBody';
-import { TestIdList } from '@src/utils/test/testid-list';
-import { disableReRender } from '@src/common/utils/react-utils';
 
 export const MainHeader: FC = React.memo(() => {
   return (

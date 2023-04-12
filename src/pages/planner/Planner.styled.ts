@@ -1,12 +1,13 @@
-import styled, { css } from 'styled-components';
+import { borderRadiusSize } from '@src/common/borderRadiusSize';
 import {
-  borderRadiusSize,
   currentColor,
   darkColor,
   defaultColor,
   disabledColor,
   hoverColor,
 } from '@src/common/constants';
+import { memo } from 'react';
+import styled, { css } from 'styled-components';
 
 export const CalendarDateListContainer = styled('div')<{ rowsCount?: number }>`
   & {
@@ -59,48 +60,51 @@ export const SwitchCalendarMode = styled('button')<{ isSelected?: boolean }>`
     margin-right: 4px;
   }
 `;
-export const SwitchCalendarModeTab = styled('button')<{ isSelected?: boolean }>`
-  & {
-    outline: none;
-    padding: 6px 16px;
-    font-size: 16px;
-    white-space: normal;
-    text-align: center;
-    flex-shrink: 0;
-    vertical-align: middle;
-    background-color: transparent;
-    border: none;
-    cursor: pointer;
-    transition: all 0.3s ease-in-out;
-    color: ${defaultColor};
-    width: fit-content;
-    min-width: 30px;
-    max-width: 300px;
-    position: relative;
-    border-radius: ${borderRadiusSize.sm};
-  }
-
-  ${(props) => {
-    if (props.isSelected) {
-      return css`
-        &:after {
-          content: '';
-          position: absolute;
-          bottom: -2px;
-          left: 0;
-          width: 100%;
-          height: 4px;
-          border-radius: ${borderRadiusSize.xl};
-          background-color: ${currentColor};
-        }
-      `;
+export const SwitchCalendarModeTab = memo(
+  styled('button')<{ isSelected?: boolean }>`
+    & {
+      outline: none;
+      padding: 6px 16px;
+      font-size: 16px;
+      white-space: normal;
+      text-align: center;
+      flex-shrink: 0;
+      vertical-align: middle;
+      background-color: transparent;
+      border: none;
+      cursor: pointer;
+      transition: all 0.3s ease-in-out;
+      color: ${defaultColor};
+      width: fit-content;
+      min-width: 30px;
+      max-width: 300px;
+      position: relative;
+      border-radius: ${borderRadiusSize.sm};
     }
-  }}
-  &:hover {
-    background-color: ${hoverColor};
-    border-radius: ${borderRadiusSize.xs} ${borderRadiusSize.xs} 0px 0px;
-  }
-`;
+
+    ${(props) => {
+      if (props.isSelected) {
+        return css`
+          &:after {
+            content: '';
+            position: absolute;
+            bottom: -2px;
+            left: 0;
+            width: 100%;
+            height: 4px;
+            border-radius: ${borderRadiusSize.xl};
+            background-color: ${currentColor};
+          }
+        `;
+      }
+    }}
+    &:hover {
+      background-color: ${hoverColor};
+      border-radius: ${borderRadiusSize.xs} ${borderRadiusSize.xs} 0px 0px;
+    }
+  `,
+  (prevProps, nextProps) => prevProps.isSelected === nextProps.isSelected
+);
 
 export const TimeSelectorButton = styled(SwitchCalendarMode)`
   margin: 0;
@@ -120,10 +124,10 @@ export const PlannerOptionPanelContainer = styled('div')`
   & {
     display: flex;
     height: 100%;
-    max-width: 300px;
+    width: 285px;
     background-color: ${'#fff'};
     padding: 0px 24px;
-    flex-basis: 20%;
+    //flex-basis: 20%;
     flex-shrink: 0;
     //border-right: 1px solid ${disabledColor};
   }

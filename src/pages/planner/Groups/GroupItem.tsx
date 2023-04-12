@@ -1,18 +1,17 @@
-import { FlexBlock } from '@components/LayoutComponents/FlexBlock';
-import { CalendarItemLabel, GroupItemCheckbox } from './GroupList.styled';
-import { FC, useState } from 'react';
+import { useChangeSelectGroupMutation } from '@api/planning-api';
+import { EmptyButtonStyled } from '@components/Buttons/EmptyButton.styled';
 import {
   LoaderIcon,
   PencilIcon,
   PlusIcon,
   TrashIcon,
 } from '@components/Icons/Icons';
-import { darkColor, defaultColor } from '@src/common/constants';
-import { EmptyButtonStyled } from '@components/Buttons/EmptyButton.styled';
-import { useChangeSelectGroupMutation } from '@api/planning-api';
-import { GroupItemProps } from './groups.types';
-import { useCreateEventModal } from '@hooks/useCreateEventModal';
+import { FlexBlock } from '@components/LayoutComponents/FlexBlock';
 import { CutText } from '@planner/RenderModes/DayCalendar/TaskList/TaskList.styled';
+import { darkColor, defaultColor } from '@src/common/constants';
+import { FC, useState } from 'react';
+import { CalendarItemLabel, GroupItemCheckbox } from './GroupList.styled';
+import { GroupItemProps } from './groups.types';
 
 export const GroupItem: FC<GroupItemProps> = ({
   onChange,
@@ -27,7 +26,7 @@ export const GroupItem: FC<GroupItemProps> = ({
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const [changeSelect] = useChangeSelectGroupMutation();
 
-  const { openModal } = useCreateEventModal({});
+  // const { openModal } = useCreateEventModal({});
 
   const changeHandler = async (isChecked: boolean) => {
     setIsLoading(true);
@@ -84,11 +83,11 @@ export const GroupItem: FC<GroupItemProps> = ({
             {item.type !== 'Invite' && (
               <EmptyButtonStyled
                 style={{ padding: 2 }}
-                onClick={() =>
-                  openModal({
-                    group: item._id,
-                  })
-                }
+                // onClick={() =>
+                // openModal({
+                //   group: item._id,
+                // })
+                // }
               >
                 <PlusIcon size={14} color={defaultColor} />
               </EmptyButtonStyled>

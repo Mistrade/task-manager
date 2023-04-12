@@ -1,6 +1,7 @@
-import React, { useContext } from 'react';
+import { useAppSelector } from '@redux/hooks/hooks';
+import { plannerSelectLayout } from '@selectors/planner';
 import { PLANNER_LAYOUTS } from '@src/common/constants';
-import { PlannerContext } from '@src/Context/planner.context';
+import React from 'react';
 import { LayoutSuspense } from '../LayoutSuspense';
 
 const DayLayout = React.lazy(() =>
@@ -9,9 +10,9 @@ const DayLayout = React.lazy(() =>
   }))
 );
 const WeekLayout = React.lazy(() =>
-  import('./RenderModes/WeekCalendar/WeekCalendarController').then(
-    ({ WeekCalendarController }) => ({ default: WeekCalendarController })
-  )
+  import('./RenderModes/WeekCalendar/WeekLayout').then(({ WeekLayout }) => ({
+    default: WeekLayout,
+  }))
 );
 const MonthLayout = React.lazy(() =>
   import('./RenderModes/MonthCalendar/MonthCalendar').then(
@@ -35,32 +36,31 @@ const FavoriteEventsLayout = React.lazy(() =>
 );
 
 export const LayoutSelector = () => {
-  const { currentLayout, currentDate, layoutItems } =
-    useContext(PlannerContext);
+  const layout = useAppSelector(plannerSelectLayout);
 
-  switch (currentLayout) {
+  switch (layout) {
     case PLANNER_LAYOUTS.DAY:
       return (
         <LayoutSuspense>
-          <DayLayout currentDate={currentDate.day} />
+          <DayLayout />
         </LayoutSuspense>
       );
     case PLANNER_LAYOUTS.WEEK:
       return (
         <LayoutSuspense>
-          <WeekLayout weekItem={layoutItems.week} />
+          <WeekLayout />
         </LayoutSuspense>
       );
     case PLANNER_LAYOUTS.MONTH:
       return (
         <LayoutSuspense>
-          <MonthLayout renderTaskCount={5} monthItem={layoutItems.month} />
+          <MonthLayout renderTaskCount={5} />
         </LayoutSuspense>
       );
     case PLANNER_LAYOUTS.YEAR:
       return (
         <LayoutSuspense>
-          <YearLayout yearItem={layoutItems.year} />
+          <YearLayout />
         </LayoutSuspense>
       );
     case PLANNER_LAYOUTS.LIST:

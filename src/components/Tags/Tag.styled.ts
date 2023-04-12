@@ -1,9 +1,6 @@
+import { borderRadiusSize } from '@src/common/borderRadiusSize';
 import styled from 'styled-components';
-import {
-  borderRadiusSize,
-  defaultColor,
-  disabledColor,
-} from '@src/common/constants';
+import { defaultColor, disabledColor } from '@src/common/constants';
 
 export const TagStyled = styled('span')`
   & {

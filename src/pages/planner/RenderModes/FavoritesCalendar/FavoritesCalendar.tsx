@@ -1,15 +1,18 @@
-import { useEventStorage } from '@hooks/useEventStorage';
-import dayjs from 'dayjs';
+import { ShortEventInfoModel } from '@api/planning-api/types/event-info.types';
+import { BreadCrumbs } from '@components/BreadCrumbs/BreadCrumbs';
 import { FlexBlock } from '@components/LayoutComponents/FlexBlock';
+import { ScrollVerticalView } from '@components/LayoutComponents/ScrollView/ScrollVerticalView';
+import { useEventStorage } from '@hooks/useEventStorage';
+import {
+  EventsStorage,
+  FavoritesCalendarModeProps,
+} from '@planner/planner.types';
 import { FindEventFilter } from '@planner/RenderModes/FindEventFilter/FindEventFilter';
 import { ListModeTaskController } from '@planner/RenderModes/List/ListModeTaskController';
-import React, { FC, useContext, useMemo } from 'react';
-import { EventsStorage, FavoritesCalendarModeProps } from '@planner/planner.types';
-import { ShortEventInfoModel } from '@api/planning-api/types/event-info.types';
 import { MonthList, PLANNER_LAYOUTS } from '@src/common/constants';
-import { ScrollVerticalView } from '@components/LayoutComponents/ScrollView/ScrollVerticalView';
-import { BreadCrumbs } from '@components/BreadCrumbs/BreadCrumbs';
 import { PlannerContext } from '@src/Context/planner.context';
+import dayjs from 'dayjs';
+import React, { FC, useContext, useMemo } from 'react';
 
 export const FavoritesCalendar: FC<FavoritesCalendarModeProps> = ({}) => {
   const {
@@ -28,19 +31,7 @@ export const FavoritesCalendar: FC<FavoritesCalendarModeProps> = ({}) => {
       .toDate();
   }, []);
 
-  const {
-    TaskStorage,
-    SwitcherBadges,
-    handlers,
-    filters,
-    debounceValue,
-    isFetching,
-  } = useEventStorage({
-    layout: PLANNER_LAYOUTS.FAVORITES,
-    scope: {
-      start: startDate,
-      end: toDate,
-    },
+  const { TaskStorage, handlers, filters, isFetching } = useEventStorage({
     onlyFavorites: true,
   });
 
@@ -66,13 +57,12 @@ export const FavoritesCalendar: FC<FavoritesCalendarModeProps> = ({}) => {
               },
             ]}
             onClick={(data) => {
-              updateCurrentLayoutAndNavigate(data, currentDate.favorites);
+              // updateCurrentLayoutAndNavigate(data, currentDate.favorites);
             }}
           />
           <FindEventFilter
             values={filters}
             onChangeHandlers={handlers}
-            statusBadges={SwitcherBadges}
             isLoading={isFetching}
           />
         </FlexBlock>

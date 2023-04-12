@@ -1,3 +1,4 @@
+import { borderRadiusSize } from '@src/common/borderRadiusSize';
 import React, { FC, useCallback, useContext, useMemo, useState } from 'react';
 import { EventInformerProps, MainEventInformerProps } from '../planner.types';
 import dayjs from 'dayjs';
@@ -16,11 +17,7 @@ import {
 } from './LeftBar/TaskInformerLeftBar';
 import { TaskInfoNotFound } from './SupportsComponent/TaskInfoNotFound';
 import { DateListGenerator } from '@src/common/calendarSupport/generators';
-import {
-  borderRadiusSize,
-  disabledColor,
-  pageHeaderColor,
-} from '@src/common/constants';
+import { disabledColor, pageHeaderColor } from '@src/common/constants';
 import { TaskInformerTitle } from './SupportsComponent/TaskInformerTitle';
 import { TaskInformerLinkButton } from './SupportsComponent/TaskInformerLinkButton';
 import { TaskInformerSwitchers } from './SupportsComponent/TaskInformerSwitchers';
@@ -29,10 +26,7 @@ import { CalendarSelectors } from '@selectors/calendarItems';
 import { useSearchNavigate } from '@hooks/useSearchNavigate';
 import { TaskInformerMoreActions } from './SupportsComponent/TaskInformerMoreActions';
 import { css } from 'styled-components';
-import {
-  CatchHandleForToast,
-  thenHandleForToast,
-} from '@api/tools';
+import { CatchHandleForToast, thenHandleForToast } from '@api/tools';
 import { useLocation } from 'react-router';
 import { PlannerContext } from '@src/Context/planner.context';
 

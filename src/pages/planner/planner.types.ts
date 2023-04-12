@@ -1,16 +1,17 @@
-import React, { FC, ReactNode } from 'react';
-import { ShortChangeCurrentPattern } from '@src/common/commonTypes';
-import { FlexBlockProps } from '@components/LayoutComponents/FlexBlock';
-import { DefaultTextInputProps } from '@components/Input/TextInput/TextInput';
-import { CalendarCellEventsListProps } from './RenderModes/WeekCalendar/CalendarCell/EventList/List';
 import {
   EventInfoModel,
   ShortEventInfoModel,
 } from '@api/planning-api/types/event-info.types';
-import { UserModel } from '@api/session-api/session-api.types';
 import { ObjectId } from '@api/rtk-api.types';
-import { PLANNER_LAYOUTS } from '@src/common/constants';
+import { UserModel } from '@api/session-api/session-api.types';
+import { DefaultTextInputProps } from '@components/Input/TextInput/TextInput';
+import { FlexBlockProps } from '@components/LayoutComponents/FlexBlock';
 import { TooltipProps } from '@components/Tooltip/Tooltip';
+import { IPlannerDate } from '@planner-reducer/types';
+import { DateScopeInterface } from '@src/common/calendarSupport/scopes';
+import { PLANNER_LAYOUTS } from '@src/common/constants';
+import React, { FC, ReactNode } from 'react';
+import { CalendarCellEventsListProps } from './RenderModes/WeekCalendar/CalendarCell/EventList/List';
 
 export type FCWithChildren<T = any> = FC<{ children?: ReactNode } & T>;
 
@@ -36,29 +37,23 @@ export interface GlobalTaskListProps {
   renderTaskCount?: RenderTaskCountType;
 }
 
-export interface YearCalendarProps {
-  yearItem: YearItem;
-}
+export interface YearCalendarProps {}
 
-export interface MonthCalendarProps extends GlobalTaskListProps {
-  monthItem: MonthItem;
-}
+export interface MonthCalendarProps extends GlobalTaskListProps {}
 
 export interface ListCalendarModeProps {}
 
 export interface FavoritesCalendarModeProps {}
 
 export interface WeekCalendarProps
-  extends Omit<MonthCalendarProps, 'monthItem' | 'renderWeekPattern'> {
-  weekItem: WeekItem;
+  extends Omit<MonthCalendarProps, 'monthItem'> {
+  config: WeekItem;
   taskStorage: EventsStorage;
   animationIndex?: number;
 }
 
 export interface DayCalendarProps extends GlobalTaskListProps {
   //TODO убрать наследование @GlobalTaskListProps
-  currentDate: Date;
-  onSelectTask?: OnSelectTaskFnType;
 }
 
 export type CalendarHeaderProps = {};
@@ -82,15 +77,6 @@ export interface TaskTileItemProps {
 export interface CalendarHeaderSwitchersProps {
   layout?: PLANNER_LAYOUTS;
 }
-
-export interface CalendarTodaySwitchersProps {
-  onChangeSwitcherState: (
-    pattern: ShortChangeCurrentPattern,
-    currentLayout: PLANNER_LAYOUTS
-  ) => void;
-  currentLayout: PLANNER_LAYOUTS;
-}
-
 export type OnSelectDateFromCalendarFn = (data: CalendarItem) => void;
 
 export interface DaySettingsPanelProps {}
@@ -107,16 +93,20 @@ export type CalendarList = Array<CalendarItem>;
 export type CalendarWeekList = Array<WeekItem>;
 export type CalendarMonthList = Array<MonthItem>;
 export type WeekItem = {
+  stateDate: IPlannerDate;
   weekOfYear: number;
   month: number;
   year: number;
   days: Array<CalendarItem>;
+  scope: TLayoutItemsScope;
 };
 
 export type MonthItem = {
+  stateDate: IPlannerDate;
   monthOfYear: number;
   year: number;
   weeks: Array<WeekItem>;
+  scope: TLayoutItemsScope;
 };
 
 export type CalendarCurrentContext = {
@@ -125,13 +115,17 @@ export type CalendarCurrentContext = {
   week?: number;
 };
 
+export type TLayoutItemsScope = Record<keyof DateScopeInterface, IPlannerDate>;
+
 export type YearItem = {
+  stateDate: IPlannerDate;
   year: number;
   months: Array<MonthItem>;
+  scope: TLayoutItemsScope;
 };
 
 export interface CalendarItem {
-  value: Date;
+  value: IPlannerDate;
   meta: CalendarItemMetaData;
 }
 

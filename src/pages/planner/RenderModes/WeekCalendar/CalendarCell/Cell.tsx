@@ -1,18 +1,19 @@
-import styled, { css } from 'styled-components';
-import React, { FC, useCallback, useContext } from 'react';
+import { useCreateEventModal } from '@hooks/useCreateEventModal';
+import { plannerDateToDate } from '@planner-reducer/utils';
 import { CalendarCellProps } from '@planner/planner.types';
+import { borderRadiusSize } from '@src/common/borderRadiusSize';
 import {
-  borderRadiusSize,
   currentColor,
   defaultColor,
   disabledColor,
   PLANNER_LAYOUTS,
 } from '@src/common/constants';
-import { CalendarCellEventsList } from './EventList/List';
-import { useCreateEventModal } from '@hooks/useCreateEventModal';
-import { CellDate } from './CellDate';
 import { PlannerContext } from '@src/Context/planner.context';
 import dayjs from 'dayjs';
+import React, { FC, useCallback, useContext } from 'react';
+import styled, { css } from 'styled-components';
+import { CellDate } from './CellDate';
+import { CalendarCellEventsList } from './EventList/List';
 
 export interface CalendarCellStyledComponentProps {
   disabled?: boolean;
@@ -125,12 +126,18 @@ export const CalendarCell: FC<CalendarCellProps> = ({
   const onPlusAction = useCallback(() => {
     openModal({
       time: value.value.toString(),
-      timeEnd: dayjs(value.value).add(1, 'hour').toDate().toString(),
+      timeEnd: dayjs(plannerDateToDate(value.value))
+        .add(1, 'hour')
+        .toDate()
+        .toString(),
     });
   }, [value.value, openModal]);
 
   const onCalendarAction = useCallback(() => {
-    updateCurrentLayoutAndNavigate(PLANNER_LAYOUTS.DAY, value.value);
+    updateCurrentLayoutAndNavigate(
+      PLANNER_LAYOUTS.DAY,
+      plannerDateToDate(value.value)
+    );
   }, [updateCurrentLayoutAndNavigate, value.value]);
 
   return (

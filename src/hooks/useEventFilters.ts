@@ -1,13 +1,13 @@
+import { GetEventsFiltersRequestProps } from '@api/planning-api/types/event-info.types';
+import { setPlannerStatus } from '@planner-reducer/index';
+import { PlannerMode } from '@planner/planner.types';
+import { EventFilterOnChangeHandle } from '@planner/RenderModes/FindEventFilter/find-event-filters.types';
+import { useAppDispatch } from '@redux/hooks/hooks';
+import { ServicesNames } from '@redux/reducers/global';
+import dayjs from 'dayjs';
 import { useCallback, useMemo, useState } from 'react';
 import { useDebounce } from './useDebounce';
-import { PlannerMode } from '@planner/planner.types';
-import dayjs from 'dayjs';
-import { useAppDispatch } from '@redux/hooks/hooks';
-import { changeEventStatuses } from '@redux/reducers/planner-reducer';
 import { useSearchNavigate } from './useSearchNavigate';
-import { GetEventsFiltersRequestProps } from '@api/planning-api/types/event-info.types';
-import { EventFilterOnChangeHandle } from '@planner/RenderModes/FindEventFilter/find-event-filters.types';
-import { ServicesNames } from '@redux/reducers/global';
 
 export interface EventFiltersProps
   extends Omit<GetEventsFiltersRequestProps, 'fromDate' | 'toDate'> {
@@ -49,13 +49,13 @@ export const useEventFilters: UseEventFiltersType = ({
   initialValues,
   layout,
   useNavigate = true,
-  debounceTimeout,
+  debounceTimeout = 1250,
 }) => {
   const navigate = useSearchNavigate();
   const dispatch = useAppDispatch();
   const [filters, setFilters] = useState<EventFiltersProps>(initialValues);
 
-  const debounceValue = useDebounce(filters, debounceTimeout || 300);
+  const debounceValue = useDebounce(filters, debounceTimeout || 1250);
 
   const changeFiltersStateHandler = <T extends keyof EventFiltersProps>(
     fieldName: T,
@@ -82,7 +82,7 @@ export const useEventFilters: UseEventFiltersType = ({
       taskStatus: (newStatus) => {
         if (useNavigate) {
           navigate(`/${ServicesNames.PLANNER}/${layout}/${newStatus}`);
-          dispatch(changeEventStatuses(newStatus || 'all'));
+          dispatch(setPlannerStatus(newStatus || 'all'));
         }
         changeFiltersStateHandler('taskStatus', newStatus);
       },

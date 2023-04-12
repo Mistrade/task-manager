@@ -1,8 +1,5 @@
-import {
-  borderRadiusSize,
-  darkColor,
-  disabledColor,
-} from '@src/common/constants';
+import { borderRadiusSize } from '@src/common/borderRadiusSize';
+import { darkColor, disabledColor } from '@src/common/constants';
 import { FlexBlock } from '@components/LayoutComponents/FlexBlock';
 import { LinkStyled } from '@components/Buttons/Link.styled';
 import React, { FC } from 'react';

@@ -1,103 +1,73 @@
-import { EventsStorage, PlannerMode } from '@planner/planner.types';
-import { useContext, useMemo } from 'react';
+import { useGetEventsStorageQuery } from '@api/planning-api';
+import { plannerDateToDate } from '@planner-reducer/utils';
+import { EventsStorage } from '@planner/planner.types';
+import { useAppSelector } from '@redux/hooks/hooks';
+import {
+  plannerSelectLayout,
+  plannerSelectScope,
+  plannerSelectStatus,
+} from '@selectors/planner';
+import { UTC_OFFSET } from '@src/common/constants';
 import {
   EventFiltersProps,
   useEventFilters,
   UseEventFiltersReturned,
 } from './useEventFilters';
-import {
-  useGetEventsCountOfStatusQuery,
-  useGetEventsStorageQuery,
-} from '@api/planning-api';
-import { SwitcherBadges } from '@components/Switcher/Switcher';
-import { GetEventsFiltersRequestProps } from '@api/planning-api/types/event-info.types';
-import { EventFilterTaskStatuses } from '@planner/RenderModes/FindEventFilter/find-event-filters.types';
-import { UTC_OFFSET } from '@src/common/constants';
-import { PlannerContext } from '@src/Context/planner.context';
-
-interface Scope {
-  start: Date;
-  end: Date;
-}
 
 interface UseTaskStorageProps {
-  scope: Scope;
-  layout: PlannerMode['layout'];
   onlyFavorites?: boolean;
 }
 
 interface UseTaskStorageQueryArgsReturned extends UseEventFiltersReturned {
-  queryArgs: GetEventsFiltersRequestProps;
   taskStatus: EventFiltersProps['taskStatus'];
   TaskStorage?: EventsStorage;
-  SwitcherBadges?: SwitcherBadges<EventFilterTaskStatuses> | null;
   isFetching: boolean;
 }
 
 type UseTaskStorageQueryArgsHookType = (
-  props: UseTaskStorageProps
+  props?: UseTaskStorageProps
 ) => UseTaskStorageQueryArgsReturned;
 
-const getQueryArgs = (
-  values: EventFiltersProps,
-  props: UseTaskStorageProps
-): GetEventsFiltersRequestProps => {
-  console.log('queryArgs');
-  return {
-    title: values.title,
-    fromDate: props.scope.start?.toString() || '',
-    toDate: props.scope?.end.toString() || '',
-    priority: values.priority,
-    taskStatus: values.taskStatus,
-    onlyFavorites: !!props.onlyFavorites,
-    utcOffset: UTC_OFFSET,
-  };
-};
-
 export const useEventStorage: UseTaskStorageQueryArgsHookType = (props) => {
-  const { currentStatus } = useContext(PlannerContext);
+  const scope = useAppSelector(plannerSelectScope);
+  const layout = useAppSelector(plannerSelectLayout);
+  const currentStatus = useAppSelector(plannerSelectStatus);
 
-  const filtersReturned = useEventFilters({
-    initialValues: {
-      start: null,
-      end: null,
-      utcOffset: UTC_OFFSET,
-      title: null,
-      taskStatus: currentStatus,
-      priority: null,
-    },
-    layout: props.layout,
-  });
-
-  const queryArgs = useMemo(
-    () => getQueryArgs(filtersReturned.debounceValue, props),
-    [filtersReturned.debounceValue, props]
+  const { debounceValue, filters, handlers, setFiltersState } = useEventFilters(
+    {
+      initialValues: {
+        start: null,
+        end: null,
+        utcOffset: UTC_OFFSET,
+        title: null,
+        taskStatus: currentStatus,
+        priority: null,
+      },
+      layout,
+    }
   );
 
-  const { data: TaskStorage, isFetching: isFetchingStorage } =
-    useGetEventsStorageQuery(
-      {
-        ...queryArgs,
-        findOnlyInSelectedGroups: true,
-      },
-      { refetchOnMountOrArgChange: true }
-    );
-
-  const {
-    data: SwitcherBadges,
-    refetch: refetchBadges,
-    isFetching: isFetchingBadges,
-  } = useGetEventsCountOfStatusQuery({
-    ...queryArgs,
-    findOnlyInSelectedGroups: true,
-  });
+  const { data: TaskStorage, isFetching } = useGetEventsStorageQuery(
+    {
+      title: debounceValue.title,
+      fromDate: plannerDateToDate(scope.startDate).toString(),
+      toDate: plannerDateToDate(scope.endDate).toString(),
+      priority: debounceValue.priority,
+      taskStatus: currentStatus,
+      onlyFavorites: !!props?.onlyFavorites,
+      utcOffset: UTC_OFFSET,
+      findOnlyInSelectedGroups: true,
+    },
+    { refetchOnMountOrArgChange: true }
+  );
 
   return {
-    queryArgs,
-    taskStatus: filtersReturned.debounceValue.taskStatus,
+    taskStatus: currentStatus,
     TaskStorage: TaskStorage?.data || {},
-    SwitcherBadges: SwitcherBadges?.data,
-    ...filtersReturned,
-    isFetching: isFetchingBadges || isFetchingStorage,
+    filters,
+    handlers,
+    isFetching,
+    debounceValue,
+    setFiltersState,
   };
 };

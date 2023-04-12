@@ -1,9 +1,9 @@
+import { borderRadiusSize } from '@src/common/borderRadiusSize';
 import React, { FC, useCallback, useContext, useMemo } from 'react';
 import dayjs from 'dayjs';
 import { planningApi, useUpdateTaskMutation } from '@api/planning-api';
 import { FlexBlock } from '@components/LayoutComponents/FlexBlock';
 import {
-  borderRadiusSize,
   darkColor,
   DATE_HOURS_FORMAT,
   defaultColor,

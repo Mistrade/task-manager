@@ -1,40 +1,21 @@
-import React, { FC, useContext, useMemo } from 'react';
-import { EventsStorage, ListCalendarModeProps } from '@planner/planner.types';
-import { FindEventFilter } from '@planner/RenderModes/FindEventFilter/FindEventFilter';
-import { ListModeTaskController } from './ListModeTaskController';
-import { useEventStorage } from '@hooks/useEventStorage';
 import { ShortEventInfoModel } from '@api/planning-api/types/event-info.types';
-import { ScrollVerticalView } from '@components/LayoutComponents/ScrollView/ScrollVerticalView';
-import { PlannerContext } from '@src/Context/planner.context';
-import dayjs from 'dayjs';
-import { MonthList, PLANNER_LAYOUTS } from '@src/common/constants';
 import { BreadCrumbs } from '@components/BreadCrumbs/BreadCrumbs';
 import { FlexBlock } from '@components/LayoutComponents/FlexBlock';
+import { ScrollVerticalView } from '@components/LayoutComponents/ScrollView/ScrollVerticalView';
+import { useEventStorage } from '@hooks/useEventStorage';
+import { plannerDateToDate } from '@planner-reducer/utils';
+import { EventsStorage, ListCalendarModeProps } from '@planner/planner.types';
+import { FindEventFilter } from '@planner/RenderModes/FindEventFilter/FindEventFilter';
+import { useAppSelector } from '@redux/hooks/hooks';
+import { plannerSelectDate, plannerSelectScope } from '@selectors/planner';
+import { MonthList, PLANNER_LAYOUTS } from '@src/common/constants';
+import React, { FC } from 'react';
+import { ListModeTaskController } from './ListModeTaskController';
 
 export const ListCalendarMode: FC<ListCalendarModeProps> = ({}) => {
-  const {
-    currentDate,
-    methods: { updateCurrentLayoutAndNavigate },
-  } = useContext(PlannerContext);
-
-  const scope = useMemo(() => {
-    return {
-      start: dayjs(currentDate.list).startOf('day').toDate(),
-      end: dayjs(currentDate.list).add(3, 'day').endOf('day').toDate(),
-    };
-  }, [currentDate.list]);
-
-  const {
-    TaskStorage,
-    SwitcherBadges,
-    handlers,
-    filters,
-    debounceValue,
-    isFetching,
-  } = useEventStorage({
-    layout: PLANNER_LAYOUTS.LIST,
-    scope: scope,
-  });
+  const date = useAppSelector(plannerSelectDate);
+  const scope = useAppSelector(plannerSelectScope);
+  const { TaskStorage, handlers, filters, isFetching } = useEventStorage();
 
   return (
     <ScrollVerticalView
@@ -43,26 +24,25 @@ export const ListCalendarMode: FC<ListCalendarModeProps> = ({}) => {
           <BreadCrumbs
             data={[
               {
-                title: `${currentDate.list.getFullYear()}г.`,
+                title: `${date.year}г.`,
                 value: PLANNER_LAYOUTS.YEAR,
               },
               {
-                title: `${MonthList[currentDate.list.getMonth()]}`,
+                title: `${MonthList[date.month]}`,
                 value: PLANNER_LAYOUTS.MONTH,
               },
               {
-                title: `Неделя ${dayjs(currentDate.list).week()}`,
+                title: `Неделя ${date.week}`,
                 value: PLANNER_LAYOUTS.WEEK,
               },
             ]}
             onClick={(data) => {
-              updateCurrentLayoutAndNavigate(data, currentDate.list);
+              // updateCurrentLayoutAndNavigate(data, currentDate.list);
             }}
           />
           <FindEventFilter
             values={filters}
             onChangeHandlers={handlers}
-            statusBadges={SwitcherBadges}
             isLoading={isFetching}
           />
         </FlexBlock>
@@ -72,8 +52,8 @@ export const ListCalendarMode: FC<ListCalendarModeProps> = ({}) => {
     >
       <ListModeTaskController
         eventStorage={TaskStorage as EventsStorage<ShortEventInfoModel>}
-        fromDate={scope.start}
-        toDate={scope.end}
+        fromDate={plannerDateToDate(scope.startDate)}
+        toDate={plannerDateToDate(scope.endDate)}
       />
     </ScrollVerticalView>
   );

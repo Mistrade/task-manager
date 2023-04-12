@@ -1,10 +1,7 @@
+import { borderRadiusSize } from '@src/common/borderRadiusSize';
 import * as React from 'react';
 import { FC, ReactNode } from 'react';
-import {
-  borderRadiusSize,
-  currentColor,
-  defaultColor,
-} from '@src/common/constants';
+import { currentColor, defaultColor } from '@src/common/constants';
 import { css } from 'styled-components';
 import { FlexBlock } from '@components/LayoutComponents/FlexBlock';
 

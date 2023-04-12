@@ -1,8 +1,12 @@
-import { FC, useContext, useEffect, useRef } from 'react';
+import { Accordion } from '@components/Accordion/Accordion';
+import { Badge } from '@components/Badge/Badge';
+import { FlexBlock } from '@components/LayoutComponents/FlexBlock';
+import { Heading } from '@components/Text/Heading';
+import { plannerDateToDate } from '@planner-reducer/utils';
 import { WeekCalendarProps } from '@planner/planner.types';
-import dayjs from 'dayjs';
-import { CalendarCell } from './CalendarCell/Cell';
-import styled from 'styled-components';
+import { NonViewScroller } from '@planner/TaskInformer/LeftBar/Tabs/TaskComments/comments.styled';
+import { useAppSelector } from '@redux/hooks/hooks';
+import { plannerSelectLayout } from '@selectors/planner';
 import {
   currentColor,
   disabledColor,
@@ -10,12 +14,10 @@ import {
   PLANNER_LAYOUTS,
 } from '@src/common/constants';
 import { getTaskListOfDay } from '@src/common/functions';
-import { Accordion } from '@components/Accordion/Accordion';
-import { Heading } from '@components/Text/Heading';
-import { Badge } from '@components/Badge/Badge';
-import { FlexBlock } from '@components/LayoutComponents/FlexBlock';
-import { NonViewScroller } from '@planner/TaskInformer/LeftBar/Tabs/TaskComments/comments.styled';
-import { PlannerContext } from '@src/Context/planner.context';
+import dayjs from 'dayjs';
+import { FC, useEffect, useMemo, useRef } from 'react';
+import styled from 'styled-components';
+import { CalendarCell } from './CalendarCell/Cell';
 
 interface StyledProps {
   isVisible?: boolean;
@@ -88,19 +90,11 @@ const WeekOfYearTitle = styled('h3')`
 // };
 
 export const WeeKCalendar: FC<WeekCalendarProps> = ({
-  weekItem,
+  config,
   renderTaskCount,
   taskStorage,
 }) => {
-  const { currentLayout } = useContext(PlannerContext);
-
-  // const onClickToDate = useCallback(
-  //   (date: CalendarItem) => {
-  //     onChangeCurrent && onChangeCurrent(date.value, 'day');
-  //   },
-  //   [onChangeCurrent]
-  // );
-
+  const currentLayout = useAppSelector(plannerSelectLayout);
   const ref = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
@@ -112,8 +106,11 @@ export const WeeKCalendar: FC<WeekCalendarProps> = ({
     }
   }, [currentLayout]);
 
+  const isCurrentWeek = useMemo(() => {
+    return dayjs().week() === config.weekOfYear;
+  }, [config.weekOfYear]);
+
   if (currentLayout === 'month') {
-    const isCurrentWeek = dayjs().week() === weekItem.weekOfYear;
     return (
       <WeekContainer>
         {isCurrentWeek && <NonViewScroller ref={ref} />}
@@ -122,7 +119,7 @@ export const WeeKCalendar: FC<WeekCalendarProps> = ({
             <Heading.H2 style={{ color: currentColor, fontSize: 18 }}>
               <FlexBlock direction={'row'} gap={6}>
                 {[
-                  `Неделя ${weekItem.weekOfYear}`,
+                  `Неделя ${config.weekOfYear}`,
                   isCurrentWeek ? (
                     <Badge
                       style={{
@@ -142,14 +139,15 @@ export const WeeKCalendar: FC<WeekCalendarProps> = ({
           }
         >
           <DaysContainer>
-            {weekItem.days.map((day) => (
+            {config.days.map((day) => (
               <CalendarCell
                 isVisible={true}
-                tasks={getTaskListOfDay(day.value, taskStorage)}
+                tasks={getTaskListOfDay(
+                  plannerDateToDate(day.value),
+                  taskStorage
+                )}
                 renderTaskCount={renderTaskCount}
-                key={`date_year_${weekItem.year}_month_${
-                  weekItem.month
-                }_${day.value.getDate()}`}
+                key={`date_year_${config.year}_month_${config.month}_${day.value.day}`}
                 value={day}
                 // onClickToDate={onClickToDate}
               />
@@ -163,14 +161,12 @@ export const WeeKCalendar: FC<WeekCalendarProps> = ({
   return (
     <WeekContainer>
       <DaysContainer>
-        {weekItem.days.map((day) => (
+        {config.days.map((day) => (
           <CalendarCell
             isVisible={true}
-            tasks={getTaskListOfDay(day.value, taskStorage)}
+            tasks={getTaskListOfDay(plannerDateToDate(day.value), taskStorage)}
             renderTaskCount={renderTaskCount}
-            key={`date_year_${weekItem.year}_month_${
-              weekItem.month
-            }_${day.value.getDate()}`}
+            key={`date_year_${config.year}_month_${config.month}_${day.value.day}`}
             value={day}
             // onClickToDate={onClickToDate}
           />

@@ -1,13 +1,14 @@
-import { FC, useCallback, useMemo } from 'react';
-import dayjs from 'dayjs';
-import { Tooltip } from '@components/Tooltip/Tooltip';
-import { PourDatesProps, SmallMonthProps } from './SmallMonth';
-import { PlannerMonthMode, WeekItem } from '@planner/planner.types';
-import { SmallMonthRow, SmallMonthWeekCount } from './SmallMonth.styled';
-import { SmallMonthDateItem } from './SmallMonthDateItem';
-import { FlexBlock } from '@components/LayoutComponents/FlexBlock';
 import { GetEventsSchemeResponse } from '@api/planning-api/types/event-info.types';
 import { EmptyButtonStyled } from '@components/Buttons/EmptyButton.styled';
+import { FlexBlock } from '@components/LayoutComponents/FlexBlock';
+import { Tooltip } from '@components/Tooltip/Tooltip';
+import { plannerDateToDate } from '@planner-reducer/utils';
+import { PlannerMonthMode, WeekItem } from '@planner/planner.types';
+import dayjs from 'dayjs';
+import { FC, useCallback, useMemo } from 'react';
+import { PourDatesProps, SmallMonthProps } from './SmallMonth';
+import { SmallMonthRow, SmallMonthWeekCount } from './SmallMonth.styled';
+import { SmallMonthDateItem } from './SmallMonthDateItem';
 
 export interface SmallMonthWeekItemProps
   extends Pick<
@@ -66,7 +67,7 @@ export const SmallMonthWeekItem: FC<SmallMonthWeekItemProps> = ({
     onSelectWeek &&
       onSelectWeek({
         layout: 'week',
-        aroundDate: weekItem.days[0].value,
+        aroundDate: plannerDateToDate(weekItem.days[0].value),
       });
   }, [weekItem, onSelectWeek]);
 
@@ -79,7 +80,7 @@ export const SmallMonthWeekItem: FC<SmallMonthWeekItemProps> = ({
       </SmallMonthWeekCount>
       <FlexBlock
         justify={
-          dayjs(weekItem.days[0].value).weekday() > 0
+          dayjs(plannerDateToDate(weekItem.days[0].value)).weekday() > 0
             ? 'flex-end'
             : 'flex-start'
         }
@@ -89,7 +90,8 @@ export const SmallMonthWeekItem: FC<SmallMonthWeekItemProps> = ({
       >
         {weekItem.days.map((day, index) => {
           const isSelect =
-            currentDate && dayjs(currentDate).isSame(day.value, 'date');
+            currentDate &&
+            dayjs(currentDate).isSame(plannerDateToDate(day.value), 'date');
 
           if (useTooltips && (day.meta.isToday || isSelect)) {
             return (
@@ -120,7 +122,7 @@ export const SmallMonthWeekItem: FC<SmallMonthWeekItemProps> = ({
           return (
             <SmallMonthDateItem
               current={current}
-              key={`short-date-${day.value.getDate()}`}
+              key={`short-date-${day.value.day}`}
               date={day}
               currentDate={currentDate}
               taskScheme={taskScheme}

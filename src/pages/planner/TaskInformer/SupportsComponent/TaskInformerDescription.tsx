@@ -1,3 +1,4 @@
+import { borderRadiusSize } from '@src/common/borderRadiusSize';
 import { FC, useEffect, useState } from 'react';
 import { useFormik } from 'formik';
 import { FlexBlock } from '@components/LayoutComponents/FlexBlock';
@@ -6,11 +7,7 @@ import { EditableFieldsButtons } from './EditableFieldsButtons';
 import { EventInfoBaseProps } from '@planner/planner.types';
 import { EventInfoUpdateFn } from './ToggleTaskInformerButtons';
 import styled, { css } from 'styled-components';
-import {
-  borderRadiusSize,
-  currentColor,
-  disabledColor,
-} from '@src/common/constants';
+import { currentColor, disabledColor } from '@src/common/constants';
 import { EmptyButtonStyled } from '@components/Buttons/EmptyButton.styled';
 import { PencilIcon } from '@components/Icons/Icons';
 import { StyledTaskInformerLinkForm } from '../TaskInformer.styled';

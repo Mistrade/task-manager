@@ -1,6 +1,6 @@
+import { borderRadiusSize } from '@src/common/borderRadiusSize';
 import styled from 'styled-components';
 import {
-  borderRadiusSize,
   defaultColor,
   disabledColor,
   lightHoverColor,

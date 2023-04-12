@@ -1,20 +1,17 @@
-import { FC, useContext, useMemo } from 'react';
-import { YearCalendarProps } from '@planner/planner.types';
-import styled from 'styled-components';
-import { FlexBlock } from '@components/LayoutComponents/FlexBlock';
-import { SmallCalendarMonthTitle } from '@planner/SmallMotnCalendar/SmallCalendarMonthTitle';
 import { useGetEventsSchemeQuery } from '@api/planning-api';
-import { DateScopeHelper } from '@src/common/calendarSupport/scopes';
-import { Loader } from '@components/Loaders/Loader';
-import {
-  borderRadiusSize,
-  PLANNER_LAYOUTS,
-} from '@src/common/constants';
-import { SmallMonth } from '@planner/SmallMotnCalendar/SmallMonth';
-import dayjs from 'dayjs';
-import { GetEventsFiltersRequestProps } from '@api/planning-api/types/event-info.types';
-import { PlannerContext } from '@src/Context/planner.context';
+import { FlexBlock } from '@components/LayoutComponents/FlexBlock';
 import { ScrollVerticalView } from '@components/LayoutComponents/ScrollView/ScrollVerticalView';
+import { Loader } from '@components/Loaders/Loader';
+import { plannerDateToDate } from '@planner-reducer/utils';
+import { YearCalendarProps } from '@planner/planner.types';
+import { SmallCalendarMonthTitle } from '@planner/SmallMotnCalendar/SmallCalendarMonthTitle';
+import { SmallMonth } from '@planner/SmallMotnCalendar/SmallMonth';
+import { useAppSelector } from '@redux/hooks/hooks';
+import { plannerSelectYearConfig } from '@selectors/planner';
+import { borderRadiusSize } from '@src/common/borderRadiusSize';
+import { UTC_OFFSET } from '@src/common/constants';
+import { FC, memo } from 'react';
+import styled from 'styled-components';
 
 const MonthItemContainer = styled('div')`
   padding: 4px;
@@ -34,23 +31,14 @@ const MonthTitleWrapper = styled('div')`
   top: 0;
 `;
 
-export const YearCalendar: FC<YearCalendarProps> = ({ yearItem }) => {
-  const {
-    methods: { updateCurrentLayoutAndNavigate },
-  } = useContext(PlannerContext);
+export const YearCalendar: FC<YearCalendarProps> = memo(() => {
+  const config = useAppSelector(plannerSelectYearConfig);
 
-  const schemeScope: GetEventsFiltersRequestProps = useMemo(() => {
-    const scope = new DateScopeHelper({
-      useOtherDays: false,
-    }).getDateScopeForTaskScheme(new Date(yearItem.year, 0, 1), 'year');
-
-    return {
-      ...scope,
-      utcOffset: dayjs().utcOffset(),
-    };
-  }, [yearItem.year]);
-
-  const { data: taskScheme, isFetching } = useGetEventsSchemeQuery(schemeScope);
+  const { data: taskScheme, isFetching } = useGetEventsSchemeQuery({
+    utcOffset: UTC_OFFSET,
+    fromDate: plannerDateToDate(config.scope.startDate).toString(),
+    toDate: plannerDateToDate(config.scope.endDate).toString(),
+  });
 
   return (
     <ScrollVerticalView renderPattern={'top-bottom'}>
@@ -62,7 +50,7 @@ export const YearCalendar: FC<YearCalendarProps> = ({ yearItem }) => {
           align={'flex-start'}
           gap={4}
         >
-          {yearItem.months.map((monthItem) => {
+          {config.months.map((monthItem) => {
             return (
               <MonthItemContainer
                 key={`monthItem_year_${monthItem.year}_month_${monthItem.monthOfYear}`}
@@ -78,27 +66,27 @@ export const YearCalendar: FC<YearCalendarProps> = ({ yearItem }) => {
                     <MonthTitleWrapper>
                       <SmallCalendarMonthTitle
                         monthItem={monthItem}
-                        onClick={(data) =>
-                          updateCurrentLayoutAndNavigate(
-                            PLANNER_LAYOUTS.MONTH,
-                            new Date(data.year, data.monthOfYear, 1)
-                          )
-                        }
+                        // onClick={(data) =>
+                        //   updateCurrentLayoutAndNavigate(
+                        //     PLANNER_LAYOUTS.MONTH,
+                        //     new Date(data.year, data.monthOfYear, 1)
+                        //   )
+                        // }
                       />
                     </MonthTitleWrapper>
                   }
-                  onSelectDate={(data) =>
-                    updateCurrentLayoutAndNavigate(
-                      PLANNER_LAYOUTS.DAY,
-                      data.value
-                    )
-                  }
-                  onSelectWeek={(current) =>
-                    updateCurrentLayoutAndNavigate(
-                      PLANNER_LAYOUTS.WEEK,
-                      current.aroundDate
-                    )
-                  }
+                  // onSelectDate={(data) =>
+                  //   updateCurrentLayoutAndNavigate(
+                  //     PLANNER_LAYOUTS.DAY,
+                  //     plannerDateToDate(data.value)
+                  //   )
+                  // }
+                  // onSelectWeek={(current) =>
+                  //   updateCurrentLayoutAndNavigate(
+                  //     PLANNER_LAYOUTS.WEEK,
+                  //     current.aroundDate
+                  //   )
+                  // }
                   monthItem={monthItem}
                 />
               </MonthItemContainer>
@@ -108,4 +96,4 @@ export const YearCalendar: FC<YearCalendarProps> = ({ yearItem }) => {
       </Loader>
     </ScrollVerticalView>
   );
-};
+});

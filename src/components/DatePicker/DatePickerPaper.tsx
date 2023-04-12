@@ -1,18 +1,18 @@
-import { FC, useEffect, useMemo, useState } from 'react';
+import { FlexBlock } from '@components/LayoutComponents/FlexBlock';
 import {
   CalendarDisabledOptions,
   MonthItem,
   PlannerMonthMode,
 } from '@pages/planner/planner.types';
-import { CalendarTodaySwitchers } from '@pages/planner/Header/CalendarTodaySwitchers';
+import { SmallCalendarMonthTitle } from '@pages/planner/SmallMotnCalendar/SmallCalendarMonthTitle';
+import { SmallMonth } from '@pages/planner/SmallMotnCalendar/SmallMonth';
+import { plannerDateToDate } from '@planner-reducer/utils';
+import { DatePickerSwitch } from '@planner/Header/DatePickerSwitch';
+import { DateListGenerator } from '@src/common/calendarSupport/generators';
 import { changeMonthCurrentHandler } from '@src/common/functions';
 import dayjs from 'dayjs';
-import { SmallCalendarMonthTitle } from '@pages/planner/SmallMotnCalendar/SmallCalendarMonthTitle';
+import { FC, useEffect, useMemo, useState } from 'react';
 import { TimeSelector } from './TimeSelector';
-import { SmallMonth } from '@pages/planner/SmallMotnCalendar/SmallMonth';
-import { DateListGenerator } from '@src/common/calendarSupport/generators';
-import { PLANNER_LAYOUTS } from '@src/common/constants';
-import { FlexBlock } from '@components/LayoutComponents/FlexBlock';
 
 interface DatePickerPaperProps {
   disabledOptions?: CalendarDisabledOptions;
@@ -49,9 +49,8 @@ export const DatePickerPaper: FC<DatePickerPaperProps> = ({
   return (
     <FlexBlock width={'100%'} direction={'column'} align={'center'} p={8}>
       <FlexBlock mb={24}>
-        <CalendarTodaySwitchers
-          currentLayout={PLANNER_LAYOUTS.MONTH}
-          onChangeSwitcherState={(pattern) => {
+        <DatePickerSwitch
+          onClick={(pattern) => {
             const v = dayjs()
               .set('year', current.year)
               .set('month', current.month);
@@ -87,7 +86,7 @@ export const DatePickerPaper: FC<DatePickerPaperProps> = ({
           onSelectDate={(data) => {
             const m = value.getMinutes();
             const h = value.getHours();
-            const r = dayjs(data.value)
+            const r = dayjs(plannerDateToDate(data.value))
               .set('hour', h)
               .set('minute', m)
               .toDate();

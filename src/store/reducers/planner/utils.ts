@@ -1,8 +1,9 @@
 import { ObjectId } from '@api/rtk-api.types';
 import { EventFilterTaskStatuses } from '@pages/planner/RenderModes/FindEventFilter/find-event-filters.types';
 import { EVENT_INFORMER_TAB_NAMES } from '@pages/planner/TaskInformer/LeftBar/TaskInformerLeftBar';
-import { IPlannerDate } from '@planner-reducer/types';
+import { IPlannerDate, IPlannerReducer } from '@planner-reducer/types';
 import { ServicesNames } from '@redux/reducers/global';
+import { PlannerObserver } from '@src/common/calendarSupport/observer';
 import { PLANNER_LAYOUTS, URLTaskStatuses } from '@src/common/constants';
 import dayjs, { Dayjs } from 'dayjs';
 
@@ -17,15 +18,20 @@ export const isEqualPlannerDate = (
   return dayIsEqual && monthIsEqual && yearIsEqual;
 };
 
+export const plannerDateToDate = (value: IPlannerDate) => {
+  return new Date(value.year, value.month, value.day);
+};
+
 export const dateToPlannerDate = (
   date: Date | Dayjs | string
 ): IPlannerDate => {
-  const value = date instanceof Dayjs ? date : dayjs(date);
+  const value = dayjs(date);
 
   return {
     day: value.date(),
     month: value.month(),
     year: value.year(),
+    week: value.week(),
   };
 };
 
@@ -80,4 +86,79 @@ export const getPlannerMetaData = (
     eventInfoId: null,
     eventInformerTabName: null,
   };
+};
+
+export const setLayoutConfig = <T extends PLANNER_LAYOUTS>(
+  state: IPlannerReducer,
+  payload: { date: IPlannerDate; layout: T }
+): void => {
+  const observer = new PlannerObserver();
+
+  console.log(state, payload);
+
+  switch (payload.layout) {
+    case PLANNER_LAYOUTS.DAY: {
+      const prev = state.config.layouts.day.scope;
+      const isEqual = isEqualPlannerDate(prev.startDate, payload.date);
+      if (!isEqual) {
+        state.config.layouts.day.scope = {
+          startDate: payload.date,
+          endDate: payload.date,
+        };
+      }
+      break;
+    }
+    case PLANNER_LAYOUTS.WEEK: {
+      const prev = state.config.layouts[PLANNER_LAYOUTS.WEEK].stateDate;
+      const isEqual = isEqualPlannerDate(prev, payload.date);
+
+      console.log('isEqual: ', isEqual, prev, payload);
+
+      if (!isEqual) {
+        state.config.layouts[PLANNER_LAYOUTS.WEEK] = observer.getWeekItem(
+          plannerDateToDate(payload.date)
+        );
+      }
+      break;
+    }
+    case PLANNER_LAYOUTS.MONTH: {
+      const prev = state.config.layouts[PLANNER_LAYOUTS.MONTH].stateDate;
+      const isEqual = isEqualPlannerDate(prev, payload.date);
+
+      if (!isEqual) {
+        state.config.layouts[PLANNER_LAYOUTS.MONTH] = observer.getMonthItem(
+          plannerDateToDate(payload.date)
+        );
+      }
+      break;
+    }
+    case PLANNER_LAYOUTS.YEAR: {
+      const prev = state.config.layouts[PLANNER_LAYOUTS.YEAR].stateDate;
+      const isEqual = isEqualPlannerDate(prev, payload.date);
+
+      if (!isEqual) {
+        state.config.layouts[PLANNER_LAYOUTS.YEAR] = observer.getYearItem(
+          plannerDateToDate(payload.date)
+        );
+      }
+      break;
+    }
+    case PLANNER_LAYOUTS.LIST: {
+      const prev = state.config.layouts[PLANNER_LAYOUTS.LIST].scope;
+      const isEqual = isEqualPlannerDate(prev.startDate, payload.date);
+
+      if (!isEqual) {
+        state.config.layouts[PLANNER_LAYOUTS.LIST].scope = {
+          startDate: payload.date,
+          endDate: dateToPlannerDate(
+            dayjs(plannerDateToDate(payload.date)).add(3, 'day')
+          ),
+        };
+      }
+      break;
+    }
+    case PLANNER_LAYOUTS.FAVORITES: {
+      break;
+    }
+  }
 };

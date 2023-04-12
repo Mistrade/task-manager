@@ -1,6 +1,6 @@
+import { borderRadiusSize } from '@src/common/borderRadiusSize';
 import styled, { css, keyframes } from 'styled-components';
 import {
-  borderRadiusSize,
   DATE_HOURS_FORMAT,
   defaultColor,
   hoverColor,

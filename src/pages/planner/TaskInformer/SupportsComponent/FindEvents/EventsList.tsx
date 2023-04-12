@@ -1,10 +1,7 @@
+import { borderRadiusSize } from '@src/common/borderRadiusSize';
 import { FC, useCallback } from 'react';
 import styled from 'styled-components';
-import {
-  borderRadiusSize,
-  currentColor,
-  disabledColor,
-} from '@src/common/constants';
+import { currentColor, disabledColor } from '@src/common/constants';
 import { Loader } from '@components/Loaders/Loader';
 import { ErrorScreen } from '@components/Errors/ErrorScreen';
 import { FlexBlock } from '@components/LayoutComponents/FlexBlock';
@@ -20,10 +17,7 @@ import {
   ShortEventInfoModel,
   SortedEventsObject,
 } from '@api/planning-api/types/event-info.types';
-import {
-  MyServerResponse,
-  ObjectId,
-} from '@api/rtk-api.types';
+import { MyServerResponse, ObjectId } from '@api/rtk-api.types';
 import { EventEssence } from '@components/Essences/EventEssence/EventEssence';
 
 export interface EventListFromArrayProps

@@ -1,5 +1,5 @@
+import { borderRadiusSize } from '@src/common/borderRadiusSize';
 import styled, { keyframes } from 'styled-components';
-import { borderRadiusSize } from '@src/common/constants';
 
 export const CellDateStyledContainer = styled('div')`
   & {

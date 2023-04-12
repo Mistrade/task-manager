@@ -1,10 +1,6 @@
+import { borderRadiusSize } from '@src/common/borderRadiusSize';
 import { FC } from 'react';
-import {
-  borderRadiusSize,
-  colorPalette,
-  disabledColor,
-  errorColor,
-} from '@src/common/constants';
+import { colorPalette, disabledColor, errorColor } from '@src/common/constants';
 import { GroupLogo } from '@pages/planner/Groups/GroupList.styled';
 import styled, { css } from 'styled-components';
 import { EmptyButtonStyled } from '@components/Buttons/EmptyButton.styled';

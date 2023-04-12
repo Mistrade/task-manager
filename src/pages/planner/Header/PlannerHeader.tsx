@@ -1,9 +1,9 @@
-import React, { FC } from 'react';
-import { CalendarHeaderProps } from '@planner/planner.types';
 import { FlexBlock } from '@components/LayoutComponents/FlexBlock';
-import { CalendarModeSwitchers } from './CalendarModeSwitchers';
-import { CalendarHeaderContainer } from './CalendarHeader.styled';
+import { CalendarModeSwitchers } from '@planner/Header/ModeSwitch/List';
+import { CalendarHeaderProps } from '@planner/planner.types';
 import { disableReRender } from '@src/common/utils/react-utils';
+import React, { FC } from 'react';
+import { CalendarHeaderContainer } from './CalendarHeader.styled';
 
 export const PlannerHeader: FC<CalendarHeaderProps> = React.memo(() => {
   return (

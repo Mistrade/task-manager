@@ -1,95 +1,47 @@
-import React, { FC, useCallback, useContext, useMemo } from 'react';
-import { MonthCalendarProps } from '@planner/planner.types';
-import { CalendarDateListContainer } from '@planner/Planner.styled';
-import { WeeKCalendar } from '@planner/RenderModes/WeekCalendar/WeekCalendar';
-import { DateScopeHelper } from '@src/common/calendarSupport/scopes';
-import dayjs from 'dayjs';
-import { FindEventFilter } from '@planner/RenderModes/FindEventFilter/FindEventFilter';
-import { useEventStorage } from '@hooks/useEventStorage';
-import { ScrollVerticalView } from '@components/LayoutComponents/ScrollView/ScrollVerticalView';
 import { FlexBlock } from '@components/LayoutComponents/FlexBlock';
-import { PLANNER_LAYOUTS } from '@src/common/constants';
-import { BreadCrumbs } from '@components/BreadCrumbs/BreadCrumbs';
-import { PlannerContext } from '@src/Context/planner.context';
+import { ScrollVerticalView } from '@components/LayoutComponents/ScrollView/ScrollVerticalView';
+import { CalendarDateListContainer } from '@planner/Planner.styled';
+import { EventsStorage, MonthCalendarProps } from '@planner/planner.types';
+import { SmartEventFilters } from '@planner/RenderModes/FindEventFilter/SmartEventFilters';
+import { MonthBreadCrumbs } from '@planner/RenderModes/MonthCalendar/SupportComponents/MonthBreadCrumbs';
+import { WeeKCalendar } from '@planner/RenderModes/WeekCalendar/WeekCalendar';
+import { useAppSelector } from '@redux/hooks/hooks';
+import { plannerSelectMonthConfig } from '@selectors/planner';
+import { disableReRender } from '@src/common/utils/react-utils';
+import React, { FC, useCallback, useState } from 'react';
 
-export const MonthCalendar: FC<MonthCalendarProps> = ({
-  monthItem,
-  renderTaskCount,
-}) => {
-  const {
-    currentDate,
-    currentLayout,
-    methods: { updateCurrentLayoutAndNavigate },
-  } = useContext(PlannerContext);
+export const MonthCalendar: FC<MonthCalendarProps> = React.memo(
+  ({ renderTaskCount }) => {
+    const config = useAppSelector(plannerSelectMonthConfig);
+    const [eventStorage, setEventStorage] = useState(() => ({}));
 
-  const scope = useMemo(() => {
-    const v = new DateScopeHelper({
-      useOtherDays: true,
-    }).getDateScopeForTaskScheme(
-      new Date(monthItem.year, monthItem.monthOfYear),
-      'month'
+    const updateHandle = useCallback((storage: EventsStorage) => {
+      setEventStorage(storage);
+    }, []);
+
+    return (
+      <ScrollVerticalView
+        staticContent={
+          <FlexBlock direction={'column'}>
+            <MonthBreadCrumbs />
+            <SmartEventFilters updateStorage={updateHandle} />
+          </FlexBlock>
+        }
+        placementStatic={'top'}
+        renderPattern={'top-bottom'}
+      >
+        <CalendarDateListContainer rowsCount={6}>
+          {config.weeks.map((week) => (
+            <WeeKCalendar
+              taskStorage={eventStorage}
+              key={`monthCalendarWeek_year_${config.year}_month_${config.monthOfYear}_week_${week.weekOfYear}`}
+              config={week}
+              renderTaskCount={renderTaskCount}
+            />
+          ))}
+        </CalendarDateListContainer>
+      </ScrollVerticalView>
     );
-
-    return {
-      fromDate: dayjs(v.fromDate).toDate(),
-      toDate: dayjs(v.toDate).toDate(),
-    };
-  }, [monthItem.monthOfYear]);
-
-  const { filters, SwitcherBadges, TaskStorage, handlers, isFetching } =
-    useEventStorage({
-      layout: currentLayout,
-      scope: {
-        start: scope.fromDate,
-        end: scope.toDate,
-      },
-    });
-
-  const breadCrumbsArr = useMemo(() => {
-    return [
-      {
-        title: `${currentDate.month.getFullYear()}г.`,
-        value: PLANNER_LAYOUTS.YEAR,
-      },
-    ];
-  }, [monthItem.monthOfYear]);
-
-  const breadCrumbsSelectHandler = useCallback(
-    (data: PLANNER_LAYOUTS) => {
-      updateCurrentLayoutAndNavigate(data, currentDate.month);
-    },
-    [monthItem.monthOfYear]
-  );
-
-  return (
-    <ScrollVerticalView
-      staticContent={
-        <FlexBlock direction={'column'}>
-          <BreadCrumbs
-            data={breadCrumbsArr}
-            onClick={breadCrumbsSelectHandler}
-          />
-          <FindEventFilter
-            values={filters}
-            onChangeHandlers={handlers}
-            statusBadges={SwitcherBadges}
-            isLoading={isFetching}
-          />
-        </FlexBlock>
-      }
-      placementStatic={'top'}
-      renderPattern={'top-bottom'}
-    >
-      <CalendarDateListContainer rowsCount={6}>
-        {monthItem.weeks.map((week) => (
-          <WeeKCalendar
-            taskStorage={TaskStorage || {}}
-            key={`monthCalendarWeek_year_${monthItem.year}_month_${monthItem.monthOfYear}_week_${week.weekOfYear}`}
-            weekItem={week}
-            renderTaskCount={renderTaskCount}
-          />
-        ))}
-      </CalendarDateListContainer>
-    </ScrollVerticalView>
-  );
-};
+  },
+  disableReRender
+);

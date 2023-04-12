@@ -3,6 +3,7 @@ import {
   CalendarDisabledOptions,
   CalendarItem,
 } from '@pages/planner/planner.types';
+import { dateToPlannerDate } from '@planner-reducer/utils';
 import dayjs, { Dayjs } from 'dayjs';
 import { DateHelper } from './dateHelper';
 
@@ -28,7 +29,7 @@ export class CalendarDateItem {
   public getItem(): CalendarItem {
     const d = dayjs(this.date);
     return {
-      value: d.toDate(),
+      value: dateToPlannerDate(d),
       meta: this.getMetaData(d),
     };
   }

@@ -1,9 +1,9 @@
+import { borderRadiusSize } from '@src/common/borderRadiusSize';
 import { FC, useContext, useMemo, useState } from 'react';
 import { CreateEventDataObject } from '../../planner.types';
 import { useFormik } from 'formik';
 import { FlexBlock } from '@components/LayoutComponents/FlexBlock';
 import {
-  borderRadiusSize,
   defaultColor,
   disabledColor,
   pageHeaderColor,

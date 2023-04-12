@@ -1,5 +1,5 @@
+import { borderRadiusSize } from '@src/common/borderRadiusSize';
 import {
-  borderRadiusSize,
   currentColor,
   defaultColor,
   disabledColor,

@@ -1,13 +1,14 @@
+import { GetEventsSchemeResponse } from '@api/planning-api/types/event-info.types';
+import { plannerDateToDate } from '@planner-reducer/utils';
 import { CalendarItem, PlannerMonthMode } from '@planner/planner.types';
+import { addNull } from '@src/common/functions';
+import dayjs from 'dayjs';
+import { FC } from 'react';
+import { SmallMonthRowItem } from './SmallMonth.styled';
 import {
   CheckPourMonthResult,
   SmallMonthWeekItemProps,
 } from './SmallMonthWeekItem';
-import { FC } from 'react';
-import dayjs from 'dayjs';
-import { addNull } from '@src/common/functions';
-import { SmallMonthRowItem } from './SmallMonth.styled';
-import { GetEventsSchemeResponse } from '@api/planning-api/types/event-info.types';
 
 interface SmallMonthDateItemProps {
   date: CalendarItem;
@@ -32,12 +33,13 @@ export const SmallMonthDateItem: FC<SmallMonthDateItemProps> = ({
     <SmallMonthRowItem
       onClick={() => onSelectDate && onSelectDate(date)}
       isFirstPoured={
-        pour?.firstPour && dayjs(date.value).isSame(pour?.firstPour, 'day')
+        pour?.firstPour &&
+        dayjs(plannerDateToDate(date.value)).isSame(pour?.firstPour, 'day')
       }
       isPoured={
         pour?.firstPour &&
         pour?.lastPour &&
-        dayjs(date.value).isBetween(
+        dayjs(plannerDateToDate(date.value)).isBetween(
           pour?.firstPour,
           pour?.lastPour,
           'day',
@@ -45,18 +47,19 @@ export const SmallMonthDateItem: FC<SmallMonthDateItemProps> = ({
         )
       }
       isLastPoured={
-        pour?.lastPour && dayjs(date.value).isSame(pour?.lastPour, 'day')
+        pour?.lastPour &&
+        dayjs(plannerDateToDate(date.value)).isSame(pour?.lastPour, 'day')
       }
-      isDisabled={date.value.getMonth() !== current.month}
+      isDisabled={date.value.month !== current.month}
       isToday={date.meta.isToday}
       isSelect={isSelect}
       hasTasks={
-        current.month === date.value.getMonth() &&
+        current.month === date.value.month &&
         taskScheme &&
-        !!taskScheme[dayjs(date.value).format('DD-MM-YYYY')]
+        !!taskScheme[dayjs(plannerDateToDate(date.value)).format('DD-MM-YYYY')]
       }
     >
-      {addNull(dayjs(date.value).date())}
+      {addNull(date.value.day)}
     </SmallMonthRowItem>
   );
 };

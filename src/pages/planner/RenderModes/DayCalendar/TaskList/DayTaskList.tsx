@@ -1,12 +1,9 @@
-import dayjs from 'dayjs';
-import React, { FC, useCallback, useContext, useMemo } from 'react';
 import {
-  currentColor,
-  defaultColor,
-  MonthList,
-  PLANNER_LAYOUTS,
-  UTC_OFFSET,
-} from '@src/common/constants';
+  useGetEventsCountOfStatusQuery,
+  useGetShortEventsArrayQuery,
+} from '@api/planning-api';
+import { ShortEventInfoModel } from '@api/planning-api/types/event-info.types';
+import { ObjectId } from '@api/rtk-api.types';
 import { Accordion } from '@components/Accordion/Accordion';
 import { Badge } from '@components/Badge/Badge';
 import { BreadCrumbs } from '@components/BreadCrumbs/BreadCrumbs';
@@ -14,23 +11,23 @@ import { Button } from '@components/Buttons/Buttons.styled';
 import { EventEssence } from '@components/Essences/EventEssence/EventEssence';
 import { FlexBlock } from '@components/LayoutComponents/FlexBlock';
 import { ScrollVerticalView } from '@components/LayoutComponents/ScrollView/ScrollVerticalView';
-import { PlannerContext } from '@src/Context/planner.context';
-import {
-  initialFiltersValues,
-  useEventFilters,
-} from '@hooks/useEventFilters';
-import {
-  useGetEventsCountOfStatusQuery,
-  useGetShortEventsArrayQuery,
-} from '@api/planning-api';
-import { ShortEventInfoModel } from '@api/planning-api/types/event-info.types';
-import { ObjectId } from '@api/rtk-api.types';
+import { initialFiltersValues, useEventFilters } from '@hooks/useEventFilters';
 import {
   GlobalTaskListProps,
   OnSelectTaskFnType,
 } from '@planner/planner.types';
-import { EVENT_INFORMER_TAB_NAMES } from '@planner/TaskInformer/LeftBar/TaskInformerLeftBar';
 import { FindEventFilter } from '@planner/RenderModes/FindEventFilter/FindEventFilter';
+import { EVENT_INFORMER_TAB_NAMES } from '@planner/TaskInformer/LeftBar/TaskInformerLeftBar';
+import {
+  currentColor,
+  defaultColor,
+  MonthList,
+  PLANNER_LAYOUTS,
+  UTC_OFFSET,
+} from '@src/common/constants';
+import { PlannerContext } from '@src/Context/planner.context';
+import dayjs from 'dayjs';
+import React, { FC, useCallback, useContext, useMemo } from 'react';
 import { NotFoundTask } from './NotFoundTasks';
 
 interface DayTaskListProps extends GlobalTaskListProps {
@@ -114,7 +111,7 @@ export const DayTaskList: FC<DayTaskListProps> = ({ day }) => {
               },
             ]}
             onClick={(data) => {
-              updateCurrentLayoutAndNavigate(data, currentDate.day);
+              // updateCurrentLayoutAndNavigate(data, currentDate.day);
             }}
           />
           <FindEventFilter
