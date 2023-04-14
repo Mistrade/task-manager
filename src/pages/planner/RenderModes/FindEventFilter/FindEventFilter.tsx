@@ -1,24 +1,23 @@
-import React, { FC, ReactNode, useCallback, useContext } from 'react';
-import { FlexBlock } from '@components/LayoutComponents/FlexBlock';
-import { SelectPriorityInput } from '@components/Input/SelectInput/CalendarSelectInputs/SelectPriorityInput';
-import { TextInput } from '@components/Input/TextInput/TextInput';
-import { TaskListEventFiltersContainer } from '@planner/RenderModes/DayCalendar/TaskList/TaskList.styled';
-import { Switcher } from '@components/Switcher/Switcher';
-import { IFindEventFilterProps } from './find-event-filters.types';
-import {
-  PLANNER_LAYOUTS,
-  TaskStatusesList,
-} from '@src/common/constants';
-import { Tooltip } from '@components/Tooltip/Tooltip';
+import { Button } from '@components/Buttons/Buttons.styled';
 import { EmptyButtonStyled } from '@components/Buttons/EmptyButton.styled';
 import { FiltersIcon, SettingsIcon } from '@components/Icons/Icons';
 import { Checkbox } from '@components/Input/Checkbox/Checkbox';
-import { Button } from '@components/Buttons/Buttons.styled';
-import { PlannerContext } from '@src/Context/planner.context';
+import { SelectPriorityInput } from '@components/Input/SelectInput/CalendarSelectInputs/SelectPriorityInput';
 import { SelectInput } from '@components/Input/SelectInput/SelectInput';
-import { SelectListContainer } from '@components/Input/SelectInput/SelectListContainer';
 import { SelectItemContainer } from '@components/Input/SelectInput/SelectItemContainer';
+import { SelectListContainer } from '@components/Input/SelectInput/SelectListContainer';
+import { TextInput } from '@components/Input/TextInput/TextInput';
+import { FlexBlock } from '@components/LayoutComponents/FlexBlock';
+import { Switcher } from '@components/Switcher/Switcher';
 import { Heading } from '@components/Text/Heading';
+import { Tooltip } from '@components/Tooltip/Tooltip';
+import { PlannerNavLink } from '@planner/Planner.styled';
+import { TaskListEventFiltersContainer } from '@planner/RenderModes/DayCalendar/TaskList/TaskList.styled';
+import { useAppSelector } from '@redux/hooks/hooks';
+import { plannerSelectLayout } from '@selectors/planner';
+import { PLANNER_LAYOUTS, TaskStatusesList } from '@src/common/constants';
+import React, { FC, ReactNode, useCallback } from 'react';
+import { IFindEventFilterProps } from './find-event-filters.types';
 
 export const LayoutNames: { [key in PLANNER_LAYOUTS]: string } = {
   [PLANNER_LAYOUTS.DAY]: 'День',
@@ -36,7 +35,7 @@ export const FindEventFilter: FC<IFindEventFilterProps> = ({
   statusBadges,
   isLoading,
 }) => {
-  const { currentStatus, currentLayout } = useContext(PlannerContext);
+  const layout = useAppSelector(plannerSelectLayout);
 
   const renderDataViewDaysOfWeek = useCallback(
     (data: Array<{ title: string; value: boolean }>): ReactNode => {
@@ -69,8 +68,16 @@ export const FindEventFilter: FC<IFindEventFilterProps> = ({
           isLoading={isLoading}
           switchersList={TaskStatusesList}
           onClick={(item) => onChangeHandlers.taskStatus(item.type)}
-          selected={currentStatus}
           badges={statusBadges}
+          component={({ item, onClick }) => (
+            <PlannerNavLink
+              to={`/planner/${layout}/${item.type}`}
+              onClick={() => onClick(item)}
+              className={({ isActive }) => (isActive ? 'active' : '')}
+            >
+              {item.title}
+            </PlannerNavLink>
+          )}
         >
           <Tooltip
             theme={'light'}
@@ -90,7 +97,7 @@ export const FindEventFilter: FC<IFindEventFilterProps> = ({
                 gap={12}
               >
                 <Heading.H2 style={{ marginBottom: 12 }}>
-                  Настройки режима "{LayoutNames[currentLayout]}"
+                  Настройки режима "{LayoutNames[layout]}"
                 </Heading.H2>
                 <FlexBlock direction={'row'} gap={12}>
                   <TextInput

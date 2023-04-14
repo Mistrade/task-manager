@@ -1,16 +1,16 @@
-import React, { FC, useMemo } from 'react';
-import styled from 'styled-components';
+import { ShortEventInfoModel } from '@api/planning-api/types/event-info.types';
+import { EmptyButtonStyled } from '@components/Buttons/EmptyButton.styled';
+import { ScrollVerticalView } from '@components/LayoutComponents/ScrollView/ScrollVerticalView';
+import { Tooltip } from '@components/Tooltip/Tooltip';
 import {
   CalendarItem,
   GlobalTaskListProps,
   OnSelectTaskFnType,
 } from '@planner/planner.types';
-import { CalendarCellEventItem } from './Item';
-import { ShortEventInfoModel } from '@api/planning-api/types/event-info.types';
-import { EmptyButtonStyled } from '@components/Buttons/EmptyButton.styled';
-import { Tooltip } from '@components/Tooltip/Tooltip';
-import { ScrollVerticalView } from '@components/LayoutComponents/ScrollView/ScrollVerticalView';
+import React, { FC, useMemo } from 'react';
+import styled from 'styled-components';
 import { CellDate } from '../CellDate';
+import { CalendarCellEventItem } from './Item';
 
 const CalendarCellEventsListContainer = styled('div')`
   & {
@@ -50,7 +50,7 @@ export const CalendarCellEventsList: FC<CalendarCellEventsListProps> = ({
         {events.visible.map((item, index) => (
           <CalendarCellEventItem
             tooltipPlacement={'left'}
-            key={item._id}
+            key={item._id + item.title}
             taskInfo={item}
             date={date}
             onSelect={onSelect}

@@ -1,26 +1,25 @@
+import { ObjectId } from '@api/rtk-api.types';
 import {
   FCWithChildren,
   MonthItem,
   WeekItem,
   YearItem,
 } from '@pages/planner/planner.types';
-import { useCallback, useEffect, useMemo, useState } from 'react';
 import { EventFilterTaskStatuses } from '@pages/planner/RenderModes/FindEventFilter/find-event-filters.types';
+import { EVENT_INFORMER_TAB_NAMES } from '@pages/planner/TaskInformer/LeftBar/TaskInformerLeftBar';
+import { useAppDispatch } from '@redux/hooks/hooks';
+import { ServicesNames, setServiceName } from '@redux/reducers/global';
 import { PlannerObserver } from '@src/common/calendarSupport/observer';
+import { ShortChangeCurrentPattern } from '@src/common/commonTypes';
 import {
   defaultMonthItem,
   defaultWeekItem,
   defaultYearItem,
   PLANNER_LAYOUTS,
 } from '@src/common/constants';
-import { useSearchNavigate } from '@hooks/useSearchNavigate';
-import { ShortChangeCurrentPattern } from '@src/common/commonTypes';
-import dayjs from 'dayjs';
-import { ObjectId } from '@api/rtk-api.types';
-import { EVENT_INFORMER_TAB_NAMES } from '@pages/planner/TaskInformer/LeftBar/TaskInformerLeftBar';
-import { useAppDispatch } from '@redux/hooks/hooks';
-import { ServicesNames, setServiceName } from '@redux/reducers/global';
 import { PlannerContext } from '@src/Context/planner.context';
+import dayjs from 'dayjs';
+import { useCallback, useEffect, useMemo, useState } from 'react';
 
 const today = new Date();
 
@@ -89,7 +88,7 @@ export const PlannerProvider: FCWithChildren<{
   }, []);
 
   const observer = useMemo(() => new PlannerObserver(), []);
-  const navigate = useSearchNavigate();
+  // const navigate = useSearchNavigate();
 
   const [currentDate, setCurrentDate] = useState<TPlannerProviderCurrentDate>({
     day: today,
@@ -101,21 +100,8 @@ export const PlannerProvider: FCWithChildren<{
   });
 
   const [currentLayout, setCurrentLayout] = useState<PLANNER_LAYOUTS>(layout);
-
-  useEffect(() => {
-    if (currentLayout !== layout) {
-      updateCurrentLayout(layout);
-    }
-  }, [layout, currentLayout]);
-
   const [currentStatus, setCurrentStatus] =
     useState<EventFilterTaskStatuses>(status);
-
-  useEffect(() => {
-    if (currentStatus !== status) {
-      updateCurrentStatus(status);
-    }
-  }, [status, currentStatus]);
 
   const [openEventId, setOpenEventId] = useState<ObjectId | null>(null);
 
@@ -150,51 +136,51 @@ export const PlannerProvider: FCWithChildren<{
           current: {
             go() {
               console.log('current navigate');
-              navigate(defaultPath + [currentLayout, currentStatus].join('/'));
+              // navigate(defaultPath + [currentLayout, currentStatus].join('/'));
             },
           },
           layout: {
             go(layout: PLANNER_LAYOUTS) {
               console.log('layout navigate');
-              navigate(defaultPath + [layout, currentStatus].join('/'));
+              // navigate(defaultPath + [layout, currentStatus].join('/'));
             },
           },
           status: {
             go(status: EventFilterTaskStatuses) {
               console.log('status navigate');
-              navigate(defaultPath + [currentLayout, status].join('/'));
+              // navigate(defaultPath + [currentLayout, status].join('/'));
             },
           },
           createEventModal: {
             go() {
               console.log('create navigate');
-              navigate(
-                defaultPath +
-                  [currentLayout, currentStatus, 'event', 'create'].join('/')
-              );
+              // navigate(
+              //   defaultPath +
+              //     [currentLayout, currentStatus, 'event', 'create'].join('/')
+              // );
             },
           },
           eventInfo: {
             go(_id: ObjectId, tabName: EVENT_INFORMER_TAB_NAMES) {
               console.log('info navigate');
-              navigate(
-                defaultPath +
-                  [
-                    currentLayout,
-                    currentStatus,
-                    'event',
-                    'info',
-                    _id,
-                    tabName,
-                  ].join('/')
-              );
+              // navigate(
+              //   defaultPath +
+              //     [
+              //       currentLayout,
+              //       currentStatus,
+              //       'event',
+              //       'info',
+              //       _id,
+              //       tabName,
+              //     ].join('/')
+              // );
             },
           },
         };
 
         return result[essence];
       },
-      [currentLayout, currentStatus, navigate]
+      [currentLayout, currentStatus]
     );
 
   const updateCurrentStatus = useCallback(

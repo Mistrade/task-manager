@@ -1,11 +1,11 @@
 import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/dist/query/react';
 import { baseServerUrl } from '../config';
+import { MyServerResponse } from '../rtk-api.types';
 import {
   AuthUserRequestProps,
   RegUserRequestProps,
   UserModel,
 } from './session-api.types';
-import { MyServerResponse } from '../rtk-api.types';
 
 export const sessionApi = createApi({
   reducerPath: 'sessionApi',
@@ -33,9 +33,9 @@ export const sessionApi = createApi({
     }),
     confirmSession: build.query<MyServerResponse<UserModel>, void>({
       query: () => ({
-        url: '/confirm',
         method: 'POST',
         credentials: 'include',
+        url: '/confirm',
       }),
       providesTags: ['Session'],
     }),
@@ -44,7 +44,25 @@ export const sessionApi = createApi({
         url: '/logout',
         method: 'POST',
       }),
-      invalidatesTags: ['Session'],
+      onQueryStarted(args, { dispatch, queryFulfilled }) {
+        queryFulfilled.then(() =>
+          dispatch(
+            sessionApi.util.updateQueryData(
+              'confirmSession',
+              undefined,
+              (draft) => {
+                Object.assign(draft, {
+                  data: null,
+                  info: {
+                    type: 'success',
+                    message: 'Сессия завершена',
+                  },
+                });
+              }
+            )
+          )
+        );
+      },
     }),
   }),
 });

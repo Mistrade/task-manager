@@ -1,11 +1,13 @@
-import React, { FC, useContext } from 'react';
-import { EventInfoModalProps } from '../planner.types';
-import { Modal, ModalBody } from '@components/LayoutComponents/Modal/Modal';
 import { useGetEventInfoQuery } from '@api/planning-api';
-import { useParams } from 'react-router';
 import { ErrorBoundary } from '@components/Errors/ErrorBoundary';
+import { Modal, ModalBody } from '@components/LayoutComponents/Modal/Modal';
 import { Loader } from '@components/Loaders/Loader';
-import { PlannerContext } from '@src/Context/planner.context';
+import { useSearchNavigate } from '@hooks/useSearchNavigate';
+import { useAppSelector } from '@redux/hooks/hooks';
+import { plannerSelectCurrentMode } from '@selectors/planner';
+import React, { FC, useCallback } from 'react';
+import { useParams } from 'react-router';
+import { EventInfoModalProps } from '../planner.types';
 
 const Informer = React.lazy(() =>
   import('../TaskInformer/TaskInformer').then(({ TaskInformer }) => ({
@@ -18,21 +20,22 @@ export const TaskInfoModal: FC<EventInfoModalProps> = ({
   onOpenClonedEvent,
 }) => {
   const { taskId } = useParams<{ taskId: string }>();
+  const backgroundUrl = useAppSelector(plannerSelectCurrentMode);
   const {
     data: taskInfo,
     isLoading,
     error,
   } = useGetEventInfoQuery(taskId || '', {
-    refetchOnMountOrArgChange: true,
     skip: !taskId,
   });
+  const navigate = useSearchNavigate();
 
-  const {
-    methods: { closeEventInfo },
-  } = useContext(PlannerContext);
+  const closeHandler = useCallback(() => {
+    navigate(backgroundUrl);
+  }, [backgroundUrl]);
 
   return (
-    <Modal style={{ width: '90%' }} isView={!!taskId} onClose={closeEventInfo}>
+    <Modal style={{ width: '90%' }} isView={!!taskId} onClose={closeHandler}>
       <ModalBody>
         <ErrorBoundary
           title={'Произошла ошибка при отрисовке, мы уже работаем над этим'}

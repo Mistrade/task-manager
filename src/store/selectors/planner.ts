@@ -1,4 +1,5 @@
 import { IPlannerReducer } from '@planner-reducer/types';
+import { ServicesNames } from '@redux/reducers/global';
 import { createSelector } from '@reduxjs/toolkit';
 import { PLANNER_LAYOUTS } from '@src/common/constants';
 import { CreateSelectorReturnType, RootState } from '@src/store';
@@ -46,4 +47,20 @@ export const plannerSelectMonthConfig = createSelector(
 export const plannerSelectYearConfig = createSelector(
   rootSelector,
   (state: IPlannerReducer) => state.config.layouts[PLANNER_LAYOUTS.YEAR]
+);
+
+export const plannerSelectedEventInfo = createSelector(
+  rootSelector,
+  (state: IPlannerReducer) => state.eventInfo?._id || null
+);
+
+export const plannerSelectCurrentMode = createSelector(
+  rootSelector,
+  (state: IPlannerReducer) =>
+    `/${ServicesNames.PLANNER}/${state.layout}/${state.status}`
+);
+
+export const plannerSelectEventInfoTabName = createSelector(
+  rootSelector,
+  (state: IPlannerReducer) => state.eventInfo.tabName
 );

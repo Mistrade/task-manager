@@ -1,27 +1,28 @@
-import { Routes } from 'react-router-dom';
-import { Navigate, Route } from 'react-router';
-import React, { FC, useContext } from 'react';
+import { SessionInterceptor } from '@components/AppRoutes/Interceptors/SessionInterceptor';
+import { ErrorBoundary } from '@components/Errors/ErrorBoundary';
+import { Loader } from '@components/Loaders/Loader';
+import { useAppSelector } from '@redux/hooks/hooks';
+import { ServicesNames } from '@redux/reducers/global';
+import { selectUserInfo } from '@redux/reducers/session/session-selectors';
 import {
   DEFAULT_PLANNER_LAYOUT,
   DEFAULT_PLANNER_STATUS,
   ERROR_DESCRIPTIONS,
   ERROR_TITLES,
 } from '@src/common/constants';
-import { ServicesNames } from '@redux/reducers/global';
-import { UserInfoContext } from '@src/Context/userInfo.context';
-import { ErrorBoundary } from '@components/Errors/ErrorBoundary';
-import { SessionInterceptor } from '@components/AppRoutes/Interceptors/SessionInterceptor';
-import { Loader } from '@components/Loaders/Loader';
 import { disableReRender } from '@src/common/utils/react-utils';
+import React, { FC } from 'react';
+import { Navigate, Route } from 'react-router';
+import { Routes } from 'react-router-dom';
 
-const PlannerPage = React.lazy(() =>
-  import('../../../pages/planner').then(({ PlannerController }) => ({
-    default: PlannerController,
-  }))
-);
+// const PlannerPage = React.lazy(() =>
+//   import('../../../pages/planner').then(({ PlannerController }) => ({
+//     default: PlannerController,
+//   }))
+// );
 
 export const PlannerRoutes: FC = React.memo(() => {
-  const userInfo = useContext(UserInfoContext);
+  const userInfo = useAppSelector(selectUserInfo);
 
   return (
     <ErrorBoundary
@@ -56,7 +57,7 @@ export const PlannerRoutes: FC = React.memo(() => {
                   />
                 }
               >
-                <PlannerPage />
+                {/*<PlannerPage />*/}
               </React.Suspense>
             }
           />

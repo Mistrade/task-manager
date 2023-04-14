@@ -1,25 +1,27 @@
+import { EventShortHoverCard } from '@components/HoverCard/EventShortHoverCard';
+import { PriorityCalendarIcon } from '@components/Icons/CalendarIcons/PriorityCalendarIcon';
+import { FlexBlock } from '@components/LayoutComponents/FlexBlock';
+import { Tooltip } from '@components/Tooltip/Tooltip';
+import { useSearchNavigate } from '@hooks/useSearchNavigate';
+import { GroupLogo } from '@planner/Groups/GroupList.styled';
+import { TaskTileItemProps } from '@planner/planner.types';
+import { useAppSelector } from '@redux/hooks/hooks';
+import { plannerSelectLayout, plannerSelectStatus } from '@selectors/planner';
 import { borderRadiusSize } from '@src/common/borderRadiusSize';
-import styled, { css, keyframes } from 'styled-components';
+import {
+  DateHelper,
+  HumanizeDateValueOptions,
+} from '@src/common/calendarSupport/dateHelper';
 import {
   DATE_HOURS_FORMAT,
   defaultColor,
   hoverColor,
   orangeColor,
 } from '@src/common/constants';
-import React, { FC, useContext, useMemo, useState } from 'react';
-import { TaskTileItemProps } from '@planner/planner.types';
-import { FlexBlock } from '@components/LayoutComponents/FlexBlock';
-import { GroupLogo } from '@planner/Groups/GroupList.styled';
-import { PriorityCalendarIcon } from '@components/Icons/CalendarIcons/PriorityCalendarIcon';
 import dayjs from 'dayjs';
+import React, { FC, useMemo, useState } from 'react';
+import styled, { css, keyframes } from 'styled-components';
 import { CalendarCellStyledComponentProps } from '../Cell';
-import {
-  DateHelper,
-  HumanizeDateValueOptions,
-} from '@src/common/calendarSupport/dateHelper';
-import { Tooltip } from '@components/Tooltip/Tooltip';
-import { EventShortHoverCard } from '@components/HoverCard/EventShortHoverCard';
-import { PlannerContext } from '@src/Context/planner.context';
 
 interface EventContainerProps extends CalendarCellStyledComponentProps {
   withFill?: boolean;
@@ -92,18 +94,26 @@ const EventTimeValue = styled('span')`
   }
 `;
 
-export const CalendarCellEventItem: FC<TaskTileItemProps> = ({
-  taskInfo,
-  onSelect,
-  date,
-  tooltipPlacement,
-}) => {
-  const [isHover, setIsHover] = useState(false);
+const isEqualEventInfo = (
+  prev: TaskTileItemProps['taskInfo'],
+  next: TaskTileItemProps['taskInfo']
+) => {
+  return (
+    prev.title === next.title &&
+    prev.group === next.group &&
+    prev.time === next.timeEnd &&
+    prev.priority === next.priority &&
+    prev._id === next._id
+  );
+};
 
-  const condition = useMemo(() => {
-    return !date.meta.isDisabled;
-  }, [date, taskInfo]);
+const memoFn = (prev: TaskTileItemProps, next: TaskTileItemProps) => {
+  return isEqualEventInfo(prev.taskInfo, next.taskInfo);
+};
 
+export const CalendarCellItemContent: FC<
+  Pick<TaskTileItemProps, 'taskInfo'>
+> = ({ taskInfo }) => {
   const timeValue = useMemo(() => {
     const start = dayjs(taskInfo.time);
     const end = dayjs(taskInfo.timeEnd);
@@ -123,14 +133,46 @@ export const CalendarCellEventItem: FC<TaskTileItemProps> = ({
       start.toDate(),
       options
     );
+
     const humanizeEnd = DateHelper.getHumanizeDateValue(end.toDate(), options);
 
     return `${humanizeStart} - ${humanizeEnd}`;
-  }, [taskInfo]);
+  }, [taskInfo.time, taskInfo.timeEnd]);
 
-  const {
-    methods: { openEventInfo },
-  } = useContext(PlannerContext);
+  return (
+    <FlexBlock direction={'column'} gap={4} width={'100%'}>
+      <FlexBlock direction={'row'} gap={4} align={'center'}>
+        <GroupLogo color={taskInfo.group?.color || ''} size={16} />
+        <FlexBlock width={'calc(100% - 16px)'}>
+          <EventText isCompleted={taskInfo.status === 'completed'}>
+            {taskInfo.title}
+          </EventText>
+        </FlexBlock>
+      </FlexBlock>
+      <FlexBlock direction={'row'} gap={4} align={'center'}>
+        <PriorityCalendarIcon priorityKey={taskInfo.priority} size={16} />
+        <FlexBlock width={'calc(100% - 16px)'}>
+          <EventTimeValue>{timeValue}</EventTimeValue>
+        </FlexBlock>
+      </FlexBlock>
+    </FlexBlock>
+  );
+};
+
+export const CalendarCellEventItem: FC<TaskTileItemProps> = ({
+  taskInfo,
+  date,
+  tooltipPlacement,
+}) => {
+  const [isHover, setIsHover] = useState(false);
+
+  const condition = useMemo(() => {
+    return !date.meta.isDisabled;
+  }, [date, taskInfo]);
+
+  const layout = useAppSelector(plannerSelectLayout);
+  const status = useAppSelector(plannerSelectStatus);
+  const navigate = useSearchNavigate();
 
   const Content = useMemo(
     () => (
@@ -140,27 +182,12 @@ export const CalendarCellEventItem: FC<TaskTileItemProps> = ({
         withFill={isHover}
         disabled={date.meta.isDisabled}
         isCurrent={date.meta.isCurrent}
-        onClick={() => condition && openEventInfo(taskInfo._id)}
+        onClick={() => condition && navigate(`event/info/${taskInfo._id}`)}
       >
-        <FlexBlock direction={'column'} gap={4} width={'100%'}>
-          <FlexBlock direction={'row'} gap={4} align={'center'}>
-            <GroupLogo color={taskInfo.group?.color || ''} size={16} />
-            <FlexBlock width={'calc(100% - 16px)'}>
-              <EventText isCompleted={taskInfo.status === 'completed'}>
-                {taskInfo.title}
-              </EventText>
-            </FlexBlock>
-          </FlexBlock>
-          <FlexBlock direction={'row'} gap={4} align={'center'}>
-            <PriorityCalendarIcon priorityKey={taskInfo.priority} size={16} />
-            <FlexBlock width={'calc(100% - 16px)'}>
-              <EventTimeValue>{timeValue}</EventTimeValue>
-            </FlexBlock>
-          </FlexBlock>
-        </FlexBlock>
+        <CalendarCellItemContent taskInfo={taskInfo} />
       </EventContainer>
     ),
-    [isHover, condition, date.meta, taskInfo, openEventInfo]
+    [isHover, condition, date.value.day, taskInfo, layout, status]
   );
 
   if (tooltipPlacement === null) {
@@ -175,8 +202,6 @@ export const CalendarCellEventItem: FC<TaskTileItemProps> = ({
       placement={tooltipPlacement}
       offset={[0, 15]}
       delay={[1000, 500]}
-      interactive={true}
-      interactiveBorder={4}
     >
       {Content}
     </Tooltip>

@@ -1,17 +1,18 @@
-import { FC, useContext } from 'react';
-import { FlexBlock } from '@components/LayoutComponents/FlexBlock';
-import { HeaderDefaultLink } from './HeaderLink.styled.';
-import { useLogoutMutation } from '@api/session-api';
-import { LogoutIcon } from '@components/Icons/Session/LogoutIcon';
-import { css } from 'styled-components';
-import { EmptyButtonStyled } from '@components/Buttons/EmptyButton.styled';
 import { useRefetchPlanningApiMutation } from '@api/planning-api';
-import { UserInfoContext } from '@src/Context/userInfo.context';
+import { useLogoutMutation } from '@api/session-api';
+import { EmptyButtonStyled } from '@components/Buttons/EmptyButton.styled';
+import { LogoutIcon } from '@components/Icons/Session/LogoutIcon';
+import { FlexBlock } from '@components/LayoutComponents/FlexBlock';
+import { useAppSelector } from '@redux/hooks/hooks';
+import { selectUserInfo } from '@redux/reducers/session/session-selectors';
+import { FC } from 'react';
+import { css } from 'styled-components';
+import { HeaderDefaultLink } from './HeaderLink.styled.';
 
 export const MainHeaderUserInfo: FC = () => {
   const [logoutUser] = useLogoutMutation();
   const [refetchTaskApi] = useRefetchPlanningApiMutation();
-  const userInfo = useContext(UserInfoContext);
+  const userInfo = useAppSelector(selectUserInfo);
 
   return (
     <FlexBlock width={'100%'} justify={'flex-end'}>

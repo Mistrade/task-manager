@@ -1,5 +1,6 @@
+import { PlannerProvider } from '@components/ContextProviders/PlannerProvider';
+import { PLANNER_LAYOUTS } from '@src/common/constants';
 import React, { FC } from 'react';
-import { PlannerHeader } from './Header/PlannerHeader';
 import { LayoutSelector } from './LayoutSelector';
 import { ModalRoutes } from './ModalRoutes';
 import { PlannerOptionsPanel } from './OptionsPanel/PlannerOptionsPanel';
@@ -12,17 +13,18 @@ import {
 
 export const PlannerPage: FC = React.memo(() => {
   return (
-    <PlannerContainer>
-      <PlannerHeader />
-      <PlannerContentContainer>
-        <PlannerOptionPanelContainer>
-          <PlannerOptionsPanel />
-        </PlannerOptionPanelContainer>
-        <PlannerLayoutContainer>
-          <LayoutSelector />
-        </PlannerLayoutContainer>
-      </PlannerContentContainer>
-      <ModalRoutes />
-    </PlannerContainer>
+    <PlannerProvider layout={PLANNER_LAYOUTS.MONTH} status={'all'}>
+      <PlannerContainer>
+        <PlannerContentContainer>
+          <PlannerOptionPanelContainer>
+            <PlannerOptionsPanel />
+          </PlannerOptionPanelContainer>
+          <PlannerLayoutContainer>
+            <LayoutSelector />
+          </PlannerLayoutContainer>
+        </PlannerContentContainer>
+        <ModalRoutes />
+      </PlannerContainer>
+    </PlannerProvider>
   );
 });

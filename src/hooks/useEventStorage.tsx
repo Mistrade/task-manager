@@ -8,6 +8,7 @@ import {
   plannerSelectStatus,
 } from '@selectors/planner';
 import { UTC_OFFSET } from '@src/common/constants';
+import { useMemo } from 'react';
 import {
   EventFiltersProps,
   useEventFilters,
@@ -29,9 +30,9 @@ type UseTaskStorageQueryArgsHookType = (
 ) => UseTaskStorageQueryArgsReturned;
 
 export const useEventStorage: UseTaskStorageQueryArgsHookType = (props) => {
-  const scope = useAppSelector(plannerSelectScope);
   const layout = useAppSelector(plannerSelectLayout);
   const currentStatus = useAppSelector(plannerSelectStatus);
+  const scope = useAppSelector(plannerSelectScope);
 
   const { debounceValue, filters, handlers, setFiltersState } = useEventFilters(
     {
@@ -47,19 +48,30 @@ export const useEventStorage: UseTaskStorageQueryArgsHookType = (props) => {
     }
   );
 
-  const { data: TaskStorage, isFetching } = useGetEventsStorageQuery(
-    {
-      title: debounceValue.title,
+  const args = useMemo(() => {
+    return {
       fromDate: plannerDateToDate(scope.startDate).toString(),
       toDate: plannerDateToDate(scope.endDate).toString(),
-      priority: debounceValue.priority,
       taskStatus: currentStatus,
+      title: debounceValue.title,
+      priority: debounceValue.priority,
       onlyFavorites: !!props?.onlyFavorites,
       utcOffset: UTC_OFFSET,
       findOnlyInSelectedGroups: true,
-    },
-    { refetchOnMountOrArgChange: true }
-  );
+    };
+  }, [
+    props?.onlyFavorites,
+    debounceValue.title,
+    debounceValue.priority,
+    currentStatus,
+    scope,
+  ]);
+
+  const { data: TaskStorage, isFetching } = useGetEventsStorageQuery(args, {
+    refetchOnMountOrArgChange: true,
+  });
+
+  console.log(TaskStorage);
 
   return {
     taskStatus: currentStatus,

@@ -1,8 +1,23 @@
-import { borderRadiusSize } from '@src/common/borderRadiusSize';
-import { FC, useContext, useMemo, useState } from 'react';
-import { CreateEventDataObject } from '../../planner.types';
-import { useFormik } from 'formik';
+import { useCreateEventMutation } from '@api/planning-api';
+import { EventIdObject } from '@api/planning-api/types/event-info.types';
+import { GroupModelResponse } from '@api/planning-api/types/groups.types';
+import { MyServerResponse } from '@api/rtk-api.types';
+import { CatchHandleForToast } from '@api/tools';
+import { Button, StyledButton } from '@components/Buttons/Buttons.styled';
 import { FlexBlock } from '@components/LayoutComponents/FlexBlock';
+import { Switcher } from '@components/Switcher/Switcher';
+import { Heading } from '@components/Text/Heading';
+import { useCreateEventModal } from '@hooks/useCreateEventModal';
+import { ChainsShowcase } from '@planner/TaskInformer/LeftBar/Tabs/Chains/Connect/ChainsShowcase';
+import {
+  ToggleEventCalendar,
+  ToggleEventPriority,
+  ToggleEventStatus,
+} from '@planner/TaskInformer/SupportsComponent/ToggleTaskInformerButtons';
+import { useAppSelector } from '@redux/hooks/hooks';
+import { createEventInitialStateSelector } from '@selectors/calendarItems';
+import { plannerSelectCurrentMode } from '@selectors/planner';
+import { borderRadiusSize } from '@src/common/borderRadiusSize';
 import {
   defaultColor,
   disabledColor,
@@ -10,30 +25,15 @@ import {
   PRIORITY_TITLES,
   TASK_STATUSES,
 } from '@src/common/constants';
+import { useFormik } from 'formik';
+import { FC, useMemo, useState } from 'react';
+import { useNavigate } from 'react-router-dom';
+import styled from 'styled-components';
 import * as yup from 'yup';
-import { Button, StyledButton } from '@components/Buttons/Buttons.styled';
-import { useCreateEventMutation } from '@api/planning-api';
-import { Heading } from '@components/Text/Heading';
-import { Switcher } from '@components/Switcher/Switcher';
-import {
-  ToggleEventCalendar,
-  ToggleEventPriority,
-  ToggleEventStatus,
-} from '@planner/TaskInformer/SupportsComponent/ToggleTaskInformerButtons';
-import { GroupModelResponse } from '@api/planning-api/types/groups.types';
-import { useCreateEventModal } from '@hooks/useCreateEventModal';
-import { CatchHandleForToast } from '@api/tools';
-import { useAppSelector } from '@redux/hooks/hooks';
-import { createEventInitialStateSelector } from '@selectors/calendarItems';
-import { PlannerContext } from '@src/Context/planner.context';
-import { EVENT_INFORMER_TAB_NAMES } from '@planner/TaskInformer/LeftBar/TaskInformerLeftBar';
-import { MyServerResponse } from '@api/rtk-api.types';
-import { EventIdObject } from '@api/planning-api/types/event-info.types';
+import { CreateEventDataObject } from '../../planner.types';
+import { CreateEventFormAdditional } from './Tabs/Additional';
 import { CreateEventInfoTab } from './Tabs/Info';
 import { CreateEventMembersTab } from './Tabs/Members';
-import { ChainsShowcase } from '@planner/TaskInformer/LeftBar/Tabs/Chains/Connect/ChainsShowcase';
-import { CreateEventFormAdditional } from './Tabs/Additional';
-import styled from 'styled-components';
 
 interface CreateEventFormProps {
   // onComplete?: (data: CreateEventDataObject, taskId?: ObjectId) => void;
@@ -108,9 +108,8 @@ export const MaxHeightHidden = styled('div')`
 
 export const CreateEventForm: FC<CreateEventFormProps> = ({ groupsList }) => {
   const { declineModal, clearState } = useCreateEventModal({});
-  const {
-    methods: { plannerNavigate },
-  } = useContext(PlannerContext);
+  const backgroundUrl = useAppSelector(plannerSelectCurrentMode);
+  const navigate = useNavigate();
   const initialState = useAppSelector(createEventInitialStateSelector);
   const [addTask, { isLoading, status }] = useCreateEventMutation();
   const [tab, setTab] = useState<CREATE_EVENT_FORM_TABS>(
@@ -124,10 +123,7 @@ export const CreateEventForm: FC<CreateEventFormProps> = ({ groupsList }) => {
         .then((response: MyServerResponse<EventIdObject>) => {
           clearState();
           if (response.data) {
-            plannerNavigate('eventInfo').go(
-              response.data?.eventId,
-              EVENT_INFORMER_TAB_NAMES.ABOUT
-            );
+            navigate(`${backgroundUrl}/event/info/${response.data.eventId}`);
           }
         })
         .catch(CatchHandleForToast);

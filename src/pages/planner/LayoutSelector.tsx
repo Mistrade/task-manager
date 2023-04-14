@@ -1,7 +1,12 @@
-import { useAppSelector } from '@redux/hooks/hooks';
-import { plannerSelectLayout } from '@selectors/planner';
+import { CenteredContainer } from '@components/AppRoutes/Interceptors/SessionInterceptor';
+import { ErrorScreen } from '@components/Errors/ErrorScreen';
+import { ModalRoutes } from '@planner/ModalRoutes';
+import { StatusRoutes } from '@planner/StatusRoutes';
 import { PLANNER_LAYOUTS } from '@src/common/constants';
-import React from 'react';
+import { disableReRender } from '@src/common/utils/react-utils';
+import React, { memo } from 'react';
+import { Route } from 'react-router';
+import { Routes } from 'react-router-dom';
 import { LayoutSuspense } from '../LayoutSuspense';
 
 const DayLayout = React.lazy(() =>
@@ -35,45 +40,97 @@ const FavoriteEventsLayout = React.lazy(() =>
   )
 );
 
-export const LayoutSelector = () => {
-  const layout = useAppSelector(plannerSelectLayout);
-
-  switch (layout) {
-    case PLANNER_LAYOUTS.DAY:
-      return (
-        <LayoutSuspense>
-          <DayLayout />
-        </LayoutSuspense>
-      );
-    case PLANNER_LAYOUTS.WEEK:
-      return (
-        <LayoutSuspense>
-          <WeekLayout />
-        </LayoutSuspense>
-      );
-    case PLANNER_LAYOUTS.MONTH:
-      return (
-        <LayoutSuspense>
-          <MonthLayout renderTaskCount={5} />
-        </LayoutSuspense>
-      );
-    case PLANNER_LAYOUTS.YEAR:
-      return (
-        <LayoutSuspense>
-          <YearLayout />
-        </LayoutSuspense>
-      );
-    case PLANNER_LAYOUTS.LIST:
-      return (
-        <LayoutSuspense>
-          <EventListLayout />
-        </LayoutSuspense>
-      );
-    case PLANNER_LAYOUTS.FAVORITES:
-      return (
-        <LayoutSuspense>
-          <FavoriteEventsLayout />
-        </LayoutSuspense>
-      );
-  }
-};
+export const LayoutSelector = memo(() => {
+  return (
+    <Routes>
+      <Route
+        path={`${PLANNER_LAYOUTS.DAY}/*`}
+        element={
+          <LayoutSuspense>
+            <StatusRoutes>
+              <DayLayout />
+              <ModalRoutes />
+            </StatusRoutes>
+          </LayoutSuspense>
+        }
+      />
+      <Route
+        path={`${PLANNER_LAYOUTS.WEEK}/*`}
+        element={
+          <LayoutSuspense>
+            <StatusRoutes>
+              <WeekLayout />
+              <ModalRoutes />
+            </StatusRoutes>
+          </LayoutSuspense>
+        }
+      />
+      <Route
+        path={`${PLANNER_LAYOUTS.MONTH}/*`}
+        element={
+          <LayoutSuspense>
+            <StatusRoutes>
+              <MonthLayout />
+              <ModalRoutes />
+            </StatusRoutes>
+          </LayoutSuspense>
+        }
+      />
+      <Route
+        path={`${PLANNER_LAYOUTS.YEAR}/*`}
+        element={
+          <LayoutSuspense>
+            <StatusRoutes>
+              <YearLayout />
+              <ModalRoutes />
+            </StatusRoutes>
+          </LayoutSuspense>
+        }
+      />
+      <Route
+        path={`${PLANNER_LAYOUTS.LIST}/*`}
+        element={
+          <LayoutSuspense>
+            <StatusRoutes>
+              <EventListLayout />
+              <ModalRoutes />
+            </StatusRoutes>
+          </LayoutSuspense>
+        }
+      />
+      <Route
+        path={`${PLANNER_LAYOUTS.FAVORITES}/*`}
+        element={
+          <LayoutSuspense>
+            <StatusRoutes>
+              <FavoriteEventsLayout />
+              <ModalRoutes />
+            </StatusRoutes>
+          </LayoutSuspense>
+        }
+      />
+      <Route
+        path={'*'}
+        element={
+          <CenteredContainer>
+            <ErrorScreen
+              title={'Такого URL не существует'}
+              description={
+                'В адресной строке допущена ошибка относительно режима отображения событий. Нажмите на кнопку ниже, если вы хотели попасть в "Планировщик"'
+              }
+              errorType={'SYSTEM_ERROR'}
+              action={{
+                title: 'Перейти к планировщику',
+                onClick: () => {
+                  // navigate(
+                  //   `/${ServicesNames.PLANNER}/${DEFAULT_PLANNER_LAYOUT}/${DEFAULT_PLANNER_STATUS}`
+                  // );
+                },
+              }}
+            />
+          </CenteredContainer>
+        }
+      />
+    </Routes>
+  );
+}, disableReRender);

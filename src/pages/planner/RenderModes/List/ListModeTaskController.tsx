@@ -1,13 +1,13 @@
-import { EventsStorage } from '@planner/planner.types';
-import { FC, useMemo } from 'react';
-import dayjs from 'dayjs';
-import { FlexBlock } from '@components/LayoutComponents/FlexBlock';
-import { getTaskListOfDay } from '@src/common/functions';
-import { DayTaskItem } from '@planner/RenderModes/DayCalendar/TaskList/DayTaskItem';
-import { CalendarTitle } from '@planner/Planner.styled';
-import { useRemoveEventMutation } from '@api/planning-api';
-import { DeclinationMonthList } from '@src/common/constants';
 import { ShortEventInfoModel } from '@api/planning-api/types/event-info.types';
+import { EventEssence } from '@components/Essences/EventEssence/EventEssence';
+import { FlexBlock } from '@components/LayoutComponents/FlexBlock';
+import { CalendarTitle } from '@planner/Planner.styled';
+import { EventsStorage } from '@planner/planner.types';
+import { DeclinationMonthList } from '@src/common/constants';
+import { getTaskListOfDay } from '@src/common/functions';
+import dayjs from 'dayjs';
+import { FC, useMemo } from 'react';
+import { useNavigate } from 'react-router-dom';
 
 export interface ListModeTaskController {
   eventStorage?: EventsStorage<ShortEventInfoModel>;
@@ -38,8 +38,7 @@ export const ListModeTaskController: FC<ListModeTaskController> = ({
     return generator(fromDate, toDate);
   }, [fromDate, toDate]);
 
-  const [removeTask, { isSuccess: isRemoveSuccess, isError: isRemoveError }] =
-    useRemoveEventMutation();
+  const navigate = useNavigate();
 
   if (eventStorage) {
     return (
@@ -49,7 +48,7 @@ export const ListModeTaskController: FC<ListModeTaskController> = ({
         width={'100%'}
         gap={12}
       >
-        {dateArray.map((date, dateIndex) => {
+        {dateArray.map((date) => {
           const tasks = getTaskListOfDay(date, eventStorage);
           if (tasks.length > 0) {
             const d = dayjs(date);
@@ -74,17 +73,25 @@ export const ListModeTaskController: FC<ListModeTaskController> = ({
                     )}
                   </CalendarTitle>
                 </FlexBlock>
-                {tasks.map((taskInfo, index) => (
-                  <DayTaskItem
-                    taskInfo={taskInfo}
-                    tabIndex={(dateIndex + 1) * (index + 1)}
-                    key={taskInfo._id}
-                    day={date}
-                    onDelete={async (id) =>
-                      await removeTask({ eventId: id }).unwrap()
-                    }
-                  />
-                ))}
+                <FlexBlock direction={'column'} gap={6}>
+                  {tasks.map((taskInfo) => (
+                    <EventEssence
+                      key={taskInfo._id}
+                      title={taskInfo.title}
+                      status={taskInfo.status}
+                      priority={taskInfo.priority}
+                      time={taskInfo.time}
+                      timeEnd={taskInfo.timeEnd}
+                      eventId={taskInfo._id}
+                      onTitleClick={(eventId) => {
+                        navigate(`event/info/${eventId}`, {
+                          relative: 'route',
+                        });
+                      }}
+                      description={taskInfo.description}
+                    />
+                  ))}
+                </FlexBlock>
               </FlexBlock>
             );
           }

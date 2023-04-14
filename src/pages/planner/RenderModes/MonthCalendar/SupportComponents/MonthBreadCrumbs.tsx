@@ -1,14 +1,18 @@
 import { BreadCrumbs } from '@components/BreadCrumbs/BreadCrumbs';
 import { setPlannerDateAndLayout } from '@planner-reducer/index';
 import { useAppDispatch, useAppSelector } from '@redux/hooks/hooks';
+import { ServicesNames } from '@redux/reducers/global';
 import { plannerSelectDate } from '@selectors/planner';
 import { PLANNER_LAYOUTS } from '@src/common/constants';
 import { disableReRender } from '@src/common/utils/react-utils';
 import React, { memo, useCallback, useMemo } from 'react';
+import { useNavigate } from 'react-router-dom';
 
 export const MonthBreadCrumbs = memo(() => {
   const currentDate = useAppSelector(plannerSelectDate);
   const dispatch = useAppDispatch();
+  const navigate = useNavigate();
+  const status = useAppSelector(plannerSelectDate);
 
   const clickHandler = useCallback(
     (layout: PLANNER_LAYOUTS) => {
@@ -18,6 +22,7 @@ export const MonthBreadCrumbs = memo(() => {
           date: currentDate,
         })
       );
+      navigate(`/${ServicesNames.PLANNER}/${layout}/${status}`);
     },
     [currentDate]
   );

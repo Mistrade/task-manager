@@ -1,22 +1,22 @@
-import { SelectListContainer } from '@components/Input/SelectInput/SelectListContainer';
-import { SelectItemContainer } from '@components/Input/SelectInput/SelectItemContainer';
-import { TASK_STATUSES } from '@src/common/constants';
-import React, { FC, useCallback, useContext } from 'react';
-import { EventInfoModel } from '@api/planning-api/types/event-info.types';
 import {
   useRemoveEventMutation,
   useUpdateTaskMutation,
 } from '@api/planning-api';
-import { EventInfoModalProps } from '@planner/planner.types';
+import { EventInfoModel } from '@api/planning-api/types/event-info.types';
+import { CatchHandleForToast, thenHandleForToast } from '@api/tools';
 import { TransparentButton } from '@components/Buttons/Buttons.styled';
+import { SelectItemContainer } from '@components/Input/SelectInput/SelectItemContainer';
+import { SelectListContainer } from '@components/Input/SelectInput/SelectListContainer';
 import { Tooltip } from '@components/Tooltip/Tooltip';
 import { useCreateEventModal } from '@hooks/useCreateEventModal';
+import { useSearchNavigate } from '@hooks/useSearchNavigate';
+import { EventInfoModalProps } from '@planner/planner.types';
+import { useAppSelector } from '@redux/hooks/hooks';
+import { ServicesNames } from '@redux/reducers/global';
+import { plannerSelectLayout, plannerSelectStatus } from '@selectors/planner';
+import { TASK_STATUSES } from '@src/common/constants';
 import dayjs from 'dayjs';
-import {
-  CatchHandleForToast,
-  thenHandleForToast,
-} from '@api/tools';
-import { PlannerContext } from '@src/Context/planner.context';
+import React, { FC, useCallback } from 'react';
 
 export interface TaskInformerMoreActionsProps extends EventInfoModalProps {
   taskItem: EventInfoModel;
@@ -24,18 +24,16 @@ export interface TaskInformerMoreActionsProps extends EventInfoModalProps {
 
 export const TaskInformerMoreActions: FC<TaskInformerMoreActionsProps> = ({
   taskItem,
-  // onClose,
 }) => {
   const [removeEvent] = useRemoveEventMutation();
   const [updEvent] = useUpdateTaskMutation();
+  const status = useAppSelector(plannerSelectStatus);
+  const layout = useAppSelector(plannerSelectLayout);
+  const navigate = useSearchNavigate();
 
   const { openModal: openCreateEventModal } = useCreateEventModal({
     useReturnBackOnDecline: true,
   });
-
-  const {
-    methods: { closeEventInfo },
-  } = useContext(PlannerContext);
 
   const cloneEventHandler = useCallback(
     (e: React.MouseEvent) => {
@@ -95,12 +93,14 @@ export const TaskInformerMoreActions: FC<TaskInformerMoreActionsProps> = ({
           .then((r) => {
             thenHandleForToast(
               r,
-              () => r?.info?.type === 'success' && closeEventInfo()
+              () =>
+                r?.info?.type === 'success' &&
+                navigate(`/${ServicesNames.PLANNER}/${layout}/${status}`)
             );
           })
           .catch(CatchHandleForToast);
     },
-    [removeEvent, taskItem, closeEventInfo]
+    [removeEvent, taskItem]
   );
 
   return (

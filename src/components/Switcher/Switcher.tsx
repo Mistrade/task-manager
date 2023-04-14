@@ -1,13 +1,12 @@
-import { currentColor, disabledColor } from '../../common/constants';
-import { SwitchCalendarModeTab } from '../../pages/planner/Planner.styled';
-import { FlexBlock } from '../LayoutComponents/FlexBlock';
-import React, { ReactNode, useRef, useState } from 'react';
-import { Badge } from '../Badge/Badge';
+import { SwitchCalendarModeTab } from '@planner/Planner.styled';
+import { currentColor } from '@src/common/constants';
+import React, { ReactNode, useRef } from 'react';
 import { ColorRing } from 'react-loader-spinner';
 import { useIntersection } from 'react-use';
-import { Arrow } from '../Icons/Icons';
-import { EmptyButtonStyled } from '../Buttons/EmptyButton.styled';
 import { css } from 'styled-components';
+import { EmptyButtonStyled } from '../Buttons/EmptyButton.styled';
+import { Arrow } from '../Icons/Icons';
+import { FlexBlock } from '../LayoutComponents/FlexBlock';
 
 export interface SwitcherItem<KEY> {
   title: string;
@@ -21,10 +20,14 @@ export type SwitcherBadges<KEY extends string = string> = {
 export interface SwitcherProps<T extends string = string> {
   switchersList: Array<SwitcherItem<T>>;
   onClick: (item: SwitcherItem<T>) => void;
-  selected: T;
+  selected?: T;
   badges?: SwitcherBadges<T> | null;
   isLoading?: boolean;
   children?: ReactNode;
+  component?: (props: {
+    item: SwitcherItem<T>;
+    onClick: SwitcherProps<T>['onClick'];
+  }) => ReactNode;
 }
 
 export const hideScrollBar = css`
@@ -53,14 +56,11 @@ export function Switcher<T extends string = string>(props: SwitcherProps<T>) {
     root: scrollContainerRef.current,
   });
 
-  const [transformState, setTransformState] = useState<number>(0);
-
   return (
     <FlexBlock
-      borderBottom={`1px solid ${disabledColor}`}
       justify={'space-between'}
       align={'flex-end'}
-      height={'fit-content'}
+      height={40}
       width={'100%'}
     >
       <FlexBlock grow={3} overflow={'hidden'} position={'relative'}>
@@ -86,26 +86,24 @@ export function Switcher<T extends string = string>(props: SwitcherProps<T>) {
         >
           <FlexBlock width={'fit-content'}>
             <div style={{ width: 0, height: 0 }} ref={nonViewLeftRef} />
-            {props.switchersList.map((item, index) => (
-              <SwitchCalendarModeTab
-                data-number={index}
-                type={'button'}
-                key={item.type}
-                onClick={() => props.onClick(item)}
-                isSelected={item.type === props.selected}
-              >
-                {item.title}
-                {props.badges &&
-                props.badges[item.type] &&
-                props.badges[item.type] > 0 ? (
-                  <Badge style={{ marginLeft: 4 }}>
-                    {props.badges[item.type]}
-                  </Badge>
-                ) : (
-                  <></>
-                )}
-              </SwitchCalendarModeTab>
-            ))}
+            {props.switchersList.map((item, index) =>
+              props.component ? (
+                props.component({
+                  item,
+                  onClick: props.onClick,
+                })
+              ) : (
+                <SwitchCalendarModeTab
+                  data-number={index}
+                  type={'button'}
+                  key={item.type}
+                  onClick={() => props.onClick(item)}
+                  isSelected={item.type === props.selected}
+                >
+                  {item.title}
+                </SwitchCalendarModeTab>
+              )
+            )}
             <div style={{ width: 0, height: 0 }} ref={nonRightViewRef} />
           </FlexBlock>
         </FlexBlock>

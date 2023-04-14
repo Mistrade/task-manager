@@ -1,20 +1,26 @@
-import { ContactsContainer, ContactsLayout } from './Contacts.styled';
-import { AddContact } from './AddConctact/AddContact';
+import {
+  CONTACT_TYPES,
+  useGetContactsListQuery,
+  useGetFriendsListQuery,
+} from '@api/friends-api';
 import { UserModel } from '@api/session-api/session-api.types';
-import { FC, useCallback, useState } from 'react';
-import { Heading } from '@components/Text/Heading';
-import { ContactBlock } from './AddConctact/AddContact.styled';
+import { ErrorScreen } from '@components/Errors/ErrorScreen';
 import { FlexBlock } from '@components/LayoutComponents/FlexBlock';
 import { ScrollVerticalView } from '@components/LayoutComponents/ScrollView/ScrollVerticalView';
-import { Switcher } from '@components/Switcher/Switcher';
-import styled from 'styled-components';
-import { Routes } from 'react-router-dom';
-import { Navigate, Route, useLocation } from 'react-router';
-import { useSearchNavigate } from '@hooks/useSearchNavigate';
-import { ErrorScreen } from '@components/Errors/ErrorScreen';
-import { CONTACT_TYPES, useGetContactsListQuery } from '@api/friends-api';
-import { ContactsList } from './Render/ContactsList';
 import { Loader } from '@components/Loaders/Loader';
+import { Switcher } from '@components/Switcher/Switcher';
+import { Heading } from '@components/Text/Heading';
+import { useSearchNavigate } from '@hooks/useSearchNavigate';
+import { CalendarUserIndicator } from '@planner/Users/UserIndicator';
+import { ServicesNames } from '@redux/reducers/global';
+import { FC, useCallback, useState } from 'react';
+import { Navigate, Route, useLocation } from 'react-router';
+import { Routes } from 'react-router-dom';
+import styled from 'styled-components';
+import { AddContact } from './AddConctact/AddContact';
+import { ContactBlock } from './AddConctact/AddContact.styled';
+import { ContactsContainer, ContactsLayout } from './Contacts.styled';
+import { ContactsList } from './Render/ContactsList';
 
 export interface ContactsProps {
   userInfo: UserModel;
@@ -52,13 +58,15 @@ export const Contacts: FC<ContactsProps> = ({ userInfo }) => {
   const changeSwitch = useCallback(
     (type: CONTACT_TYPES) => {
       setSwitchItem(type);
-      navigate('/contacts/' + type);
+      navigate(`/${ServicesNames.FRIENDS}/` + type);
     },
     [setSwitchItem]
   );
   const { data, isFetching } = useGetContactsListQuery(switchItem, {
     refetchOnMountOrArgChange: true,
   });
+
+  const { data: friends } = useGetFriendsListQuery();
 
   return (
     <ContactsContainer>
@@ -98,25 +106,26 @@ export const Contacts: FC<ContactsProps> = ({ userInfo }) => {
                   <Route
                     index
                     element={
-                      <Navigate to={'/contacts/' + CONTACT_TYPES.FRIENDS} />
+                      <Navigate
+                        to={
+                          `/${ServicesNames.FRIENDS}/` + CONTACT_TYPES.FRIENDS
+                        }
+                      />
                     }
                   />
                   <Route
                     path={CONTACT_TYPES.FRIENDS}
                     element={
-                      <ContactsList
-                        listType={CONTACT_TYPES.FRIENDS}
-                        list={data?.data || []}
-                        emptyError={
-                          <ErrorScreen
-                            title={'Вы пока не добавили друзей'}
-                            errorType={'BAD_REQUEST'}
-                            description={
-                              'Воспользуйтесь формой выше, чтобы найти и добавить новых друзей.'
-                            }
+                      <>
+                        {friends?.data?.map((user: UserModel) => (
+                          <CalendarUserIndicator
+                            id={user._id}
+                            name={user.name}
+                            surname={user.surname}
+                            withFullName={true}
                           />
-                        }
-                      />
+                        ))}
+                      </>
                     }
                   />
                   <Route

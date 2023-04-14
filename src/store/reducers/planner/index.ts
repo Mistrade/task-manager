@@ -1,3 +1,4 @@
+import { ObjectId } from '@api/rtk-api.types';
 import { EventFilterTaskStatuses } from '@pages/planner/RenderModes/FindEventFilter/find-event-filters.types';
 import {
   dateToPlannerDate,
@@ -6,6 +7,7 @@ import {
   plannerDateToDate,
   setLayoutConfig,
 } from '@planner-reducer/utils';
+import { EVENT_INFORMER_TAB_NAMES } from '@planner/TaskInformer/LeftBar/TaskInformerLeftBar';
 import {
   IPlannerDate,
   IPlannerReducer,
@@ -22,69 +24,92 @@ import {
 } from '@src/common/constants';
 import dayjs from 'dayjs';
 
-const today = dayjs();
-
-const todayPlannerDate: IPlannerDate = {
-  month: today.month(),
-  day: today.date(),
-  year: today.year(),
-  week: today.week(),
-};
-
-const { status, layout, eventInfoId } = getPlannerMetaData(
-  window.location.pathname
-);
-
-const observer = new PlannerObserver();
-const todayDate = today.toDate();
-const todayMonthItem = observer.getMonthItem(todayDate);
-const todayWeekItem = observer.getWeekItem(todayDate);
-const todayYearItem = observer.getYearItem(todayDate);
-
-const initialState: IPlannerReducer = {
-  date: {
-    day: todayPlannerDate,
-    week: todayPlannerDate,
-    month: todayPlannerDate,
-    year: todayPlannerDate,
-    list: todayPlannerDate,
-    favorites: todayPlannerDate,
-  },
-  layout: layout || DEFAULT_PLANNER_LAYOUT,
-  status: status || DEFAULT_PLANNER_STATUS,
-  eventInfo: eventInfoId ? { _id: eventInfoId } : null,
-  config: {
-    layouts: {
-      month: todayMonthItem,
-      week: todayWeekItem,
-      year: todayYearItem,
-      day: {
-        scope: {
-          startDate: dateToPlannerDate(today.startOf('day').toDate()),
-          endDate: dateToPlannerDate(today.endOf('day').toDate()),
-        },
-      },
-      list: {
-        scope: {
-          startDate: dateToPlannerDate(today.startOf('day').toDate()),
-          endDate: dateToPlannerDate(today.add(3, 'day').endOf('day').toDate()),
-        },
-      },
-      favorites: {
-        scope: {
-          startDate: dateToPlannerDate(today.startOf('day').toDate()),
-          endDate: dateToPlannerDate(today.endOf('day').toDate()),
-        },
-      },
-    },
-    optionsPanel: todayMonthItem,
-  },
-};
-
 const plannerSlice = createSlice({
   name: 'planner',
-  initialState,
+  initialState: (): IPlannerReducer => {
+    const observer = new PlannerObserver();
+
+    const today = dayjs();
+
+    const todayPlannerDate: IPlannerDate = {
+      month: dayjs().month(),
+      day: dayjs().date(),
+      year: dayjs().year(),
+      week: dayjs().week(),
+    };
+
+    const { status, layout, eventInfoId } = getPlannerMetaData(
+      window.location.pathname
+    );
+    const todayDate = dayjs().toDate();
+    const todayMonthItem = observer.getMonthItem(todayDate);
+    const todayWeekItem = observer.getWeekItem(todayDate);
+    const todayYearItem = observer.getYearItem(todayDate);
+    return {
+      date: {
+        day: todayPlannerDate,
+        week: todayPlannerDate,
+        month: todayPlannerDate,
+        year: todayPlannerDate,
+        list: todayPlannerDate,
+        favorites: todayPlannerDate,
+      },
+      layout: layout || DEFAULT_PLANNER_LAYOUT,
+      status: status || DEFAULT_PLANNER_STATUS,
+      eventInfo: {
+        _id: eventInfoId || null,
+        tabName: EVENT_INFORMER_TAB_NAMES.ABOUT,
+      },
+      config: {
+        layouts: {
+          month: todayMonthItem,
+          week: todayWeekItem,
+          year: todayYearItem,
+          day: {
+            scope: {
+              startDate: dateToPlannerDate(today.startOf('day').toDate()),
+              endDate: dateToPlannerDate(today.endOf('day').toDate()),
+            },
+          },
+          list: {
+            scope: {
+              startDate: dateToPlannerDate(today.startOf('day').toDate()),
+              endDate: dateToPlannerDate(
+                today.add(3, 'day').endOf('day').toDate()
+              ),
+            },
+          },
+          favorites: {
+            scope: {
+              startDate: dateToPlannerDate(new Date(2022, 0, 1)),
+              endDate: dateToPlannerDate(dayjs().add(5, 'year')),
+            },
+          },
+        },
+        optionsPanel: todayMonthItem,
+      },
+    };
+  },
   reducers: {
+    setEventInfoTabName(
+      state,
+      { payload }: PayloadAction<EVENT_INFORMER_TAB_NAMES>
+    ) {
+      state.eventInfo.tabName = payload;
+    },
+    setOpenEventId(state, { payload }: PayloadAction<ObjectId | null>) {
+      if (!!payload) {
+        state.eventInfo = {
+          _id: payload,
+          tabName: state.eventInfo.tabName,
+        };
+        return;
+      }
+      state.eventInfo = {
+        _id: null,
+        tabName: state.eventInfo.tabName,
+      };
+    },
     setPlannerDate(state, { payload }: PayloadAction<TSetPlannerDatePayload>) {
       const prev = state.date[payload.layout];
 
@@ -192,6 +217,8 @@ export const {
   setPlannerLayout,
   changeDateOfPattern,
   setPlannerDateAndLayout,
+  setOpenEventId,
+  setEventInfoTabName,
 } = plannerSlice.actions;
 
 export default plannerReducer;

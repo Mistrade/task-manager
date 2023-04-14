@@ -1,17 +1,16 @@
-import { EventInfoBaseProps } from '@planner/planner.types';
-import { EventInfoUpdateFn } from '../SupportsComponent/ToggleTaskInformerButtons';
-import { FC } from 'react';
 import { FlexBlock } from '@components/LayoutComponents/FlexBlock';
+import { EventInfoBaseProps } from '@planner/planner.types';
+import { useAppSelector } from '@redux/hooks/hooks';
+import { plannerSelectEventInfoTabName } from '@selectors/planner';
 import { disabledColor } from '@src/common/constants';
+import { FC } from 'react';
+import { EventInfoUpdateFn } from '../SupportsComponent/ToggleTaskInformerButtons';
 import { EventInfoAboutTab } from './Tabs/About/EventInfoAboutTab';
 import { EventChainsTab } from './Tabs/Chains/EventChainsTab';
+import { EventCheckList } from './Tabs/EventCheckList/EventCheckList';
+import { TaskComments } from './Tabs/TaskComments/TaskComments';
 import { TaskHistory } from './Tabs/TaskHistory/TaskHistory';
 import { TaskMembers } from './Tabs/TaskMembers/TaskMembers';
-import { TaskComments } from './Tabs/TaskComments/TaskComments';
-import { Routes } from 'react-router-dom';
-import { Route } from 'react-router';
-import { NotFoundPage } from '@pages/NotFound/NotFoundPage';
-import { EventCheckList } from './Tabs/EventCheckList/EventCheckList';
 
 interface TaskInformerLeftBarProps extends EventInfoBaseProps {
   updateFn: EventInfoUpdateFn;
@@ -30,6 +29,8 @@ export const TaskInformerLeftBar: FC<TaskInformerLeftBarProps> = ({
   eventInfo,
   updateFn,
 }) => {
+  const tabName = useAppSelector(plannerSelectEventInfoTabName);
+
   return (
     <FlexBlock
       flex={'1 0 calc(100% - 312px)'}
@@ -42,37 +43,24 @@ export const TaskInformerLeftBar: FC<TaskInformerLeftBarProps> = ({
     >
       <FlexBlock height={'100%'} mt={4}>
         <FlexBlock width={'100%'} height={'100%'} direction={'column'}>
-          <Routes>
-            <Route
-              path={EVENT_INFORMER_TAB_NAMES.ABOUT}
-              element={
-                <EventInfoAboutTab eventInfo={eventInfo} updateFn={updateFn} />
-              }
-            />
-            <Route
-              path={EVENT_INFORMER_TAB_NAMES.CHAINS}
-              element={
-                <EventChainsTab taskItem={eventInfo} updateFn={updateFn} />
-              }
-            />
-            <Route
-              path={EVENT_INFORMER_TAB_NAMES.HISTORY}
-              element={<TaskHistory taskInfo={eventInfo} />}
-            />
-            <Route
-              path={EVENT_INFORMER_TAB_NAMES.MEMBERS}
-              element={<TaskMembers taskItem={eventInfo} />}
-            />
-            <Route
-              path={EVENT_INFORMER_TAB_NAMES.COMMENTS}
-              element={<TaskComments taskInfo={eventInfo} />}
-            />
-            <Route
-              path={EVENT_INFORMER_TAB_NAMES.CHECK_LIST}
-              element={<EventCheckList eventInfo={eventInfo} />}
-            />
-            <Route path={'*'} element={<NotFoundPage />} />
-          </Routes>
+          {tabName === EVENT_INFORMER_TAB_NAMES.ABOUT && (
+            <EventInfoAboutTab eventInfo={eventInfo} updateFn={updateFn} />
+          )}
+          {tabName === EVENT_INFORMER_TAB_NAMES.CHAINS && (
+            <EventChainsTab taskItem={eventInfo} />
+          )}
+          {tabName === EVENT_INFORMER_TAB_NAMES.HISTORY && (
+            <TaskHistory taskInfo={eventInfo} />
+          )}
+          {tabName === EVENT_INFORMER_TAB_NAMES.MEMBERS && (
+            <TaskMembers taskItem={eventInfo} />
+          )}
+          {tabName === EVENT_INFORMER_TAB_NAMES.COMMENTS && (
+            <TaskComments taskInfo={eventInfo} />
+          )}
+          {tabName === EVENT_INFORMER_TAB_NAMES.CHECK_LIST && (
+            <EventCheckList eventInfo={eventInfo} />
+          )}
         </FlexBlock>
       </FlexBlock>
     </FlexBlock>

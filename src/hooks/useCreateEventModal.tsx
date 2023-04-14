@@ -1,13 +1,13 @@
 import { useAppDispatch, useAppSelector } from '@redux/hooks/hooks';
-import { useCallback, useContext } from 'react';
-import { useLocation } from 'react-router';
+import { ServicesNames } from '@redux/reducers/global';
 import {
   clearCreateInitialState,
   CreateEventInitialState,
   setCreateEventInitialState,
 } from '@redux/reducers/planner-reducer';
+import { plannerSelectLayout, plannerSelectStatus } from '@selectors/planner';
+import { useCallback, useMemo } from 'react';
 import { useSearchNavigate } from './useSearchNavigate';
-import { PlannerContext } from '@src/Context/planner.context';
 
 interface UseCreateEventProps {
   useReturnBackOnDecline?: boolean;
@@ -30,19 +30,17 @@ type UseCreateEventHook = (
 export const useCreateEventModal: UseCreateEventHook = ({
   useReturnBackOnDecline,
 }) => {
-  const { createEventPrevUrl } = useAppSelector((state) => state.planner);
-
-  const {
-    methods: { plannerNavigate },
-  } = useContext(PlannerContext);
-
-  const location = useLocation();
+  const createEventPrevUrl = useAppSelector(
+    (state) => state.planner.createEventPrevUrl
+  );
+  const layout = useAppSelector(plannerSelectLayout);
+  const status = useAppSelector(plannerSelectStatus);
   const dispatch = useAppDispatch();
   const navigate = useSearchNavigate();
 
   const navigateToModal = useCallback(() => {
-    plannerNavigate('createEventModal').go();
-  }, [plannerNavigate]);
+    navigate(`/${ServicesNames.PLANNER}/${layout}/${status}/event/create`);
+  }, [layout, status]);
 
   const openModal: UseCreateEventReturned['openModal'] = useCallback(
     (initialValues) => {
@@ -67,15 +65,21 @@ export const useCreateEventModal: UseCreateEventHook = ({
       if (createEventPrevUrl) {
         navigate(createEventPrevUrl, { replace: true });
       } else {
-        plannerNavigate('current').go();
+        const [serviceName, layout, status] = window.location.pathname
+          .split('/')
+          .filter((item) => !!item);
+        navigate('/' + [serviceName, layout, status].join('/'));
       }
       clearState();
-    }, [createEventPrevUrl, plannerNavigate]);
+    }, [createEventPrevUrl]);
 
-  return {
-    openModal,
-    navigateToModal,
-    declineModal,
-    clearState,
-  };
+  return useMemo(
+    () => ({
+      openModal,
+      navigateToModal,
+      declineModal,
+      clearState,
+    }),
+    [layout, status, createEventPrevUrl]
+  );
 };

@@ -18,8 +18,6 @@ export const MainHeader: FC = React.memo(() => {
       `}
       minHeight={70}
       basis={'70px'}
-      pl={24}
-      pr={24}
       pt={12}
       pb={12}
       gap={12}

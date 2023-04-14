@@ -1,45 +1,46 @@
-import { EventInfoBaseProps } from '@planner/planner.types';
-import { EventInfoUpdateFn } from '@planner/TaskInformer/SupportsComponent/ToggleTaskInformerButtons';
-import { FC } from 'react';
-import { FlexBlock } from '@components/LayoutComponents/FlexBlock';
 import { DatePicker } from '@components/DatePicker/DatePicker';
-import dayjs from 'dayjs';
-import { TaskInformerDescription } from '@planner/TaskInformer/SupportsComponent/TaskInformerDescription';
-import { useSearchNavigate } from '@hooks/useSearchNavigate';
+import { FlexBlock } from '@components/LayoutComponents/FlexBlock';
 import { ScrollVerticalView } from '@components/LayoutComponents/ScrollView/ScrollVerticalView';
+import { EventInfoBaseProps } from '@planner/planner.types';
+import { TaskInformerDescription } from '@planner/TaskInformer/SupportsComponent/TaskInformerDescription';
+import { EventInfoUpdateFn } from '@planner/TaskInformer/SupportsComponent/ToggleTaskInformerButtons';
+import dayjs from 'dayjs';
+import { FC, memo } from 'react';
 
 export interface EventInfoAboutTabProps extends EventInfoBaseProps {
   updateFn: EventInfoUpdateFn;
 }
 
-export const EventInfoAboutTab: FC<EventInfoAboutTabProps> = ({
-  eventInfo,
-  updateFn,
-}) => {
-  const navigate = useSearchNavigate();
-  return (
-    <ScrollVerticalView renderPattern={'top-bottom'}>
-      <FlexBlock direction={'column'} gap={12} pb={40}>
-        <FlexBlock direction={'row'} gap={12}>
-          <DatePicker
-            label={'Дата начала'}
-            currentDate={dayjs(eventInfo.time).toDate()}
-            onChange={async (date) => {
-              await updateFn('time', dayjs(date).toString());
-            }}
-            useForceUpdateValue={true}
-          />
-          <DatePicker
-            label={'Дата завершения'}
-            currentDate={dayjs(eventInfo.timeEnd).toDate()}
-            onChange={async (date) => {
-              await updateFn('timeEnd', dayjs(date).toString());
-            }}
-            useForceUpdateValue={true}
-          />
+export const EventInfoAboutTab: FC<EventInfoAboutTabProps> = memo(
+  ({ eventInfo, updateFn }) => {
+    return (
+      <ScrollVerticalView renderPattern={'top-bottom'}>
+        <FlexBlock direction={'column'} gap={12} pb={40}>
+          <FlexBlock direction={'row'} gap={12}>
+            <DatePicker
+              label={'Дата начала'}
+              currentDate={dayjs(eventInfo.time).toDate()}
+              onChange={async (date) => {
+                await updateFn('time', dayjs(date).toString());
+              }}
+              useForceUpdateValue={true}
+            />
+            <DatePicker
+              label={'Дата завершения'}
+              currentDate={dayjs(eventInfo.timeEnd).toDate()}
+              onChange={async (date) => {
+                await updateFn('timeEnd', dayjs(date).toString());
+              }}
+              useForceUpdateValue={true}
+            />
+          </FlexBlock>
+          <TaskInformerDescription eventInfo={eventInfo} updateFn={updateFn} />
         </FlexBlock>
-        <TaskInformerDescription eventInfo={eventInfo} updateFn={updateFn} />
-      </FlexBlock>
-    </ScrollVerticalView>
-  );
-};
+      </ScrollVerticalView>
+    );
+  },
+  (prev, next) =>
+    prev.eventInfo.time === next.eventInfo.time &&
+    prev.eventInfo.timeEnd === next.eventInfo.timeEnd &&
+    prev.eventInfo.description.length === next.eventInfo.description.length
+);

@@ -6,7 +6,7 @@ import {
   disabledColor,
   hoverColor,
 } from '@src/common/constants';
-import { memo } from 'react';
+import { NavLink } from 'react-router-dom';
 import styled, { css } from 'styled-components';
 
 export const CalendarDateListContainer = styled('div')<{ rowsCount?: number }>`
@@ -60,51 +60,89 @@ export const SwitchCalendarMode = styled('button')<{ isSelected?: boolean }>`
     margin-right: 4px;
   }
 `;
-export const SwitchCalendarModeTab = memo(
-  styled('button')<{ isSelected?: boolean }>`
-    & {
-      outline: none;
-      padding: 6px 16px;
-      font-size: 16px;
-      white-space: normal;
-      text-align: center;
-      flex-shrink: 0;
-      vertical-align: middle;
-      background-color: transparent;
-      border: none;
-      cursor: pointer;
-      transition: all 0.3s ease-in-out;
-      color: ${defaultColor};
-      width: fit-content;
-      min-width: 30px;
-      max-width: 300px;
-      position: relative;
-      border-radius: ${borderRadiusSize.sm};
-    }
+export const SwitchCalendarModeTab = styled('button')<{ isSelected?: boolean }>`
+  & {
+    outline: none;
+    padding: 6px 16px;
+    font-size: 15px;
+    white-space: normal;
+    text-align: center;
+    flex-shrink: 0;
+    vertical-align: middle;
+    background-color: transparent;
+    border: none;
+    cursor: pointer;
+    transition: all 0.3s ease-in-out;
+    color: ${defaultColor};
+    width: fit-content;
+    min-width: 30px;
+    max-width: 300px;
+    position: relative;
+    border-radius: ${borderRadiusSize.sm};
+    gap: 4px;
+    display: flex;
+  }
 
-    ${(props) => {
-      if (props.isSelected) {
-        return css`
-          &:after {
-            content: '';
-            position: absolute;
-            bottom: -2px;
-            left: 0;
-            width: 100%;
-            height: 4px;
-            border-radius: ${borderRadiusSize.xl};
-            background-color: ${currentColor};
-          }
-        `;
-      }
-    }}
-    &:hover {
-      background-color: ${hoverColor};
-      border-radius: ${borderRadiusSize.xs} ${borderRadiusSize.xs} 0px 0px;
+  ${(props) => {
+    if (props.isSelected) {
+      return css`
+        &:after {
+          content: '';
+          position: absolute;
+          bottom: 0px;
+          left: 0;
+          width: 100%;
+          height: 3px;
+          border-radius: ${borderRadiusSize.xl};
+          background-color: ${currentColor};
+        }
+      `;
     }
-  `,
-  (prevProps, nextProps) => prevProps.isSelected === nextProps.isSelected
-);
+  }}
+  &:hover {
+    background-color: ${hoverColor};
+    border-radius: ${borderRadiusSize.xs} ${borderRadiusSize.xs} 0px 0px;
+  }
+`;
+
+export const PlannerNavLink = styled(NavLink)`
+  & {
+    outline: none;
+    text-decoration: none;
+    padding: 6px 16px;
+    font-size: 15px;
+    white-space: normal;
+    text-align: center;
+    flex-shrink: 0;
+    vertical-align: middle;
+    background-color: transparent;
+    border: none;
+    cursor: pointer;
+    transition: all 0.3s ease-in-out;
+    color: ${defaultColor};
+    width: fit-content;
+    min-width: 30px;
+    max-width: 300px;
+    position: relative;
+    border-radius: ${borderRadiusSize.sm};
+  }
+
+  &.active:after {
+    content: '';
+    position: absolute;
+    bottom: 0px;
+    left: 0;
+    width: 100%;
+    height: 3px;
+    border-radius: ${borderRadiusSize.xl};
+    background-color: ${currentColor};
+  }
+
+  &:hover {
+    background-color: ${hoverColor};
+    border-radius: ${borderRadiusSize.xs} ${borderRadiusSize.xs} 0px 0px;
+  }
+`;
 
 export const TimeSelectorButton = styled(SwitchCalendarMode)`
   margin: 0;
@@ -123,6 +161,7 @@ export const TimeSelectorButton = styled(SwitchCalendarMode)`
 export const PlannerOptionPanelContainer = styled('div')`
   & {
     display: flex;
+    flex-direction: column;
     height: 100%;
     width: 285px;
     background-color: ${'#fff'};

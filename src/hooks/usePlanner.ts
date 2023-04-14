@@ -1,19 +1,19 @@
+import { GroupModelResponse } from '@api/planning-api/types/groups.types';
+import { ObjectId } from '@api/rtk-api.types';
 import {
   OnChangeCurrentFnType,
   OnCloseTaskInfoFnType,
   OnSelectTaskFnType,
   PlannerMode,
 } from '@planner/planner.types';
-import { useCallback } from 'react';
 import { useAppDispatch, useAppSelector } from '@redux/hooks/hooks';
 import {
   changeGroupRemoved,
   changePlanner,
 } from '@redux/reducers/planner-reducer';
 import { CalendarCurrentSelector } from '@selectors/calendarItems';
+import { useCallback } from 'react';
 import { useSearchNavigate } from './useSearchNavigate';
-import { ObjectId } from '@api/rtk-api.types';
-import { GroupModelResponse } from '@api/planning-api/types/groups.types';
 
 export interface UsePlannerReturned {
   planner: PlannerMode;
@@ -72,7 +72,7 @@ export const usePlanner: UsePlannerType = () => {
 
   const onSelectTask: OnSelectTaskFnType = useCallback(
     (taskId: string) => {
-      navigate(`/planner/${planner.layout}/${statuses}/info/${taskId}/about`);
+      navigate(`/planner/${planner.layout}/${statuses}/info/${taskId}`);
     },
     [planner.layout, statuses]
   );

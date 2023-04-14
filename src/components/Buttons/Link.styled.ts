@@ -1,9 +1,9 @@
 import { borderRadiusSize } from '@src/common/borderRadiusSize';
-import styled from 'styled-components';
-import { Link } from 'react-router-dom';
 import { currentColor } from '@src/common/constants';
+import { NavLink } from 'react-router-dom';
+import styled from 'styled-components';
 
-export const LinkStyled = styled(Link)`
+export const LinkStyled = styled(NavLink)`
   border-radius: ${borderRadiusSize.sm};
   font-size: 14px;
   color: ${currentColor};

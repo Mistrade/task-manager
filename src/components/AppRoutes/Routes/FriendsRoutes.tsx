@@ -1,12 +1,12 @@
-import React, { FC, useContext } from 'react';
-import { Contacts } from '@contacts/Contacts';
 import { UserModel } from '@api/session-api/session-api.types';
 import { SessionInterceptor } from '@components/AppRoutes/Interceptors/SessionInterceptor';
-import { UserInfoContext } from '@src/Context/userInfo.context';
+import { Contacts } from '@contacts/Contacts';
+import { useAppSelector } from '@redux/hooks/hooks';
+import { selectUserInfo } from '@redux/reducers/session/session-selectors';
+import React, { FC } from 'react';
 
 export const FriendsRoutes: FC = () => {
-  const userInfo = useContext(UserInfoContext);
-
+  const userInfo = useAppSelector(selectUserInfo);
   return (
     <SessionInterceptor userInfo={userInfo} mode={'show'}>
       <Contacts userInfo={userInfo as UserModel} />

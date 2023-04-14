@@ -1,16 +1,24 @@
 import { useGetEventsSchemeQuery } from '@api/planning-api';
+import { GetEventsFiltersRequestProps } from '@api/planning-api/types/event-info.types';
 import { FlexBlock } from '@components/LayoutComponents/FlexBlock';
 import { ScrollVerticalView } from '@components/LayoutComponents/ScrollView/ScrollVerticalView';
 import { Loader } from '@components/Loaders/Loader';
-import { plannerDateToDate } from '@planner-reducer/utils';
+import { useSearchNavigate } from '@hooks/useSearchNavigate';
+import { setPlannerDateAndLayout } from '@planner-reducer/index';
+import { dateToPlannerDate, plannerDateToDate } from '@planner-reducer/utils';
 import { YearCalendarProps } from '@planner/planner.types';
 import { SmallCalendarMonthTitle } from '@planner/SmallMotnCalendar/SmallCalendarMonthTitle';
 import { SmallMonth } from '@planner/SmallMotnCalendar/SmallMonth';
-import { useAppSelector } from '@redux/hooks/hooks';
-import { plannerSelectYearConfig } from '@selectors/planner';
+import { useAppDispatch, useAppSelector } from '@redux/hooks/hooks';
+import { ServicesNames } from '@redux/reducers/global';
+import {
+  plannerSelectStatus,
+  plannerSelectYearConfig,
+} from '@selectors/planner';
 import { borderRadiusSize } from '@src/common/borderRadiusSize';
-import { UTC_OFFSET } from '@src/common/constants';
-import { FC, memo } from 'react';
+import { PLANNER_LAYOUTS, UTC_OFFSET } from '@src/common/constants';
+import dayjs from 'dayjs';
+import { FC, memo, useMemo } from 'react';
 import styled from 'styled-components';
 
 const MonthItemContainer = styled('div')`
@@ -33,12 +41,21 @@ const MonthTitleWrapper = styled('div')`
 
 export const YearCalendar: FC<YearCalendarProps> = memo(() => {
   const config = useAppSelector(plannerSelectYearConfig);
+  const status = useAppSelector(plannerSelectStatus);
+  const dispatch = useAppDispatch();
+  const navigate = useSearchNavigate();
 
-  const { data: taskScheme, isFetching } = useGetEventsSchemeQuery({
-    utcOffset: UTC_OFFSET,
-    fromDate: plannerDateToDate(config.scope.startDate).toString(),
-    toDate: plannerDateToDate(config.scope.endDate).toString(),
-  });
+  const args = useMemo(
+    (): GetEventsFiltersRequestProps => ({
+      utcOffset: UTC_OFFSET,
+      fromDate: plannerDateToDate(config.scope.startDate).toString(),
+      toDate: plannerDateToDate(config.scope.endDate).toString(),
+      taskStatus: 'all',
+    }),
+    [config]
+  );
+
+  const { data: taskScheme, isFetching } = useGetEventsSchemeQuery(args);
 
   return (
     <ScrollVerticalView renderPattern={'top-bottom'}>
@@ -66,27 +83,47 @@ export const YearCalendar: FC<YearCalendarProps> = memo(() => {
                     <MonthTitleWrapper>
                       <SmallCalendarMonthTitle
                         monthItem={monthItem}
-                        // onClick={(data) =>
-                        //   updateCurrentLayoutAndNavigate(
-                        //     PLANNER_LAYOUTS.MONTH,
-                        //     new Date(data.year, data.monthOfYear, 1)
-                        //   )
-                        // }
+                        onClick={(data) => {
+                          dispatch(
+                            setPlannerDateAndLayout({
+                              date: dateToPlannerDate(
+                                dayjs()
+                                  .set('year', data.year)
+                                  .set('month', data.monthOfYear)
+                                  .startOf('month')
+                              ),
+                              layout: PLANNER_LAYOUTS.MONTH,
+                            })
+                          );
+                          navigate(
+                            `/${ServicesNames.PLANNER}/${PLANNER_LAYOUTS.MONTH}/${status}`
+                          );
+                        }}
                       />
                     </MonthTitleWrapper>
                   }
-                  // onSelectDate={(data) =>
-                  //   updateCurrentLayoutAndNavigate(
-                  //     PLANNER_LAYOUTS.DAY,
-                  //     plannerDateToDate(data.value)
-                  //   )
-                  // }
-                  // onSelectWeek={(current) =>
-                  //   updateCurrentLayoutAndNavigate(
-                  //     PLANNER_LAYOUTS.WEEK,
-                  //     current.aroundDate
-                  //   )
-                  // }
+                  onSelectDate={(data) => {
+                    dispatch(
+                      setPlannerDateAndLayout({
+                        date: data.value,
+                        layout: PLANNER_LAYOUTS.DAY,
+                      })
+                    );
+                    navigate(
+                      `/${ServicesNames.PLANNER}/${PLANNER_LAYOUTS.DAY}/${status}`
+                    );
+                  }}
+                  onSelectWeek={(current) => {
+                    dispatch(
+                      setPlannerDateAndLayout({
+                        date: dateToPlannerDate(current.aroundDate),
+                        layout: PLANNER_LAYOUTS.WEEK,
+                      })
+                    );
+                    navigate(
+                      `/${ServicesNames.PLANNER}/${PLANNER_LAYOUTS.WEEK}/${status}`
+                    );
+                  }}
                   monthItem={monthItem}
                 />
               </MonthItemContainer>

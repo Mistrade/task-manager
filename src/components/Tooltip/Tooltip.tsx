@@ -1,7 +1,7 @@
-import { FC, ReactNode, useCallback } from 'react';
-import { TooltipIcon } from '@components/Icons/TooltipIcon';
 import { IconProps } from '@components/Icons/Icons';
+import { TooltipIcon } from '@components/Icons/TooltipIcon';
 import Tippy, { TippyProps } from '@tippyjs/react';
+import { FC, ReactNode, useCallback } from 'react';
 
 export interface TooltipProps {
   children?: ReactNode;
@@ -41,7 +41,7 @@ export const Tooltip: FC<TooltipProps & IconProps> = ({
   interactiveBorder = 0,
   interactive = false,
   theme = 'current',
-  hideOnClick = 'toggle',
+  hideOnClick,
   maxWidth = 300,
   offset,
   animation = 'shift-away',

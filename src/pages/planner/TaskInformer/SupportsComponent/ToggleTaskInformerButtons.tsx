@@ -1,23 +1,23 @@
+import { planningApi } from '@api/planning-api';
+import { EventInfoModel } from '@api/planning-api/types/event-info.types';
+import { GroupModelResponse } from '@api/planning-api/types/groups.types';
+import { DropDownButton } from '@components/Buttons/DropDownButton';
+import { PriorityCalendarIcon } from '@components/Icons/CalendarIcons/PriorityCalendarIcon';
+import { IconProps } from '@components/Icons/Icons';
+import { GroupLogo } from '@planner/Groups/GroupList.styled';
 import {
   CalendarPriorityKeys,
   EventLinkItem,
   TaskStatusesType,
   UUID,
 } from '@planner/planner.types';
-import { FC, useMemo, useState } from 'react';
-import { ToggleButtonContainer } from './ToggleButtonContainer';
-import { DropDownButton } from '@components/Buttons/DropDownButton';
 import { PRIORITY_LIST, TASK_STATUSES } from '@src/common/constants';
 import { Delay } from '@src/common/functions';
-import { planningApi } from '@api/planning-api';
-import { GroupLogo } from '@planner/Groups/GroupList.styled';
-import { IconProps } from '@components/Icons/Icons';
-import { PriorityCalendarIcon } from '@components/Icons/CalendarIcons/PriorityCalendarIcon';
-import { GroupModelResponse } from '@api/planning-api/types/groups.types';
-import { EventStatusButton } from './EventStatusButton';
-import { EventPriorityButton } from './EventPriorityButton';
+import { FC, useMemo, useState } from 'react';
 import { EventGroupButton } from './EventGroupButton';
-import { EventInfoModel } from '@api/planning-api/types/event-info.types';
+import { EventPriorityButton } from './EventPriorityButton';
+import { EventStatusButton } from './EventStatusButton';
+import { ToggleButtonContainer } from './ToggleButtonContainer';
 
 export type EventInfoUpdateFn = (
   field: keyof EventInfoModel,
@@ -44,27 +44,16 @@ export const ToggleEventCalendar: FC<
   onChange,
   iconProps,
 }) => {
+  const arg = useMemo(() => ({}), []);
   const { data: calendarsList, isLoading } =
-    planningApi.endpoints.getGroupsList.useQueryState(
-      {},
-      {
-        selectFromResult(res) {
-          return {
-            ...res,
-            data: {
-              data:
-                res.data?.data?.filter((item) => item.type !== 'Invite') || [],
-            },
-          };
-        },
-      }
-    );
+    planningApi.endpoints.getGroupsList.useQueryState(arg);
 
   const [mutationLoading, setMutationLoading] = useState(false);
   const randomId = useMemo(
     () => `change__event_calendar${Date.now() * Math.random()}`,
     []
   );
+
   return (
     <ToggleButtonContainer
       focusElementId={elementId || randomId}

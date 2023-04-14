@@ -1,16 +1,11 @@
-import { useCreateEventModal } from '@hooks/useCreateEventModal';
-import { plannerDateToDate } from '@planner-reducer/utils';
 import { CalendarCellProps } from '@planner/planner.types';
 import { borderRadiusSize } from '@src/common/borderRadiusSize';
 import {
   currentColor,
   defaultColor,
   disabledColor,
-  PLANNER_LAYOUTS,
 } from '@src/common/constants';
-import { PlannerContext } from '@src/Context/planner.context';
-import dayjs from 'dayjs';
-import React, { FC, useCallback, useContext } from 'react';
+import React, { FC } from 'react';
 import styled, { css } from 'styled-components';
 import { CellDate } from './CellDate';
 import { CalendarCellEventsList } from './EventList/List';
@@ -116,41 +111,14 @@ export const CalendarCell: FC<CalendarCellProps> = ({
   value,
   tasks = [],
   onSelectTask,
-  isVisible,
 }) => {
-  const { openModal } = useCreateEventModal({ useReturnBackOnDecline: true });
-  const {
-    methods: { updateCurrentLayoutAndNavigate },
-  } = useContext(PlannerContext);
-
-  const onPlusAction = useCallback(() => {
-    openModal({
-      time: value.value.toString(),
-      timeEnd: dayjs(plannerDateToDate(value.value))
-        .add(1, 'hour')
-        .toDate()
-        .toString(),
-    });
-  }, [value.value, openModal]);
-
-  const onCalendarAction = useCallback(() => {
-    updateCurrentLayoutAndNavigate(
-      PLANNER_LAYOUTS.DAY,
-      plannerDateToDate(value.value)
-    );
-  }, [updateCurrentLayoutAndNavigate, value.value]);
-
   return (
     <WeekCellContainer
-      isVisible={isVisible}
+      isVisible={true}
       disabled={value.meta.isDisabled}
       isCurrent={value.meta.isCurrent}
     >
-      <CellDate
-        date={value}
-        onPlusAction={onPlusAction}
-        onCalendarAction={onCalendarAction}
-      />
+      <CellDate date={value} />
       <CalendarCellEventsList
         tasks={tasks}
         date={value}

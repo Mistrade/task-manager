@@ -1,16 +1,12 @@
-import { FC, useMemo } from 'react';
 import { FlexBlock } from '@components/LayoutComponents/FlexBlock';
-import { disabledColor } from '@src/common/constants';
+import { setEventInfoTabName } from '@planner-reducer/index';
 import { SwitchCalendarModeTab } from '@planner/Planner.styled';
-import { Badge } from '@components/Badge/Badge';
+import { useAppDispatch, useAppSelector } from '@redux/hooks/hooks';
+import { plannerSelectEventInfoTabName } from '@selectors/planner';
+import { disabledColor } from '@src/common/constants';
+import { disableReRender } from '@src/common/utils/react-utils';
+import { FC, memo, useCallback } from 'react';
 import { EVENT_INFORMER_TAB_NAMES } from '../LeftBar/TaskInformerLeftBar';
-
-export type TaskInformerSwitchersKeys =
-  | 'about'
-  | 'history'
-  | 'comments'
-  | 'members'
-  | 'chains';
 
 export interface TaskInformerSwitchersItem {
   title: string;
@@ -18,21 +14,7 @@ export interface TaskInformerSwitchersItem {
   badgeCount?: number;
 }
 
-type TaskInformerSwitcherBadges = {
-  [key in EVENT_INFORMER_TAB_NAMES]?: number;
-};
-
-interface TaskInformerSwitchers {
-  onChange?: (value: TaskInformerSwitchersItem) => void;
-  selected: EVENT_INFORMER_TAB_NAMES;
-  badges: TaskInformerSwitcherBadges;
-}
-
-export const isCorrectTaskInformerSwitcherName = (switcherName: string) => {
-  return !!taskInformerSwitcherList.filter((item) => {
-    return item.key === switcherName;
-  }).length;
-};
+interface TaskInformerSwitchers {}
 
 export const taskInformerSwitcherList: Array<TaskInformerSwitchersItem> = [
   { title: 'Инфо', key: EVENT_INFORMER_TAB_NAMES.ABOUT },
@@ -42,22 +24,16 @@ export const taskInformerSwitcherList: Array<TaskInformerSwitchersItem> = [
   { title: 'Участники', key: EVENT_INFORMER_TAB_NAMES.MEMBERS },
   { title: 'Связи', key: EVENT_INFORMER_TAB_NAMES.CHAINS },
 ];
-export const TaskInformerSwitchers: FC<TaskInformerSwitchers> = ({
-  selected,
-  onChange,
-  badges,
-}) => {
-  const badgesCount = useMemo((): Required<TaskInformerSwitcherBadges> => {
-    return {
-      comments: badges?.comments || 0,
-      members: badges?.members || 0,
-      about: badges?.about || 0,
-      chains: badges?.chains || 0,
-      history: badges?.history || 0,
-      checkList: 0,
-    };
-  }, [badges]);
 
+export const TaskInformerSwitchers: FC<TaskInformerSwitchers> = memo(() => {
+  const tabName = useAppSelector(plannerSelectEventInfoTabName);
+  const dispatch = useAppDispatch();
+  const changeTabNameHandle = useCallback(
+    (tabName: EVENT_INFORMER_TAB_NAMES) => {
+      dispatch(setEventInfoTabName(tabName));
+    },
+    []
+  );
   return (
     <FlexBlock
       borderBottom={`1px solid ${disabledColor}`}
@@ -66,18 +42,12 @@ export const TaskInformerSwitchers: FC<TaskInformerSwitchers> = ({
     >
       {taskInformerSwitcherList.map((item) => (
         <SwitchCalendarModeTab
-          style={{ gap: 4, display: 'flex' }}
-          key={item.key}
-          onClick={() => onChange && onChange(item)}
-          isSelected={item.key === selected}
+          isSelected={item.key === tabName}
+          onClick={() => changeTabNameHandle(item.key)}
         >
-          <span>{item.title}</span>
-          {(badgesCount[item.key] && badgesCount[item.key] > 0 && (
-            <Badge>{badgesCount[item.key]}</Badge>
-          )) ||
-            ''}
+          {item.title}
         </SwitchCalendarModeTab>
       ))}
     </FlexBlock>
   );
-};
+}, disableReRender);

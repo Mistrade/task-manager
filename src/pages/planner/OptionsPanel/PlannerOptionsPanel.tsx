@@ -3,6 +3,7 @@ import { ScrollVerticalView } from '@components/LayoutComponents/ScrollView/Scro
 import { GroupList } from '@planner/Groups/GroupList';
 import { CalendarCurrentTitle } from '@planner/Header/CalendarCurrentTitle';
 import { OptionPanelCalendar } from '@planner/OptionsPanel/Calendar';
+import { PlannerSelectLayout } from '@planner/OptionsPanel/SelectLayout';
 import { TimeZone } from '@planner/OptionsPanel/TimeZone';
 import { DaySettingsPanelProps } from '@planner/planner.types';
 import { disableReRender } from '@src/common/utils/react-utils';
@@ -15,7 +16,12 @@ export const PlannerOptionsPanel: FC<DaySettingsPanelProps> = React.memo(
         gap={24}
         renderPattern={'top-bottom'}
         placementStatic={'top'}
-        staticContent={<CalendarCurrentTitle />}
+        staticContent={
+          <FlexBlock direction={'column'} gap={20}>
+            <PlannerSelectLayout />
+            <CalendarCurrentTitle />
+          </FlexBlock>
+        }
       >
         <FlexBlock gap={24} direction={'column'}>
           <OptionPanelCalendar />

@@ -1,5 +1,14 @@
+import { UserModel } from '@api/session-api/session-api.types';
+import { LinkStyled } from '@components/Buttons/Link.styled';
+import { UserHoverCard } from '@components/HoverCard/UserHoverCard';
+import { Tooltip } from '@components/Tooltip/Tooltip';
+import { useCreateEventModal } from '@hooks/useCreateEventModal';
+import { UserAvatar } from '@planner/Users/UserAvatar';
+import { useAppSelector } from '@redux/hooks/hooks';
+import { selectUserInfo } from '@redux/reducers/session/session-selectors';
+import { currentColor } from '@src/common/constants';
 import { MergedObject } from '@src/common/functions';
-import React, { ReactNode, useContext } from 'react';
+import React, { ReactNode } from 'react';
 import {
   CommentStickyAvatar,
   MergedCommentContainer,
@@ -7,14 +16,6 @@ import {
   MergedCommentDataUserName,
   MergedCommentUserInfo,
 } from '../TaskComments/SupportComponents/MergedCommentItem';
-import { Tooltip } from '@components/Tooltip/Tooltip';
-import { UserHoverCard } from '@components/HoverCard/UserHoverCard';
-import { UserAvatar } from '@planner/Users/UserAvatar';
-import { LinkStyled } from '@components/Buttons/Link.styled';
-import { currentColor } from '@src/common/constants';
-import { UserModel } from '@api/session-api/session-api.types';
-import { useCreateEventModal } from '@hooks/useCreateEventModal';
-import { UserInfoContext } from '@src/Context/userInfo.context';
 
 export interface EventHistoryMergedItemProps<
   Type,
@@ -32,7 +33,7 @@ export function MergedNote<
   renderGroup,
 }: EventHistoryMergedItemProps<Type, ItemType>): JSX.Element {
   const { openModal } = useCreateEventModal({ useReturnBackOnDecline: true });
-  const currentUser = useContext(UserInfoContext);
+  const currentUser = useAppSelector(selectUserInfo);
   return (
     <MergedCommentContainer>
       <MergedCommentUserInfo>

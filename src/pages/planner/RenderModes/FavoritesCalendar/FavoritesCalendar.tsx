@@ -1,39 +1,21 @@
 import { ShortEventInfoModel } from '@api/planning-api/types/event-info.types';
-import { BreadCrumbs } from '@components/BreadCrumbs/BreadCrumbs';
 import { FlexBlock } from '@components/LayoutComponents/FlexBlock';
 import { ScrollVerticalView } from '@components/LayoutComponents/ScrollView/ScrollVerticalView';
-import { useEventStorage } from '@hooks/useEventStorage';
+import { plannerDateToDate } from '@planner-reducer/utils';
 import {
   EventsStorage,
   FavoritesCalendarModeProps,
 } from '@planner/planner.types';
-import { FindEventFilter } from '@planner/RenderModes/FindEventFilter/FindEventFilter';
+import { DayLayoutBreadCrumbs } from '@planner/RenderModes/DayCalendar/BreadCrumbs/DayLayoutBreadCrumbs';
+import { SmartEventFilters } from '@planner/RenderModes/FindEventFilter/SmartEventFilters';
 import { ListModeTaskController } from '@planner/RenderModes/List/ListModeTaskController';
-import { MonthList, PLANNER_LAYOUTS } from '@src/common/constants';
-import { PlannerContext } from '@src/Context/planner.context';
-import dayjs from 'dayjs';
-import React, { FC, useContext, useMemo } from 'react';
+import { useAppSelector } from '@redux/hooks/hooks';
+import { plannerSelectScope } from '@selectors/planner';
+import React, { FC, useState } from 'react';
 
 export const FavoritesCalendar: FC<FavoritesCalendarModeProps> = ({}) => {
-  const {
-    currentDate,
-    methods: { updateCurrentLayoutAndNavigate },
-  } = useContext(PlannerContext);
-
-  const startDate = useMemo(() => {
-    return new Date(2022, 0, 1);
-  }, []);
-
-  const toDate = useMemo(() => {
-    return dayjs()
-      .set('year', new Date().getFullYear() + 1)
-      .endOf('year')
-      .toDate();
-  }, []);
-
-  const { TaskStorage, handlers, filters, isFetching } = useEventStorage({
-    onlyFavorites: true,
-  });
+  const scope = useAppSelector(plannerSelectScope);
+  const [storage, setStorage] = useState<EventsStorage>(() => ({}));
 
   return (
     <ScrollVerticalView
@@ -41,37 +23,15 @@ export const FavoritesCalendar: FC<FavoritesCalendarModeProps> = ({}) => {
       placementStatic={'top'}
       staticContent={
         <FlexBlock direction={'column'}>
-          <BreadCrumbs
-            data={[
-              {
-                title: `${currentDate.favorites.getFullYear()}г.`,
-                value: PLANNER_LAYOUTS.YEAR,
-              },
-              {
-                title: `${MonthList[currentDate.favorites.getMonth()]}`,
-                value: PLANNER_LAYOUTS.MONTH,
-              },
-              {
-                title: `Неделя ${dayjs(currentDate.favorites).week()}`,
-                value: PLANNER_LAYOUTS.WEEK,
-              },
-            ]}
-            onClick={(data) => {
-              // updateCurrentLayoutAndNavigate(data, currentDate.favorites);
-            }}
-          />
-          <FindEventFilter
-            values={filters}
-            onChangeHandlers={handlers}
-            isLoading={isFetching}
-          />
+          <DayLayoutBreadCrumbs />
+          <SmartEventFilters onlyFavorites={true} updateStorage={setStorage} />
         </FlexBlock>
       }
     >
       <ListModeTaskController
-        eventStorage={TaskStorage as EventsStorage<ShortEventInfoModel>}
-        fromDate={startDate}
-        toDate={toDate}
+        eventStorage={storage as EventsStorage<ShortEventInfoModel>}
+        fromDate={plannerDateToDate(scope.startDate)}
+        toDate={plannerDateToDate(scope.endDate)}
       />
     </ScrollVerticalView>
   );

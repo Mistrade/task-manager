@@ -1,23 +1,23 @@
-import React, { FC, useCallback, useMemo, useState } from 'react';
+import { GroupModelResponse } from '@api/planning-api/types/groups.types';
+import { ObjectId } from '@api/rtk-api.types';
+import { TimeBadge } from '@components/Badge/Badge';
+import { EmptyButtonStyled } from '@components/Buttons/EmptyButton.styled';
+import { LinkStyled } from '@components/Buttons/Link.styled';
+import { Arrow } from '@components/Icons/Icons';
+import { FlexBlock } from '@components/LayoutComponents/FlexBlock';
+import { Tooltip } from '@components/Tooltip/Tooltip';
 import {
   CalendarPriorityKeys,
   TaskStatusesType,
 } from '@pages/planner/planner.types';
-import dayjs, { Dayjs } from 'dayjs';
-import { GroupModelResponse } from '@api/planning-api/types/groups.types';
-import { EssenceContainer, EventEssenceTitle } from './event-essence.styled';
-import { EventStatusButton } from '@pages/planner/TaskInformer/SupportsComponent/EventStatusButton';
-import { EventPriorityButton } from '@pages/planner/TaskInformer/SupportsComponent/EventPriorityButton';
-import { DateHelper } from '@src/common/calendarSupport/dateHelper';
-import { ObjectId } from '@api/rtk-api.types';
 import { HistoryDescriptionField } from '@pages/planner/TaskInformer/LeftBar/Tabs/TaskHistory/Fields/HistoryDescriptionField';
 import { EventGroupButton } from '@pages/planner/TaskInformer/SupportsComponent/EventGroupButton';
-import { FlexBlock } from '@components/LayoutComponents/FlexBlock';
-import { TimeBadge } from '@components/Badge/Badge';
-import { Tooltip } from '@components/Tooltip/Tooltip';
-import { EmptyButtonStyled } from '@components/Buttons/EmptyButton.styled';
-import { Arrow } from '@components/Icons/Icons';
-import { LinkStyled } from '@components/Buttons/Link.styled';
+import { EventPriorityButton } from '@pages/planner/TaskInformer/SupportsComponent/EventPriorityButton';
+import { EventStatusButton } from '@pages/planner/TaskInformer/SupportsComponent/EventStatusButton';
+import { DateHelper } from '@src/common/calendarSupport/dateHelper';
+import dayjs, { Dayjs } from 'dayjs';
+import React, { FC, useCallback, useMemo, useState } from 'react';
+import { EssenceContainer, EventEssenceTitle } from './event-essence.styled';
 
 export interface EventEssenceProps {
   status: TaskStatusesType | null;
@@ -181,7 +181,7 @@ export const EventEssence: FC<EventEssenceProps> = ({
               {optionalFields.eventId && (
                 <FlexBlock>
                   <LinkStyled
-                    to={`/planner/day/all/event/info/${optionalFields.eventId}/about`}
+                    to={`/planner/day/all/event/info/${optionalFields.eventId}`}
                     target={'_blank'}
                   >
                     Перейти к оригиналу

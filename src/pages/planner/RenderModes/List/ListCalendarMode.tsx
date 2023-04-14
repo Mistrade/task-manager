@@ -1,57 +1,31 @@
-import { ShortEventInfoModel } from '@api/planning-api/types/event-info.types';
-import { BreadCrumbs } from '@components/BreadCrumbs/BreadCrumbs';
 import { FlexBlock } from '@components/LayoutComponents/FlexBlock';
 import { ScrollVerticalView } from '@components/LayoutComponents/ScrollView/ScrollVerticalView';
-import { useEventStorage } from '@hooks/useEventStorage';
 import { plannerDateToDate } from '@planner-reducer/utils';
 import { EventsStorage, ListCalendarModeProps } from '@planner/planner.types';
-import { FindEventFilter } from '@planner/RenderModes/FindEventFilter/FindEventFilter';
+import { DayLayoutBreadCrumbs } from '@planner/RenderModes/DayCalendar/BreadCrumbs/DayLayoutBreadCrumbs';
+import { SmartEventFilters } from '@planner/RenderModes/FindEventFilter/SmartEventFilters';
 import { useAppSelector } from '@redux/hooks/hooks';
-import { plannerSelectDate, plannerSelectScope } from '@selectors/planner';
-import { MonthList, PLANNER_LAYOUTS } from '@src/common/constants';
-import React, { FC } from 'react';
+import { plannerSelectScope } from '@selectors/planner';
+import React, { FC, useState } from 'react';
 import { ListModeTaskController } from './ListModeTaskController';
 
-export const ListCalendarMode: FC<ListCalendarModeProps> = ({}) => {
-  const date = useAppSelector(plannerSelectDate);
+export const ListCalendarMode: FC<ListCalendarModeProps> = () => {
   const scope = useAppSelector(plannerSelectScope);
-  const { TaskStorage, handlers, filters, isFetching } = useEventStorage();
+  const [state, setState] = useState<EventsStorage>({});
 
   return (
     <ScrollVerticalView
       staticContent={
         <FlexBlock direction={'column'}>
-          <BreadCrumbs
-            data={[
-              {
-                title: `${date.year}г.`,
-                value: PLANNER_LAYOUTS.YEAR,
-              },
-              {
-                title: `${MonthList[date.month]}`,
-                value: PLANNER_LAYOUTS.MONTH,
-              },
-              {
-                title: `Неделя ${date.week}`,
-                value: PLANNER_LAYOUTS.WEEK,
-              },
-            ]}
-            onClick={(data) => {
-              // updateCurrentLayoutAndNavigate(data, currentDate.list);
-            }}
-          />
-          <FindEventFilter
-            values={filters}
-            onChangeHandlers={handlers}
-            isLoading={isFetching}
-          />
+          <DayLayoutBreadCrumbs />
+          <SmartEventFilters updateStorage={setState} />
         </FlexBlock>
       }
       placementStatic={'top'}
       renderPattern={'top-bottom'}
     >
       <ListModeTaskController
-        eventStorage={TaskStorage as EventsStorage<ShortEventInfoModel>}
+        eventStorage={state}
         fromDate={plannerDateToDate(scope.startDate)}
         toDate={plannerDateToDate(scope.endDate)}
       />

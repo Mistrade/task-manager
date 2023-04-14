@@ -1,11 +1,12 @@
-import React, { FC, useContext } from 'react';
-import { UserInfoContext } from '@src/Context/userInfo.context';
 import { SessionInterceptor } from '@components/AppRoutes/Interceptors/SessionInterceptor';
-import { FlexBlock } from '@components/LayoutComponents/FlexBlock';
 import { ErrorScreen } from '@components/Errors/ErrorScreen';
+import { FlexBlock } from '@components/LayoutComponents/FlexBlock';
+import { useAppSelector } from '@redux/hooks/hooks';
+import { selectUserInfo } from '@redux/reducers/session/session-selectors';
+import React, { FC } from 'react';
 
 export const ProfileRoutes: FC = () => {
-  const userInfo = useContext(UserInfoContext);
+  const userInfo = useAppSelector(selectUserInfo);
 
   return (
     <SessionInterceptor userInfo={userInfo} mode={'show'}>

@@ -6,6 +6,7 @@ import {
   WeekItem,
   YearItem,
 } from '@planner/planner.types';
+import { EVENT_INFORMER_TAB_NAMES } from '@planner/TaskInformer/LeftBar/TaskInformerLeftBar';
 import { PLANNER_LAYOUTS } from '@src/common/constants';
 
 export interface IPlannerDate {
@@ -16,14 +17,15 @@ export interface IPlannerDate {
 }
 
 export interface IEventInfoState {
-  _id: ObjectId;
+  _id: ObjectId | null;
+  tabName: EVENT_INFORMER_TAB_NAMES;
 }
 
 export interface IPlannerReducer {
   date: Record<PLANNER_LAYOUTS, IPlannerDate>;
   layout: PLANNER_LAYOUTS;
   status: EventFilterTaskStatuses;
-  eventInfo: IEventInfoState | null;
+  eventInfo: IEventInfoState;
   config: {
     layouts: IPlannerLayoutRenderConfig;
     optionsPanel: TPlannerPanelRenderConfig;

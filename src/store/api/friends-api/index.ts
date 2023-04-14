@@ -1,3 +1,4 @@
+import { UserModel } from '@api/session-api/session-api.types';
 import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/dist/query/react';
 import { baseServerUrl } from '../config';
 import { MyServerResponse, ObjectId } from '../rtk-api.types';
@@ -21,6 +22,7 @@ export const contactsApi = createApi({
     CONTACT_TYPES.FRIENDS,
     CONTACT_TYPES.OUTGOING,
     CONTACT_TYPES.INCOMING,
+    'FriendsList',
   ],
   baseQuery: fetchBaseQuery({
     baseUrl: `${baseServerUrl}/friends`,
@@ -55,6 +57,13 @@ export const contactsApi = createApi({
       }),
       invalidatesTags: [],
     }),
+    getFriendsList: query<MyServerResponse<Array<UserModel>>, void>({
+      query: () => ({
+        method: 'POST',
+        url: '/get_friends_list',
+      }),
+      providesTags: ['FriendsList'],
+    }),
   }),
 });
 
@@ -62,4 +71,5 @@ export const {
   useAddContactMutation,
   useGetContactsListQuery,
   useResponseOnFriendRequestMutation,
+  useGetFriendsListQuery,
 } = contactsApi;

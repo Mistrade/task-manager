@@ -1,9 +1,10 @@
-import { Route } from 'react-router';
-import React, { FC, useContext } from 'react';
-import { Routes } from 'react-router-dom';
-import { UserInfoContext } from '@src/Context/userInfo.context';
 import { SessionInterceptor } from '@components/AppRoutes/Interceptors/SessionInterceptor';
 import { WithSuspense } from '@components/Loaders/WithSuspense';
+import { useAppSelector } from '@redux/hooks/hooks';
+import { selectUserInfo } from '@redux/reducers/session/session-selectors';
+import React, { FC } from 'react';
+import { Route } from 'react-router';
+import { Routes } from 'react-router-dom';
 
 const RegistrationForm = React.lazy(() =>
   import('../../Session/Registration').then(({ Registration }) => ({
@@ -17,7 +18,7 @@ const AuthorizationForm = React.lazy(() =>
 );
 
 export const SessionRoutes: FC = () => {
-  const userInfo = useContext(UserInfoContext);
+  const userInfo = useAppSelector(selectUserInfo);
 
   return (
     <Routes>
