@@ -2,8 +2,12 @@ import { CalendarIcon } from '@components/Icons/AppIcon/CalendarIcon';
 import { ListIcon } from '@components/Icons/AppIcon/ListIcon';
 import { StarIcon } from '@components/Icons/Icons';
 import { FlexBlock } from '@components/LayoutComponents/FlexBlock';
-import { CalendarModeSwitchItem } from '@planner/Header/ModeSwitch/Item';
+import { LinkSolid } from '@planner/Header/ModeSwitch/Item';
+import { useAppSelector } from '@redux/hooks/hooks';
+import { ServicesNames } from '@redux/reducers/global';
+import { plannerSelectStatus } from '@selectors/planner';
 import { currentColor, PLANNER_LAYOUTS } from '@src/common/constants';
+import { getPath } from '@src/common/functions';
 import React, { FC, ReactNode } from 'react';
 
 export interface PlannerHeaderSwitchObject {
@@ -48,10 +52,15 @@ export const PlannerHeaderSwitch: {
 };
 
 export const CalendarModeSwitchers: FC = React.memo(() => {
+  const status = useAppSelector(plannerSelectStatus);
   return (
     <FlexBlock width={'100%'} align={'flex-end'} justify={'center'}>
       {Object.values(PlannerHeaderSwitch).map((item) => (
-        <CalendarModeSwitchItem key={item.layout} {...item} />
+        <LinkSolid
+          key={item.layout}
+          {...item}
+          to={getPath(ServicesNames.PLANNER, item.layout, status)}
+        />
       ))}
     </FlexBlock>
   );

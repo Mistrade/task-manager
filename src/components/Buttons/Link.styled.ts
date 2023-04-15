@@ -3,16 +3,12 @@ import { currentColor } from '@src/common/constants';
 import { NavLink } from 'react-router-dom';
 import styled from 'styled-components';
 
-export const LinkStyled = styled(NavLink)`
+export const LinkStyled = styled(NavLink)<{ fontSize?: number }>`
   border-radius: ${borderRadiusSize.sm};
-  font-size: 14px;
+  font-size: ${(_) => _.fontSize || 14}px;
   color: ${currentColor};
   outline: none;
   text-decoration: none;
   font-family: 'Helvetica Neue', sans-serif;
   line-height: 1.2;
-
-  &:hover {
-    text-decoration: ${currentColor} underline;
-  }
 `;

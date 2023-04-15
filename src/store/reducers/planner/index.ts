@@ -88,6 +88,9 @@ const plannerSlice = createSlice({
         },
         optionsPanel: todayMonthItem,
       },
+      createEventModal: {
+        isOpen: false,
+      },
     };
   },
   reducers: {
@@ -96,6 +99,9 @@ const plannerSlice = createSlice({
       { payload }: PayloadAction<EVENT_INFORMER_TAB_NAMES>
     ) {
       state.eventInfo.tabName = payload;
+    },
+    setCreateEventModalIsOpen(state, { payload }: PayloadAction<boolean>) {
+      state.createEventModal.isOpen = payload;
     },
     setOpenEventId(state, { payload }: PayloadAction<ObjectId | null>) {
       if (!!payload) {
@@ -219,6 +225,7 @@ export const {
   setPlannerDateAndLayout,
   setOpenEventId,
   setEventInfoTabName,
+  setCreateEventModalIsOpen,
 } = plannerSlice.actions;
 
 export default plannerReducer;

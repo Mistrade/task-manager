@@ -1,16 +1,16 @@
-import { CreateEventDataObject } from '@planner/planner.types';
-import { FC } from 'react';
-import { FormikErrors, FormikTouched, useFormik } from 'formik';
-import { FlexBlock } from '@components/LayoutComponents/FlexBlock';
-import { TextInput } from '@components/Input/TextInput/TextInput';
+import { DatePickerPaper } from '@components/DatePicker/DatePickerPaper';
+import { CompleteIcon, CreatedIcon } from '@components/Icons/Icons';
 import { SelectLinks } from '@components/Input/SelectInput/CalendarSelectInputs/SelectLinks';
 import { SelectInput } from '@components/Input/SelectInput/SelectInput';
 import { SelectListContainer } from '@components/Input/SelectInput/SelectListContainer';
-import { DatePickerPaper } from '@components/DatePicker/DatePickerPaper';
-import dayjs from 'dayjs';
-import { DateHelper } from '@src/common/calendarSupport/dateHelper';
-import { CompleteIcon, CreatedIcon } from '@components/Icons/Icons';
 import { TextAreaInput } from '@components/Input/TextAreaInput/TextAreaInput';
+import { TextInput } from '@components/Input/TextInput/TextInput';
+import { FlexBlock } from '@components/LayoutComponents/FlexBlock';
+import { CreateEventDataObject } from '@planner/planner.types';
+import { DateHelper } from '@src/common/calendarSupport/dateHelper';
+import dayjs from 'dayjs';
+import { FormikErrors, FormikTouched, useFormik } from 'formik';
+import { FC } from 'react';
 
 export interface BaseCreateEventTabProps {
   values: CreateEventDataObject;
@@ -32,8 +32,8 @@ export const CreateEventInfoTab: FC<BaseCreateEventTabProps> = ({
       <FlexBlock mb={12} width={'100%'}>
         <TextInput
           inputId={'task__title'}
-          onChange={(e) => setFieldValue('title', e.target.value)}
-          onFocus={(e) => !touched.title && setFieldTouched('title', true)}
+          onChange={(e) => setFieldValue('title', e.target.value, false)}
+          onBlur={(e) => !touched.title && setFieldTouched('title', true)}
           errorMessage={errors.title}
           isDirty={touched.title}
           value={values.title || ''}

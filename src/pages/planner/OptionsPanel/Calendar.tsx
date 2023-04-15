@@ -1,18 +1,26 @@
-import { plannerDateToDate } from '@planner-reducer/utils';
+import { useSearchNavigate } from '@hooks/useSearchNavigate';
+import { setPlannerDateAndLayout } from '@planner-reducer/index';
+import { dateToPlannerDate, plannerDateToDate } from '@planner-reducer/utils';
 import { PlannerMonthMode } from '@planner/planner.types';
 import { SmallCalendarMonthTitle } from '@planner/SmallMotnCalendar/SmallCalendarMonthTitle';
 import { SmallMonth } from '@planner/SmallMotnCalendar/SmallMonth';
-import { useAppSelector } from '@redux/hooks/hooks';
+import { useAppDispatch, useAppSelector } from '@redux/hooks/hooks';
+import { ServicesNames } from '@redux/reducers/global';
 import {
   plannerSelectDate,
   plannerSelectPanelConfig,
+  plannerSelectStatus,
 } from '@selectors/planner';
+import { PLANNER_LAYOUTS } from '@src/common/constants';
+import { getPath } from '@src/common/functions';
 import React, { FC, useMemo } from 'react';
 
 export const OptionPanelCalendar: FC = () => {
   const currentDate = useAppSelector(plannerSelectDate);
   const config = useAppSelector(plannerSelectPanelConfig);
-
+  const status = useAppSelector(plannerSelectStatus);
+  const dispatch = useAppDispatch();
+  const navigate = useSearchNavigate();
   const MonthCurrent: PlannerMonthMode = useMemo(
     () => ({
       layout: 'month',
@@ -22,43 +30,45 @@ export const OptionPanelCalendar: FC = () => {
     []
   );
 
-  // const pour: PourDatesProps | undefined = useMemo(() => {
-  //   if (layout === PLANNER_LAYOUTS.WEEK) {
-  //     return {
-  //       type: 'week',
-  //       date: plannerDateToDate(currentDate),
-  //     };
-  //   }
-  //
-  //   return undefined;
-  // }, [layout, currentDate]);
-
   return (
     <SmallMonth
       monthItem={config}
       title={
         <SmallCalendarMonthTitle
           monthItem={config}
-          onClick={
-            (data) => {}
-            // setPlannerDate({
-            //   layout,
-            //   date: da
-            // })
-          }
+          onClick={(data) => {
+            dispatch(
+              setPlannerDateAndLayout({
+                date: data.stateDate,
+                layout: PLANNER_LAYOUTS.MONTH,
+              })
+            );
+            navigate(
+              getPath(ServicesNames.PLANNER, PLANNER_LAYOUTS.MONTH, status)
+            );
+          }}
         />
       }
       current={MonthCurrent}
       value={plannerDateToDate(currentDate)}
-      // onSelectDate={(date) =>
-      //   // updateCurrentLayoutAndNavigate(
-      //   //   PLANNER_LAYOUTS.DAY,
-      //   //   plannerDateToDate(date.value)
-      //   // )
-      // }
-      // onSelectWeek={(date) =>
-      //   // updateCurrentLayoutAndNavigate(PLANNER_LAYOUTS.WEEK, date.aroundDate)
-      // }
+      onSelectDate={(date) => {
+        dispatch(
+          setPlannerDateAndLayout({
+            date: date.value,
+            layout: PLANNER_LAYOUTS.DAY,
+          })
+        );
+        navigate(getPath(ServicesNames.PLANNER, PLANNER_LAYOUTS.DAY, status));
+      }}
+      onSelectWeek={(date) => {
+        dispatch(
+          setPlannerDateAndLayout({
+            date: dateToPlannerDate(date.aroundDate),
+            layout: PLANNER_LAYOUTS.WEEK,
+          })
+        );
+        navigate(getPath(ServicesNames.PLANNER, PLANNER_LAYOUTS.WEEK, status));
+      }}
     />
   );
 };

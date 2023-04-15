@@ -15,9 +15,11 @@ import {
 import {
   DATE_HOURS_FORMAT,
   defaultColor,
+  delayedColor,
   hoverColor,
   orangeColor,
 } from '@src/common/constants';
+import { eventIsDelayed } from '@src/common/functions';
 import dayjs from 'dayjs';
 import React, { FC, useMemo, useState } from 'react';
 import styled, { css, keyframes } from 'styled-components';
@@ -25,6 +27,7 @@ import { CalendarCellStyledComponentProps } from '../Cell';
 
 interface EventContainerProps extends CalendarCellStyledComponentProps {
   withFill?: boolean;
+  fillColor?: string;
 }
 
 interface EventTextProps {
@@ -46,7 +49,8 @@ const EventAnimation = keyframes`
 const EventContainer = styled('div')<EventContainerProps>`
   & {
     gap: 4px;
-    background-color: ${(props) => (props.withFill ? hoverColor : '')};
+    background-color: ${(props) =>
+      props.withFill ? props.fillColor || hoverColor : ''};
     width: 100%;
     padding: 5px 7px;
     text-align: center;
@@ -174,21 +178,22 @@ export const CalendarCellEventItem: FC<TaskTileItemProps> = ({
   const status = useAppSelector(plannerSelectStatus);
   const navigate = useSearchNavigate();
 
-  const Content = useMemo(
-    () => (
+  const Content = useMemo(() => {
+    const isDelayed = eventIsDelayed(taskInfo.timeEnd, taskInfo.status);
+    return (
       <EventContainer
         onMouseEnter={() => condition && setIsHover(true)}
         onMouseLeave={() => setIsHover(false)}
-        withFill={isHover}
+        withFill={isDelayed || isHover}
+        fillColor={isDelayed ? delayedColor : hoverColor}
         disabled={date.meta.isDisabled}
         isCurrent={date.meta.isCurrent}
         onClick={() => condition && navigate(`event/info/${taskInfo._id}`)}
       >
         <CalendarCellItemContent taskInfo={taskInfo} />
       </EventContainer>
-    ),
-    [isHover, condition, date.value.day, taskInfo, layout, status]
-  );
+    );
+  }, [isHover, condition, date.value.day, taskInfo, layout, status]);
 
   if (tooltipPlacement === null) {
     return Content;

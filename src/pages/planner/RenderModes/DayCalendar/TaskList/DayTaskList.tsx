@@ -13,7 +13,6 @@ import {
   GlobalTaskListProps,
   OnSelectTaskFnType,
 } from '@planner/planner.types';
-import { DayLayoutBreadCrumbs } from '@planner/RenderModes/DayCalendar/BreadCrumbs/DayLayoutBreadCrumbs';
 import { DayTaskListFilter } from '@planner/RenderModes/DayCalendar/TaskList/Filter';
 import { useAppDispatch } from '@redux/hooks/hooks';
 import { currentColor, defaultColor } from '@src/common/constants';
@@ -44,7 +43,6 @@ export const DayTaskList: FC<DayTaskListProps> = ({ day }) => {
     <ScrollVerticalView
       staticContent={
         <FlexBlock direction={'column'}>
-          <DayLayoutBreadCrumbs />
           <DayTaskListFilter updateState={setEvents} />
         </FlexBlock>
       }

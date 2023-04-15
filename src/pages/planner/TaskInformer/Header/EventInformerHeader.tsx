@@ -1,5 +1,7 @@
 import { EventInfoModel } from '@api/planning-api/types/event-info.types';
+import { TimeBadge } from '@components/Badge/Badge';
 import { FlexBlock } from '@components/LayoutComponents/FlexBlock';
+import { Tooltip } from '@components/Tooltip/Tooltip';
 import { EventInformerToggles } from '@planner/TaskInformer/Header/Toggles';
 import { TaskInformerLinkButton } from '@planner/TaskInformer/SupportsComponent/TaskInformerLinkButton';
 import { TaskInformerMoreActions } from '@planner/TaskInformer/SupportsComponent/TaskInformerMoreActions';
@@ -7,7 +9,8 @@ import { TaskInformerSwitchers } from '@planner/TaskInformer/SupportsComponent/T
 import { TaskInformerTitle } from '@planner/TaskInformer/SupportsComponent/TaskInformerTitle';
 import { EventInfoUpdateFn } from '@planner/TaskInformer/SupportsComponent/ToggleTaskInformerButtons';
 import { borderRadiusSize } from '@src/common/borderRadiusSize';
-import { pageHeaderColor } from '@src/common/constants';
+import { orangeColor, pageHeaderColor } from '@src/common/constants';
+import { eventIsDelayed } from '@src/common/functions';
 import React, { memo } from 'react';
 import { css } from 'styled-components';
 
@@ -31,7 +34,13 @@ export const EventInformerHeader = memo<EventInformerHeaderProps>(
         width={'100%'}
         additionalCss={css``}
       >
-        <FlexBlock direction={'row'} justify={'flex-start'} gap={12} mb={12}>
+        <FlexBlock
+          direction={'row'}
+          justify={'flex-start'}
+          align={'center'}
+          gap={12}
+          mb={12}
+        >
           <TaskInformerTitle
             title={eventInfo.title}
             onChange={async (value) => await updateTaskHandler('title', value)}
@@ -40,6 +49,20 @@ export const EventInformerHeader = memo<EventInformerHeaderProps>(
               await updateTaskHandler('isLiked', value)
             }
           />
+          {eventIsDelayed(eventInfo.timeEnd, eventInfo.status) && (
+            <Tooltip
+              content={
+                'Событие считается просроченным, когда текущее время становится позже даты завершения события. Сравнение происходит в минутах.'
+              }
+              theme={'light'}
+              delay={[100, 200]}
+              placement={'bottom'}
+            >
+              <TimeBadge style={{ backgroundColor: orangeColor }}>
+                Просрочено
+              </TimeBadge>
+            </Tooltip>
+          )}
         </FlexBlock>
         <FlexBlock
           justify={'flex-start'}

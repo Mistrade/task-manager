@@ -1,12 +1,13 @@
+import { useGetGroupsListQuery } from '@api/planning-api';
+import { ErrorBoundary } from '@components/Errors/ErrorBoundary';
+import { FlexBlock } from '@components/LayoutComponents/FlexBlock';
+import { Modal, ModalBody } from '@components/LayoutComponents/Modal/Modal';
+import { Loader } from '@components/Loaders/Loader';
+import { useAppSelector } from '@redux/hooks/hooks';
+import { selectCreateEventModalIsOpen } from '@selectors/planner';
+import { ERROR_DESCRIPTIONS, ERROR_TITLES } from '@src/common/constants';
 import React, { FC } from 'react';
 import { CreateEventModalProps } from '../../planner.types';
-import { Modal, ModalBody } from '@components/LayoutComponents/Modal/Modal';
-import { ERROR_DESCRIPTIONS, ERROR_TITLES } from '@src/common/constants';
-import { FlexBlock } from '@components/LayoutComponents/FlexBlock';
-import { ErrorBoundary } from '@components/Errors/ErrorBoundary';
-import { Loader } from '@components/Loaders/Loader';
-import { planningApi } from '@api/planning-api';
-import { useCreateEventModal } from '@hooks/useCreateEventModal';
 
 const CreateEventForm = React.lazy(() =>
   import('./CreateEventForm').then(({ CreateEventForm }) => ({
@@ -16,17 +17,13 @@ const CreateEventForm = React.lazy(() =>
 
 export const CreateEventModal: FC<CreateEventModalProps> = ({
   onClose,
-  clonedEventInfo,
+  onSuccess,
 }) => {
-  const { data: groupsList, isLoading } =
-    planningApi.endpoints.getGroupsList.useQueryState({});
-  // exclude: ['Invite'],
-  // });
-
-  const { declineModal } = useCreateEventModal({});
+  const { data: groupsList, isLoading } = useGetGroupsListQuery({});
+  const isOpen = useAppSelector(selectCreateEventModalIsOpen);
 
   return (
-    <Modal isView={true} onClose={declineModal}>
+    <Modal isView={isOpen} onClose={onClose}>
       <ModalBody>
         <FlexBlock
           minWidth={'60vw'}
@@ -47,12 +44,8 @@ export const CreateEventModal: FC<CreateEventModalProps> = ({
               >
                 <CreateEventForm
                   groupsList={groupsList?.data || []}
-                  onCancel={(value) => {
-                    onClose && onClose();
-                    if (clonedEventInfo?.parentId) {
-                      history.back();
-                    }
-                  }}
+                  onClose={onClose}
+                  onSuccess={onSuccess}
                 />
               </React.Suspense>
             </Loader>

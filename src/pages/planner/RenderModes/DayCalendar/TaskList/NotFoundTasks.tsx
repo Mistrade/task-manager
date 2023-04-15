@@ -1,11 +1,11 @@
-import styled from 'styled-components';
+import { Button } from '@components/Buttons/Buttons.styled';
+import { NotFoundIcon } from '@components/Icons/Icons';
+import { FlexBlock } from '@components/LayoutComponents/FlexBlock';
+import { useCreateEventModal } from '@hooks/useCreateEventModal';
+import { GlobalTaskListProps } from '@planner/planner.types';
 import { defaultColor } from '@src/common/constants';
 import React, { FC, ReactNode } from 'react';
-import { FlexBlock } from '@components/LayoutComponents/FlexBlock';
-import { NotFoundIcon } from '@components/Icons/Icons';
-import { Button } from '@components/Buttons/Buttons.styled';
-import { GlobalTaskListProps } from '@planner/planner.types';
-import { useCreateEventModal } from '@hooks/useCreateEventModal';
+import styled from 'styled-components';
 
 export interface NotFoundTaskProps
   extends Omit<GlobalTaskListProps, 'renderTaskCount'> {
@@ -25,7 +25,7 @@ const NotFoundTitle = styled('h2')`
   }
 `;
 export const NotFoundTask: FC<NotFoundTaskProps> = ({ day, text, actions }) => {
-  const { openModal } = useCreateEventModal({});
+  const { openModal } = useCreateEventModal();
 
   return (
     <FlexBlock
@@ -48,7 +48,14 @@ export const NotFoundTask: FC<NotFoundTaskProps> = ({ day, text, actions }) => {
         )}
       </NotFoundTitle>
       <FlexBlock direction={'column'} gap={16}>
-        <Button onClick={() => openModal({ time: day.toString() })}>
+        <Button
+          onClick={() =>
+            openModal(
+              { time: day.toString() },
+              { modalPath: 'event/create', useReturnBackOnDecline: true }
+            )
+          }
+        >
           Создать событие
         </Button>
         {actions}

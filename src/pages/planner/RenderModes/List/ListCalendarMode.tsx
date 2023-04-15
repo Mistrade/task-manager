@@ -2,7 +2,6 @@ import { FlexBlock } from '@components/LayoutComponents/FlexBlock';
 import { ScrollVerticalView } from '@components/LayoutComponents/ScrollView/ScrollVerticalView';
 import { plannerDateToDate } from '@planner-reducer/utils';
 import { EventsStorage, ListCalendarModeProps } from '@planner/planner.types';
-import { DayLayoutBreadCrumbs } from '@planner/RenderModes/DayCalendar/BreadCrumbs/DayLayoutBreadCrumbs';
 import { SmartEventFilters } from '@planner/RenderModes/FindEventFilter/SmartEventFilters';
 import { useAppSelector } from '@redux/hooks/hooks';
 import { plannerSelectScope } from '@selectors/planner';
@@ -17,7 +16,6 @@ export const ListCalendarMode: FC<ListCalendarModeProps> = () => {
     <ScrollVerticalView
       staticContent={
         <FlexBlock direction={'column'}>
-          <DayLayoutBreadCrumbs />
           <SmartEventFilters updateStorage={setState} />
         </FlexBlock>
       }

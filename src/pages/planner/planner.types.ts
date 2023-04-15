@@ -77,6 +77,7 @@ export interface TaskTileItemProps {
 export interface CalendarHeaderSwitchersProps {
   layout?: PLANNER_LAYOUTS;
 }
+
 export type OnSelectDateFromCalendarFn = (data: CalendarItem) => void;
 
 export interface DaySettingsPanelProps {}
@@ -295,8 +296,8 @@ export interface EventInfoModalProps {
 }
 
 export interface CreateEventModalProps {
+  onSuccess?: (eventId: string) => void;
   onClose?: () => void;
-  clonedEventInfo?: Partial<EventInfoModel> | null;
 }
 
 export interface PlannerYearMode {

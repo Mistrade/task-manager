@@ -93,6 +93,7 @@ export const darkColor = 'rgba(0, 0, 0, .6)';
 export const todayID = 'calendar-today';
 export const pageHeaderColor = '#f6f8fa';
 export const orangeColor = 'rgba(255,117,66, 1)';
+export const delayedColor = 'rgba(255,117,66, .15)';
 export const lightHoverColor = 'rgba(220, 220, 220, .4)';
 export const errorColor = '#FF6666';
 export const completeColor = '#c6fcda';
@@ -376,7 +377,7 @@ export const TASK_STATUSES: { [key in TaskStatusesType]: TaskStatusInfo } = {
 };
 
 export const TaskStatusesList: Array<StatusesTabsObject> = [
-  { title: 'Все', type: URLTaskStatuses.all },
+  { title: 'Все события', type: URLTaskStatuses.all },
   { title: 'Запланировано', type: URLTaskStatuses.created },
   { title: 'В работе', type: URLTaskStatuses.in_work },
   { title: 'Выполнено', type: URLTaskStatuses.completed },

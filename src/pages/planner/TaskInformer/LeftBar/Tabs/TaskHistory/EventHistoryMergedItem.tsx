@@ -6,8 +6,9 @@ import { useCreateEventModal } from '@hooks/useCreateEventModal';
 import { UserAvatar } from '@planner/Users/UserAvatar';
 import { useAppSelector } from '@redux/hooks/hooks';
 import { selectUserInfo } from '@redux/reducers/session/session-selectors';
+import { plannerSelectCurrentMode } from '@selectors/planner';
 import { currentColor } from '@src/common/constants';
-import { MergedObject } from '@src/common/functions';
+import { getPath, MergedObject } from '@src/common/functions';
 import React, { ReactNode } from 'react';
 import {
   CommentStickyAvatar,
@@ -32,8 +33,9 @@ export function MergedNote<
   mergeItem,
   renderGroup,
 }: EventHistoryMergedItemProps<Type, ItemType>): JSX.Element {
-  const { openModal } = useCreateEventModal({ useReturnBackOnDecline: true });
+  const { openModal } = useCreateEventModal();
   const currentUser = useAppSelector(selectUserInfo);
+  const backgroundUrl = useAppSelector(plannerSelectCurrentMode);
   return (
     <MergedCommentContainer>
       <MergedCommentUserInfo>
@@ -45,9 +47,15 @@ export function MergedNote<
                 action={{
                   title: 'Запланировать событие',
                   onClick(user: UserModel) {
-                    openModal({
-                      members: [user],
-                    });
+                    openModal(
+                      {
+                        members: [user],
+                      },
+                      {
+                        useReturnBackOnDecline: true,
+                        modalPath: getPath(backgroundUrl, 'event/create'),
+                      }
+                    );
                   },
                   condition: mergeItem.user._id !== currentUser?._id,
                 }}

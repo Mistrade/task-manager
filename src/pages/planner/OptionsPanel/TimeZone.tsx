@@ -1,5 +1,6 @@
 import { FlexBlock } from '@components/LayoutComponents/FlexBlock';
 import { Tooltip } from '@components/Tooltip/Tooltip';
+import { CutText } from '@planner/RenderModes/DayCalendar/TaskList/TaskList.styled';
 import dayjs from 'dayjs';
 import React from 'react';
 
@@ -18,7 +19,11 @@ export const TimeZone = () => {
             : `-${dayjs().utcOffset() / 60}`
         }`}
         placement={'right'}
-        children={`Часовой пояс:\n${dayjs.tz.guess()}`}
+        children={
+          <CutText rows={1} fontSize={14}>
+            Часовой пояс: {dayjs.tz.guess()}
+          </CutText>
+        }
       />
     </FlexBlock>
   );

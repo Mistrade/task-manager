@@ -7,6 +7,7 @@ import {
   PlannerLayoutContainer,
   PlannerOptionPanelContainer,
 } from '@planner/Planner.styled';
+import { CutText } from '@planner/RenderModes/DayCalendar/TaskList/TaskList.styled';
 import { useAppSelector } from '@redux/hooks/hooks';
 import { ServicesNames } from '@redux/reducers/global';
 import { selectUserInfo } from '@redux/reducers/session/session-selectors';
@@ -86,7 +87,13 @@ export const MainHeaderBody: FC = React.memo(
             >
               <AppLogoIcon size={30} />
               <Heading.H1 style={{ color: currentColor, fontSize: 16 }}>
-                White Planner
+                White Planner{' '}
+                <CutText
+                  fontSize={16}
+                  style={{ fontStyle: 'normal', fontWeight: 'normal' }}
+                >
+                  (Beta version)
+                </CutText>
               </Heading.H1>
             </EmptyButtonStyled>
           </PlannerOptionPanelContainer>

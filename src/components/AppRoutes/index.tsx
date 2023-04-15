@@ -2,7 +2,7 @@ import { SessionInterceptor } from '@components/AppRoutes/Interceptors/SessionIn
 import { FaqRoutes } from '@components/AppRoutes/Routes/FaqRoutes';
 import { ProfileRoutes } from '@components/AppRoutes/Routes/ProfileRoutes';
 import { SessionRoutes } from '@components/AppRoutes/Routes/SessionRoutes';
-import { FriendsPage } from '@contacts/index';
+import { FriendsPage } from '@pages/Friends/index';
 import { LayoutSuspense } from '@pages/LayoutSuspense';
 import { NotFoundPage } from '@pages/NotFound/NotFoundPage';
 import { PlannerPage } from '@planner/Planner';

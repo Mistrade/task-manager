@@ -1,9 +1,9 @@
-import { Route, Routes } from 'react-router-dom';
-import { UpdateGroupInfoHock } from './Groups/UpdateGroupInfoHock';
-import { CreateOrUpdateGroupModal } from './Groups/CreateOrUpdateGroup';
-import { CreateEventModal } from './Forms/CreateEvent/CreateEventModal';
-import { TaskInfoModal } from './CalendarModals/TaskInfoModal';
+import { CreateEventFromPlanner } from '@planner/Forms/CreateEventFromPlanner';
 import React from 'react';
+import { Route, Routes } from 'react-router-dom';
+import { TaskInfoModal } from './CalendarModals/TaskInfoModal';
+import { CreateOrUpdateGroupModal } from './Groups/CreateOrUpdateGroup';
+import { UpdateGroupInfoHock } from './Groups/UpdateGroupInfoHock';
 
 export const ModalRoutes = () => {
   return (
@@ -13,7 +13,7 @@ export const ModalRoutes = () => {
         <Route path={':groupId'} element={<UpdateGroupInfoHock />} />
       </Route>
       <Route path={'event'}>
-        <Route path={'create'} element={<CreateEventModal />} />
+        <Route path={'create'} element={<CreateEventFromPlanner />} />
         <Route path={'info/:taskId/*'} element={<TaskInfoModal />} />
       </Route>
     </Routes>

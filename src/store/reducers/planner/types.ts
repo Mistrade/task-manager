@@ -30,6 +30,9 @@ export interface IPlannerReducer {
     layouts: IPlannerLayoutRenderConfig;
     optionsPanel: TPlannerPanelRenderConfig;
   };
+  createEventModal: {
+    isOpen: boolean;
+  };
 }
 
 export interface IPlannerLayoutRenderConfig {

@@ -3,6 +3,7 @@ import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 export enum ServicesNames {
   'PLANNER' = 'planner',
   'FRIENDS' = 'friends',
+  'PROFILE' = 'profile',
 }
 
 interface IGlobalReducer {

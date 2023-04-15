@@ -15,6 +15,7 @@ import { useAppSelector } from '@redux/hooks/hooks';
 import { ServicesNames } from '@redux/reducers/global';
 import { plannerSelectLayout, plannerSelectStatus } from '@selectors/planner';
 import { TASK_STATUSES } from '@src/common/constants';
+import { getPath } from '@src/common/functions';
 import dayjs from 'dayjs';
 import React, { FC, useCallback } from 'react';
 
@@ -31,9 +32,7 @@ export const TaskInformerMoreActions: FC<TaskInformerMoreActionsProps> = ({
   const layout = useAppSelector(plannerSelectLayout);
   const navigate = useSearchNavigate();
 
-  const { openModal: openCreateEventModal } = useCreateEventModal({
-    useReturnBackOnDecline: true,
-  });
+  const { openModal: openCreateEventModal } = useCreateEventModal();
 
   const cloneEventHandler = useCallback(
     (e: React.MouseEvent) => {
@@ -42,33 +41,55 @@ export const TaskInformerMoreActions: FC<TaskInformerMoreActionsProps> = ({
       const timeEnd = dayjs(taskItem.timeEnd);
 
       taskItem &&
-        openCreateEventModal({
-          title: `Clone: ${taskItem.title}`,
-          linkedFrom: taskItem._id,
-          description: `Событие было клонировано от события: "${taskItem.title}".\n`,
-          time: time.isValid() ? time.format() : undefined,
-          timeEnd: timeEnd.isValid() ? timeEnd.format() : undefined,
-          parentId: taskItem.parentId,
-          status: taskItem.status,
-          link: taskItem.link,
-          priority: taskItem.priority,
-        });
+        openCreateEventModal(
+          {
+            title: `Clone: ${taskItem.title}`,
+            linkedFrom: taskItem._id,
+            description: `Событие было клонировано от события: "${taskItem.title}".\n`,
+            time: time.isValid() ? time.format() : undefined,
+            timeEnd: timeEnd.isValid() ? timeEnd.format() : undefined,
+            parentId: taskItem.parentId,
+            status: taskItem.status,
+            link: taskItem.link,
+            priority: taskItem.priority,
+          },
+          {
+            modalPath: getPath(
+              ServicesNames.PLANNER,
+              layout,
+              status,
+              'event/create'
+            ),
+            useReturnBackOnDecline: true,
+          }
+        );
     },
-    [taskItem, openCreateEventModal]
+    [taskItem, openCreateEventModal, layout, status]
   );
 
   const createChildEventHandler = useCallback(
     (e: React.MouseEvent) => {
       e.stopPropagation();
       taskItem &&
-        openCreateEventModal({
-          group: taskItem.group?._id || '',
-          title: 'Child Event: ',
-          parentId: taskItem._id,
-          description: `Событие было создано как дочернее для: "${taskItem.title}".\n`,
-        });
+        openCreateEventModal(
+          {
+            group: taskItem.group?._id || '',
+            title: 'Child Event: ',
+            parentId: taskItem._id,
+            description: `Событие было создано как дочернее для: "${taskItem.title}".\n`,
+          },
+          {
+            useReturnBackOnDecline: true,
+            modalPath: getPath(
+              ServicesNames.PLANNER,
+              layout,
+              status,
+              'event/create'
+            ),
+          }
+        );
     },
-    [taskItem, openCreateEventModal]
+    [taskItem, openCreateEventModal, layout, status]
   );
 
   const completeEventHandler = useCallback(

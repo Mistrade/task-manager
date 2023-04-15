@@ -1,13 +1,12 @@
 import { useCreateEventMutation } from '@api/planning-api';
 import { EventIdObject } from '@api/planning-api/types/event-info.types';
 import { GroupModelResponse } from '@api/planning-api/types/groups.types';
-import { MyServerResponse } from '@api/rtk-api.types';
+import { MyServerResponse, ObjectId } from '@api/rtk-api.types';
 import { CatchHandleForToast } from '@api/tools';
 import { Button, StyledButton } from '@components/Buttons/Buttons.styled';
 import { FlexBlock } from '@components/LayoutComponents/FlexBlock';
 import { Switcher } from '@components/Switcher/Switcher';
 import { Heading } from '@components/Text/Heading';
-import { useCreateEventModal } from '@hooks/useCreateEventModal';
 import { ChainsShowcase } from '@planner/TaskInformer/LeftBar/Tabs/Chains/Connect/ChainsShowcase';
 import {
   ToggleEventCalendar,
@@ -16,7 +15,6 @@ import {
 } from '@planner/TaskInformer/SupportsComponent/ToggleTaskInformerButtons';
 import { useAppSelector } from '@redux/hooks/hooks';
 import { createEventInitialStateSelector } from '@selectors/calendarItems';
-import { plannerSelectCurrentMode } from '@selectors/planner';
 import { borderRadiusSize } from '@src/common/borderRadiusSize';
 import {
   defaultColor,
@@ -27,7 +25,6 @@ import {
 } from '@src/common/constants';
 import { useFormik } from 'formik';
 import { FC, useMemo, useState } from 'react';
-import { useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
 import * as yup from 'yup';
 import { CreateEventDataObject } from '../../planner.types';
@@ -36,10 +33,9 @@ import { CreateEventInfoTab } from './Tabs/Info';
 import { CreateEventMembersTab } from './Tabs/Members';
 
 interface CreateEventFormProps {
-  // onComplete?: (data: CreateEventDataObject, taskId?: ObjectId) => void;
-  // date: Date | null;
-  onCancel?: (data: CreateEventDataObject) => void;
+  onClose?: () => void;
   groupsList?: Array<GroupModelResponse>;
+  onSuccess?: (eventId: ObjectId) => void;
 }
 
 export const LinkValidationSchema = yup
@@ -106,10 +102,11 @@ export const MaxHeightHidden = styled('div')`
   width: 100%;
 `;
 
-export const CreateEventForm: FC<CreateEventFormProps> = ({ groupsList }) => {
-  const { declineModal, clearState } = useCreateEventModal({});
-  const backgroundUrl = useAppSelector(plannerSelectCurrentMode);
-  const navigate = useNavigate();
+export const CreateEventForm: FC<CreateEventFormProps> = ({
+  groupsList,
+  onSuccess,
+  onClose,
+}) => {
   const initialState = useAppSelector(createEventInitialStateSelector);
   const [addTask, { isLoading, status }] = useCreateEventMutation();
   const [tab, setTab] = useState<CREATE_EVENT_FORM_TABS>(
@@ -120,12 +117,12 @@ export const CreateEventForm: FC<CreateEventFormProps> = ({ groupsList }) => {
     async onSubmit(values) {
       await addTask(values)
         .unwrap()
-        .then((response: MyServerResponse<EventIdObject>) => {
-          clearState();
-          if (response.data) {
-            navigate(`${backgroundUrl}/event/info/${response.data.eventId}`);
-          }
-        })
+        .then(
+          (response: MyServerResponse<EventIdObject>) =>
+            response.data?.eventId &&
+            onSuccess &&
+            onSuccess(response.data?.eventId)
+        )
         .catch(CatchHandleForToast);
     },
     validationSchema: addTaskValidationSchema,
@@ -146,12 +143,6 @@ export const CreateEventForm: FC<CreateEventFormProps> = ({ groupsList }) => {
   }, [formik.values.group, groupsList]);
 
   return (
-    // <form
-    //   // onSubmit={formik.handleSubmit}
-    //   onSubmit={(e) => e.preventDefault()}
-    //
-    //   style={{ width: '100%', height: '100%' }}
-    // >
     <FlexBlock
       direction={'column'}
       basis={'100%'}
@@ -257,6 +248,7 @@ export const CreateEventForm: FC<CreateEventFormProps> = ({ groupsList }) => {
         gap={12}
       >
         <Button
+          disabled={isLoading}
           type={'button'}
           onKeyDown={(event) => {
             event.preventDefault();
@@ -286,7 +278,8 @@ export const CreateEventForm: FC<CreateEventFormProps> = ({ groupsList }) => {
           Создать
         </Button>
         <StyledButton
-          onClick={declineModal}
+          disabled={isLoading}
+          onClick={onClose}
           fillColor={'#fff'}
           textColor={defaultColor}
         >
@@ -294,6 +287,5 @@ export const CreateEventForm: FC<CreateEventFormProps> = ({ groupsList }) => {
         </StyledButton>
       </FlexBlock>
     </FlexBlock>
-    // </form>
   );
 };

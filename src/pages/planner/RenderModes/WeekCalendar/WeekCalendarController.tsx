@@ -2,7 +2,6 @@ import { FlexBlock } from '@components/LayoutComponents/FlexBlock';
 import { ScrollVerticalView } from '@components/LayoutComponents/ScrollView/ScrollVerticalView';
 import { EventsStorage, WeekCalendarProps } from '@planner/planner.types';
 import { SmartEventFilters } from '@planner/RenderModes/FindEventFilter/SmartEventFilters';
-import { WeekBreadCrumbs } from '@planner/RenderModes/WeekCalendar/SupportComponents/WeekBreadCrumbs';
 import React, { FC, memo, useCallback, useState } from 'react';
 import { WeeKCalendar } from './WeekCalendar';
 
@@ -21,7 +20,6 @@ export const WeekCalendarController: FC<WeekCalendarControllerProps> = memo(
       <ScrollVerticalView
         staticContent={
           <FlexBlock direction={'column'}>
-            <WeekBreadCrumbs />
             <SmartEventFilters updateStorage={handleChangeStorage} />
           </FlexBlock>
         }

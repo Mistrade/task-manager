@@ -1,14 +1,21 @@
 import { CenteredContainer } from '@components/AppRoutes/Interceptors/SessionInterceptor';
 import { ErrorScreen } from '@components/Errors/ErrorScreen';
+import { CompleteIcon } from '@components/Icons/Icons';
+import { TelegramLogoIcon } from '@components/Icons/SocialNetworkIcons/Telegram';
+import { TwoPeopleIcon } from '@components/Icons/UserIcons/UserIcons';
 import { FlexBlock } from '@components/LayoutComponents/FlexBlock';
+import { FriendsList } from '@pages/Friends/Tabs/FriendsList';
+import { LinkSolid } from '@planner/Header/ModeSwitch/Item';
 import {
   PlannerContainer,
   PlannerContentContainer,
   PlannerLayoutContainer,
-  PlannerNavLink,
   PlannerOptionPanelContainer,
 } from '@planner/Planner.styled';
 import { ServicesNames } from '@redux/reducers/global';
+import { currentColor } from '@src/common/constants';
+import { getPath } from '@src/common/functions';
+import { ReactNode } from 'react';
 import { Navigate, Route } from 'react-router';
 import { Routes } from 'react-router-dom';
 
@@ -18,10 +25,21 @@ export enum FRIENDS_ROUTES {
   'INCOMING_REQUESTS' = 'incoming',
 }
 
-export const FRIENDS_ROUTES_PAGE_NAMES: { [key in FRIENDS_ROUTES]: string } = {
-  my_friends: 'Список друзей',
-  outgoing: 'Исходящие заявки',
-  incoming: 'Входящие заявки',
+export const FRIENDS_ROUTES_PAGE_NAMES: {
+  [key in FRIENDS_ROUTES]: {
+    title: string;
+    icon: ReactNode;
+  };
+} = {
+  my_friends: { title: 'Список друзей', icon: <TwoPeopleIcon size={24} /> },
+  outgoing: {
+    title: 'Исходящие заявки',
+    icon: <TelegramLogoIcon size={24} color={currentColor} />,
+  },
+  incoming: {
+    title: 'Входящие заявки',
+    icon: <CompleteIcon size={24} color={currentColor} />,
+  },
 };
 
 export const FriendsPage = () => {
@@ -31,18 +49,17 @@ export const FriendsPage = () => {
         <PlannerOptionPanelContainer>
           <FlexBlock direction={'column'} gap={8}>
             {Object.values(FRIENDS_ROUTES).map((item) => (
-              <PlannerNavLink
+              <LinkSolid
                 key={item}
                 style={{
                   width: '100%',
                   justifyContent: 'flex-start',
                   textAlign: 'left',
                 }}
-                to={item}
-                className={({ isActive }) => (isActive ? 'active' : '')}
-              >
-                {FRIENDS_ROUTES_PAGE_NAMES[item]}
-              </PlannerNavLink>
+                icon={FRIENDS_ROUTES_PAGE_NAMES[item].icon}
+                title={FRIENDS_ROUTES_PAGE_NAMES[item].title}
+                to={getPath(ServicesNames.FRIENDS, item)}
+              />
             ))}
           </FlexBlock>
         </PlannerOptionPanelContainer>
@@ -56,7 +73,10 @@ export const FriendsPage = () => {
                 />
               }
             />
-            <Route path={FRIENDS_ROUTES.FRIENDS_LIST} element={'Друзья'} />
+            <Route
+              path={FRIENDS_ROUTES.FRIENDS_LIST}
+              element={<FriendsList />}
+            />
             <Route
               path={FRIENDS_ROUTES.OUTGOING_REQUESTS}
               element={'Исходящие заявки'}

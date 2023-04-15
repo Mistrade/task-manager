@@ -1,38 +1,31 @@
 import { FlexBlock } from '@components/LayoutComponents/FlexBlock';
-import { setPlannerLayout } from '@planner-reducer/index';
 import { PlannerNavLink } from '@planner/Planner.styled';
-import { useAppDispatch, useAppSelector } from '@redux/hooks/hooks';
-import { plannerSelectStatus } from '@selectors/planner';
-import { PLANNER_LAYOUTS } from '@src/common/constants';
-import { memo, ReactNode, useCallback } from 'react';
+import { CutText } from '@planner/RenderModes/DayCalendar/TaskList/TaskList.styled';
+import { defaultColor } from '@src/common/constants';
+import { CSSProperties, FC, ReactNode } from 'react';
 
-export const CalendarModeSwitchItem = memo<{
+export const LinkSolid: FC<{
   title: ReactNode;
-  icon: ReactNode;
-  layout: PLANNER_LAYOUTS;
-}>(
-  ({ title, icon, layout }) => {
-    const status = useAppSelector(plannerSelectStatus);
-    const dispatch = useAppDispatch();
-
-    const clickHandler = useCallback(() => {
-      dispatch(setPlannerLayout(layout));
-    }, [layout]);
-
-    return (
-      <PlannerNavLink
-        to={`/planner/${layout}/${status}`}
-        onClick={clickHandler}
-        className={({ isActive }) => {
-          return isActive ? 'active' : '';
-        }}
-      >
-        <FlexBlock align={'center'} gap={6}>
-          {icon}
+  icon?: ReactNode;
+  style?: CSSProperties;
+  onClick?: () => void;
+  to: string;
+}> = ({ title, icon, to, style, onClick }) => {
+  return (
+    <PlannerNavLink
+      style={style}
+      to={to}
+      onClick={onClick}
+      className={({ isActive }) => {
+        return isActive ? 'active' : '';
+      }}
+    >
+      <FlexBlock align={'center'} gap={6}>
+        {icon}
+        <CutText rows={1} color={defaultColor} fontSize={15}>
           {title}
-        </FlexBlock>
-      </PlannerNavLink>
-    );
-  },
-  (prevProps, nextProps) => prevProps.layout === nextProps.layout
-);
+        </CutText>
+      </FlexBlock>
+    </PlannerNavLink>
+  );
+};

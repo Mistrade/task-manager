@@ -64,3 +64,8 @@ export const plannerSelectEventInfoTabName = createSelector(
   rootSelector,
   (state: IPlannerReducer) => state.eventInfo.tabName
 );
+
+export const selectCreateEventModalIsOpen = createSelector(
+  rootSelector,
+  (state: IPlannerReducer) => state.createEventModal.isOpen
+);

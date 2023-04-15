@@ -24,10 +24,10 @@ export const CalendarDateListContainer = styled('div')<{ rowsCount?: number }>`
 
 export const CalendarTitle = styled('h2')`
   & {
-    font-size: 24px;
+    font-size: 20px;
     font-family: 'Helvetica Neue', sans-serif;
-    font-weight: bold;
-    color: rgba(15, 15, 15, 0.6);
+    font-weight: normal;
+    color: ${darkColor};
     margin-top: 0;
     margin-bottom: 0;
     white-space: nowrap;
@@ -125,6 +125,11 @@ export const PlannerNavLink = styled(NavLink)`
     max-width: 300px;
     position: relative;
     border-radius: ${borderRadiusSize.sm};
+    height: 40px;
+    display: flex;
+    flex-direction: row;
+    gap: 6px;
+    align-items: center;
   }
 
   &.active:after {

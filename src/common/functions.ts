@@ -1,10 +1,16 @@
 import {
+  EventInfoModel,
+  ShortEventInfoModel,
+} from '@api/planning-api/types/event-info.types';
+import { UserModel } from '@api/session-api/session-api.types';
+import {
   EventItem,
   EventsStorage,
   PlannerMode,
   PlannerMonthMode,
 } from '@pages/planner/planner.types';
-import dayjs from 'dayjs';
+import dayjs, { Dayjs } from 'dayjs';
+import { DateHelper } from './calendarSupport/dateHelper';
 import {
   ChangeDayCurrentFn,
   ChangeListCurrentFn,
@@ -14,9 +20,6 @@ import {
   ShortChangeCurrentPattern,
 } from './commonTypes';
 import { MonthList, PLANNER_LAYOUTS } from './constants';
-import { DateHelper } from './calendarSupport/dateHelper';
-import { ShortEventInfoModel } from '@api/planning-api/types/event-info.types';
-import { UserModel } from '@api/session-api/session-api.types';
 
 export const addNull = (value: number): string =>
   value < 10 ? `0${value}` : value.toString();
@@ -179,7 +182,7 @@ const getMonthCalendarTitle = (
     withTodayMonth && today.year() === year && month === today.month()
       ? '( Сегодня )'
       : '';
-  return `${m}/${year} г. ${todayTitle}`.trim();
+  return `${m} ${year} г. ${todayTitle}`.trim();
 };
 
 const getWeekCalendarTitle = (currentDate: Date): string => {
@@ -191,15 +194,18 @@ const getWeekCalendarTitle = (currentDate: Date): string => {
     year: d.year(),
     month: d.month(),
   };
-  return `Неделя ${w}, ${m.year}г.`;
+  return `Неделя ${w} ${m.year}г.`;
 };
 
 const getYearCalendarTitle = (currentDate: Date) => {
-  return `Календарь ${currentDate.getFullYear()}г.`;
+  return `${currentDate.getFullYear()}г.`;
 };
 
 const getDayCalendarTitle = (currentDate: Date) => {
-  return DateHelper.getHumanizeDateValue(currentDate, { withTime: false });
+  return DateHelper.getHumanizeDateValue(currentDate, {
+    withTime: false,
+    monthPattern: 'full',
+  });
 };
 
 const getListCalendarTitle = (currentDate: Date) => {
@@ -347,4 +353,19 @@ export const mergeArrayWithUserId = <
   });
 
   return arr;
+};
+
+export const getPath = (...arr: Array<string>) => {
+  return '/' + arr.join('/');
+};
+
+export const eventIsDelayed = (
+  timeEnd: Dayjs | Date | string,
+  eventStatus: EventInfoModel['status']
+): boolean => {
+  return (
+    dayjs().isAfter(timeEnd, 'minute') &&
+    eventStatus !== 'completed' &&
+    eventStatus !== 'archive'
+  );
 };
