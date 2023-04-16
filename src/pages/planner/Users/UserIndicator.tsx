@@ -1,7 +1,10 @@
 import { FC, useState } from 'react';
-import { FlexBlock } from '@components/LayoutComponents/FlexBlock';
+
 import { EmptyButtonStyled } from '@components/Buttons/EmptyButton.styled';
+import { FlexBlock } from '@components/LayoutComponents/FlexBlock';
+
 import { UserAvatar } from './UserAvatar';
+
 
 interface CalendarUserIndicator {
   name: string;

@@ -1,10 +1,15 @@
 import { FC } from 'react';
-import { ChainsRenderModeProps } from '@planner/TaskInformer/LeftBar/Tabs/Chains/event-chains.types';
-import { ChildrenEventList } from './ChildrenEventList';
+
+import { currentColor } from '@src/common/constants';
+
+import { TooltipIcon } from '@components/Icons/TooltipIcon';
 import { FlexBlock } from '@components/LayoutComponents/FlexBlock';
 import { Tooltip } from '@components/Tooltip/Tooltip';
-import { TooltipIcon } from '@components/Icons/TooltipIcon';
-import { currentColor } from '@src/common/constants';
+
+import { ChainsRenderModeProps } from '@planner/TaskInformer/LeftBar/Tabs/Chains/event-chains.types';
+
+import { ChildrenEventList } from './ChildrenEventList';
+
 
 export const ChainsRenderModeList: FC<ChainsRenderModeProps> = ({
   eventItem,

@@ -1,8 +1,6 @@
-import React, { forwardRef, ReactNode } from 'react';
-import {
-  FlexBlock,
-  FlexBlockProps,
-} from '@components/LayoutComponents/FlexBlock';
+import React, { ReactNode, forwardRef } from 'react';
+import { css, keyframes } from 'styled-components';
+
 import { StyledInput } from '@components/Input/Input.styled';
 import {
   InputActions,
@@ -20,7 +18,11 @@ import {
   InputLabel,
   InputLabelProps,
 } from '@components/Input/InputSupportComponents/InputLabel';
-import { css, keyframes } from 'styled-components';
+import {
+  FlexBlock,
+  FlexBlockProps,
+} from '@components/LayoutComponents/FlexBlock';
+
 
 export interface DefaultTextInputProps
   extends InputErrorMessageProps,

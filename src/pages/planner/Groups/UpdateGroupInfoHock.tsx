@@ -1,8 +1,10 @@
-import { useParams } from 'react-router';
-import { CreateOrUpdateGroupModal } from './CreateOrUpdateGroup';
 import { FC } from 'react';
+import { useParams } from 'react-router';
+
+import { CreateOrUpdateGroupModal } from './CreateOrUpdateGroup';
 import { UpdateGroupInfoMiddleware } from './UpdateGroupInfoMiddleware';
 import { ChangeGroupHockProps } from './groups.types';
+
 
 export const UpdateGroupInfoHock: FC<ChangeGroupHockProps> = ({ onClose }) => {
   const { groupId } = useParams<{ groupId?: string }>();

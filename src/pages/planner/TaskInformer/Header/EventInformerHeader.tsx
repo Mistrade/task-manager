@@ -1,18 +1,23 @@
-import { EventInfoModel } from '@api/planning-api/types/event-info.types';
+import React, { memo } from 'react';
+import { css } from 'styled-components';
+
+import { borderRadiusSize } from '@src/common/borderRadiusSize';
+import { orangeColor, pageHeaderColor } from '@src/common/constants';
+import { eventIsDelayed } from '@src/common/functions';
+
 import { TimeBadge } from '@components/Badge/Badge';
 import { FlexBlock } from '@components/LayoutComponents/FlexBlock';
 import { Tooltip } from '@components/Tooltip/Tooltip';
+
 import { EventInformerToggles } from '@planner/TaskInformer/Header/Toggles';
 import { TaskInformerLinkButton } from '@planner/TaskInformer/SupportsComponent/TaskInformerLinkButton';
 import { TaskInformerMoreActions } from '@planner/TaskInformer/SupportsComponent/TaskInformerMoreActions';
 import { TaskInformerSwitchers } from '@planner/TaskInformer/SupportsComponent/TaskInformerSwitchers';
 import { TaskInformerTitle } from '@planner/TaskInformer/SupportsComponent/TaskInformerTitle';
 import { EventInfoUpdateFn } from '@planner/TaskInformer/SupportsComponent/ToggleTaskInformerButtons';
-import { borderRadiusSize } from '@src/common/borderRadiusSize';
-import { orangeColor, pageHeaderColor } from '@src/common/constants';
-import { eventIsDelayed } from '@src/common/functions';
-import React, { memo } from 'react';
-import { css } from 'styled-components';
+
+import { EventInfoModel } from '@api/planning-api/types/event-info.types';
+
 
 export interface EventInformerHeaderProps {
   eventInfo: EventInfoModel;

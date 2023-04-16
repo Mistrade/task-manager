@@ -1,9 +1,12 @@
-import { planningApi } from '@api/planning-api';
-import { EventInfoModel } from '@api/planning-api/types/event-info.types';
-import { GroupModelResponse } from '@api/planning-api/types/groups.types';
+import { FC, useMemo, useState } from 'react';
+
+import { PRIORITY_LIST, TASK_STATUSES } from '@src/common/constants';
+import { Delay } from '@src/common/functions';
+
 import { DropDownButton } from '@components/Buttons/DropDownButton';
 import { PriorityCalendarIcon } from '@components/Icons/CalendarIcons/PriorityCalendarIcon';
 import { IconProps } from '@components/Icons/Icons';
+
 import { GroupLogo } from '@planner/Groups/GroupList.styled';
 import {
   CalendarPriorityKeys,
@@ -11,13 +14,16 @@ import {
   TaskStatusesType,
   UUID,
 } from '@planner/planner.types';
-import { PRIORITY_LIST, TASK_STATUSES } from '@src/common/constants';
-import { Delay } from '@src/common/functions';
-import { FC, useMemo, useState } from 'react';
+
+import { planningApi } from '@api/planning-api';
+import { EventInfoModel } from '@api/planning-api/types/event-info.types';
+import { GroupModelResponse } from '@api/planning-api/types/groups.types';
+
 import { EventGroupButton } from './EventGroupButton';
 import { EventPriorityButton } from './EventPriorityButton';
 import { EventStatusButton } from './EventStatusButton';
 import { ToggleButtonContainer } from './ToggleButtonContainer';
+
 
 export type EventInfoUpdateFn = (
   field: keyof EventInfoModel,

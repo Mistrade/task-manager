@@ -1,17 +1,21 @@
+import { setPlannerLayout } from '@planner-reducer/index';
+import { useAppDispatch, useAppSelector } from '@redux/hooks/hooks';
+import { ServicesNames } from '@redux/reducers/global';
+import { plannerSelectLayout, plannerSelectStatus } from '@selectors/planner';
+import { useMemo, useState } from 'react';
+
+import { defaultColor } from '@src/common/constants';
+import { getPath } from '@src/common/functions';
+
 import { SelectListContainer } from '@components/Input/SelectInput/SelectListContainer';
 import { FlexBlock } from '@components/LayoutComponents/FlexBlock';
 import { Tooltip } from '@components/Tooltip/Tooltip';
-import { setPlannerLayout } from '@planner-reducer/index';
+
 import { LinkSolid } from '@planner/Header/ModeSwitch/Item';
 import { PlannerHeaderSwitch } from '@planner/Header/ModeSwitch/List';
 import { SwitchCalendarModeTab } from '@planner/Planner.styled';
 import { CutText } from '@planner/RenderModes/DayCalendar/TaskList/TaskList.styled';
-import { useAppDispatch, useAppSelector } from '@redux/hooks/hooks';
-import { ServicesNames } from '@redux/reducers/global';
-import { plannerSelectLayout, plannerSelectStatus } from '@selectors/planner';
-import { defaultColor } from '@src/common/constants';
-import { getPath } from '@src/common/functions';
-import { useMemo, useState } from 'react';
+
 
 export const PlannerSelectLayout = () => {
   const dispatch = useAppDispatch();

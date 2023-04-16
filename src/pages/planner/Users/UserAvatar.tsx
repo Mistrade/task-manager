@@ -1,7 +1,10 @@
-import { UserModel } from '@api/session-api/session-api.types';
-import { currentColor, darkColor } from '@src/common/constants';
 import { FC, useMemo } from 'react';
 import styled from 'styled-components';
+
+import { currentColor, darkColor } from '@src/common/constants';
+
+import { UserModel } from '@api/session-api/session-api.types';
+
 
 export interface UserAvatarProps {
   user: Partial<UserModel>;

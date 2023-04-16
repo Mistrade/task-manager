@@ -1,6 +1,9 @@
 import { FC } from 'react';
+
 import { FlexBlock } from '@components/LayoutComponents/FlexBlock';
+
 import { EventChainItemsWrapperProps } from '../event-chains.types';
+
 
 export const TaskChainItemsWrapper: FC<EventChainItemsWrapperProps> = ({
   children,

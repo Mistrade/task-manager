@@ -1,10 +1,13 @@
-import { borderRadiusSize } from '@src/common/borderRadiusSize';
 import { FC } from 'react';
-import { colorPalette, disabledColor, errorColor } from '@src/common/constants';
-import { GroupLogo } from '@pages/planner/Groups/GroupList.styled';
 import styled, { css } from 'styled-components';
+
+import { borderRadiusSize } from '@src/common/borderRadiusSize';
+import { colorPalette, disabledColor, errorColor } from '@src/common/constants';
+
 import { EmptyButtonStyled } from '@components/Buttons/EmptyButton.styled';
 import { SelectIcon } from '@components/Icons/Icons';
+
+import { GroupLogo } from '@pages/planner/Groups/GroupList.styled';
 
 interface ColorSchemeProps {
   gap: number | string;

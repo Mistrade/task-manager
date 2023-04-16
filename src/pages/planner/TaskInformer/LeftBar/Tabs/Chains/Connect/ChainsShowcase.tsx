@@ -1,16 +1,19 @@
-import {
-  ConnectChainsCard,
-  ConnectChainsCardObject,
-} from './ConnectChainsCard';
+import { FC } from 'react';
+import styled from 'styled-components';
+
+import { DontHoveredButton } from '@components/Buttons/EmptyButton.styled';
 import {
   ApprovedAfterIcon,
   ChildOfIcon,
   CompletedAfterIcon,
   ParentOfIcon,
 } from '@components/Icons/Icons';
-import { FC } from 'react';
-import { DontHoveredButton } from '@components/Buttons/EmptyButton.styled';
-import styled from 'styled-components';
+
+import {
+  ConnectChainsCard,
+  ConnectChainsCardObject,
+} from './ConnectChainsCard';
+
 
 export const ConnectTypesArray: Array<ConnectChainsCardObject> = [
   {

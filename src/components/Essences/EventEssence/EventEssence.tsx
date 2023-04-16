@@ -1,23 +1,29 @@
-import { GroupModelResponse } from '@api/planning-api/types/groups.types';
-import { ObjectId } from '@api/rtk-api.types';
+import dayjs, { Dayjs } from 'dayjs';
+import React, { FC, useCallback, useMemo, useState } from 'react';
+
+import { DateHelper } from '@src/common/calendarSupport/dateHelper';
+
 import { TimeBadge } from '@components/Badge/Badge';
 import { EmptyButtonStyled } from '@components/Buttons/EmptyButton.styled';
 import { LinkStyled } from '@components/Buttons/Link.styled';
 import { Arrow } from '@components/Icons/Icons';
 import { FlexBlock } from '@components/LayoutComponents/FlexBlock';
 import { Tooltip } from '@components/Tooltip/Tooltip';
-import {
-  CalendarPriorityKeys,
-  TaskStatusesType,
-} from '@pages/planner/planner.types';
+
 import { HistoryDescriptionField } from '@pages/planner/TaskInformer/LeftBar/Tabs/TaskHistory/Fields/HistoryDescriptionField';
 import { EventGroupButton } from '@pages/planner/TaskInformer/SupportsComponent/EventGroupButton';
 import { EventPriorityButton } from '@pages/planner/TaskInformer/SupportsComponent/EventPriorityButton';
 import { EventStatusButton } from '@pages/planner/TaskInformer/SupportsComponent/EventStatusButton';
-import { DateHelper } from '@src/common/calendarSupport/dateHelper';
-import dayjs, { Dayjs } from 'dayjs';
-import React, { FC, useCallback, useMemo, useState } from 'react';
+import {
+  CalendarPriorityKeys,
+  TaskStatusesType,
+} from '@pages/planner/planner.types';
+
+import { GroupModelResponse } from '@api/planning-api/types/groups.types';
+import { ObjectId } from '@api/rtk-api.types';
+
 import { EssenceContainer, EventEssenceTitle } from './event-essence.styled';
+
 
 export interface EventEssenceProps {
   status: TaskStatusesType | null;

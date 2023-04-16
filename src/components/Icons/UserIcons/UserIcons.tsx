@@ -1,6 +1,9 @@
-import { IconProps } from '@components/Icons/Icons';
-import { currentColor } from '@src/common/constants';
 import { FC } from 'react';
+
+import { currentColor } from '@src/common/constants';
+
+import { IconProps } from '@components/Icons/Icons';
+
 
 export const TwoPeopleIcon: FC<Omit<IconProps, 'onClick'>> = ({
   size,

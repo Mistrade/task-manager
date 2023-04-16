@@ -1,12 +1,15 @@
-import { BreadCrumbs } from '@components/BreadCrumbs/BreadCrumbs';
 import { setPlannerDateAndLayout } from '@planner-reducer/index';
 import { useAppDispatch, useAppSelector } from '@redux/hooks/hooks';
 import { ServicesNames } from '@redux/reducers/global';
 import { plannerSelectDate, plannerSelectStatus } from '@selectors/planner';
-import { MonthList, PLANNER_LAYOUTS } from '@src/common/constants';
-import { disableReRender } from '@src/common/utils/react-utils';
 import React, { memo, useMemo } from 'react';
 import { useNavigate } from 'react-router-dom';
+
+import { MonthList, PLANNER_LAYOUTS } from '@src/common/constants';
+import { disableReRender } from '@src/common/utils/react-utils';
+
+import { BreadCrumbs } from '@components/BreadCrumbs/BreadCrumbs';
+
 
 export const DayLayoutBreadCrumbs = memo(() => {
   const navigate = useNavigate();

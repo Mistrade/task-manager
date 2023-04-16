@@ -1,8 +1,11 @@
-import { TagStyled } from './Tag.styled';
 import { FC, ReactNode } from 'react';
-import { TrashIcon } from '../Icons/Icons';
+
 import { defaultColor } from '@src/common/constants';
+
 import { EmptyButtonStyled } from '../Buttons/EmptyButton.styled';
+import { TrashIcon } from '../Icons/Icons';
+import { TagStyled } from './Tag.styled';
+
 
 export interface TagProps {
   children: ReactNode;

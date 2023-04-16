@@ -1,17 +1,22 @@
+import { IPlannerDate } from '@planner-reducer/types';
+import React, { FC, ReactNode } from 'react';
+
+import { DateScopeInterface } from '@src/common/calendarSupport/scopes';
+import { PLANNER_LAYOUTS } from '@src/common/constants';
+
+import { DefaultTextInputProps } from '@components/Input/TextInput/TextInput';
+import { FlexBlockProps } from '@components/LayoutComponents/FlexBlock';
+import { TooltipProps } from '@components/Tooltip/Tooltip';
+
 import {
   EventInfoModel,
   ShortEventInfoModel,
 } from '@api/planning-api/types/event-info.types';
 import { ObjectId } from '@api/rtk-api.types';
 import { UserModel } from '@api/session-api/session-api.types';
-import { DefaultTextInputProps } from '@components/Input/TextInput/TextInput';
-import { FlexBlockProps } from '@components/LayoutComponents/FlexBlock';
-import { TooltipProps } from '@components/Tooltip/Tooltip';
-import { IPlannerDate } from '@planner-reducer/types';
-import { DateScopeInterface } from '@src/common/calendarSupport/scopes';
-import { PLANNER_LAYOUTS } from '@src/common/constants';
-import React, { FC, ReactNode } from 'react';
+
 import { CalendarCellEventsListProps } from './RenderModes/WeekCalendar/CalendarCell/EventList/List';
+
 
 export type FCWithChildren<T = any> = FC<{ children?: ReactNode } & T>;
 

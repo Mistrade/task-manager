@@ -1,11 +1,15 @@
+import { useCreateEventModal } from '@hooks/useCreateEventModal';
+import React, { FC, ReactNode } from 'react';
+import styled from 'styled-components';
+
+import { defaultColor } from '@src/common/constants';
+
 import { Button } from '@components/Buttons/Buttons.styled';
 import { NotFoundIcon } from '@components/Icons/Icons';
 import { FlexBlock } from '@components/LayoutComponents/FlexBlock';
-import { useCreateEventModal } from '@hooks/useCreateEventModal';
+
 import { GlobalTaskListProps } from '@planner/planner.types';
-import { defaultColor } from '@src/common/constants';
-import React, { FC, ReactNode } from 'react';
-import styled from 'styled-components';
+
 
 export interface NotFoundTaskProps
   extends Omit<GlobalTaskListProps, 'renderTaskCount'> {

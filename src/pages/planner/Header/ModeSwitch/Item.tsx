@@ -1,8 +1,12 @@
+import { CSSProperties, FC, ReactNode } from 'react';
+
+import { defaultColor } from '@src/common/constants';
+
 import { FlexBlock } from '@components/LayoutComponents/FlexBlock';
+
 import { PlannerNavLink } from '@planner/Planner.styled';
 import { CutText } from '@planner/RenderModes/DayCalendar/TaskList/TaskList.styled';
-import { defaultColor } from '@src/common/constants';
-import { CSSProperties, FC, ReactNode } from 'react';
+
 
 export const LinkSolid: FC<{
   title: ReactNode;

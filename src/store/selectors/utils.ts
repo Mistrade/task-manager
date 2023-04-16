@@ -1,5 +1,7 @@
 import { PlannerMode } from '@planner/planner.types';
+
 import { CalendarModeForState } from '../reducers/planner-reducer';
+
 
 export const currentFromStoreToDefault = (
   current: CalendarModeForState

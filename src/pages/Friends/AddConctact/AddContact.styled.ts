@@ -1,13 +1,10 @@
-import { borderRadiusSize } from '@src/common/borderRadiusSize';
 import styled from 'styled-components';
+
+import { borderRadiusSize } from '@src/common/borderRadiusSize';
 import { disabledColor } from '@src/common/constants';
+
 import { FlexBlock } from '@components/LayoutComponents/FlexBlock';
 
-export const AddContactContainer = styled('div')`
-  gap: 12px;
-  display: flex;
-  flex-direction: column;
-`;
 
 export const ContactBlock = styled(FlexBlock)`
   width: 100%;

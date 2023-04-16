@@ -1,11 +1,16 @@
-import { EventToggleButtonProps } from './EventStatusButton';
 import { FC, forwardRef } from 'react';
-import { FlexBlock } from '@components/LayoutComponents/FlexBlock';
-import { darkColor, PRIORITY_TITLES } from '@src/common/constants';
+
+import { PRIORITY_TITLES, darkColor } from '@src/common/constants';
+
 import { EmptyButtonStyled } from '@components/Buttons/EmptyButton.styled';
-import { CalendarPriorityKeys } from '@planner/planner.types';
 import { PriorityCalendarIcon } from '@components/Icons/CalendarIcons/PriorityCalendarIcon';
+import { FlexBlock } from '@components/LayoutComponents/FlexBlock';
 import { Tooltip } from '@components/Tooltip/Tooltip';
+
+import { CalendarPriorityKeys } from '@planner/planner.types';
+
+import { EventToggleButtonProps } from './EventStatusButton';
+
 
 export interface EventPriorityButtonProps extends EventToggleButtonProps {
   priority: CalendarPriorityKeys | null;

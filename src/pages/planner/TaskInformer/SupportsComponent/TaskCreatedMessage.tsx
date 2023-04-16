@@ -1,11 +1,15 @@
-import React, { FC } from 'react';
-import { EventInfoBaseProps } from '@planner/planner.types';
-import { FlexBlock } from '@components/LayoutComponents/FlexBlock';
 import dayjs from 'dayjs';
-import { Heading } from '@components/Text/Heading';
-import { CalendarUserIndicator } from '@planner/Users/UserIndicator';
-import { openUrlInNewTab } from '@src/common/url';
+import React, { FC } from 'react';
+
 import { getDateDescription } from '@src/common/calendarSupport/dateHelper';
+import { openUrlInNewTab } from '@src/common/url';
+
+import { FlexBlock } from '@components/LayoutComponents/FlexBlock';
+import { Heading } from '@components/Text/Heading';
+
+import { CalendarUserIndicator } from '@planner/Users/UserIndicator';
+import { EventInfoBaseProps } from '@planner/planner.types';
+
 
 export const TaskCreatedMessage: FC<EventInfoBaseProps> = ({ eventInfo }) => {
   return (

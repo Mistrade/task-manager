@@ -1,12 +1,16 @@
 import React, { ReactNode } from 'react';
+
+import { EventInfoUpdateFn } from '@planner/TaskInformer/SupportsComponent/ToggleTaskInformerButtons';
+
+import { EventChainsObject } from '@api/planning-api/types/event-chains.types';
 import {
   EventInfoModel,
   ShortEventInfoModel,
 } from '@api/planning-api/types/event-info.types';
-import { EventInfoUpdateFn } from '@planner/TaskInformer/SupportsComponent/ToggleTaskInformerButtons';
 import { ObjectId } from '@api/rtk-api.types';
+
 import { UseConnectChainsOfTreeProps } from './Connect/useConnectChainsOfTree';
-import { EventChainsObject } from '@api/planning-api/types/event-chains.types';
+
 
 export interface ChainsAccordionProps {
   title: ReactNode;

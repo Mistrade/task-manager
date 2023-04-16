@@ -1,7 +1,9 @@
 import { CommentModel } from '@api/planning-api/types/comments.types';
 import { EventInfoModel } from '@api/planning-api/types/event-info.types';
-import { MergedComment } from './SupportComponents/CommentsList';
 import { ObjectId } from '@api/rtk-api.types';
+
+import { MergedComment } from './SupportComponents/CommentsList';
+
 
 export interface CommentGroupProps extends BaseCommentActionsProps {
   comment: MergedComment;

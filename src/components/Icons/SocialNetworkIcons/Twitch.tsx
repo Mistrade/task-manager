@@ -1,9 +1,11 @@
 import React, { FC } from 'react';
+
 import { IconProps } from '@components/Icons/Icons';
 import {
   FlexBlock,
   FlexBlockProps,
 } from '@components/LayoutComponents/FlexBlock';
+
 
 export const TwitchLogoIcon: FC<IconProps & FlexBlockProps> = ({
   size = 24,

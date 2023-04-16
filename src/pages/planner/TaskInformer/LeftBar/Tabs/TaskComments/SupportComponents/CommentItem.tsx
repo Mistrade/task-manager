@@ -1,12 +1,15 @@
-import React, { FC, useMemo, useState } from 'react';
-import { CommentItemProps } from '../comments.types';
-import { StyledCommentText } from '../comments.styled';
-import { FlexBlock } from '@components/LayoutComponents/FlexBlock';
-import { CommentDate } from './CommentDate';
 import dayjs from 'dayjs';
+import React, { FC, useMemo, useState } from 'react';
+
+import { FlexBlock } from '@components/LayoutComponents/FlexBlock';
+
+import { StyledCommentText } from '../comments.styled';
+import { CommentItemProps } from '../comments.types';
 import { CommentActions } from './CommentActions';
-import { ReplyComment } from './ReplyComment';
+import { CommentDate } from './CommentDate';
 import { CommentDescription } from './CommentDescription';
+import { ReplyComment } from './ReplyComment';
+
 
 export const CommentItem: FC<CommentItemProps> = ({
   item,

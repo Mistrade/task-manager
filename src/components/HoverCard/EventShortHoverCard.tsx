@@ -1,21 +1,25 @@
+import React, { FC, useMemo } from 'react';
+
 import {
   DateHelper,
   HumanizeDateValueOptions,
 } from '@src/common/calendarSupport/dateHelper';
-import { convertEventStatus } from '@src/common/functions';
-import { PriorityCalendarIcon } from '@components/Icons/CalendarIcons/PriorityCalendarIcon';
 import { PRIORITY_TITLES } from '@src/common/constants';
-import { GroupLogo } from '@pages/planner/Groups/GroupList.styled';
-import React, { FC, useMemo } from 'react';
-import { ShortEventInfoModel } from '@api/planning-api/types/event-info.types';
-import { JoinToEventButton } from '@components/Buttons/Buttons.styled';
-import { UrlIcon } from '@components/Icons/SocialNetworkIcons';
-import { UserAvatar } from '@pages/planner/Users/UserAvatar';
-import { CutText } from '@pages/planner/RenderModes/DayCalendar/TaskList/TaskList.styled';
-import { TreeIcon } from '@components/Icons/CalendarIcons/TreeIcon';
-import { FlexBlock } from '@components/LayoutComponents/FlexBlock';
+import { convertEventStatus } from '@src/common/functions';
+
 import { Badge } from '@components/Badge/Badge';
+import { JoinToEventButton } from '@components/Buttons/Buttons.styled';
+import { PriorityCalendarIcon } from '@components/Icons/CalendarIcons/PriorityCalendarIcon';
+import { TreeIcon } from '@components/Icons/CalendarIcons/TreeIcon';
 import { EventIcon } from '@components/Icons/EventIcon';
+import { UrlIcon } from '@components/Icons/SocialNetworkIcons';
+import { FlexBlock } from '@components/LayoutComponents/FlexBlock';
+
+import { GroupLogo } from '@pages/planner/Groups/GroupList.styled';
+import { CutText } from '@pages/planner/RenderModes/DayCalendar/TaskList/TaskList.styled';
+import { UserAvatar } from '@pages/planner/Users/UserAvatar';
+
+import { ShortEventInfoModel } from '@api/planning-api/types/event-info.types';
 
 export interface EventShortHoverCardProps {
   event: ShortEventInfoModel;

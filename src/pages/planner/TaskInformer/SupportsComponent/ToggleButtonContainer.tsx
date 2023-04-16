@@ -1,6 +1,8 @@
 import { FC, ReactNode } from 'react';
-import { FlexBlock } from '@components/LayoutComponents/FlexBlock';
 import styled from 'styled-components';
+
+import { FlexBlock } from '@components/LayoutComponents/FlexBlock';
+
 
 const StyledToggleButtonContainer = styled('label')`
   display: flex;

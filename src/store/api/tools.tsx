@@ -1,7 +1,11 @@
-import { CancelIcon, CompleteIcon } from '@components/Icons/Icons';
-import { currentColor } from '@src/common/constants';
 import { toast } from 'react-toastify';
+
+import { currentColor } from '@src/common/constants';
+
+import { CancelIcon, CompleteIcon } from '@components/Icons/Icons';
+
 import { CustomRtkError, MyServerResponse } from './rtk-api.types';
+
 
 export function CatchHandleForToast<T>(reason: any | CustomRtkError<T>) {
   console.error(reason);

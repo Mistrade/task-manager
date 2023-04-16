@@ -1,13 +1,18 @@
-import { Accordion } from '@components/Accordion/Accordion';
 import { plannerDateToDate } from '@planner-reducer/utils';
-import { WeekCalendarProps } from '@planner/planner.types';
-import { WeekHeader } from '@planner/RenderModes/WeekCalendar/WeekHeader';
 import { useAppSelector } from '@redux/hooks/hooks';
 import { plannerSelectLayout } from '@selectors/planner';
-import { getTaskListOfDay } from '@src/common/functions';
 import { FC, useMemo } from 'react';
 import styled from 'styled-components';
+
+import { getTaskListOfDay } from '@src/common/functions';
+
+import { Accordion } from '@components/Accordion/Accordion';
+
+import { WeekHeader } from '@planner/RenderModes/WeekCalendar/WeekHeader';
+import { WeekCalendarProps } from '@planner/planner.types';
+
 import { CalendarCell } from './CalendarCell/Cell';
+
 
 const WeekContainer = styled('div')`
   position: relative;

@@ -1,10 +1,16 @@
-import { EventInfoModel } from '@api/planning-api/types/event-info.types';
+import { FC, memo } from 'react';
+
+import { disableReRender } from '@src/common/utils/react-utils';
+
 import { FlexBlock } from '@components/LayoutComponents/FlexBlock';
 import { Heading } from '@components/Text/Heading';
+
 import { OptionPanelCalendar } from '@planner/OptionsPanel/Calendar';
-import { disableReRender } from '@src/common/utils/react-utils';
-import { FC, memo } from 'react';
+
+import { EventInfoModel } from '@api/planning-api/types/event-info.types';
+
 import { TaskCreatedMessage } from '../SupportsComponent/TaskCreatedMessage';
+
 
 interface TaskInformerRightBarProps {
   eventInfo: EventInfoModel;

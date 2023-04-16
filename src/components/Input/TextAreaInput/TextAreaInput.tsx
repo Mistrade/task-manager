@@ -1,9 +1,11 @@
-import { TextInputProps } from '@components/Input/TextInput/TextInput';
 import React, { FC, useEffect, useRef } from 'react';
-import { FlexBlock } from '@components/LayoutComponents/FlexBlock';
+
 import { StyledTextAreaInput } from '@components/Input/Input.styled';
-import { InputLabel } from '@components/Input/InputSupportComponents/InputLabel';
 import { InputErrorMessage } from '@components/Input/InputSupportComponents/InputErrorMessage';
+import { InputLabel } from '@components/Input/InputSupportComponents/InputLabel';
+import { TextInputProps } from '@components/Input/TextInput/TextInput';
+import { FlexBlock } from '@components/LayoutComponents/FlexBlock';
+
 
 type ExtendableTextInputKeys =
   | 'actions'

@@ -1,16 +1,21 @@
-import { ShortEventInfoModel } from '@api/planning-api/types/event-info.types';
+import React, { FC, useMemo } from 'react';
+import styled from 'styled-components';
+
 import { EmptyButtonStyled } from '@components/Buttons/EmptyButton.styled';
 import { ScrollVerticalView } from '@components/LayoutComponents/ScrollView/ScrollVerticalView';
 import { Tooltip } from '@components/Tooltip/Tooltip';
+
 import {
   CalendarItem,
   GlobalTaskListProps,
   OnSelectTaskFnType,
 } from '@planner/planner.types';
-import React, { FC, useMemo } from 'react';
-import styled from 'styled-components';
+
+import { ShortEventInfoModel } from '@api/planning-api/types/event-info.types';
+
 import { CellDate } from '../CellDate';
 import { CalendarCellEventItem } from './Item';
+
 
 const CalendarCellEventsListContainer = styled('div')`
   & {

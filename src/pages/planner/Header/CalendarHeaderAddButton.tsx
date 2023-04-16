@@ -1,16 +1,19 @@
-import { EmptyButtonStyled } from '@components/Buttons/EmptyButton.styled';
-import { PlusIcon } from '@components/Icons/Icons';
-import { SelectItemContainer } from '@components/Input/SelectInput/SelectItemContainer';
-import { SelectListContainer } from '@components/Input/SelectInput/SelectListContainer';
-import { Tooltip } from '@components/Tooltip/Tooltip';
 import { useCreateEventModal } from '@hooks/useCreateEventModal';
 import { useSearchNavigate } from '@hooks/useSearchNavigate';
 import { useAppSelector } from '@redux/hooks/hooks';
 import { ServicesNames } from '@redux/reducers/global';
 import { plannerSelectLayout, plannerSelectStatus } from '@selectors/planner';
+import React, { FC, useMemo } from 'react';
+
 import { getPath } from '@src/common/functions';
 import { disableReRender } from '@src/common/utils/react-utils';
-import React, { FC, useMemo } from 'react';
+
+import { EmptyButtonStyled } from '@components/Buttons/EmptyButton.styled';
+import { PlusIcon } from '@components/Icons/Icons';
+import { SelectItemContainer } from '@components/Input/SelectInput/SelectItemContainer';
+import { SelectListContainer } from '@components/Input/SelectInput/SelectListContainer';
+import { Tooltip } from '@components/Tooltip/Tooltip';
+
 
 export interface CalendarHeaderAddButtonProps {
   onAddTask?: () => void;

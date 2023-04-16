@@ -1,25 +1,22 @@
 import React, { FC } from 'react';
-import { CommentActionsProps } from '../comments.types';
+
+import { currentColor, defaultColor, orangeColor } from '@src/common/constants';
+
+import { WhiteButton } from '@components/Buttons/Buttons.styled';
+import { CopyToClipboardButton } from '@components/Buttons/CopyToClipboardButton';
+import { AnswerIcon } from '@components/Icons/CalendarIcons/AnswerIcon';
+import { PencilIcon, StarIcon, TrashIcon } from '@components/Icons/Icons';
+import { FlexBlock } from '@components/LayoutComponents/FlexBlock';
+import { Tooltip } from '@components/Tooltip/Tooltip';
+
 import { useToggleIsImportantCommentStateMutation } from '@api/planning-api';
+
 import {
   CommentActionButton,
   CommentActionsContainer,
 } from '../comments.styled';
-import { Tooltip } from '@components/Tooltip/Tooltip';
-import {
-  PencilIcon,
-  StarIcon,
-  TrashIcon,
-} from '@components/Icons/Icons';
-import {
-  currentColor,
-  defaultColor,
-  orangeColor,
-} from '@src/common/constants';
-import { AnswerIcon } from '@components/Icons/CalendarIcons/AnswerIcon';
-import { CopyToClipboardButton } from '@components/Buttons/CopyToClipboardButton';
-import { FlexBlock } from '@components/LayoutComponents/FlexBlock';
-import { WhiteButton } from '@components/Buttons/Buttons.styled';
+import { CommentActionsProps } from '../comments.types';
+
 
 export const RemoveAction: FC<
   Pick<CommentActionsProps, 'onRemoveComment' | 'comment'>

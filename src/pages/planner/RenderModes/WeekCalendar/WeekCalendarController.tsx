@@ -1,9 +1,13 @@
+import React, { FC, memo, useCallback, useState } from 'react';
+
 import { FlexBlock } from '@components/LayoutComponents/FlexBlock';
 import { ScrollVerticalView } from '@components/LayoutComponents/ScrollView/ScrollVerticalView';
-import { EventsStorage, WeekCalendarProps } from '@planner/planner.types';
+
 import { SmartEventFilters } from '@planner/RenderModes/FindEventFilter/SmartEventFilters';
-import React, { FC, memo, useCallback, useState } from 'react';
+import { EventsStorage, WeekCalendarProps } from '@planner/planner.types';
+
 import { WeeKCalendar } from './WeekCalendar';
+
 
 export interface WeekCalendarControllerProps
   extends Omit<WeekCalendarProps, 'taskStorage'> {}

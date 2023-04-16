@@ -1,4 +1,5 @@
 import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/dist/query/react';
+
 import { baseServerUrl } from '../config';
 import { MyServerResponse } from '../rtk-api.types';
 import {
@@ -6,6 +7,7 @@ import {
   RegUserRequestProps,
   UserModel,
 } from './session-api.types';
+
 
 export const sessionApi = createApi({
   reducerPath: 'sessionApi',

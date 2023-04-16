@@ -1,11 +1,10 @@
 import { FC } from 'react';
-import { WhiteButton } from '@components/Buttons/Buttons.styled';
-import {
-  CancelIcon,
-  CompleteIcon,
-  LoaderIcon,
-} from '@components/Icons/Icons';
+
 import { currentColor, defaultColor } from '@src/common/constants';
+
+import { WhiteButton } from '@components/Buttons/Buttons.styled';
+import { CancelIcon, CompleteIcon, LoaderIcon } from '@components/Icons/Icons';
+
 
 interface EditableFieldsButtonsProps {
   isLoading: boolean;

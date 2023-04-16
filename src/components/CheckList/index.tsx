@@ -1,30 +1,33 @@
+import React, { FC, useCallback, useMemo, useState } from 'react';
+import { ColorRing } from 'react-loader-spinner';
+import styled, { keyframes } from 'styled-components';
+
 import { borderRadiusSize } from '@src/common/borderRadiusSize';
 import {
   currentColor,
   defaultColor,
   disabledColor,
 } from '@src/common/constants';
-import styled, { keyframes } from 'styled-components';
-import React, { FC, useCallback, useMemo, useState } from 'react';
-import { ColorRing } from 'react-loader-spinner';
-import { ICheckListItem } from '@pages/planner/planner.types';
-import {
-  FlexBlock,
-  FlexBlockProps,
-} from '@components/LayoutComponents/FlexBlock';
-import { Tooltip } from '@components/Tooltip/Tooltip';
-import { Checkbox } from '@components/Input/Checkbox/Checkbox';
+
+import { TimeBadge } from '@components/Badge/Badge';
 import { CopyToClipboardButton } from '@components/Buttons/CopyToClipboardButton';
 import { EmptyButtonStyled } from '@components/Buttons/EmptyButton.styled';
 import { PencilIcon, TrashIcon } from '@components/Icons/Icons';
+import { TooltipIcon } from '@components/Icons/TooltipIcon';
+import { Checkbox } from '@components/Input/Checkbox/Checkbox';
 import {
   TextInput,
   TextInputProps,
 } from '@components/Input/TextInput/TextInput';
-import { TooltipIcon } from '@components/Icons/TooltipIcon';
-import { TimeBadge } from '@components/Badge/Badge';
+import {
+  FlexBlock,
+  FlexBlockProps,
+} from '@components/LayoutComponents/FlexBlock';
 import { ScrollVerticalView } from '@components/LayoutComponents/ScrollView/ScrollVerticalView';
 import { Heading } from '@components/Text/Heading';
+import { Tooltip } from '@components/Tooltip/Tooltip';
+
+import { ICheckListItem } from '@pages/planner/planner.types';
 
 const CheckListContainerAnimation = keyframes`
   from {

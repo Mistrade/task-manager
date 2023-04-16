@@ -1,11 +1,11 @@
-import { ObjectId } from '@api/rtk-api.types';
 import { FC } from 'react';
+
 import { ErrorScreen } from '@components/Errors/ErrorScreen';
+
 import { useCreateCheckListMutation } from '@api/planning-api';
-import {
-  CatchHandleForToast,
-  thenHandleForToast,
-} from '@api/tools';
+import { ObjectId } from '@api/rtk-api.types';
+import { CatchHandleForToast, thenHandleForToast } from '@api/tools';
+
 
 export interface CreateEventCheckList {
   eventId: ObjectId;

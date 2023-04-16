@@ -1,7 +1,10 @@
-import React, { FC } from 'react';
-import { StyledCommentDate } from '../comments.styled';
 import dayjs from 'dayjs';
+import React, { FC } from 'react';
+
 import { getDateDescription } from '@src/common/calendarSupport/dateHelper';
+
+import { StyledCommentDate } from '../comments.styled';
+
 
 export const CommentDate: FC<{ date: Date; isUpdated?: boolean }> = ({
   date,

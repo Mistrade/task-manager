@@ -1,4 +1,5 @@
 import { FC } from 'react';
+
 import { ShortEventInfoModel } from '@api/planning-api/types/event-info.types';
 
 interface ListModeDayItemProps {

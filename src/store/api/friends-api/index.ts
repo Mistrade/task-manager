@@ -1,11 +1,13 @@
-import { UserModel } from '@api/session-api/session-api.types';
 import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/dist/query/react';
+
+import { UserModel } from '@api/session-api/session-api.types';
+
 import { baseServerUrl } from '../config';
 import { MyServerResponse, ObjectId } from '../rtk-api.types';
 import { TFriendsModelList } from './friends-api.types';
 
-export enum CONTACT_TYPES {
-  'FRIENDS' = 'friends',
+
+export enum FRIEND_REQUESTS_TYPES {
   'INCOMING' = 'incoming',
   'OUTGOING' = 'outgoing',
 }
@@ -19,9 +21,8 @@ export enum ContactAcceptStatuses {
 export const contactsApi = createApi({
   reducerPath: 'contactsApi',
   tagTypes: [
-    CONTACT_TYPES.FRIENDS,
-    CONTACT_TYPES.OUTGOING,
-    CONTACT_TYPES.INCOMING,
+    FRIEND_REQUESTS_TYPES.OUTGOING,
+    FRIEND_REQUESTS_TYPES.INCOMING,
     'FriendsList',
   ],
   baseQuery: fetchBaseQuery({
@@ -37,9 +38,12 @@ export const contactsApi = createApi({
         body: args,
       }),
       invalidatesTags: (result, error, arg, meta) =>
-        !error ? [CONTACT_TYPES.OUTGOING] : [],
+        !error ? [FRIEND_REQUESTS_TYPES.OUTGOING] : [],
     }),
-    getContactsList: query<MyServerResponse<TFriendsModelList>, CONTACT_TYPES>({
+    getContactsList: query<
+      MyServerResponse<TFriendsModelList>,
+      FRIEND_REQUESTS_TYPES
+    >({
       query: (args) => ({
         url: `/get_requests_list/${args}`,
         method: 'GET',

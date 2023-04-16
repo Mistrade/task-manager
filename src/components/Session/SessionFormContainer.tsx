@@ -1,9 +1,12 @@
-import { borderRadiusSize } from '@src/common/borderRadiusSize';
 import * as React from 'react';
 import { FC, ReactNode } from 'react';
-import { currentColor, defaultColor } from '@src/common/constants';
 import { css } from 'styled-components';
+
+import { borderRadiusSize } from '@src/common/borderRadiusSize';
+import { currentColor, defaultColor } from '@src/common/constants';
+
 import { FlexBlock } from '@components/LayoutComponents/FlexBlock';
+
 
 interface SessionFormContainerProps {
   children: ReactNode;

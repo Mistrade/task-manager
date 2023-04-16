@@ -1,4 +1,7 @@
-import { useChangeSelectGroupMutation } from '@api/planning-api';
+import { FC, useState } from 'react';
+
+import { darkColor, defaultColor } from '@src/common/constants';
+
 import { EmptyButtonStyled } from '@components/Buttons/EmptyButton.styled';
 import {
   LoaderIcon,
@@ -7,11 +10,14 @@ import {
   TrashIcon,
 } from '@components/Icons/Icons';
 import { FlexBlock } from '@components/LayoutComponents/FlexBlock';
+
 import { CutText } from '@planner/RenderModes/DayCalendar/TaskList/TaskList.styled';
-import { darkColor, defaultColor } from '@src/common/constants';
-import { FC, useState } from 'react';
+
+import { useChangeSelectGroupMutation } from '@api/planning-api';
+
 import { CalendarItemLabel, GroupItemCheckbox } from './GroupList.styled';
 import { GroupItemProps } from './groups.types';
+
 
 export const GroupItem: FC<GroupItemProps> = ({
   onChange,

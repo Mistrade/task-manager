@@ -1,5 +1,7 @@
-import { TimeBadge } from '@components/Badge/Badge';
 import React from 'react';
+
+import { TimeBadge } from '@components/Badge/Badge';
+
 import { BreadCrumbsContainer } from './BreadCrumbs.styled';
 
 interface BreadCrumbsItem<T> {

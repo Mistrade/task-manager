@@ -1,7 +1,11 @@
 import { FC, memo } from 'react';
-import { SmallCalendarMonthTitleProps } from '@planner/planner.types';
-import { currentColor, MonthList } from '@src/common/constants';
+
+import { MonthList, currentColor } from '@src/common/constants';
+
 import { FlexBlock } from '@components/LayoutComponents/FlexBlock';
+
+import { SmallCalendarMonthTitleProps } from '@planner/planner.types';
+
 
 export const SmallCalendarMonthTitle: FC<SmallCalendarMonthTitleProps> = memo(
   ({ monthItem, onClick, renderYear }) => {

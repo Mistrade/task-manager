@@ -1,8 +1,11 @@
 import { FC } from 'react';
-import { ReplyContent } from '@components/Essences/EventEssence/event-essence.styled';
-import { BaseEventHistoryFieldProps } from '../event-history.types';
-import { Text } from '@components/Text/Text';
+
 import { TimeBadge } from '@components/Badge/Badge';
+import { ReplyContent } from '@components/Essences/EventEssence/event-essence.styled';
+import { Text } from '@components/Text/Text';
+
+import { BaseEventHistoryFieldProps } from '../event-history.types';
+
 
 export const HistoryTitleField: FC<BaseEventHistoryFieldProps<string>> = ({
   value,

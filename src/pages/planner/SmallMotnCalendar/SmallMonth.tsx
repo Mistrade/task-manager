@@ -1,19 +1,25 @@
+import { FC, ReactNode } from 'react';
+
+import {
+  MonthList,
+  WeekDaysShortList,
+  defaultColor,
+} from '@src/common/constants';
+
+import { FlexBlock } from '@components/LayoutComponents/FlexBlock';
+
 import {
   MonthItem,
   OnSelectDateFromCalendarFn,
   PlannerMonthMode,
   PlannerWeekMode,
 } from '@planner/planner.types';
-import { FC, ReactNode } from 'react';
-import { FlexBlock } from '@components/LayoutComponents/FlexBlock';
-import {
-  defaultColor,
-  MonthList,
-  WeekDaysShortList,
-} from '@src/common/constants';
-import { SmallMonthWeekItem } from './SmallMonthWeekItem';
-import { SmallMonthRow } from './SmallMonth.styled';
+
 import { GetEventsSchemeResponse } from '@api/planning-api/types/event-info.types';
+
+import { SmallMonthRow } from './SmallMonth.styled';
+import { SmallMonthWeekItem } from './SmallMonthWeekItem';
+
 
 export interface PourDatesProps {
   type: 'week' | 'month';

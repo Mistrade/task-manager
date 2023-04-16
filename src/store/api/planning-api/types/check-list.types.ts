@@ -1,5 +1,7 @@
 import { ICheckListItem } from '@planner/planner.types';
+
 import { ObjectId, UtcDate } from '@api/rtk-api.types';
+
 
 export interface CreateCheckListRequest {
   title: string;

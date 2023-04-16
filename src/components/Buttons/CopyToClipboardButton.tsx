@@ -1,11 +1,15 @@
-import { currentColor } from '@src/common/constants';
-import { EmptyButtonStyled } from './EmptyButton.styled';
 import { FC, useCallback, useEffect, useState } from 'react';
 import { toast } from 'react-toastify';
-import { Button } from './Buttons.styled';
-import { FlexBlockProps } from '@components/LayoutComponents/FlexBlock';
-import { CompleteIcon, IconProps } from '@components/Icons/Icons';
+
+import { currentColor } from '@src/common/constants';
+
 import { CopyIcon } from '@components/Icons/AppIcon/CopyIcon';
+import { CompleteIcon, IconProps } from '@components/Icons/Icons';
+import { FlexBlockProps } from '@components/LayoutComponents/FlexBlock';
+
+import { Button } from './Buttons.styled';
+import { EmptyButtonStyled } from './EmptyButton.styled';
+
 
 export interface CopyToClipboardButtonProps extends Omit<IconProps, 'onClick'> {
   iconContainerProps?: FlexBlockProps;

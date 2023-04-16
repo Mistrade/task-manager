@@ -1,19 +1,23 @@
-import { EventItem, EventLinkItem } from '@planner/planner.types';
-import { EventInfoUpdateFn } from './ToggleTaskInformerButtons';
-import { FC, useState } from 'react';
 import { useFormik } from 'formik';
+import { FC, useState } from 'react';
 import * as yup from 'yup';
-import { LinkValidationSchema } from '@planner/Forms/CreateEvent/CreateEventForm';
-import { SelectLinks } from '@components/Input/SelectInput/CalendarSelectInputs/SelectLinks';
-import { FlexBlock } from '@components/LayoutComponents/FlexBlock';
+
 import {
   JoinToEventButton,
   TransparentButton,
 } from '@components/Buttons/Buttons.styled';
 import { EmptyButtonStyled } from '@components/Buttons/EmptyButton.styled';
 import { PencilIcon, TrashIcon } from '@components/Icons/Icons';
-import { EditableFieldsButtons } from './EditableFieldsButtons';
+import { SelectLinks } from '@components/Input/SelectInput/CalendarSelectInputs/SelectLinks';
+import { FlexBlock } from '@components/LayoutComponents/FlexBlock';
+
+import { LinkValidationSchema } from '@planner/Forms/CreateEvent/CreateEventForm';
+import { EventItem, EventLinkItem } from '@planner/planner.types';
+
 import { StyledTaskInformerLinkForm } from '../TaskInformer.styled';
+import { EditableFieldsButtons } from './EditableFieldsButtons';
+import { EventInfoUpdateFn } from './ToggleTaskInformerButtons';
+
 
 interface InformerTaskAddLinkProps {
   onDecline: () => void;

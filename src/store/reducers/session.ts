@@ -1,4 +1,5 @@
-import { createSlice, isAnyOf, PayloadAction } from '@reduxjs/toolkit';
+import { PayloadAction, createSlice, isAnyOf } from '@reduxjs/toolkit';
+
 import {
   AuthorizationUser,
   CheckUserSession,

@@ -1,14 +1,18 @@
-import { CalendarCellProps } from '@planner/planner.types';
+import React, { FC } from 'react';
+import styled, { css } from 'styled-components';
+
 import { borderRadiusSize } from '@src/common/borderRadiusSize';
 import {
   currentColor,
   defaultColor,
   disabledColor,
 } from '@src/common/constants';
-import React, { FC } from 'react';
-import styled, { css } from 'styled-components';
+
+import { CalendarCellProps } from '@planner/planner.types';
+
 import { CellDate } from './CellDate';
 import { CalendarCellEventsList } from './EventList/List';
+
 
 export interface CalendarCellStyledComponentProps {
   disabled?: boolean;

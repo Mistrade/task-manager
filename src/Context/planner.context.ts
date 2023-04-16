@@ -1,14 +1,19 @@
 import { createContext } from 'react';
-import { IPlannerProviderValue } from '@components/ContextProviders/PlannerProvider';
+
+import { ShortChangeCurrentPattern } from '@src/common/commonTypes';
 import {
+  PLANNER_LAYOUTS,
   defaultMonthItem,
   defaultWeekItem,
   defaultYearItem,
-  PLANNER_LAYOUTS,
 } from '@src/common/constants';
+
+import { IPlannerProviderValue } from '@components/ContextProviders/PlannerProvider';
+
 import { EventFilterTaskStatuses } from '@planner/RenderModes/FindEventFilter/find-event-filters.types';
-import { ShortChangeCurrentPattern } from '@src/common/commonTypes';
+
 import { ObjectId } from '@api/rtk-api.types';
+
 
 const today = new Date();
 

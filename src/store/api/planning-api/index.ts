@@ -1,15 +1,19 @@
-import { SwitcherBadges } from '@components/Switcher/Switcher';
-import { CreateGroupProps } from '@planner/Groups/groups.types';
-import { CreateEventDataObject, EventsStorage } from '@planner/planner.types';
-import { EventFilterTaskStatuses } from '@planner/RenderModes/FindEventFilter/find-event-filters.types';
 import {
   BaseQueryFn,
-  createApi,
   FetchArgs,
+  createApi,
   fetchBaseQuery,
 } from '@reduxjs/toolkit/dist/query/react';
-import { mergeArrayWithUserId, MergedObject } from '@src/common/functions';
 import dayjs from 'dayjs';
+
+import { MergedObject, mergeArrayWithUserId } from '@src/common/functions';
+
+import { SwitcherBadges } from '@components/Switcher/Switcher';
+
+import { CreateGroupProps } from '@planner/Groups/groups.types';
+import { EventFilterTaskStatuses } from '@planner/RenderModes/FindEventFilter/find-event-filters.types';
+import { CreateEventDataObject, EventsStorage } from '@planner/planner.types';
+
 import { baseServerUrl } from '../config';
 import { CustomRtkError, MyServerResponse, ObjectId } from '../rtk-api.types';
 import {
@@ -46,6 +50,7 @@ import {
   GroupIdObject,
   GroupModelResponse,
 } from './types/groups.types';
+
 
 export const PlanningApiTagTypes = [
   'Events',

@@ -1,5 +1,6 @@
-import { borderRadiusSize } from '@src/common/borderRadiusSize';
 import styled, { css } from 'styled-components';
+
+import { borderRadiusSize } from '@src/common/borderRadiusSize';
 import {
   currentColor,
   darkColor,
@@ -9,6 +10,7 @@ import {
   lightHoverColor,
   orangeColor,
 } from '@src/common/constants';
+
 import { FlexBlock } from '@components/LayoutComponents/FlexBlock';
 
 export const SmallMonthWeekCount = styled(FlexBlock)`

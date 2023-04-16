@@ -1,9 +1,14 @@
 import { FC } from 'react';
-import { BaseEventHistoryFieldProps } from '../event-history.types';
-import { GroupModelResponse } from '@api/planning-api/types/groups.types';
-import { EventGroupButton } from '@planner/TaskInformer/SupportsComponent/EventGroupButton';
+
 import { ReplyContent } from '@components/Essences/EventEssence/event-essence.styled';
 import { Text } from '@components/Text/Text';
+
+import { EventGroupButton } from '@planner/TaskInformer/SupportsComponent/EventGroupButton';
+
+import { GroupModelResponse } from '@api/planning-api/types/groups.types';
+
+import { BaseEventHistoryFieldProps } from '../event-history.types';
+
 
 export const HistoryGroupField: FC<
   BaseEventHistoryFieldProps<GroupModelResponse | null>

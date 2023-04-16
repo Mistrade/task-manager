@@ -1,16 +1,18 @@
 import { FC, forwardRef } from 'react';
-import { Tooltip } from '@components/Tooltip/Tooltip';
-import {
-  currentColor,
-  darkColor,
-  defaultColor,
-} from '@src/common/constants';
+
+import { currentColor, darkColor, defaultColor } from '@src/common/constants';
+
 import { EmptyButtonStyled } from '@components/Buttons/EmptyButton.styled';
-import { FlexBlock } from '@components/LayoutComponents/FlexBlock';
-import { EventToggleButtonProps } from './EventStatusButton';
-import { GroupModelResponse } from '@api/planning-api/types/groups.types';
 import { LoaderIcon } from '@components/Icons/Icons';
+import { FlexBlock } from '@components/LayoutComponents/FlexBlock';
+import { Tooltip } from '@components/Tooltip/Tooltip';
+
 import { GroupLogo } from '@planner/Groups/GroupList.styled';
+
+import { GroupModelResponse } from '@api/planning-api/types/groups.types';
+
+import { EventToggleButtonProps } from './EventStatusButton';
+
 
 export interface EventGroupButtonProps extends EventToggleButtonProps {
   group: GroupModelResponse | null;

@@ -1,15 +1,19 @@
+import { FC } from 'react';
+
+import { Button, WhiteButton } from '@components/Buttons/Buttons.styled';
+import { FlexBlock } from '@components/LayoutComponents/FlexBlock';
 import {
   Modal,
   ModalBody,
   ModalFooter,
   ModalHeader,
 } from '@components/LayoutComponents/Modal/Modal';
-import { FC } from 'react';
-import { FlexBlock } from '@components/LayoutComponents/FlexBlock';
-import { Button, WhiteButton } from '@components/Buttons/Buttons.styled';
+
 import { useRemoveGroupMutation } from '@api/planning-api';
-import { RemoveGroupHockProps, RemoveGroupModalProps } from './groups.types';
 import { CatchHandleForToast, thenHandleForToast } from '@api/tools';
+
+import { RemoveGroupHockProps, RemoveGroupModalProps } from './groups.types';
+
 
 export const RemoveGroupHock: FC<RemoveGroupHockProps> = (props) => {
   if (props.groupInfo !== null) {

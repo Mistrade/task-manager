@@ -1,15 +1,19 @@
-import { FlexBlock } from '@components/LayoutComponents/FlexBlock';
-import { CheckboxStyledInput } from '@components/Input/Checkbox/Checkbox.styled';
 import { ChangeEvent, FC, useRef } from 'react';
+
+import { darkColor } from '@src/common/constants';
+
+import { EmptyButtonStyled } from '@components/Buttons/EmptyButton.styled';
+import { IconProps } from '@components/Icons/Icons';
 import {
   EmptyCheckboxIcon,
   FillCheckboxIcon,
 } from '@components/Icons/InputIcons/Checkbox';
-import { IconProps } from '@components/Icons/Icons';
-import { EmptyButtonStyled } from '@components/Buttons/EmptyButton.styled';
+import { CheckboxStyledInput } from '@components/Input/Checkbox/Checkbox.styled';
 import { StyledLabel } from '@components/Input/Input.styled';
-import { darkColor } from '@src/common/constants';
+import { FlexBlock } from '@components/LayoutComponents/FlexBlock';
+
 import { CutText } from '@planner/RenderModes/DayCalendar/TaskList/TaskList.styled';
+
 
 export interface CheckboxProps {
   type: 'checkbox' | 'radio';

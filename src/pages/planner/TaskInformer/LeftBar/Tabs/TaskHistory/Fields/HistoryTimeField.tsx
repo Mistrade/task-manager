@@ -1,10 +1,14 @@
-import { FC } from 'react';
 import dayjs from 'dayjs';
-import { TimeBadge } from '@components/Badge/Badge';
+import { FC } from 'react';
+
 import { DateHelper } from '@src/common/calendarSupport/dateHelper';
-import { BaseEventHistoryFieldProps } from '../event-history.types';
+
+import { TimeBadge } from '@components/Badge/Badge';
 import { ReplyContent } from '@components/Essences/EventEssence/event-essence.styled';
 import { Text } from '@components/Text/Text';
+
+import { BaseEventHistoryFieldProps } from '../event-history.types';
+
 
 export const HistoryTimeField: FC<
   BaseEventHistoryFieldProps<Date | null | string | undefined>

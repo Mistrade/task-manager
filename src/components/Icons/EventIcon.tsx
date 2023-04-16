@@ -1,4 +1,6 @@
 import React, { FC } from 'react';
+
+import { ListIcon } from '@components/Icons/AppIcon/ListIcon';
 import {
   ArchiveIcon,
   CompleteIcon,
@@ -8,9 +10,11 @@ import {
   ReviewIcon,
 } from '@components/Icons/Icons';
 import { FlexBlockProps } from '@components/LayoutComponents/FlexBlock';
-import { ListIcon } from '@components/Icons/AppIcon/ListIcon';
-import { EventInfoModel } from '@api/planning-api/types/event-info.types';
+
 import { EventFilterTaskStatuses } from '@planner/RenderModes/FindEventFilter/find-event-filters.types';
+
+import { EventInfoModel } from '@api/planning-api/types/event-info.types';
+
 
 export const EventIcon: FC<
   IconProps &

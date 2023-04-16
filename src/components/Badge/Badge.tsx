@@ -1,10 +1,12 @@
-import { borderRadiusSize } from '@src/common/borderRadiusSize';
 import styled from 'styled-components';
+
+import { borderRadiusSize } from '@src/common/borderRadiusSize';
 import {
   currentColor,
   defaultColor,
   pageHeaderColor,
 } from '@src/common/constants';
+
 
 export const Badge = styled('span')`
   line-height: 1;

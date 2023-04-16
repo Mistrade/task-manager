@@ -1,6 +1,9 @@
 import styled from 'styled-components';
+
 import { defaultColor } from '@src/common/constants';
+
 import { pxToCssValue } from '@components/LayoutComponents/FlexBlock';
+
 
 export interface PreviewDescriptionProps {
   isOpen?: boolean;

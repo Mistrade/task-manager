@@ -1,7 +1,9 @@
-import { LinkStyled } from '@components/Buttons/Link.styled';
-import { currentColor, defaultColor } from '@src/common/constants';
 import React from 'react';
 import styled from 'styled-components';
+
+import { currentColor, defaultColor } from '@src/common/constants';
+
+import { LinkStyled } from '@components/Buttons/Link.styled';
 
 export const HeaderDefaultLink = styled(LinkStyled)`
   font-size: 16px;

@@ -1,6 +1,8 @@
 import { EventFiltersProps } from '@hooks/useEventFilters';
 import React from 'react';
+
 import { SwitcherBadges } from '@components/Switcher/Switcher';
+
 
 export interface IFindEventFilterProps extends FormHandle {
   statusBadges?: SwitcherBadges<EventFilterTaskStatuses> | null;

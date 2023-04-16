@@ -1,13 +1,16 @@
+import plannerReducer from '@redux/reducers/planner';
 import { combineReducers, configureStore } from '@reduxjs/toolkit';
-import { eventReducer } from './reducers/events';
-import { SessionReducer } from './reducers/session';
-import { CalendarReducer } from './reducers/planner-reducer';
+import { setupListeners } from '@reduxjs/toolkit/query';
+
+import { contactsApi } from '@api/friends-api';
 import { planningApi } from '@api/planning-api';
 import { sessionApi } from '@api/session-api';
-import { setupListeners } from '@reduxjs/toolkit/query';
-import { contactsApi } from '@api/friends-api';
+
+import { eventReducer } from './reducers/events';
 import { GlobalReducer } from './reducers/global';
-import plannerReducer from '@redux/reducers/planner';
+import { CalendarReducer } from './reducers/planner-reducer';
+import { SessionReducer } from './reducers/session';
+
 
 const rootReducer = combineReducers({
   events: eventReducer,

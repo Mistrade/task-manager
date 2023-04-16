@@ -1,16 +1,16 @@
 import dayjs from 'dayjs';
+import duration from 'dayjs/plugin/duration';
 import isBetween from 'dayjs/plugin/isBetween';
-import Weekday from 'dayjs/plugin/weekday';
-import isToday from 'dayjs/plugin/isToday';
 import isSameOrAfter from 'dayjs/plugin/isSameOrAfter';
 import isSameOrBefore from 'dayjs/plugin/isSameOrBefore';
+import isToday from 'dayjs/plugin/isToday';
 import isTomorrow from 'dayjs/plugin/isTomorrow';
 import isYesterday from 'dayjs/plugin/isYesterday';
-import weekOfYear from 'dayjs/plugin/weekOfYear';
-import updateLocale from 'dayjs/plugin/updateLocale';
-import duration from 'dayjs/plugin/duration';
-import utc from 'dayjs/plugin/utc';
 import tz from 'dayjs/plugin/timezone';
+import updateLocale from 'dayjs/plugin/updateLocale';
+import utc from 'dayjs/plugin/utc';
+import weekOfYear from 'dayjs/plugin/weekOfYear';
+import Weekday from 'dayjs/plugin/weekday';
 
 dayjs.extend(isBetween);
 dayjs.extend(isToday);

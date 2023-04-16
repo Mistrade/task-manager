@@ -1,13 +1,17 @@
+import React, { FC } from 'react';
+
+import { disableReRender } from '@src/common/utils/react-utils';
+
 import { FlexBlock } from '@components/LayoutComponents/FlexBlock';
 import { ScrollVerticalView } from '@components/LayoutComponents/ScrollView/ScrollVerticalView';
+
 import { GroupList } from '@planner/Groups/GroupList';
 import { CalendarCurrentTitle } from '@planner/Header/CalendarCurrentTitle';
 import { OptionPanelCalendar } from '@planner/OptionsPanel/Calendar';
 import { PlannerSelectLayout } from '@planner/OptionsPanel/SelectLayout';
 import { TimeZone } from '@planner/OptionsPanel/TimeZone';
 import { DaySettingsPanelProps } from '@planner/planner.types';
-import { disableReRender } from '@src/common/utils/react-utils';
-import React, { FC } from 'react';
+
 
 export const PlannerOptionsPanel: FC<DaySettingsPanelProps> = React.memo(
   ({}) => {

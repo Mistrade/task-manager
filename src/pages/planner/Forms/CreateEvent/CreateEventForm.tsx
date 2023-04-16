@@ -1,36 +1,42 @@
-import { useCreateEventMutation } from '@api/planning-api';
-import { EventIdObject } from '@api/planning-api/types/event-info.types';
-import { GroupModelResponse } from '@api/planning-api/types/groups.types';
-import { MyServerResponse, ObjectId } from '@api/rtk-api.types';
-import { CatchHandleForToast } from '@api/tools';
+import { useAppSelector } from '@redux/hooks/hooks';
+import { createEventInitialStateSelector } from '@selectors/calendarItems';
+import { useFormik } from 'formik';
+import { FC, useMemo, useState } from 'react';
+import styled from 'styled-components';
+import * as yup from 'yup';
+
+import { borderRadiusSize } from '@src/common/borderRadiusSize';
+import {
+  PRIORITY_TITLES,
+  TASK_STATUSES,
+  defaultColor,
+  disabledColor,
+  pageHeaderColor,
+} from '@src/common/constants';
+
 import { Button, StyledButton } from '@components/Buttons/Buttons.styled';
 import { FlexBlock } from '@components/LayoutComponents/FlexBlock';
 import { Switcher } from '@components/Switcher/Switcher';
 import { Heading } from '@components/Text/Heading';
+
 import { ChainsShowcase } from '@planner/TaskInformer/LeftBar/Tabs/Chains/Connect/ChainsShowcase';
 import {
   ToggleEventCalendar,
   ToggleEventPriority,
   ToggleEventStatus,
 } from '@planner/TaskInformer/SupportsComponent/ToggleTaskInformerButtons';
-import { useAppSelector } from '@redux/hooks/hooks';
-import { createEventInitialStateSelector } from '@selectors/calendarItems';
-import { borderRadiusSize } from '@src/common/borderRadiusSize';
-import {
-  defaultColor,
-  disabledColor,
-  pageHeaderColor,
-  PRIORITY_TITLES,
-  TASK_STATUSES,
-} from '@src/common/constants';
-import { useFormik } from 'formik';
-import { FC, useMemo, useState } from 'react';
-import styled from 'styled-components';
-import * as yup from 'yup';
+
+import { useCreateEventMutation } from '@api/planning-api';
+import { EventIdObject } from '@api/planning-api/types/event-info.types';
+import { GroupModelResponse } from '@api/planning-api/types/groups.types';
+import { MyServerResponse, ObjectId } from '@api/rtk-api.types';
+import { CatchHandleForToast } from '@api/tools';
+
 import { CreateEventDataObject } from '../../planner.types';
 import { CreateEventFormAdditional } from './Tabs/Additional';
 import { CreateEventInfoTab } from './Tabs/Info';
 import { CreateEventMembersTab } from './Tabs/Members';
+
 
 interface CreateEventFormProps {
   onClose?: () => void;

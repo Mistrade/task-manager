@@ -1,3 +1,11 @@
+import { useAppSelector } from '@redux/hooks/hooks';
+import { ServicesNames } from '@redux/reducers/global';
+import { plannerSelectLayout } from '@selectors/planner';
+import React, { FC, ReactNode, useCallback } from 'react';
+
+import { PLANNER_LAYOUTS, TaskStatusesList } from '@src/common/constants';
+import { getPath } from '@src/common/functions';
+
 import { Button } from '@components/Buttons/Buttons.styled';
 import { EmptyButtonStyled } from '@components/Buttons/EmptyButton.styled';
 import { FiltersIcon, SettingsIcon } from '@components/Icons/Icons';
@@ -11,18 +19,15 @@ import { FlexBlock } from '@components/LayoutComponents/FlexBlock';
 import { Switcher } from '@components/Switcher/Switcher';
 import { Heading } from '@components/Text/Heading';
 import { Tooltip } from '@components/Tooltip/Tooltip';
+
 import { PlannerNavLink } from '@planner/Planner.styled';
 import {
   CutText,
   TaskListEventFiltersContainer,
 } from '@planner/RenderModes/DayCalendar/TaskList/TaskList.styled';
-import { useAppSelector } from '@redux/hooks/hooks';
-import { ServicesNames } from '@redux/reducers/global';
-import { plannerSelectLayout } from '@selectors/planner';
-import { PLANNER_LAYOUTS, TaskStatusesList } from '@src/common/constants';
-import { getPath } from '@src/common/functions';
-import React, { FC, ReactNode, useCallback } from 'react';
+
 import { IFindEventFilterProps } from './find-event-filters.types';
+
 
 export const LayoutNames: { [key in PLANNER_LAYOUTS]: string } = {
   [PLANNER_LAYOUTS.DAY]: 'День',

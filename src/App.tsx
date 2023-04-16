@@ -1,9 +1,5 @@
-import { AppRoutes } from '@components/AppRoutes';
-import { UserInfoProvider } from '@components/ContextProviders/UserInfoProvider';
-import { FlexBlock } from '@components/LayoutComponents/FlexBlock';
-import { MainHeader } from '@components/LayoutComponents/MainHeader/MainHeader';
-import { TooltipStyled } from '@components/Tooltip/Tooltip.styled';
 import React from 'react';
+import { Helmet } from 'react-helmet';
 import { Provider } from 'react-redux';
 import { BrowserRouter } from 'react-router-dom';
 import { ToastContainer } from 'react-toastify';
@@ -12,6 +8,13 @@ import styled, { createGlobalStyle, css } from 'styled-components';
 import 'tippy.js/animations/perspective.css';
 import 'tippy.js/animations/shift-away.css';
 import 'tippy.js/dist/tippy.css';
+
+import { AppRoutes } from '@components/AppRoutes';
+import { UserInfoProvider } from '@components/ContextProviders/UserInfoProvider';
+import { FlexBlock } from '@components/LayoutComponents/FlexBlock';
+import { MainHeader } from '@components/LayoutComponents/MainHeader/MainHeader';
+import { TooltipStyled } from '@components/Tooltip/Tooltip.styled';
+
 import './common/dayjs';
 import { store } from './store';
 
@@ -44,6 +47,7 @@ const AppContainer = styled('main')`
 function App() {
   return (
     <>
+      <Helmet title={'White Planner - современный сервис планирования.'} />
       <GlobalStyled />
       <TooltipStyled />
       <Provider store={store}>
@@ -71,8 +75,8 @@ function App() {
       <ToastContainer
         pauseOnHover={true}
         position={'top-right'}
-        autoClose={2000}
-        limit={2}
+        autoClose={3500}
+        limit={5}
         newestOnTop={true}
       />
     </>

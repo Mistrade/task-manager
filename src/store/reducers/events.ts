@@ -1,7 +1,10 @@
-import { EventsStorage } from '@planner/planner.types';
-import { createSlice, PayloadAction } from '@reduxjs/toolkit';
+import { PayloadAction, createSlice } from '@reduxjs/toolkit';
+
 import { LS_KEYS } from '@src/common/constants';
 import { getFromLocalStorage } from '@src/common/localStorage';
+
+import { EventsStorage } from '@planner/planner.types';
+
 
 export interface EventsStateProps {
   all: EventsStorage;

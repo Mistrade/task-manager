@@ -1,6 +1,8 @@
 import { FC } from 'react';
-import { FlexBlock } from '@components/LayoutComponents/FlexBlock';
+
 import { ErrorScreen } from '@components/Errors/ErrorScreen';
+import { FlexBlock } from '@components/LayoutComponents/FlexBlock';
+
 
 export const TaskInfoNotFound: FC<{ message?: string }> = ({ message }) => (
   <FlexBlock

@@ -1,14 +1,19 @@
-import { EventInfoModel } from '@api/planning-api/types/event-info.types';
+import React, { memo } from 'react';
+
+import { borderRadiusSize } from '@src/common/borderRadiusSize';
+import { disabledColor } from '@src/common/constants';
+
 import { FlexBlock } from '@components/LayoutComponents/FlexBlock';
+
 import {
   EventInfoUpdateFn,
   ToggleEventCalendar,
   ToggleEventPriority,
   ToggleEventStatus,
 } from '@planner/TaskInformer/SupportsComponent/ToggleTaskInformerButtons';
-import { borderRadiusSize } from '@src/common/borderRadiusSize';
-import { disabledColor } from '@src/common/constants';
-import React, { memo } from 'react';
+
+import { EventInfoModel } from '@api/planning-api/types/event-info.types';
+
 
 export interface EventInformerTogglesProps {
   group: EventInfoModel['group'];

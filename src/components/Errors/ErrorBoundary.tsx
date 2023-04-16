@@ -1,6 +1,9 @@
-import { FlexBlock } from '@components/LayoutComponents/FlexBlock';
 import { Component, ReactNode } from 'react';
+
+import { FlexBlock } from '@components/LayoutComponents/FlexBlock';
+
 import { ErrorScreen, ErrorScreenProps } from './ErrorScreen';
+
 
 export class ErrorBoundary extends Component<
   { children: ReactNode } & ErrorScreenProps,

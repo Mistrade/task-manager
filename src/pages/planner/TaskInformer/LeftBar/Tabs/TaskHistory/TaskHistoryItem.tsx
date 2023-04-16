@@ -1,11 +1,16 @@
-import { borderRadiusSize } from '@src/common/borderRadiusSize';
 import { FC, ReactNode } from 'react';
-import { FlexBlock } from '@components/LayoutComponents/FlexBlock';
-import { CalendarUserIndicator } from '@planner/Users/UserIndicator';
-import { currentColor, darkColor, disabledColor } from '@src/common/constants';
 import { css } from 'styled-components';
+
+import { borderRadiusSize } from '@src/common/borderRadiusSize';
 import { getDateDescription } from '@src/common/calendarSupport/dateHelper';
+import { currentColor, darkColor, disabledColor } from '@src/common/constants';
+
+import { FlexBlock } from '@components/LayoutComponents/FlexBlock';
+
+import { CalendarUserIndicator } from '@planner/Users/UserIndicator';
+
 import { UserModel } from '@api/session-api/session-api.types';
+
 
 export interface TaskHistoryItemProps {
   user: UserModel | null;

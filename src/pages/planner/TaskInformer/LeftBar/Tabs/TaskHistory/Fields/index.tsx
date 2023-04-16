@@ -1,16 +1,20 @@
 import { FC } from 'react';
-import { EventHistoryQueryResult } from '@api/planning-api/types/event-history.types';
-import { HistoryStatusField } from './HistoryStatusField';
-import { HistoryPriorityField } from './HistoryPriorityField';
-import { HistoryCreatedAtField } from './HIstoryCreatedAtField';
-import { HistoryDescriptionField } from './HistoryDescriptionField';
-import { HistoryTimeField } from './HistoryTimeField';
-import { HistoryGroupField } from './HistoryGroupField';
-import { HistoryChildOfField } from './HistoryChildOfField';
+
 import { ReplyContent } from '@components/Essences/EventEssence/event-essence.styled';
-import { HistorySnapshotField } from './HistorySnapshotField';
+
+import { EventHistoryQueryResult } from '@api/planning-api/types/event-history.types';
+
+import { HistoryCreatedAtField } from './HIstoryCreatedAtField';
+import { HistoryChildOfField } from './HistoryChildOfField';
+import { HistoryDescriptionField } from './HistoryDescriptionField';
+import { HistoryGroupField } from './HistoryGroupField';
 import { HistoryLinkField } from './HistoryLinkField';
+import { HistoryPriorityField } from './HistoryPriorityField';
+import { HistorySnapshotField } from './HistorySnapshotField';
+import { HistoryStatusField } from './HistoryStatusField';
+import { HistoryTimeField } from './HistoryTimeField';
 import { HistoryTitleField } from './HistoryTitleField';
+
 
 export interface EventHistoryItemControllerProps {
   historyItem: EventHistoryQueryResult;

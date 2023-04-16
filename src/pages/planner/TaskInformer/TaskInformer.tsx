@@ -1,9 +1,16 @@
+import React, { FC, useCallback } from 'react';
+import { Helmet } from 'react-helmet';
+import { css } from 'styled-components';
+
+import { MonthList } from '@src/common/constants';
+
+import { FlexBlock } from '@components/LayoutComponents/FlexBlock';
+
+import { EventInformerHeader } from '@planner/TaskInformer/Header/EventInformerHeader';
+
 import { useUpdateTaskMutation } from '@api/planning-api';
 import { CatchHandleForToast, thenHandleForToast } from '@api/tools';
-import { FlexBlock } from '@components/LayoutComponents/FlexBlock';
-import { EventInformerHeader } from '@planner/TaskInformer/Header/EventInformerHeader';
-import React, { FC, useCallback } from 'react';
-import { css } from 'styled-components';
+
 import { EventInformerProps, MainEventInformerProps } from '../planner.types';
 import { TaskInformerLeftBar } from './LeftBar/TaskInformerLeftBar';
 import { TaskInformerRightBar } from './RightBar/TaskInformerRightBar';
@@ -28,31 +35,34 @@ const TaskInformerMain: FC<MainEventInformerProps> = ({ eventInfo }) => {
   );
 
   return (
-    <FlexBlock direction={'column'} width={'100%'} height={'100%'}>
-      <EventInformerHeader
-        eventInfo={eventInfo}
-        updateTaskHandler={updateTaskHandler}
-      />
-      <FlexBlock
-        direction={'row'}
-        width={'100%'}
-        height={'100%'}
-        gap={12}
-        pl={20}
-        pb={12}
-        pr={20}
-        overflow={'hidden'}
-        additionalCss={css`
-          z-index: 0;
-        `}
-      >
-        <TaskInformerLeftBar
+    <>
+      <Helmet title={eventInfo.title} />
+      <FlexBlock direction={'column'} width={'100%'} height={'100%'}>
+        <EventInformerHeader
           eventInfo={eventInfo}
-          updateFn={updateTaskHandler}
+          updateTaskHandler={updateTaskHandler}
         />
-        <TaskInformerRightBar eventInfo={eventInfo} />
+        <FlexBlock
+          direction={'row'}
+          width={'100%'}
+          height={'100%'}
+          gap={12}
+          pl={20}
+          pb={12}
+          pr={20}
+          overflow={'hidden'}
+          additionalCss={css`
+            z-index: 0;
+          `}
+        >
+          <TaskInformerLeftBar
+            eventInfo={eventInfo}
+            updateFn={updateTaskHandler}
+          />
+          <TaskInformerRightBar eventInfo={eventInfo} />
+        </FlexBlock>
       </FlexBlock>
-    </FlexBlock>
+    </>
   );
 };
 

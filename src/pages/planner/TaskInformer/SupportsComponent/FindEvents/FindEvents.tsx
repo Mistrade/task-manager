@@ -1,18 +1,23 @@
-import { FC, ReactNode, useEffect } from 'react';
-import { useLazyGetShortEventsArrayQuery } from '@api/planning-api';
-import { ExtendSelectableEventListProps } from './EventsList';
-import { FlexBlock } from '@components/LayoutComponents/FlexBlock';
 import { useEventFilters } from '@hooks/useEventFilters';
-import { SmartFindEventFilters } from './SmartFindEventFilters';
+import dayjs from 'dayjs';
+import { FC, ReactNode, useEffect } from 'react';
 import { css } from 'styled-components';
-import { PreviewEventsList } from './PreviewEventsList';
+
+import { UTC_OFFSET } from '@src/common/constants';
+
+import { FlexBlock } from '@components/LayoutComponents/FlexBlock';
+
+import { useLazyGetShortEventsArrayQuery } from '@api/planning-api';
 import {
   EventInfoModel,
   GetEventsFiltersRequestProps,
 } from '@api/planning-api/types/event-info.types';
-import { UTC_OFFSET } from '@src/common/constants';
-import dayjs from 'dayjs';
 import { CatchHandleForToast } from '@api/tools';
+
+import { ExtendSelectableEventListProps } from './EventsList';
+import { PreviewEventsList } from './PreviewEventsList';
+import { SmartFindEventFilters } from './SmartFindEventFilters';
+
 
 export interface FindEventsProps
   extends Partial<ExtendSelectableEventListProps> {

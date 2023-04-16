@@ -1,6 +1,9 @@
 import { FC } from 'react';
-import { IconProps } from '@components/Icons/Icons';
+
 import { currentColor } from '@src/common/constants';
+
+import { IconProps } from '@components/Icons/Icons';
+
 
 export const EmptyCheckboxIcon: FC<IconProps> = ({
   color = currentColor,

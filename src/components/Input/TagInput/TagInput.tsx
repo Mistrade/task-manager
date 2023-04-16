@@ -1,10 +1,12 @@
+import { FC, useState } from 'react';
+
 import {
   TextInput,
   TextInputProps,
 } from '@components/Input/TextInput/TextInput';
-import { FC, useState } from 'react';
 import { FlexBlock } from '@components/LayoutComponents/FlexBlock';
 import { Tag } from '@components/Tags/Tag';
+
 
 type ExtendableProps = Omit<
   TextInputProps,
@@ -19,6 +21,7 @@ type ExtendableProps = Omit<
 
 export interface TagInputProps extends ExtendableProps {
   tags: Array<string>;
+
   onAddTag(tagName: string): void;
 }
 

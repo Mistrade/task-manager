@@ -1,10 +1,14 @@
+import dayjs from 'dayjs';
+import { memo, useMemo } from 'react';
+
+import { currentColor, orangeColor } from '@src/common/constants';
+
 import { Badge } from '@components/Badge/Badge';
 import { FlexBlock } from '@components/LayoutComponents/FlexBlock';
 import { Heading } from '@components/Text/Heading';
+
 import { WeekItem } from '@planner/planner.types';
-import { currentColor, orangeColor } from '@src/common/constants';
-import dayjs from 'dayjs';
-import { memo, useMemo } from 'react';
+
 
 export const WeekHeader = memo<{ config: WeekItem }>(
   ({ config }) => {

@@ -1,8 +1,10 @@
 import { IPlannerReducer } from '@planner-reducer/types';
 import { ServicesNames } from '@redux/reducers/global';
 import { createSelector } from '@reduxjs/toolkit';
+
 import { PLANNER_LAYOUTS } from '@src/common/constants';
 import { CreateSelectorReturnType, RootState } from '@src/store';
+
 
 const rootSelector: CreateSelectorReturnType<IPlannerReducer> = createSelector(
   (state: RootState) => state,

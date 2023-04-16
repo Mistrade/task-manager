@@ -1,3 +1,6 @@
+import { FC, ReactNode } from 'react';
+import { css } from 'styled-components';
+
 import { borderRadiusSize } from '@src/common/borderRadiusSize';
 import {
   currentColor,
@@ -5,14 +8,15 @@ import {
   disabledColor,
   pageHeaderColor,
 } from '@src/common/constants';
-import { css } from 'styled-components';
+
 import {
   FlexBlock,
   FlexBlockProps,
 } from '@components/LayoutComponents/FlexBlock';
 import { Heading } from '@components/Text/Heading';
-import { FC, ReactNode } from 'react';
+
 import { ConnectChainsType } from '../event-chains.types';
+
 
 export interface ConnectChainsCardObject {
   type: ConnectChainsType;

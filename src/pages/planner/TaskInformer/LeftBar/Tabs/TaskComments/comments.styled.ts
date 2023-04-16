@@ -1,5 +1,6 @@
-import { borderRadiusSize } from '@src/common/borderRadiusSize';
 import styled, { keyframes } from 'styled-components';
+
+import { borderRadiusSize } from '@src/common/borderRadiusSize';
 import {
   currentColor,
   darkColor,
@@ -8,6 +9,7 @@ import {
   hoverColor,
   pageHeaderColor,
 } from '@src/common/constants';
+
 import { EmptyButtonStyled } from '@components/Buttons/EmptyButton.styled';
 
 export const CreateCommentContainer = styled('div')`

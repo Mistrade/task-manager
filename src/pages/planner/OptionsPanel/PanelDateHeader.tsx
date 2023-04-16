@@ -1,11 +1,15 @@
-import { FlexBlock } from '@components/LayoutComponents/FlexBlock';
 import { plannerDateToDate } from '@planner-reducer/utils';
-import { CalendarTitle } from '@planner/Planner.styled';
 import { useAppSelector } from '@redux/hooks/hooks';
 import { plannerSelectDate, plannerSelectLayout } from '@selectors/planner';
+import React, { useMemo } from 'react';
+
 import { getCalendarTitle } from '@src/common/functions';
 import { disableReRender } from '@src/common/utils/react-utils';
-import React, { useMemo } from 'react';
+
+import { FlexBlock } from '@components/LayoutComponents/FlexBlock';
+
+import { CalendarTitle } from '@planner/Planner.styled';
+
 
 export const PanelDateHeader = React.memo(() => {
   const date = useAppSelector(plannerSelectDate);

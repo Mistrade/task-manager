@@ -1,24 +1,29 @@
+import { useFormik } from 'formik';
+import { FC, useEffect } from 'react';
+import * as yup from 'yup';
+
+import { colorPalette, currentColor } from '@src/common/constants';
+
+import { Button, WhiteButton } from '@components/Buttons/Buttons.styled';
+import { ColorScheme } from '@components/ColorScheme/ColorScheme';
+import { InputErrorMessage } from '@components/Input/InputSupportComponents/InputErrorMessage';
+import { TextInput } from '@components/Input/TextInput/TextInput';
+import { FlexBlock } from '@components/LayoutComponents/FlexBlock';
 import {
   Modal,
   ModalBody,
   ModalFooter,
   ModalHeader,
 } from '@components/LayoutComponents/Modal/Modal';
-import { FC, useEffect } from 'react';
-import { FlexBlock } from '@components/LayoutComponents/FlexBlock';
-import { colorPalette, currentColor } from '@src/common/constants';
-import { useFormik } from 'formik';
-import * as yup from 'yup';
-import { ColorScheme } from '@components/ColorScheme/ColorScheme';
-import { TextInput } from '@components/Input/TextInput/TextInput';
+
 import {
   useCreateEventGroupMutation,
   useUpdateGroupInfoMutation,
 } from '@api/planning-api';
-import { Button, WhiteButton } from '@components/Buttons/Buttons.styled';
-import { InputErrorMessage } from '@components/Input/InputSupportComponents/InputErrorMessage';
-import { ChangeGroupModalProps, CreateGroupProps } from './groups.types';
 import { CatchHandleForToast, thenHandleForToast } from '@api/tools';
+
+import { ChangeGroupModalProps, CreateGroupProps } from './groups.types';
+
 
 const validationSchema = yup.object().shape({
   color: yup

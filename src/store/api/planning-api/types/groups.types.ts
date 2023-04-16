@@ -1,5 +1,5 @@
-import { UserModel } from '@api/session-api/session-api.types';
 import { ObjectId, UtcDate } from '@api/rtk-api.types';
+import { UserModel } from '@api/session-api/session-api.types';
 
 export interface ChangeSelectGroupRequestProps extends GroupIdObject {
   state: boolean;

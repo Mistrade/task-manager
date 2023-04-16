@@ -1,9 +1,11 @@
 import React, { FC } from 'react';
+
 import { IconProps } from '@components/Icons/Icons';
-import { FlexBlockProps } from '@components/LayoutComponents/FlexBlock';
 import { CloseEyeIcon } from '@components/Icons/Session/CloseEyeIcon';
 import { OpenEyeIcon } from '@components/Icons/Session/OpenEyeIcon';
+import { FlexBlockProps } from '@components/LayoutComponents/FlexBlock';
 import { Tooltip } from '@components/Tooltip/Tooltip';
+
 
 interface PasswordIconProps extends IconProps, FlexBlockProps {
   isOpen?: boolean;

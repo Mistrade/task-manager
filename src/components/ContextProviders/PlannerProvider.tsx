@@ -1,25 +1,28 @@
-import { ObjectId } from '@api/rtk-api.types';
+import { useAppDispatch } from '@redux/hooks/hooks';
+import { ServicesNames, setServiceName } from '@redux/reducers/global';
+import dayjs from 'dayjs';
+import { useCallback, useEffect, useMemo, useState } from 'react';
+
+import { PlannerContext } from '@src/Context/planner.context';
+import { PlannerObserver } from '@src/common/calendarSupport/observer';
+import { ShortChangeCurrentPattern } from '@src/common/commonTypes';
+import {
+  PLANNER_LAYOUTS,
+  defaultMonthItem,
+  defaultWeekItem,
+  defaultYearItem,
+} from '@src/common/constants';
+
+import { EventFilterTaskStatuses } from '@pages/planner/RenderModes/FindEventFilter/find-event-filters.types';
+import { EVENT_INFORMER_TAB_NAMES } from '@pages/planner/TaskInformer/LeftBar/TaskInformerLeftBar';
 import {
   FCWithChildren,
   MonthItem,
   WeekItem,
   YearItem,
 } from '@pages/planner/planner.types';
-import { EventFilterTaskStatuses } from '@pages/planner/RenderModes/FindEventFilter/find-event-filters.types';
-import { EVENT_INFORMER_TAB_NAMES } from '@pages/planner/TaskInformer/LeftBar/TaskInformerLeftBar';
-import { useAppDispatch } from '@redux/hooks/hooks';
-import { ServicesNames, setServiceName } from '@redux/reducers/global';
-import { PlannerObserver } from '@src/common/calendarSupport/observer';
-import { ShortChangeCurrentPattern } from '@src/common/commonTypes';
-import {
-  defaultMonthItem,
-  defaultWeekItem,
-  defaultYearItem,
-  PLANNER_LAYOUTS,
-} from '@src/common/constants';
-import { PlannerContext } from '@src/Context/planner.context';
-import dayjs from 'dayjs';
-import { useCallback, useEffect, useMemo, useState } from 'react';
+
+import { ObjectId } from '@api/rtk-api.types';
 
 const today = new Date();
 

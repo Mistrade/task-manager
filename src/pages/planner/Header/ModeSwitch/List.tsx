@@ -1,14 +1,18 @@
+import { useAppSelector } from '@redux/hooks/hooks';
+import { ServicesNames } from '@redux/reducers/global';
+import { plannerSelectStatus } from '@selectors/planner';
+import React, { FC, ReactNode } from 'react';
+
+import { PLANNER_LAYOUTS, currentColor } from '@src/common/constants';
+import { getPath } from '@src/common/functions';
+
 import { CalendarIcon } from '@components/Icons/AppIcon/CalendarIcon';
 import { ListIcon } from '@components/Icons/AppIcon/ListIcon';
 import { StarIcon } from '@components/Icons/Icons';
 import { FlexBlock } from '@components/LayoutComponents/FlexBlock';
+
 import { LinkSolid } from '@planner/Header/ModeSwitch/Item';
-import { useAppSelector } from '@redux/hooks/hooks';
-import { ServicesNames } from '@redux/reducers/global';
-import { plannerSelectStatus } from '@selectors/planner';
-import { currentColor, PLANNER_LAYOUTS } from '@src/common/constants';
-import { getPath } from '@src/common/functions';
-import React, { FC, ReactNode } from 'react';
+
 
 export interface PlannerHeaderSwitchObject {
   title: string;

@@ -1,13 +1,15 @@
-import { ContactBlock } from './AddContact.styled';
-import { TextInput } from '@components/Input/TextInput/TextInput';
-import { PhoneIcon } from '@components/Icons/Session/LogoutIcon';
-import { FlexBlock } from '@components/LayoutComponents/FlexBlock';
-import { EmptyButtonStyled } from '@components/Buttons/EmptyButton.styled';
-import { Button } from '@components/Buttons/Buttons.styled';
 import { useFormik } from 'formik';
 import * as yup from 'yup';
+
+import { Button } from '@components/Buttons/Buttons.styled';
+import { PhoneIcon } from '@components/Icons/Session/LogoutIcon';
+import { TextInput } from '@components/Input/TextInput/TextInput';
+import { FlexBlock } from '@components/LayoutComponents/FlexBlock';
+import { Tooltip } from '@components/Tooltip/Tooltip';
+
 import { useAddContactMutation } from '@api/friends-api';
 import { CatchHandleForToast, thenHandleForToast } from '@api/tools';
+
 
 const phonePattern = new RegExp(
   /^((8|\+7)[\- ]?)?(\(?\d{3,4}\)?[\- ]?)?[\d\- ]{5,10}$/
@@ -57,7 +59,7 @@ const schema = yup.object().shape({
     }),
 });
 
-export const AddContactForm = () => {
+export const SendFriendRequestForm = () => {
   const [addContact] = useAddContactMutation();
   const formik = useFormik({
     initialValues: {
@@ -70,39 +72,42 @@ export const AddContactForm = () => {
       })
         .unwrap()
         .then(thenHandleForToast)
-        .catch(CatchHandleForToast);
+        .catch(CatchHandleForToast)
+        .then(() => {
+          formik.resetForm();
+        });
     },
   });
 
   return (
-    <form onSubmit={formik.handleSubmit}>
-      <ContactBlock p={'12px 24px'}>
-        <FlexBlock width={'100%'} direction={'column'} gap={12}>
-          <TextInput
-            placeholder={'Номер или почта контакта в системе'}
-            iconPlacement={'left'}
-            icon={<PhoneIcon size={20} />}
-            value={formik.values.value}
-            onFocus={() => formik.setFieldTouched('value', true)}
-            isDirty={formik.touched.value}
-            errorMessage={formik.errors.value}
-            onChange={(e) => formik.setFieldValue('value', e.target.value)}
-            buttons={
-              <FlexBlock
-                direction={'row'}
-                align={'center'}
-                gap={6}
-                justify={'flex-end'}
-              >
-                <Button type={'submit'}>Добавить</Button>
-                <EmptyButtonStyled onClick={() => formik.resetForm()}>
-                  Очистить
-                </EmptyButtonStyled>
-              </FlexBlock>
-            }
-          />
-        </FlexBlock>
-      </ContactBlock>
-    </form>
+    <Tooltip
+      maxWidth={600}
+      content={
+        <form onSubmit={formik.handleSubmit} style={{ width: 500 }}>
+          <FlexBlock p={8} width={'100%'}>
+            <TextInput
+              containerProps={{ width: '100%' }}
+              placeholder={'Номер или почта контакта в системе'}
+              iconPlacement={'left'}
+              icon={<PhoneIcon size={20} />}
+              value={formik.values.value}
+              onFocus={() => formik.setFieldTouched('value', true)}
+              isDirty={formik.touched.value}
+              errorMessage={formik.errors.value}
+              onChange={(e) => formik.setFieldValue('value', e.target.value)}
+            />
+          </FlexBlock>
+        </form>
+      }
+      theme={'light'}
+      placement={'bottom-start'}
+      arrow={false}
+      hideOnClick={true}
+      trigger={'click'}
+      interactive={true}
+      interactiveBorder={20}
+    >
+      <Button type={'button'}>Добавить в друзья</Button>
+    </Tooltip>
   );
 };

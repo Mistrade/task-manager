@@ -1,6 +1,8 @@
 import { FC, useCallback, useEffect } from 'react';
+
 import { ErrorScreen } from '@components/Errors/ErrorScreen';
 import { FlexBlock } from '@components/LayoutComponents/FlexBlock';
+
 
 export const NotFoundPage: FC = () => {
   useEffect(() => {

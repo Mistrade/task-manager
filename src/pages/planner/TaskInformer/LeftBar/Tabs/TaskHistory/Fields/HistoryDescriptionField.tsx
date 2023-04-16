@@ -1,11 +1,16 @@
 import { FC, useRef, useState } from 'react';
-import { FlexBlock } from '@components/LayoutComponents/FlexBlock';
-import { BaseEventHistoryFieldProps } from '../event-history.types';
-import { currentColor } from '@src/common/constants';
-import { CutText } from '@planner/RenderModes/DayCalendar/TaskList/TaskList.styled';
 import { useIntersection } from 'react-use';
-import { DontHoveredButton } from '@components/Buttons/EmptyButton.styled';
+
+import { currentColor } from '@src/common/constants';
+
 import { CopyToClipboardButton } from '@components/Buttons/CopyToClipboardButton';
+import { DontHoveredButton } from '@components/Buttons/EmptyButton.styled';
+import { FlexBlock } from '@components/LayoutComponents/FlexBlock';
+
+import { CutText } from '@planner/RenderModes/DayCalendar/TaskList/TaskList.styled';
+
+import { BaseEventHistoryFieldProps } from '../event-history.types';
+
 
 export interface HistoryDescriptionFieldProps
   extends BaseEventHistoryFieldProps<string> {

@@ -1,20 +1,20 @@
 import { useCallback, useEffect, useState } from 'react';
-import {
-  EventInfoModel,
-  ShortEventInfoModel,
-} from '@api/planning-api/types/event-info.types';
+import { toast } from 'react-toastify';
+
+import { ConnectChainsProps } from '@planner/TaskInformer/LeftBar/Tabs/Chains/event-chains.types';
+
 import { useConnectChainsMutation } from '@api/planning-api';
 import {
   AddChainsRequestData,
   ConnectChildResponse,
 } from '@api/planning-api/types/event-chains.types';
-import { MyServerResponse } from '@api/rtk-api.types';
-import { ConnectChainsProps } from '@planner/TaskInformer/LeftBar/Tabs/Chains/event-chains.types';
 import {
-  CatchHandleForToast,
-  thenHandleForToast,
-} from '@api/tools';
-import { toast } from 'react-toastify';
+  EventInfoModel,
+  ShortEventInfoModel,
+} from '@api/planning-api/types/event-info.types';
+import { MyServerResponse } from '@api/rtk-api.types';
+import { CatchHandleForToast, thenHandleForToast } from '@api/tools';
+
 
 export type ConnectChainsSteps =
   | null

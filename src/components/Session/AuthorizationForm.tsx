@@ -1,18 +1,23 @@
-import { TextInput } from '@components/Input/TextInput/TextInput';
+import { useSearchNavigate } from '@hooks/useSearchNavigate';
+import { useAppSelector } from '@redux/hooks/hooks';
 import { useFormik } from 'formik';
-import { Button } from '@components/Buttons/Buttons.styled';
-import { SessionFormContainer } from './SessionFormContainer';
-import { Heading } from '@components/Text/Heading';
-import { FlexBlock } from '@components/LayoutComponents/FlexBlock';
-import { PasswordInput } from '@components/Input/PasswordInput/PasswordInput';
-import { useLoginMutation } from '@api/session-api';
+import { FC } from 'react';
 import { toast } from 'react-toastify';
+
 import { defaultColor } from '@src/common/constants';
 import { AuthValidationScheme } from '@src/common/validation/session';
-import { useAppSelector } from '@redux/hooks/hooks';
-import { useSearchNavigate } from '@hooks/useSearchNavigate';
+
+import { Button } from '@components/Buttons/Buttons.styled';
+import { PasswordInput } from '@components/Input/PasswordInput/PasswordInput';
+import { TextInput } from '@components/Input/TextInput/TextInput';
+import { FlexBlock } from '@components/LayoutComponents/FlexBlock';
+import { Heading } from '@components/Text/Heading';
+
+import { useLoginMutation } from '@api/session-api';
 import { AuthUserRequestProps } from '@api/session-api/session-api.types';
-import { FC } from 'react';
+
+import { SessionFormContainer } from './SessionFormContainer';
+
 
 const initialValues: AuthUserRequestProps = {
   phone: '',

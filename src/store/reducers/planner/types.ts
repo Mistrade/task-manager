@@ -1,13 +1,17 @@
-import { ObjectId } from '@api/rtk-api.types';
+import { PLANNER_LAYOUTS } from '@src/common/constants';
+
 import { EventFilterTaskStatuses } from '@pages/planner/RenderModes/FindEventFilter/find-event-filters.types';
+
+import { EVENT_INFORMER_TAB_NAMES } from '@planner/TaskInformer/LeftBar/TaskInformerLeftBar';
 import {
   MonthItem,
   TLayoutItemsScope,
   WeekItem,
   YearItem,
 } from '@planner/planner.types';
-import { EVENT_INFORMER_TAB_NAMES } from '@planner/TaskInformer/LeftBar/TaskInformerLeftBar';
-import { PLANNER_LAYOUTS } from '@src/common/constants';
+
+import { ObjectId } from '@api/rtk-api.types';
+
 
 export interface IPlannerDate {
   day: number;

@@ -1,10 +1,14 @@
-import { FlexBlock } from '@components/LayoutComponents/FlexBlock';
-import { Checkbox } from '@components/Input/Checkbox/Checkbox';
 import { FC, useCallback, useMemo } from 'react';
-import { BaseCreateEventTabProps } from './Info';
-import { ICheckListItem } from '@planner/planner.types';
+
 import { CheckList } from '@components/CheckList';
+import { Checkbox } from '@components/Input/Checkbox/Checkbox';
+import { FlexBlock } from '@components/LayoutComponents/FlexBlock';
+
 import { MaxHeightHidden } from '@planner/Forms/CreateEvent/CreateEventForm';
+import { ICheckListItem } from '@planner/planner.types';
+
+import { BaseCreateEventTabProps } from './Info';
+
 
 export const CreateEventFormAdditional: FC<BaseCreateEventTabProps> = ({
   values,

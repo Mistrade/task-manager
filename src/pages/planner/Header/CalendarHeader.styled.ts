@@ -1,6 +1,9 @@
-import { FlexBlock } from '@components/LayoutComponents/FlexBlock';
 import styled from 'styled-components';
+
 import { disabledColor } from '@src/common/constants';
+
+import { FlexBlock } from '@components/LayoutComponents/FlexBlock';
+
 
 export const CalendarHeaderContainer = styled(FlexBlock)`
   flex-direction: column;

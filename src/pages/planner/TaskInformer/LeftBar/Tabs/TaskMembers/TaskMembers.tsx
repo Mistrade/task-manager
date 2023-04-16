@@ -1,9 +1,13 @@
-import { EventInfoModel } from '@api/planning-api/types/event-info.types';
-import { JoinToEventButton } from '@components/Buttons/Buttons.styled';
-import { FlexBlock } from '@components/LayoutComponents/FlexBlock';
+import { FC } from 'react';
+
 import { borderRadiusSize } from '@src/common/borderRadiusSize';
 import { currentColor, darkColor, disabledColor } from '@src/common/constants';
-import { FC } from 'react';
+
+import { JoinToEventButton } from '@components/Buttons/Buttons.styled';
+import { FlexBlock } from '@components/LayoutComponents/FlexBlock';
+
+import { EventInfoModel } from '@api/planning-api/types/event-info.types';
+
 
 export interface TaskMembersProps {
   taskItem: EventInfoModel;

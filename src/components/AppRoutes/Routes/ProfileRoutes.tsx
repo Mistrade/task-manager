@@ -1,9 +1,10 @@
-import { SessionInterceptor } from '@components/AppRoutes/Interceptors/SessionInterceptor';
-import { ErrorScreen } from '@components/Errors/ErrorScreen';
-import { FlexBlock } from '@components/LayoutComponents/FlexBlock';
 import { useAppSelector } from '@redux/hooks/hooks';
 import { selectUserInfo } from '@redux/reducers/session/session-selectors';
 import React, { FC } from 'react';
+
+import { SessionInterceptor } from '@components/AppRoutes/Interceptors/SessionInterceptor';
+import { ErrorScreen } from '@components/Errors/ErrorScreen';
+import { FlexBlock } from '@components/LayoutComponents/FlexBlock';
 
 export const ProfileRoutes: FC = () => {
   const userInfo = useAppSelector(selectUserInfo);

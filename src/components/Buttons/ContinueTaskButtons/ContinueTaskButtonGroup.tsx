@@ -1,10 +1,15 @@
 import { FC, useMemo } from 'react';
-import { TaskStatusesType } from '@pages/planner/planner.types';
+
 import { ContinueWorkTaskButtonName, darkColor } from '@src/common/constants';
 import { convertEventStatus } from '@src/common/functions';
-import { WhiteButton } from '../Buttons.styled';
-import { FlexBlock } from '@components/LayoutComponents/FlexBlock';
+
 import { ArrowRightIcon } from '@components/Icons/Icons';
+import { FlexBlock } from '@components/LayoutComponents/FlexBlock';
+
+import { TaskStatusesType } from '@pages/planner/planner.types';
+
+import { WhiteButton } from '../Buttons.styled';
+
 
 interface ContinueTaskButtonGroupProps {
   status: TaskStatusesType;

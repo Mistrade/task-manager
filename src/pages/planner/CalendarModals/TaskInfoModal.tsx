@@ -1,13 +1,17 @@
-import { useGetEventInfoQuery } from '@api/planning-api';
-import { ErrorBoundary } from '@components/Errors/ErrorBoundary';
-import { Modal, ModalBody } from '@components/LayoutComponents/Modal/Modal';
-import { Loader } from '@components/Loaders/Loader';
 import { useSearchNavigate } from '@hooks/useSearchNavigate';
 import { useAppSelector } from '@redux/hooks/hooks';
 import { plannerSelectCurrentMode } from '@selectors/planner';
 import React, { FC, useCallback } from 'react';
 import { useParams } from 'react-router';
+
+import { ErrorBoundary } from '@components/Errors/ErrorBoundary';
+import { Modal, ModalBody } from '@components/LayoutComponents/Modal/Modal';
+import { Loader } from '@components/Loaders/Loader';
+
+import { useGetEventInfoQuery } from '@api/planning-api';
+
 import { EventInfoModalProps } from '../planner.types';
+
 
 const Informer = React.lazy(() =>
   import('../TaskInformer/TaskInformer').then(({ TaskInformer }) => ({

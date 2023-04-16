@@ -1,12 +1,16 @@
-import { FlexBlock } from '@components/LayoutComponents/FlexBlock';
-import { ScrollVerticalView } from '@components/LayoutComponents/ScrollView/ScrollVerticalView';
 import { plannerDateToDate } from '@planner-reducer/utils';
-import { EventsStorage, ListCalendarModeProps } from '@planner/planner.types';
-import { SmartEventFilters } from '@planner/RenderModes/FindEventFilter/SmartEventFilters';
 import { useAppSelector } from '@redux/hooks/hooks';
 import { plannerSelectScope } from '@selectors/planner';
 import React, { FC, useState } from 'react';
+
+import { FlexBlock } from '@components/LayoutComponents/FlexBlock';
+import { ScrollVerticalView } from '@components/LayoutComponents/ScrollView/ScrollVerticalView';
+
+import { SmartEventFilters } from '@planner/RenderModes/FindEventFilter/SmartEventFilters';
+import { EventsStorage, ListCalendarModeProps } from '@planner/planner.types';
+
 import { ListModeTaskController } from './ListModeTaskController';
+
 
 export const ListCalendarMode: FC<ListCalendarModeProps> = () => {
   const scope = useAppSelector(plannerSelectScope);

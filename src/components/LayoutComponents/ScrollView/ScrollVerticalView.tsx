@@ -1,11 +1,13 @@
+import { ReactNode, memo } from 'react';
+import styled, { css } from 'styled-components';
+
 import {
   FlexBlock,
   FlexBlockProps,
 } from '@components/LayoutComponents/FlexBlock';
 import { hideScrollBar } from '@components/Switcher/Switcher';
+
 import { FCWithChildren } from '@planner/planner.types';
-import { memo, ReactNode } from 'react';
-import styled, { css } from 'styled-components';
 
 export interface ScrollVerticalViewProps {
   placementStatic?: 'top' | 'bottom';

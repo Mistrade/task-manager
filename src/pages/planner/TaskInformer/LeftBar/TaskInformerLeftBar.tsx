@@ -1,9 +1,13 @@
-import { FlexBlock } from '@components/LayoutComponents/FlexBlock';
-import { EventInfoBaseProps } from '@planner/planner.types';
 import { useAppSelector } from '@redux/hooks/hooks';
 import { plannerSelectEventInfoTabName } from '@selectors/planner';
-import { disabledColor } from '@src/common/constants';
 import { FC } from 'react';
+
+import { disabledColor } from '@src/common/constants';
+
+import { FlexBlock } from '@components/LayoutComponents/FlexBlock';
+
+import { EventInfoBaseProps } from '@planner/planner.types';
+
 import { EventInfoUpdateFn } from '../SupportsComponent/ToggleTaskInformerButtons';
 import { EventInfoAboutTab } from './Tabs/About/EventInfoAboutTab';
 import { EventChainsTab } from './Tabs/Chains/EventChainsTab';
@@ -11,6 +15,7 @@ import { EventCheckList } from './Tabs/EventCheckList/EventCheckList';
 import { TaskComments } from './Tabs/TaskComments/TaskComments';
 import { TaskHistory } from './Tabs/TaskHistory/TaskHistory';
 import { TaskMembers } from './Tabs/TaskMembers/TaskMembers';
+
 
 interface TaskInformerLeftBarProps extends EventInfoBaseProps {
   updateFn: EventInfoUpdateFn;

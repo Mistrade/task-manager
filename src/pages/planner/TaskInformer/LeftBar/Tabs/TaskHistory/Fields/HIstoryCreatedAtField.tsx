@@ -1,7 +1,10 @@
 import { FC } from 'react';
-import { FlexBlock } from '@components/LayoutComponents/FlexBlock';
-import { BaseEventHistoryFieldProps } from '../event-history.types';
+
 import { EventEssence } from '@components/Essences/EventEssence/EventEssence';
+import { FlexBlock } from '@components/LayoutComponents/FlexBlock';
+
+import { BaseEventHistoryFieldProps } from '../event-history.types';
+
 
 export const HistoryCreatedAtField: FC<BaseEventHistoryFieldProps> = ({
   value,

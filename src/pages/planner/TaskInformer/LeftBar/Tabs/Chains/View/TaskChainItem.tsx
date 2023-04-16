@@ -1,14 +1,18 @@
-import { borderRadiusSize } from '@src/common/borderRadiusSize';
-import { darkColor, disabledColor } from '@src/common/constants';
-import { FlexBlock } from '@components/LayoutComponents/FlexBlock';
-import { LinkStyled } from '@components/Buttons/Link.styled';
-import React, { FC } from 'react';
 import { useAppSelector } from '@redux/hooks/hooks';
 import { CalendarSelectors } from '@selectors/calendarItems';
+import React, { FC } from 'react';
+
+import { borderRadiusSize } from '@src/common/borderRadiusSize';
+import { darkColor, disabledColor } from '@src/common/constants';
 import { convertEventStatus } from '@src/common/functions';
+
+import { LinkStyled } from '@components/Buttons/Link.styled';
 import { PriorityCalendarIcon } from '@components/Icons/CalendarIcons/PriorityCalendarIcon';
-import { TaskChainItemProps } from '../event-chains.types';
+import { FlexBlock } from '@components/LayoutComponents/FlexBlock';
+
 import { TaskChainBadge } from '../EventChains.styled';
+import { TaskChainItemProps } from '../event-chains.types';
+
 
 export const TaskChainItem: FC<TaskChainItemProps> = ({
   chainItem,

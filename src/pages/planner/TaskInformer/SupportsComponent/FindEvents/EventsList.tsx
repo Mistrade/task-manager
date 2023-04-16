@@ -1,24 +1,28 @@
-import { borderRadiusSize } from '@src/common/borderRadiusSize';
 import { FC, useCallback } from 'react';
 import styled from 'styled-components';
+
+import { borderRadiusSize } from '@src/common/borderRadiusSize';
 import { currentColor, disabledColor } from '@src/common/constants';
-import { Loader } from '@components/Loaders/Loader';
-import { ErrorScreen } from '@components/Errors/ErrorScreen';
-import { FlexBlock } from '@components/LayoutComponents/FlexBlock';
+
 import { Accordion } from '@components/Accordion/Accordion';
-import { Heading } from '@components/Text/Heading';
 import { EmptyButtonStyled } from '@components/Buttons/EmptyButton.styled';
-import { ScrollVerticalView } from '@components/LayoutComponents/ScrollView/ScrollVerticalView';
+import { ErrorScreen } from '@components/Errors/ErrorScreen';
+import { EventEssence } from '@components/Essences/EventEssence/EventEssence';
 import {
   EmptyCheckboxIcon,
   FillCheckboxIcon,
 } from '@components/Icons/InputIcons/Checkbox';
+import { FlexBlock } from '@components/LayoutComponents/FlexBlock';
+import { ScrollVerticalView } from '@components/LayoutComponents/ScrollView/ScrollVerticalView';
+import { Loader } from '@components/Loaders/Loader';
+import { Heading } from '@components/Text/Heading';
+
 import {
   ShortEventInfoModel,
   SortedEventsObject,
 } from '@api/planning-api/types/event-info.types';
 import { MyServerResponse, ObjectId } from '@api/rtk-api.types';
-import { EventEssence } from '@components/Essences/EventEssence/EventEssence';
+
 
 export interface EventListFromArrayProps
   extends ExtendSelectableEventListProps {

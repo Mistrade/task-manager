@@ -1,25 +1,27 @@
+import { useAppSelector } from '@redux/hooks/hooks';
+import { FC, useCallback, useEffect, useMemo, useRef, useState } from 'react';
+
+import { hoverColor } from '@src/common/constants';
+import { mergeArrayWithUserId } from '@src/common/functions';
+
+import { ErrorScreen } from '@components/Errors/ErrorScreen';
+import { FlexBlock } from '@components/LayoutComponents/FlexBlock';
+import { ScrollVerticalView } from '@components/LayoutComponents/ScrollView/ScrollVerticalView';
+import { Loader } from '@components/Loaders/Loader';
+
 import {
   useGetCommentsListQuery,
   useRemoveCommentMutation,
 } from '@api/planning-api';
-import { FC, useCallback, useEffect, useMemo, useRef, useState } from 'react';
-import { FlexBlock } from '@components/LayoutComponents/FlexBlock';
-import { hoverColor } from '@src/common/constants';
-import { useAppSelector } from '@redux/hooks/hooks';
-import { sessionApi } from '@api/session-api';
-import { ErrorScreen } from '@components/Errors/ErrorScreen';
-import { Loader } from '@components/Loaders/Loader';
-import { ScrollVerticalView } from '@components/LayoutComponents/ScrollView/ScrollVerticalView';
 import { CommentModel } from '@api/planning-api/types/comments.types';
 import { ObjectId } from '@api/rtk-api.types';
+import { sessionApi } from '@api/session-api';
+import { CatchHandleForToast, thenHandleForToast } from '@api/tools';
+
 import { CommentForm } from './SupportComponents/CommentForm';
 import { CommentsList } from './SupportComponents/CommentsList';
 import { TaskCommentsProps } from './comments.types';
-import { mergeArrayWithUserId } from '@src/common/functions';
-import {
-  CatchHandleForToast,
-  thenHandleForToast,
-} from '@api/tools';
+
 
 const keyframe = [
   { backgroundColor: 'transparent' },

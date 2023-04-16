@@ -1,23 +1,28 @@
-import {
-  ShortEventInfoModel,
-  SortedEventsObject,
-} from '@api/planning-api/types/event-info.types';
-import { ObjectId } from '@api/rtk-api.types';
+import { setOpenEventId } from '@planner-reducer/index';
+import { useAppDispatch } from '@redux/hooks/hooks';
+import React, { FC, useCallback, useState } from 'react';
+import { useNavigate } from 'react-router-dom';
+
+import { currentColor, defaultColor } from '@src/common/constants';
+
 import { Accordion } from '@components/Accordion/Accordion';
 import { Badge } from '@components/Badge/Badge';
 import { EventEssence } from '@components/Essences/EventEssence/EventEssence';
 import { FlexBlock } from '@components/LayoutComponents/FlexBlock';
 import { ScrollVerticalView } from '@components/LayoutComponents/ScrollView/ScrollVerticalView';
-import { setOpenEventId } from '@planner-reducer/index';
+
+import { DayTaskListFilter } from '@planner/RenderModes/DayCalendar/TaskList/Filter';
 import {
   GlobalTaskListProps,
   OnSelectTaskFnType,
 } from '@planner/planner.types';
-import { DayTaskListFilter } from '@planner/RenderModes/DayCalendar/TaskList/Filter';
-import { useAppDispatch } from '@redux/hooks/hooks';
-import { currentColor, defaultColor } from '@src/common/constants';
-import React, { FC, useCallback, useState } from 'react';
-import { useNavigate } from 'react-router-dom';
+
+import {
+  ShortEventInfoModel,
+  SortedEventsObject,
+} from '@api/planning-api/types/event-info.types';
+import { ObjectId } from '@api/rtk-api.types';
+
 
 interface DayTaskListProps extends GlobalTaskListProps {
   day: Date;

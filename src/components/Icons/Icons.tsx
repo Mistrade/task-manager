@@ -1,13 +1,16 @@
 import React, { FC } from 'react';
+
 import {
   currentColor,
   defaultColor,
   priorityColors,
 } from '@src/common/constants';
+
 import {
   FlexBlock,
   FlexBlockProps,
 } from '@components/LayoutComponents/FlexBlock';
+
 
 export interface IconProps {
   size?: number;

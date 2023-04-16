@@ -1,15 +1,18 @@
-import {
-  EventInfoModel,
-  ShortEventInfoModel,
-} from '@api/planning-api/types/event-info.types';
-import { UserModel } from '@api/session-api/session-api.types';
+import dayjs, { Dayjs } from 'dayjs';
+
 import {
   EventItem,
   EventsStorage,
   PlannerMode,
   PlannerMonthMode,
 } from '@pages/planner/planner.types';
-import dayjs, { Dayjs } from 'dayjs';
+
+import {
+  EventInfoModel,
+  ShortEventInfoModel,
+} from '@api/planning-api/types/event-info.types';
+import { UserModel } from '@api/session-api/session-api.types';
+
 import { DateHelper } from './calendarSupport/dateHelper';
 import {
   ChangeDayCurrentFn,
@@ -20,6 +23,7 @@ import {
   ShortChangeCurrentPattern,
 } from './commonTypes';
 import { MonthList, PLANNER_LAYOUTS } from './constants';
+
 
 export const addNull = (value: number): string =>
   value < 10 ? `0${value}` : value.toString();

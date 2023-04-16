@@ -1,5 +1,5 @@
-import { useGetEventChainsQuery } from '@api/planning-api';
-import { EventInfoModel } from '@api/planning-api/types/event-info.types';
+import { FC, memo, useState } from 'react';
+
 import { EmptyButtonStyled } from '@components/Buttons/EmptyButton.styled';
 import { LinkStyled } from '@components/Buttons/Link.styled';
 import { ErrorScreen } from '@components/Errors/ErrorScreen';
@@ -9,10 +9,14 @@ import { ScrollVerticalView } from '@components/LayoutComponents/ScrollView/Scro
 import { Loader } from '@components/Loaders/Loader';
 import { Switcher } from '@components/Switcher/Switcher';
 import { Tooltip } from '@components/Tooltip/Tooltip';
-import { FC, memo, useState } from 'react';
+
+import { useGetEventChainsQuery } from '@api/planning-api';
+import { EventInfoModel } from '@api/planning-api/types/event-info.types';
+
 import { ConnectChains } from './Connect/ConnectChains';
-import { ConnectChainsType } from './event-chains.types';
 import { ChainsRenderModeList } from './View/ViewTypes/ChainsRenderModeList';
+import { ConnectChainsType } from './event-chains.types';
+
 
 interface EventChainsTabProps {
   taskItem: EventInfoModel;

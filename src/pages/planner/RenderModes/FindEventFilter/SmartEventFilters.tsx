@@ -1,12 +1,17 @@
-import { ShortEventInfoModel } from '@api/planning-api/types/event-info.types';
 import { useEventStorage } from '@hooks/useEventStorage';
-import { EventsStorage } from '@planner/planner.types';
-import { FindEventFilter } from '@planner/RenderModes/FindEventFilter/FindEventFilter';
-import { disableReRender } from '@src/common/utils/react-utils';
 import React, { FC, memo, useEffect } from 'react';
+
+import { disableReRender } from '@src/common/utils/react-utils';
+
+import { FindEventFilter } from '@planner/RenderModes/FindEventFilter/FindEventFilter';
+import { EventsStorage } from '@planner/planner.types';
+
+import { ShortEventInfoModel } from '@api/planning-api/types/event-info.types';
+
 
 export interface WeekFiltersProps {
   updateStorage(storage: EventsStorage<ShortEventInfoModel>): void;
+
   onlyFavorites?: boolean;
 }
 

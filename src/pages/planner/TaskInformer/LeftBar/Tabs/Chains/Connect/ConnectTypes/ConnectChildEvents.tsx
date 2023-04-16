@@ -1,14 +1,18 @@
-import { FindEvents } from '@planner/TaskInformer/SupportsComponent/FindEvents/FindEvents';
 import { FC, useEffect } from 'react';
+
+import { Badge } from '@components/Badge/Badge';
+import { ButtonWithLoading } from '@components/Buttons/ButtonWithLoading';
 import { EmptyButtonStyled } from '@components/Buttons/EmptyButton.styled';
 import { FlexBlock } from '@components/LayoutComponents/FlexBlock';
 import { Heading } from '@components/Text/Heading';
-import { Badge } from '@components/Badge/Badge';
-import { ButtonWithLoading } from '@components/Buttons/ButtonWithLoading';
-import { PreviewEventsList } from '@planner/TaskInformer/SupportsComponent/FindEvents/PreviewEventsList';
-import { ObjectId } from '@api/rtk-api.types';
-import { ConnectChildEventsProps } from '@planner/TaskInformer/LeftBar/Tabs/Chains/event-chains.types';
+
 import { useConnectChainsOfTree } from '@planner/TaskInformer/LeftBar/Tabs/Chains/Connect/useConnectChainsOfTree';
+import { ConnectChildEventsProps } from '@planner/TaskInformer/LeftBar/Tabs/Chains/event-chains.types';
+import { FindEvents } from '@planner/TaskInformer/SupportsComponent/FindEvents/FindEvents';
+import { PreviewEventsList } from '@planner/TaskInformer/SupportsComponent/FindEvents/PreviewEventsList';
+
+import { ObjectId } from '@api/rtk-api.types';
+
 
 export const ConnectChildEvents: FC<ConnectChildEventsProps> = ({
   taskInfo,

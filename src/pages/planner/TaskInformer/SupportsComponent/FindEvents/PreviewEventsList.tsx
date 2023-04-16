@@ -1,6 +1,9 @@
-import { FlexBlock } from '@components/LayoutComponents/FlexBlock';
-import { EventListFromArray, EventListFromArrayProps } from './EventsList';
 import { FC, ReactNode } from 'react';
+
+import { FlexBlock } from '@components/LayoutComponents/FlexBlock';
+
+import { EventListFromArray, EventListFromArrayProps } from './EventsList';
+
 
 export interface PreviewEventsListProps extends EventListFromArrayProps {
   buttons?: ReactNode;

@@ -1,12 +1,15 @@
-import { CreateEventDataObject, PlannerMode } from '@planner/planner.types';
 import { createSelector } from '@reduxjs/toolkit';
 import dayjs from 'dayjs';
+
+import { CreateEventDataObject, PlannerMode } from '@planner/planner.types';
+
 import { CreateSelectorReturnType, RootState } from '../index';
 import {
   CalendarModeForState,
   CreateEventInitialState,
 } from '../reducers/planner-reducer';
 import { currentFromStoreToDefault } from './utils';
+
 
 export const RootPlannerSelector: CreateSelectorReturnType<
   RootState['planner']

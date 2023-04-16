@@ -1,14 +1,18 @@
+import { FC, useCallback, useState } from 'react';
+
+import { darkColor } from '@src/common/constants';
+
+import { EmptyButtonStyled } from '@components/Buttons/EmptyButton.styled';
+import { ErrorScreen } from '@components/Errors/ErrorScreen';
+import { Arrow } from '@components/Icons/Icons';
 import { FlexBlock } from '@components/LayoutComponents/FlexBlock';
 import { Heading } from '@components/Text/Heading';
-import { FC, useCallback, useState } from 'react';
-import { ConnectChildEvents } from './ConnectTypes/ConnectChildEvents';
-import { EmptyButtonStyled } from '@components/Buttons/EmptyButton.styled';
-import { Arrow } from '@components/Icons/Icons';
-import { darkColor } from '@src/common/constants';
-import { ConnectChainsProps, ConnectChainsType } from '../event-chains.types';
 import { Tooltip } from '@components/Tooltip/Tooltip';
+
+import { ConnectChainsProps, ConnectChainsType } from '../event-chains.types';
 import { ChainsShowcase } from './ChainsShowcase';
-import { ErrorScreen } from '@components/Errors/ErrorScreen';
+import { ConnectChildEvents } from './ConnectTypes/ConnectChildEvents';
+
 
 export const ConnectChains: FC<ConnectChainsProps> = ({
   taskInfo,

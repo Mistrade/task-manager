@@ -1,16 +1,20 @@
-import { ShortEventInfoModel } from '@api/planning-api/types/event-info.types';
+import { plannerDateToDate } from '@planner-reducer/utils';
+import { useAppSelector } from '@redux/hooks/hooks';
+import { plannerSelectScope } from '@selectors/planner';
+import React, { FC, useState } from 'react';
+
 import { FlexBlock } from '@components/LayoutComponents/FlexBlock';
 import { ScrollVerticalView } from '@components/LayoutComponents/ScrollView/ScrollVerticalView';
-import { plannerDateToDate } from '@planner-reducer/utils';
+
+import { SmartEventFilters } from '@planner/RenderModes/FindEventFilter/SmartEventFilters';
+import { ListModeTaskController } from '@planner/RenderModes/List/ListModeTaskController';
 import {
   EventsStorage,
   FavoritesCalendarModeProps,
 } from '@planner/planner.types';
-import { SmartEventFilters } from '@planner/RenderModes/FindEventFilter/SmartEventFilters';
-import { ListModeTaskController } from '@planner/RenderModes/List/ListModeTaskController';
-import { useAppSelector } from '@redux/hooks/hooks';
-import { plannerSelectScope } from '@selectors/planner';
-import React, { FC, useState } from 'react';
+
+import { ShortEventInfoModel } from '@api/planning-api/types/event-info.types';
+
 
 export const FavoritesCalendar: FC<FavoritesCalendarModeProps> = ({}) => {
   const scope = useAppSelector(plannerSelectScope);

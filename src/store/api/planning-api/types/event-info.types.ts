@@ -1,13 +1,16 @@
+import { EventFilterTaskStatuses } from '@planner/RenderModes/FindEventFilter/find-event-filters.types';
 import {
   CalendarPriorityKeys,
   EventLinkItem,
   ICheckListItem,
   TaskStatusesType,
 } from '@planner/planner.types';
-import { UserModel } from '@api/session-api/session-api.types';
-import { GroupModelResponse } from './groups.types';
+
 import { ObjectId, UtcDate } from '@api/rtk-api.types';
-import { EventFilterTaskStatuses } from '@planner/RenderModes/FindEventFilter/find-event-filters.types';
+import { UserModel } from '@api/session-api/session-api.types';
+
+import { GroupModelResponse } from './groups.types';
+
 
 export type EventInviteAcceptedStatuses =
   | 'not_accepted'

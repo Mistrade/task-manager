@@ -1,10 +1,11 @@
-import { SessionInterceptor } from '@components/AppRoutes/Interceptors/SessionInterceptor';
-import { WithSuspense } from '@components/Loaders/WithSuspense';
 import { useAppSelector } from '@redux/hooks/hooks';
 import { selectUserInfo } from '@redux/reducers/session/session-selectors';
 import React, { FC } from 'react';
 import { Route } from 'react-router';
 import { Routes } from 'react-router-dom';
+
+import { SessionInterceptor } from '@components/AppRoutes/Interceptors/SessionInterceptor';
+import { WithSuspense } from '@components/Loaders/WithSuspense';
 
 const RegistrationForm = React.lazy(() =>
   import('../../Session/Registration').then(({ Registration }) => ({

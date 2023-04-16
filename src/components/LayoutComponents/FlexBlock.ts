@@ -1,9 +1,9 @@
+import { ReactNode } from 'react';
 import styled, {
-  css,
   CSSProperties,
   FlattenSimpleInterpolation,
+  css,
 } from 'styled-components';
-import { ReactNode } from 'react';
 
 export type FlexBlockProps = MarginProps &
   PaddingProps &

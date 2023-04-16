@@ -1,7 +1,9 @@
-import { IconProps } from '@components/Icons/Icons';
-import { TooltipIcon } from '@components/Icons/TooltipIcon';
 import Tippy, { TippyProps } from '@tippyjs/react';
 import { FC, ReactNode, useCallback } from 'react';
+
+import { IconProps } from '@components/Icons/Icons';
+import { TooltipIcon } from '@components/Icons/TooltipIcon';
+
 
 export interface TooltipProps {
   children?: ReactNode;

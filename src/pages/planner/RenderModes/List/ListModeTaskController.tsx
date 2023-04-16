@@ -1,13 +1,18 @@
-import { ShortEventInfoModel } from '@api/planning-api/types/event-info.types';
-import { EventEssence } from '@components/Essences/EventEssence/EventEssence';
-import { FlexBlock } from '@components/LayoutComponents/FlexBlock';
-import { CalendarTitle } from '@planner/Planner.styled';
-import { EventsStorage } from '@planner/planner.types';
-import { DeclinationMonthList } from '@src/common/constants';
-import { getTaskListOfDay } from '@src/common/functions';
 import dayjs from 'dayjs';
 import { FC, useMemo } from 'react';
 import { useNavigate } from 'react-router-dom';
+
+import { DeclinationMonthList } from '@src/common/constants';
+import { getTaskListOfDay } from '@src/common/functions';
+
+import { EventEssence } from '@components/Essences/EventEssence/EventEssence';
+import { FlexBlock } from '@components/LayoutComponents/FlexBlock';
+
+import { CalendarTitle } from '@planner/Planner.styled';
+import { EventsStorage } from '@planner/planner.types';
+
+import { ShortEventInfoModel } from '@api/planning-api/types/event-info.types';
+
 
 export interface ListModeTaskController {
   eventStorage?: EventsStorage<ShortEventInfoModel>;

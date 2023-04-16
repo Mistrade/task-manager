@@ -1,12 +1,17 @@
-import styled from 'styled-components';
 import React, { FC, useEffect, useRef } from 'react';
-import { CommentModel } from '@api/planning-api/types/comments.types';
-import { UserModel } from '@api/session-api/session-api.types';
+import styled from 'styled-components';
+
 import { ErrorScreen } from '@components/Errors/ErrorScreen';
 import { FlexBlock } from '@components/LayoutComponents/FlexBlock';
-import { BaseCommentActionsProps, CommentGroupProps } from '../comments.types';
+
 import { MergedNote } from '@planner/TaskInformer/LeftBar/Tabs/TaskHistory/EventHistoryMergedItem';
+
+import { CommentModel } from '@api/planning-api/types/comments.types';
+import { UserModel } from '@api/session-api/session-api.types';
+
+import { BaseCommentActionsProps, CommentGroupProps } from '../comments.types';
 import { CommentGroup } from './CommentGroup';
+
 
 export const CommentsListContainer = styled('ul')`
   & {

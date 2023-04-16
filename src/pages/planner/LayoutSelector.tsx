@@ -1,13 +1,18 @@
-import { CenteredContainer } from '@components/AppRoutes/Interceptors/SessionInterceptor';
-import { ErrorScreen } from '@components/Errors/ErrorScreen';
-import { ModalRoutes } from '@planner/ModalRoutes';
-import { StatusRoutes } from '@planner/StatusRoutes';
-import { PLANNER_LAYOUTS } from '@src/common/constants';
-import { disableReRender } from '@src/common/utils/react-utils';
 import React, { memo } from 'react';
 import { Route } from 'react-router';
 import { Routes } from 'react-router-dom';
+
+import { PLANNER_LAYOUTS } from '@src/common/constants';
+import { disableReRender } from '@src/common/utils/react-utils';
+
+import { CenteredContainer } from '@components/AppRoutes/Interceptors/SessionInterceptor';
+import { ErrorScreen } from '@components/Errors/ErrorScreen';
+
+import { ModalRoutes } from '@planner/ModalRoutes';
+import { StatusRoutes } from '@planner/StatusRoutes';
+
 import { LayoutSuspense } from '../LayoutSuspense';
+
 
 const DayLayout = React.lazy(() =>
   import('./RenderModes/DayCalendar/DayCalendar').then(({ DayCalendar }) => ({

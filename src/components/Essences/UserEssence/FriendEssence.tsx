@@ -1,13 +1,18 @@
-import { FC } from 'react';
-import { IFriendModel } from '@api/friends-api/friends-api.types';
-import { CalendarUserIndicator } from '@pages/planner/Users/UserIndicator';
 import { useSearchNavigate } from '@hooks/useSearchNavigate';
-import { ContactAcceptStatuses } from '@api/friends-api';
-import { ObjectId } from '@api/rtk-api.types';
-import { EssenceContainer } from '../EventEssence/event-essence.styled';
-import { FlexBlock } from '@components/LayoutComponents/FlexBlock';
+import { FC } from 'react';
+
 import { Button } from '@components/Buttons/Buttons.styled';
 import { EmptyButtonStyled } from '@components/Buttons/EmptyButton.styled';
+import { FlexBlock } from '@components/LayoutComponents/FlexBlock';
+
+import { CalendarUserIndicator } from '@pages/planner/Users/UserIndicator';
+
+import { ContactAcceptStatuses } from '@api/friends-api';
+import { IFriendModel } from '@api/friends-api/friends-api.types';
+import { ObjectId } from '@api/rtk-api.types';
+
+import { EssenceContainer } from '../EventEssence/event-essence.styled';
+
 
 export interface FriendEssenceProps {
   friendModel: IFriendModel;

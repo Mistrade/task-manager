@@ -1,6 +1,9 @@
-import { Loader } from '@components/Loaders/Loader';
-import { FCWithChildren } from '@planner/planner.types';
 import React from 'react';
+
+import { Loader } from '@components/Loaders/Loader';
+
+import { FCWithChildren } from '@planner/planner.types';
+
 
 export const LayoutSuspense: FCWithChildren<{ title?: string }> = ({
   children,

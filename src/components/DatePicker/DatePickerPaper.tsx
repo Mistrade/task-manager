@@ -1,17 +1,22 @@
+import { plannerDateToDate } from '@planner-reducer/utils';
+import dayjs from 'dayjs';
+import { FC, useEffect, useMemo, useState } from 'react';
+
+import { DateListGenerator } from '@src/common/calendarSupport/generators';
+import { changeMonthCurrentHandler } from '@src/common/functions';
+
 import { FlexBlock } from '@components/LayoutComponents/FlexBlock';
+
+import { SmallCalendarMonthTitle } from '@pages/planner/SmallMotnCalendar/SmallCalendarMonthTitle';
+import { SmallMonth } from '@pages/planner/SmallMotnCalendar/SmallMonth';
 import {
   CalendarDisabledOptions,
   MonthItem,
   PlannerMonthMode,
 } from '@pages/planner/planner.types';
-import { SmallCalendarMonthTitle } from '@pages/planner/SmallMotnCalendar/SmallCalendarMonthTitle';
-import { SmallMonth } from '@pages/planner/SmallMotnCalendar/SmallMonth';
-import { plannerDateToDate } from '@planner-reducer/utils';
+
 import { DatePickerSwitch } from '@planner/Header/DatePickerSwitch';
-import { DateListGenerator } from '@src/common/calendarSupport/generators';
-import { changeMonthCurrentHandler } from '@src/common/functions';
-import dayjs from 'dayjs';
-import { FC, useEffect, useMemo, useState } from 'react';
+
 import { TimeSelector } from './TimeSelector';
 
 interface DatePickerPaperProps {

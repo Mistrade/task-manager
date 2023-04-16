@@ -1,18 +1,22 @@
-import { CenteredContainer } from '@components/AppRoutes/Interceptors/SessionInterceptor';
-import { PlannerProvider } from '@components/ContextProviders/PlannerProvider';
-import { ErrorScreen } from '@components/Errors/ErrorScreen';
 import { useSearchNavigate } from '@hooks/useSearchNavigate';
-import { PlannerPage } from '@planner/Planner';
-import { EventFilterTaskStatuses } from '@planner/RenderModes/FindEventFilter/find-event-filters.types';
 import { ServicesNames } from '@redux/reducers/global';
+import { FC } from 'react';
+import { useParams } from 'react-router';
+
 import {
   DEFAULT_PLANNER_LAYOUT,
   DEFAULT_PLANNER_STATUS,
   PLANNER_LAYOUTS,
   URLTaskStatuses,
 } from '@src/common/constants';
-import { FC } from 'react';
-import { useParams } from 'react-router';
+
+import { CenteredContainer } from '@components/AppRoutes/Interceptors/SessionInterceptor';
+import { PlannerProvider } from '@components/ContextProviders/PlannerProvider';
+import { ErrorScreen } from '@components/Errors/ErrorScreen';
+
+import { PlannerPage } from '@planner/Planner';
+import { EventFilterTaskStatuses } from '@planner/RenderModes/FindEventFilter/find-event-filters.types';
+
 
 export const CalendarStatusProxy: FC<{ layout: PLANNER_LAYOUTS }> = ({
   layout,

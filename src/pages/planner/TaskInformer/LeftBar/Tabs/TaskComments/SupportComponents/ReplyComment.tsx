@@ -1,18 +1,23 @@
+import dayjs from 'dayjs';
 import React, { FC } from 'react';
-import { ReplyCommentProps } from '../comments.types';
+
+import { currentColor } from '@src/common/constants';
+
+import { LinkStyled } from '@components/Buttons/Link.styled';
+import { TrashIcon } from '@components/Icons/Icons';
+import { FlexBlock } from '@components/LayoutComponents/FlexBlock';
+import { Tooltip } from '@components/Tooltip/Tooltip';
+
+import { CutText } from '@planner/RenderModes/DayCalendar/TaskList/TaskList.styled';
+
 import {
   CommentActionButton,
   StyledReplyComment,
   StyledReplyCommentActionContainer,
 } from '../comments.styled';
-import { FlexBlock } from '@components/LayoutComponents/FlexBlock';
-import { LinkStyled } from '@components/Buttons/Link.styled';
-import { currentColor } from '@src/common/constants';
+import { ReplyCommentProps } from '../comments.types';
 import { CommentDate } from './CommentDate';
-import dayjs from 'dayjs';
-import { CutText } from '@planner/RenderModes/DayCalendar/TaskList/TaskList.styled';
-import { Tooltip } from '@components/Tooltip/Tooltip';
-import { TrashIcon } from '@components/Icons/Icons';
+
 
 export const ReplyComment: FC<ReplyCommentProps> = ({
   scrollToAnsweredCommentFn,

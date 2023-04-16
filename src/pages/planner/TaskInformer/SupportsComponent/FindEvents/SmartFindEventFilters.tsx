@@ -1,10 +1,13 @@
-import { FlexBlock } from '@components/LayoutComponents/FlexBlock';
-import { TextInput } from '@components/Input/TextInput/TextInput';
 import React, { FC } from 'react';
+
+import { DatePicker } from '@components/DatePicker/DatePicker';
 import { SelectPriorityInput } from '@components/Input/SelectInput/CalendarSelectInputs/SelectPriorityInput';
 import { SelectStatusInput } from '@components/Input/SelectInput/CalendarSelectInputs/SelectStatusInput';
+import { TextInput } from '@components/Input/TextInput/TextInput';
+import { FlexBlock } from '@components/LayoutComponents/FlexBlock';
+
 import { FormHandle } from '../../../RenderModes/FindEventFilter/find-event-filters.types';
-import { DatePicker } from '@components/DatePicker/DatePicker';
+
 
 export const SmartFindEventFilters: FC<FormHandle> = ({
   values,

@@ -1,7 +1,11 @@
-import { RegUserRequestProps } from '@api/session-api/session-api.types';
 import { createAsyncThunk } from '@reduxjs/toolkit';
+
 import { api } from '@src/Api/api';
+
+import { RegUserRequestProps } from '@api/session-api/session-api.types';
+
 import { ThunkErrorObject } from './types';
+
 
 export type RegistrationNextAction = 'login' | 'try_again';
 

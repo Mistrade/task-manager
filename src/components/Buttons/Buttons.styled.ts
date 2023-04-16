@@ -1,6 +1,8 @@
-import { borderRadiusSize } from '@src/common/borderRadiusSize';
 import styled, { css } from 'styled-components';
+
+import { borderRadiusSize } from '@src/common/borderRadiusSize';
 import { currentColor, defaultColor } from '@src/common/constants';
+
 
 export const StyledButton = styled('button')<{
   fillColor?: string;

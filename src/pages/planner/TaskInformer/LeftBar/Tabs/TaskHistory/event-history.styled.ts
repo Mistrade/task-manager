@@ -1,5 +1,6 @@
-import { StyledCommentContainer } from '../TaskComments/comments.styled';
 import styled from 'styled-components';
+
+import { StyledCommentContainer } from '../TaskComments/comments.styled';
 
 export const StyledHistoryList = styled(StyledCommentContainer)`
   flex-direction: column;

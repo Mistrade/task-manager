@@ -1,11 +1,15 @@
 import { FC, forwardRef } from 'react';
-import { FlexBlock } from '@components/LayoutComponents/FlexBlock';
-import { EventIcon } from '@components/Icons/EventIcon';
+
+import { TASK_STATUSES, darkColor } from '@src/common/constants';
+
 import { EmptyButtonStyled } from '@components/Buttons/EmptyButton.styled';
+import { EventIcon } from '@components/Icons/EventIcon';
 import { IconProps } from '@components/Icons/Icons';
-import { TaskStatusesType } from '@planner/planner.types';
-import { darkColor, TASK_STATUSES } from '@src/common/constants';
+import { FlexBlock } from '@components/LayoutComponents/FlexBlock';
 import { Tooltip } from '@components/Tooltip/Tooltip';
+
+import { TaskStatusesType } from '@planner/planner.types';
+
 
 export interface EventToggleButtonProps {
   buttonId?: string;

@@ -1,13 +1,18 @@
-import { FlexBlock } from '@components/LayoutComponents/FlexBlock';
-import { PanelDateHeader } from '@planner/OptionsPanel/PanelDateHeader';
+import React, { FC } from 'react';
+
 import { borderRadiusSize } from '@src/common/borderRadiusSize';
 import { disabledColor } from '@src/common/constants';
-import React, { FC } from 'react';
+
+import { FlexBlock } from '@components/LayoutComponents/FlexBlock';
+
+import { PanelDateHeader } from '@planner/OptionsPanel/PanelDateHeader';
+
 import {
   CalendarHeaderAddButton,
   CalendarHeaderAddButtonProps,
 } from './CalendarHeaderAddButton';
 import { CalendarTodaySwitchers } from './CalendarTodaySwitchers';
+
 
 export type CalendarCurrentTitleProps = Pick<
   CalendarHeaderAddButtonProps,

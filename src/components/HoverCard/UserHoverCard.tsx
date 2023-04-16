@@ -1,10 +1,14 @@
-import { FlexBlock } from '@components/LayoutComponents/FlexBlock';
-import { UserModel } from '@api/session-api/session-api.types';
 import { FC, useCallback, useMemo } from 'react';
-import { CalendarUserIndicator } from '@pages/planner/Users/UserIndicator';
+
+import { DateHelper } from '@src/common/calendarSupport/dateHelper';
+
 import { Button } from '@components/Buttons/Buttons.styled';
 import { EmailIcon, PhoneIcon } from '@components/Icons/Session/LogoutIcon';
-import { DateHelper } from '@src/common/calendarSupport/dateHelper';
+import { FlexBlock } from '@components/LayoutComponents/FlexBlock';
+
+import { CalendarUserIndicator } from '@pages/planner/Users/UserIndicator';
+
+import { UserModel } from '@api/session-api/session-api.types';
 
 export interface UserHoverCardProps {
   user: UserModel;

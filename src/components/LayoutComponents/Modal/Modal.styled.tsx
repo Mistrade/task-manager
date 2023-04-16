@@ -1,5 +1,6 @@
-import { borderRadiusSize } from '@src/common/borderRadiusSize';
 import styled, { keyframes } from 'styled-components';
+
+import { borderRadiusSize } from '@src/common/borderRadiusSize';
 import { defaultColor } from '@src/common/constants';
 
 export const ModalLayout = styled('div')`

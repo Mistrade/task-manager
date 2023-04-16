@@ -1,7 +1,9 @@
 import React, { FC } from 'react';
+
 import { StyledCommentContainer } from '../comments.styled';
 import { CommentGroupProps } from '../comments.types';
 import { CommentItem } from './CommentItem';
+
 
 export const CommentGroup: FC<CommentGroupProps> = ({
   comment,

@@ -1,19 +1,24 @@
-import { useGetEventsStorageQuery } from '@api/planning-api';
 import { plannerDateToDate } from '@planner-reducer/utils';
-import { EventsStorage } from '@planner/planner.types';
 import { useAppSelector } from '@redux/hooks/hooks';
 import {
   plannerSelectLayout,
   plannerSelectScope,
   plannerSelectStatus,
 } from '@selectors/planner';
-import { UTC_OFFSET } from '@src/common/constants';
 import { useMemo } from 'react';
+
+import { UTC_OFFSET } from '@src/common/constants';
+
+import { EventsStorage } from '@planner/planner.types';
+
+import { useGetEventsStorageQuery } from '@api/planning-api';
+
 import {
   EventFiltersProps,
-  useEventFilters,
   UseEventFiltersReturned,
+  useEventFilters,
 } from './useEventFilters';
+
 
 interface UseTaskStorageProps {
   onlyFavorites?: boolean;

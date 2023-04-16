@@ -1,7 +1,10 @@
+import { createSelector } from '@reduxjs/toolkit';
+
+import { CreateSelectorReturnType, RootState } from '@src/store';
+
 import { sessionApi } from '@api/session-api';
 import { UserModel } from '@api/session-api/session-api.types';
-import { createSelector } from '@reduxjs/toolkit';
-import { CreateSelectorReturnType, RootState } from '@src/store';
+
 
 export const baseSelectUserInfo = sessionApi.endpoints.confirmSession.select;
 

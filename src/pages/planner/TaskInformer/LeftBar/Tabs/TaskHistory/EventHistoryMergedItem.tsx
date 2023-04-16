@@ -1,15 +1,20 @@
-import { UserModel } from '@api/session-api/session-api.types';
-import { LinkStyled } from '@components/Buttons/Link.styled';
-import { UserHoverCard } from '@components/HoverCard/UserHoverCard';
-import { Tooltip } from '@components/Tooltip/Tooltip';
 import { useCreateEventModal } from '@hooks/useCreateEventModal';
-import { UserAvatar } from '@planner/Users/UserAvatar';
 import { useAppSelector } from '@redux/hooks/hooks';
 import { selectUserInfo } from '@redux/reducers/session/session-selectors';
 import { plannerSelectCurrentMode } from '@selectors/planner';
-import { currentColor } from '@src/common/constants';
-import { getPath, MergedObject } from '@src/common/functions';
 import React, { ReactNode } from 'react';
+
+import { currentColor } from '@src/common/constants';
+import { MergedObject, getPath } from '@src/common/functions';
+
+import { LinkStyled } from '@components/Buttons/Link.styled';
+import { UserHoverCard } from '@components/HoverCard/UserHoverCard';
+import { Tooltip } from '@components/Tooltip/Tooltip';
+
+import { UserAvatar } from '@planner/Users/UserAvatar';
+
+import { UserModel } from '@api/session-api/session-api.types';
+
 import {
   CommentStickyAvatar,
   MergedCommentContainer,
@@ -17,6 +22,7 @@ import {
   MergedCommentDataUserName,
   MergedCommentUserInfo,
 } from '../TaskComments/SupportComponents/MergedCommentItem';
+
 
 export interface EventHistoryMergedItemProps<
   Type,

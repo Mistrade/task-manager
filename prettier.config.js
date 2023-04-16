@@ -7,4 +7,14 @@ module.exports = {
   code: 80,
   before: true,
   after: true,
+  importOrderSeparation: true,
+  importOrderSortSpecifiers: true,
+  importOrder: [
+    '^@src/(.*)$',
+    '^@components/(.*)$',
+    '^@pages/(.*)$',
+    '^@planner/(.*)$',
+    '^@api/(.*)$',
+    '^[./]',
+  ],
 };

@@ -1,36 +1,42 @@
-import { borderRadiusSize } from '@src/common/borderRadiusSize';
-import React, { FC, useCallback, useContext, useMemo } from 'react';
+import { useAppDispatch } from '@redux/hooks/hooks';
 import dayjs from 'dayjs';
-import { planningApi, useUpdateTaskMutation } from '@api/planning-api';
-import { FlexBlock } from '@components/LayoutComponents/FlexBlock';
+import React, { FC, useCallback, useContext, useMemo } from 'react';
+import { css } from 'styled-components';
+
+import { PlannerContext } from '@src/Context/planner.context';
+import { borderRadiusSize } from '@src/common/borderRadiusSize';
+import { DateHelper } from '@src/common/calendarSupport/dateHelper';
 import {
-  darkColor,
   DATE_HOURS_FORMAT,
+  darkColor,
   defaultColor,
   disabledColor,
   hoverColor,
   orangeColor,
   pageHeaderColor,
 } from '@src/common/constants';
-import { css } from 'styled-components';
-import { CutText } from './TaskList.styled';
-import { OnSelectTaskFnType } from '@planner/planner.types';
+
+import { EmptyLink } from '@components/Buttons/EmptyButton.styled';
+import { LikeButton } from '@components/Buttons/LikeButton';
+import { UrlIcon } from '@components/Icons/SocialNetworkIcons';
+import { FlexBlock } from '@components/LayoutComponents/FlexBlock';
+import { Tooltip } from '@components/Tooltip/Tooltip';
+
 import {
   EventInfoUpdateFn,
   ToggleEventCalendar,
   ToggleEventPriority,
   ToggleEventStatus,
 } from '@planner/TaskInformer/SupportsComponent/ToggleTaskInformerButtons';
-import { LikeButton } from '@components/Buttons/LikeButton';
-import { UrlIcon } from '@components/Icons/SocialNetworkIcons';
 import { CalendarUserIndicator } from '@planner/Users/UserIndicator';
-import { EmptyLink } from '@components/Buttons/EmptyButton.styled';
-import { useAppDispatch } from '@redux/hooks/hooks';
-import { DateHelper } from '@src/common/calendarSupport/dateHelper';
+import { OnSelectTaskFnType } from '@planner/planner.types';
+
+import { planningApi, useUpdateTaskMutation } from '@api/planning-api';
 import { ShortEventInfoModel } from '@api/planning-api/types/event-info.types';
-import { Tooltip } from '@components/Tooltip/Tooltip';
 import { CatchHandleForToast, thenHandleForToast } from '@api/tools';
-import { PlannerContext } from '@src/Context/planner.context';
+
+import { CutText } from './TaskList.styled';
+
 
 interface DayTaskItemProps {
   taskInfo: ShortEventInfoModel;

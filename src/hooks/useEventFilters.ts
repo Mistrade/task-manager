@@ -1,13 +1,17 @@
-import { GetEventsFiltersRequestProps } from '@api/planning-api/types/event-info.types';
 import { setPlannerStatus } from '@planner-reducer/index';
-import { PlannerMode } from '@planner/planner.types';
-import { EventFilterOnChangeHandle } from '@planner/RenderModes/FindEventFilter/find-event-filters.types';
 import { useAppDispatch } from '@redux/hooks/hooks';
 import { ServicesNames } from '@redux/reducers/global';
 import dayjs from 'dayjs';
 import { useCallback, useMemo, useState } from 'react';
+
+import { EventFilterOnChangeHandle } from '@planner/RenderModes/FindEventFilter/find-event-filters.types';
+import { PlannerMode } from '@planner/planner.types';
+
+import { GetEventsFiltersRequestProps } from '@api/planning-api/types/event-info.types';
+
 import { useDebounce } from './useDebounce';
 import { useSearchNavigate } from './useSearchNavigate';
+
 
 export interface EventFiltersProps
   extends Omit<GetEventsFiltersRequestProps, 'fromDate' | 'toDate'> {

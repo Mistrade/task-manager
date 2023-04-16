@@ -1,5 +1,3 @@
-import { ObjectId } from '@api/rtk-api.types';
-import { EventFilterTaskStatuses } from '@pages/planner/RenderModes/FindEventFilter/find-event-filters.types';
 import {
   dateToPlannerDate,
   getPlannerMetaData,
@@ -7,13 +5,14 @@ import {
   plannerDateToDate,
   setLayoutConfig,
 } from '@planner-reducer/utils';
-import { EVENT_INFORMER_TAB_NAMES } from '@planner/TaskInformer/LeftBar/TaskInformerLeftBar';
 import {
   IPlannerDate,
   IPlannerReducer,
   TSetPlannerDatePayload,
 } from '@redux/reducers/planner/types';
-import { createSlice, PayloadAction } from '@reduxjs/toolkit';
+import { PayloadAction, createSlice } from '@reduxjs/toolkit';
+import dayjs from 'dayjs';
+
 import { PlannerObserver } from '@src/common/calendarSupport/observer';
 import { ShortChangeCurrentPattern } from '@src/common/commonTypes';
 import {
@@ -22,7 +21,13 @@ import {
   DEFAULT_PLANNER_STATUS,
   PLANNER_LAYOUTS,
 } from '@src/common/constants';
-import dayjs from 'dayjs';
+
+import { EventFilterTaskStatuses } from '@pages/planner/RenderModes/FindEventFilter/find-event-filters.types';
+
+import { EVENT_INFORMER_TAB_NAMES } from '@planner/TaskInformer/LeftBar/TaskInformerLeftBar';
+
+import { ObjectId } from '@api/rtk-api.types';
+
 
 const plannerSlice = createSlice({
   name: 'planner',

@@ -1,8 +1,11 @@
-import { FlexBlock } from '@components/LayoutComponents/FlexBlock';
-import { Tooltip } from '@components/Tooltip/Tooltip';
-import { CutText } from '@planner/RenderModes/DayCalendar/TaskList/TaskList.styled';
 import dayjs from 'dayjs';
 import React from 'react';
+
+import { FlexBlock } from '@components/LayoutComponents/FlexBlock';
+import { Tooltip } from '@components/Tooltip/Tooltip';
+
+import { CutText } from '@planner/RenderModes/DayCalendar/TaskList/TaskList.styled';
+
 
 export const TimeZone = () => {
   return (

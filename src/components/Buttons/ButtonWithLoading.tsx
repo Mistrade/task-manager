@@ -1,9 +1,12 @@
-import { Button, TransparentButton, WhiteButton } from './Buttons.styled';
 import React, { FC, useMemo } from 'react';
-import { StyledComponentProps } from 'styled-components';
 import { ThreeDots } from 'react-loader-spinner';
+import { StyledComponentProps } from 'styled-components';
+
 import { currentColor } from '@src/common/constants';
+
+import { Button, TransparentButton, WhiteButton } from './Buttons.styled';
 import { EmptyButtonStyled } from './EmptyButton.styled';
+
 
 export interface ButtonWithLoadingProps
   extends Partial<StyledComponentProps<'button', {}, {}, ''>> {

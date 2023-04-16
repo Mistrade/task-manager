@@ -1,14 +1,19 @@
-import { GetEventsSchemeResponse } from '@api/planning-api/types/event-info.types';
+import { plannerDateToDate } from '@planner-reducer/utils';
+import dayjs from 'dayjs';
+import { FC, useCallback, useMemo } from 'react';
+
 import { EmptyButtonStyled } from '@components/Buttons/EmptyButton.styled';
 import { FlexBlock } from '@components/LayoutComponents/FlexBlock';
 import { Tooltip } from '@components/Tooltip/Tooltip';
-import { plannerDateToDate } from '@planner-reducer/utils';
+
 import { PlannerMonthMode, WeekItem } from '@planner/planner.types';
-import dayjs from 'dayjs';
-import { FC, useCallback, useMemo } from 'react';
+
+import { GetEventsSchemeResponse } from '@api/planning-api/types/event-info.types';
+
 import { PourDatesProps, SmallMonthProps } from './SmallMonth';
 import { SmallMonthRow, SmallMonthWeekCount } from './SmallMonth.styled';
 import { SmallMonthDateItem } from './SmallMonthDateItem';
+
 
 export interface SmallMonthWeekItemProps
   extends Pick<

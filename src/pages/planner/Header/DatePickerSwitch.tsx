@@ -1,9 +1,13 @@
+import React, { FC, ReactNode } from 'react';
+
+import { ShortChangeCurrentPattern } from '@src/common/commonTypes';
+
 import { EmptyButtonStyled } from '@components/Buttons/EmptyButton.styled';
 import { Arrow, DoubleArrow } from '@components/Icons/Icons';
 import { FlexBlock } from '@components/LayoutComponents/FlexBlock';
+
 import { SwitchCalendarMode } from '@planner/Planner.styled';
-import { ShortChangeCurrentPattern } from '@src/common/commonTypes';
-import React, { FC, ReactNode } from 'react';
+
 
 const SwitchArr: Array<{
   title: ReactNode;

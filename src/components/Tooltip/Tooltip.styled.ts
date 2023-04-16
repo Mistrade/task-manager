@@ -1,5 +1,6 @@
-import { borderRadiusSize } from '@src/common/borderRadiusSize';
 import styled, { createGlobalStyle, css } from 'styled-components';
+
+import { borderRadiusSize } from '@src/common/borderRadiusSize';
 import {
   currentColorWithoutBlur,
   darkColor,
@@ -7,8 +8,11 @@ import {
   pageHeaderColor,
   shadowColor,
 } from '@src/common/constants';
+
 import { pxToCssValue } from '@components/LayoutComponents/FlexBlock';
+
 import { OptionsTooltip } from './Tooltip';
+
 
 export const TooltipWrapper = styled('span')`
   & {

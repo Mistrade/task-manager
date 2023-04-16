@@ -1,25 +1,30 @@
-import { useGetEventsSchemeQuery } from '@api/planning-api';
-import { GetEventsFiltersRequestProps } from '@api/planning-api/types/event-info.types';
-import { FlexBlock } from '@components/LayoutComponents/FlexBlock';
-import { ScrollVerticalView } from '@components/LayoutComponents/ScrollView/ScrollVerticalView';
-import { Loader } from '@components/Loaders/Loader';
 import { useSearchNavigate } from '@hooks/useSearchNavigate';
 import { setPlannerDateAndLayout } from '@planner-reducer/index';
 import { dateToPlannerDate, plannerDateToDate } from '@planner-reducer/utils';
-import { YearCalendarProps } from '@planner/planner.types';
-import { SmallCalendarMonthTitle } from '@planner/SmallMotnCalendar/SmallCalendarMonthTitle';
-import { SmallMonth } from '@planner/SmallMotnCalendar/SmallMonth';
 import { useAppDispatch, useAppSelector } from '@redux/hooks/hooks';
 import { ServicesNames } from '@redux/reducers/global';
 import {
   plannerSelectStatus,
   plannerSelectYearConfig,
 } from '@selectors/planner';
-import { borderRadiusSize } from '@src/common/borderRadiusSize';
-import { PLANNER_LAYOUTS, UTC_OFFSET } from '@src/common/constants';
 import dayjs from 'dayjs';
 import { FC, memo, useMemo } from 'react';
 import styled from 'styled-components';
+
+import { borderRadiusSize } from '@src/common/borderRadiusSize';
+import { PLANNER_LAYOUTS, UTC_OFFSET } from '@src/common/constants';
+
+import { FlexBlock } from '@components/LayoutComponents/FlexBlock';
+import { ScrollVerticalView } from '@components/LayoutComponents/ScrollView/ScrollVerticalView';
+import { Loader } from '@components/Loaders/Loader';
+
+import { SmallCalendarMonthTitle } from '@planner/SmallMotnCalendar/SmallCalendarMonthTitle';
+import { SmallMonth } from '@planner/SmallMotnCalendar/SmallMonth';
+import { YearCalendarProps } from '@planner/planner.types';
+
+import { useGetEventsSchemeQuery } from '@api/planning-api';
+import { GetEventsFiltersRequestProps } from '@api/planning-api/types/event-info.types';
+
 
 const MonthItemContainer = styled('div')`
   padding: 4px;

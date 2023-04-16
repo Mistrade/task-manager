@@ -1,17 +1,22 @@
-import { borderRadiusSize } from '@src/common/borderRadiusSize';
-import { FC, useEffect, useState } from 'react';
 import { useFormik } from 'formik';
-import { FlexBlock } from '@components/LayoutComponents/FlexBlock';
-import { TextAreaInput } from '@components/Input/TextAreaInput/TextAreaInput';
-import { EditableFieldsButtons } from './EditableFieldsButtons';
-import { EventInfoBaseProps } from '@planner/planner.types';
-import { EventInfoUpdateFn } from './ToggleTaskInformerButtons';
+import { FC, useEffect, useState } from 'react';
 import styled, { css } from 'styled-components';
+
+import { borderRadiusSize } from '@src/common/borderRadiusSize';
 import { currentColor, disabledColor } from '@src/common/constants';
+
 import { EmptyButtonStyled } from '@components/Buttons/EmptyButton.styled';
 import { PencilIcon } from '@components/Icons/Icons';
-import { StyledTaskInformerLinkForm } from '../TaskInformer.styled';
 import { InputLabel } from '@components/Input/InputSupportComponents/InputLabel';
+import { TextAreaInput } from '@components/Input/TextAreaInput/TextAreaInput';
+import { FlexBlock } from '@components/LayoutComponents/FlexBlock';
+
+import { EventInfoBaseProps } from '@planner/planner.types';
+
+import { StyledTaskInformerLinkForm } from '../TaskInformer.styled';
+import { EditableFieldsButtons } from './EditableFieldsButtons';
+import { EventInfoUpdateFn } from './ToggleTaskInformerButtons';
+
 
 interface TaskInformerDescriptionProps extends EventInfoBaseProps {
   updateFn: EventInfoUpdateFn;

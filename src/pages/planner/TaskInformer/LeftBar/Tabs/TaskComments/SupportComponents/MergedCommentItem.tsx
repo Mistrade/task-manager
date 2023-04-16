@@ -1,7 +1,9 @@
-import styled from 'styled-components';
-import { MergedComment } from './CommentsList';
 import React from 'react';
+import styled from 'styled-components';
+
 import { BaseCommentActionsProps, CommentGroupProps } from '../comments.types';
+import { MergedComment } from './CommentsList';
+
 
 export const MergedCommentContainer = styled('li')`
   & {

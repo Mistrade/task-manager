@@ -1,20 +1,24 @@
+import { useAppSelector } from '@redux/hooks/hooks';
+import { ServicesNames } from '@redux/reducers/global';
+import { selectUserInfo } from '@redux/reducers/session/session-selectors';
+import { plannerSelectLayout, plannerSelectStatus } from '@selectors/planner';
+import React, { FC, useMemo } from 'react';
+import { toast } from 'react-toastify';
+
+import { currentColor } from '@src/common/constants';
+
 import { EmptyButtonStyled } from '@components/Buttons/EmptyButton.styled';
 import { AppLogoIcon } from '@components/Icons/AppIcon/AppLogoIcon';
 import { FlexBlock } from '@components/LayoutComponents/FlexBlock';
 import { Heading } from '@components/Text/Heading';
+
 import {
   PlannerContentContainer,
   PlannerLayoutContainer,
   PlannerOptionPanelContainer,
 } from '@planner/Planner.styled';
 import { CutText } from '@planner/RenderModes/DayCalendar/TaskList/TaskList.styled';
-import { useAppSelector } from '@redux/hooks/hooks';
-import { ServicesNames } from '@redux/reducers/global';
-import { selectUserInfo } from '@redux/reducers/session/session-selectors';
-import { plannerSelectLayout, plannerSelectStatus } from '@selectors/planner';
-import { currentColor } from '@src/common/constants';
-import React, { FC, useMemo } from 'react';
-import { toast } from 'react-toastify';
+
 import { HeaderLinkStyled } from './HeaderLink.styled.';
 import { NavigationContainer } from './MainHeader.styled';
 import { MainHeaderUserInfo } from './MainHeaderUserInfo';

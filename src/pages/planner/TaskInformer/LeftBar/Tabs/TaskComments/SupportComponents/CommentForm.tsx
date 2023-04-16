@@ -1,13 +1,17 @@
 import { FC, useCallback } from 'react';
-import { CreateCommentBarProps } from '../comments.types';
+
 import { TaskInformerDescriptionInput } from '@planner/TaskInformer/SupportsComponent/TaskInformerDescription';
+
 import {
   useCreateCommentMutation,
   useUpdateCommentMutation,
 } from '@api/planning-api';
-import { CreateCommentContainer } from '../comments.styled';
-import { ReplyComment } from './ReplyComment';
 import { CatchHandleForToast } from '@api/tools';
+
+import { CreateCommentContainer } from '../comments.styled';
+import { CreateCommentBarProps } from '../comments.types';
+import { ReplyComment } from './ReplyComment';
+
 
 export const CommentForm: FC<CreateCommentBarProps> = ({
   replyComment,

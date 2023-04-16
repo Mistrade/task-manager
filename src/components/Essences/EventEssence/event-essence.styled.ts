@@ -1,12 +1,15 @@
-import { borderRadiusSize } from '@src/common/borderRadiusSize';
 import styled from 'styled-components';
+
+import { borderRadiusSize } from '@src/common/borderRadiusSize';
 import {
   currentColor,
   darkColor,
   disabledColor,
   pageHeaderColor,
 } from '@src/common/constants';
+
 import { FlexBlock } from '@components/LayoutComponents/FlexBlock';
+
 
 export const EssenceContainer = styled(FlexBlock)`
   display: flex;

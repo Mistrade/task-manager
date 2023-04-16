@@ -1,11 +1,15 @@
-import { ObjectId } from '@api/rtk-api.types';
-import { EventFilterTaskStatuses } from '@pages/planner/RenderModes/FindEventFilter/find-event-filters.types';
-import { EVENT_INFORMER_TAB_NAMES } from '@pages/planner/TaskInformer/LeftBar/TaskInformerLeftBar';
 import { IPlannerDate, IPlannerReducer } from '@planner-reducer/types';
 import { ServicesNames } from '@redux/reducers/global';
+import dayjs, { Dayjs } from 'dayjs';
+
 import { PlannerObserver } from '@src/common/calendarSupport/observer';
 import { PLANNER_LAYOUTS, URLTaskStatuses } from '@src/common/constants';
-import dayjs, { Dayjs } from 'dayjs';
+
+import { EventFilterTaskStatuses } from '@pages/planner/RenderModes/FindEventFilter/find-event-filters.types';
+import { EVENT_INFORMER_TAB_NAMES } from '@pages/planner/TaskInformer/LeftBar/TaskInformerLeftBar';
+
+import { ObjectId } from '@api/rtk-api.types';
+
 
 export const isEqualPlannerDate = (
   prev: IPlannerDate,

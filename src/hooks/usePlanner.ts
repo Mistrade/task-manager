@@ -1,11 +1,3 @@
-import { GroupModelResponse } from '@api/planning-api/types/groups.types';
-import { ObjectId } from '@api/rtk-api.types';
-import {
-  OnChangeCurrentFnType,
-  OnCloseTaskInfoFnType,
-  OnSelectTaskFnType,
-  PlannerMode,
-} from '@planner/planner.types';
 import { useAppDispatch, useAppSelector } from '@redux/hooks/hooks';
 import {
   changeGroupRemoved,
@@ -13,7 +5,19 @@ import {
 } from '@redux/reducers/planner-reducer';
 import { CalendarCurrentSelector } from '@selectors/calendarItems';
 import { useCallback } from 'react';
+
+import {
+  OnChangeCurrentFnType,
+  OnCloseTaskInfoFnType,
+  OnSelectTaskFnType,
+  PlannerMode,
+} from '@planner/planner.types';
+
+import { GroupModelResponse } from '@api/planning-api/types/groups.types';
+import { ObjectId } from '@api/rtk-api.types';
+
 import { useSearchNavigate } from './useSearchNavigate';
+
 
 export interface UsePlannerReturned {
   planner: PlannerMode;

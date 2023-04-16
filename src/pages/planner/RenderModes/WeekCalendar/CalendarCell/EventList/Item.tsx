@@ -1,12 +1,10 @@
-import { EventShortHoverCard } from '@components/HoverCard/EventShortHoverCard';
-import { PriorityCalendarIcon } from '@components/Icons/CalendarIcons/PriorityCalendarIcon';
-import { FlexBlock } from '@components/LayoutComponents/FlexBlock';
-import { Tooltip } from '@components/Tooltip/Tooltip';
 import { useSearchNavigate } from '@hooks/useSearchNavigate';
-import { GroupLogo } from '@planner/Groups/GroupList.styled';
-import { TaskTileItemProps } from '@planner/planner.types';
 import { useAppSelector } from '@redux/hooks/hooks';
 import { plannerSelectLayout, plannerSelectStatus } from '@selectors/planner';
+import dayjs from 'dayjs';
+import React, { FC, useMemo, useState } from 'react';
+import styled, { css, keyframes } from 'styled-components';
+
 import { borderRadiusSize } from '@src/common/borderRadiusSize';
 import {
   DateHelper,
@@ -20,10 +18,17 @@ import {
   orangeColor,
 } from '@src/common/constants';
 import { eventIsDelayed } from '@src/common/functions';
-import dayjs from 'dayjs';
-import React, { FC, useMemo, useState } from 'react';
-import styled, { css, keyframes } from 'styled-components';
+
+import { EventShortHoverCard } from '@components/HoverCard/EventShortHoverCard';
+import { PriorityCalendarIcon } from '@components/Icons/CalendarIcons/PriorityCalendarIcon';
+import { FlexBlock } from '@components/LayoutComponents/FlexBlock';
+import { Tooltip } from '@components/Tooltip/Tooltip';
+
+import { GroupLogo } from '@planner/Groups/GroupList.styled';
+import { TaskTileItemProps } from '@planner/planner.types';
+
 import { CalendarCellStyledComponentProps } from '../Cell';
+
 
 interface EventContainerProps extends CalendarCellStyledComponentProps {
   withFill?: boolean;

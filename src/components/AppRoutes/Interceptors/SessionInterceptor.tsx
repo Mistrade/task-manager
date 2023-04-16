@@ -1,9 +1,11 @@
-import { UserModel } from '@api/session-api/session-api.types';
-import { ErrorScreen } from '@components/Errors/ErrorScreen';
-import { AuthorizationForm } from '@components/Session/AuthorizationForm';
 import React, { FC, ReactNode, useCallback } from 'react';
 import { useLocation } from 'react-router';
 import styled from 'styled-components';
+
+import { ErrorScreen } from '@components/Errors/ErrorScreen';
+import { AuthorizationForm } from '@components/Session/AuthorizationForm';
+
+import { UserModel } from '@api/session-api/session-api.types';
 
 export const CenteredContainer = styled('div')`
   & {

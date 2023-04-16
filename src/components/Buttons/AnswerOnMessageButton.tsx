@@ -1,9 +1,13 @@
 import { FC } from 'react';
+
 import { currentColor } from '@src/common/constants';
-import { EmptyButtonStyled } from './EmptyButton.styled';
+
+import { AnswerIcon } from '@components/Icons/CalendarIcons/AnswerIcon';
 import { IconProps } from '@components/Icons/Icons';
 import { FlexBlockProps } from '@components/LayoutComponents/FlexBlock';
-import { AnswerIcon } from '@components/Icons/CalendarIcons/AnswerIcon';
+
+import { EmptyButtonStyled } from './EmptyButton.styled';
+
 
 export interface AnswerOnMessageButtonProps extends Omit<IconProps, 'onClick'> {
   iconContainerProps?: FlexBlockProps;

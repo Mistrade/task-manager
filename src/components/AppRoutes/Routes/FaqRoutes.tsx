@@ -1,6 +1,7 @@
-import { FlexBlock } from '@components/LayoutComponents/FlexBlock';
 import React from 'react';
+
 import { ErrorScreen } from '@components/Errors/ErrorScreen';
+import { FlexBlock } from '@components/LayoutComponents/FlexBlock';
 
 export const FaqRoutes = () => {
   return (

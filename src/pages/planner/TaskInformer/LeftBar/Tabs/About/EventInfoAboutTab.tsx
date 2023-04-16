@@ -1,11 +1,14 @@
+import dayjs from 'dayjs';
+import { FC, memo } from 'react';
+
 import { DatePicker } from '@components/DatePicker/DatePicker';
 import { FlexBlock } from '@components/LayoutComponents/FlexBlock';
 import { ScrollVerticalView } from '@components/LayoutComponents/ScrollView/ScrollVerticalView';
-import { EventInfoBaseProps } from '@planner/planner.types';
+
 import { TaskInformerDescription } from '@planner/TaskInformer/SupportsComponent/TaskInformerDescription';
 import { EventInfoUpdateFn } from '@planner/TaskInformer/SupportsComponent/ToggleTaskInformerButtons';
-import dayjs from 'dayjs';
-import { FC, memo } from 'react';
+import { EventInfoBaseProps } from '@planner/planner.types';
+
 
 export interface EventInfoAboutTabProps extends EventInfoBaseProps {
   updateFn: EventInfoUpdateFn;

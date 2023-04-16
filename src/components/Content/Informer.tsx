@@ -1,5 +1,6 @@
-import styled from 'styled-components';
 import React, { FC, ReactNode } from 'react';
+import styled from 'styled-components';
+
 import { ErrorTypes } from '@api/rtk-api.types';
 
 interface DefaultInformerProps {

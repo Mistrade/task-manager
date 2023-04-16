@@ -1,8 +1,11 @@
 import { FC } from 'react';
-import { BaseEventHistoryFieldProps } from '../event-history.types';
+
+import { EventEssence } from '@components/Essences/EventEssence/EventEssence';
 import { ReplyContent } from '@components/Essences/EventEssence/event-essence.styled';
 import { FlexBlock } from '@components/LayoutComponents/FlexBlock';
-import { EventEssence } from '@components/Essences/EventEssence/EventEssence';
+
+import { BaseEventHistoryFieldProps } from '../event-history.types';
+
 
 interface ChildOfListProps {
   list: BaseEventHistoryFieldProps['value']['eventSnapshot']['insertChildOfEvents'];

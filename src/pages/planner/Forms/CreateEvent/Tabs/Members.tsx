@@ -1,9 +1,12 @@
-import { BaseCreateEventTabProps } from './Info';
 import { FC } from 'react';
-import { ScrollVerticalView } from '@components/LayoutComponents/ScrollView/ScrollVerticalView';
-import { FlexBlock } from '@components/LayoutComponents/FlexBlock';
-import { SelectInput } from '@components/Input/SelectInput/SelectInput';
+
 import { ErrorScreen } from '@components/Errors/ErrorScreen';
+import { SelectInput } from '@components/Input/SelectInput/SelectInput';
+import { FlexBlock } from '@components/LayoutComponents/FlexBlock';
+import { ScrollVerticalView } from '@components/LayoutComponents/ScrollView/ScrollVerticalView';
+
+import { BaseCreateEventTabProps } from './Info';
+
 
 export interface CreateEventMembersTabProps extends BaseCreateEventTabProps {}
 

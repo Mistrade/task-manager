@@ -1,13 +1,17 @@
-import { useGetShortEventsArrayQuery } from '@api/planning-api';
-import { SortedEventsObject } from '@api/planning-api/types/event-info.types';
 import { initialFiltersValues, useEventFilters } from '@hooks/useEventFilters';
 import { plannerDateToDate } from '@planner-reducer/utils';
-import { FindEventFilter } from '@planner/RenderModes/FindEventFilter/FindEventFilter';
 import { useAppSelector } from '@redux/hooks/hooks';
 import { plannerSelectDate, plannerSelectStatus } from '@selectors/planner';
-import { PLANNER_LAYOUTS, UTC_OFFSET } from '@src/common/constants';
 import dayjs from 'dayjs';
 import React, { FC, memo, useEffect, useMemo } from 'react';
+
+import { PLANNER_LAYOUTS, UTC_OFFSET } from '@src/common/constants';
+
+import { FindEventFilter } from '@planner/RenderModes/FindEventFilter/FindEventFilter';
+
+import { useGetShortEventsArrayQuery } from '@api/planning-api';
+import { SortedEventsObject } from '@api/planning-api/types/event-info.types';
+
 
 export interface DayTaskListFilterProps {
   updateState(arr: SortedEventsObject): void;

@@ -1,9 +1,13 @@
 import { FC } from 'react';
-import { BaseEventHistoryFieldProps } from '../event-history.types';
-import { EventPriorityButton } from '@planner/TaskInformer/SupportsComponent/EventPriorityButton';
-import { CalendarPriorityKeys } from '@planner/planner.types';
+
 import { ReplyContent } from '@components/Essences/EventEssence/event-essence.styled';
 import { Text } from '@components/Text/Text';
+
+import { EventPriorityButton } from '@planner/TaskInformer/SupportsComponent/EventPriorityButton';
+import { CalendarPriorityKeys } from '@planner/planner.types';
+
+import { BaseEventHistoryFieldProps } from '../event-history.types';
+
 
 export const HistoryPriorityField: FC<
   BaseEventHistoryFieldProps<CalendarPriorityKeys | null>

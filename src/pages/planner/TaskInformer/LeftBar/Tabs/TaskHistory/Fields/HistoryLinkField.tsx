@@ -1,11 +1,15 @@
 import { FC } from 'react';
-import { BaseEventHistoryFieldProps } from '../event-history.types';
-import { EventLinkItem } from '@planner/planner.types';
-import { Text } from '@components/Text/Text';
+
 import { JoinToEventButton } from '@components/Buttons/Buttons.styled';
+import { ReplyContent } from '@components/Essences/EventEssence/event-essence.styled';
 import { UrlIcon } from '@components/Icons/SocialNetworkIcons';
 import { FlexBlock } from '@components/LayoutComponents/FlexBlock';
-import { ReplyContent } from '@components/Essences/EventEssence/event-essence.styled';
+import { Text } from '@components/Text/Text';
+
+import { EventLinkItem } from '@planner/planner.types';
+
+import { BaseEventHistoryFieldProps } from '../event-history.types';
+
 
 export const HistoryLinkField: FC<
   BaseEventHistoryFieldProps<EventLinkItem | null | undefined>

@@ -1,6 +1,8 @@
-import { GroupModelResponse } from '@api/planning-api/types/groups.types';
 import { UsePlannerReturned } from '@hooks/usePlanner';
+
+import { GroupModelResponse } from '@api/planning-api/types/groups.types';
 import { ObjectId } from '@api/rtk-api.types';
+
 
 export interface UpdateGroupModalProps {
   onClose?: () => void;

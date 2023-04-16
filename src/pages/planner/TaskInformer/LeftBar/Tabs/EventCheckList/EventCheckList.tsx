@@ -1,17 +1,18 @@
-import { EventInfoModel } from '@api/planning-api/types/event-info.types';
 import { FC, useCallback } from 'react';
+
+import { CenteredContainer } from '@components/AppRoutes/Interceptors/SessionInterceptor';
 import { CheckList } from '@components/CheckList';
-import { CreateEventCheckList } from './CreateEventCheckList';
+import { Loader } from '@components/Loaders/Loader';
+
 import {
   useGetCheckListQuery,
   useUpdateCheckListMutation,
 } from '@api/planning-api';
-import { CenteredContainer } from '@components/AppRoutes/Interceptors/SessionInterceptor';
-import { Loader } from '@components/Loaders/Loader';
-import {
-  CatchHandleForToast,
-  thenHandleForToast,
-} from '@api/tools';
+import { EventInfoModel } from '@api/planning-api/types/event-info.types';
+import { CatchHandleForToast, thenHandleForToast } from '@api/tools';
+
+import { CreateEventCheckList } from './CreateEventCheckList';
+
 
 export interface EventCheckListProps {
   eventInfo: EventInfoModel;

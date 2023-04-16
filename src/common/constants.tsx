@@ -1,3 +1,8 @@
+import dayjs from 'dayjs';
+import { ReactNode } from 'react';
+
+import { ShortChangeCurrentPattern } from '@src/common/commonTypes';
+
 import { ErrorBadRequestImg } from '@components/Icons/Errors/ErrorBadRequest';
 import { ErrorForbiddenImg } from '@components/Icons/Errors/ErrorForbidden';
 import { SystemErrorImg } from '@components/Icons/Errors/SystemError';
@@ -8,22 +13,24 @@ import {
   ProcessIcon,
   ReviewIcon,
 } from '@components/Icons/Icons';
+import { TelegramLogoIcon } from '@components/Icons/SocialNetworkIcons/Telegram';
+import { TwoPeopleIcon } from '@components/Icons/UserIcons/UserIcons';
+
+import {
+  EventFilterTaskStatuses,
+  StatusesTabsObject,
+} from '@pages/planner/RenderModes/FindEventFilter/find-event-filters.types';
 import {
   CalendarPriorityKeys,
   CalendarPriorityList,
   DateItem,
   MonthItem,
-  TaskStatusesType,
   TaskStatusInfo,
+  TaskStatusesType,
   WeekItem,
   YearItem,
 } from '@pages/planner/planner.types';
-import {
-  EventFilterTaskStatuses,
-  StatusesTabsObject,
-} from '@pages/planner/RenderModes/FindEventFilter/find-event-filters.types';
-import { ShortChangeCurrentPattern } from '@src/common/commonTypes';
-import dayjs from 'dayjs';
+
 import { ErrorImagesType } from './types';
 
 export const MonthList = [
@@ -574,5 +581,28 @@ export const CHANGE_DATE_OF_PATTERN_SIGNATURE: TChangeDateOfPatternSignature = {
       unit: 'day',
       value: 0,
     },
+  },
+};
+
+export enum FRIENDS_ROUTES {
+  'FRIENDS_LIST' = 'my_friends',
+  'OUTGOING_REQUESTS' = 'outgoing',
+  'INCOMING_REQUESTS' = 'incoming',
+}
+
+export const FRIENDS_ROUTES_PAGE_NAMES: {
+  [key in FRIENDS_ROUTES]: {
+    title: string;
+    icon: ReactNode;
+  };
+} = {
+  my_friends: { title: 'Список друзей', icon: <TwoPeopleIcon size={24} /> },
+  outgoing: {
+    title: 'Исходящие заявки',
+    icon: <TelegramLogoIcon size={24} color={currentColor} />,
+  },
+  incoming: {
+    title: 'Входящие заявки',
+    icon: <CompleteIcon size={24} color={currentColor} />,
   },
 };

@@ -1,14 +1,19 @@
-import { GetEventsSchemeResponse } from '@api/planning-api/types/event-info.types';
 import { plannerDateToDate } from '@planner-reducer/utils';
-import { CalendarItem, PlannerMonthMode } from '@planner/planner.types';
-import { addNull } from '@src/common/functions';
 import dayjs from 'dayjs';
 import { FC } from 'react';
+
+import { addNull } from '@src/common/functions';
+
+import { CalendarItem, PlannerMonthMode } from '@planner/planner.types';
+
+import { GetEventsSchemeResponse } from '@api/planning-api/types/event-info.types';
+
 import { SmallMonthRowItem } from './SmallMonth.styled';
 import {
   CheckPourMonthResult,
   SmallMonthWeekItemProps,
 } from './SmallMonthWeekItem';
+
 
 interface SmallMonthDateItemProps {
   date: CalendarItem;

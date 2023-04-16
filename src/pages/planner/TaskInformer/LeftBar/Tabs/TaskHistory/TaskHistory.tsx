@@ -1,6 +1,13 @@
-import { useGetEventHistoryQuery } from '@api/planning-api';
-import { EventHistoryQueryResult } from '@api/planning-api/types/event-history.types';
-import { EventInfoModel } from '@api/planning-api/types/event-info.types';
+import dayjs from 'dayjs';
+import React, { FC, memo } from 'react';
+
+import {
+  darkColor,
+  defaultColor,
+  hoverColor,
+  orangeColor,
+} from '@src/common/constants';
+
 import { Badge } from '@components/Badge/Badge';
 import { LinkStyled } from '@components/Buttons/Link.styled';
 import { ErrorScreen } from '@components/Errors/ErrorScreen';
@@ -9,19 +16,17 @@ import { ScrollVerticalView } from '@components/LayoutComponents/ScrollView/Scro
 import { Loader } from '@components/Loaders/Loader';
 import { Heading } from '@components/Text/Heading';
 import { Tooltip } from '@components/Tooltip/Tooltip';
-import {
-  darkColor,
-  defaultColor,
-  hoverColor,
-  orangeColor,
-} from '@src/common/constants';
-import dayjs from 'dayjs';
-import React, { FC, memo } from 'react';
-import { ChatItem } from '../TaskComments/comments.styled';
+
+import { useGetEventHistoryQuery } from '@api/planning-api';
+import { EventHistoryQueryResult } from '@api/planning-api/types/event-history.types';
+import { EventInfoModel } from '@api/planning-api/types/event-info.types';
+
 import { CommentDate } from '../TaskComments/SupportComponents/CommentDate';
-import { StyledHistoryList } from './event-history.styled';
+import { ChatItem } from '../TaskComments/comments.styled';
 import { MergedNote } from './EventHistoryMergedItem';
 import { EventHistoryItemController } from './Fields';
+import { StyledHistoryList } from './event-history.styled';
+
 
 export interface TaskHistoryProps {
   taskInfo: EventInfoModel;

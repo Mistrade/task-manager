@@ -1,9 +1,11 @@
 import React, { FC } from 'react';
-import {
-  InputActionsStyledContainer,
-  InputActionStyledItem,
-} from './InputActions.styled';
+
 import { InputActionDeleteElement } from './InputActionDeleteElement';
+import {
+  InputActionStyledItem,
+  InputActionsStyledContainer,
+} from './InputActions.styled';
+
 
 export interface TextInputAdditionalAction {
   title: string;

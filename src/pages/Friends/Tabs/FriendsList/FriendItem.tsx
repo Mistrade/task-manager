@@ -1,15 +1,20 @@
-import { UserModel } from '@api/session-api/session-api.types';
+import { ServicesNames } from '@redux/reducers/global';
+import { FC } from 'react';
+
 import { Button } from '@components/Buttons/Buttons.styled';
 import { EmptyButtonStyled } from '@components/Buttons/EmptyButton.styled';
 import { LinkStyled } from '@components/Buttons/Link.styled';
 import { FlexBlock } from '@components/LayoutComponents/FlexBlock';
+
 import {
   FriendItemContainer,
   FriendItemContentContainer,
 } from '@pages/Friends/Tabs/FriendsList/styled';
+
 import { UserAvatar } from '@planner/Users/UserAvatar';
-import { ServicesNames } from '@redux/reducers/global';
-import { FC } from 'react';
+
+import { UserModel } from '@api/session-api/session-api.types';
+
 
 export interface FriendItemProps {
   user: UserModel;

@@ -1,9 +1,12 @@
 import { FC, ReactNode, useState } from 'react';
+import { css } from 'styled-components';
+
+import { currentColor } from '@src/common/constants';
+
+import { EmptyButtonStyled } from '@components/Buttons/EmptyButton.styled';
 import { Arrow, IconProps, PlusIcon } from '@components/Icons/Icons';
 import { FlexBlock } from '@components/LayoutComponents/FlexBlock';
-import { EmptyButtonStyled } from '@components/Buttons/EmptyButton.styled';
-import { currentColor } from '@src/common/constants';
-import { css } from 'styled-components';
+
 
 export interface AccordionProps {
   title: ReactNode;

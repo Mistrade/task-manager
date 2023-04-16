@@ -1,10 +1,13 @@
-import { BreadCrumbs } from '@components/BreadCrumbs/BreadCrumbs';
 import { setPlannerDateAndLayout } from '@planner-reducer/index';
 import { useAppDispatch, useAppSelector } from '@redux/hooks/hooks';
 import { plannerSelectDate } from '@selectors/planner';
+import React, { memo, useCallback, useMemo } from 'react';
+
 import { MonthList, PLANNER_LAYOUTS } from '@src/common/constants';
 import { disableReRender } from '@src/common/utils/react-utils';
-import React, { memo, useCallback, useMemo } from 'react';
+
+import { BreadCrumbs } from '@components/BreadCrumbs/BreadCrumbs';
+
 
 export const WeekBreadCrumbs = memo(() => {
   const currentDate = useAppSelector(plannerSelectDate);
