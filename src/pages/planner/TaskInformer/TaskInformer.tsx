@@ -2,8 +2,6 @@ import React, { FC, useCallback } from 'react';
 import { Helmet } from 'react-helmet';
 import { css } from 'styled-components';
 
-import { MonthList } from '@src/common/constants';
-
 import { FlexBlock } from '@components/LayoutComponents/FlexBlock';
 
 import { EventInformerHeader } from '@planner/TaskInformer/Header/EventInformerHeader';

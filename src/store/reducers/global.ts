@@ -4,6 +4,8 @@ export enum ServicesNames {
   'PLANNER' = 'planner',
   'FRIENDS' = 'friends',
   'PROFILE' = 'profile',
+  'FAQ' = 'faq',
+  'SESSION' = 'session',
 }
 
 interface IGlobalReducer {

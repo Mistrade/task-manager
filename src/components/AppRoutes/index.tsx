@@ -38,8 +38,8 @@ export const AppRoutes: FC = React.memo(() => {
           </SessionInterceptor>
         }
       />
-      <Route path={'profile/*'} element={<ProfileRoutes />} />
-      <Route path={'faq/*'} element={<FaqRoutes />} />
+      <Route path={`${ServicesNames.PROFILE}/*`} element={<ProfileRoutes />} />
+      <Route path={`${ServicesNames.FAQ}/*`} element={<FaqRoutes />} />
       <Route
         path={`${ServicesNames.FRIENDS}/*`}
         element={
@@ -50,7 +50,7 @@ export const AppRoutes: FC = React.memo(() => {
           </SessionInterceptor>
         }
       />
-      <Route path={'session/*'} element={<SessionRoutes />} />
+      <Route path={`${ServicesNames.SESSION}/*`} element={<SessionRoutes />} />
       <Route path={'*'} element={<NotFoundPage />} />
     </Routes>
   );
