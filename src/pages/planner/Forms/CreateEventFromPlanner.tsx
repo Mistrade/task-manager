@@ -2,7 +2,7 @@ import { useCreateEventModal } from '@hooks/useCreateEventModal';
 import { useSearchNavigate } from '@hooks/useSearchNavigate';
 import { setEventInfoTabName } from '@planner-reducer/index';
 import { useAppDispatch, useAppSelector } from '@redux/hooks/hooks';
-import { plannerSelectLayout, plannerSelectStatus } from '@selectors/planner';
+import { plannerSelectLayout } from '@selectors/planner';
 import React, { FC, useCallback } from 'react';
 
 import { SERVICES_NAMES } from '@src/common/constants';
@@ -17,7 +17,6 @@ export const CreateEventFromPlanner: FC = ({}) => {
   const { declineModal, clearState } = useCreateEventModal();
 
   const navigate = useSearchNavigate();
-  const status = useAppSelector(plannerSelectStatus);
   const layout = useAppSelector(plannerSelectLayout);
   const prevUrl = useAppSelector((state) => state.planner.createEventPrevUrl);
   const dispatch = useAppDispatch();
@@ -26,22 +25,15 @@ export const CreateEventFromPlanner: FC = ({}) => {
       clearState();
       dispatch(setEventInfoTabName(EVENT_INFORMER_TAB_NAMES.ABOUT));
       navigate(
-        getPath(
-          SERVICES_NAMES.PLANNER,
-          layout,
-          status,
-          'event',
-          'info',
-          eventId
-        )
+        getPath(SERVICES_NAMES.PLANNER, layout, 'event', 'info', eventId)
       );
     },
-    [layout, status, clearState]
+    [layout, clearState]
   );
 
   const closeHandler = useCallback(() => {
-    declineModal(prevUrl || getPath(SERVICES_NAMES.PLANNER, layout, status));
-  }, [declineModal, prevUrl, layout, status]);
+    declineModal(prevUrl || getPath(SERVICES_NAMES.PLANNER, layout));
+  }, [declineModal, prevUrl, layout]);
 
   return <CreateEventModal onSuccess={successHandler} onClose={closeHandler} />;
 };

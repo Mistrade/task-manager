@@ -1,7 +1,7 @@
-import { Navigate, Route } from 'react-router';
+import { Route } from 'react-router';
 import { Routes } from 'react-router-dom';
 
-import { FRIENDS_ROUTES, SERVICES_NAMES } from '@src/common/constants';
+import { FRIENDS_ROUTES } from '@src/common/constants';
 
 import { CenteredContainer } from '@components/AppRoutes/Interceptors/SessionInterceptor';
 import { EmptyButtonStyled } from '@components/Buttons/EmptyButton.styled';
@@ -35,18 +35,7 @@ export const FriendsLayouts = () => {
           renderPattern={'top-bottom'}
         >
           <Routes>
-            <Route
-              index
-              element={
-                <Navigate
-                  to={`/${SERVICES_NAMES.FRIENDS}/${FRIENDS_ROUTES.FRIENDS_LIST}`}
-                />
-              }
-            />
-            <Route
-              path={FRIENDS_ROUTES.FRIENDS_LIST}
-              element={<FriendsList />}
-            />
+            <Route index element={<FriendsList />} />
             <Route
               path={FRIENDS_ROUTES.OUTGOING_REQUESTS}
               element={<OutgoingRequestList />}

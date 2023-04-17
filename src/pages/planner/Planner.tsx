@@ -1,10 +1,6 @@
 import React, { FC } from 'react';
 import Helmet from 'react-helmet';
 
-import { PLANNER_LAYOUTS } from '@src/common/constants';
-
-import { PlannerProvider } from '@components/ContextProviders/PlannerProvider';
-
 import { LayoutSelector } from './LayoutSelector';
 import { ModalRoutes } from './ModalRoutes';
 import { PlannerOptionsPanel } from './OptionsPanel/PlannerOptionsPanel';
@@ -17,7 +13,7 @@ import {
 
 export const PlannerPage: FC = React.memo(() => {
   return (
-    <PlannerProvider layout={PLANNER_LAYOUTS.MONTH} status={'all'}>
+    <>
       <Helmet
         title={'Мои дела'}
         meta={[
@@ -44,6 +40,6 @@ export const PlannerPage: FC = React.memo(() => {
         </PlannerContentContainer>
         <ModalRoutes />
       </PlannerContainer>
-    </PlannerProvider>
+    </>
   );
 });

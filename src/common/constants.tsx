@@ -586,6 +586,14 @@ export const CHANGE_DATE_OF_PATTERN_SIGNATURE: TChangeDateOfPatternSignature = {
   },
 };
 
+export enum SERVICES_NAMES {
+  'PLANNER' = 'planner',
+  'FRIENDS' = 'friends',
+  'PROFILE' = 'profile',
+  'FAQ' = 'faq',
+  'SESSION' = 'session',
+}
+
 export enum FRIENDS_ROUTES {
   'FRIENDS_LIST' = 'my_friends',
   'OUTGOING_REQUESTS' = 'outgoing',
@@ -596,16 +604,27 @@ export const FRIENDS_ROUTES_PAGE_NAMES: {
   [key in FRIENDS_ROUTES]: {
     title: string;
     icon: ReactNode;
+    path: string;
+    matchEndPath: boolean;
   };
 } = {
-  my_friends: { title: 'Список друзей', icon: <TwoPeopleIcon size={24} /> },
+  my_friends: {
+    title: 'Список друзей',
+    icon: <TwoPeopleIcon size={24} />,
+    path: `/${SERVICES_NAMES.FRIENDS}`,
+    matchEndPath: true,
+  },
   outgoing: {
     title: 'Исходящие заявки',
     icon: <TelegramLogoIcon size={24} color={currentColor} />,
+    path: `/${SERVICES_NAMES.FRIENDS}/${FRIENDS_ROUTES.OUTGOING_REQUESTS}`,
+    matchEndPath: false,
   },
   incoming: {
     title: 'Входящие заявки',
     icon: <CompleteIcon size={24} color={currentColor} />,
+    path: `/${SERVICES_NAMES.FRIENDS}/${FRIENDS_ROUTES.INCOMING_REQUESTS}`,
+    matchEndPath: false,
   },
 };
 
@@ -614,18 +633,10 @@ export const FRIENDS_PAGE_TITLES = {
   [FRIEND_REQUESTS_TYPES.INCOMING]: 'Входящие заявки в друзья',
 };
 
-export enum SERVICES_NAMES {
-  'PLANNER' = 'planner',
-  'FRIENDS' = 'friends',
-  'PROFILE' = 'profile',
-  'FAQ' = 'faq',
-  'SESSION' = 'session',
-}
-
 export const SERVICES_TITLES: { [key in SERVICES_NAMES]: string } = {
   [SERVICES_NAMES.PLANNER]: 'Мои дела',
   [SERVICES_NAMES.FRIENDS]: 'Мои друзья',
-  [SERVICES_NAMES.FAQ]: 'Faq',
+  [SERVICES_NAMES.FAQ]: 'FAQ',
   [SERVICES_NAMES.PROFILE]: 'Профиль пользователя',
   [SERVICES_NAMES.SESSION]: 'Сессия',
 };

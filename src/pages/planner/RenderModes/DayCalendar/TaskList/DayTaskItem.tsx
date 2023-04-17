@@ -1,9 +1,8 @@
 import { useAppDispatch } from '@redux/hooks/hooks';
 import dayjs from 'dayjs';
-import React, { FC, useCallback, useContext, useMemo } from 'react';
+import React, { FC, useCallback, useMemo } from 'react';
 import { css } from 'styled-components';
 
-import { PlannerContext } from '@src/Context/planner.context';
 import { borderRadiusSize } from '@src/common/borderRadiusSize';
 import { DateHelper } from '@src/common/calendarSupport/dateHelper';
 import {
@@ -31,12 +30,11 @@ import {
 import { CalendarUserIndicator } from '@planner/Users/UserIndicator';
 import { OnSelectTaskFnType } from '@planner/planner.types';
 
-import { planningApi, useUpdateTaskMutation } from '@api/planning-api';
+import { useUpdateTaskMutation } from '@api/planning-api';
 import { ShortEventInfoModel } from '@api/planning-api/types/event-info.types';
 import { CatchHandleForToast, thenHandleForToast } from '@api/tools';
 
 import { CutText } from './TaskList.styled';
-
 
 interface DayTaskItemProps {
   taskInfo: ShortEventInfoModel;
@@ -86,14 +84,9 @@ export const DayTaskItem: FC<DayTaskItemProps> = ({
   const dispatch = useAppDispatch();
   const [updateTask] = useUpdateTaskMutation();
 
-  const {
-    currentLayout,
-    methods: { openEventInfo },
-  } = useContext(PlannerContext);
-
   const setTaskInfo = useCallback(() => {
-    openEventInfo(taskInfo._id);
-  }, [openEventInfo, taskInfo, day]);
+    // openEventInfo(taskInfo._id);
+  }, [taskInfo, day]);
 
   const keyPressHandler = (e: React.KeyboardEvent<HTMLDivElement>) => {
     if (e.key === 'Enter') {
@@ -240,11 +233,11 @@ export const DayTaskItem: FC<DayTaskItemProps> = ({
                             data: !taskInfo.isLiked,
                             field: 'isLiked',
                           });
-                          if (currentLayout === 'favorites') {
-                            dispatch(
-                              planningApi.util.invalidateTags(['EventsCount'])
-                            );
-                          }
+                          // if (currentLayout === 'favorites') {
+                          //   dispatch(
+                          //     planningApi.util.invalidateTags(['EventsCount'])
+                          //   );
+                          // }
                         }}
                       />
                     </Tooltip>

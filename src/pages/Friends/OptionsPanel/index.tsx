@@ -1,9 +1,4 @@
-import {
-  FRIENDS_ROUTES,
-  FRIENDS_ROUTES_PAGE_NAMES,
-  SERVICES_NAMES,
-} from '@src/common/constants';
-import { getPath } from '@src/common/functions';
+import { FRIENDS_ROUTES_PAGE_NAMES } from '@src/common/constants';
 
 import { FlexBlock } from '@components/LayoutComponents/FlexBlock';
 
@@ -14,17 +9,19 @@ export const FriendsOptionPanel = () => {
   return (
     <PlannerOptionPanelContainer>
       <FlexBlock direction={'column'} gap={8}>
-        {Object.values(FRIENDS_ROUTES).map((item) => (
+        {Object.values(FRIENDS_ROUTES_PAGE_NAMES).map((item) => (
           <LinkSolid
-            key={item}
+            end={item.matchEndPath}
+            relative={undefined}
+            key={item.title}
             style={{
               width: '100%',
               justifyContent: 'flex-start',
               textAlign: 'left',
             }}
-            icon={FRIENDS_ROUTES_PAGE_NAMES[item].icon}
-            title={FRIENDS_ROUTES_PAGE_NAMES[item].title}
-            to={getPath(SERVICES_NAMES.FRIENDS, item)}
+            icon={item.icon}
+            title={item.title}
+            to={item.path}
           />
         ))}
       </FlexBlock>
