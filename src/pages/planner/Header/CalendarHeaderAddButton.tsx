@@ -1,10 +1,10 @@
 import { useCreateEventModal } from '@hooks/useCreateEventModal';
 import { useSearchNavigate } from '@hooks/useSearchNavigate';
 import { useAppSelector } from '@redux/hooks/hooks';
-import { ServicesNames } from '@redux/reducers/global';
-import { plannerSelectLayout, plannerSelectStatus } from '@selectors/planner';
+import { plannerSelectLayout } from '@selectors/planner';
 import React, { FC, useMemo } from 'react';
 
+import { SERVICES_NAMES } from '@src/common/constants';
 import { getPath } from '@src/common/functions';
 import { disableReRender } from '@src/common/utils/react-utils';
 
@@ -14,7 +14,6 @@ import { SelectItemContainer } from '@components/Input/SelectInput/SelectItemCon
 import { SelectListContainer } from '@components/Input/SelectInput/SelectListContainer';
 import { Tooltip } from '@components/Tooltip/Tooltip';
 
-
 export interface CalendarHeaderAddButtonProps {
   onAddTask?: () => void;
 }
@@ -22,7 +21,6 @@ export interface CalendarHeaderAddButtonProps {
 export const CalendarHeaderAddButton: FC<CalendarHeaderAddButtonProps> =
   React.memo(({}) => {
     const navigate = useSearchNavigate();
-    const status = useAppSelector(plannerSelectStatus);
     const layout = useAppSelector(plannerSelectLayout);
     const { openModal } = useCreateEventModal();
 
@@ -35,9 +33,8 @@ export const CalendarHeaderAddButton: FC<CalendarHeaderAddButtonProps> =
               {},
               {
                 modalPath: getPath(
-                  ServicesNames.PLANNER,
+                  SERVICES_NAMES.PLANNER,
                   layout,
-                  status,
                   'event/create'
                 ),
                 useReturnBackOnDecline: true,
@@ -48,13 +45,11 @@ export const CalendarHeaderAddButton: FC<CalendarHeaderAddButtonProps> =
         {
           title: 'Создать календарь',
           onClick() {
-            navigate(
-              getPath(ServicesNames.PLANNER, layout, status, 'create-group')
-            );
+            navigate(getPath(SERVICES_NAMES.PLANNER, layout, 'create-group'));
           },
         },
       ];
-    }, [layout, status]);
+    }, [layout]);
 
     return (
       <Tooltip

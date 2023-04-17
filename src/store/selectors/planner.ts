@@ -1,10 +1,8 @@
 import { IPlannerReducer } from '@planner-reducer/types';
-import { ServicesNames } from '@redux/reducers/global';
 import { createSelector } from '@reduxjs/toolkit';
 
-import { PLANNER_LAYOUTS } from '@src/common/constants';
+import { PLANNER_LAYOUTS, SERVICES_NAMES } from '@src/common/constants';
 import { CreateSelectorReturnType, RootState } from '@src/store';
-
 
 const rootSelector: CreateSelectorReturnType<IPlannerReducer> = createSelector(
   (state: RootState) => state,
@@ -58,8 +56,7 @@ export const plannerSelectedEventInfo = createSelector(
 
 export const plannerSelectCurrentMode = createSelector(
   rootSelector,
-  (state: IPlannerReducer) =>
-    `/${ServicesNames.PLANNER}/${state.layout}/${state.status}`
+  (state: IPlannerReducer) => `/${SERVICES_NAMES.PLANNER}/${state.layout}`
 );
 
 export const plannerSelectEventInfoTabName = createSelector(

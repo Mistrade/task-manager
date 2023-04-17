@@ -51,7 +51,6 @@ import {
   GroupModelResponse,
 } from './types/groups.types';
 
-
 export const PlanningApiTagTypes = [
   'Events',
   'EventInfo',
@@ -429,7 +428,7 @@ export const planningApi = createApi({
         }),
         invalidatesTags: (result, error) => (error ? [] : ['CheckList']),
       }),
-      refetchPlanningApi: mutation({
+      refetchPlanningApi: mutation<null, void>({
         queryFn: () => ({ data: null }),
         invalidatesTags: PlanningApiTagTypes,
       }),

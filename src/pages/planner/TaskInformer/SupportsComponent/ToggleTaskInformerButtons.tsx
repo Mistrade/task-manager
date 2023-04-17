@@ -24,7 +24,6 @@ import { EventPriorityButton } from './EventPriorityButton';
 import { EventStatusButton } from './EventStatusButton';
 import { ToggleButtonContainer } from './ToggleButtonContainer';
 
-
 export type EventInfoUpdateFn = (
   field: keyof EventInfoModel,
   data: string | EventLinkItem | boolean | null,
@@ -81,12 +80,14 @@ export const ToggleEventCalendar: FC<
             }
           }}
           data={
-            calendarsList?.data?.map((item) => ({
-              id: item._id,
-              title: item.title,
-              key: item.color,
-              icon: <GroupLogo color={item.color} />,
-            })) || []
+            calendarsList?.data
+              ?.filter((item) => item.type !== 'Invite')
+              .map((item) => ({
+                id: item._id,
+                title: item.title,
+                key: item.color,
+                icon: <GroupLogo color={item.color} />,
+              })) || []
           }
           renderElement={
             <EventGroupButton

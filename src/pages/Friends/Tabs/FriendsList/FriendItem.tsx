@@ -1,8 +1,7 @@
-import { ServicesNames } from '@redux/reducers/global';
-import { FC } from 'react';
+import { FC, ReactNode } from 'react';
 
-import { Button } from '@components/Buttons/Buttons.styled';
-import { EmptyButtonStyled } from '@components/Buttons/EmptyButton.styled';
+import { SERVICES_NAMES } from '@src/common/constants';
+
 import { LinkStyled } from '@components/Buttons/Link.styled';
 import { FlexBlock } from '@components/LayoutComponents/FlexBlock';
 
@@ -15,30 +14,34 @@ import { UserAvatar } from '@planner/Users/UserAvatar';
 
 import { UserModel } from '@api/session-api/session-api.types';
 
-
 export interface FriendItemProps {
   user: UserModel;
-  onCreateEvent?: () => void;
+  primaryButton?: ReactNode;
+  secondaryButton?: ReactNode;
 }
 
-export const FriendItem: FC<FriendItemProps> = ({ user, onCreateEvent }) => {
+export const FriendItem: FC<FriendItemProps> = ({
+  user,
+  primaryButton,
+  secondaryButton,
+}) => {
   return (
     <FriendItemContainer>
-      <LinkStyled to={`/${ServicesNames.PROFILE}/${user._id}`}>
+      <LinkStyled to={`/${SERVICES_NAMES.PROFILE}/${user._id}`}>
         <UserAvatar size={100} user={user} />
       </LinkStyled>
       <FriendItemContentContainer>
         <FlexBlock gap={12} direction={'row'} mb={16}>
           <LinkStyled
             fontSize={16}
-            to={`/${ServicesNames.PROFILE}/${user._id}`}
+            to={`/${SERVICES_NAMES.PROFILE}/${user._id}`}
           >
             {user.surname} {user.name} {user.patronymic || ''}
           </LinkStyled>
         </FlexBlock>
         <FlexBlock gap={6}>
-          <Button onClick={onCreateEvent}>Запланировать событие</Button>
-          <EmptyButtonStyled>Написать сообщение</EmptyButtonStyled>
+          {primaryButton}
+          {secondaryButton}
         </FlexBlock>
       </FriendItemContentContainer>
     </FriendItemContainer>

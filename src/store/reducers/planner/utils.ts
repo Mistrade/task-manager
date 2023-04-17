@@ -1,15 +1,17 @@
 import { IPlannerDate, IPlannerReducer } from '@planner-reducer/types';
-import { ServicesNames } from '@redux/reducers/global';
 import dayjs, { Dayjs } from 'dayjs';
 
 import { PlannerObserver } from '@src/common/calendarSupport/observer';
-import { PLANNER_LAYOUTS, URLTaskStatuses } from '@src/common/constants';
+import {
+  PLANNER_LAYOUTS,
+  SERVICES_NAMES,
+  URLTaskStatuses,
+} from '@src/common/constants';
 
 import { EventFilterTaskStatuses } from '@pages/planner/RenderModes/FindEventFilter/find-event-filters.types';
 import { EVENT_INFORMER_TAB_NAMES } from '@pages/planner/TaskInformer/LeftBar/TaskInformerLeftBar';
 
 import { ObjectId } from '@api/rtk-api.types';
-
 
 export const isEqualPlannerDate = (
   prev: IPlannerDate,
@@ -68,7 +70,7 @@ export const getPlannerMetaData = (
   const [serviceName, layout, status, eventPath, infoPath, eventId, tabName] =
     path.split('/').filter((part) => part.length);
 
-  if (serviceName === ServicesNames.PLANNER) {
+  if (serviceName === SERVICES_NAMES.PLANNER) {
     return {
       layout:
         layout && isCorrectLayout(layout) ? (layout as PLANNER_LAYOUTS) : null,

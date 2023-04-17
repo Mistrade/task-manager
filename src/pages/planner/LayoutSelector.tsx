@@ -9,10 +9,8 @@ import { CenteredContainer } from '@components/AppRoutes/Interceptors/SessionInt
 import { ErrorScreen } from '@components/Errors/ErrorScreen';
 
 import { ModalRoutes } from '@planner/ModalRoutes';
-import { StatusRoutes } from '@planner/StatusRoutes';
 
 import { LayoutSuspense } from '../LayoutSuspense';
-
 
 const DayLayout = React.lazy(() =>
   import('./RenderModes/DayCalendar/DayCalendar').then(({ DayCalendar }) => ({
@@ -52,10 +50,8 @@ export const LayoutSelector = memo(() => {
         path={`${PLANNER_LAYOUTS.DAY}/*`}
         element={
           <LayoutSuspense>
-            <StatusRoutes>
-              <DayLayout />
-              <ModalRoutes />
-            </StatusRoutes>
+            <DayLayout />
+            <ModalRoutes />
           </LayoutSuspense>
         }
       />
@@ -63,10 +59,8 @@ export const LayoutSelector = memo(() => {
         path={`${PLANNER_LAYOUTS.WEEK}/*`}
         element={
           <LayoutSuspense>
-            <StatusRoutes>
-              <WeekLayout />
-              <ModalRoutes />
-            </StatusRoutes>
+            <WeekLayout />
+            <ModalRoutes />
           </LayoutSuspense>
         }
       />
@@ -74,10 +68,8 @@ export const LayoutSelector = memo(() => {
         path={`${PLANNER_LAYOUTS.MONTH}/*`}
         element={
           <LayoutSuspense>
-            <StatusRoutes>
-              <MonthLayout />
-              <ModalRoutes />
-            </StatusRoutes>
+            <MonthLayout />
+            <ModalRoutes />
           </LayoutSuspense>
         }
       />
@@ -85,10 +77,8 @@ export const LayoutSelector = memo(() => {
         path={`${PLANNER_LAYOUTS.YEAR}/*`}
         element={
           <LayoutSuspense>
-            <StatusRoutes>
-              <YearLayout />
-              <ModalRoutes />
-            </StatusRoutes>
+            <YearLayout />
+            <ModalRoutes />
           </LayoutSuspense>
         }
       />
@@ -96,10 +86,8 @@ export const LayoutSelector = memo(() => {
         path={`${PLANNER_LAYOUTS.LIST}/*`}
         element={
           <LayoutSuspense>
-            <StatusRoutes>
-              <EventListLayout />
-              <ModalRoutes />
-            </StatusRoutes>
+            <EventListLayout />
+            <ModalRoutes />
           </LayoutSuspense>
         }
       />
@@ -107,10 +95,8 @@ export const LayoutSelector = memo(() => {
         path={`${PLANNER_LAYOUTS.FAVORITES}/*`}
         element={
           <LayoutSuspense>
-            <StatusRoutes>
-              <FavoriteEventsLayout />
-              <ModalRoutes />
-            </StatusRoutes>
+            <FavoriteEventsLayout />
+            <ModalRoutes />
           </LayoutSuspense>
         }
       />

@@ -1,10 +1,10 @@
 import { useCreateEventModal } from '@hooks/useCreateEventModal';
 import { useAppSelector } from '@redux/hooks/hooks';
 import { selectUserInfo } from '@redux/reducers/session/session-selectors';
-import { plannerSelectCurrentMode } from '@selectors/planner';
+import { plannerSelectLayout } from '@selectors/planner';
 import React, { ReactNode } from 'react';
 
-import { currentColor } from '@src/common/constants';
+import { SERVICES_NAMES, currentColor } from '@src/common/constants';
 import { MergedObject, getPath } from '@src/common/functions';
 
 import { LinkStyled } from '@components/Buttons/Link.styled';
@@ -23,7 +23,6 @@ import {
   MergedCommentUserInfo,
 } from '../TaskComments/SupportComponents/MergedCommentItem';
 
-
 export interface EventHistoryMergedItemProps<
   Type,
   ItemType extends MergedObject<Type, keyof Type, Type>
@@ -41,7 +40,7 @@ export function MergedNote<
 }: EventHistoryMergedItemProps<Type, ItemType>): JSX.Element {
   const { openModal } = useCreateEventModal();
   const currentUser = useAppSelector(selectUserInfo);
-  const backgroundUrl = useAppSelector(plannerSelectCurrentMode);
+  const layout = useAppSelector(plannerSelectLayout);
   return (
     <MergedCommentContainer>
       <MergedCommentUserInfo>
@@ -59,7 +58,11 @@ export function MergedNote<
                       },
                       {
                         useReturnBackOnDecline: true,
-                        modalPath: getPath(backgroundUrl, 'event/create'),
+                        modalPath: getPath(
+                          SERVICES_NAMES.PLANNER,
+                          layout,
+                          'event/create'
+                        ),
                       }
                     );
                   },

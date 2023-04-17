@@ -1,12 +1,11 @@
 import { useCreateEventModal } from '@hooks/useCreateEventModal';
 import { useSearchNavigate } from '@hooks/useSearchNavigate';
 import { useAppSelector } from '@redux/hooks/hooks';
-import { ServicesNames } from '@redux/reducers/global';
-import { plannerSelectLayout, plannerSelectStatus } from '@selectors/planner';
+import { plannerSelectLayout } from '@selectors/planner';
 import dayjs from 'dayjs';
 import React, { FC, useCallback } from 'react';
 
-import { TASK_STATUSES } from '@src/common/constants';
+import { SERVICES_NAMES, TASK_STATUSES } from '@src/common/constants';
 import { getPath } from '@src/common/functions';
 
 import { TransparentButton } from '@components/Buttons/Buttons.styled';
@@ -23,7 +22,6 @@ import {
 import { EventInfoModel } from '@api/planning-api/types/event-info.types';
 import { CatchHandleForToast, thenHandleForToast } from '@api/tools';
 
-
 export interface TaskInformerMoreActionsProps extends EventInfoModalProps {
   taskItem: EventInfoModel;
 }
@@ -33,7 +31,6 @@ export const TaskInformerMoreActions: FC<TaskInformerMoreActionsProps> = ({
 }) => {
   const [removeEvent] = useRemoveEventMutation();
   const [updEvent] = useUpdateTaskMutation();
-  const status = useAppSelector(plannerSelectStatus);
   const layout = useAppSelector(plannerSelectLayout);
   const navigate = useSearchNavigate();
 
@@ -59,17 +56,12 @@ export const TaskInformerMoreActions: FC<TaskInformerMoreActionsProps> = ({
             priority: taskItem.priority,
           },
           {
-            modalPath: getPath(
-              ServicesNames.PLANNER,
-              layout,
-              status,
-              'event/create'
-            ),
+            modalPath: getPath(SERVICES_NAMES.PLANNER, layout, 'event/create'),
             useReturnBackOnDecline: true,
           }
         );
     },
-    [taskItem, openCreateEventModal, layout, status]
+    [taskItem, openCreateEventModal, layout]
   );
 
   const createChildEventHandler = useCallback(
@@ -85,16 +77,11 @@ export const TaskInformerMoreActions: FC<TaskInformerMoreActionsProps> = ({
           },
           {
             useReturnBackOnDecline: true,
-            modalPath: getPath(
-              ServicesNames.PLANNER,
-              layout,
-              status,
-              'event/create'
-            ),
+            modalPath: getPath(SERVICES_NAMES.PLANNER, layout, 'event/create'),
           }
         );
     },
-    [taskItem, openCreateEventModal, layout, status]
+    [taskItem, openCreateEventModal, layout]
   );
 
   const completeEventHandler = useCallback(
@@ -121,7 +108,7 @@ export const TaskInformerMoreActions: FC<TaskInformerMoreActionsProps> = ({
               r,
               () =>
                 r?.info?.type === 'success' &&
-                navigate(`/${ServicesNames.PLANNER}/${layout}/${status}`)
+                navigate(`/${SERVICES_NAMES.PLANNER}/${layout}`)
             );
           })
           .catch(CatchHandleForToast);

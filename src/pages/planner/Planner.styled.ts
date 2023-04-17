@@ -10,7 +10,6 @@ import {
   hoverColor,
 } from '@src/common/constants';
 
-
 export const CalendarDateListContainer = styled('div')<{ rowsCount?: number }>`
   & {
     width: 100%;
@@ -65,6 +64,7 @@ export const SwitchCalendarMode = styled('button')<{ isSelected?: boolean }>`
 export const SwitchCalendarModeTab = styled('button')<{ isSelected?: boolean }>`
   & {
     outline: none;
+    text-decoration: none;
     padding: 6px 16px;
     font-size: 15px;
     white-space: normal;
@@ -81,8 +81,11 @@ export const SwitchCalendarModeTab = styled('button')<{ isSelected?: boolean }>`
     max-width: 300px;
     position: relative;
     border-radius: ${borderRadiusSize.sm};
-    gap: 4px;
+    height: 40px;
     display: flex;
+    flex-direction: row;
+    gap: 6px;
+    align-items: center;
   }
 
   ${(props) => {

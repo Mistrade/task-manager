@@ -7,14 +7,13 @@ import { EmptyButtonStyled } from '@components/Buttons/EmptyButton.styled';
 import { LogoutIcon } from '@components/Icons/Session/LogoutIcon';
 import { FlexBlock } from '@components/LayoutComponents/FlexBlock';
 
-import { useRefetchPlanningApiMutation } from '@api/planning-api';
 import { useLogoutMutation } from '@api/session-api';
+import { CatchHandleForToast, thenHandleForToast } from '@api/tools';
 
 import { HeaderDefaultLink } from './HeaderLink.styled.';
 
 export const MainHeaderUserInfo: FC = () => {
   const [logoutUser] = useLogoutMutation();
-  const [refetchTaskApi] = useRefetchPlanningApiMutation();
   const userInfo = useAppSelector(selectUserInfo);
 
   return (
@@ -40,10 +39,10 @@ export const MainHeaderUserInfo: FC = () => {
                 cursor: pointer;
               `}
               onClick={async () =>
-                await logoutUser().then(() => {
-                  refetchTaskApi('');
-                  // navigate('/session/login', { replace: true });
-                })
+                await logoutUser()
+                  .unwrap()
+                  .then(thenHandleForToast)
+                  .catch(CatchHandleForToast)
               }
             >
               Выход

@@ -1,10 +1,9 @@
 import { setPlannerLayout } from '@planner-reducer/index';
 import { useAppDispatch, useAppSelector } from '@redux/hooks/hooks';
-import { ServicesNames } from '@redux/reducers/global';
-import { plannerSelectLayout, plannerSelectStatus } from '@selectors/planner';
+import { plannerSelectLayout } from '@selectors/planner';
 import { useMemo, useState } from 'react';
 
-import { defaultColor } from '@src/common/constants';
+import { SERVICES_NAMES, defaultColor } from '@src/common/constants';
 import { getPath } from '@src/common/functions';
 
 import { SelectListContainer } from '@components/Input/SelectInput/SelectListContainer';
@@ -16,11 +15,9 @@ import { PlannerHeaderSwitch } from '@planner/Header/ModeSwitch/List';
 import { SwitchCalendarModeTab } from '@planner/Planner.styled';
 import { CutText } from '@planner/RenderModes/DayCalendar/TaskList/TaskList.styled';
 
-
 export const PlannerSelectLayout = () => {
   const dispatch = useAppDispatch();
   const layout = useAppSelector(plannerSelectLayout);
-  const status = useAppSelector(plannerSelectStatus);
   const selected = useMemo(() => {
     return PlannerHeaderSwitch[layout];
   }, [layout]);
@@ -49,7 +46,7 @@ export const PlannerSelectLayout = () => {
           <SelectListContainer>
             {filteredArr.map((item) => (
               <LinkSolid
-                to={getPath(ServicesNames.PLANNER, item.layout, status)}
+                to={getPath(SERVICES_NAMES.PLANNER, item.layout)}
                 style={{ width: '100%' }}
                 key={item.layout}
                 title={item.title}

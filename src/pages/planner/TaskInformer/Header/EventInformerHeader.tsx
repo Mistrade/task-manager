@@ -18,7 +18,6 @@ import { EventInfoUpdateFn } from '@planner/TaskInformer/SupportsComponent/Toggl
 
 import { EventInfoModel } from '@api/planning-api/types/event-info.types';
 
-
 export interface EventInformerHeaderProps {
   eventInfo: EventInfoModel;
   updateTaskHandler: EventInfoUpdateFn;
@@ -107,5 +106,6 @@ export const EventInformerHeader = memo<EventInformerHeaderProps>(
     prevProps.eventInfo.link === nextProps.eventInfo.link &&
     prevProps.eventInfo.priority === nextProps.eventInfo.priority &&
     prevProps.eventInfo.status === nextProps.eventInfo.status &&
-    prevProps.eventInfo.isLiked === nextProps.eventInfo.isLiked
+    prevProps.eventInfo.isLiked === nextProps.eventInfo.isLiked &&
+    prevProps.eventInfo.group?._id === nextProps.eventInfo.group?._id
 );

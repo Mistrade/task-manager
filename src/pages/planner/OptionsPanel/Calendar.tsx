@@ -2,26 +2,22 @@ import { useSearchNavigate } from '@hooks/useSearchNavigate';
 import { setPlannerDateAndLayout } from '@planner-reducer/index';
 import { dateToPlannerDate, plannerDateToDate } from '@planner-reducer/utils';
 import { useAppDispatch, useAppSelector } from '@redux/hooks/hooks';
-import { ServicesNames } from '@redux/reducers/global';
 import {
   plannerSelectDate,
   plannerSelectPanelConfig,
-  plannerSelectStatus,
 } from '@selectors/planner';
 import React, { FC, useMemo } from 'react';
 
-import { PLANNER_LAYOUTS } from '@src/common/constants';
+import { PLANNER_LAYOUTS, SERVICES_NAMES } from '@src/common/constants';
 import { getPath } from '@src/common/functions';
 
 import { SmallCalendarMonthTitle } from '@planner/SmallMotnCalendar/SmallCalendarMonthTitle';
 import { SmallMonth } from '@planner/SmallMotnCalendar/SmallMonth';
 import { PlannerMonthMode } from '@planner/planner.types';
 
-
 export const OptionPanelCalendar: FC = () => {
   const currentDate = useAppSelector(plannerSelectDate);
   const config = useAppSelector(plannerSelectPanelConfig);
-  const status = useAppSelector(plannerSelectStatus);
   const dispatch = useAppDispatch();
   const navigate = useSearchNavigate();
   const MonthCurrent: PlannerMonthMode = useMemo(
@@ -46,9 +42,7 @@ export const OptionPanelCalendar: FC = () => {
                 layout: PLANNER_LAYOUTS.MONTH,
               })
             );
-            navigate(
-              getPath(ServicesNames.PLANNER, PLANNER_LAYOUTS.MONTH, status)
-            );
+            navigate(getPath(SERVICES_NAMES.PLANNER, PLANNER_LAYOUTS.MONTH));
           }}
         />
       }
@@ -61,7 +55,7 @@ export const OptionPanelCalendar: FC = () => {
             layout: PLANNER_LAYOUTS.DAY,
           })
         );
-        navigate(getPath(ServicesNames.PLANNER, PLANNER_LAYOUTS.DAY, status));
+        navigate(getPath(SERVICES_NAMES.PLANNER, PLANNER_LAYOUTS.DAY));
       }}
       onSelectWeek={(date) => {
         dispatch(
@@ -70,7 +64,7 @@ export const OptionPanelCalendar: FC = () => {
             layout: PLANNER_LAYOUTS.WEEK,
           })
         );
-        navigate(getPath(ServicesNames.PLANNER, PLANNER_LAYOUTS.WEEK, status));
+        navigate(getPath(SERVICES_NAMES.PLANNER, PLANNER_LAYOUTS.WEEK));
       }}
     />
   );

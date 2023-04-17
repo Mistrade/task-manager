@@ -1,8 +1,7 @@
-import { ServicesNames } from '@redux/reducers/global';
 import { Navigate, Route } from 'react-router';
 import { Routes } from 'react-router-dom';
 
-import { FRIENDS_ROUTES } from '@src/common/constants';
+import { FRIENDS_ROUTES, SERVICES_NAMES } from '@src/common/constants';
 
 import { CenteredContainer } from '@components/AppRoutes/Interceptors/SessionInterceptor';
 import { EmptyButtonStyled } from '@components/Buttons/EmptyButton.styled';
@@ -13,12 +12,10 @@ import { ScrollVerticalView } from '@components/LayoutComponents/ScrollView/Scro
 
 import { SendFriendRequestForm } from '@pages/Friends/AddConctact/SendFriendRequestForm';
 import { FriendsList } from '@pages/Friends/Tabs/FriendsList';
-import { FriendRequestList } from '@pages/Friends/Tabs/Requests/FriendRequestList';
+import { IncomingRequestList } from '@pages/Friends/Tabs/Requests/IncomingRequestsList';
+import { OutgoingRequestList } from '@pages/Friends/Tabs/Requests/OutgoingRequestList';
 
 import { PlannerLayoutContainer } from '@planner/Planner.styled';
-
-import { FRIEND_REQUESTS_TYPES } from '@api/friends-api';
-
 
 export const FriendsLayouts = () => {
   return (
@@ -42,7 +39,7 @@ export const FriendsLayouts = () => {
               index
               element={
                 <Navigate
-                  to={`/${ServicesNames.FRIENDS}/${FRIENDS_ROUTES.FRIENDS_LIST}`}
+                  to={`/${SERVICES_NAMES.FRIENDS}/${FRIENDS_ROUTES.FRIENDS_LIST}`}
                 />
               }
             />
@@ -52,19 +49,11 @@ export const FriendsLayouts = () => {
             />
             <Route
               path={FRIENDS_ROUTES.OUTGOING_REQUESTS}
-              element={
-                <FriendRequestList
-                  requestType={FRIEND_REQUESTS_TYPES.OUTGOING}
-                />
-              }
+              element={<OutgoingRequestList />}
             />
             <Route
               path={FRIENDS_ROUTES.INCOMING_REQUESTS}
-              element={
-                <FriendRequestList
-                  requestType={FRIEND_REQUESTS_TYPES.INCOMING}
-                />
-              }
+              element={<IncomingRequestList />}
             />
             <Route
               path={'*'}

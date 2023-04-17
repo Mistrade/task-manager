@@ -1,5 +1,6 @@
 import { useSearchNavigate } from '@hooks/useSearchNavigate';
 import { useAppSelector } from '@redux/hooks/hooks';
+import { plannerSelectLayout } from '@selectors/planner';
 import { useFormik } from 'formik';
 import { FC } from 'react';
 import { toast } from 'react-toastify';
@@ -18,7 +19,6 @@ import { AuthUserRequestProps } from '@api/session-api/session-api.types';
 
 import { SessionFormContainer } from './SessionFormContainer';
 
-
 const initialValues: AuthUserRequestProps = {
   phone: '',
   password: '',
@@ -27,6 +27,7 @@ const initialValues: AuthUserRequestProps = {
 export const AuthorizationForm: FC<{ prevUrl?: string }> = ({ prevUrl }) => {
   const navigate = useSearchNavigate();
   const [loginUser] = useLoginMutation();
+  const layout = useAppSelector(plannerSelectLayout);
   const { statuses } = useAppSelector((state) => state.planner);
   const {
     values,
@@ -50,7 +51,7 @@ export const AuthorizationForm: FC<{ prevUrl?: string }> = ({ prevUrl }) => {
           if (prevUrl) {
             navigate(prevUrl, { replace: true });
           } else {
-            navigate(`/planner/day/${statuses}`, { replace: true });
+            navigate(`/planner/${layout}`, { replace: true });
           }
         }
       }

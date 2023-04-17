@@ -1,21 +1,28 @@
 import { useCreateEventModal } from '@hooks/useCreateEventModal';
-import { useAppSelector } from '@redux/hooks/hooks';
-import { selectCreateEventModalIsOpen } from '@selectors/planner';
 import React from 'react';
 import { Helmet } from 'react-helmet';
 
+import { Button } from '@components/Buttons/Buttons.styled';
+import { EmptyButtonStyled } from '@components/Buttons/EmptyButton.styled';
 import { FlexBlock } from '@components/LayoutComponents/FlexBlock';
 
 import { FriendItem } from '@pages/Friends/Tabs/FriendsList/FriendItem';
 
-import { CreateEventModal } from '@planner/Forms/CreateEvent/CreateEventModal';
-
 import { useGetFriendsListQuery } from '@api/friends-api';
+import { UserModel } from '@api/session-api/session-api.types';
 
 export const FriendsList = () => {
   const { data: friendsList, isFetching } = useGetFriendsListQuery();
-  const isOpenModal = useAppSelector(selectCreateEventModalIsOpen);
   const { openModal, declineModal } = useCreateEventModal();
+
+  const createEventHandler = (user: UserModel) => {
+    openModal(
+      {
+        members: [user],
+      },
+      {}
+    );
+  };
 
   return (
     <>
@@ -25,22 +32,16 @@ export const FriendsList = () => {
           <FriendItem
             key={user._id}
             user={user}
-            onCreateEvent={() => {
-              openModal(
-                {
-                  members: [user],
-                },
-                {}
-              );
-            }}
+            primaryButton={
+              <Button onClick={() => createEventHandler(user)}>
+                Запланировать событие
+              </Button>
+            }
+            secondaryButton={
+              <EmptyButtonStyled>Написать сообщение</EmptyButtonStyled>
+            }
           />
         ))}
-        {isOpenModal && (
-          <CreateEventModal
-            onSuccess={() => declineModal()}
-            onClose={declineModal}
-          />
-        )}
       </FlexBlock>
     </>
   );

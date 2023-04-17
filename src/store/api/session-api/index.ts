@@ -1,5 +1,8 @@
 import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/dist/query/react';
 
+import { contactsApi } from '@api/friends-api';
+import { planningApi } from '@api/planning-api';
+
 import { baseServerUrl } from '../config';
 import { MyServerResponse } from '../rtk-api.types';
 import {
@@ -7,7 +10,6 @@ import {
   RegUserRequestProps,
   UserModel,
 } from './session-api.types';
-
 
 export const sessionApi = createApi({
   reducerPath: 'sessionApi',
@@ -47,7 +49,7 @@ export const sessionApi = createApi({
         method: 'POST',
       }),
       onQueryStarted(args, { dispatch, queryFulfilled }) {
-        queryFulfilled.then(() =>
+        queryFulfilled.then(() => {
           dispatch(
             sessionApi.util.updateQueryData(
               'confirmSession',
@@ -62,8 +64,11 @@ export const sessionApi = createApi({
                 });
               }
             )
-          )
-        );
+          );
+
+          dispatch(contactsApi.endpoints.resetState.initiate());
+          dispatch(planningApi.endpoints.refetchPlanningApi.initiate());
+        });
       },
     }),
   }),

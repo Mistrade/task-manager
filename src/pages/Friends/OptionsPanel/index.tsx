@@ -1,8 +1,7 @@
-import { ServicesNames } from '@redux/reducers/global';
-
 import {
   FRIENDS_ROUTES,
   FRIENDS_ROUTES_PAGE_NAMES,
+  SERVICES_NAMES,
 } from '@src/common/constants';
 import { getPath } from '@src/common/functions';
 
@@ -10,7 +9,6 @@ import { FlexBlock } from '@components/LayoutComponents/FlexBlock';
 
 import { LinkSolid } from '@planner/Header/ModeSwitch/Item';
 import { PlannerOptionPanelContainer } from '@planner/Planner.styled';
-
 
 export const FriendsOptionPanel = () => {
   return (
@@ -26,7 +24,7 @@ export const FriendsOptionPanel = () => {
             }}
             icon={FRIENDS_ROUTES_PAGE_NAMES[item].icon}
             title={FRIENDS_ROUTES_PAGE_NAMES[item].title}
-            to={getPath(ServicesNames.FRIENDS, item)}
+            to={getPath(SERVICES_NAMES.FRIENDS, item)}
           />
         ))}
       </FlexBlock>

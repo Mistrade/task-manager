@@ -1,15 +1,9 @@
 import { PayloadAction, createSlice } from '@reduxjs/toolkit';
 
-export enum ServicesNames {
-  'PLANNER' = 'planner',
-  'FRIENDS' = 'friends',
-  'PROFILE' = 'profile',
-  'FAQ' = 'faq',
-  'SESSION' = 'session',
-}
+import { SERVICES_NAMES } from '@src/common/constants';
 
 interface IGlobalReducer {
-  serviceName: ServicesNames | null;
+  serviceName: SERVICES_NAMES | null;
 }
 
 const initialState: IGlobalReducer = {
@@ -20,7 +14,7 @@ const GlobalSlice = createSlice({
   name: 'global',
   initialState,
   reducers: {
-    setServiceName(state, data: PayloadAction<ServicesNames | null>) {
+    setServiceName(state, data: PayloadAction<SERVICES_NAMES | null>) {
       state.serviceName = data.payload;
     },
   },

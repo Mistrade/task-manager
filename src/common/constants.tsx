@@ -31,6 +31,8 @@ import {
   YearItem,
 } from '@pages/planner/planner.types';
 
+import { FRIEND_REQUESTS_TYPES } from '@api/friends-api';
+
 import { ErrorImagesType } from './types';
 
 export const MonthList = [
@@ -401,7 +403,7 @@ export enum PLANNER_LAYOUTS {
 }
 
 export const DEFAULT_PLANNER_LAYOUT: PLANNER_LAYOUTS = PLANNER_LAYOUTS.DAY;
-export const DEFAULT_PLANNER_STATUS: EventFilterTaskStatuses = 'in_work';
+export const DEFAULT_PLANNER_STATUS: EventFilterTaskStatuses = 'all';
 
 export const UTC_OFFSET = dayjs().utcOffset();
 
@@ -605,4 +607,25 @@ export const FRIENDS_ROUTES_PAGE_NAMES: {
     title: 'Входящие заявки',
     icon: <CompleteIcon size={24} color={currentColor} />,
   },
+};
+
+export const FRIENDS_PAGE_TITLES = {
+  [FRIEND_REQUESTS_TYPES.OUTGOING]: 'Исходящие заявки в друзья',
+  [FRIEND_REQUESTS_TYPES.INCOMING]: 'Входящие заявки в друзья',
+};
+
+export enum SERVICES_NAMES {
+  'PLANNER' = 'planner',
+  'FRIENDS' = 'friends',
+  'PROFILE' = 'profile',
+  'FAQ' = 'faq',
+  'SESSION' = 'session',
+}
+
+export const SERVICES_TITLES: { [key in SERVICES_NAMES]: string } = {
+  [SERVICES_NAMES.PLANNER]: 'Мои дела',
+  [SERVICES_NAMES.FRIENDS]: 'Мои друзья',
+  [SERVICES_NAMES.FAQ]: 'Faq',
+  [SERVICES_NAMES.PROFILE]: 'Профиль пользователя',
+  [SERVICES_NAMES.SESSION]: 'Сессия',
 };

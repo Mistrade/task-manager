@@ -1,6 +1,10 @@
+import { useCreateEventModal } from '@hooks/useCreateEventModal';
+import { useAppSelector } from '@redux/hooks/hooks';
+import { plannerSelectLayout } from '@selectors/planner';
 import { FC, useState } from 'react';
 
-import { darkColor, defaultColor } from '@src/common/constants';
+import { SERVICES_NAMES, darkColor, defaultColor } from '@src/common/constants';
+import { getPath } from '@src/common/functions';
 
 import { EmptyButtonStyled } from '@components/Buttons/EmptyButton.styled';
 import {
@@ -18,7 +22,6 @@ import { useChangeSelectGroupMutation } from '@api/planning-api';
 import { CalendarItemLabel, GroupItemCheckbox } from './GroupList.styled';
 import { GroupItemProps } from './groups.types';
 
-
 export const GroupItem: FC<GroupItemProps> = ({
   onChange,
   isChecked,
@@ -31,8 +34,9 @@ export const GroupItem: FC<GroupItemProps> = ({
   const [isHover, setIsHover] = useState(false);
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const [changeSelect] = useChangeSelectGroupMutation();
+  const layout = useAppSelector(plannerSelectLayout);
 
-  // const { openModal } = useCreateEventModal({});
+  const { openModal } = useCreateEventModal();
 
   const changeHandler = async (isChecked: boolean) => {
     setIsLoading(true);
@@ -53,8 +57,8 @@ export const GroupItem: FC<GroupItemProps> = ({
 
   return (
     <li
-      onMouseEnter={() => onDelete && setIsHover(true)}
-      onMouseLeave={() => onDelete && setIsHover(false)}
+      onMouseEnter={() => setIsHover(true)}
+      onMouseLeave={() => setIsHover(false)}
     >
       <FlexBlock
         width={'100%'}
@@ -89,11 +93,21 @@ export const GroupItem: FC<GroupItemProps> = ({
             {item.type !== 'Invite' && (
               <EmptyButtonStyled
                 style={{ padding: 2 }}
-                // onClick={() =>
-                // openModal({
-                //   group: item._id,
-                // })
-                // }
+                onClick={() =>
+                  openModal(
+                    {
+                      group: item._id,
+                    },
+                    {
+                      useReturnBackOnDecline: true,
+                      modalPath: getPath(
+                        SERVICES_NAMES.PLANNER,
+                        layout,
+                        'event/create'
+                      ),
+                    }
+                  )
+                }
               >
                 <PlusIcon size={14} color={defaultColor} />
               </EmptyButtonStyled>

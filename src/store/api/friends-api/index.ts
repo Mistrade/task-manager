@@ -6,7 +6,6 @@ import { baseServerUrl } from '../config';
 import { MyServerResponse, ObjectId } from '../rtk-api.types';
 import { TFriendsModelList } from './friends-api.types';
 
-
 export enum FRIEND_REQUESTS_TYPES {
   'INCOMING' = 'incoming',
   'OUTGOING' = 'outgoing',
@@ -59,7 +58,7 @@ export const contactsApi = createApi({
         method: 'POST',
         body: arg,
       }),
-      invalidatesTags: [],
+      invalidatesTags: ['FriendsList', FRIEND_REQUESTS_TYPES.INCOMING],
     }),
     getFriendsList: query<MyServerResponse<Array<UserModel>>, void>({
       query: () => ({
@@ -67,6 +66,14 @@ export const contactsApi = createApi({
         url: '/get_friends_list',
       }),
       providesTags: ['FriendsList'],
+    }),
+    resetState: mutation<null, void>({
+      queryFn: () => ({ data: null }),
+      invalidatesTags: [
+        FRIEND_REQUESTS_TYPES.OUTGOING,
+        FRIEND_REQUESTS_TYPES.INCOMING,
+        'FriendsList',
+      ],
     }),
   }),
 });

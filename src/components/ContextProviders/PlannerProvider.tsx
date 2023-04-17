@@ -1,5 +1,5 @@
 import { useAppDispatch } from '@redux/hooks/hooks';
-import { ServicesNames, setServiceName } from '@redux/reducers/global';
+import { setServiceName } from '@redux/reducers/global';
 import dayjs from 'dayjs';
 import { useCallback, useEffect, useMemo, useState } from 'react';
 
@@ -8,6 +8,7 @@ import { PlannerObserver } from '@src/common/calendarSupport/observer';
 import { ShortChangeCurrentPattern } from '@src/common/commonTypes';
 import {
   PLANNER_LAYOUTS,
+  SERVICES_NAMES,
   defaultMonthItem,
   defaultWeekItem,
   defaultYearItem,
@@ -84,7 +85,7 @@ export const PlannerProvider: FCWithChildren<{
   const dispatch = useAppDispatch();
 
   useEffect(() => {
-    dispatch(setServiceName(ServicesNames.PLANNER));
+    dispatch(setServiceName(SERVICES_NAMES.PLANNER));
     return () => {
       dispatch(setServiceName(null));
     };
@@ -131,7 +132,7 @@ export const PlannerProvider: FCWithChildren<{
   const plannerNavigate: IPlannerProviderMethods['plannerNavigate'] =
     useCallback(
       (essence) => {
-        const defaultPath = `/${ServicesNames.PLANNER}/`;
+        const defaultPath = `/${SERVICES_NAMES.PLANNER}/`;
 
         console.log('planner navigate: ', essence);
 

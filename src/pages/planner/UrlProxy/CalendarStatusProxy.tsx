@@ -1,12 +1,11 @@
 import { useSearchNavigate } from '@hooks/useSearchNavigate';
-import { ServicesNames } from '@redux/reducers/global';
 import { FC } from 'react';
 import { useParams } from 'react-router';
 
 import {
   DEFAULT_PLANNER_LAYOUT,
-  DEFAULT_PLANNER_STATUS,
   PLANNER_LAYOUTS,
+  SERVICES_NAMES,
   URLTaskStatuses,
 } from '@src/common/constants';
 
@@ -16,7 +15,6 @@ import { ErrorScreen } from '@components/Errors/ErrorScreen';
 
 import { PlannerPage } from '@planner/Planner';
 import { EventFilterTaskStatuses } from '@planner/RenderModes/FindEventFilter/find-event-filters.types';
-
 
 export const CalendarStatusProxy: FC<{ layout: PLANNER_LAYOUTS }> = ({
   layout,
@@ -47,9 +45,7 @@ export const CalendarStatusProxy: FC<{ layout: PLANNER_LAYOUTS }> = ({
         action={{
           title: `Перейти в "Планировщик"`,
           onClick: () => {
-            navigate(
-              `/${ServicesNames.PLANNER}/${DEFAULT_PLANNER_LAYOUT}/${DEFAULT_PLANNER_STATUS}`
-            );
+            navigate(`/${SERVICES_NAMES.PLANNER}/${DEFAULT_PLANNER_LAYOUT}`);
           },
         }}
         errorType={'BAD_REQUEST'}

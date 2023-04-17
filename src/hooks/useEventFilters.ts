@@ -1,6 +1,5 @@
 import { setPlannerStatus } from '@planner-reducer/index';
 import { useAppDispatch } from '@redux/hooks/hooks';
-import { ServicesNames } from '@redux/reducers/global';
 import dayjs from 'dayjs';
 import { useCallback, useMemo, useState } from 'react';
 
@@ -10,8 +9,6 @@ import { PlannerMode } from '@planner/planner.types';
 import { GetEventsFiltersRequestProps } from '@api/planning-api/types/event-info.types';
 
 import { useDebounce } from './useDebounce';
-import { useSearchNavigate } from './useSearchNavigate';
-
 
 export interface EventFiltersProps
   extends Omit<GetEventsFiltersRequestProps, 'fromDate' | 'toDate'> {
@@ -55,7 +52,6 @@ export const useEventFilters: UseEventFiltersType = ({
   useNavigate = true,
   debounceTimeout = 1250,
 }) => {
-  const navigate = useSearchNavigate();
   const dispatch = useAppDispatch();
   const [filters, setFilters] = useState<EventFiltersProps>(initialValues);
 
@@ -84,11 +80,7 @@ export const useEventFilters: UseEventFiltersType = ({
           key === 'not_selected' ? null : key
         ),
       taskStatus: (newStatus) => {
-        if (useNavigate) {
-          navigate(`/${ServicesNames.PLANNER}/${layout}/${newStatus}`);
-          dispatch(setPlannerStatus(newStatus || 'all'));
-        }
-        changeFiltersStateHandler('taskStatus', newStatus);
+        dispatch(setPlannerStatus(newStatus || 'all'));
       },
     }),
     [layout, useNavigate]

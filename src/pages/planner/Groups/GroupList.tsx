@@ -5,10 +5,8 @@ import { useGetGroupsListQuery } from '@api/planning-api';
 import { GroupItem } from './GroupItem';
 import { GroupListStyled } from './GroupList.styled';
 
-
 export const GroupList = () => {
   const { currentData } = useGetGroupsListQuery({});
-  // const { onSelectRemovedGroup, onCreateGroup } = usePlanner();
 
   return (
     <GroupListStyled>

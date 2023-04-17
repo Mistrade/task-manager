@@ -1,10 +1,10 @@
 import { useAppSelector } from '@redux/hooks/hooks';
-import { ServicesNames } from '@redux/reducers/global';
 import { selectUserInfo } from '@redux/reducers/session/session-selectors';
 import React, { FC, lazy } from 'react';
 import { Route } from 'react-router';
 import { Routes } from 'react-router-dom';
 
+import { SERVICES_NAMES } from '@src/common/constants';
 import { disableReRender } from '@src/common/utils/react-utils';
 
 import { SessionInterceptor } from '@components/AppRoutes/Interceptors/SessionInterceptor';
@@ -29,7 +29,7 @@ export const AppRoutes: FC = React.memo(() => {
   return (
     <Routes>
       <Route
-        path={`${ServicesNames.PLANNER}/*`}
+        path={`${SERVICES_NAMES.PLANNER}/*`}
         element={
           <SessionInterceptor userInfo={userInfo}>
             <LayoutSuspense>
@@ -38,10 +38,10 @@ export const AppRoutes: FC = React.memo(() => {
           </SessionInterceptor>
         }
       />
-      <Route path={`${ServicesNames.PROFILE}/*`} element={<ProfileRoutes />} />
-      <Route path={`${ServicesNames.FAQ}/*`} element={<FaqRoutes />} />
+      <Route path={`${SERVICES_NAMES.PROFILE}/*`} element={<ProfileRoutes />} />
+      <Route path={`${SERVICES_NAMES.FAQ}/*`} element={<FaqRoutes />} />
       <Route
-        path={`${ServicesNames.FRIENDS}/*`}
+        path={`${SERVICES_NAMES.FRIENDS}/*`}
         element={
           <SessionInterceptor userInfo={userInfo}>
             <LayoutSuspense title={'Загрузка сервиса...'}>
@@ -50,7 +50,7 @@ export const AppRoutes: FC = React.memo(() => {
           </SessionInterceptor>
         }
       />
-      <Route path={`${ServicesNames.SESSION}/*`} element={<SessionRoutes />} />
+      <Route path={`${SERVICES_NAMES.SESSION}/*`} element={<SessionRoutes />} />
       <Route path={'*'} element={<NotFoundPage />} />
     </Routes>
   );

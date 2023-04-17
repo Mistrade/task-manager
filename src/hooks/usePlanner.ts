@@ -18,7 +18,6 @@ import { ObjectId } from '@api/rtk-api.types';
 
 import { useSearchNavigate } from './useSearchNavigate';
 
-
 export interface UsePlannerReturned {
   planner: PlannerMode;
   // createEventDateState: Date | null;
@@ -57,7 +56,7 @@ export const usePlanner: UsePlannerType = () => {
 
   const onCreateGroup: UsePlannerReturned['onCreateGroup'] = useCallback(
     (calendarId) => {
-      const defaultPath = `/planner/${planner.layout}/${statuses}/group`;
+      const defaultPath = `/planner/${planner.layout}/group`;
       navigate(calendarId ? `${defaultPath}/${calendarId}` : defaultPath);
     },
     [statuses, planner.layout]
@@ -71,19 +70,19 @@ export const usePlanner: UsePlannerType = () => {
   );
 
   const onCloseCreateGroupModal = useCallback(() => {
-    return navigate(`/planner/${planner.layout}/${statuses}`);
-  }, [planner.layout, statuses]);
+    return navigate(`/planner/${planner.layout}`);
+  }, [planner.layout]);
 
   const onSelectTask: OnSelectTaskFnType = useCallback(
     (taskId: string) => {
-      navigate(`/planner/${planner.layout}/${statuses}/info/${taskId}`);
+      navigate(`/planner/${planner.layout}/info/${taskId}`);
     },
-    [planner.layout, statuses]
+    [planner.layout]
   );
 
   const onChangePlanner: UsePlannerReturned['onChangePlanner'] = useCallback(
     (date, l) => {
-      navigate(`/planner/${l}/${statuses}`, { replace: true });
+      navigate(`/planner/${l}`, { replace: true });
       if ('fromDate' in date || 'toDate' in date) {
         dispatch(
           changePlanner({
@@ -103,7 +102,7 @@ export const usePlanner: UsePlannerType = () => {
   );
 
   const onCloseEventInformer = useCallback(() => {
-    navigate(`/planner/${planner.layout}/${statuses}`, { replace: true });
+    navigate(`/planner/${planner.layout}`, { replace: true });
   }, [planner.layout, statuses]);
 
   return {

@@ -3,13 +3,15 @@ import { useSearchNavigate } from '@hooks/useSearchNavigate';
 import { setPlannerDateAndLayout } from '@planner-reducer/index';
 import { IPlannerDate } from '@planner-reducer/types';
 import { plannerDateToDate } from '@planner-reducer/utils';
-import { useAppDispatch, useAppSelector } from '@redux/hooks/hooks';
-import { ServicesNames } from '@redux/reducers/global';
-import { plannerSelectStatus } from '@selectors/planner';
+import { useAppDispatch } from '@redux/hooks/hooks';
 import dayjs from 'dayjs';
 import React, { memo } from 'react';
 
-import { PLANNER_LAYOUTS, currentColor } from '@src/common/constants';
+import {
+  PLANNER_LAYOUTS,
+  SERVICES_NAMES,
+  currentColor,
+} from '@src/common/constants';
 import { getPath } from '@src/common/functions';
 
 import { EmptyButtonStyled } from '@components/Buttons/EmptyButton.styled';
@@ -18,12 +20,10 @@ import { PlusIcon } from '@components/Icons/Icons';
 
 import { CellDateHoverContainer } from '@planner/RenderModes/WeekCalendar/CalendarCell/Cell.styled';
 
-
 export const CellDateButtons = memo<{ date: IPlannerDate }>(
   ({ date }) => {
     const dispatch = useAppDispatch();
     const navigate = useSearchNavigate();
-    const status = useAppSelector(plannerSelectStatus);
     const { openModal } = useCreateEventModal();
 
     const onPlusAction = () => {
@@ -50,7 +50,7 @@ export const CellDateButtons = memo<{ date: IPlannerDate }>(
         })
       );
 
-      navigate(getPath(ServicesNames.PLANNER, PLANNER_LAYOUTS.DAY, status));
+      navigate(getPath(SERVICES_NAMES.PLANNER, PLANNER_LAYOUTS.DAY));
     };
 
     return (

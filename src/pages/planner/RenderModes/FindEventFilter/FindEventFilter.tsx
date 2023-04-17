@@ -1,10 +1,8 @@
 import { useAppSelector } from '@redux/hooks/hooks';
-import { ServicesNames } from '@redux/reducers/global';
-import { plannerSelectLayout } from '@selectors/planner';
+import { plannerSelectLayout, plannerSelectStatus } from '@selectors/planner';
 import React, { FC, ReactNode, useCallback } from 'react';
 
 import { PLANNER_LAYOUTS, TaskStatusesList } from '@src/common/constants';
-import { getPath } from '@src/common/functions';
 
 import { Button } from '@components/Buttons/Buttons.styled';
 import { EmptyButtonStyled } from '@components/Buttons/EmptyButton.styled';
@@ -20,14 +18,12 @@ import { Switcher } from '@components/Switcher/Switcher';
 import { Heading } from '@components/Text/Heading';
 import { Tooltip } from '@components/Tooltip/Tooltip';
 
-import { PlannerNavLink } from '@planner/Planner.styled';
 import {
   CutText,
   TaskListEventFiltersContainer,
 } from '@planner/RenderModes/DayCalendar/TaskList/TaskList.styled';
 
 import { IFindEventFilterProps } from './find-event-filters.types';
-
 
 export const LayoutNames: { [key in PLANNER_LAYOUTS]: string } = {
   [PLANNER_LAYOUTS.DAY]: 'День',
@@ -46,6 +42,7 @@ export const FindEventFilter: FC<IFindEventFilterProps> = ({
   isLoading,
 }) => {
   const layout = useAppSelector(plannerSelectLayout);
+  const status = useAppSelector(plannerSelectStatus);
 
   const renderDataViewDaysOfWeek = useCallback(
     (data: Array<{ title: string; value: boolean }>): ReactNode => {
@@ -76,20 +73,10 @@ export const FindEventFilter: FC<IFindEventFilterProps> = ({
       >
         <Switcher
           isLoading={isLoading}
+          selected={status}
           switchersList={TaskStatusesList}
           onClick={(item) => onChangeHandlers.taskStatus(item.type)}
           badges={statusBadges}
-          component={({ item, onClick }) => {
-            return (
-              <PlannerNavLink
-                to={getPath(ServicesNames.PLANNER, layout, item.type)}
-                onClick={() => onClick(item)}
-                className={({ isActive }) => (isActive ? 'active' : '')}
-              >
-                {item.title}
-              </PlannerNavLink>
-            );
-          }}
         >
           <Tooltip
             theme={'light'}

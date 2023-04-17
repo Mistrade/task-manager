@@ -24,7 +24,6 @@ import { ObjectId } from '@api/rtk-api.types';
 
 import { EssenceContainer, EventEssenceTitle } from './event-essence.styled';
 
-
 export interface EventEssenceProps {
   status: TaskStatusesType | null;
   priority: CalendarPriorityKeys | null;
@@ -187,7 +186,7 @@ export const EventEssence: FC<EventEssenceProps> = ({
               {optionalFields.eventId && (
                 <FlexBlock>
                   <LinkStyled
-                    to={`/planner/day/all/event/info/${optionalFields.eventId}`}
+                    to={`/planner/day/event/info/${optionalFields.eventId}`}
                     target={'_blank'}
                   >
                     Перейти к оригиналу

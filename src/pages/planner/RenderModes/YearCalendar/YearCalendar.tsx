@@ -2,17 +2,17 @@ import { useSearchNavigate } from '@hooks/useSearchNavigate';
 import { setPlannerDateAndLayout } from '@planner-reducer/index';
 import { dateToPlannerDate, plannerDateToDate } from '@planner-reducer/utils';
 import { useAppDispatch, useAppSelector } from '@redux/hooks/hooks';
-import { ServicesNames } from '@redux/reducers/global';
-import {
-  plannerSelectStatus,
-  plannerSelectYearConfig,
-} from '@selectors/planner';
+import { plannerSelectYearConfig } from '@selectors/planner';
 import dayjs from 'dayjs';
 import { FC, memo, useMemo } from 'react';
 import styled from 'styled-components';
 
 import { borderRadiusSize } from '@src/common/borderRadiusSize';
-import { PLANNER_LAYOUTS, UTC_OFFSET } from '@src/common/constants';
+import {
+  PLANNER_LAYOUTS,
+  SERVICES_NAMES,
+  UTC_OFFSET,
+} from '@src/common/constants';
 
 import { FlexBlock } from '@components/LayoutComponents/FlexBlock';
 import { ScrollVerticalView } from '@components/LayoutComponents/ScrollView/ScrollVerticalView';
@@ -24,7 +24,6 @@ import { YearCalendarProps } from '@planner/planner.types';
 
 import { useGetEventsSchemeQuery } from '@api/planning-api';
 import { GetEventsFiltersRequestProps } from '@api/planning-api/types/event-info.types';
-
 
 const MonthItemContainer = styled('div')`
   padding: 4px;
@@ -46,7 +45,6 @@ const MonthTitleWrapper = styled('div')`
 
 export const YearCalendar: FC<YearCalendarProps> = memo(() => {
   const config = useAppSelector(plannerSelectYearConfig);
-  const status = useAppSelector(plannerSelectStatus);
   const dispatch = useAppDispatch();
   const navigate = useSearchNavigate();
 
@@ -101,7 +99,7 @@ export const YearCalendar: FC<YearCalendarProps> = memo(() => {
                             })
                           );
                           navigate(
-                            `/${ServicesNames.PLANNER}/${PLANNER_LAYOUTS.MONTH}/${status}`
+                            `/${SERVICES_NAMES.PLANNER}/${PLANNER_LAYOUTS.MONTH}`
                           );
                         }}
                       />
@@ -115,7 +113,7 @@ export const YearCalendar: FC<YearCalendarProps> = memo(() => {
                       })
                     );
                     navigate(
-                      `/${ServicesNames.PLANNER}/${PLANNER_LAYOUTS.DAY}/${status}`
+                      `/${SERVICES_NAMES.PLANNER}/${PLANNER_LAYOUTS.DAY}`
                     );
                   }}
                   onSelectWeek={(current) => {
@@ -126,7 +124,7 @@ export const YearCalendar: FC<YearCalendarProps> = memo(() => {
                       })
                     );
                     navigate(
-                      `/${ServicesNames.PLANNER}/${PLANNER_LAYOUTS.WEEK}/${status}`
+                      `/${SERVICES_NAMES.PLANNER}/${PLANNER_LAYOUTS.WEEK}`
                     );
                   }}
                   monthItem={monthItem}

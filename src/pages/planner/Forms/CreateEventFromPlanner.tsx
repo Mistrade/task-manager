@@ -2,10 +2,10 @@ import { useCreateEventModal } from '@hooks/useCreateEventModal';
 import { useSearchNavigate } from '@hooks/useSearchNavigate';
 import { setEventInfoTabName } from '@planner-reducer/index';
 import { useAppDispatch, useAppSelector } from '@redux/hooks/hooks';
-import { ServicesNames } from '@redux/reducers/global';
 import { plannerSelectLayout, plannerSelectStatus } from '@selectors/planner';
 import React, { FC, useCallback } from 'react';
 
+import { SERVICES_NAMES } from '@src/common/constants';
 import { getPath } from '@src/common/functions';
 
 import { CreateEventModal } from '@planner/Forms/CreateEvent/CreateEventModal';
@@ -26,14 +26,21 @@ export const CreateEventFromPlanner: FC = ({}) => {
       clearState();
       dispatch(setEventInfoTabName(EVENT_INFORMER_TAB_NAMES.ABOUT));
       navigate(
-        getPath(ServicesNames.PLANNER, layout, status, 'event', 'info', eventId)
+        getPath(
+          SERVICES_NAMES.PLANNER,
+          layout,
+          status,
+          'event',
+          'info',
+          eventId
+        )
       );
     },
     [layout, status, clearState]
   );
 
   const closeHandler = useCallback(() => {
-    declineModal(prevUrl || getPath(ServicesNames.PLANNER, layout, status));
+    declineModal(prevUrl || getPath(SERVICES_NAMES.PLANNER, layout, status));
   }, [declineModal, prevUrl, layout, status]);
 
   return <CreateEventModal onSuccess={successHandler} onClose={closeHandler} />;

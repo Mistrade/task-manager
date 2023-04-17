@@ -1,6 +1,4 @@
 import { useSearchNavigate } from '@hooks/useSearchNavigate';
-import { useAppSelector } from '@redux/hooks/hooks';
-import { plannerSelectLayout, plannerSelectStatus } from '@selectors/planner';
 import dayjs from 'dayjs';
 import React, { FC, useMemo, useState } from 'react';
 import styled, { css, keyframes } from 'styled-components';
@@ -28,7 +26,6 @@ import { GroupLogo } from '@planner/Groups/GroupList.styled';
 import { TaskTileItemProps } from '@planner/planner.types';
 
 import { CalendarCellStyledComponentProps } from '../Cell';
-
 
 interface EventContainerProps extends CalendarCellStyledComponentProps {
   withFill?: boolean;
@@ -179,8 +176,6 @@ export const CalendarCellEventItem: FC<TaskTileItemProps> = ({
     return !date.meta.isDisabled;
   }, [date, taskInfo]);
 
-  const layout = useAppSelector(plannerSelectLayout);
-  const status = useAppSelector(plannerSelectStatus);
   const navigate = useSearchNavigate();
 
   const Content = useMemo(() => {
@@ -198,7 +193,7 @@ export const CalendarCellEventItem: FC<TaskTileItemProps> = ({
         <CalendarCellItemContent taskInfo={taskInfo} />
       </EventContainer>
     );
-  }, [isHover, condition, date.value.day, taskInfo, layout, status]);
+  }, [isHover, condition, date.value.day, taskInfo]);
 
   if (tooltipPlacement === null) {
     return Content;

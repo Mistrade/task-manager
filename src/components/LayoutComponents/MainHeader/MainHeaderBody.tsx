@@ -1,11 +1,13 @@
 import { useAppSelector } from '@redux/hooks/hooks';
-import { ServicesNames } from '@redux/reducers/global';
-import { selectUserInfo } from '@redux/reducers/session/session-selectors';
-import { plannerSelectLayout, plannerSelectStatus } from '@selectors/planner';
+import { plannerSelectLayout } from '@selectors/planner';
 import React, { FC, useMemo } from 'react';
 import { toast } from 'react-toastify';
 
-import { currentColor } from '@src/common/constants';
+import {
+  SERVICES_NAMES,
+  SERVICES_TITLES,
+  currentColor,
+} from '@src/common/constants';
 
 import { EmptyButtonStyled } from '@components/Buttons/EmptyButton.styled';
 import { AppLogoIcon } from '@components/Icons/AppIcon/AppLogoIcon';
@@ -26,31 +28,32 @@ import { MainHeaderUserInfo } from './MainHeaderUserInfo';
 interface NavigationArrayItem {
   title: string;
   path: string;
-  serviceName: ServicesNames;
+  serviceName: SERVICES_NAMES;
 }
 
 const Nav = React.memo(
   () => {
-    const userInfo = useAppSelector(selectUserInfo);
     const layout = useAppSelector(plannerSelectLayout);
-    const status = useAppSelector(plannerSelectStatus);
 
     const NavigationArray: Array<NavigationArrayItem> = useMemo(
       () => [
         {
-          title: 'Мои дела',
-          path: userInfo
-            ? `/${ServicesNames.PLANNER}/${layout}/${status}`
-            : `/${ServicesNames.PLANNER}`,
-          serviceName: ServicesNames.PLANNER,
+          title: SERVICES_TITLES.planner,
+          path: `/${SERVICES_NAMES.PLANNER}/${layout}`,
+          serviceName: SERVICES_NAMES.PLANNER,
         },
         {
-          title: 'Мои контакты',
-          path: `/${ServicesNames.FRIENDS}`,
-          serviceName: ServicesNames.FRIENDS,
+          title: SERVICES_TITLES.friends,
+          path: `/${SERVICES_NAMES.FRIENDS}`,
+          serviceName: SERVICES_NAMES.FRIENDS,
+        },
+        {
+          title: SERVICES_TITLES.faq,
+          path: `/faq`,
+          serviceName: SERVICES_NAMES.FAQ,
         },
       ],
-      [layout, status]
+      [layout]
     );
 
     return (
