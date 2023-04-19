@@ -20,7 +20,6 @@ import { UserModel } from '@api/session-api/session-api.types';
 
 import { CalendarCellEventsListProps } from './RenderModes/WeekCalendar/CalendarCell/EventList/List';
 
-
 export type FCWithChildren<T = any> = FC<{ children?: ReactNode } & T>;
 
 export interface DatePickerProps {
@@ -59,12 +58,6 @@ export interface WeekCalendarProps
   taskStorage: EventsStorage;
   animationIndex?: number;
 }
-
-export interface DayCalendarProps extends GlobalTaskListProps {
-  //TODO убрать наследование @GlobalTaskListProps
-}
-
-export type CalendarHeaderProps = {};
 export type RenderTaskCountType = number | 'all';
 
 export interface CalendarCellProps extends GlobalTaskListProps {
@@ -82,10 +75,6 @@ export interface TaskTileItemProps {
   tooltipPlacement: TooltipProps['placement'] | null;
 }
 
-export interface CalendarHeaderSwitchersProps {
-  layout?: PLANNER_LAYOUTS;
-}
-
 export type OnSelectDateFromCalendarFn = (data: CalendarItem) => void;
 
 export interface DaySettingsPanelProps {}
@@ -95,8 +84,6 @@ export interface SmallCalendarMonthTitleProps {
   onClick?: (monthItem: MonthItem) => void;
   renderYear?: boolean;
 }
-
-export type RenderWeekPattern = 'short' | 'full' | 'none';
 
 export type CalendarList = Array<CalendarItem>;
 export type CalendarWeekList = Array<WeekItem>;
@@ -250,29 +237,6 @@ export interface TaskStatusInfo extends SelectBooleanInputDataItem {
   key: TaskStatusesType;
 }
 
-export type SocialNetworkKeys =
-  | 'vk'
-  | 'instagram'
-  | 'facebook'
-  | 'whatsApp'
-  | 'viber'
-  | 'telegram';
-export type TaskMemberSocialNetworkItem = {
-  networkName: SocialNetworkKeys;
-  link: string;
-};
-export type GenderKeys = 'man' | 'woman';
-export type TaskMemberItemType = {
-  id: UUID;
-  name: string;
-  surname: string;
-  gender: GenderKeys;
-  patronymic?: string;
-  phoneNumber?: string;
-  email?: string;
-  socialNetworks: Array<TaskMemberSocialNetworkItem>;
-};
-
 export interface ICreateEventMemberItem {
   accessRight: EVENT_ACCESS_RIGHTS;
   user: UserModel;
@@ -293,8 +257,6 @@ export type EventsStorageMonth<EVENT = ShortEventInfoModel> = CustomObject<
 >;
 export type EventsStorageDate<EVENT = ShortEventInfoModel> = Array<EVENT>;
 
-// export type SelectTaskItem = Omit<TaskTileClickArguments, 'event'>
-
 export interface EventInformerProps extends EventInfoModalProps {
   eventInfo: EventInfoModel | null;
   eventErrorInfo?: string;
@@ -302,7 +264,6 @@ export interface EventInformerProps extends EventInfoModalProps {
 
 export interface EventInfoBaseProps {
   eventInfo: EventInfoModel;
-  // openClonedTask?: (taskId: ObjectId) => void,
 }
 
 export type MainEventInformerProps = EventInfoBaseProps & EventInfoModalProps;
@@ -366,14 +327,8 @@ export interface DateSettingPanelOptions {
   monthCurrent: PlannerMonthMode;
 }
 
-export type OnCloseTaskInfoFnType = () => void;
 export type OnAddTaskFnType = (
   date: Date,
   initialValues?: Partial<EventInfoModel>
 ) => void;
-export type OnChangeCurrentFnType = (
-  date: Date | PlannerListMode,
-  layout: PlannerMode['layout']
-) => void;
 export type OnSelectTaskFnType = (taskId: string) => any;
-// export type SelectedTaskType = SelectTaskItem | null
