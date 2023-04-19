@@ -22,7 +22,7 @@ import { PriorityCalendarIcon } from '@components/Icons/CalendarIcons/PriorityCa
 import { FlexBlock } from '@components/LayoutComponents';
 import { Tooltip } from '@components/Tooltip/Tooltip';
 
-import { GroupLogo } from '@planner/Groups/GroupList.styled';
+import { GroupLogo } from '@planner/Groups/styled';
 import { TaskTileItemProps } from '@planner/planner.types';
 
 import { CalendarCellStyledComponentProps } from '../Cell';

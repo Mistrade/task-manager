@@ -64,6 +64,7 @@ const plannerSlice = createSlice({
         list: todayPlannerDate,
         favorites: todayPlannerDate,
       },
+      selectedEventGroup: null,
       createEventInitialState: null,
       createEventPrevUrl: null,
       layout: currentLayout,

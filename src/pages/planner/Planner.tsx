@@ -1,16 +1,16 @@
 import React, { FC } from 'react';
 import Helmet from 'react-helmet';
 
+import { PlannerOptionsPanel } from '@src/pages/planner/OptionsPanel';
+
 import { LayoutSelector } from './LayoutSelector';
 import { ModalRoutesMemo } from './ModalRoutes';
-import { PlannerOptionsPanel } from './OptionsPanel/PlannerOptionsPanel';
 import {
   PlannerContainer,
   PlannerContentContainer,
   PlannerLayoutContainer,
   PlannerOptionPanelContainer,
 } from './Planner.styled';
-
 
 export const PlannerPage: FC = React.memo(() => {
   return (

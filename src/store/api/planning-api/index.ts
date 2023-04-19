@@ -10,7 +10,7 @@ import { MergedObject, mergeArrayWithUserId } from '@src/common/functions';
 
 import { SwitcherBadges } from '@components/Switcher/Switcher';
 
-import { CreateGroupProps } from '@planner/Groups/groups.types';
+import { CreateGroupProps } from '@planner/Groups/types';
 import { EventFilterTaskStatuses } from '@planner/RenderModes/FindEventFilter/find-event-filters.types';
 import { CreateEventRequestData, EventsStorage } from '@planner/planner.types';
 
@@ -50,7 +50,6 @@ import {
   GroupIdObject,
   GroupModelResponse,
 } from './types/groups.types';
-
 
 export const PlanningApiTagTypes = [
   'Events',

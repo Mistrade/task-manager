@@ -16,6 +16,7 @@ import {
   YearItem,
 } from '@planner/planner.types';
 
+import { GroupModelResponse } from '@api/planning-api/types/groups.types';
 import { ObjectId } from '@api/rtk-api.types';
 
 export interface IPlannerDate {
@@ -59,6 +60,7 @@ export interface IPlannerReducer {
   eventFilter: IEventFiltersState;
   createEventInitialState: null | CreateEventInitialState;
   createEventPrevUrl: string | null;
+  selectedEventGroup: GroupModelResponse | null;
 }
 
 export interface IPlannerLayoutRenderConfig {

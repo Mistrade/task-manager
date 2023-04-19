@@ -11,12 +11,11 @@ import { LoaderIcon } from '@components/Icons/Icons';
 import { FlexBlock } from '@components/LayoutComponents';
 import { Tooltip } from '@components/Tooltip/Tooltip';
 
-import { GroupLogo } from '@planner/Groups/GroupList.styled';
+import { GroupLogo } from '@planner/Groups/styled';
 
 import { GroupModelResponse } from '@api/planning-api/types/groups.types';
 
 import { EventToggleButtonProps } from './EventStatusButton';
-
 
 export interface EventGroupButtonProps extends EventToggleButtonProps {
   group: GroupModelResponse | null;

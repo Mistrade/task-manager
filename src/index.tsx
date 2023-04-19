@@ -14,5 +14,3 @@ root.render(
   <App />
   // </React.StrictMode>
 );
-export {FRIEND_REQUEST_ACCEPT_STATUSES} from "@src/common/constants/enums";
-export {FRIEND_REQUESTS_TYPES} from "@src/common/constants/enums";

@@ -141,3 +141,8 @@ export const createEventInitialStateSelector: CreateSelectorReturnType<CreateEve
       },
     };
   });
+
+export const plannerSelectEventGroup = createSelector(
+  rootSelector,
+  (state) => state.selectedEventGroup
+);

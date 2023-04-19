@@ -11,7 +11,7 @@ import { borderRadiusSize } from '@src/common/css/mixins';
 import { EmptyButtonStyled } from '@components/Buttons/EmptyButton.styled';
 import { SelectIcon } from '@components/Icons/Icons';
 
-import { GroupLogo } from '@pages/planner/Groups/GroupList.styled';
+import { GroupLogo } from '@planner/Groups/styled';
 
 interface ColorSchemeProps {
   gap: number | string;

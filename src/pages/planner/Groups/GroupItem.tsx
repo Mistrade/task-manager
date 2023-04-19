@@ -6,6 +6,11 @@ import { FC, useState } from 'react';
 import { darkColor, defaultColor } from '@src/common/constants/constants';
 import { SERVICES_NAMES } from '@src/common/constants/enums';
 import { getPath } from '@src/common/functions';
+import {
+  CalendarItemLabel,
+  GroupItemCheckbox,
+} from '@src/pages/planner/Groups/styled';
+import { GroupItemProps } from '@src/pages/planner/Groups/types';
 
 import { EmptyButtonStyled } from '@components/Buttons/EmptyButton.styled';
 import {
@@ -18,9 +23,6 @@ import { FlexBlock } from '@components/LayoutComponents';
 import { CutText } from '@components/Text/Text';
 
 import { useChangeSelectGroupMutation } from '@api/planning-api';
-
-import { CalendarItemLabel, GroupItemCheckbox } from './GroupList.styled';
-import { GroupItemProps } from './groups.types';
 
 export const GroupItem: FC<GroupItemProps> = ({
   onChange,

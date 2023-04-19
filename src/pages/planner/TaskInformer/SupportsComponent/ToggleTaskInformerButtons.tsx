@@ -8,7 +8,7 @@ import { DropDownButton } from '@components/Buttons/DropDownButton';
 import { PriorityCalendarIcon } from '@components/Icons/CalendarIcons/PriorityCalendarIcon';
 import { IconProps } from '@components/Icons/Icons';
 
-import { GroupLogo } from '@planner/Groups/GroupList.styled';
+import { GroupLogo } from '@planner/Groups/styled';
 import {
   CalendarPriorityKeys,
   EventLinkItem,
@@ -24,7 +24,6 @@ import { EventGroupButton } from './EventGroupButton';
 import { EventPriorityButton } from './EventPriorityButton';
 import { EventStatusButton } from './EventStatusButton';
 import { ToggleButtonContainer } from './ToggleButtonContainer';
-
 
 export type EventInfoUpdateFn = (
   field: keyof EventInfoModel,

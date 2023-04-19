@@ -21,13 +21,13 @@ import {
   ModalHeader,
 } from '@components/LayoutComponents/Modal/Modal';
 
+import { ChangeGroupModalProps, CreateGroupProps } from '@planner/Groups/types';
+
 import {
   useCreateEventGroupMutation,
   useUpdateGroupInfoMutation,
 } from '@api/planning-api';
 import { CatchHandleForToast, thenHandleForToast } from '@api/tools';
-
-import { ChangeGroupModalProps, CreateGroupProps } from './groups.types';
 
 //TODO прорефакторить узел GROUPS
 const validationSchema = yup.object().shape({

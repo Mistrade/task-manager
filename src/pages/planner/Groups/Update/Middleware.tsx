@@ -1,11 +1,10 @@
 import { FC, useEffect } from 'react';
 import { toast } from 'react-toastify';
 
+import { CreateOrUpdateGroupModal } from '@planner/Groups/Create/CreateOrUpdateGroup';
+import { UpdateGroupInfoMiddlewareProps } from '@planner/Groups/types';
+
 import { useGetGroupInfoQuery } from '@api/planning-api';
-
-import { CreateOrUpdateGroupModal } from './CreateOrUpdateGroup';
-import { UpdateGroupInfoMiddlewareProps } from './groups.types';
-
 
 export const UpdateGroupInfoMiddleware: FC<UpdateGroupInfoMiddlewareProps> = ({
   groupId,

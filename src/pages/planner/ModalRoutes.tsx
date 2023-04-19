@@ -1,10 +1,12 @@
 import React, { FC, memo } from 'react';
 import { Route, Routes } from 'react-router-dom';
 
-import { CreateEventFromPlanner } from '@planner/Forms/CreateEvent/CreateEventFromPlanner';
+import { CreateOrUpdateGroupModal } from '@src/pages/planner/Groups/Create/CreateOrUpdateGroup';
 
-import { CreateOrUpdateGroupModal } from './Groups/CreateOrUpdateGroup';
-import { UpdateGroupInfoHock } from './Groups/UpdateGroupInfoHock';
+import { CreateEventFromPlanner } from '@planner/Forms/CreateEvent/CreateEventFromPlanner';
+import { RemoveGroupModal } from '@planner/Groups/Remove/RemoveGroupModal';
+import { UpdateGroupInfoHock } from '@planner/Groups/Update/Hock';
+
 import { TaskInfoModal } from './TaskInformer/TaskInfoModal';
 
 const ModalRoutes: FC = () => {
@@ -13,7 +15,8 @@ const ModalRoutes: FC = () => {
       <Route path={':layout/*'}>
         <Route path={'group'}>
           <Route path={'create'} element={<CreateOrUpdateGroupModal />} />
-          <Route path={':groupId'} element={<UpdateGroupInfoHock />} />
+          <Route path={'remove/:groupId'} element={<RemoveGroupModal />} />
+          <Route path={'update/:groupId'} element={<UpdateGroupInfoHock />} />
         </Route>
         <Route path={'event'}>
           <Route path={'create'} element={<CreateEventFromPlanner />} />

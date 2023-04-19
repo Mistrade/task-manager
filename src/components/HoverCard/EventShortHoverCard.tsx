@@ -17,7 +17,7 @@ import { FlexBlock } from '@components/LayoutComponents';
 import { CutText } from '@components/Text/Text';
 import { UserAvatar } from '@components/Users/UserAvatar';
 
-import { GroupLogo } from '@pages/planner/Groups/GroupList.styled';
+import { GroupLogo } from '@planner/Groups/styled';
 
 import { ShortEventInfoModel } from '@api/planning-api/types/event-info.types';
 

@@ -31,20 +31,3 @@ export interface GroupItemProps {
   onSuccessChangeSelect?: () => Promise<void>;
   onEdit?: (_id: ObjectId) => void;
 }
-
-export interface RemoveGroupModalBaseProps {
-  onClose?: () => void;
-  onSuccess?: () => void;
-}
-
-export interface RemoveGroupHockProps extends RemoveGroupModalBaseProps {
-  groupInfo: GroupModelResponse | null;
-}
-
-export interface RemoveGroupControllerProps extends RemoveGroupModalBaseProps {
-  groupInfo: GroupModelResponse;
-}
-
-export interface RemoveGroupModalProps extends RemoveGroupControllerProps {
-  count: number;
-}
