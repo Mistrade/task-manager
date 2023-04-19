@@ -8,8 +8,8 @@ import {
   hoverColor,
   orangeColor,
 } from '@src/common/constants/constants';
+import { CenteredContainer } from '@src/routes/Interceptors/SessionInterceptor';
 
-import { CenteredContainer } from '@components/AppRoutes/Interceptors/SessionInterceptor';
 import { Badge } from '@components/Badge/Badge';
 import { LinkStyled } from '@components/Buttons/Link.styled';
 import { ErrorScreen } from '@components/Errors/ErrorScreen';

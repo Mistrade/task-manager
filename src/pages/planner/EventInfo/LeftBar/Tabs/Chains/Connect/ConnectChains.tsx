@@ -1,8 +1,8 @@
 import { FC, useCallback, useState } from 'react';
 
 import { darkColor } from '@src/common/constants/constants';
+import { CenteredContainer } from '@src/routes/Interceptors/SessionInterceptor';
 
-import { CenteredContainer } from '@components/AppRoutes/Interceptors/SessionInterceptor';
 import { EmptyButtonStyled } from '@components/Buttons/EmptyButton.styled';
 import { ErrorScreen } from '@components/Errors/ErrorScreen';
 import { Arrow } from '@components/Icons/Icons';

@@ -1,6 +1,7 @@
 import { FC, useCallback } from 'react';
 
-import { CenteredContainer } from '@components/AppRoutes/Interceptors/SessionInterceptor';
+import { CenteredContainer } from '@src/routes/Interceptors/SessionInterceptor';
+
 import { CheckList } from '@components/CheckList';
 import { Loader } from '@components/Loaders/Loader';
 
@@ -12,7 +13,6 @@ import { EventInfoModel } from '@api/planning-api/types/event-info.types';
 import { CatchHandleForToast, thenHandleForToast } from '@api/tools';
 
 import { CreateEventCheckList } from './CreateEventCheckList';
-
 
 export interface EventCheckListProps {
   eventInfo: EventInfoModel;

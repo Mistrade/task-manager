@@ -2,7 +2,8 @@ import { useAppSelector } from '@redux/hooks/hooks';
 import { selectUserInfo } from '@selectors/session-selectors';
 import React, { FC } from 'react';
 
-import { SessionInterceptor } from '@components/AppRoutes/Interceptors/SessionInterceptor';
+import { SessionInterceptor } from '@src/routes/Interceptors/SessionInterceptor';
+
 import { ErrorScreen } from '@components/Errors/ErrorScreen';
 import { FlexBlock } from '@components/LayoutComponents';
 

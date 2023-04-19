@@ -4,8 +4,8 @@ import { Routes } from 'react-router-dom';
 
 import { PLANNER_LAYOUTS } from '@src/common/constants/enums';
 import { disableReRender } from '@src/common/utils/react-utils';
+import { CenteredContainer } from '@src/routes/Interceptors/SessionInterceptor';
 
-import { CenteredContainer } from '@components/AppRoutes/Interceptors/SessionInterceptor';
 import { ErrorScreen } from '@components/Errors/ErrorScreen';
 import { VerticalScroll } from '@components/LayoutComponents/ScrollView/VerticalScroll';
 import { LayoutSuspense } from '@components/Loaders/LayoutSuspense';

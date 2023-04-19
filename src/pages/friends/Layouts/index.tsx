@@ -7,8 +7,8 @@ import {
   ERROR_TYPES,
   FRIENDS_ROUTES,
 } from '@src/common/constants/enums';
+import { CenteredContainer } from '@src/routes/Interceptors/SessionInterceptor';
 
-import { CenteredContainer } from '@components/AppRoutes/Interceptors/SessionInterceptor';
 import { EmptyButtonStyled } from '@components/Buttons/EmptyButton.styled';
 import { ErrorScreen } from '@components/Errors/ErrorScreen';
 import { FiltersIcon } from '@components/Icons/Icons';

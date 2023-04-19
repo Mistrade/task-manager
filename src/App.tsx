@@ -9,7 +9,8 @@ import 'tippy.js/animations/perspective.css';
 import 'tippy.js/animations/shift-away.css';
 import 'tippy.js/dist/tippy.css';
 
-import { AppRoutes } from '@components/AppRoutes';
+import { AppRoutes } from '@src/routes';
+
 import { UserInfoProvider } from '@components/ContextProviders/UserInfoProvider';
 import { FlexBlock } from '@components/LayoutComponents';
 import { MainHeader } from '@components/LayoutComponents/PageHeader';

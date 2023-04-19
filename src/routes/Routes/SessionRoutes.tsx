@@ -4,18 +4,21 @@ import React, { FC } from 'react';
 import { Route } from 'react-router';
 import { Routes } from 'react-router-dom';
 
-import { SessionInterceptor } from '@components/AppRoutes/Interceptors/SessionInterceptor';
+import { SessionInterceptor } from '@src/routes/Interceptors/SessionInterceptor';
+
 import { WithSuspense } from '@components/Loaders/WithSuspense';
 
 const RegistrationForm = React.lazy(() =>
-  import('../../Session/Registration').then(({ Registration }) => ({
+  import('@components/Session/Registration').then(({ Registration }) => ({
     default: Registration,
   }))
 );
 const AuthorizationForm = React.lazy(() =>
-  import('../../Session/AuthorizationForm').then(({ AuthorizationForm }) => ({
-    default: AuthorizationForm,
-  }))
+  import('@components/Session/AuthorizationForm').then(
+    ({ AuthorizationForm }) => ({
+      default: AuthorizationForm,
+    })
+  )
 );
 
 export const SessionRoutes: FC = () => {

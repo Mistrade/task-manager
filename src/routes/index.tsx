@@ -6,11 +6,11 @@ import { Routes } from 'react-router-dom';
 
 import { LOADER_TITLES, SERVICES_NAMES } from '@src/common/constants/enums';
 import { disableReRender } from '@src/common/utils/react-utils';
+import { SessionInterceptor } from '@src/routes/Interceptors/SessionInterceptor';
+import { FaqRoutes } from '@src/routes/Routes/FaqRoutes';
+import { ProfileRoutes } from '@src/routes/Routes/ProfileRoutes';
+import { SessionRoutes } from '@src/routes/Routes/SessionRoutes';
 
-import { SessionInterceptor } from '@components/AppRoutes/Interceptors/SessionInterceptor';
-import { FaqRoutes } from '@components/AppRoutes/Routes/FaqRoutes';
-import { ProfileRoutes } from '@components/AppRoutes/Routes/ProfileRoutes';
-import { SessionRoutes } from '@components/AppRoutes/Routes/SessionRoutes';
 import { LayoutSuspense } from '@components/Loaders/LayoutSuspense';
 
 import { FriendsPage } from '@pages/friends';

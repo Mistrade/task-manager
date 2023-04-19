@@ -1,6 +1,7 @@
 import { FC, memo, useState } from 'react';
 
-import { CenteredContainer } from '@components/AppRoutes/Interceptors/SessionInterceptor';
+import { CenteredContainer } from '@src/routes/Interceptors/SessionInterceptor';
+
 import { EmptyButtonStyled } from '@components/Buttons/EmptyButton.styled';
 import { LinkStyled } from '@components/Buttons/Link.styled';
 import { ErrorScreen } from '@components/Errors/ErrorScreen';
