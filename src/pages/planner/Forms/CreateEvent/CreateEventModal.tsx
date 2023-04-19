@@ -12,7 +12,7 @@ import { Loader } from '@components/Loaders/Loader';
 
 import { useGetGroupsListQuery } from '@api/planning-api';
 
-import { CreateEventModalProps } from '../../planner.types';
+import { CreateEventModalProps } from 'src/pages/planner/types';
 
 
 const CreateEventForm = React.lazy(() =>

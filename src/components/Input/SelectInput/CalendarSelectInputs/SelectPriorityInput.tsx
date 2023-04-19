@@ -15,7 +15,7 @@ import { FlexBlockProps } from '@components/LayoutComponents/FlexBlock';
 import {
   CalendarPriorityKeys,
   CalendarPriorityList,
-} from '@planner/planner.types';
+} from '@planner/types';
 
 interface SelectPriorityInputProps
   extends Partial<Omit<DefaultTextInputProps, 'onChange'>> {

@@ -17,7 +17,7 @@ import {
   PlannerContentContainer,
   PlannerLayoutContainer,
   PlannerOptionPanelContainer,
-} from '@planner/Planner.styled';
+} from '@planner/styled';
 
 import { HeaderLinkStyled } from './Link.styled.';
 import { MainHeaderUserInfo } from './UserInfo';

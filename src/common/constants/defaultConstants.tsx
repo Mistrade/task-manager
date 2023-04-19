@@ -13,8 +13,8 @@ import { CompleteIcon } from '@components/Icons/Icons';
 import { TelegramLogoIcon } from '@components/Icons/SocialNetworkIcons/Telegram';
 import { TwoPeopleIcon } from '@components/Icons/UserIcons/UserIcons';
 
-import { EventFilterTaskStatuses } from '@planner/RenderModes/FindEventFilter/find-event-filters.types';
-import { CalendarPriorityKeys, TaskStatusesType } from '@planner/planner.types';
+import { EventFilterTaskStatuses } from '@planner/Filters/find-event-filters.types';
+import { CalendarPriorityKeys, TaskStatusesType } from '@planner/types';
 
 export const DATE_RENDER_FORMAT = 'DD-MM-YYYY HH:mm';
 export const DATE_RENDER_FORMAT_WITH_SEC = 'DD-MM-YYYY HH:mm:ss';

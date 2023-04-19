@@ -10,7 +10,7 @@ import {
 } from '@components/LayoutComponents/FlexBlock';
 import { hideScrollBar } from '@components/Switcher/Switcher';
 
-import { FCWithChildren } from '@planner/planner.types';
+import { FCWithChildren } from '@planner/types';
 
 export interface ScrollVerticalViewProps {
   placementStatic?: 'top' | 'bottom';
@@ -93,12 +93,14 @@ export const VerticalScroll: FCWithChildren<ScrollVerticalViewProps> = memo(
     const bottomRef = useRef<HTMLDivElement>(null);
     const topIntersection = useIntersection(topRef, {
       root: root.current,
-      rootMargin: '-20px',
+      rootMargin: '50px',
+      threshold: 0,
     });
 
     const bottomIntersection = useIntersection(bottomRef, {
       root: root.current,
-      rootMargin: '20px',
+      rootMargin: '50px',
+      threshold: 0,
     });
 
     return (

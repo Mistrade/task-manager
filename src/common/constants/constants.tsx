@@ -2,12 +2,12 @@ import { ErrorBadRequestImg } from '@components/Icons/Errors/ErrorBadRequest';
 import { ErrorForbiddenImg } from '@components/Icons/Errors/ErrorForbidden';
 import { SystemErrorImg } from '@components/Icons/Errors/SystemError';
 
-import { EventFilterTaskStatuses } from '@planner/RenderModes/FindEventFilter/find-event-filters.types';
+import { EventFilterTaskStatuses } from '@planner/Filters/find-event-filters.types';
 import {
   CalendarPriorityKeys,
   CalendarPriorityList,
   TaskStatusesType,
-} from '@planner/planner.types';
+} from '@planner/types';
 
 import { ErrorImagesType } from '../types';
 

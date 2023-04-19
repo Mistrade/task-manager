@@ -2,7 +2,7 @@ import styled from 'styled-components';
 
 import { borderRadiusSize } from '@src/common/css/mixins';
 
-import { SwitchCalendarMode } from '@planner/Planner.styled';
+import { SwitchCalendarMode } from '@planner/styled';
 
 export const InputActionsStyledContainer = styled('div')`
   display: flex;

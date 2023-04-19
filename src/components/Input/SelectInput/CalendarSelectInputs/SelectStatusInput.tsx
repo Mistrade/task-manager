@@ -12,7 +12,7 @@ import { SelectListContainer } from '@components/Input/SelectInput/SelectListCon
 import { DefaultTextInputProps } from '@components/Input/TextInput/TextInput';
 import { FlexBlockProps } from '@components/LayoutComponents/FlexBlock';
 
-import { EventFilterTaskStatuses } from '@planner/RenderModes/FindEventFilter/find-event-filters.types';
+import { EventFilterTaskStatuses } from '@planner/Filters/find-event-filters.types';
 
 interface SelectStatusInputProps
   extends Partial<Omit<DefaultTextInputProps, 'onChange'>> {

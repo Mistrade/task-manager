@@ -6,13 +6,13 @@ import {
 } from '@reduxjs/toolkit/dist/query/react';
 import dayjs from 'dayjs';
 
-import { MergedObject, mergeArrayWithUserId } from '@src/common/functions';
+import { mergeArrayWithUserId } from '@src/common/functions';
 
 import { SwitcherBadges } from '@components/Switcher/Switcher';
 
+import { EventFilterTaskStatuses } from '@planner/Filters/find-event-filters.types';
 import { CreateGroupProps } from '@planner/Groups/types';
-import { EventFilterTaskStatuses } from '@planner/RenderModes/FindEventFilter/find-event-filters.types';
-import { CreateEventRequestData, EventsStorage } from '@planner/planner.types';
+import { CreateEventRequestData, EventsStorage } from '@planner/types';
 
 import { baseServerUrl } from '../config';
 import { CustomRtkError, MyServerResponse, ObjectId } from '../rtk-api.types';
@@ -32,7 +32,10 @@ import {
   ConnectChildResponse,
   EventChainsObject,
 } from './types/event-chains.types';
-import { EventHistoryQueryResult } from './types/event-history.types';
+import {
+  EventHistoryQueryResult,
+  GetHistoryReturned,
+} from './types/event-history.types';
 import {
   EventIdObject,
   EventInfoModel,
@@ -254,16 +257,7 @@ export const planningApi = createApi({
         },
         providesTags: ['EventsScheme'],
       }),
-      getEventHistory: query<
-        Array<
-          MergedObject<
-            EventHistoryQueryResult,
-            'changeUserId',
-            EventHistoryQueryResult
-          >
-        >,
-        ObjectId
-      >({
+      getEventHistory: query<GetHistoryReturned, ObjectId>({
         query: (taskId) => ({
           url: `/history/${taskId}`,
           method: 'GET',
@@ -272,18 +266,18 @@ export const planningApi = createApi({
           value: MyServerResponse<Array<EventHistoryQueryResult>>,
           meta,
           arg: ObjectId
-        ): Array<
-          MergedObject<
-            EventHistoryQueryResult,
-            'changeUserId',
-            EventHistoryQueryResult
-          >
-        > {
+        ): GetHistoryReturned {
           if (!value.data) {
-            return [];
+            return {
+              arr: [],
+              count: 0,
+            };
           }
 
-          return mergeArrayWithUserId(value.data || [], 'changeUserId');
+          return {
+            arr: mergeArrayWithUserId(value.data || [], 'changeUserId'),
+            count: value.data.length,
+          };
         },
         providesTags: ['EventHistory'],
       }),

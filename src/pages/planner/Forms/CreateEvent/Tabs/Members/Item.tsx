@@ -1,4 +1,4 @@
-import { ICreateEventMemberItem } from '@planner/planner.types';
+import { ICreateEventMemberItem } from '@planner/types';
 
 export interface CreateEventMembersItemProps {
   isChecked?: boolean;

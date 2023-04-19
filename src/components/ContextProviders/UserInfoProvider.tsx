@@ -1,11 +1,11 @@
 import React from 'react';
 
-import { UserInfoContext } from '@src/Context/userInfo.context';
 import { disableReRender } from '@src/common/utils/react-utils';
+import { UserInfoContext } from '@src/context/userInfo.context';
 
 import { Loader } from '@components/Loaders/Loader';
 
-import { FCWithChildren } from '@pages/planner/planner.types';
+import { FCWithChildren } from '@planner/types';
 
 import { useConfirmSessionQuery } from '@api/session-api';
 

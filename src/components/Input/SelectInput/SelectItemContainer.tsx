@@ -6,7 +6,7 @@ import { HoverElementMixin, borderRadiusSize } from '@src/common/css/mixins';
 
 import { FlexBlock } from '@components/LayoutComponents';
 
-import { FCWithChildren } from '@planner/planner.types';
+import { FCWithChildren } from '@planner/types';
 
 export const SelectItemContainer: FCWithChildren<{
   onClick?: (e: React.MouseEvent<HTMLDivElement>) => void;

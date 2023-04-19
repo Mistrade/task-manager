@@ -16,7 +16,7 @@ import {
   PlannerMonthMode,
   PlannerWeekMode,
   PlannerYearMode,
-} from '@pages/planner/planner.types';
+} from '@planner/types';
 
 export interface HumanizeDateValueOptions {
   withTime?: boolean;

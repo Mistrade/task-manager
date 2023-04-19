@@ -9,7 +9,7 @@ import {
 } from '@src/common/constants/enums';
 import { URLTaskStatuses } from '@src/common/constants/signatures';
 
-import { EventFilterTaskStatuses } from '@pages/planner/RenderModes/FindEventFilter/find-event-filters.types';
+import { EventFilterTaskStatuses } from '@pages/planner/Filters/find-event-filters.types';
 
 import { ObjectId } from '@api/rtk-api.types';
 

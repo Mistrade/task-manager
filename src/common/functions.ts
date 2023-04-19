@@ -7,7 +7,7 @@ import {
   EventsStorage,
   PlannerMode,
   PlannerMonthMode,
-} from '@pages/planner/planner.types';
+} from '@planner/types';
 
 import {
   EventInfoModel,
@@ -25,7 +25,6 @@ import {
   ShortChangeCurrentPattern,
 } from './commonTypes';
 import { MonthList } from './constants/constants';
-
 
 export const addNull = (value: number): string =>
   value < 10 ? `0${value}` : value.toString();

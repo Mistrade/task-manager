@@ -9,7 +9,7 @@ import {
   MonthItem,
   WeekItem,
   YearItem,
-} from '@pages/planner/planner.types';
+} from '@planner/types';
 
 import { CalendarDateItem } from './calendarDateItem';
 import { DateHelper } from './dateHelper';

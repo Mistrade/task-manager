@@ -5,7 +5,7 @@ import {
   CalendarCurrentContext,
   CalendarDisabledOptions,
   CalendarItem,
-} from '@pages/planner/planner.types';
+} from '@planner/types';
 
 import { DateHelper } from './dateHelper';
 

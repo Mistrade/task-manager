@@ -11,14 +11,12 @@ import { Arrow } from '@components/Icons/Icons';
 import { FlexBlock } from '@components/LayoutComponents';
 import { Tooltip } from '@components/Tooltip/Tooltip';
 
-import { HistoryDescriptionField } from '@pages/planner/TaskInformer/LeftBar/Tabs/TaskHistory/Fields/HistoryDescriptionField';
-import { EventGroupButton } from '@pages/planner/TaskInformer/SupportsComponent/EventGroupButton';
-import { EventPriorityButton } from '@pages/planner/TaskInformer/SupportsComponent/EventPriorityButton';
-import { EventStatusButton } from '@pages/planner/TaskInformer/SupportsComponent/EventStatusButton';
-import {
-  CalendarPriorityKeys,
-  TaskStatusesType,
-} from '@pages/planner/planner.types';
+import { HistoryDescriptionField } from '@pages/planner/EventInfo/LeftBar/Tabs/TaskHistory/Fields/HistoryDescriptionField';
+import { EventGroupButton } from '@pages/planner/EventInfo/SupportsComponent/EventGroupButton';
+import { EventPriorityButton } from '@pages/planner/EventInfo/SupportsComponent/EventPriorityButton';
+import { EventStatusButton } from '@pages/planner/EventInfo/SupportsComponent/EventStatusButton';
+
+import { CalendarPriorityKeys, TaskStatusesType } from '@planner/types';
 
 import { GroupModelResponse } from '@api/planning-api/types/groups.types';
 import { ObjectId } from '@api/rtk-api.types';
@@ -132,19 +130,16 @@ export const EventEssence: FC<EventEssenceProps> = ({
             <FlexBlock direction={'column'} gap={6} basis={'50%'}>
               {optionalFields.createdAt && (
                 <FlexBlock style={{ whiteSpace: 'pre-wrap', fontSize: 14 }}>
-                  {[
-                    'Создано',
-                    ' ',
-                    <TimeBadge>
-                      {DateHelper.getHumanizeDateValue(
-                        dayjs(optionalFields.createdAt).toDate(),
-                        {
-                          withTime: true,
-                          monthPattern: 'full',
-                        }
-                      )}
-                    </TimeBadge>,
-                  ]}
+                  Создано{' '}
+                  <TimeBadge>
+                    {DateHelper.getHumanizeDateValue(
+                      dayjs(optionalFields.createdAt).toDate(),
+                      {
+                        withTime: true,
+                        monthPattern: 'full',
+                      }
+                    )}
+                  </TimeBadge>
                 </FlexBlock>
               )}
               {optionalFields.time && optionalFields.timeEnd && (
@@ -154,34 +149,28 @@ export const EventEssence: FC<EventEssenceProps> = ({
                   gap={6}
                 >
                   <FlexBlock fSize={14}>
-                    {[
-                      'Начало',
-                      ' ',
-                      <TimeBadge>
-                        {DateHelper.getHumanizeDateValue(
-                          dayjs(optionalFields.time).toDate(),
-                          {
-                            withTime: true,
-                            monthPattern: 'short',
-                          }
-                        )}
-                      </TimeBadge>,
-                    ]}
+                    Начало{' '}
+                    <TimeBadge>
+                      {DateHelper.getHumanizeDateValue(
+                        dayjs(optionalFields.time).toDate(),
+                        {
+                          withTime: true,
+                          monthPattern: 'short',
+                        }
+                      )}
+                    </TimeBadge>
                   </FlexBlock>
                   <FlexBlock fSize={14}>
-                    {[
-                      'Конец',
-                      ' ',
-                      <TimeBadge>
-                        {DateHelper.getHumanizeDateValue(
-                          dayjs(optionalFields.timeEnd).toDate(),
-                          {
-                            withTime: true,
-                            monthPattern: 'short',
-                          }
-                        )}
-                      </TimeBadge>,
-                    ]}
+                    Конец{' '}
+                    <TimeBadge>
+                      {DateHelper.getHumanizeDateValue(
+                        dayjs(optionalFields.timeEnd).toDate(),
+                        {
+                          withTime: true,
+                          monthPattern: 'short',
+                        }
+                      )}
+                    </TimeBadge>
                   </FlexBlock>
                 </FlexBlock>
               )}

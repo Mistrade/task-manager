@@ -7,7 +7,7 @@ import { currentColor } from '@src/common/constants/constants';
 
 import { FlexBlock } from '@components/LayoutComponents';
 
-import { SwitchCalendarModeTab } from '@planner/Planner.styled';
+import { SwitchCalendarModeTab } from '@planner/styled';
 
 import { EmptyButtonStyled } from '../Buttons/EmptyButton.styled';
 import { Arrow } from '../Icons/Icons';

@@ -10,7 +10,7 @@ import {
 
 import { FlexBlock } from '@components/LayoutComponents';
 
-import { TimeSelectorButton } from '@pages/planner/Planner.styled';
+import { TimeSelectorButton } from '@planner/styled';
 
 interface TimeSelectorProps {
   currentDate: Date;

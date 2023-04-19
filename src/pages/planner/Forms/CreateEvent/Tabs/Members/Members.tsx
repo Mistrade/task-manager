@@ -46,6 +46,7 @@ export const CreateEventMembersTab: FC<CreateEventMembersTabProps> = ({
           {myFriends.data.map((item) => {
             return (
               <Checkbox
+                key={item._id}
                 type={'checkbox'}
                 title={
                   <LinkStyled

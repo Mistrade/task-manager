@@ -26,9 +26,9 @@ import {
 } from '@src/common/constants/enums';
 import { CHANGE_DATE_OF_PATTERN_SIGNATURE } from '@src/common/constants/signatures';
 
-import { EventFilterTaskStatuses } from '@pages/planner/RenderModes/FindEventFilter/find-event-filters.types';
+import { EventFilterTaskStatuses } from '@pages/planner/Filters/find-event-filters.types';
 
-import { CalendarPriorityKeys } from '@planner/planner.types';
+import { CalendarPriorityKeys } from '@planner/types';
 
 import { ObjectId } from '@api/rtk-api.types';
 

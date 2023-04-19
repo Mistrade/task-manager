@@ -13,8 +13,8 @@ import {
 import {
   EventFilterTaskStatuses,
   StatusesTabsObject,
-} from '@planner/RenderModes/FindEventFilter/find-event-filters.types';
-import { TaskStatusInfo, TaskStatusesType } from '@planner/planner.types';
+} from '@planner/Filters/find-event-filters.types';
+import { TaskStatusInfo, TaskStatusesType } from '@planner/types';
 
 
 type TChangeDateOfPatternSignature = {

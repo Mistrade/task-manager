@@ -1,9 +1,9 @@
-import { EventFilterTaskStatuses } from '@planner/RenderModes/FindEventFilter/find-event-filters.types';
+import { EventFilterTaskStatuses } from '@planner/Filters/find-event-filters.types';
 import {
   CalendarPriorityKeys,
   EventLinkItem,
   TaskStatusesType,
-} from '@planner/planner.types';
+} from '@planner/types';
 
 import { ObjectId, UtcDate } from '@api/rtk-api.types';
 import { UserModel } from '@api/session-api/session-api.types';

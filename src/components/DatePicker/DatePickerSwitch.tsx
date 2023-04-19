@@ -6,7 +6,7 @@ import { EmptyButtonStyled } from '@components/Buttons/EmptyButton.styled';
 import { Arrow, DoubleArrow } from '@components/Icons/Icons';
 import { FlexBlock } from '@components/LayoutComponents';
 
-import { SwitchCalendarMode } from '@planner/Planner.styled';
+import { SwitchCalendarMode } from '@planner/styled';
 
 
 const SwitchArr: Array<{

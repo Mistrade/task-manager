@@ -1,6 +1,6 @@
 import { TextInputProps } from '@components/Input/TextInput/TextInput';
 
-import { SelectBooleanInputDataItem } from '@planner/planner.types';
+import { SelectBooleanInputDataItem } from '@planner/types';
 
 import { SelectInput } from './SelectInput';
 import { SelectItemContainer } from './SelectItemContainer';

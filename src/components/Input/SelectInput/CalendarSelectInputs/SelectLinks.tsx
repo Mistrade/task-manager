@@ -1,8 +1,5 @@
-import React, { useRef, useState } from 'react';
+import React, { ChangeEvent, useRef, useState } from 'react';
 import * as yup from 'yup';
-
-import { currentColor, hoverColor } from '@src/common/constants/constants';
-import { borderRadiusSize } from '@src/common/css/mixins';
 
 import {
   Button,
@@ -10,14 +7,14 @@ import {
   WhiteButton,
 } from '@components/Buttons/Buttons.styled';
 import { UrlIcon } from '@components/Icons/SocialNetworkIcons';
-import { DefaultWebIcon } from '@components/Icons/SocialNetworkIcons/DefaultWeb';
+import { Informer } from '@components/Inform/Informer';
 import {
   DefaultTextInputProps,
   TextInput,
 } from '@components/Input/TextInput/TextInput';
 import { FlexBlock } from '@components/LayoutComponents';
 
-import { EventLinkItem } from '@planner/planner.types';
+import { EventLinkItem } from '@planner/types';
 
 export interface SelectLinksProps
   extends Omit<DefaultTextInputProps, 'onChange' | 'value'> {
@@ -93,19 +90,15 @@ const linkList: Array<LinkItem> = [
   },
 ];
 
-const DefaultIcon = <DefaultWebIcon size={24} color={currentColor} />;
-
 export function SelectLinks<T>({
   label,
   onChange,
   tooltip,
   initialShowNotification = true,
   initialLinkValue,
+  buttons,
   ...props
 }: SelectLinksProps): JSX.Element {
-  //TODO компонент должен принимать только ссылки, при визуализации показывать только домен, без пути
-  //TODO так же для ссылки можно добавить описание и выбрать одну основную ссылку
-
   const [link, setLink] = useState<{ key: string; value: string }>(
     initialLinkValue || { key: 'default', value: '' }
   );
@@ -146,6 +139,53 @@ export function SelectLinks<T>({
     return 'default';
   };
 
+  const onReplaceLink = () => {
+    setLink((prev) => {
+      const v = prev.value.replace('http:', 'https:');
+      if (yup.string().url().isValidSync(v)) {
+        setIsSecure(true);
+        return {
+          key: prev.key,
+          value: v,
+        };
+      }
+      return prev;
+    });
+  };
+
+  const blurHandle = async (e: React.FocusEvent<HTMLInputElement>) => {
+    let value = e.target.value.toLowerCase();
+
+    if (value) {
+      const isHttp = /http:\/\//i.test(value);
+      const isHttps = /https:\/\//i.test(value);
+
+      if (!isHttp && !isHttps) {
+        value = `https://${value}`;
+      }
+    }
+
+    const isUrl = yup.string().url().isValidSync(value);
+
+    if (isUrl) {
+      changeIconHandler(value).then((r) => {
+        const result = {
+          key: r,
+          value: value,
+        };
+        setLink(result);
+        onChange && onChange(result);
+      });
+    } else {
+      setLink({ key: 'default', value: value });
+      onChange && onChange(null);
+    }
+  };
+
+  const changeHandle = (e: ChangeEvent<HTMLInputElement>) => {
+    setLink((prev) => ({ key: prev.key, value: e.target.value }));
+  };
+
   return (
     <FlexBlock justify={'flex-start'} gap={6} width={'100%'} wrap={'wrap'}>
       <FlexBlock width={'100%'} gap={12} wrap={'nowrap'}>
@@ -160,39 +200,11 @@ export function SelectLinks<T>({
             isLoading={loading}
             icon={<UrlIcon name={link.key} />}
             iconPlacement={'right'}
-            onBlur={async (e) => {
-              let value = e.target.value.toLowerCase();
-
-              if (value) {
-                const isHttp = /http:\/\//i.test(value);
-                const isHttps = /https:\/\//i.test(value);
-
-                if (!isHttp && !isHttps) {
-                  value = `https://${value}`;
-                }
-              }
-
-              const isUrl = yup.string().url().isValidSync(value);
-
-              if (isUrl) {
-                changeIconHandler(value).then((r) => {
-                  const result = {
-                    key: r,
-                    value: value,
-                  };
-                  setLink(result);
-                  onChange && onChange(result);
-                });
-              } else {
-                setLink({ key: 'default', value: value });
-                onChange && onChange(null);
-              }
-            }}
-            onChange={(e) => {
-              setLink((prev) => ({ key: prev.key, value: e.target.value }));
-            }}
+            onBlur={blurHandle}
+            onChange={changeHandle}
             buttons={
-              link.value && (
+              buttons ||
+              (link.value && (
                 <FlexBlock
                   justify={'flex-end'}
                   align={'center'}
@@ -207,49 +219,25 @@ export function SelectLinks<T>({
                     Проверить
                   </LinkButton>
                 </FlexBlock>
-              )
+              ))
             }
           />
         </FlexBlock>
       </FlexBlock>
       {!isSecure && showNotification && (
-        <FlexBlock
-          border={`1px solid ${currentColor}`}
-          bgColor={hoverColor}
-          width={'100%'}
-          borderRadius={borderRadiusSize.xs}
-          p={16}
-          wrap={'nowrap'}
-          align={'flex-start'}
-        >
+        <Informer>
           <FlexBlock width={'100%'}>
             Внимание! Вы используете НЕ БЕЗОПАСНУЮ ссылку.
             <br />
             Заменить на безопасную?
           </FlexBlock>
           <FlexBlock mt={6} gap={6}>
-            <Button
-              onClick={() => {
-                setLink((prev) => {
-                  const v = prev.value.replace('http:', 'https:');
-                  if (yup.string().url().isValidSync(v)) {
-                    setIsSecure(true);
-                    return {
-                      key: prev.key,
-                      value: v,
-                    };
-                  }
-                  return prev;
-                });
-              }}
-            >
-              Заменить
-            </Button>
+            <Button onClick={onReplaceLink}>Заменить</Button>
             <WhiteButton onClick={() => setShowNotification(false)}>
               Игнорировать
             </WhiteButton>
           </FlexBlock>
-        </FlexBlock>
+        </Informer>
       )}
     </FlexBlock>
   );

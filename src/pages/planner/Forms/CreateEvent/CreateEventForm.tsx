@@ -21,12 +21,12 @@ import { FlexBlock } from '@components/LayoutComponents';
 import { Switcher } from '@components/Switcher/Switcher';
 import { Heading } from '@components/Text/Heading';
 
-import { ChainsShowcase } from '@planner/TaskInformer/LeftBar/Tabs/Chains/Connect/ChainsShowcase';
+import { ChainsShowcase } from '@planner/EventInfo/LeftBar/Tabs/Chains/Connect/ChainsShowcase';
 import {
   ToggleEventCalendar,
   ToggleEventPriority,
   ToggleEventStatus,
-} from '@planner/TaskInformer/SupportsComponent/ToggleTaskInformerButtons';
+} from '@planner/EventInfo/SupportsComponent/ToggleTaskInformerButtons';
 
 import { useCreateEventMutation } from '@api/planning-api';
 import { EventIdObject } from '@api/planning-api/types/event-info.types';
@@ -34,7 +34,7 @@ import { GroupModelResponse } from '@api/planning-api/types/groups.types';
 import { MyServerResponse, ObjectId } from '@api/rtk-api.types';
 import { CatchHandleForToast, thenHandleForToast } from '@api/tools';
 
-import { CreateEventDataObject } from '../../planner.types';
+import { CreateEventDataObject } from 'src/pages/planner/types';
 import { CreateEventFormAdditional } from './Tabs/Additional';
 import { CreateEventInfoTab } from './Tabs/Info';
 

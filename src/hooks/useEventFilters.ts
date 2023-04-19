@@ -1,10 +1,7 @@
-import { setPlannerStatus } from '@planner-reducer/index';
-import { useAppDispatch } from '@redux/hooks/hooks';
-import dayjs from 'dayjs';
 import { useCallback, useMemo, useState } from 'react';
 
-import { EventFilterOnChangeHandle } from '@planner/RenderModes/FindEventFilter/find-event-filters.types';
-import { PlannerMode } from '@planner/planner.types';
+import { EventFilterOnChangeHandle } from '@planner/Filters/find-event-filters.types';
+import { PlannerMode } from '@planner/types';
 
 import { GetEventsFiltersRequestProps } from '@api/planning-api/types/event-info.types';
 
@@ -34,26 +31,12 @@ export type UseEventFiltersType = (
   options: UseEventFiltersProps
 ) => UseEventFiltersReturned;
 
-export const initialFiltersValues: (
-  day: Date,
-  taskStatus: EventFiltersProps['taskStatus']
-) => EventFiltersProps = (day, taskStatus) => ({
-  title: null,
-  priority: null,
-  start: dayjs(day).startOf('day').toDate(),
-  end: dayjs(day).endOf('day').toDate(),
-  taskStatus,
-  utcOffset: dayjs().utcOffset(),
-});
-
-//TODO дописать чтобы починить логику в связях
 export const useEventFilters: UseEventFiltersType = ({
   initialValues,
   layout,
   useNavigate = true,
   debounceTimeout = 1250,
 }) => {
-  const dispatch = useAppDispatch();
   const [filters, setFilters] = useState<EventFiltersProps>(initialValues);
 
   const debounceValue = useDebounce(filters, debounceTimeout || 1250);
@@ -81,7 +64,7 @@ export const useEventFilters: UseEventFiltersType = ({
           key === 'not_selected' ? null : key
         ),
       taskStatus: (newStatus) => {
-        dispatch(setPlannerStatus(newStatus || 'all'));
+        changeFiltersStateHandler('taskStatus', newStatus);
       },
     }),
     [layout, useNavigate]

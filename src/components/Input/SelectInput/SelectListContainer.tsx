@@ -5,7 +5,7 @@ import {
   FlexBlockProps,
 } from '@components/LayoutComponents/FlexBlock';
 
-import { FCWithChildren } from '@planner/planner.types';
+import { FCWithChildren } from '@planner/types';
 
 export const SelectListContainer: FCWithChildren<FlexBlockProps> = ({
   children,

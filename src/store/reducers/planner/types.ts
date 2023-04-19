@@ -5,7 +5,7 @@ import {
   PLANNER_LAYOUTS,
 } from '@src/common/constants/enums';
 
-import { EventFilterTaskStatuses } from '@pages/planner/RenderModes/FindEventFilter/find-event-filters.types';
+import { EventFilterTaskStatuses } from '@pages/planner/Filters/find-event-filters.types';
 
 import {
   CalendarPriorityKeys,
@@ -14,7 +14,7 @@ import {
   TLayoutItemsScope,
   WeekItem,
   YearItem,
-} from '@planner/planner.types';
+} from '@planner/types';
 
 import { GroupModelResponse } from '@api/planning-api/types/groups.types';
 import { ObjectId } from '@api/rtk-api.types';

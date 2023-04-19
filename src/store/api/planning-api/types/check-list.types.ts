@@ -1,4 +1,4 @@
-import { ICheckListItem } from '@planner/planner.types';
+import { ICheckListItem } from '@planner/types';
 
 import { ObjectId, UtcDate } from '@api/rtk-api.types';
 

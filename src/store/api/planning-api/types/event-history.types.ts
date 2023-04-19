@@ -1,14 +1,15 @@
+import { MergedObject } from '@src/common/functions';
+
 import {
   CalendarPriorityKeys,
   EventLinkItem,
   TaskStatusesType,
-} from '@planner/planner.types';
+} from '@planner/types';
 
 import { ObjectId, UtcDate } from '@api/rtk-api.types';
 import { UserModel } from '@api/session-api/session-api.types';
 
 import { GroupModelResponse } from './groups.types';
-
 
 export interface QuerySnapshotRequiredFields {
   //id записи
@@ -81,4 +82,15 @@ export interface EventHistoryQueryResult {
   eventSnapshot: EventHistoryQuerySnapshot;
   //Если isPrivate = true, то эта запись истории будет отображаться только у создателя historyItem
   isPrivate: boolean;
+}
+
+export interface GetHistoryReturned {
+  arr: Array<
+    MergedObject<
+      EventHistoryQueryResult,
+      'changeUserId',
+      EventHistoryQueryResult
+    >
+  >;
+  count: number;
 }

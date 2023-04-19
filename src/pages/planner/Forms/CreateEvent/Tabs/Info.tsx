@@ -13,8 +13,7 @@ import { TextAreaInput } from '@components/Input/TextAreaInput/TextAreaInput';
 import { TextInput } from '@components/Input/TextInput/TextInput';
 import { FlexBlock } from '@components/LayoutComponents';
 
-import { CreateEventDataObject } from '@planner/planner.types';
-
+import { CreateEventDataObject } from '@planner/types';
 
 export interface BaseCreateEventTabProps {
   values: CreateEventDataObject;
@@ -45,7 +44,6 @@ export const CreateEventInfoTab: FC<BaseCreateEventTabProps> = ({
           placeholder={'Укажите название события'}
         />
       </FlexBlock>
-
       <FlexBlock mb={12} wrap={'nowrap'} width={'100%'}>
         <SelectLinks
           inputId={'select__link'}

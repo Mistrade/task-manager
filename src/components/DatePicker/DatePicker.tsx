@@ -10,7 +10,7 @@ import { SelectInput } from '@components/Input/SelectInput/SelectInput';
 import { SelectListContainer } from '@components/Input/SelectInput/SelectListContainer';
 import { FlexBlock } from '@components/LayoutComponents';
 
-import { DatePickerProps } from '@pages/planner/planner.types';
+import { DatePickerProps } from '@planner/types';
 
 export const DatePicker: FC<DatePickerProps> = memo(
   ({

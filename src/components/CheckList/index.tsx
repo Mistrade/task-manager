@@ -27,7 +27,7 @@ import { VerticalScroll } from '@components/LayoutComponents/ScrollView/Vertical
 import { Heading } from '@components/Text/Heading';
 import { Tooltip } from '@components/Tooltip/Tooltip';
 
-import { ICheckListItem } from '@pages/planner/planner.types';
+import { ICheckListItem } from '@planner/types';
 
 const CheckListContainerAnimation = keyframes`
   from {

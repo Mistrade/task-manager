@@ -8,13 +8,13 @@ import { changeMonthCurrentHandler } from '@src/common/functions';
 import { DatePickerSwitch } from '@components/DatePicker/DatePickerSwitch';
 import { FlexBlock } from '@components/LayoutComponents';
 
-import { SmallCalendarMonthTitle } from '@pages/planner/SmallMotnCalendar/SmallCalendarMonthTitle';
-import { SmallMonth } from '@pages/planner/SmallMotnCalendar/SmallMonth';
+import { SmallCalendarMonthTitle } from '@pages/planner/SmallMonth/SmallCalendarMonthTitle';
+import { SmallMonth } from '@pages/planner/SmallMonth/SmallMonth';
 import {
   CalendarDisabledOptions,
   MonthItem,
   PlannerMonthMode,
-} from '@pages/planner/planner.types';
+} from '@planner/types';
 
 import { TimeSelector } from './TimeSelector';
 

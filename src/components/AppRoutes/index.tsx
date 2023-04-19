@@ -11,15 +11,15 @@ import { SessionInterceptor } from '@components/AppRoutes/Interceptors/SessionIn
 import { FaqRoutes } from '@components/AppRoutes/Routes/FaqRoutes';
 import { ProfileRoutes } from '@components/AppRoutes/Routes/ProfileRoutes';
 import { SessionRoutes } from '@components/AppRoutes/Routes/SessionRoutes';
+import { LayoutSuspense } from '@components/Loaders/LayoutSuspense';
 
-import { FriendsPage } from '@pages/Friends';
-import { LayoutSuspense } from '@pages/LayoutSuspense';
-import { NotFoundPage } from '@pages/NotFound/NotFoundPage';
+import { FriendsPage } from '@pages/friends';
+import { NotFoundPage } from '@pages/notFound/NotFoundPage';
 
-import { PlannerPage } from '@planner/Planner';
+import { PlannerPage } from '@planner/index';
 
 const Planner = lazy(() =>
-  import('@planner/Planner').then(({ PlannerPage }) => ({
+  import('@planner/index').then(({ PlannerPage }) => ({
     default: PlannerPage,
   }))
 );

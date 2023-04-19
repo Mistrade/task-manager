@@ -12,7 +12,7 @@ import {
 } from '@components/Icons/Icons';
 import { FlexBlockProps } from '@components/LayoutComponents/FlexBlock';
 
-import { CalendarPriorityKeys } from '@planner/planner.types';
+import { CalendarPriorityKeys } from '@planner/types';
 
 
 interface PriorityCalendarIconProps extends IconProps, FlexBlockProps {

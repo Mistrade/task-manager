@@ -13,7 +13,7 @@ import {
 import { PLANNER_LAYOUTS, SERVICES_NAMES } from '@src/common/constants/enums';
 import { CreateSelectorReturnType, RootState } from '@src/store';
 
-import { CreateEventDataObject } from '@planner/planner.types';
+import { CreateEventDataObject } from '@planner/types';
 
 const rootSelector: CreateSelectorReturnType<IPlannerReducer> = createSelector(
   (state: RootState) => state,

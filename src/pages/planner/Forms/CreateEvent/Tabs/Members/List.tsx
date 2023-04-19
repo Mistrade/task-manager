@@ -3,7 +3,7 @@ import { FC } from 'react';
 import { Loader } from '@components/Loaders/Loader';
 
 import { CreateEventMembersItem } from '@planner/Forms/CreateEvent/Tabs/Members/Item';
-import { CreateEventDataObject } from '@planner/planner.types';
+import { CreateEventDataObject } from '@planner/types';
 
 import { useGetFriendsListQuery } from '@api/friends-api';
 import { UserModel } from '@api/session-api/session-api.types';

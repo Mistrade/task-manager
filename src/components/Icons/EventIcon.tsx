@@ -11,7 +11,7 @@ import {
 } from '@components/Icons/Icons';
 import { FlexBlockProps } from '@components/LayoutComponents/FlexBlock';
 
-import { EventFilterTaskStatuses } from '@planner/RenderModes/FindEventFilter/find-event-filters.types';
+import { EventFilterTaskStatuses } from '@planner/Filters/find-event-filters.types';
 
 import { EventInfoModel } from '@api/planning-api/types/event-info.types';
 
