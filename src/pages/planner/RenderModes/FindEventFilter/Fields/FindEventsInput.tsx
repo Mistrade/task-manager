@@ -30,7 +30,7 @@ export const FindEventsInput = memo(() => {
   const layout = useAppSelector(plannerSelectLayout);
   const { openModal } = useCreateEventModal();
 
-  const { data: events } = useGetEventListQuery(
+  const { data: events, isFetching } = useGetEventListQuery(
     {
       utcOffset: UTC_OFFSET,
       title: debounceValue,
@@ -48,10 +48,14 @@ export const FindEventsInput = memo(() => {
       placeholder={'Поиск по всем событиям'}
       onChange={({ target }) => setValue(target.value)}
       data={events?.data || []}
+      isLoading={isFetching}
       selectContainerViewCondition={!!value.length || !!events?.data?.length}
       icon={<ListIcon size={20} color={currentColor} />}
       renderData={(data, setIsOpenState) => (
-        <VerticalScroll renderPattern={'top-bottom'}>
+        <VerticalScroll
+          renderPattern={'top-bottom'}
+          containerProps={{ width: '100%', minWidth: 300 }}
+        >
           <SelectListContainer>
             {data.map((item) => (
               <SelectItemContainer
