@@ -1,40 +1,27 @@
+import { useEventStorageQueryArgs } from '@hooks/useEventStorageQueryArgs';
 import { plannerDateToDate } from '@planner-reducer/utils';
 import { useAppSelector } from '@redux/hooks/hooks';
 import { plannerSelectScope } from '@selectors/planner';
-import React, { FC, useState } from 'react';
+import React, { FC, memo } from 'react';
+import { Helmet } from 'react-helmet';
 
-import { FlexBlock } from '@components/LayoutComponents/FlexBlock';
-import { ScrollVerticalView } from '@components/LayoutComponents/ScrollView/ScrollVerticalView';
-
-import { SmartEventFilters } from '@planner/RenderModes/FindEventFilter/SmartEventFilters';
 import { ListModeTaskController } from '@planner/RenderModes/List/ListModeTaskController';
-import {
-  EventsStorage,
-  FavoritesCalendarModeProps,
-} from '@planner/planner.types';
+import { FavoritesCalendarModeProps } from '@planner/planner.types';
 
-import { ShortEventInfoModel } from '@api/planning-api/types/event-info.types';
+import { useGetEventsStorageQuery } from '@api/planning-api';
 
-
-export const FavoritesCalendar: FC<FavoritesCalendarModeProps> = ({}) => {
+export const FavoritesCalendar: FC<FavoritesCalendarModeProps> = memo(() => {
   const scope = useAppSelector(plannerSelectScope);
-  const [storage, setStorage] = useState<EventsStorage>(() => ({}));
-
+  const args = useEventStorageQueryArgs({ onlyFavorites: true });
+  const { data: storage } = useGetEventsStorageQuery(args);
   return (
-    <ScrollVerticalView
-      renderPattern={'top-bottom'}
-      placementStatic={'top'}
-      staticContent={
-        <FlexBlock direction={'column'}>
-          <SmartEventFilters onlyFavorites={true} updateStorage={setStorage} />
-        </FlexBlock>
-      }
-    >
+    <>
+      <Helmet title={'Избранные события'} />
       <ListModeTaskController
-        eventStorage={storage as EventsStorage<ShortEventInfoModel>}
+        eventStorage={storage?.data || {}}
         fromDate={plannerDateToDate(scope.startDate)}
         toDate={plannerDateToDate(scope.endDate)}
       />
-    </ScrollVerticalView>
+    </>
   );
-};
+});

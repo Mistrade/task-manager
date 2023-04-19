@@ -1,4 +1,4 @@
-import { ChangeEvent, FC, useRef } from 'react';
+import { ChangeEvent, FC, ReactNode, useRef } from 'react';
 
 import { darkColor } from '@src/common/constants';
 
@@ -14,10 +14,9 @@ import { FlexBlock } from '@components/LayoutComponents/FlexBlock';
 
 import { CutText } from '@planner/RenderModes/DayCalendar/TaskList/TaskList.styled';
 
-
 export interface CheckboxProps {
   type: 'checkbox' | 'radio';
-  title: string;
+  title: ReactNode;
   onChange?: (e: ChangeEvent<HTMLInputElement>) => void;
   isChecked?: boolean;
   iconProps?: Omit<IconProps, 'onClick'>;
@@ -40,6 +39,7 @@ export const Checkbox: FC<CheckboxProps> = ({
       align={'center'}
       width={'100%'}
       overflow={'hidden'}
+      gap={6}
     >
       <CheckboxStyledInput
         type={type}
@@ -57,11 +57,15 @@ export const Checkbox: FC<CheckboxProps> = ({
           <EmptyCheckboxIcon {...iconProps} />
         )}
       </EmptyButtonStyled>
-      <StyledLabel>
-        <CutText rows={2} color={darkColor} fontSize={14}>
-          {title}
-        </CutText>
-      </StyledLabel>
+      {typeof title === 'string' ? (
+        <StyledLabel>
+          <CutText rows={2} color={darkColor} fontSize={14}>
+            {title}
+          </CutText>
+        </StyledLabel>
+      ) : (
+        title
+      )}
     </FlexBlock>
   );
 };

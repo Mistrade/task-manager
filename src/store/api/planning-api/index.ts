@@ -12,7 +12,7 @@ import { SwitcherBadges } from '@components/Switcher/Switcher';
 
 import { CreateGroupProps } from '@planner/Groups/groups.types';
 import { EventFilterTaskStatuses } from '@planner/RenderModes/FindEventFilter/find-event-filters.types';
-import { CreateEventDataObject, EventsStorage } from '@planner/planner.types';
+import { CreateEventRequestData, EventsStorage } from '@planner/planner.types';
 
 import { baseServerUrl } from '../config';
 import { CustomRtkError, MyServerResponse, ObjectId } from '../rtk-api.types';
@@ -129,6 +129,22 @@ export const planningApi = createApi({
         }),
         providesTags: ['EventInfo'],
       }),
+      getEventList: query<
+        MyServerResponse<Array<ShortEventInfoModel>>,
+        GetEventsFiltersRequestProps
+      >({
+        query: (props: GetEventsFiltersRequestProps) => ({
+          url: '/info/get_short_events_array',
+          method: 'POST',
+          body: props,
+          keepUnusedDataFor: 30,
+        }),
+        transformResponse(value: MyServerResponse<Array<ShortEventInfoModel>>) {
+          return {
+            data: value?.data?.slice(0, 20) || [],
+          };
+        },
+      }),
       getShortEventsArray: query<
         SortedEventsObject,
         GetEventsFiltersRequestProps
@@ -137,6 +153,7 @@ export const planningApi = createApi({
           url: `/info/get_short_events_array`,
           method: 'POST',
           body: props,
+          keepUnusedDataFor: 30,
         }),
         providesTags: ['Events'],
         transformResponse(
@@ -171,12 +188,13 @@ export const planningApi = createApi({
           url: `/info/get_events_storage`,
           method: 'POST',
           body: props,
+          keepUnusedDataFor: 30,
         }),
         providesTags: ['Events'],
       }),
       createEvent: mutation<
         MyServerResponse<EventIdObject>,
-        CreateEventDataObject
+        CreateEventRequestData
       >({
         query: (body) => ({
           url: `/create`,
@@ -463,5 +481,6 @@ export const {
   useUpdateCommentMutation,
   useCreateCheckListMutation,
   useGetCheckListQuery,
+  useGetEventListQuery,
   useUpdateCheckListMutation,
 } = planningApi;

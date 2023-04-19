@@ -173,9 +173,9 @@ export const PlannerOptionPanelContainer = styled('div')`
     display: flex;
     flex-direction: column;
     height: 100%;
-    width: 285px;
+    width: 260px;
     background-color: ${'#fff'};
-    padding: 0px 24px;
+    padding: 0px 12px;
     //flex-basis: 20%;
     flex-shrink: 0;
     //border-right: 1px solid ${disabledColor};

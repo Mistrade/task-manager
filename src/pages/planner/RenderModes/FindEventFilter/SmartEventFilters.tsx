@@ -1,5 +1,5 @@
 import { useEventStorage } from '@hooks/useEventStorage';
-import React, { FC, memo, useEffect } from 'react';
+import React, { FC, memo } from 'react';
 
 import { disableReRender } from '@src/common/utils/react-utils';
 
@@ -7,7 +7,6 @@ import { FindEventFilter } from '@planner/RenderModes/FindEventFilter/FindEventF
 import { EventsStorage } from '@planner/planner.types';
 
 import { ShortEventInfoModel } from '@api/planning-api/types/event-info.types';
-
 
 export interface WeekFiltersProps {
   updateStorage(storage: EventsStorage<ShortEventInfoModel>): void;
@@ -17,21 +16,11 @@ export interface WeekFiltersProps {
 
 export const SmartEventFilters: FC<WeekFiltersProps> = memo(
   ({ updateStorage, onlyFavorites }) => {
-    const { filters, handlers, isFetching, TaskStorage } = useEventStorage({
+    const { filters, handlers, isFetching } = useEventStorage({
       onlyFavorites,
     });
 
-    useEffect(() => {
-      updateStorage(TaskStorage || {});
-    }, [TaskStorage]);
-
-    return (
-      <FindEventFilter
-        values={filters}
-        onChangeHandlers={handlers}
-        isLoading={isFetching}
-      />
-    );
+    return <FindEventFilter />;
   },
   disableReRender
 );

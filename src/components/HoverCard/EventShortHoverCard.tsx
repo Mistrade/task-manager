@@ -38,14 +38,17 @@ export const EventShortHoverCard: FC<EventShortHoverCardProps> = ({
     const start = DateHelper.getHumanizeDateValue(event.time, options);
     const end = DateHelper.getHumanizeDateValue(event.timeEnd, options);
 
-    return [
-      <span style={{ fontSize: 14, color: '#000' }} key={'0'}>
-        {start}
-      </span>,
-      <span style={{ fontSize: 14, color: '#000' }} key={'1'}>
-        {end}
-      </span>,
-    ];
+    return (
+      <>
+        <span style={{ fontSize: 14, color: '#000' }} key={'0'}>
+          c {start}
+        </span>
+        <br />
+        <span style={{ fontSize: 14, color: '#000' }} key={'1'}>
+          по {end}
+        </span>
+      </>
+    );
   }, []);
   return (
     <FlexBlock direction={'column'} p={4} width={'100%'} gap={8}>

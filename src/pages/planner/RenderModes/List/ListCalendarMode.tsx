@@ -1,36 +1,35 @@
+import { useEventStorageQueryArgs } from '@hooks/useEventStorageQueryArgs';
 import { plannerDateToDate } from '@planner-reducer/utils';
 import { useAppSelector } from '@redux/hooks/hooks';
 import { plannerSelectScope } from '@selectors/planner';
-import React, { FC, useState } from 'react';
+import React, { FC, memo } from 'react';
+import { Helmet } from 'react-helmet';
 
-import { FlexBlock } from '@components/LayoutComponents/FlexBlock';
-import { ScrollVerticalView } from '@components/LayoutComponents/ScrollView/ScrollVerticalView';
+import { ShortMonthList } from '@src/common/constants';
 
-import { SmartEventFilters } from '@planner/RenderModes/FindEventFilter/SmartEventFilters';
-import { EventsStorage, ListCalendarModeProps } from '@planner/planner.types';
+import { ListCalendarModeProps } from '@planner/planner.types';
+
+import { useGetEventsStorageQuery } from '@api/planning-api';
 
 import { ListModeTaskController } from './ListModeTaskController';
 
-
-export const ListCalendarMode: FC<ListCalendarModeProps> = () => {
+export const ListCalendarMode: FC<ListCalendarModeProps> = memo(() => {
   const scope = useAppSelector(plannerSelectScope);
-  const [state, setState] = useState<EventsStorage>({});
+  const args = useEventStorageQueryArgs();
+  const { data: storage } = useGetEventsStorageQuery(args);
 
   return (
-    <ScrollVerticalView
-      staticContent={
-        <FlexBlock direction={'column'}>
-          <SmartEventFilters updateStorage={setState} />
-        </FlexBlock>
-      }
-      placementStatic={'top'}
-      renderPattern={'top-bottom'}
-    >
+    <>
+      <Helmet
+        title={`События ${scope.startDate.day} ${
+          ShortMonthList[scope.startDate.month]
+        } - ${scope.endDate.day} ${ShortMonthList[scope.endDate.month]}`}
+      />
       <ListModeTaskController
-        eventStorage={state}
+        eventStorage={storage?.data || {}}
         fromDate={plannerDateToDate(scope.startDate)}
         toDate={plannerDateToDate(scope.endDate)}
       />
-    </ScrollVerticalView>
+    </>
   );
-};
+});

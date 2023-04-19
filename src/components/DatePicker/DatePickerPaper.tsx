@@ -79,7 +79,7 @@ export const DatePickerPaper: FC<DatePickerPaperProps> = ({
       <FlexBlock
         direction={'row'}
         width={'100%'}
-        height={225}
+        height={240}
         gap={12}
         justify={'flex-start'}
         overflow={'hidden'}

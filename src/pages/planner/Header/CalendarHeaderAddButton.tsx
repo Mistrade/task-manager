@@ -2,7 +2,7 @@ import { useCreateEventModal } from '@hooks/useCreateEventModal';
 import { useSearchNavigate } from '@hooks/useSearchNavigate';
 import { useAppSelector } from '@redux/hooks/hooks';
 import { plannerSelectLayout } from '@selectors/planner';
-import React, { FC, useMemo } from 'react';
+import React, { FC, useMemo, useState } from 'react';
 
 import { SERVICES_NAMES } from '@src/common/constants';
 import { getPath } from '@src/common/functions';
@@ -14,65 +14,68 @@ import { SelectItemContainer } from '@components/Input/SelectInput/SelectItemCon
 import { SelectListContainer } from '@components/Input/SelectInput/SelectListContainer';
 import { Tooltip } from '@components/Tooltip/Tooltip';
 
-export interface CalendarHeaderAddButtonProps {
-  onAddTask?: () => void;
-}
+export const CalendarHeaderAddButton: FC = React.memo(() => {
+  const navigate = useSearchNavigate();
+  const layout = useAppSelector(plannerSelectLayout);
+  const { openModal } = useCreateEventModal();
+  const [isOpen, setIsOpen] = useState(false);
 
-export const CalendarHeaderAddButton: FC<CalendarHeaderAddButtonProps> =
-  React.memo(({}) => {
-    const navigate = useSearchNavigate();
-    const layout = useAppSelector(plannerSelectLayout);
-    const { openModal } = useCreateEventModal();
-
-    const items = useMemo(() => {
-      return [
-        {
-          title: 'Создать событие',
-          onClick() {
-            openModal(
-              {},
-              {
-                modalPath: getPath(
-                  SERVICES_NAMES.PLANNER,
-                  layout,
-                  'event/create'
-                ),
-                useReturnBackOnDecline: true,
-              }
-            );
-          },
+  const items = useMemo(() => {
+    return [
+      {
+        title: 'Создать событие',
+        onClick() {
+          openModal(
+            {},
+            {
+              modalPath: getPath(
+                SERVICES_NAMES.PLANNER,
+                layout,
+                'event/create'
+              ),
+              useReturnBackOnDecline: true,
+            }
+          );
         },
-        {
-          title: 'Создать календарь',
-          onClick() {
-            navigate(getPath(SERVICES_NAMES.PLANNER, layout, 'create-group'));
-          },
+      },
+      {
+        title: 'Создать группу событий',
+        onClick() {
+          navigate(getPath(SERVICES_NAMES.PLANNER, layout, 'group', 'create'));
         },
-      ];
-    }, [layout]);
+      },
+    ];
+  }, [layout]);
 
-    return (
-      <Tooltip
-        theme={'light'}
-        trigger={'click'}
-        hideOnClick={true}
-        interactive={true}
-        placement={'bottom'}
-        content={
-          <SelectListContainer>
-            {items.map((item) => (
-              <SelectItemContainer key={item.title} onClick={item.onClick}>
-                {item.title}
-              </SelectItemContainer>
-            ))}
-          </SelectListContainer>
-        }
+  return (
+    <Tooltip
+      visible={isOpen}
+      theme={'light'}
+      interactive={true}
+      placement={'bottom'}
+      onClickOutside={() => setIsOpen(false)}
+      content={
+        <SelectListContainer>
+          {items.map((item) => (
+            <SelectItemContainer
+              key={item.title}
+              onClick={() => {
+                item.onClick();
+                setIsOpen(false);
+              }}
+            >
+              {item.title}
+            </SelectItemContainer>
+          ))}
+        </SelectListContainer>
+      }
+    >
+      <EmptyButtonStyled
+        onClick={() => setIsOpen((prev) => !prev)}
+        style={{ width: '100%', display: 'flex', justifyContent: 'center' }}
       >
-        <EmptyButtonStyled
-          style={{ width: '100%', display: 'flex', justifyContent: 'center' }}
-        >
-          <PlusIcon size={30} />
-        </EmptyButtonStyled>
-      </Tooltip>
-    );
-  }, disableReRender);
+        <PlusIcon size={30} />
+      </EmptyButtonStyled>
+    </Tooltip>
+  );
+}, disableReRender);

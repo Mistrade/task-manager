@@ -7,8 +7,9 @@ import { disableReRender } from '@src/common/utils/react-utils';
 
 import { CenteredContainer } from '@components/AppRoutes/Interceptors/SessionInterceptor';
 import { ErrorScreen } from '@components/Errors/ErrorScreen';
+import { ScrollVerticalView } from '@components/LayoutComponents/ScrollView/ScrollVerticalView';
 
-import { ModalRoutes } from '@planner/ModalRoutes';
+import { FindEventFilter } from '@planner/RenderModes/FindEventFilter/FindEventFilter';
 
 import { LayoutSuspense } from '../LayoutSuspense';
 
@@ -45,83 +46,84 @@ const FavoriteEventsLayout = React.lazy(() =>
 
 export const LayoutSelector = memo(() => {
   return (
-    <Routes>
-      <Route
-        path={`${PLANNER_LAYOUTS.DAY}/*`}
-        element={
-          <LayoutSuspense>
-            <DayLayout />
-            <ModalRoutes />
-          </LayoutSuspense>
-        }
-      />
-      <Route
-        path={`${PLANNER_LAYOUTS.WEEK}/*`}
-        element={
-          <LayoutSuspense>
-            <WeekLayout />
-            <ModalRoutes />
-          </LayoutSuspense>
-        }
-      />
-      <Route
-        path={`${PLANNER_LAYOUTS.MONTH}/*`}
-        element={
-          <LayoutSuspense>
-            <MonthLayout />
-            <ModalRoutes />
-          </LayoutSuspense>
-        }
-      />
-      <Route
-        path={`${PLANNER_LAYOUTS.YEAR}/*`}
-        element={
-          <LayoutSuspense>
-            <YearLayout />
-            <ModalRoutes />
-          </LayoutSuspense>
-        }
-      />
-      <Route
-        path={`${PLANNER_LAYOUTS.LIST}/*`}
-        element={
-          <LayoutSuspense>
-            <EventListLayout />
-            <ModalRoutes />
-          </LayoutSuspense>
-        }
-      />
-      <Route
-        path={`${PLANNER_LAYOUTS.FAVORITES}/*`}
-        element={
-          <LayoutSuspense>
-            <FavoriteEventsLayout />
-            <ModalRoutes />
-          </LayoutSuspense>
-        }
-      />
-      <Route
-        path={'*'}
-        element={
-          <CenteredContainer>
-            <ErrorScreen
-              title={'Такого URL не существует'}
-              description={
-                'В адресной строке допущена ошибка относительно режима отображения событий. Нажмите на кнопку ниже, если вы хотели попасть в "Планировщик"'
-              }
-              errorType={'SYSTEM_ERROR'}
-              action={{
-                title: 'Перейти к планировщику',
-                onClick: () => {
-                  // navigate(
-                  //   `/${ServicesNames.PLANNER}/${DEFAULT_PLANNER_LAYOUT}/${DEFAULT_PLANNER_STATUS}`
-                  // );
-                },
-              }}
-            />
-          </CenteredContainer>
-        }
-      />
-    </Routes>
+    <ScrollVerticalView
+      useShadow={true}
+      staticContent={<FindEventFilter />}
+      placementStatic={'top'}
+      renderPattern={'top-bottom'}
+    >
+      <Routes>
+        <Route
+          path={`${PLANNER_LAYOUTS.DAY}/*`}
+          element={
+            <LayoutSuspense>
+              <DayLayout />
+            </LayoutSuspense>
+          }
+        />
+        <Route
+          path={`${PLANNER_LAYOUTS.WEEK}/*`}
+          element={
+            <LayoutSuspense>
+              <WeekLayout />
+            </LayoutSuspense>
+          }
+        />
+        <Route
+          path={`${PLANNER_LAYOUTS.MONTH}/*`}
+          element={
+            <LayoutSuspense>
+              <MonthLayout />
+            </LayoutSuspense>
+          }
+        />
+        <Route
+          path={`${PLANNER_LAYOUTS.YEAR}/*`}
+          element={
+            <LayoutSuspense>
+              <YearLayout />
+            </LayoutSuspense>
+          }
+        />
+        <Route
+          path={`${PLANNER_LAYOUTS.LIST}/*`}
+          element={
+            <LayoutSuspense>
+              <EventListLayout />
+            </LayoutSuspense>
+          }
+        />
+        <Route
+          path={`${PLANNER_LAYOUTS.FAVORITES}/*`}
+          element={
+            <LayoutSuspense>
+              <FavoriteEventsLayout />
+            </LayoutSuspense>
+          }
+        />
+        <Route
+          path={'*'}
+          element={
+            <CenteredContainer>
+              <ErrorScreen
+                title={'Такого URL не существует'}
+                description={
+                  'В адресной строке допущена ошибка относительно режима отображения событий. Нажмите на кнопку ниже, если вы хотели попасть в "Планировщик"'
+                }
+                errorType={'SYSTEM_ERROR'}
+                action={{
+                  title: 'Перейти к планировщику',
+                  onClick: () => {
+                    // navigate(
+                    //   `/${ServicesNames.PLANNER}/${DEFAULT_PLANNER_LAYOUT}/${DEFAULT_PLANNER_STATUS}`
+                    // );
+                  },
+                }}
+              />
+            </CenteredContainer>
+          }
+        />
+      </Routes>
+    </ScrollVerticalView>
   );
 }, disableReRender);

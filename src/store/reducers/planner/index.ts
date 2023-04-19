@@ -25,9 +25,9 @@ import {
 import { EventFilterTaskStatuses } from '@pages/planner/RenderModes/FindEventFilter/find-event-filters.types';
 
 import { EVENT_INFORMER_TAB_NAMES } from '@planner/TaskInformer/LeftBar/TaskInformerLeftBar';
+import { CalendarPriorityKeys } from '@planner/planner.types';
 
 import { ObjectId } from '@api/rtk-api.types';
-
 
 const plannerSlice = createSlice({
   name: 'planner',
@@ -50,6 +50,8 @@ const plannerSlice = createSlice({
     const todayMonthItem = observer.getMonthItem(todayDate);
     const todayWeekItem = observer.getWeekItem(todayDate);
     const todayYearItem = observer.getYearItem(todayDate);
+    const currentLayout = layout || DEFAULT_PLANNER_LAYOUT;
+    const currentStatus = status || DEFAULT_PLANNER_STATUS;
     return {
       date: {
         day: todayPlannerDate,
@@ -59,8 +61,13 @@ const plannerSlice = createSlice({
         list: todayPlannerDate,
         favorites: todayPlannerDate,
       },
-      layout: layout || DEFAULT_PLANNER_LAYOUT,
-      status: status || DEFAULT_PLANNER_STATUS,
+      layout: currentLayout,
+      eventFilter: {
+        lastResetTS: Date.now(),
+        taskStatus: currentStatus,
+        title: '',
+        priority: null,
+      },
       eventInfo: {
         _id: eventInfoId || null,
         tabName: EVENT_INFORMER_TAB_NAMES.ABOUT,
@@ -166,12 +173,12 @@ const plannerSlice = createSlice({
       state,
       { payload }: PayloadAction<EventFilterTaskStatuses>
     ) {
-      const prev = state.status;
+      const prev = state.eventFilter.taskStatus;
 
       const isEqual = prev === payload;
 
       if (!isEqual) {
-        state.status = payload;
+        state.eventFilter.taskStatus = payload;
       }
     },
     changeDateOfPattern(
@@ -218,6 +225,23 @@ const plannerSlice = createSlice({
         state.date[layout] = result;
       }
     },
+    changeEventFilterTitle(state, { payload }: PayloadAction<string>) {
+      state.eventFilter.title = payload;
+    },
+    changeEventFilterPriority(
+      state,
+      { payload }: PayloadAction<CalendarPriorityKeys | null>
+    ) {
+      state.eventFilter.priority = payload;
+    },
+    resetEventFiltersState(state) {
+      state.eventFilter = {
+        lastResetTS: Date.now(),
+        taskStatus: DEFAULT_PLANNER_STATUS,
+        title: '',
+        priority: null,
+      };
+    },
   },
 });
 
@@ -231,6 +255,9 @@ export const {
   setOpenEventId,
   setEventInfoTabName,
   setCreateEventModalIsOpen,
+  changeEventFilterTitle,
+  changeEventFilterPriority,
+  resetEventFiltersState,
 } = plannerSlice.actions;
 
 export default plannerReducer;

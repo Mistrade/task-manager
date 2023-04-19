@@ -13,6 +13,7 @@ import {
   disabledColor,
   pageHeaderColor,
 } from '@src/common/constants';
+import { CreateEventMembersTab } from '@src/pages/planner/Forms/CreateEvent/Tabs/Members/Members';
 
 import { Button, StyledButton } from '@components/Buttons/Buttons.styled';
 import { FlexBlock } from '@components/LayoutComponents/FlexBlock';
@@ -30,13 +31,11 @@ import { useCreateEventMutation } from '@api/planning-api';
 import { EventIdObject } from '@api/planning-api/types/event-info.types';
 import { GroupModelResponse } from '@api/planning-api/types/groups.types';
 import { MyServerResponse, ObjectId } from '@api/rtk-api.types';
-import { CatchHandleForToast } from '@api/tools';
+import { CatchHandleForToast, thenHandleForToast } from '@api/tools';
 
 import { CreateEventDataObject } from '../../planner.types';
 import { CreateEventFormAdditional } from './Tabs/Additional';
 import { CreateEventInfoTab } from './Tabs/Info';
-import { CreateEventMembersTab } from './Tabs/Members';
-
 
 interface CreateEventFormProps {
   onClose?: () => void;
@@ -121,14 +120,16 @@ export const CreateEventForm: FC<CreateEventFormProps> = ({
 
   const formik = useFormik<CreateEventDataObject>({
     async onSubmit(values) {
-      await addTask(values)
+      const data = { ...values, members: Object.values(values.members) };
+
+      await addTask(data)
         .unwrap()
-        .then(
-          (response: MyServerResponse<EventIdObject>) =>
-            response.data?.eventId &&
+        .then((response: MyServerResponse<EventIdObject>) => {
+          thenHandleForToast(response);
+          response.data?.eventId &&
             onSuccess &&
-            onSuccess(response.data?.eventId)
-        )
+            onSuccess(response.data?.eventId);
+        })
         .catch(CatchHandleForToast);
     },
     validationSchema: addTaskValidationSchema,

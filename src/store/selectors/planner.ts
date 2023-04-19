@@ -21,7 +21,7 @@ export const plannerSelectDate = createSelector(
 
 export const plannerSelectStatus = createSelector(
   rootSelector,
-  (state: IPlannerReducer) => state.status
+  (state: IPlannerReducer) => state.eventFilter.taskStatus
 );
 
 export const plannerSelectPanelConfig = createSelector(
@@ -67,4 +67,32 @@ export const plannerSelectEventInfoTabName = createSelector(
 export const selectCreateEventModalIsOpen = createSelector(
   rootSelector,
   (state: IPlannerReducer) => state.createEventModal.isOpen
+);
+
+export const plannerSelectFilters = createSelector(
+  rootSelector,
+  (state: IPlannerReducer) => state.eventFilter
+);
+
+export const plannerSelectFormFilters = createSelector(
+  plannerSelectFilters,
+  (state) => ({
+    title: state.title,
+    priority: state.priority,
+  })
+);
+
+export const plannerSelectEventFilterTitle = createSelector(
+  plannerSelectFilters,
+  (state) => state.title
+);
+
+export const plannerSelectEventFilterPriority = createSelector(
+  plannerSelectFilters,
+  (state) => state.priority
+);
+
+export const plannerSelectLastReset = createSelector(
+  plannerSelectFilters,
+  (state) => state.lastResetTS
 );

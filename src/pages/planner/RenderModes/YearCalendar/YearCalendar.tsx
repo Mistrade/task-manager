@@ -1,29 +1,26 @@
+import { useEventStorageQueryArgs } from '@hooks/useEventStorageQueryArgs';
 import { useSearchNavigate } from '@hooks/useSearchNavigate';
 import { setPlannerDateAndLayout } from '@planner-reducer/index';
-import { dateToPlannerDate, plannerDateToDate } from '@planner-reducer/utils';
+import { dateToPlannerDate } from '@planner-reducer/utils';
 import { useAppDispatch, useAppSelector } from '@redux/hooks/hooks';
 import { plannerSelectYearConfig } from '@selectors/planner';
 import dayjs from 'dayjs';
-import { FC, memo, useMemo } from 'react';
+import { FC, memo } from 'react';
+import { Helmet } from 'react-helmet';
 import styled from 'styled-components';
 
 import { borderRadiusSize } from '@src/common/borderRadiusSize';
-import {
-  PLANNER_LAYOUTS,
-  SERVICES_NAMES,
-  UTC_OFFSET,
-} from '@src/common/constants';
+import { PLANNER_LAYOUTS, SERVICES_NAMES } from '@src/common/constants';
 
 import { FlexBlock } from '@components/LayoutComponents/FlexBlock';
-import { ScrollVerticalView } from '@components/LayoutComponents/ScrollView/ScrollVerticalView';
 import { Loader } from '@components/Loaders/Loader';
 
+import { DateWithTooltipPlanner } from '@planner/SmallMotnCalendar/DateWithTooltipPlanner';
 import { SmallCalendarMonthTitle } from '@planner/SmallMotnCalendar/SmallCalendarMonthTitle';
 import { SmallMonth } from '@planner/SmallMotnCalendar/SmallMonth';
 import { YearCalendarProps } from '@planner/planner.types';
 
 import { useGetEventsSchemeQuery } from '@api/planning-api';
-import { GetEventsFiltersRequestProps } from '@api/planning-api/types/event-info.types';
 
 const MonthItemContainer = styled('div')`
   padding: 4px;
@@ -48,21 +45,13 @@ export const YearCalendar: FC<YearCalendarProps> = memo(() => {
   const dispatch = useAppDispatch();
   const navigate = useSearchNavigate();
 
-  const args = useMemo(
-    (): GetEventsFiltersRequestProps => ({
-      utcOffset: UTC_OFFSET,
-      fromDate: plannerDateToDate(config.scope.startDate).toString(),
-      toDate: plannerDateToDate(config.scope.endDate).toString(),
-      taskStatus: 'all',
-    }),
-    [config]
-  );
-
-  const { data: taskScheme, isFetching } = useGetEventsSchemeQuery(args);
+  const args = useEventStorageQueryArgs();
+  const { data: taskScheme, isLoading } = useGetEventsSchemeQuery(args);
 
   return (
-    <ScrollVerticalView renderPattern={'top-bottom'}>
-      <Loader title={'Загрузка схемы...'} isActive={isFetching}>
+    <>
+      <Helmet title={`Схема событий ${config.year}г.`} />
+      <Loader title={'Загрузка схемы...'} isActive={isLoading}>
         <FlexBlock
           wrap={'wrap'}
           direction={'row'}
@@ -81,6 +70,7 @@ export const YearCalendar: FC<YearCalendarProps> = memo(() => {
                     month: monthItem.monthOfYear,
                     year: monthItem.year,
                   }}
+                  dateComponent={DateWithTooltipPlanner}
                   includesTasks={taskScheme}
                   title={
                     <MonthTitleWrapper>
@@ -134,6 +124,6 @@ export const YearCalendar: FC<YearCalendarProps> = memo(() => {
           })}
         </FlexBlock>
       </Loader>
-    </ScrollVerticalView>
+    </>
   );
 });

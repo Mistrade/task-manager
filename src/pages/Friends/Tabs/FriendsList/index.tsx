@@ -18,7 +18,7 @@ export const FriendsList = () => {
   const createEventHandler = (user: UserModel) => {
     openModal(
       {
-        members: [user],
+        members: { [user._id]: user },
       },
       {}
     );

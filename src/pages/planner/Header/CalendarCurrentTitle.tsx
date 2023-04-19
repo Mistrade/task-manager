@@ -7,20 +7,11 @@ import { FlexBlock } from '@components/LayoutComponents/FlexBlock';
 
 import { PanelDateHeader } from '@planner/OptionsPanel/PanelDateHeader';
 
-import {
-  CalendarHeaderAddButton,
-  CalendarHeaderAddButtonProps,
-} from './CalendarHeaderAddButton';
+import { CalendarHeaderAddButton } from './CalendarHeaderAddButton';
 import { CalendarTodaySwitchers } from './CalendarTodaySwitchers';
 
-
-export type CalendarCurrentTitleProps = Pick<
-  CalendarHeaderAddButtonProps,
-  'onAddTask'
->;
-
-export const CalendarCurrentTitle: FC<CalendarCurrentTitleProps> = React.memo(
-  ({ onAddTask }) => {
+export const CalendarCurrentTitle: FC = React.memo(
+  () => {
     return (
       <FlexBlock
         direction={'column'}
@@ -32,7 +23,7 @@ export const CalendarCurrentTitle: FC<CalendarCurrentTitleProps> = React.memo(
         pb={6}
       >
         <FlexBlock justify={'center'} width={'100%'} p={`3px 12px`}>
-          <CalendarHeaderAddButton onAddTask={onAddTask} />
+          <CalendarHeaderAddButton />
         </FlexBlock>
         <PanelDateHeader />
         <FlexBlock justify={'center'} width={'100%'} p={`3px 12px`}>

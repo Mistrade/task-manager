@@ -1,8 +1,16 @@
+import { useSearchNavigate } from '@hooks/useSearchNavigate';
+import { useAppSelector } from '@redux/hooks/hooks';
+import { plannerSelectLayout } from '@selectors/planner';
 import { useFormik } from 'formik';
 import { FC, useEffect } from 'react';
 import * as yup from 'yup';
 
-import { colorPalette, currentColor } from '@src/common/constants';
+import {
+  SERVICES_NAMES,
+  colorPalette,
+  currentColor,
+} from '@src/common/constants';
+import { getPath } from '@src/common/functions';
 
 import { Button, WhiteButton } from '@components/Buttons/Buttons.styled';
 import { ColorScheme } from '@components/ColorScheme/ColorScheme';
@@ -23,7 +31,6 @@ import {
 import { CatchHandleForToast, thenHandleForToast } from '@api/tools';
 
 import { ChangeGroupModalProps, CreateGroupProps } from './groups.types';
-
 
 const validationSchema = yup.object().shape({
   color: yup
@@ -60,8 +67,14 @@ export const CreateOrUpdateGroupModal: FC<ChangeGroupModalProps> = ({
   isEditing,
   initialValues,
 }) => {
+  const layout = useAppSelector(plannerSelectLayout);
+  const navigate = useSearchNavigate();
   const [create] = useCreateEventGroupMutation();
   const [update] = useUpdateGroupInfoMutation();
+
+  const closeModal = () => {
+    navigate(getPath(SERVICES_NAMES.PLANNER, layout));
+  };
 
   const {
     setFieldValue,
@@ -83,13 +96,19 @@ export const CreateOrUpdateGroupModal: FC<ChangeGroupModalProps> = ({
       if (!isEditing) {
         return await create(values)
           .unwrap()
-          .then((data) => thenHandleForToast(data, () => onClose && onClose()))
+          .then((data) => {
+            thenHandleForToast(data, () => onClose && onClose());
+            closeModal();
+          })
           .catch(CatchHandleForToast);
       }
 
       return await update(values)
         .unwrap()
-        .then((data) => thenHandleForToast(data, () => onClose && onClose()))
+        .then((data) => {
+          thenHandleForToast(data, () => onClose && onClose());
+          closeModal();
+        })
         .catch(CatchHandleForToast);
     },
   });
@@ -166,7 +185,7 @@ export const CreateOrUpdateGroupModal: FC<ChangeGroupModalProps> = ({
             <Button type={'submit'}>
               {isEditing ? 'Изменить' : 'Создать'}
             </Button>
-            <WhiteButton onClick={onClose}>Отмена</WhiteButton>
+            <WhiteButton onClick={closeModal}>Отмена</WhiteButton>
           </FlexBlock>
         </ModalFooter>
       </Modal>

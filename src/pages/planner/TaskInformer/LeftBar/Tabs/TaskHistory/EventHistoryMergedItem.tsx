@@ -54,7 +54,7 @@ export function MergedNote<
                   onClick(user: UserModel) {
                     openModal(
                       {
-                        members: [user],
+                        members: { [user._id]: user },
                       },
                       {
                         useReturnBackOnDecline: true,

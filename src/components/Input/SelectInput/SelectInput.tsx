@@ -1,4 +1,4 @@
-import React, { ReactNode } from 'react';
+import React, { ReactNode, useState } from 'react';
 
 import { InputActions } from '@components/Input/InputSupportComponents/InputActions';
 import { InputErrorMessage } from '@components/Input/InputSupportComponents/InputErrorMessage';
@@ -10,16 +10,20 @@ import {
   FlexBlock,
   FlexBlockProps,
 } from '@components/LayoutComponents/FlexBlock';
-import { Tooltip } from '@components/Tooltip/Tooltip';
-
+import { Tooltip, TooltipProps } from '@components/Tooltip/Tooltip';
 
 type ExtendableFromTextInput = Omit<DefaultTextInputProps, 'children'>;
 
 export interface SelectInputProps<T> extends ExtendableFromTextInput {
-  data: T;
-  renderData: (data: T) => ReactNode;
+  data: Array<T>;
+  renderData: (
+    data: Array<T>,
+    setIsOpenState: (value: boolean) => void
+  ) => ReactNode;
   multiple?: boolean;
   containerProps?: FlexBlockProps;
+  selectContainerPlacement?: TooltipProps['placement'];
+  selectContainerViewCondition?: boolean;
 }
 
 export function SelectInput<T>({
@@ -35,8 +39,12 @@ export function SelectInput<T>({
   onBlur,
   isDirty,
   errorMessage,
+  selectContainerPlacement,
+  selectContainerViewCondition = true,
   ...textInputProps
 }: SelectInputProps<T>): JSX.Element {
+  const [isOpen, setIsOpen] = useState(false);
+
   return (
     <FlexBlock {...containerProps} width={'100%'} direction={'column'} gap={6}>
       <Tooltip
@@ -45,12 +53,13 @@ export function SelectInput<T>({
         offset={[0, 5]}
         maxWidth={500}
         hideOnClick={true}
-        placement={'bottom-start'}
+        placement={selectContainerPlacement || 'bottom-start'}
         arrow={false}
-        trigger={'click'}
+        visible={isOpen && selectContainerViewCondition}
+        onClickOutside={() => setIsOpen(false)}
         interactive={true}
         interactiveBorder={20}
-        content={renderData(data)}
+        content={renderData(data, setIsOpen)}
       >
         <TextInput
           readOnly={readOnly}
@@ -58,6 +67,7 @@ export function SelectInput<T>({
           {...textInputProps}
           onFocus={(e) => {
             onFocus && onFocus(e);
+            setIsOpen(true);
           }}
           onBlur={(e) => {
             onBlur && onBlur(e);

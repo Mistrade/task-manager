@@ -1,9 +1,12 @@
 import { useCreateEventModal } from '@hooks/useCreateEventModal';
 import { useSearchNavigate } from '@hooks/useSearchNavigate';
-import { setEventInfoTabName } from '@planner-reducer/index';
+import {
+  setCreateEventModalIsOpen,
+  setEventInfoTabName,
+} from '@planner-reducer/index';
 import { useAppDispatch, useAppSelector } from '@redux/hooks/hooks';
 import { plannerSelectLayout } from '@selectors/planner';
-import React, { FC, useCallback } from 'react';
+import React, { FC, useCallback, useLayoutEffect } from 'react';
 
 import { SERVICES_NAMES } from '@src/common/constants';
 import { getPath } from '@src/common/functions';
@@ -30,6 +33,10 @@ export const CreateEventFromPlanner: FC = ({}) => {
     },
     [layout, clearState]
   );
+
+  useLayoutEffect(() => {
+    dispatch(setCreateEventModalIsOpen(true));
+  }, []);
 
   const closeHandler = useCallback(() => {
     declineModal(prevUrl || getPath(SERVICES_NAMES.PLANNER, layout));

@@ -1,13 +1,11 @@
-import { plannerDateToDate } from '@planner-reducer/utils';
 import { useAppSelector } from '@redux/hooks/hooks';
 import { plannerSelectWeekConfig } from '@selectors/planner';
+import { memo } from 'react';
 import { Helmet } from 'react-helmet';
-
-import { DateHelper } from '@src/common/calendarSupport/dateHelper';
 
 import { WeekCalendarController } from '@planner/RenderModes/WeekCalendar/WeekCalendarController';
 
-export const WeekLayout = () => {
+export const WeekLayout = memo(() => {
   const config = useAppSelector(plannerSelectWeekConfig);
   return (
     <>
@@ -15,4 +13,4 @@ export const WeekLayout = () => {
       <WeekCalendarController config={config} />
     </>
   );
-};
+});

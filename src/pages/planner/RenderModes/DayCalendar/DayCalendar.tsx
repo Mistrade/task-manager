@@ -25,7 +25,7 @@ export const DayCalendar: FC = memo(() => {
           }
         )}`}
       />
-      <DayTaskList day={plannerDateToDate(date)} />
+      <DayTaskList />
     </>
   );
 }, disableReRender);

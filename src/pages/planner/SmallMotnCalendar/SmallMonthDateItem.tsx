@@ -4,6 +4,7 @@ import { FC } from 'react';
 
 import { addNull } from '@src/common/functions';
 
+import { SmallMonthProps } from '@planner/SmallMotnCalendar/SmallMonth';
 import { CalendarItem, PlannerMonthMode } from '@planner/planner.types';
 
 import { GetEventsSchemeResponse } from '@api/planning-api/types/event-info.types';
@@ -14,7 +15,6 @@ import {
   SmallMonthWeekItemProps,
 } from './SmallMonthWeekItem';
 
-
 interface SmallMonthDateItemProps {
   date: CalendarItem;
   currentDate?: Date;
@@ -23,6 +23,7 @@ interface SmallMonthDateItemProps {
   onSelectDate?: SmallMonthWeekItemProps['onSelectDate'];
   isSelect?: boolean;
   current: PlannerMonthMode;
+  dateComponent?: SmallMonthProps['dateComponent'];
 }
 
 export const SmallMonthDateItem: FC<SmallMonthDateItemProps> = ({
@@ -33,38 +34,54 @@ export const SmallMonthDateItem: FC<SmallMonthDateItemProps> = ({
   onSelectDate,
   isSelect,
   current,
+  dateComponent,
 }) => {
+  if (!dateComponent) {
+    return (
+      <SmallMonthRowItem
+        onClick={() => onSelectDate && onSelectDate(date)}
+        isFirstPoured={
+          pour?.firstPour &&
+          dayjs(plannerDateToDate(date.value)).isSame(pour?.firstPour, 'day')
+        }
+        isPoured={
+          pour?.firstPour &&
+          pour?.lastPour &&
+          dayjs(plannerDateToDate(date.value)).isBetween(
+            pour?.firstPour,
+            pour?.lastPour,
+            'day',
+            '()'
+          )
+        }
+        isLastPoured={
+          pour?.lastPour &&
+          dayjs(plannerDateToDate(date.value)).isSame(pour?.lastPour, 'day')
+        }
+        isDisabled={date.value.month !== current.month}
+        isToday={date.meta.isToday}
+        isSelect={isSelect}
+        hasTasks={
+          current.month === date.value.month &&
+          taskScheme &&
+          !!taskScheme[
+            dayjs(plannerDateToDate(date.value)).format('DD-MM-YYYY')
+          ]
+        }
+      >
+        {addNull(date.value.day)}
+      </SmallMonthRowItem>
+    );
+  }
+
   return (
-    <SmallMonthRowItem
-      onClick={() => onSelectDate && onSelectDate(date)}
-      isFirstPoured={
-        pour?.firstPour &&
-        dayjs(plannerDateToDate(date.value)).isSame(pour?.firstPour, 'day')
-      }
-      isPoured={
-        pour?.firstPour &&
-        pour?.lastPour &&
-        dayjs(plannerDateToDate(date.value)).isBetween(
-          pour?.firstPour,
-          pour?.lastPour,
-          'day',
-          '()'
-        )
-      }
-      isLastPoured={
-        pour?.lastPour &&
-        dayjs(plannerDateToDate(date.value)).isSame(pour?.lastPour, 'day')
-      }
-      isDisabled={date.value.month !== current.month}
-      isToday={date.meta.isToday}
-      isSelect={isSelect}
-      hasTasks={
-        current.month === date.value.month &&
-        taskScheme &&
-        !!taskScheme[dayjs(plannerDateToDate(date.value)).format('DD-MM-YYYY')]
-      }
-    >
-      {addNull(date.value.day)}
-    </SmallMonthRowItem>
+    <>
+      {dateComponent({
+        date,
+        taskScheme,
+        onSelectDate,
+        current,
+      })}
+    </>
   );
 };

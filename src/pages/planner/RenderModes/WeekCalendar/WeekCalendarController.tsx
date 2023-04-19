@@ -1,37 +1,22 @@
-import React, { FC, memo, useCallback, useState } from 'react';
+import { useEventStorageQueryArgs } from '@hooks/useEventStorageQueryArgs';
+import React, { FC, memo } from 'react';
 
-import { FlexBlock } from '@components/LayoutComponents/FlexBlock';
-import { ScrollVerticalView } from '@components/LayoutComponents/ScrollView/ScrollVerticalView';
+import { WeekCalendarProps } from '@planner/planner.types';
 
-import { SmartEventFilters } from '@planner/RenderModes/FindEventFilter/SmartEventFilters';
-import { EventsStorage, WeekCalendarProps } from '@planner/planner.types';
+import { useGetEventsStorageQuery } from '@api/planning-api';
 
 import { WeeKCalendar } from './WeekCalendar';
-
 
 export interface WeekCalendarControllerProps
   extends Omit<WeekCalendarProps, 'taskStorage'> {}
 
 export const WeekCalendarController: FC<WeekCalendarControllerProps> = memo(
   ({ config }) => {
-    const [eventStorage, setEventStorage] = useState<EventsStorage>({});
-
-    const handleChangeStorage = useCallback((storage: EventsStorage) => {
-      setEventStorage(storage);
-    }, []);
+    const queryArg = useEventStorageQueryArgs();
+    const { data: eventStorage } = useGetEventsStorageQuery(queryArg);
 
     return (
-      <ScrollVerticalView
-        staticContent={
-          <FlexBlock direction={'column'}>
-            <SmartEventFilters updateStorage={handleChangeStorage} />
-          </FlexBlock>
-        }
-        placementStatic={'top'}
-        renderPattern={'top-bottom'}
-      >
-        <WeeKCalendar taskStorage={eventStorage} config={config} />
-      </ScrollVerticalView>
+      <WeeKCalendar taskStorage={eventStorage?.data || {}} config={config} />
     );
   },
   (prev, next) => prev.config.weekOfYear === next.config.weekOfYear

@@ -4,7 +4,6 @@ import { FC, ReactNode, useCallback } from 'react';
 import { IconProps } from '@components/Icons/Icons';
 import { TooltipIcon } from '@components/Icons/TooltipIcon';
 
-
 export interface TooltipProps {
   children?: ReactNode;
   content: ReactNode;
@@ -78,7 +77,7 @@ export const Tooltip: FC<TooltipProps & IconProps> = ({
       triggerTarget={triggerTarget}
       placement={placement || 'top'}
       popperOptions={{
-        strategy: 'fixed',
+        strategy: 'absolute',
       }}
     >
       <span>{children ? children : <TooltipIcon {...iconProps} />}</span>

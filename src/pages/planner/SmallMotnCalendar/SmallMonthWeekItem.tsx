@@ -4,7 +4,6 @@ import { FC, useCallback, useMemo } from 'react';
 
 import { EmptyButtonStyled } from '@components/Buttons/EmptyButton.styled';
 import { FlexBlock } from '@components/LayoutComponents/FlexBlock';
-import { Tooltip } from '@components/Tooltip/Tooltip';
 
 import { PlannerMonthMode, WeekItem } from '@planner/planner.types';
 
@@ -14,11 +13,10 @@ import { PourDatesProps, SmallMonthProps } from './SmallMonth';
 import { SmallMonthRow, SmallMonthWeekCount } from './SmallMonth.styled';
 import { SmallMonthDateItem } from './SmallMonthDateItem';
 
-
 export interface SmallMonthWeekItemProps
   extends Pick<
     SmallMonthProps,
-    'onSelectWeek' | 'onSelectDate' | 'useTooltips'
+    'onSelectWeek' | 'onSelectDate' | 'useTooltips' | 'dateComponent'
   > {
   current: PlannerMonthMode;
   pourDates?: PourDatesProps;
@@ -63,6 +61,7 @@ export const SmallMonthWeekItem: FC<SmallMonthWeekItemProps> = ({
   onSelectDate,
   useTooltips,
   current,
+  dateComponent,
 }) => {
   const weekIsPoured = useMemo(() => {
     return pourDates?.type === 'week' && checkIsPouredWeek(weekItem, pourDates);
@@ -94,38 +93,13 @@ export const SmallMonthWeekItem: FC<SmallMonthWeekItemProps> = ({
         gap={4}
       >
         {weekItem.days.map((day, index) => {
+          const date = plannerDateToDate(day.value);
           const isSelect =
-            currentDate &&
-            dayjs(currentDate).isSame(plannerDateToDate(day.value), 'date');
-
-          if (useTooltips && (day.meta.isToday || isSelect)) {
-            return (
-              <Tooltip
-                content={
-                  day.meta.isToday ? 'Сегодня' : 'Выбранный день календаря'
-                }
-                key={`short-date-${day.value.toString()}`}
-                placement={'right'}
-              >
-                <SmallMonthDateItem
-                  current={current}
-                  date={day}
-                  currentDate={currentDate}
-                  taskScheme={taskScheme}
-                  onSelectDate={onSelectDate}
-                  pour={
-                    pourDates?.type === 'month'
-                      ? checkPourMonth(pourDates)
-                      : null
-                  }
-                  isSelect={isSelect}
-                />
-              </Tooltip>
-            );
-          }
+            currentDate && dayjs(currentDate).isSame(date, 'date');
 
           return (
             <SmallMonthDateItem
+              dateComponent={dateComponent}
               current={current}
               key={`short-date-${day.value.day}`}
               date={day}

@@ -8,6 +8,7 @@ import {
 
 import { FlexBlock } from '@components/LayoutComponents/FlexBlock';
 
+import { DateWithTooltipProps } from '@planner/SmallMotnCalendar/DateWithTooltipPlanner';
 import {
   MonthItem,
   OnSelectDateFromCalendarFn,
@@ -19,7 +20,6 @@ import { GetEventsSchemeResponse } from '@api/planning-api/types/event-info.type
 
 import { SmallMonthRow } from './SmallMonth.styled';
 import { SmallMonthWeekItem } from './SmallMonthWeekItem';
-
 
 export interface PourDatesProps {
   type: 'week' | 'month';
@@ -36,6 +36,7 @@ export interface SmallMonthProps {
   includesTasks?: GetEventsSchemeResponse;
   pourDates?: PourDatesProps;
   useTooltips?: boolean;
+  dateComponent?: (props: DateWithTooltipProps) => ReactNode;
 }
 
 export const SmallMonth: FC<SmallMonthProps> = ({
@@ -48,6 +49,7 @@ export const SmallMonth: FC<SmallMonthProps> = ({
   onSelectWeek,
   title,
   useTooltips,
+  dateComponent,
 }) => {
   return (
     <FlexBlock
@@ -74,6 +76,7 @@ export const SmallMonth: FC<SmallMonthProps> = ({
         </SmallMonthRow>
         {monthItem?.weeks.map((weekItem) => (
           <SmallMonthWeekItem
+            dateComponent={dateComponent}
             current={current}
             useTooltips={useTooltips}
             key={`short-week-${weekItem.weekOfYear}`}

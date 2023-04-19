@@ -4,6 +4,7 @@ import { EventFilterTaskStatuses } from '@pages/planner/RenderModes/FindEventFil
 
 import { EVENT_INFORMER_TAB_NAMES } from '@planner/TaskInformer/LeftBar/TaskInformerLeftBar';
 import {
+  CalendarPriorityKeys,
   MonthItem,
   TLayoutItemsScope,
   WeekItem,
@@ -11,7 +12,6 @@ import {
 } from '@planner/planner.types';
 
 import { ObjectId } from '@api/rtk-api.types';
-
 
 export interface IPlannerDate {
   day: number;
@@ -28,7 +28,6 @@ export interface IEventInfoState {
 export interface IPlannerReducer {
   date: Record<PLANNER_LAYOUTS, IPlannerDate>;
   layout: PLANNER_LAYOUTS;
-  status: EventFilterTaskStatuses;
   eventInfo: IEventInfoState;
   config: {
     layouts: IPlannerLayoutRenderConfig;
@@ -37,6 +36,7 @@ export interface IPlannerReducer {
   createEventModal: {
     isOpen: boolean;
   };
+  eventFilter: IEventFiltersState;
 }
 
 export interface IPlannerLayoutRenderConfig {
@@ -55,3 +55,10 @@ export type TSetPlannerDatePayload = {
   date: IPlannerDate;
   layout: PLANNER_LAYOUTS;
 };
+
+export interface IEventFiltersState {
+  lastResetTS: number;
+  title: string;
+  taskStatus: EventFilterTaskStatuses;
+  priority: CalendarPriorityKeys | null;
+}

@@ -15,7 +15,7 @@ import {
   UUID,
 } from '@planner/planner.types';
 
-import { planningApi } from '@api/planning-api';
+import { useGetGroupsListQuery } from '@api/planning-api';
 import { EventInfoModel } from '@api/planning-api/types/event-info.types';
 import { GroupModelResponse } from '@api/planning-api/types/groups.types';
 
@@ -50,8 +50,7 @@ export const ToggleEventCalendar: FC<
   iconProps,
 }) => {
   const arg = useMemo(() => ({}), []);
-  const { data: calendarsList, isLoading } =
-    planningApi.endpoints.getGroupsList.useQueryState(arg);
+  const { data: calendarsList, isLoading } = useGetGroupsListQuery(arg);
 
   const [mutationLoading, setMutationLoading] = useState(false);
   const randomId = useMemo(

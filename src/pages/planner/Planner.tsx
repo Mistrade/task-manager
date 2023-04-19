@@ -2,7 +2,7 @@ import React, { FC } from 'react';
 import Helmet from 'react-helmet';
 
 import { LayoutSelector } from './LayoutSelector';
-import { ModalRoutes } from './ModalRoutes';
+import { ModalRoutesMemo } from './ModalRoutes';
 import { PlannerOptionsPanel } from './OptionsPanel/PlannerOptionsPanel';
 import {
   PlannerContainer,
@@ -38,7 +38,7 @@ export const PlannerPage: FC = React.memo(() => {
             <LayoutSelector />
           </PlannerLayoutContainer>
         </PlannerContentContainer>
-        <ModalRoutes />
+        <ModalRoutesMemo />
       </PlannerContainer>
     </>
   );

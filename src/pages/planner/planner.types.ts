@@ -8,6 +8,8 @@ import { DefaultTextInputProps } from '@components/Input/TextInput/TextInput';
 import { FlexBlockProps } from '@components/LayoutComponents/FlexBlock';
 import { TooltipProps } from '@components/Tooltip/Tooltip';
 
+import { EVENT_ACCESS_RIGHTS } from '@planner/Forms/CreateEvent/Tabs/Members/Members';
+
 import {
   EventInfoModel,
   ShortEventInfoModel,
@@ -16,7 +18,6 @@ import { ObjectId } from '@api/rtk-api.types';
 import { UserModel } from '@api/session-api/session-api.types';
 
 import { CalendarCellEventsListProps } from './RenderModes/WeekCalendar/CalendarCell/EventList/List';
-
 
 export type FCWithChildren<T = any> = FC<{ children?: ReactNode } & T>;
 
@@ -180,6 +181,10 @@ export interface ICheckListItem {
   eventLink: ObjectId | null;
 }
 
+export type CreateEventRequestData = Omit<CreateEventDataObject, 'members'> & {
+  members: Array<UserModel>;
+};
+
 export interface CreateEventDataObject {
   linkedFrom?: UUID;
   parentId?: UUID;
@@ -266,7 +271,12 @@ export type TaskMemberItemType = {
   socialNetworks: Array<TaskMemberSocialNetworkItem>;
 };
 
-export type TaskMembersListType = Array<UserModel>;
+export interface ICreateEventMemberItem {
+  accessRight: EVENT_ACCESS_RIGHTS;
+  user: UserModel;
+}
+//TODO
+export type TaskMembersListType = { [key in ObjectId]: UserModel };
 
 export type CustomObject<T = any> = { [key in string]: T };
 

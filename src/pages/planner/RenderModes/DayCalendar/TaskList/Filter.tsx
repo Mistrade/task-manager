@@ -12,7 +12,6 @@ import { FindEventFilter } from '@planner/RenderModes/FindEventFilter/FindEventF
 import { useGetShortEventsArrayQuery } from '@api/planning-api';
 import { SortedEventsObject } from '@api/planning-api/types/event-info.types';
 
-
 export interface DayTaskListFilterProps {
   updateState(arr: SortedEventsObject): void;
 }
@@ -60,12 +59,6 @@ export const DayTaskListFilter: FC<DayTaskListFilterProps> = memo(
       updateState(eventList || { throughEvents: [], baseEvents: [] });
     }, [eventList]);
 
-    return (
-      <FindEventFilter
-        values={filters}
-        isLoading={isFetchingTasks}
-        onChangeHandlers={handlers}
-      />
-    );
+    return <FindEventFilter />;
   }
 );

@@ -3,7 +3,6 @@ import styled from 'styled-components';
 import { borderRadiusSize } from '@src/common/borderRadiusSize';
 import { lightHoverColor } from '@src/common/constants';
 
-
 export const DontHoveredButton = styled('button')`
   & {
     position: relative;
@@ -26,8 +25,10 @@ DontHoveredButton.defaultProps = {
 };
 
 export const EmptyButtonStyled = styled(DontHoveredButton)`
+  transition: all 0.3s ease-in;
+  border-radius: ${borderRadiusSize.sm};
+
   &:hover {
-    border-radius: ${borderRadiusSize.sm};
     background-color: ${lightHoverColor};
   }
 `;
@@ -51,15 +52,14 @@ export const EmptyLink = styled('a')`
     justify-content: flex-start;
     gap: 8px;
     padding: 4px 6px;
+    border-radius: ${borderRadiusSize.sm};
   }
 
   &:focus {
-    border-radius: ${borderRadiusSize.sm};
     background-color: ${lightHoverColor};
   }
 
   &:hover {
-    border-radius: ${borderRadiusSize.sm};
     background-color: ${lightHoverColor};
   }
 `;

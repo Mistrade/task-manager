@@ -5,10 +5,13 @@ import { currentColor } from '@src/common/constants';
 
 import { EmptyButtonStyled } from '@components/Buttons/EmptyButton.styled';
 import { Arrow, IconProps, PlusIcon } from '@components/Icons/Icons';
-import { FlexBlock } from '@components/LayoutComponents/FlexBlock';
-
+import {
+  FlexBlock,
+  FlexBlockProps,
+} from '@components/LayoutComponents/FlexBlock';
 
 export interface AccordionProps {
+  containerProps?: FlexBlockProps;
   title: ReactNode;
   children: ReactNode;
   initialState?: boolean;
@@ -27,17 +30,18 @@ export const Accordion: FC<AccordionProps> = ({
   children,
   initialState = true,
   action,
+  containerProps,
 }) => {
   const [isOpen, setIsOpen] = useState(initialState);
 
   return (
     <FlexBlock
+      {...containerProps}
       width={'100%'}
       direction={'column'}
       additionalCss={css`
         transition: 0.6s ease-in-out;
       `}
-      // overflow={'hidden'}
     >
       <FlexBlock
         direction={'row'}

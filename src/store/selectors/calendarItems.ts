@@ -10,7 +10,6 @@ import {
 } from '../reducers/planner-reducer';
 import { currentFromStoreToDefault } from './utils';
 
-
 export const RootPlannerSelector: CreateSelectorReturnType<
   RootState['planner']
 > = createSelector(
@@ -59,7 +58,7 @@ export const createEventInitialStateSelector: CreateSelectorReturnType<CreateEve
         ? dayjs(initialState.timeEnd).toDate()
         : dayjs().add(1, 'hour').toDate(),
       status: initialState?.status || 'created',
-      members: initialState?.members || [],
+      members: initialState?.members || {},
       link: initialState?.link || null,
       group: initialState?.group || '',
       parentId: initialState?.parentId,
