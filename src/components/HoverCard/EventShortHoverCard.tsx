@@ -4,7 +4,7 @@ import {
   DateHelper,
   HumanizeDateValueOptions,
 } from '@src/common/calendarSupport/dateHelper';
-import { PRIORITY_TITLES } from '@src/common/constants';
+import { PRIORITY_TITLES } from '@src/common/constants/constants';
 import { convertEventStatus } from '@src/common/functions';
 
 import { Badge } from '@components/Badge/Badge';
@@ -13,11 +13,11 @@ import { PriorityCalendarIcon } from '@components/Icons/CalendarIcons/PriorityCa
 import { TreeIcon } from '@components/Icons/CalendarIcons/TreeIcon';
 import { EventIcon } from '@components/Icons/EventIcon';
 import { UrlIcon } from '@components/Icons/SocialNetworkIcons';
-import { FlexBlock } from '@components/LayoutComponents/FlexBlock';
+import { FlexBlock } from '@components/LayoutComponents';
+import { CutText } from '@components/Text/Text';
+import { UserAvatar } from '@components/Users/UserAvatar';
 
 import { GroupLogo } from '@pages/planner/Groups/GroupList.styled';
-import { CutText } from '@pages/planner/RenderModes/DayCalendar/TaskList/TaskList.styled';
-import { UserAvatar } from '@pages/planner/Users/UserAvatar';
 
 import { ShortEventInfoModel } from '@api/planning-api/types/event-info.types';
 

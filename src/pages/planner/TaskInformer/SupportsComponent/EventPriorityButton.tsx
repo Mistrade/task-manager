@@ -1,10 +1,10 @@
 import { FC, forwardRef } from 'react';
 
-import { PRIORITY_TITLES, darkColor } from '@src/common/constants';
+import { PRIORITY_TITLES, darkColor } from '@src/common/constants/constants';
 
 import { EmptyButtonStyled } from '@components/Buttons/EmptyButton.styled';
 import { PriorityCalendarIcon } from '@components/Icons/CalendarIcons/PriorityCalendarIcon';
-import { FlexBlock } from '@components/LayoutComponents/FlexBlock';
+import { FlexBlock } from '@components/LayoutComponents';
 import { Tooltip } from '@components/Tooltip/Tooltip';
 
 import { CalendarPriorityKeys } from '@planner/planner.types';

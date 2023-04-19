@@ -1,16 +1,15 @@
 import styled, { css } from 'styled-components';
 
-import { borderRadiusSize } from '@src/common/borderRadiusSize';
 import {
   currentColor,
   darkColor,
   defaultColor,
   disabledColor,
   errorColor,
-} from '@src/common/constants';
+} from '@src/common/constants/constants';
+import { borderRadiusSize } from '@src/common/css/mixins';
 
 import { DefaultTextInputProps } from './TextInput/TextInput';
-
 
 const LeftIconPadding = css`
   padding: 8px 12px 8px 46px;

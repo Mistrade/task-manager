@@ -3,14 +3,14 @@ import { ColorRing } from 'react-loader-spinner';
 import { useIntersection } from 'react-use';
 import { css } from 'styled-components';
 
-import { currentColor } from '@src/common/constants';
+import { currentColor } from '@src/common/constants/constants';
+
+import { FlexBlock } from '@components/LayoutComponents';
 
 import { SwitchCalendarModeTab } from '@planner/Planner.styled';
 
 import { EmptyButtonStyled } from '../Buttons/EmptyButton.styled';
 import { Arrow } from '../Icons/Icons';
-import { FlexBlock } from '../LayoutComponents/FlexBlock';
-
 
 export interface SwitcherItem<KEY> {
   title: string;

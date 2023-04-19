@@ -2,21 +2,19 @@ import dayjs from 'dayjs';
 import React, { FC } from 'react';
 
 import { DateHelper } from '@src/common/calendarSupport/dateHelper';
-import { defaultColor } from '@src/common/constants';
+import { defaultColor } from '@src/common/constants/constants';
 
 import { EmptyButtonStyled } from '@components/Buttons/EmptyButton.styled';
 import { LinkStyled } from '@components/Buttons/Link.styled';
 import { AnswerIcon } from '@components/Icons/CalendarIcons/AnswerIcon';
 import { TrashIcon } from '@components/Icons/Icons';
-import { FlexBlock } from '@components/LayoutComponents/FlexBlock';
-
-import { CutText } from '@planner/RenderModes/DayCalendar/TaskList/TaskList.styled';
+import { FlexBlock } from '@components/LayoutComponents';
+import { CutText } from '@components/Text/Text';
 
 import { CommentModel } from '@api/planning-api/types/comments.types';
 import { ObjectId } from '@api/rtk-api.types';
 
 import { MessageContainer, MessagesListContainer } from '../comments.styled';
-
 
 export interface AnsweredCommentProps {
   commentItem?: CommentModel | null;

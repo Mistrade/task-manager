@@ -3,16 +3,17 @@ import { selectCreateEventModalIsOpen } from '@selectors/planner';
 import React, { FC } from 'react';
 import { Helmet } from 'react-helmet';
 
-import { ERROR_DESCRIPTIONS, ERROR_TITLES } from '@src/common/constants';
+import { ERROR_DESCRIPTIONS, ERROR_TITLES } from '@src/common/constants/enums';
 
 import { ErrorBoundary } from '@components/Errors/ErrorBoundary';
-import { FlexBlock } from '@components/LayoutComponents/FlexBlock';
+import { FlexBlock } from '@components/LayoutComponents';
 import { Modal, ModalBody } from '@components/LayoutComponents/Modal/Modal';
 import { Loader } from '@components/Loaders/Loader';
 
 import { useGetGroupsListQuery } from '@api/planning-api';
 
 import { CreateEventModalProps } from '../../planner.types';
+
 
 const CreateEventForm = React.lazy(() =>
   import('./CreateEventForm').then(({ CreateEventForm }) => ({

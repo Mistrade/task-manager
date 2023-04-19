@@ -1,6 +1,6 @@
 import { FC } from 'react';
 
-import { FlexBlock } from '@components/LayoutComponents/FlexBlock';
+import { FlexBlock } from '@components/LayoutComponents';
 
 import { EventChainItemsWrapperProps } from '../event-chains.types';
 

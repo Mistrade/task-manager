@@ -5,7 +5,8 @@ import { plannerSelectLayout } from '@selectors/planner';
 import dayjs from 'dayjs';
 import React, { FC, useCallback } from 'react';
 
-import { SERVICES_NAMES, TASK_STATUSES } from '@src/common/constants';
+import { SERVICES_NAMES } from '@src/common/constants/enums';
+import { TASK_STATUSES } from '@src/common/constants/signatures';
 import { getPath } from '@src/common/functions';
 
 import { TransparentButton } from '@components/Buttons/Buttons.styled';
@@ -21,6 +22,7 @@ import {
 } from '@api/planning-api';
 import { EventInfoModel } from '@api/planning-api/types/event-info.types';
 import { CatchHandleForToast, thenHandleForToast } from '@api/tools';
+
 
 export interface TaskInformerMoreActionsProps extends EventInfoModalProps {
   taskItem: EventInfoModel;

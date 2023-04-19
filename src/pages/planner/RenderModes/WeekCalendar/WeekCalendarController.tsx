@@ -7,6 +7,7 @@ import { useGetEventsStorageQuery } from '@api/planning-api';
 
 import { WeeKCalendar } from './WeekCalendar';
 
+
 export interface WeekCalendarControllerProps
   extends Omit<WeekCalendarProps, 'taskStorage'> {}
 

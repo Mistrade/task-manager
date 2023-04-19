@@ -9,6 +9,7 @@ import { disableReRender } from '@src/common/utils/react-utils';
 
 import { DayTaskList } from './TaskList/DayTaskList';
 
+
 export const DayCalendar: FC = memo(() => {
   const date = useAppSelector(plannerSelectDate);
 

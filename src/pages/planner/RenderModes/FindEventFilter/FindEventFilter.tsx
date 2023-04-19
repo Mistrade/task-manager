@@ -2,16 +2,28 @@ import { setPlannerStatus } from '@planner-reducer/index';
 import { useAppDispatch, useAppSelector } from '@redux/hooks/hooks';
 import { plannerSelectStatus } from '@selectors/planner';
 import React, { FC, memo } from 'react';
+import styled from 'styled-components';
 
-import { TaskStatusesList } from '@src/common/constants';
+import { TaskStatusesList } from '@src/common/constants/signatures';
 
-import { FlexBlock } from '@components/LayoutComponents/FlexBlock';
+import { FlexBlock } from '@components/LayoutComponents';
 import { Switcher } from '@components/Switcher/Switcher';
 
-import { TaskListEventFiltersContainer } from '@planner/RenderModes/DayCalendar/TaskList/TaskList.styled';
 import { FindEventsInput } from '@planner/RenderModes/FindEventFilter/Fields/FindEventsInput';
 import { FiltersButton } from '@planner/RenderModes/FindEventFilter/FiltersButton';
 
+export const TaskListEventFiltersContainer = styled('div')`
+  z-index: 10;
+  display: flex;
+  justify-content: flex-start;
+  flex-wrap: nowrap;
+  background-color: #fff;
+  gap: 12px;
+  top: 0;
+  left: 0;
+  position: sticky;
+  width: 100%;
+`;
 export const FindEventFilter: FC = memo(() => {
   const status = useAppSelector(plannerSelectStatus);
   const dispatch = useAppDispatch();

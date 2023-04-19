@@ -6,11 +6,9 @@ import { plannerSelectLayout } from '@selectors/planner';
 import dayjs from 'dayjs';
 import { memo, useState } from 'react';
 
-import {
-  SERVICES_NAMES,
-  UTC_OFFSET,
-  currentColor,
-} from '@src/common/constants';
+import { currentColor } from '@src/common/constants/constants';
+import { UTC_OFFSET } from '@src/common/constants/defaultConstants';
+import { SERVICES_NAMES } from '@src/common/constants/enums';
 import { getPath } from '@src/common/functions';
 
 import { ListIcon } from '@components/Icons/AppIcon/ListIcon';
@@ -19,10 +17,9 @@ import { EventIcon } from '@components/Icons/EventIcon';
 import { SelectInput } from '@components/Input/SelectInput/SelectInput';
 import { SelectItemContainer } from '@components/Input/SelectInput/SelectItemContainer';
 import { SelectListContainer } from '@components/Input/SelectInput/SelectListContainer';
-import { FlexBlock } from '@components/LayoutComponents/FlexBlock';
-import { ScrollVerticalView } from '@components/LayoutComponents/ScrollView/ScrollVerticalView';
-
-import { CutText } from '@planner/RenderModes/DayCalendar/TaskList/TaskList.styled';
+import { FlexBlock } from '@components/LayoutComponents';
+import { VerticalScroll } from '@components/LayoutComponents/ScrollView/VerticalScroll';
+import { CutText } from '@components/Text/Text';
 
 import { useGetEventListQuery } from '@api/planning-api';
 
@@ -54,7 +51,7 @@ export const FindEventsInput = memo(() => {
       selectContainerViewCondition={!!value.length || !!events?.data?.length}
       icon={<ListIcon size={20} color={currentColor} />}
       renderData={(data, setIsOpenState) => (
-        <ScrollVerticalView renderPattern={'top-bottom'}>
+        <VerticalScroll renderPattern={'top-bottom'}>
           <SelectListContainer>
             {data.map((item) => (
               <SelectItemContainer
@@ -109,7 +106,7 @@ export const FindEventsInput = memo(() => {
               </SelectItemContainer>
             )}
           </SelectListContainer>
-        </ScrollVerticalView>
+        </VerticalScroll>
       )}
     />
   );

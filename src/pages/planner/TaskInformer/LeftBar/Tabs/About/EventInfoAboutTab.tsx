@@ -2,8 +2,8 @@ import dayjs from 'dayjs';
 import { FC, memo } from 'react';
 
 import { DatePicker } from '@components/DatePicker/DatePicker';
-import { FlexBlock } from '@components/LayoutComponents/FlexBlock';
-import { ScrollVerticalView } from '@components/LayoutComponents/ScrollView/ScrollVerticalView';
+import { FlexBlock } from '@components/LayoutComponents';
+import { VerticalScroll } from '@components/LayoutComponents/ScrollView/VerticalScroll';
 
 import { TaskInformerDescription } from '@planner/TaskInformer/SupportsComponent/TaskInformerDescription';
 import { EventInfoUpdateFn } from '@planner/TaskInformer/SupportsComponent/ToggleTaskInformerButtons';
@@ -17,7 +17,7 @@ export interface EventInfoAboutTabProps extends EventInfoBaseProps {
 export const EventInfoAboutTab: FC<EventInfoAboutTabProps> = memo(
   ({ eventInfo, updateFn }) => {
     return (
-      <ScrollVerticalView renderPattern={'top-bottom'}>
+      <VerticalScroll renderPattern={'top-bottom'}>
         <FlexBlock direction={'column'} gap={12} pb={40}>
           <FlexBlock direction={'row'} gap={12}>
             <DatePicker
@@ -39,7 +39,7 @@ export const EventInfoAboutTab: FC<EventInfoAboutTabProps> = memo(
           </FlexBlock>
           <TaskInformerDescription eventInfo={eventInfo} updateFn={updateFn} />
         </FlexBlock>
-      </ScrollVerticalView>
+      </VerticalScroll>
     );
   },
   (prev, next) =>

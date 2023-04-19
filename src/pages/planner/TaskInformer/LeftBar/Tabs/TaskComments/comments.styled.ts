@@ -1,6 +1,5 @@
 import styled, { keyframes } from 'styled-components';
 
-import { borderRadiusSize } from '@src/common/borderRadiusSize';
 import {
   currentColor,
   darkColor,
@@ -8,7 +7,8 @@ import {
   disabledColor,
   hoverColor,
   pageHeaderColor,
-} from '@src/common/constants';
+} from '@src/common/constants/constants';
+import { borderRadiusSize } from '@src/common/css/mixins';
 
 import { EmptyButtonStyled } from '@components/Buttons/EmptyButton.styled';
 

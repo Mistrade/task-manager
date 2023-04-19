@@ -11,6 +11,7 @@ import {
   UserModel,
 } from './session-api.types';
 
+
 export const sessionApi = createApi({
   reducerPath: 'sessionApi',
   tagTypes: ['Session'],

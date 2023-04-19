@@ -1,8 +1,8 @@
-import { FRIENDS_ROUTES_PAGE_NAMES } from '@src/common/constants';
+import { FRIENDS_ROUTES_PAGE_NAMES } from '@src/common/constants/defaultConstants';
 
-import { FlexBlock } from '@components/LayoutComponents/FlexBlock';
+import { FlexBlock } from '@components/LayoutComponents';
 
-import { LinkSolid } from '@planner/Header/ModeSwitch/Item';
+import { LinkSolid } from '@planner/OptionsPanel/ModeSwitch/Item';
 import { PlannerOptionPanelContainer } from '@planner/Planner.styled';
 
 export const FriendsOptionPanel = () => {

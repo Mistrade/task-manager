@@ -1,8 +1,8 @@
 import React, { useRef, useState } from 'react';
 import * as yup from 'yup';
 
-import { borderRadiusSize } from '@src/common/borderRadiusSize';
-import { currentColor, hoverColor } from '@src/common/constants';
+import { currentColor, hoverColor } from '@src/common/constants/constants';
+import { borderRadiusSize } from '@src/common/css/mixins';
 
 import {
   Button,
@@ -15,10 +15,9 @@ import {
   DefaultTextInputProps,
   TextInput,
 } from '@components/Input/TextInput/TextInput';
-import { FlexBlock } from '@components/LayoutComponents/FlexBlock';
+import { FlexBlock } from '@components/LayoutComponents';
 
 import { EventLinkItem } from '@planner/planner.types';
-
 
 export interface SelectLinksProps
   extends Omit<DefaultTextInputProps, 'onChange' | 'value'> {

@@ -3,14 +3,13 @@ import { useAppDispatch, useAppSelector } from '@redux/hooks/hooks';
 import { plannerSelectEventInfoTabName } from '@selectors/planner';
 import { FC, memo, useCallback } from 'react';
 
-import { disabledColor } from '@src/common/constants';
+import { disabledColor } from '@src/common/constants/constants';
+import { EVENT_INFORMER_TAB_NAMES } from '@src/common/constants/enums';
 import { disableReRender } from '@src/common/utils/react-utils';
 
-import { FlexBlock } from '@components/LayoutComponents/FlexBlock';
+import { FlexBlock } from '@components/LayoutComponents';
 
 import { SwitchCalendarModeTab } from '@planner/Planner.styled';
-
-import { EVENT_INFORMER_TAB_NAMES } from '../LeftBar/TaskInformerLeftBar';
 
 
 export interface TaskInformerSwitchersItem {

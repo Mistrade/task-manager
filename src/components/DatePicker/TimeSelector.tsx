@@ -8,7 +8,7 @@ import {
   generateMinuteArray,
 } from '@src/common/functions';
 
-import { FlexBlock } from '@components/LayoutComponents/FlexBlock';
+import { FlexBlock } from '@components/LayoutComponents';
 
 import { TimeSelectorButton } from '@pages/planner/Planner.styled';
 
@@ -86,7 +86,7 @@ export const TimeSelector: FC<TimeSelectorProps> = ({
     <FlexBlock maxHeight={'inherit'} gap={4}>
       <FlexBlock
         direction={'column'}
-        maxHeight={225}
+        maxHeight={240}
         overflowY={'scroll'}
         ref={hourRef}
         additionalCss={css`
@@ -111,7 +111,7 @@ export const TimeSelector: FC<TimeSelectorProps> = ({
       </FlexBlock>
       <FlexBlock
         direction={'column'}
-        maxHeight={225}
+        maxHeight={240}
         overflowY={'scroll'}
         ref={minuteRef}
         additionalCss={css`

@@ -6,6 +6,7 @@ import React, { memo, useEffect, useState } from 'react';
 
 import { TextInput } from '@components/Input/TextInput/TextInput';
 
+
 export const EventFilterTitleInput = memo(() => {
   const initialTitle = useAppSelector(plannerSelectEventFilterTitle);
   const dispatch = useAppDispatch();

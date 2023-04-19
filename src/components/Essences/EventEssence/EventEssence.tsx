@@ -2,12 +2,13 @@ import dayjs, { Dayjs } from 'dayjs';
 import React, { FC, useCallback, useMemo, useState } from 'react';
 
 import { DateHelper } from '@src/common/calendarSupport/dateHelper';
+import { getPath } from '@src/common/functions';
 
 import { TimeBadge } from '@components/Badge/Badge';
 import { EmptyButtonStyled } from '@components/Buttons/EmptyButton.styled';
 import { LinkStyled } from '@components/Buttons/Link.styled';
 import { Arrow } from '@components/Icons/Icons';
-import { FlexBlock } from '@components/LayoutComponents/FlexBlock';
+import { FlexBlock } from '@components/LayoutComponents';
 import { Tooltip } from '@components/Tooltip/Tooltip';
 
 import { HistoryDescriptionField } from '@pages/planner/TaskInformer/LeftBar/Tabs/TaskHistory/Fields/HistoryDescriptionField';
@@ -58,6 +59,7 @@ export const EventEssence: FC<EventEssenceProps> = ({
     onTitleClick && onTitleClick(optionalFields.eventId);
   }, [onTitleClick, optionalFields.eventId]);
 
+  //TODO раздробить верстку на мелкие компоненты
   return (
     <EssenceContainer {...containerProps}>
       <FlexBlock gap={6} align={'center'} direction={'row'}>
@@ -186,7 +188,10 @@ export const EventEssence: FC<EventEssenceProps> = ({
               {optionalFields.eventId && (
                 <FlexBlock>
                   <LinkStyled
-                    to={`/planner/day/event/info/${optionalFields.eventId}`}
+                    to={getPath(
+                      'planner/day/event/info',
+                      optionalFields.eventId
+                    )}
                     target={'_blank'}
                   >
                     Перейти к оригиналу

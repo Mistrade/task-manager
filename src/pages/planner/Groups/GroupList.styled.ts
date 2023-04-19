@@ -1,7 +1,7 @@
 import styled from 'styled-components';
 
-import { borderRadiusSize } from '@src/common/borderRadiusSize';
-import { defaultColor, lightHoverColor } from '@src/common/constants';
+import { defaultColor, lightHoverColor } from '@src/common/constants/constants';
+import { borderRadiusSize } from '@src/common/css/mixins';
 
 import { pxToCssValue } from '@components/LayoutComponents/FlexBlock';
 

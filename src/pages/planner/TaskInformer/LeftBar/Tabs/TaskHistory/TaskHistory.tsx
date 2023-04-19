@@ -6,13 +6,13 @@ import {
   defaultColor,
   hoverColor,
   orangeColor,
-} from '@src/common/constants';
+} from '@src/common/constants/constants';
 
 import { Badge } from '@components/Badge/Badge';
 import { LinkStyled } from '@components/Buttons/Link.styled';
 import { ErrorScreen } from '@components/Errors/ErrorScreen';
-import { FlexBlock } from '@components/LayoutComponents/FlexBlock';
-import { ScrollVerticalView } from '@components/LayoutComponents/ScrollView/ScrollVerticalView';
+import { FlexBlock } from '@components/LayoutComponents';
+import { VerticalScroll } from '@components/LayoutComponents/ScrollView/VerticalScroll';
 import { Loader } from '@components/Loaders/Loader';
 import { Heading } from '@components/Text/Heading';
 import { Tooltip } from '@components/Tooltip/Tooltip';
@@ -101,7 +101,7 @@ export const TaskHistory: FC<TaskHistoryProps> = memo(
     }
 
     return (
-      <ScrollVerticalView renderPattern={'top-bottom'}>
+      <VerticalScroll renderPattern={'top-bottom'}>
         <FlexBlock width={'100%'} gap={12} direction={'column'}>
           {history.map((item) => (
             <MergedNote
@@ -183,7 +183,7 @@ export const TaskHistory: FC<TaskHistoryProps> = memo(
             записей в истории события
           </FlexBlock>
         </FlexBlock>
-      </ScrollVerticalView>
+      </VerticalScroll>
     );
   },
   (prev, next) => prev.taskInfo._id === next.taskInfo._id

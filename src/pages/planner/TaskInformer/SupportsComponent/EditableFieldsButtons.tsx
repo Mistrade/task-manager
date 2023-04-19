@@ -1,6 +1,6 @@
 import { FC } from 'react';
 
-import { currentColor, defaultColor } from '@src/common/constants';
+import { currentColor, defaultColor } from '@src/common/constants/constants';
 
 import { WhiteButton } from '@components/Buttons/Buttons.styled';
 import { CancelIcon, CompleteIcon, LoaderIcon } from '@components/Icons/Icons';

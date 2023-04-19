@@ -2,7 +2,7 @@ import React, { FC, useEffect, useRef } from 'react';
 import styled from 'styled-components';
 
 import { ErrorScreen } from '@components/Errors/ErrorScreen';
-import { FlexBlock } from '@components/LayoutComponents/FlexBlock';
+import { FlexBlock } from '@components/LayoutComponents';
 
 import { MergedNote } from '@planner/TaskInformer/LeftBar/Tabs/TaskHistory/EventHistoryMergedItem';
 

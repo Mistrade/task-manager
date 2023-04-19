@@ -1,11 +1,13 @@
 import dayjs, { Dayjs } from 'dayjs';
 
 import {
-  DATE_HOURS_MINUTES_SECONDS_FORMAT,
-  DATE_RENDER_FORMAT_WITH_SEC,
   DeclinationMonthList,
   ShortMonthList,
-} from '@src/common/constants';
+} from '@src/common/constants/constants';
+import {
+  DATE_HOURS_MINUTES_SECONDS_FORMAT,
+  DATE_RENDER_FORMAT_WITH_SEC,
+} from '@src/common/constants/defaultConstants';
 
 import {
   CalendarCurrentContext,

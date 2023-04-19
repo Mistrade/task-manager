@@ -4,7 +4,7 @@ import { DatePicker } from '@components/DatePicker/DatePicker';
 import { SelectPriorityInput } from '@components/Input/SelectInput/CalendarSelectInputs/SelectPriorityInput';
 import { SelectStatusInput } from '@components/Input/SelectInput/CalendarSelectInputs/SelectStatusInput';
 import { TextInput } from '@components/Input/TextInput/TextInput';
-import { FlexBlock } from '@components/LayoutComponents/FlexBlock';
+import { FlexBlock } from '@components/LayoutComponents';
 
 import { FormHandle } from '../../../RenderModes/FindEventFilter/find-event-filters.types';
 

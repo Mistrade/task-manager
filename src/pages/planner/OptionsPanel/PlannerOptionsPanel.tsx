@@ -3,20 +3,20 @@ import React, { FC } from 'react';
 import { disableReRender } from '@src/common/utils/react-utils';
 
 import { LayoutAccordion } from '@components/Accordion/LayoutAccordion';
-import { FlexBlock } from '@components/LayoutComponents/FlexBlock';
-import { ScrollVerticalView } from '@components/LayoutComponents/ScrollView/ScrollVerticalView';
+import { FlexBlock } from '@components/LayoutComponents';
+import { VerticalScroll } from '@components/LayoutComponents/ScrollView/VerticalScroll';
+import { CutText } from '@components/Text/Text';
 
 import { GroupList } from '@planner/Groups/GroupList';
-import { CalendarCurrentTitle } from '@planner/Header/CalendarCurrentTitle';
 import { OptionPanelCalendar } from '@planner/OptionsPanel/Calendar';
+import { CalendarCurrentTitle } from '@planner/OptionsPanel/CalendarCurrentTitle';
 import { PlannerSelectLayout } from '@planner/OptionsPanel/SelectLayout';
-import { CutText } from '@planner/RenderModes/DayCalendar/TaskList/TaskList.styled';
 import { DaySettingsPanelProps } from '@planner/planner.types';
 
 export const PlannerOptionsPanel: FC<DaySettingsPanelProps> = React.memo(
   ({}) => {
     return (
-      <ScrollVerticalView
+      <VerticalScroll
         gap={12}
         renderPattern={'top-bottom'}
         placementStatic={'top'}
@@ -38,15 +38,15 @@ export const PlannerOptionsPanel: FC<DaySettingsPanelProps> = React.memo(
               </CutText>
             }
           >
-            <ScrollVerticalView
+            <VerticalScroll
               renderPattern={'top-bottom'}
               containerProps={{ maxHeight: 220 }}
             >
               <GroupList />
-            </ScrollVerticalView>
+            </VerticalScroll>
           </LayoutAccordion>
         </FlexBlock>
-      </ScrollVerticalView>
+      </VerticalScroll>
     );
   },
   disableReRender

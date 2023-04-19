@@ -2,7 +2,7 @@ import React, { FC, useCallback } from 'react';
 import { Helmet } from 'react-helmet';
 import { css } from 'styled-components';
 
-import { FlexBlock } from '@components/LayoutComponents/FlexBlock';
+import { FlexBlock } from '@components/LayoutComponents';
 
 import { EventInformerHeader } from '@planner/TaskInformer/Header/EventInformerHeader';
 
@@ -14,6 +14,7 @@ import { TaskInformerLeftBar } from './LeftBar/TaskInformerLeftBar';
 import { TaskInformerRightBar } from './RightBar/TaskInformerRightBar';
 import { TaskInfoNotFound } from './SupportsComponent/TaskInfoNotFound';
 import { EventInfoUpdateFn } from './SupportsComponent/ToggleTaskInformerButtons';
+
 
 const TaskInformerMain: FC<MainEventInformerProps> = ({ eventInfo }) => {
   const [updateTask] = useUpdateTaskMutation();

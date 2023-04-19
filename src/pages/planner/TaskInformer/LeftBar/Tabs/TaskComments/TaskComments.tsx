@@ -1,12 +1,12 @@
 import { useAppSelector } from '@redux/hooks/hooks';
 import { FC, useCallback, useEffect, useMemo, useRef, useState } from 'react';
 
-import { hoverColor } from '@src/common/constants';
+import { hoverColor } from '@src/common/constants/constants';
 import { mergeArrayWithUserId } from '@src/common/functions';
 
 import { ErrorScreen } from '@components/Errors/ErrorScreen';
-import { FlexBlock } from '@components/LayoutComponents/FlexBlock';
-import { ScrollVerticalView } from '@components/LayoutComponents/ScrollView/ScrollVerticalView';
+import { FlexBlock } from '@components/LayoutComponents';
+import { VerticalScroll } from '@components/LayoutComponents/ScrollView/VerticalScroll';
 import { Loader } from '@components/Loaders/Loader';
 
 import {
@@ -161,7 +161,7 @@ export const TaskComments: FC<TaskCommentsProps> = ({ taskInfo }) => {
   }
 
   return (
-    <ScrollVerticalView
+    <VerticalScroll
       placementStatic={'bottom'}
       gap={0}
       staticContent={
@@ -197,6 +197,6 @@ export const TaskComments: FC<TaskCommentsProps> = ({ taskInfo }) => {
           onClickToReplyComment={onClickToReplyCommentHandler}
         />
       </FlexBlock>
-    </ScrollVerticalView>
+    </VerticalScroll>
   );
 };

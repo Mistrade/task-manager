@@ -1,11 +1,11 @@
 import { FC, useCallback, useState } from 'react';
 
-import { darkColor } from '@src/common/constants';
+import { darkColor } from '@src/common/constants/constants';
 
 import { EmptyButtonStyled } from '@components/Buttons/EmptyButton.styled';
 import { ErrorScreen } from '@components/Errors/ErrorScreen';
 import { Arrow } from '@components/Icons/Icons';
-import { FlexBlock } from '@components/LayoutComponents/FlexBlock';
+import { FlexBlock } from '@components/LayoutComponents';
 import { Heading } from '@components/Text/Heading';
 import { Tooltip } from '@components/Tooltip/Tooltip';
 

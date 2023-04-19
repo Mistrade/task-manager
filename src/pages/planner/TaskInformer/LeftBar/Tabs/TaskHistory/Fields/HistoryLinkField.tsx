@@ -3,7 +3,7 @@ import { FC } from 'react';
 import { JoinToEventButton } from '@components/Buttons/Buttons.styled';
 import { ReplyContent } from '@components/Essences/EventEssence/event-essence.styled';
 import { UrlIcon } from '@components/Icons/SocialNetworkIcons';
-import { FlexBlock } from '@components/LayoutComponents/FlexBlock';
+import { FlexBlock } from '@components/LayoutComponents';
 import { Text } from '@components/Text/Text';
 
 import { EventLinkItem } from '@planner/planner.types';

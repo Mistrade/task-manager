@@ -14,5 +14,5 @@ root.render(
   <App />
   // </React.StrictMode>
 );
-export { FRIENDS_ROUTES_PAGE_NAMES } from '@src/common/constants';
-export { FRIENDS_ROUTES } from '@src/common/constants';
+export {FRIEND_REQUEST_ACCEPT_STATUSES} from "@src/common/constants/enums";
+export {FRIEND_REQUESTS_TYPES} from "@src/common/constants/enums";

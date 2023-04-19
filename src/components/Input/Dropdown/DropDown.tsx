@@ -6,8 +6,7 @@ import {
   DropDownAdditionalMethods,
   DropDownProps,
 } from '@components/Input/Dropdown/types';
-import { FlexBlock } from '@components/LayoutComponents/FlexBlock';
-
+import { FlexBlock } from '@components/LayoutComponents';
 
 export function DropDown<T extends HTMLElement = HTMLElement>({
   renderElement,

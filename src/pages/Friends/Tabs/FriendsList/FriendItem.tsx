@@ -1,16 +1,16 @@
 import { FC, ReactNode } from 'react';
 
-import { SERVICES_NAMES } from '@src/common/constants';
+import { SERVICES_NAMES } from '@src/common/constants/enums';
+import { getPath } from '@src/common/functions';
 
 import { LinkStyled } from '@components/Buttons/Link.styled';
-import { FlexBlock } from '@components/LayoutComponents/FlexBlock';
+import { FlexBlock } from '@components/LayoutComponents';
+import { UserAvatar } from '@components/Users/UserAvatar';
 
 import {
   FriendItemContainer,
   FriendItemContentContainer,
 } from '@pages/Friends/Tabs/FriendsList/styled';
-
-import { UserAvatar } from '@planner/Users/UserAvatar';
 
 import { UserModel } from '@api/session-api/session-api.types';
 
@@ -27,14 +27,14 @@ export const FriendItem: FC<FriendItemProps> = ({
 }) => {
   return (
     <FriendItemContainer>
-      <LinkStyled to={`/${SERVICES_NAMES.PROFILE}/${user._id}`}>
+      <LinkStyled to={getPath(SERVICES_NAMES.PROFILE, user._id)}>
         <UserAvatar size={100} user={user} />
       </LinkStyled>
       <FriendItemContentContainer>
         <FlexBlock gap={12} direction={'row'} mb={16}>
           <LinkStyled
             fontSize={16}
-            to={`/${SERVICES_NAMES.PROFILE}/${user._id}`}
+            to={getPath(SERVICES_NAMES.PROFILE, user._id)}
           >
             {user.surname} {user.name} {user.patronymic || ''}
           </LinkStyled>

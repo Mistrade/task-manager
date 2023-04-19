@@ -8,6 +8,7 @@ import {
 import {
   IPlannerDate,
   IPlannerReducer,
+  SetCreateEventInitialStatePayload,
   TSetPlannerDatePayload,
 } from '@redux/reducers/planner/types';
 import { PayloadAction, createSlice } from '@reduxjs/toolkit';
@@ -16,15 +17,17 @@ import dayjs from 'dayjs';
 import { PlannerObserver } from '@src/common/calendarSupport/observer';
 import { ShortChangeCurrentPattern } from '@src/common/commonTypes';
 import {
-  CHANGE_DATE_OF_PATTERN_SIGNATURE,
   DEFAULT_PLANNER_LAYOUT,
   DEFAULT_PLANNER_STATUS,
+} from '@src/common/constants/defaultConstants';
+import {
+  EVENT_INFORMER_TAB_NAMES,
   PLANNER_LAYOUTS,
-} from '@src/common/constants';
+} from '@src/common/constants/enums';
+import { CHANGE_DATE_OF_PATTERN_SIGNATURE } from '@src/common/constants/signatures';
 
 import { EventFilterTaskStatuses } from '@pages/planner/RenderModes/FindEventFilter/find-event-filters.types';
 
-import { EVENT_INFORMER_TAB_NAMES } from '@planner/TaskInformer/LeftBar/TaskInformerLeftBar';
 import { CalendarPriorityKeys } from '@planner/planner.types';
 
 import { ObjectId } from '@api/rtk-api.types';
@@ -61,6 +64,8 @@ const plannerSlice = createSlice({
         list: todayPlannerDate,
         favorites: todayPlannerDate,
       },
+      createEventInitialState: null,
+      createEventPrevUrl: null,
       layout: currentLayout,
       eventFilter: {
         lastResetTS: Date.now(),
@@ -106,6 +111,21 @@ const plannerSlice = createSlice({
     };
   },
   reducers: {
+    setCreateEventInitialState(
+      state,
+      { payload }: SetCreateEventInitialStatePayload
+    ) {
+      console.log('set initial state: ', payload);
+
+      state.createEventInitialState = payload.data;
+      state.createEventPrevUrl = payload.prevUrl;
+
+      console.log('set initialState is successfully');
+    },
+    clearCreateInitialState(state) {
+      state.createEventInitialState = null;
+      state.createEventPrevUrl = null;
+    },
     setEventInfoTabName(
       state,
       { payload }: PayloadAction<EVENT_INFORMER_TAB_NAMES>
@@ -258,6 +278,8 @@ export const {
   changeEventFilterTitle,
   changeEventFilterPriority,
   resetEventFiltersState,
+  setCreateEventInitialState,
+  clearCreateInitialState,
 } = plannerSlice.actions;
 
 export default plannerReducer;

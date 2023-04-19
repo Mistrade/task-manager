@@ -6,7 +6,6 @@ import {
   FlexBlockProps,
 } from '@components/LayoutComponents/FlexBlock';
 
-
 export const DiscordLogoIcon: FC<IconProps & FlexBlockProps> = ({
   size = 24,
   color = '#5865F2',

@@ -1,14 +1,15 @@
 import { NavLink } from 'react-router-dom';
 import styled, { css } from 'styled-components';
 
-import { borderRadiusSize } from '@src/common/borderRadiusSize';
 import {
   currentColor,
   darkColor,
   defaultColor,
   disabledColor,
   hoverColor,
-} from '@src/common/constants';
+} from '@src/common/constants/constants';
+import { borderRadiusSize } from '@src/common/css/mixins';
+
 
 export const CalendarDateListContainer = styled('div')<{ rowsCount?: number }>`
   & {

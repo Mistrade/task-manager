@@ -1,11 +1,10 @@
 import React, { FC } from 'react';
 
-import { orangeColor } from '@src/common/constants';
+import { orangeColor } from '@src/common/constants/constants';
 
 import { StarIcon } from '@components/Icons/Icons';
 
 import { EmptyButtonStyled } from './EmptyButton.styled';
-
 
 export interface LikeButtonProps {
   isChecked: boolean;

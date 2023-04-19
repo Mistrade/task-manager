@@ -1,8 +1,12 @@
 import { FC } from 'react';
 import styled, { css } from 'styled-components';
 
-import { borderRadiusSize } from '@src/common/borderRadiusSize';
-import { colorPalette, disabledColor, errorColor } from '@src/common/constants';
+import {
+  colorPalette,
+  disabledColor,
+  errorColor,
+} from '@src/common/constants/constants';
+import { borderRadiusSize } from '@src/common/css/mixins';
 
 import { EmptyButtonStyled } from '@components/Buttons/EmptyButton.styled';
 import { SelectIcon } from '@components/Icons/Icons';

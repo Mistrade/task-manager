@@ -1,11 +1,12 @@
 import { FC, forwardRef } from 'react';
 
-import { TASK_STATUSES, darkColor } from '@src/common/constants';
+import { darkColor } from '@src/common/constants/constants';
+import { TASK_STATUSES } from '@src/common/constants/signatures';
 
 import { EmptyButtonStyled } from '@components/Buttons/EmptyButton.styled';
 import { EventIcon } from '@components/Icons/EventIcon';
 import { IconProps } from '@components/Icons/Icons';
-import { FlexBlock } from '@components/LayoutComponents/FlexBlock';
+import { FlexBlock } from '@components/LayoutComponents';
 import { Tooltip } from '@components/Tooltip/Tooltip';
 
 import { TaskStatusesType } from '@planner/planner.types';

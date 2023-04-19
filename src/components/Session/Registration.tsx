@@ -3,14 +3,14 @@ import { useFormik } from 'formik';
 import { FC, useEffect } from 'react';
 import { toast } from 'react-toastify';
 
-import { defaultColor } from '@src/common/constants';
+import { defaultColor } from '@src/common/constants/constants';
 import { RegistrationValidationScheme } from '@src/common/validation/session';
 
 import { Button } from '@components/Buttons/Buttons.styled';
 import { LinkStyled } from '@components/Buttons/Link.styled';
 import { PasswordInput } from '@components/Input/PasswordInput/PasswordInput';
 import { TextInput } from '@components/Input/TextInput/TextInput';
-import { FlexBlock } from '@components/LayoutComponents/FlexBlock';
+import { FlexBlock } from '@components/LayoutComponents';
 import { Heading } from '@components/Text/Heading';
 import { Tooltip } from '@components/Tooltip/Tooltip';
 
@@ -18,7 +18,6 @@ import { useRegistrationMutation } from '@api/session-api';
 import { RegUserRequestProps } from '@api/session-api/session-api.types';
 
 import { SessionFormContainer } from './SessionFormContainer';
-
 
 export const Registration: FC = () => {
   const [regUser, { data, isSuccess, isLoading, status, isError }] =

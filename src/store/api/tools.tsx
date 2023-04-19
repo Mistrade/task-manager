@@ -1,6 +1,6 @@
 import { toast } from 'react-toastify';
 
-import { currentColor } from '@src/common/constants';
+import { currentColor } from '@src/common/constants/constants';
 
 import { CancelIcon, CompleteIcon } from '@components/Icons/Icons';
 

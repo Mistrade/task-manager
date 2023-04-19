@@ -1,11 +1,11 @@
 import React, { FC, memo } from 'react';
 import { Route, Routes } from 'react-router-dom';
 
-import { CreateEventFromPlanner } from '@planner/Forms/CreateEventFromPlanner';
+import { CreateEventFromPlanner } from '@planner/Forms/CreateEvent/CreateEventFromPlanner';
 
-import { TaskInfoModal } from './CalendarModals/TaskInfoModal';
 import { CreateOrUpdateGroupModal } from './Groups/CreateOrUpdateGroup';
 import { UpdateGroupInfoHock } from './Groups/UpdateGroupInfoHock';
+import { TaskInfoModal } from './TaskInformer/TaskInfoModal';
 
 const ModalRoutes: FC = () => {
   return (

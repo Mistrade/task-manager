@@ -1,13 +1,12 @@
 import { FC, useState } from 'react';
 
-import { defaultColor } from '@src/common/constants';
+import { defaultColor } from '@src/common/constants/constants';
 
 import { PasswordIcon } from '@components/Icons/Session/PasswordIcon';
 import {
   TextInput,
   TextInputProps,
 } from '@components/Input/TextInput/TextInput';
-
 
 export const PasswordInput: FC<TextInputProps> = ({
   value,

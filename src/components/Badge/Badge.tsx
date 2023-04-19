@@ -1,11 +1,11 @@
 import styled from 'styled-components';
 
-import { borderRadiusSize } from '@src/common/borderRadiusSize';
 import {
   currentColor,
   defaultColor,
   pageHeaderColor,
-} from '@src/common/constants';
+} from '@src/common/constants/constants';
+import { borderRadiusSize } from '@src/common/css/mixins';
 
 
 export const Badge = styled('span')`

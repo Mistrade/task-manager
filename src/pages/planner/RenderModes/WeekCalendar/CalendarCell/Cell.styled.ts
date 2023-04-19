@@ -1,6 +1,6 @@
 import styled, { keyframes } from 'styled-components';
 
-import { borderRadiusSize } from '@src/common/borderRadiusSize';
+import { borderRadiusSize } from '@src/common/css/mixins';
 
 
 export const CellDateStyledContainer = styled('div')`

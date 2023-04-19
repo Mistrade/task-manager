@@ -4,9 +4,10 @@ import { plannerSelectFilters, plannerSelectScope } from '@selectors/planner';
 import dayjs from 'dayjs';
 import { useMemo } from 'react';
 
-import { UTC_OFFSET } from '@src/common/constants';
+import { UTC_OFFSET } from '@src/common/constants/defaultConstants';
 
 import { GetEventsFiltersRequestProps } from '@api/planning-api/types/event-info.types';
+
 
 export const useEventStorageQueryArgs: (props?: {
   onlyFavorites?: boolean;

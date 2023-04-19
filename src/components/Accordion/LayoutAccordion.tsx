@@ -1,13 +1,13 @@
 import { FC } from 'react';
 
-import { borderRadiusSize } from '@src/common/borderRadiusSize';
 import {
   defaultColor,
   delayedColor,
   hoverColor,
   orangeColor,
   pageHeaderColor,
-} from '@src/common/constants';
+} from '@src/common/constants/constants';
+import { borderRadiusSize } from '@src/common/css/mixins';
 
 import { Accordion, AccordionProps } from '@components/Accordion/Accordion';
 

@@ -4,9 +4,9 @@ import {
   MonthList,
   WeekDaysShortList,
   defaultColor,
-} from '@src/common/constants';
+} from '@src/common/constants/constants';
 
-import { FlexBlock } from '@components/LayoutComponents/FlexBlock';
+import { FlexBlock } from '@components/LayoutComponents';
 
 import { DateWithTooltipProps } from '@planner/SmallMotnCalendar/DateWithTooltipPlanner';
 import {
@@ -77,7 +77,7 @@ export const SmallMonth: FC<SmallMonthProps> = ({
         {monthItem?.weeks.map((weekItem) => (
           <SmallMonthWeekItem
             dateComponent={dateComponent}
-            current={current}
+            current={current} //TODO поизбавлять в проекте от легаси CURRENT
             useTooltips={useTooltips}
             key={`short-week-${weekItem.weekOfYear}`}
             onSelectWeek={onSelectWeek}

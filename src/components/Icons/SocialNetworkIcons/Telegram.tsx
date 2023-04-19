@@ -1,13 +1,12 @@
 import React, { FC } from 'react';
 
-import { currentColor } from '@src/common/constants';
+import { currentColor } from '@src/common/constants/constants';
 
 import { IconProps } from '@components/Icons/Icons';
 import {
   FlexBlock,
   FlexBlockProps,
 } from '@components/LayoutComponents/FlexBlock';
-
 
 export const TelegramLogoIcon: FC<IconProps & FlexBlockProps> = ({
   size = 24,

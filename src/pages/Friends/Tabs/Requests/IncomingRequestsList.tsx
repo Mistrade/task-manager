@@ -1,21 +1,24 @@
 import React, { FC } from 'react';
 import { Helmet } from 'react-helmet';
 
-import { FRIENDS_PAGE_TITLES } from '@src/common/constants';
+import { FRIENDS_PAGE_TITLES } from '@src/common/constants/defaultConstants';
+import {
+  FRIEND_REQUESTS_TYPES,
+  FRIEND_REQUEST_ACCEPT_STATUSES,
+} from '@src/common/constants/enums';
 
 import { ButtonWithLoading } from '@components/Buttons/ButtonWithLoading';
 import { EmptyButtonStyled } from '@components/Buttons/EmptyButton.styled';
-import { FlexBlock } from '@components/LayoutComponents/FlexBlock';
+import { FlexBlock } from '@components/LayoutComponents';
 
 import { FriendItem } from '@pages/Friends/Tabs/FriendsList/FriendItem';
 import { FriendRequestListProps } from '@pages/Friends/Tabs/Requests/OutgoingRequestList';
 
 import {
-  ContactAcceptStatuses,
-  FRIEND_REQUESTS_TYPES,
   useGetContactsListQuery,
   useResponseOnFriendRequestMutation,
 } from '@api/friends-api';
+
 
 export const IncomingRequestList: FC<FriendRequestListProps> = () => {
   const { data: requestList, isFetching } = useGetContactsListQuery(
@@ -38,7 +41,7 @@ export const IncomingRequestList: FC<FriendRequestListProps> = () => {
                 onClick={() =>
                   responseOnRequest({
                     _id: item._id,
-                    acceptedStatus: ContactAcceptStatuses.ACCEPTED,
+                    acceptedStatus: FRIEND_REQUEST_ACCEPT_STATUSES.ACCEPTED,
                   })
                 }
               >
@@ -50,7 +53,7 @@ export const IncomingRequestList: FC<FriendRequestListProps> = () => {
                 onClick={() =>
                   responseOnRequest({
                     _id: item._id,
-                    acceptedStatus: ContactAcceptStatuses.DECLINE,
+                    acceptedStatus: FRIEND_REQUEST_ACCEPT_STATUSES.DECLINE,
                   })
                 }
               >

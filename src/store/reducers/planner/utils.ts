@@ -3,15 +3,16 @@ import dayjs, { Dayjs } from 'dayjs';
 
 import { PlannerObserver } from '@src/common/calendarSupport/observer';
 import {
+  EVENT_INFORMER_TAB_NAMES,
   PLANNER_LAYOUTS,
   SERVICES_NAMES,
-  URLTaskStatuses,
-} from '@src/common/constants';
+} from '@src/common/constants/enums';
+import { URLTaskStatuses } from '@src/common/constants/signatures';
 
 import { EventFilterTaskStatuses } from '@pages/planner/RenderModes/FindEventFilter/find-event-filters.types';
-import { EVENT_INFORMER_TAB_NAMES } from '@pages/planner/TaskInformer/LeftBar/TaskInformerLeftBar';
 
 import { ObjectId } from '@api/rtk-api.types';
+
 
 export const isEqualPlannerDate = (
   prev: IPlannerDate,

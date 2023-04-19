@@ -1,10 +1,9 @@
 import { FC, ReactNode } from 'react';
 import { ThreeDots } from 'react-loader-spinner';
 
-import { currentColor } from '@src/common/constants';
+import { currentColor } from '@src/common/constants/constants';
 
-import { FlexBlock } from '@components/LayoutComponents/FlexBlock';
-
+import { FlexBlock } from '@components/LayoutComponents';
 
 export const Loader: FC<{
   title?: ReactNode;

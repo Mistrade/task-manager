@@ -8,13 +8,14 @@ import {
 } from '@selectors/planner';
 import React, { FC, useMemo } from 'react';
 
-import { PLANNER_LAYOUTS, SERVICES_NAMES } from '@src/common/constants';
+import { PLANNER_LAYOUTS, SERVICES_NAMES } from '@src/common/constants/enums';
 import { getPath } from '@src/common/functions';
 
 import { DateWithTooltipPlanner } from '@planner/SmallMotnCalendar/DateWithTooltipPlanner';
 import { SmallCalendarMonthTitle } from '@planner/SmallMotnCalendar/SmallCalendarMonthTitle';
 import { SmallMonth } from '@planner/SmallMotnCalendar/SmallMonth';
 import { PlannerMonthMode } from '@planner/planner.types';
+
 
 export const OptionPanelCalendar: FC = () => {
   const currentDate = useAppSelector(plannerSelectDate);

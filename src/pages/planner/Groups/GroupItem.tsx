@@ -3,7 +3,8 @@ import { useAppSelector } from '@redux/hooks/hooks';
 import { plannerSelectLayout } from '@selectors/planner';
 import { FC, useState } from 'react';
 
-import { SERVICES_NAMES, darkColor, defaultColor } from '@src/common/constants';
+import { darkColor, defaultColor } from '@src/common/constants/constants';
+import { SERVICES_NAMES } from '@src/common/constants/enums';
 import { getPath } from '@src/common/functions';
 
 import { EmptyButtonStyled } from '@components/Buttons/EmptyButton.styled';
@@ -13,9 +14,8 @@ import {
   PlusIcon,
   TrashIcon,
 } from '@components/Icons/Icons';
-import { FlexBlock } from '@components/LayoutComponents/FlexBlock';
-
-import { CutText } from '@planner/RenderModes/DayCalendar/TaskList/TaskList.styled';
+import { FlexBlock } from '@components/LayoutComponents';
+import { CutText } from '@components/Text/Text';
 
 import { useChangeSelectGroupMutation } from '@api/planning-api';
 

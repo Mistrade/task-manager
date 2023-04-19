@@ -4,7 +4,6 @@ import { SelectItemContainer } from '@components/Input/SelectInput/SelectItemCon
 import { SelectListContainer } from '@components/Input/SelectInput/SelectListContainer';
 import { Tooltip } from '@components/Tooltip/Tooltip';
 
-
 interface DefaultDataElement {
   title: string;
   icon?: ReactNode;

@@ -2,16 +2,17 @@ import React, { memo } from 'react';
 import { Route } from 'react-router';
 import { Routes } from 'react-router-dom';
 
-import { PLANNER_LAYOUTS } from '@src/common/constants';
+import { PLANNER_LAYOUTS } from '@src/common/constants/enums';
 import { disableReRender } from '@src/common/utils/react-utils';
 
 import { CenteredContainer } from '@components/AppRoutes/Interceptors/SessionInterceptor';
 import { ErrorScreen } from '@components/Errors/ErrorScreen';
-import { ScrollVerticalView } from '@components/LayoutComponents/ScrollView/ScrollVerticalView';
+import { VerticalScroll } from '@components/LayoutComponents/ScrollView/VerticalScroll';
 
 import { FindEventFilter } from '@planner/RenderModes/FindEventFilter/FindEventFilter';
 
 import { LayoutSuspense } from '../LayoutSuspense';
+
 
 const DayLayout = React.lazy(() =>
   import('./RenderModes/DayCalendar/DayCalendar').then(({ DayCalendar }) => ({
@@ -46,7 +47,7 @@ const FavoriteEventsLayout = React.lazy(() =>
 
 export const LayoutSelector = memo(() => {
   return (
-    <ScrollVerticalView
+    <VerticalScroll
       useShadow={true}
       staticContent={<FindEventFilter />}
       placementStatic={'top'}
@@ -124,6 +125,6 @@ export const LayoutSelector = memo(() => {
           }
         />
       </Routes>
-    </ScrollVerticalView>
+    </VerticalScroll>
   );
 }, disableReRender);

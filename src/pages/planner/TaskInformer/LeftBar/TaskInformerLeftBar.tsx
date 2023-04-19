@@ -2,9 +2,10 @@ import { useAppSelector } from '@redux/hooks/hooks';
 import { plannerSelectEventInfoTabName } from '@selectors/planner';
 import { FC } from 'react';
 
-import { disabledColor } from '@src/common/constants';
+import { disabledColor } from '@src/common/constants/constants';
+import { EVENT_INFORMER_TAB_NAMES } from '@src/common/constants/enums';
 
-import { FlexBlock } from '@components/LayoutComponents/FlexBlock';
+import { FlexBlock } from '@components/LayoutComponents';
 
 import { EventInfoBaseProps } from '@planner/planner.types';
 
@@ -19,15 +20,6 @@ import { TaskMembers } from './Tabs/TaskMembers/TaskMembers';
 
 interface TaskInformerLeftBarProps extends EventInfoBaseProps {
   updateFn: EventInfoUpdateFn;
-}
-
-export enum EVENT_INFORMER_TAB_NAMES {
-  'ABOUT' = 'about',
-  'CHAINS' = 'chains',
-  'HISTORY' = 'history',
-  'MEMBERS' = 'members',
-  'COMMENTS' = 'comments',
-  'CHECK_LIST' = 'checkList',
 }
 
 export const TaskInformerLeftBar: FC<TaskInformerLeftBarProps> = ({

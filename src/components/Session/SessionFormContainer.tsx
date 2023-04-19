@@ -2,11 +2,10 @@ import * as React from 'react';
 import { FC, ReactNode } from 'react';
 import { css } from 'styled-components';
 
-import { borderRadiusSize } from '@src/common/borderRadiusSize';
-import { currentColor, defaultColor } from '@src/common/constants';
+import { currentColor, defaultColor } from '@src/common/constants/constants';
+import { borderRadiusSize } from '@src/common/css/mixins';
 
-import { FlexBlock } from '@components/LayoutComponents/FlexBlock';
-
+import { FlexBlock } from '@components/LayoutComponents';
 
 interface SessionFormContainerProps {
   children: ReactNode;

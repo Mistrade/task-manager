@@ -9,10 +9,10 @@ import { FC, memo } from 'react';
 import { Helmet } from 'react-helmet';
 import styled from 'styled-components';
 
-import { borderRadiusSize } from '@src/common/borderRadiusSize';
-import { PLANNER_LAYOUTS, SERVICES_NAMES } from '@src/common/constants';
+import { PLANNER_LAYOUTS, SERVICES_NAMES } from '@src/common/constants/enums';
+import { borderRadiusSize } from '@src/common/css/mixins';
 
-import { FlexBlock } from '@components/LayoutComponents/FlexBlock';
+import { FlexBlock } from '@components/LayoutComponents';
 import { Loader } from '@components/Loaders/Loader';
 
 import { DateWithTooltipPlanner } from '@planner/SmallMotnCalendar/DateWithTooltipPlanner';
@@ -21,6 +21,7 @@ import { SmallMonth } from '@planner/SmallMotnCalendar/SmallMonth';
 import { YearCalendarProps } from '@planner/planner.types';
 
 import { useGetEventsSchemeQuery } from '@api/planning-api';
+
 
 const MonthItemContainer = styled('div')`
   padding: 4px;

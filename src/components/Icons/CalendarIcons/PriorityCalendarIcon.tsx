@@ -1,6 +1,6 @@
 import React, { FC } from 'react';
 
-import { currentColor, priorityColors } from '@src/common/constants';
+import { currentColor, priorityColors } from '@src/common/constants/constants';
 
 import {
   Arrow,

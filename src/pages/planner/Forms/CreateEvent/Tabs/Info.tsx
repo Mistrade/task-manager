@@ -11,7 +11,7 @@ import { SelectInput } from '@components/Input/SelectInput/SelectInput';
 import { SelectListContainer } from '@components/Input/SelectInput/SelectListContainer';
 import { TextAreaInput } from '@components/Input/TextAreaInput/TextAreaInput';
 import { TextInput } from '@components/Input/TextInput/TextInput';
-import { FlexBlock } from '@components/LayoutComponents/FlexBlock';
+import { FlexBlock } from '@components/LayoutComponents';
 
 import { CreateEventDataObject } from '@planner/planner.types';
 

@@ -1,8 +1,5 @@
-import { UsePlannerReturned } from '@hooks/usePlanner';
-
 import { GroupModelResponse } from '@api/planning-api/types/groups.types';
 import { ObjectId } from '@api/rtk-api.types';
-
 
 export interface UpdateGroupModalProps {
   onClose?: () => void;
@@ -32,7 +29,7 @@ export interface GroupItemProps {
   isDisabled?: boolean;
   onDelete?: (item: GroupModelResponse) => void;
   onSuccessChangeSelect?: () => Promise<void>;
-  onEdit?: UsePlannerReturned['onCreateGroup'];
+  onEdit?: (_id: ObjectId) => void;
 }
 
 export interface RemoveGroupModalBaseProps {

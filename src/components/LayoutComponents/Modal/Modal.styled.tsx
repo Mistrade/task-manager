@@ -1,7 +1,7 @@
 import styled, { keyframes } from 'styled-components';
 
-import { borderRadiusSize } from '@src/common/borderRadiusSize';
-import { defaultColor } from '@src/common/constants';
+import { defaultColor } from '@src/common/constants/constants';
+import { borderRadiusSize } from '@src/common/css/mixins';
 
 export const ModalLayout = styled('div')`
   & {

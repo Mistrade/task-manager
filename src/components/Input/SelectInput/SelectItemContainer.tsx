@@ -1,14 +1,12 @@
 import React from 'react';
 import { css } from 'styled-components';
 
-import { borderRadiusSize } from '@src/common/borderRadiusSize';
-import { hoverColor } from '@src/common/constants';
-import { HoverElementMixin } from '@src/common/cssMixins';
+import { hoverColor } from '@src/common/constants/constants';
+import { HoverElementMixin, borderRadiusSize } from '@src/common/css/mixins';
 
-import { FlexBlock } from '@components/LayoutComponents/FlexBlock';
+import { FlexBlock } from '@components/LayoutComponents';
 
 import { FCWithChildren } from '@planner/planner.types';
-
 
 export const SelectItemContainer: FCWithChildren<{
   onClick?: (e: React.MouseEvent<HTMLDivElement>) => void;

@@ -3,9 +3,9 @@ import dayjs from 'dayjs';
 import { FC, ReactNode, useEffect } from 'react';
 import { css } from 'styled-components';
 
-import { UTC_OFFSET } from '@src/common/constants';
+import { UTC_OFFSET } from '@src/common/constants/defaultConstants';
 
-import { FlexBlock } from '@components/LayoutComponents/FlexBlock';
+import { FlexBlock } from '@components/LayoutComponents';
 
 import { useLazyGetShortEventsArrayQuery } from '@api/planning-api';
 import {

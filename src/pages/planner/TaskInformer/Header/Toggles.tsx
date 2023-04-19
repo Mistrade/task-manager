@@ -1,9 +1,9 @@
 import React, { memo } from 'react';
 
-import { borderRadiusSize } from '@src/common/borderRadiusSize';
-import { disabledColor } from '@src/common/constants';
+import { disabledColor } from '@src/common/constants/constants';
+import { borderRadiusSize } from '@src/common/css/mixins';
 
-import { FlexBlock } from '@components/LayoutComponents/FlexBlock';
+import { FlexBlock } from '@components/LayoutComponents';
 
 import {
   EventInfoUpdateFn,

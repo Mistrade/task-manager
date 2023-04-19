@@ -1,22 +1,23 @@
 import { useAppSelector } from '@redux/hooks/hooks';
-import { createEventInitialStateSelector } from '@selectors/calendarItems';
+import { createEventInitialStateSelector } from '@selectors/planner';
 import { useFormik } from 'formik';
 import { FC, useMemo, useState } from 'react';
 import styled from 'styled-components';
 import * as yup from 'yup';
 
-import { borderRadiusSize } from '@src/common/borderRadiusSize';
 import {
   PRIORITY_TITLES,
-  TASK_STATUSES,
   defaultColor,
   disabledColor,
   pageHeaderColor,
-} from '@src/common/constants';
+} from '@src/common/constants/constants';
+import { CREATE_EVENT_FORM_TABS } from '@src/common/constants/enums';
+import { TASK_STATUSES } from '@src/common/constants/signatures';
+import { borderRadiusSize } from '@src/common/css/mixins';
 import { CreateEventMembersTab } from '@src/pages/planner/Forms/CreateEvent/Tabs/Members/Members';
 
 import { Button, StyledButton } from '@components/Buttons/Buttons.styled';
-import { FlexBlock } from '@components/LayoutComponents/FlexBlock';
+import { FlexBlock } from '@components/LayoutComponents';
 import { Switcher } from '@components/Switcher/Switcher';
 import { Heading } from '@components/Text/Heading';
 
@@ -80,13 +81,6 @@ const addTaskValidationSchema = yup.object({
     .min(12, 'Выберите элемент из выпадающего списка')
     .max(24, 'Выберите элемент из выпадающего списка'),
 });
-
-export enum CREATE_EVENT_FORM_TABS {
-  'INFO' = 'info',
-  'MEMBERS' = 'members',
-  'CHAINS' = 'chains',
-  'ADDITIONAL' = 'additional',
-}
 
 interface SwitcherItem {
   title: string;

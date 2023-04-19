@@ -4,12 +4,13 @@ import { Helmet } from 'react-helmet';
 
 import { Button } from '@components/Buttons/Buttons.styled';
 import { EmptyButtonStyled } from '@components/Buttons/EmptyButton.styled';
-import { FlexBlock } from '@components/LayoutComponents/FlexBlock';
+import { FlexBlock } from '@components/LayoutComponents';
 
 import { FriendItem } from '@pages/Friends/Tabs/FriendsList/FriendItem';
 
 import { useGetFriendsListQuery } from '@api/friends-api';
 import { UserModel } from '@api/session-api/session-api.types';
+
 
 export const FriendsList = () => {
   const { data: friendsList, isFetching } = useGetFriendsListQuery();

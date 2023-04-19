@@ -4,8 +4,8 @@ import { EmptyButtonStyled } from '@components/Buttons/EmptyButton.styled';
 import { LinkStyled } from '@components/Buttons/Link.styled';
 import { ErrorScreen } from '@components/Errors/ErrorScreen';
 import { TooltipIcon } from '@components/Icons/TooltipIcon';
-import { FlexBlock } from '@components/LayoutComponents/FlexBlock';
-import { ScrollVerticalView } from '@components/LayoutComponents/ScrollView/ScrollVerticalView';
+import { FlexBlock } from '@components/LayoutComponents';
+import { VerticalScroll } from '@components/LayoutComponents/ScrollView/VerticalScroll';
 import { Loader } from '@components/Loaders/Loader';
 import { Switcher } from '@components/Switcher/Switcher';
 import { Tooltip } from '@components/Tooltip/Tooltip';
@@ -123,7 +123,7 @@ export const EventChainsTab: FC<EventChainsTabProps> = memo(
     }
 
     return (
-      <ScrollVerticalView
+      <VerticalScroll
         placementStatic={'top'}
         staticContent={
           <FlexBlock width={'100%'} align={'center'}>
@@ -191,7 +191,7 @@ export const EventChainsTab: FC<EventChainsTabProps> = memo(
             />
           </FlexBlock>
         )}
-      </ScrollVerticalView>
+      </VerticalScroll>
     );
   },
   (prev, next) => prev.taskItem._id === next.taskItem._id

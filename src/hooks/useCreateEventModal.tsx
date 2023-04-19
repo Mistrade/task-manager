@@ -1,10 +1,10 @@
-import { setCreateEventModalIsOpen } from '@planner-reducer/index';
-import { useAppDispatch } from '@redux/hooks/hooks';
 import {
-  CreateEventInitialState,
   clearCreateInitialState,
   setCreateEventInitialState,
-} from '@redux/reducers/planner-reducer';
+  setCreateEventModalIsOpen,
+} from '@planner-reducer/index';
+import { CreateEventInitialState } from '@planner-reducer/types';
+import { useAppDispatch } from '@redux/hooks/hooks';
 import { useCallback, useMemo } from 'react';
 
 import { useSearchNavigate } from './useSearchNavigate';

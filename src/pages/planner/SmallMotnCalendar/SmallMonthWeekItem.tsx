@@ -3,7 +3,7 @@ import dayjs from 'dayjs';
 import { FC, useCallback, useMemo } from 'react';
 
 import { EmptyButtonStyled } from '@components/Buttons/EmptyButton.styled';
-import { FlexBlock } from '@components/LayoutComponents/FlexBlock';
+import { FlexBlock } from '@components/LayoutComponents';
 
 import { PlannerMonthMode, WeekItem } from '@planner/planner.types';
 
@@ -12,6 +12,7 @@ import { GetEventsSchemeResponse } from '@api/planning-api/types/event-info.type
 import { PourDatesProps, SmallMonthProps } from './SmallMonth';
 import { SmallMonthRow, SmallMonthWeekCount } from './SmallMonth.styled';
 import { SmallMonthDateItem } from './SmallMonthDateItem';
+
 
 export interface SmallMonthWeekItemProps
   extends Pick<

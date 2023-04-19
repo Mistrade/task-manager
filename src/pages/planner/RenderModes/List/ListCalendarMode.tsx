@@ -5,13 +5,14 @@ import { plannerSelectScope } from '@selectors/planner';
 import React, { FC, memo } from 'react';
 import { Helmet } from 'react-helmet';
 
-import { ShortMonthList } from '@src/common/constants';
+import { ShortMonthList } from '@src/common/constants/constants';
 
 import { ListCalendarModeProps } from '@planner/planner.types';
 
 import { useGetEventsStorageQuery } from '@api/planning-api';
 
 import { ListModeTaskController } from './ListModeTaskController';
+
 
 export const ListCalendarMode: FC<ListCalendarModeProps> = memo(() => {
   const scope = useAppSelector(plannerSelectScope);

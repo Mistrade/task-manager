@@ -11,8 +11,8 @@ import 'tippy.js/dist/tippy.css';
 
 import { AppRoutes } from '@components/AppRoutes';
 import { UserInfoProvider } from '@components/ContextProviders/UserInfoProvider';
-import { FlexBlock } from '@components/LayoutComponents/FlexBlock';
-import { MainHeader } from '@components/LayoutComponents/MainHeader/MainHeader';
+import { FlexBlock } from '@components/LayoutComponents';
+import { MainHeader } from '@components/LayoutComponents/PageHeader';
 import { TooltipStyled } from '@components/Tooltip/Tooltip.styled';
 
 import './common/dayjs';

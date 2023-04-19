@@ -2,7 +2,7 @@ import { FC, useCallback, useMemo } from 'react';
 
 import { CheckList } from '@components/CheckList';
 import { Checkbox } from '@components/Input/Checkbox/Checkbox';
-import { FlexBlock } from '@components/LayoutComponents/FlexBlock';
+import { FlexBlock } from '@components/LayoutComponents';
 
 import { MaxHeightHidden } from '@planner/Forms/CreateEvent/CreateEventForm';
 import { ICheckListItem } from '@planner/planner.types';

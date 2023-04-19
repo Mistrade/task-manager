@@ -4,9 +4,8 @@ import { DateHelper } from '@src/common/calendarSupport/dateHelper';
 
 import { Button } from '@components/Buttons/Buttons.styled';
 import { EmailIcon, PhoneIcon } from '@components/Icons/Session/LogoutIcon';
-import { FlexBlock } from '@components/LayoutComponents/FlexBlock';
-
-import { CalendarUserIndicator } from '@pages/planner/Users/UserIndicator';
+import { FlexBlock } from '@components/LayoutComponents';
+import { CalendarUserIndicator } from '@components/Users/UserIndicator';
 
 import { UserModel } from '@api/session-api/session-api.types';
 

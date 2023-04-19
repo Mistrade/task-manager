@@ -1,10 +1,14 @@
 import { FC, forwardRef } from 'react';
 
-import { currentColor, darkColor, defaultColor } from '@src/common/constants';
+import {
+  currentColor,
+  darkColor,
+  defaultColor,
+} from '@src/common/constants/constants';
 
 import { EmptyButtonStyled } from '@components/Buttons/EmptyButton.styled';
 import { LoaderIcon } from '@components/Icons/Icons';
-import { FlexBlock } from '@components/LayoutComponents/FlexBlock';
+import { FlexBlock } from '@components/LayoutComponents';
 import { Tooltip } from '@components/Tooltip/Tooltip';
 
 import { GroupLogo } from '@planner/Groups/GroupList.styled';

@@ -1,26 +1,32 @@
 import { useSearchNavigate } from '@hooks/useSearchNavigate';
 import { FC } from 'react';
 
+import { FRIEND_REQUEST_ACCEPT_STATUSES } from '@src/common/constants/enums';
+
 import { Button } from '@components/Buttons/Buttons.styled';
 import { EmptyButtonStyled } from '@components/Buttons/EmptyButton.styled';
-import { FlexBlock } from '@components/LayoutComponents/FlexBlock';
+import { FlexBlock } from '@components/LayoutComponents';
+import { CalendarUserIndicator } from '@components/Users/UserIndicator';
 
-import { CalendarUserIndicator } from '@pages/planner/Users/UserIndicator';
-
-import { ContactAcceptStatuses } from '@api/friends-api';
 import { IFriendModel } from '@api/friends-api/friends-api.types';
 import { ObjectId } from '@api/rtk-api.types';
 
 import { EssenceContainer } from '../EventEssence/event-essence.styled';
 
-
 export interface FriendEssenceProps {
   friendModel: IFriendModel;
-  onAccept?: (status: ContactAcceptStatuses, _id: ObjectId) => Promise<void>;
-  onDecline?: (status: ContactAcceptStatuses, _id: ObjectId) => Promise<void>;
+  onAccept?: (
+    status: FRIEND_REQUEST_ACCEPT_STATUSES,
+    _id: ObjectId
+  ) => Promise<void>;
+  onDecline?: (
+    status: FRIEND_REQUEST_ACCEPT_STATUSES,
+    _id: ObjectId
+  ) => Promise<void>;
   onRemove?: () => Promise<void>;
 }
 
+//TODO DELETE
 export const FriendEssence: FC<FriendEssenceProps> = ({
   friendModel,
   onRemove,
@@ -28,6 +34,8 @@ export const FriendEssence: FC<FriendEssenceProps> = ({
   onAccept,
 }) => {
   const navigate = useSearchNavigate();
+
+  //TODO раздробить верстку на мелкие компоненты
   return (
     <EssenceContainer>
       <FlexBlock gap={6} direction={'row'} align={'center'} width={'100%'}>
@@ -48,7 +56,10 @@ export const FriendEssence: FC<FriendEssenceProps> = ({
             <Button
               onClick={() =>
                 onAccept &&
-                onAccept(ContactAcceptStatuses.ACCEPTED, friendModel._id)
+                onAccept(
+                  FRIEND_REQUEST_ACCEPT_STATUSES.ACCEPTED,
+                  friendModel._id
+                )
               }
             >
               Принять
@@ -58,7 +69,10 @@ export const FriendEssence: FC<FriendEssenceProps> = ({
             <EmptyButtonStyled
               onClick={() =>
                 onDecline &&
-                onDecline(ContactAcceptStatuses.DECLINE, friendModel._id)
+                onDecline(
+                  FRIEND_REQUEST_ACCEPT_STATUSES.DECLINE,
+                  friendModel._id
+                )
               }
             >
               Отклонить

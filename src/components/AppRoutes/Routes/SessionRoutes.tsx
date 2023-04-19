@@ -1,5 +1,5 @@
 import { useAppSelector } from '@redux/hooks/hooks';
-import { selectUserInfo } from '@redux/reducers/session/session-selectors';
+import { selectUserInfo } from '@selectors/session-selectors';
 import React, { FC } from 'react';
 import { Route } from 'react-router';
 import { Routes } from 'react-router-dom';

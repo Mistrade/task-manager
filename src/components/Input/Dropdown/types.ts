@@ -2,7 +2,6 @@ import React, { ReactNode } from 'react';
 
 import { FlexBlockProps } from '@components/LayoutComponents/FlexBlock';
 
-
 export type DropDownElementsSupport =
   | HTMLButtonElement
   | HTMLInputElement

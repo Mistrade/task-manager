@@ -4,10 +4,11 @@ import React, { memo } from 'react';
 
 import { Button } from '@components/Buttons/Buttons.styled';
 import { Checkbox } from '@components/Input/Checkbox/Checkbox';
-import { FlexBlock } from '@components/LayoutComponents/FlexBlock';
+import { FlexBlock } from '@components/LayoutComponents';
 
 import { EventFilterPriorityInput } from '@planner/RenderModes/FindEventFilter/Fields/Priority';
 import { EventFilterTitleInput } from '@planner/RenderModes/FindEventFilter/Fields/Title';
+
 
 export const FilterForm = memo(() => {
   const dispatch = useAppDispatch();

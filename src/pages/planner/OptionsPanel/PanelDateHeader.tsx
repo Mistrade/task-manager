@@ -6,7 +6,7 @@ import React, { useMemo } from 'react';
 import { getCalendarTitle } from '@src/common/functions';
 import { disableReRender } from '@src/common/utils/react-utils';
 
-import { FlexBlock } from '@components/LayoutComponents/FlexBlock';
+import { FlexBlock } from '@components/LayoutComponents';
 
 import { CalendarTitle } from '@planner/Planner.styled';
 

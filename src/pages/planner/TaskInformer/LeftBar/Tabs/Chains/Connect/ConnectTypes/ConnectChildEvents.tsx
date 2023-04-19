@@ -3,7 +3,7 @@ import { FC, useEffect } from 'react';
 import { Badge } from '@components/Badge/Badge';
 import { ButtonWithLoading } from '@components/Buttons/ButtonWithLoading';
 import { EmptyButtonStyled } from '@components/Buttons/EmptyButton.styled';
-import { FlexBlock } from '@components/LayoutComponents/FlexBlock';
+import { FlexBlock } from '@components/LayoutComponents';
 import { Heading } from '@components/Text/Heading';
 
 import { useConnectChainsOfTree } from '@planner/TaskInformer/LeftBar/Tabs/Chains/Connect/useConnectChainsOfTree';

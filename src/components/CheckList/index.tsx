@@ -2,12 +2,12 @@ import React, { FC, useCallback, useMemo, useState } from 'react';
 import { ColorRing } from 'react-loader-spinner';
 import styled, { keyframes } from 'styled-components';
 
-import { borderRadiusSize } from '@src/common/borderRadiusSize';
 import {
   currentColor,
   defaultColor,
   disabledColor,
-} from '@src/common/constants';
+} from '@src/common/constants/constants';
+import { borderRadiusSize } from '@src/common/css/mixins';
 
 import { TimeBadge } from '@components/Badge/Badge';
 import { CopyToClipboardButton } from '@components/Buttons/CopyToClipboardButton';
@@ -23,7 +23,7 @@ import {
   FlexBlock,
   FlexBlockProps,
 } from '@components/LayoutComponents/FlexBlock';
-import { ScrollVerticalView } from '@components/LayoutComponents/ScrollView/ScrollVerticalView';
+import { VerticalScroll } from '@components/LayoutComponents/ScrollView/VerticalScroll';
 import { Heading } from '@components/Text/Heading';
 import { Tooltip } from '@components/Tooltip/Tooltip';
 
@@ -311,7 +311,7 @@ export const CheckList: FC<CheckListProps> = ({
   }, [checkList]);
 
   return (
-    <ScrollVerticalView
+    <VerticalScroll
       containerProps={scrollContainerProps}
       renderPattern={'top-bottom'}
       placementStatic={'top'}
@@ -405,6 +405,6 @@ export const CheckList: FC<CheckListProps> = ({
           />
         ))}
       </CheckListUL>
-    </ScrollVerticalView>
+    </VerticalScroll>
   );
 };

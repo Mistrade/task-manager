@@ -20,10 +20,4 @@ const INLINE_STYLES = [
   { label: 'Monospace', style: 'CODE' },
 ];
 
-// const decorators = new CompositeDecorator([
-// 	{
-// 		strategy:
-// 	}
-// ])
-
 export { TEXT_EDITOR_BLOCKS };

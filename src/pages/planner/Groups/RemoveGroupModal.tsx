@@ -1,7 +1,7 @@
 import { FC } from 'react';
 
 import { Button, WhiteButton } from '@components/Buttons/Buttons.styled';
-import { FlexBlock } from '@components/LayoutComponents/FlexBlock';
+import { FlexBlock } from '@components/LayoutComponents';
 import {
   Modal,
   ModalBody,

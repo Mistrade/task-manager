@@ -2,7 +2,6 @@ import { EventFilterTaskStatuses } from '@planner/RenderModes/FindEventFilter/fi
 import {
   CalendarPriorityKeys,
   EventLinkItem,
-  ICheckListItem,
   TaskStatusesType,
 } from '@planner/planner.types';
 
@@ -11,18 +10,12 @@ import { UserModel } from '@api/session-api/session-api.types';
 
 import { GroupModelResponse } from './groups.types';
 
-
 export type EventInviteAcceptedStatuses =
   | 'not_accepted'
   | 'accepted'
   | 'decline';
 export type EventInviteAccessRights = 'viewer' | 'editor' | 'admin';
 export type AccessRightsWithOwner = EventInviteAccessRights | 'owner';
-
-export interface CheckListModel {
-  title: string;
-  data: Array<ICheckListItem>;
-}
 
 export interface EventInfoModel {
   _id: ObjectId;

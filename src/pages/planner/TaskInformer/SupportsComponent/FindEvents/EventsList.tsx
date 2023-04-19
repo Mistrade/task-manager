@@ -1,8 +1,8 @@
 import { FC, useCallback } from 'react';
 import styled from 'styled-components';
 
-import { borderRadiusSize } from '@src/common/borderRadiusSize';
-import { currentColor, disabledColor } from '@src/common/constants';
+import { currentColor, disabledColor } from '@src/common/constants/constants';
+import { borderRadiusSize } from '@src/common/css/mixins';
 
 import { Accordion } from '@components/Accordion/Accordion';
 import { EmptyButtonStyled } from '@components/Buttons/EmptyButton.styled';
@@ -12,8 +12,8 @@ import {
   EmptyCheckboxIcon,
   FillCheckboxIcon,
 } from '@components/Icons/InputIcons/Checkbox';
-import { FlexBlock } from '@components/LayoutComponents/FlexBlock';
-import { ScrollVerticalView } from '@components/LayoutComponents/ScrollView/ScrollVerticalView';
+import { FlexBlock } from '@components/LayoutComponents';
+import { VerticalScroll } from '@components/LayoutComponents/ScrollView/VerticalScroll';
 import { Loader } from '@components/Loaders/Loader';
 import { Heading } from '@components/Text/Heading';
 
@@ -136,7 +136,7 @@ export const EventListFromArray: FC<EventListFromArrayProps> = ({
   ) {
     return (
       <Container>
-        <ScrollVerticalView
+        <VerticalScroll
           placementStatic={'top'}
           renderPattern={'top-bottom'}
           gap={6}
@@ -161,7 +161,7 @@ export const EventListFromArray: FC<EventListFromArrayProps> = ({
               />
             )}
           </FlexBlock>
-        </ScrollVerticalView>
+        </VerticalScroll>
       </Container>
     );
   }

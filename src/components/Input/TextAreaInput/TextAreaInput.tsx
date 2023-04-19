@@ -4,8 +4,7 @@ import { StyledTextAreaInput } from '@components/Input/Input.styled';
 import { InputErrorMessage } from '@components/Input/InputSupportComponents/InputErrorMessage';
 import { InputLabel } from '@components/Input/InputSupportComponents/InputLabel';
 import { TextInputProps } from '@components/Input/TextInput/TextInput';
-import { FlexBlock } from '@components/LayoutComponents/FlexBlock';
-
+import { FlexBlock } from '@components/LayoutComponents';
 
 type ExtendableTextInputKeys =
   | 'actions'

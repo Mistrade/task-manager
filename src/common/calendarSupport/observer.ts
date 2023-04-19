@@ -8,7 +8,6 @@ import {
 
 import { DateListGenerator } from './generators';
 
-
 export class PlannerObserver {
   public disabledOptions?: CalendarDisabledOptions;
 

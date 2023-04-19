@@ -1,13 +1,13 @@
 import { useFormik } from 'formik';
 import { FC, memo, useState } from 'react';
 
-import { currentColor } from '@src/common/constants';
+import { currentColor } from '@src/common/constants/constants';
 
 import { EmptyButtonStyled } from '@components/Buttons/EmptyButton.styled';
 import { LikeButton } from '@components/Buttons/LikeButton';
 import { PencilIcon } from '@components/Icons/Icons';
 import { TextInput } from '@components/Input/TextInput/TextInput';
-import { FlexBlock } from '@components/LayoutComponents/FlexBlock';
+import { FlexBlock } from '@components/LayoutComponents';
 import { Heading } from '@components/Text/Heading';
 
 import { StyledTaskInformerLinkForm } from '../TaskInformer.styled';

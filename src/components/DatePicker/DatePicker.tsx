@@ -8,7 +8,7 @@ import { EmptyButtonStyled } from '@components/Buttons/EmptyButton.styled';
 import { DatePickerPaper } from '@components/DatePicker/DatePickerPaper';
 import { SelectInput } from '@components/Input/SelectInput/SelectInput';
 import { SelectListContainer } from '@components/Input/SelectInput/SelectListContainer';
-import { FlexBlock } from '@components/LayoutComponents/FlexBlock';
+import { FlexBlock } from '@components/LayoutComponents';
 
 import { DatePickerProps } from '@pages/planner/planner.types';
 

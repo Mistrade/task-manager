@@ -1,17 +1,17 @@
 import { useCreateEventModal } from '@hooks/useCreateEventModal';
 import { useAppSelector } from '@redux/hooks/hooks';
-import { selectUserInfo } from '@redux/reducers/session/session-selectors';
 import { plannerSelectLayout } from '@selectors/planner';
+import { selectUserInfo } from '@selectors/session-selectors';
 import React, { ReactNode } from 'react';
 
-import { SERVICES_NAMES, currentColor } from '@src/common/constants';
+import { currentColor } from '@src/common/constants/constants';
+import { SERVICES_NAMES } from '@src/common/constants/enums';
 import { MergedObject, getPath } from '@src/common/functions';
 
 import { LinkStyled } from '@components/Buttons/Link.styled';
 import { UserHoverCard } from '@components/HoverCard/UserHoverCard';
 import { Tooltip } from '@components/Tooltip/Tooltip';
-
-import { UserAvatar } from '@planner/Users/UserAvatar';
+import { UserAvatar } from '@components/Users/UserAvatar';
 
 import { UserModel } from '@api/session-api/session-api.types';
 

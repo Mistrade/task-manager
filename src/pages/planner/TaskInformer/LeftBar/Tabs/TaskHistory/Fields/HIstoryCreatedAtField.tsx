@@ -1,7 +1,7 @@
 import { FC } from 'react';
 
 import { EventEssence } from '@components/Essences/EventEssence/EventEssence';
-import { FlexBlock } from '@components/LayoutComponents/FlexBlock';
+import { FlexBlock } from '@components/LayoutComponents';
 
 import { BaseEventHistoryFieldProps } from '../event-history.types';
 

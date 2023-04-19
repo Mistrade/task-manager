@@ -4,12 +4,11 @@ import React, { FC } from 'react';
 import { getDateDescription } from '@src/common/calendarSupport/dateHelper';
 import { openUrlInNewTab } from '@src/common/url';
 
-import { FlexBlock } from '@components/LayoutComponents/FlexBlock';
+import { FlexBlock } from '@components/LayoutComponents';
 import { Heading } from '@components/Text/Heading';
+import { CalendarUserIndicator } from '@components/Users/UserIndicator';
 
-import { CalendarUserIndicator } from '@planner/Users/UserIndicator';
 import { EventInfoBaseProps } from '@planner/planner.types';
-
 
 export const TaskCreatedMessage: FC<EventInfoBaseProps> = ({ eventInfo }) => {
   return (

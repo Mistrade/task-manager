@@ -8,6 +8,7 @@ import { SelectPriorityInput } from '@components/Input/SelectInput/CalendarSelec
 
 import { CalendarPriorityKeys } from '@planner/planner.types';
 
+
 export const EventFilterPriorityInput = memo(() => {
   const initial = useAppSelector(plannerSelectEventFilterPriority);
   const dispatch = useAppDispatch();

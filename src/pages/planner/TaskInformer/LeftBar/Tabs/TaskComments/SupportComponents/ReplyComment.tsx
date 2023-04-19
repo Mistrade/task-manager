@@ -1,14 +1,13 @@
 import dayjs from 'dayjs';
 import React, { FC } from 'react';
 
-import { currentColor } from '@src/common/constants';
+import { currentColor } from '@src/common/constants/constants';
 
 import { LinkStyled } from '@components/Buttons/Link.styled';
 import { TrashIcon } from '@components/Icons/Icons';
-import { FlexBlock } from '@components/LayoutComponents/FlexBlock';
+import { FlexBlock } from '@components/LayoutComponents';
+import { CutText } from '@components/Text/Text';
 import { Tooltip } from '@components/Tooltip/Tooltip';
-
-import { CutText } from '@planner/RenderModes/DayCalendar/TaskList/TaskList.styled';
 
 import {
   CommentActionButton,
@@ -17,7 +16,6 @@ import {
 } from '../comments.styled';
 import { ReplyCommentProps } from '../comments.types';
 import { CommentDate } from './CommentDate';
-
 
 export const ReplyComment: FC<ReplyCommentProps> = ({
   scrollToAnsweredCommentFn,

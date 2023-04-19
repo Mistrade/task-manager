@@ -6,7 +6,7 @@ import dayjs from 'dayjs';
 import { FC, useMemo, useState } from 'react';
 
 import { DateHelper } from '@src/common/calendarSupport/dateHelper';
-import { SERVICES_NAMES } from '@src/common/constants';
+import { SERVICES_NAMES } from '@src/common/constants/enums';
 import { getPath } from '@src/common/functions';
 
 import { SelectItemContainer } from '@components/Input/SelectInput/SelectItemContainer';
@@ -21,6 +21,7 @@ import {
 } from '@planner/planner.types';
 
 import { GetEventsSchemeResponse } from '@api/planning-api/types/event-info.types';
+
 
 export interface DateWithTooltipProps {
   date: CalendarItem;

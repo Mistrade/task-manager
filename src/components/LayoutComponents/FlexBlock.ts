@@ -22,10 +22,6 @@ interface ChildrenProps {
   children?: ReactNode;
 }
 
-interface EventsMap {
-  onClick?: <T>(data: T) => void;
-}
-
 export interface WidthProps {
   width?: UnitsType;
   maxWidth?: UnitsType;

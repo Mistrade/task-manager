@@ -1,13 +1,12 @@
 import { FC } from 'react';
 
-import { ERROR_IMAGES, defaultColor } from '@src/common/constants';
-import { scaleAnimation } from '@src/common/cssMixins';
+import { ERROR_IMAGES, defaultColor } from '@src/common/constants/constants';
+import { scaleAnimation } from '@src/common/css/mixins';
 import { DocumentErrorTypes } from '@src/common/types';
 
 import { ButtonWithLoading } from '@components/Buttons/ButtonWithLoading';
-import { FlexBlock } from '@components/LayoutComponents/FlexBlock';
+import { FlexBlock } from '@components/LayoutComponents';
 import { Heading } from '@components/Text/Heading';
-
 
 export interface ActionItemProps {
   title: string;

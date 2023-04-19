@@ -5,18 +5,15 @@ import { useFormik } from 'formik';
 import { FC, useEffect } from 'react';
 import * as yup from 'yup';
 
-import {
-  SERVICES_NAMES,
-  colorPalette,
-  currentColor,
-} from '@src/common/constants';
+import { colorPalette, currentColor } from '@src/common/constants/constants';
+import { SERVICES_NAMES } from '@src/common/constants/enums';
 import { getPath } from '@src/common/functions';
 
 import { Button, WhiteButton } from '@components/Buttons/Buttons.styled';
 import { ColorScheme } from '@components/ColorScheme/ColorScheme';
 import { InputErrorMessage } from '@components/Input/InputSupportComponents/InputErrorMessage';
 import { TextInput } from '@components/Input/TextInput/TextInput';
-import { FlexBlock } from '@components/LayoutComponents/FlexBlock';
+import { FlexBlock } from '@components/LayoutComponents';
 import {
   Modal,
   ModalBody,
@@ -32,6 +29,7 @@ import { CatchHandleForToast, thenHandleForToast } from '@api/tools';
 
 import { ChangeGroupModalProps, CreateGroupProps } from './groups.types';
 
+//TODO прорефакторить узел GROUPS
 const validationSchema = yup.object().shape({
   color: yup
     .string()

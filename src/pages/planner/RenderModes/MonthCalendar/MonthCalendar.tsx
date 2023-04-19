@@ -7,7 +7,8 @@ import {
 import React, { FC, useMemo } from 'react';
 import { Helmet } from 'react-helmet';
 
-import { MonthList, UTC_OFFSET } from '@src/common/constants';
+import { MonthList } from '@src/common/constants/constants';
+import { UTC_OFFSET } from '@src/common/constants/defaultConstants';
 import { disableReRender } from '@src/common/utils/react-utils';
 
 import { CalendarDateListContainer } from '@planner/Planner.styled';
@@ -16,6 +17,7 @@ import { MonthCalendarProps } from '@planner/planner.types';
 
 import { useGetEventsStorageQuery } from '@api/planning-api';
 import { GetEventsFiltersRequestProps } from '@api/planning-api/types/event-info.types';
+
 
 export const MonthCalendar: FC<MonthCalendarProps> = React.memo(
   ({ renderTaskCount }) => {

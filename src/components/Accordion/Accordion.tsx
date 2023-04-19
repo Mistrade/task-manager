@@ -1,7 +1,7 @@
 import { FC, ReactNode, useState } from 'react';
 import { css } from 'styled-components';
 
-import { currentColor } from '@src/common/constants';
+import { currentColor } from '@src/common/constants/constants';
 
 import { EmptyButtonStyled } from '@components/Buttons/EmptyButton.styled';
 import { Arrow, IconProps, PlusIcon } from '@components/Icons/Icons';
@@ -9,6 +9,7 @@ import {
   FlexBlock,
   FlexBlockProps,
 } from '@components/LayoutComponents/FlexBlock';
+
 
 export interface AccordionProps {
   containerProps?: FlexBlockProps;

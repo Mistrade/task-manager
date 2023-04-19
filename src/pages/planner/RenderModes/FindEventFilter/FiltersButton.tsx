@@ -5,14 +5,14 @@ import {
 } from '@selectors/planner';
 import React, { memo, useState } from 'react';
 
-import { delayedColor } from '@src/common/constants';
+import { delayedColor } from '@src/common/constants/constants';
 
 import { EmptyButtonStyled } from '@components/Buttons/EmptyButton.styled';
 import { FiltersIcon } from '@components/Icons/Icons';
-import { FlexBlock } from '@components/LayoutComponents/FlexBlock';
+import { FlexBlock } from '@components/LayoutComponents';
+import { CutText } from '@components/Text/Text';
 import { Tooltip } from '@components/Tooltip/Tooltip';
 
-import { CutText } from '@planner/RenderModes/DayCalendar/TaskList/TaskList.styled';
 import { FilterForm } from '@planner/RenderModes/FindEventFilter/FilterForm';
 
 export const FiltersButton = memo(() => {

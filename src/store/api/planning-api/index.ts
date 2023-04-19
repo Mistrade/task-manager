@@ -51,6 +51,7 @@ import {
   GroupModelResponse,
 } from './types/groups.types';
 
+
 export const PlanningApiTagTypes = [
   'Events',
   'EventInfo',

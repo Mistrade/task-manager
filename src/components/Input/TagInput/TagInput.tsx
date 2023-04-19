@@ -4,9 +4,8 @@ import {
   TextInput,
   TextInputProps,
 } from '@components/Input/TextInput/TextInput';
-import { FlexBlock } from '@components/LayoutComponents/FlexBlock';
+import { FlexBlock } from '@components/LayoutComponents';
 import { Tag } from '@components/Tags/Tag';
-
 
 type ExtendableProps = Omit<
   TextInputProps,

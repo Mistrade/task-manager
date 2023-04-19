@@ -1,13 +1,13 @@
 import { FC, ReactNode } from 'react';
 import { css } from 'styled-components';
 
-import { borderRadiusSize } from '@src/common/borderRadiusSize';
 import {
   currentColor,
   darkColor,
   disabledColor,
   pageHeaderColor,
-} from '@src/common/constants';
+} from '@src/common/constants/constants';
+import { borderRadiusSize } from '@src/common/css/mixins';
 
 import {
   FlexBlock,

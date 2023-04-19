@@ -1,8 +1,8 @@
 import { FC, memo } from 'react';
 
-import { MonthList, currentColor } from '@src/common/constants';
+import { MonthList, currentColor } from '@src/common/constants/constants';
 
-import { FlexBlock } from '@components/LayoutComponents/FlexBlock';
+import { FlexBlock } from '@components/LayoutComponents';
 
 import { SmallCalendarMonthTitleProps } from '@planner/planner.types';
 

@@ -46,6 +46,7 @@ export const initialFiltersValues: (
   utcOffset: dayjs().utcOffset(),
 });
 
+//TODO дописать чтобы починить логику в связях
 export const useEventFilters: UseEventFiltersType = ({
   initialValues,
   layout,

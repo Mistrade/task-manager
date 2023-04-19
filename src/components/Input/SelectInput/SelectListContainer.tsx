@@ -7,7 +7,6 @@ import {
 
 import { FCWithChildren } from '@planner/planner.types';
 
-
 export const SelectListContainer: FCWithChildren<FlexBlockProps> = ({
   children,
   ...flexBlockProps

@@ -1,17 +1,16 @@
 import React, { FC } from 'react';
 import { Helmet } from 'react-helmet';
 
-import { FRIENDS_PAGE_TITLES } from '@src/common/constants';
+import { FRIENDS_PAGE_TITLES } from '@src/common/constants/defaultConstants';
+import { FRIEND_REQUESTS_TYPES } from '@src/common/constants/enums';
 
 import { EmptyButtonStyled } from '@components/Buttons/EmptyButton.styled';
-import { FlexBlock } from '@components/LayoutComponents/FlexBlock';
+import { FlexBlock } from '@components/LayoutComponents';
 
 import { FriendItem } from '@pages/Friends/Tabs/FriendsList/FriendItem';
 
-import {
-  FRIEND_REQUESTS_TYPES,
-  useGetContactsListQuery,
-} from '@api/friends-api';
+import { useGetContactsListQuery } from '@api/friends-api';
+
 
 export interface FriendRequestListProps {}
 

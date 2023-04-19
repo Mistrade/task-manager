@@ -1,6 +1,6 @@
 import { FC, ReactNode } from 'react';
 
-import { defaultColor } from '@src/common/constants';
+import { defaultColor } from '@src/common/constants/constants';
 
 import { EmptyButtonStyled } from '../Buttons/EmptyButton.styled';
 import { TrashIcon } from '../Icons/Icons';

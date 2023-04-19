@@ -3,17 +3,18 @@ import { useAppDispatch, useAppSelector } from '@redux/hooks/hooks';
 import { plannerSelectLayout } from '@selectors/planner';
 import { useMemo, useState } from 'react';
 
-import { SERVICES_NAMES, defaultColor } from '@src/common/constants';
+import { defaultColor } from '@src/common/constants/constants';
+import { SERVICES_NAMES } from '@src/common/constants/enums';
 import { getPath } from '@src/common/functions';
 
 import { SelectListContainer } from '@components/Input/SelectInput/SelectListContainer';
-import { FlexBlock } from '@components/LayoutComponents/FlexBlock';
+import { FlexBlock } from '@components/LayoutComponents';
+import { CutText } from '@components/Text/Text';
 import { Tooltip } from '@components/Tooltip/Tooltip';
 
-import { LinkSolid } from '@planner/Header/ModeSwitch/Item';
-import { PlannerHeaderSwitch } from '@planner/Header/ModeSwitch/List';
+import { LinkSolid } from '@planner/OptionsPanel/ModeSwitch/Item';
+import { PlannerHeaderSwitch } from '@planner/OptionsPanel/ModeSwitch/List';
 import { SwitchCalendarModeTab } from '@planner/Planner.styled';
-import { CutText } from '@planner/RenderModes/DayCalendar/TaskList/TaskList.styled';
 
 export const PlannerSelectLayout = () => {
   const dispatch = useAppDispatch();

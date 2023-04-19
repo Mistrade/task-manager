@@ -6,7 +6,6 @@ import { SelectInput } from './SelectInput';
 import { SelectItemContainer } from './SelectItemContainer';
 import { SelectListContainer } from './SelectListContainer';
 
-
 interface SelectBooleanInputProps<T extends SelectBooleanInputDataItem>
   extends Omit<TextInputProps, 'onChange' | 'readOnly' | 'value'> {
   onChange?: (data: T) => void;

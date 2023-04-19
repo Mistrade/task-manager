@@ -1,6 +1,5 @@
 import styled, { css } from 'styled-components';
 
-import { borderRadiusSize } from '@src/common/borderRadiusSize';
 import {
   currentColor,
   darkColor,
@@ -9,9 +8,10 @@ import {
   hoverColor,
   lightHoverColor,
   orangeColor,
-} from '@src/common/constants';
+} from '@src/common/constants/constants';
+import { borderRadiusSize } from '@src/common/css/mixins';
 
-import { FlexBlock } from '@components/LayoutComponents/FlexBlock';
+import { FlexBlock } from '@components/LayoutComponents';
 
 export const SmallMonthWeekCount = styled(FlexBlock)`
   justify-content: center;

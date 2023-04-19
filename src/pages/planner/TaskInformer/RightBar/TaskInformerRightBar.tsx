@@ -2,7 +2,7 @@ import { FC, memo } from 'react';
 
 import { disableReRender } from '@src/common/utils/react-utils';
 
-import { FlexBlock } from '@components/LayoutComponents/FlexBlock';
+import { FlexBlock } from '@components/LayoutComponents';
 import { Heading } from '@components/Text/Heading';
 
 import { OptionPanelCalendar } from '@planner/OptionsPanel/Calendar';

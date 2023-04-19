@@ -23,7 +23,6 @@ import {
   FlexBlockProps,
 } from '@components/LayoutComponents/FlexBlock';
 
-
 export interface DefaultTextInputProps
   extends InputErrorMessageProps,
     InputActionsProps,

@@ -2,7 +2,7 @@ import React, { FC, useMemo } from 'react';
 import styled from 'styled-components';
 
 import { EmptyButtonStyled } from '@components/Buttons/EmptyButton.styled';
-import { ScrollVerticalView } from '@components/LayoutComponents/ScrollView/ScrollVerticalView';
+import { VerticalScroll } from '@components/LayoutComponents/ScrollView/VerticalScroll';
 import { Tooltip } from '@components/Tooltip/Tooltip';
 
 import {
@@ -71,7 +71,7 @@ export const CalendarCellEventsList: FC<CalendarCellEventsListProps> = ({
             placement={'left'}
             interactive={true}
             content={
-              <ScrollVerticalView
+              <VerticalScroll
                 renderPattern={'top-bottom'}
                 placementStatic={'top'}
                 containerProps={{ maxHeight: 300 }}
@@ -94,7 +94,7 @@ export const CalendarCellEventsList: FC<CalendarCellEventsListProps> = ({
                     />
                   ))}
                 </CalendarCellEventsListContainer>
-              </ScrollVerticalView>
+              </VerticalScroll>
             }
           >
             <EmptyButtonStyled

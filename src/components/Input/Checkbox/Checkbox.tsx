@@ -1,6 +1,6 @@
 import { ChangeEvent, FC, ReactNode, useRef } from 'react';
 
-import { darkColor } from '@src/common/constants';
+import { darkColor } from '@src/common/constants/constants';
 
 import { EmptyButtonStyled } from '@components/Buttons/EmptyButton.styled';
 import { IconProps } from '@components/Icons/Icons';
@@ -10,9 +10,8 @@ import {
 } from '@components/Icons/InputIcons/Checkbox';
 import { CheckboxStyledInput } from '@components/Input/Checkbox/Checkbox.styled';
 import { StyledLabel } from '@components/Input/Input.styled';
-import { FlexBlock } from '@components/LayoutComponents/FlexBlock';
-
-import { CutText } from '@planner/RenderModes/DayCalendar/TaskList/TaskList.styled';
+import { FlexBlock } from '@components/LayoutComponents';
+import { CutText } from '@components/Text/Text';
 
 export interface CheckboxProps {
   type: 'checkbox' | 'radio';

@@ -1,26 +1,20 @@
 import { FC } from 'react';
 import { BaseCreateEventTabProps } from 'src/pages/planner/Forms/CreateEvent/Tabs/Info';
 
-import { SERVICES_NAMES } from '@src/common/constants';
+import { SERVICES_NAMES } from '@src/common/constants/enums';
 
 import { TimeBadge } from '@components/Badge/Badge';
 import { LinkStyled } from '@components/Buttons/Link.styled';
 import { ErrorScreen } from '@components/Errors/ErrorScreen';
 import { Checkbox } from '@components/Input/Checkbox/Checkbox';
-import { FlexBlock } from '@components/LayoutComponents/FlexBlock';
-import { ScrollVerticalView } from '@components/LayoutComponents/ScrollView/ScrollVerticalView';
+import { FlexBlock } from '@components/LayoutComponents';
+import { VerticalScroll } from '@components/LayoutComponents/ScrollView/VerticalScroll';
 import { Heading } from '@components/Text/Heading';
-
-import { CutText } from '@planner/RenderModes/DayCalendar/TaskList/TaskList.styled';
+import { CutText } from '@components/Text/Text';
 
 import { useGetFriendsListQuery } from '@api/friends-api';
 
 export interface CreateEventMembersTabProps extends BaseCreateEventTabProps {}
-
-export enum EVENT_ACCESS_RIGHTS {
-  EDITOR = 'editor',
-  VIEW_ONLY = 'viewer',
-}
 
 export const CreateEventMembersTab: FC<CreateEventMembersTabProps> = ({
   values,
@@ -32,7 +26,7 @@ export const CreateEventMembersTab: FC<CreateEventMembersTabProps> = ({
   const { data: myFriends } = useGetFriendsListQuery();
 
   return (
-    <ScrollVerticalView
+    <VerticalScroll
       placementStatic={'top'}
       renderPattern={'top-bottom'}
       gap={12}
@@ -93,6 +87,6 @@ export const CreateEventMembersTab: FC<CreateEventMembersTabProps> = ({
           </FlexBlock>
         </FlexBlock>
       )}
-    </ScrollVerticalView>
+    </VerticalScroll>
   );
 };

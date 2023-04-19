@@ -5,7 +5,8 @@ import { FC, useEffect, useMemo, useState } from 'react';
 import { DateListGenerator } from '@src/common/calendarSupport/generators';
 import { changeMonthCurrentHandler } from '@src/common/functions';
 
-import { FlexBlock } from '@components/LayoutComponents/FlexBlock';
+import { DatePickerSwitch } from '@components/DatePicker/DatePickerSwitch';
+import { FlexBlock } from '@components/LayoutComponents';
 
 import { SmallCalendarMonthTitle } from '@pages/planner/SmallMotnCalendar/SmallCalendarMonthTitle';
 import { SmallMonth } from '@pages/planner/SmallMotnCalendar/SmallMonth';
@@ -14,8 +15,6 @@ import {
   MonthItem,
   PlannerMonthMode,
 } from '@pages/planner/planner.types';
-
-import { DatePickerSwitch } from '@planner/Header/DatePickerSwitch';
 
 import { TimeSelector } from './TimeSelector';
 

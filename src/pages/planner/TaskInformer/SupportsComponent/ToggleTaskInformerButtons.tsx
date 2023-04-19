@@ -1,6 +1,7 @@
 import { FC, useMemo, useState } from 'react';
 
-import { PRIORITY_LIST, TASK_STATUSES } from '@src/common/constants';
+import { PRIORITY_LIST } from '@src/common/constants/constants';
+import { TASK_STATUSES } from '@src/common/constants/signatures';
 import { Delay } from '@src/common/functions';
 
 import { DropDownButton } from '@components/Buttons/DropDownButton';
@@ -23,6 +24,7 @@ import { EventGroupButton } from './EventGroupButton';
 import { EventPriorityButton } from './EventPriorityButton';
 import { EventStatusButton } from './EventStatusButton';
 import { ToggleButtonContainer } from './ToggleButtonContainer';
+
 
 export type EventInfoUpdateFn = (
   field: keyof EventInfoModel,

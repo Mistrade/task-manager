@@ -9,7 +9,7 @@ import {
 import { EmptyButtonStyled } from '@components/Buttons/EmptyButton.styled';
 import { PencilIcon, TrashIcon } from '@components/Icons/Icons';
 import { SelectLinks } from '@components/Input/SelectInput/CalendarSelectInputs/SelectLinks';
-import { FlexBlock } from '@components/LayoutComponents/FlexBlock';
+import { FlexBlock } from '@components/LayoutComponents';
 
 import { LinkValidationSchema } from '@planner/Forms/CreateEvent/CreateEventForm';
 import { EventItem, EventLinkItem } from '@planner/planner.types';

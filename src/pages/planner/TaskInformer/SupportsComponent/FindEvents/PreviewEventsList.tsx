@@ -1,6 +1,6 @@
 import { FC, ReactNode } from 'react';
 
-import { FlexBlock } from '@components/LayoutComponents/FlexBlock';
+import { FlexBlock } from '@components/LayoutComponents';
 
 import { EventListFromArray, EventListFromArrayProps } from './EventsList';
 

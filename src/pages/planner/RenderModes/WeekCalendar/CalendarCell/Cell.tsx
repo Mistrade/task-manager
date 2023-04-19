@@ -1,12 +1,12 @@
 import React, { FC } from 'react';
 import styled, { css } from 'styled-components';
 
-import { borderRadiusSize } from '@src/common/borderRadiusSize';
 import {
   currentColor,
   defaultColor,
   disabledColor,
-} from '@src/common/constants';
+} from '@src/common/constants/constants';
+import { borderRadiusSize } from '@src/common/css/mixins';
 
 import { CalendarCellProps } from '@planner/planner.types';
 

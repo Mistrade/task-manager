@@ -12,6 +12,7 @@ import {
   PlannerContentContainer,
 } from '@planner/Planner.styled';
 
+
 export const FriendsPage = () => {
   const isOpenModal = useAppSelector(selectCreateEventModalIsOpen);
   const { declineModal } = useCreateEventModal();

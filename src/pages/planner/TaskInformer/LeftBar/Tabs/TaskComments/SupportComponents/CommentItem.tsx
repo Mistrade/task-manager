@@ -1,7 +1,7 @@
 import dayjs from 'dayjs';
 import React, { FC, useMemo, useState } from 'react';
 
-import { FlexBlock } from '@components/LayoutComponents/FlexBlock';
+import { FlexBlock } from '@components/LayoutComponents';
 
 import { StyledCommentText } from '../comments.styled';
 import { CommentItemProps } from '../comments.types';

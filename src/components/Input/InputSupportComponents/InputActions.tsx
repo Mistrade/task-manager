@@ -6,7 +6,6 @@ import {
   InputActionsStyledContainer,
 } from './InputActions.styled';
 
-
 export interface TextInputAdditionalAction {
   title: string;
   actionKey: string;

@@ -2,14 +2,14 @@ import { useFormik } from 'formik';
 import { FC, useEffect, useState } from 'react';
 import styled, { css } from 'styled-components';
 
-import { borderRadiusSize } from '@src/common/borderRadiusSize';
-import { currentColor, disabledColor } from '@src/common/constants';
+import { currentColor, disabledColor } from '@src/common/constants/constants';
+import { borderRadiusSize } from '@src/common/css/mixins';
 
 import { EmptyButtonStyled } from '@components/Buttons/EmptyButton.styled';
 import { PencilIcon } from '@components/Icons/Icons';
 import { InputLabel } from '@components/Input/InputSupportComponents/InputLabel';
 import { TextAreaInput } from '@components/Input/TextAreaInput/TextAreaInput';
-import { FlexBlock } from '@components/LayoutComponents/FlexBlock';
+import { FlexBlock } from '@components/LayoutComponents';
 
 import { EventInfoBaseProps } from '@planner/planner.types';
 

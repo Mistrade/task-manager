@@ -2,11 +2,11 @@ import dayjs from 'dayjs';
 import { FC, useMemo } from 'react';
 import { useNavigate } from 'react-router-dom';
 
-import { DeclinationMonthList } from '@src/common/constants';
+import { DeclinationMonthList } from '@src/common/constants/constants';
 import { getTaskListOfDay } from '@src/common/functions';
 
 import { EventEssence } from '@components/Essences/EventEssence/EventEssence';
-import { FlexBlock } from '@components/LayoutComponents/FlexBlock';
+import { FlexBlock } from '@components/LayoutComponents';
 
 import { CalendarTitle } from '@planner/Planner.styled';
 import { EventsStorage } from '@planner/planner.types';

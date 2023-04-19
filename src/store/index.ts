@@ -6,16 +6,9 @@ import { contactsApi } from '@api/friends-api';
 import { planningApi } from '@api/planning-api';
 import { sessionApi } from '@api/session-api';
 
-import { eventReducer } from './reducers/events';
 import { GlobalReducer } from './reducers/global';
-import { CalendarReducer } from './reducers/planner-reducer';
-import { SessionReducer } from './reducers/session';
-
 
 const rootReducer = combineReducers({
-  events: eventReducer,
-  session: SessionReducer,
-  planner: CalendarReducer,
   global: GlobalReducer,
   plannerState: plannerReducer,
   [planningApi.reducerPath]: planningApi.reducer,

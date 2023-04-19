@@ -1,6 +1,7 @@
 import { PayloadAction, createSlice } from '@reduxjs/toolkit';
 
-import { SERVICES_NAMES } from '@src/common/constants';
+import { SERVICES_NAMES } from '@src/common/constants/enums';
+
 
 interface IGlobalReducer {
   serviceName: SERVICES_NAMES | null;

@@ -4,26 +4,16 @@ import { useAppDispatch } from '@redux/hooks/hooks';
 import React, { FC, memo, useCallback } from 'react';
 import { useNavigate } from 'react-router-dom';
 
-import { currentColor, defaultColor } from '@src/common/constants';
+import { currentColor, defaultColor } from '@src/common/constants/constants';
 
 import { Accordion } from '@components/Accordion/Accordion';
 import { Badge } from '@components/Badge/Badge';
 import { EventEssence } from '@components/Essences/EventEssence/EventEssence';
-import { FlexBlock } from '@components/LayoutComponents/FlexBlock';
-
-import {
-  GlobalTaskListProps,
-  OnSelectTaskFnType,
-} from '@planner/planner.types';
+import { FlexBlock } from '@components/LayoutComponents';
 
 import { useGetShortEventsArrayQuery } from '@api/planning-api';
 import { ShortEventInfoModel } from '@api/planning-api/types/event-info.types';
 import { ObjectId } from '@api/rtk-api.types';
-
-interface DayTaskListProps extends GlobalTaskListProps {
-  day: Date;
-  onSelectTask?: OnSelectTaskFnType;
-}
 
 export const DayTaskList: FC = memo(() => {
   const dispatch = useAppDispatch();

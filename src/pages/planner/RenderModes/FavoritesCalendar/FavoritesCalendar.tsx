@@ -10,6 +10,7 @@ import { FavoritesCalendarModeProps } from '@planner/planner.types';
 
 import { useGetEventsStorageQuery } from '@api/planning-api';
 
+
 export const FavoritesCalendar: FC<FavoritesCalendarModeProps> = memo(() => {
   const scope = useAppSelector(plannerSelectScope);
   const args = useEventStorageQueryArgs({ onlyFavorites: true });

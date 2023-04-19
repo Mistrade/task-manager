@@ -1,6 +1,9 @@
 import { FC, useMemo } from 'react';
 
-import { PRIORITY_LIST, PRIORITY_TITLES } from '@src/common/constants';
+import {
+  PRIORITY_LIST,
+  PRIORITY_TITLES,
+} from '@src/common/constants/constants';
 
 import { PriorityCalendarIcon } from '@components/Icons/CalendarIcons/PriorityCalendarIcon';
 import { SelectInput } from '@components/Input/SelectInput/SelectInput';
@@ -13,7 +16,6 @@ import {
   CalendarPriorityKeys,
   CalendarPriorityList,
 } from '@planner/planner.types';
-
 
 interface SelectPriorityInputProps
   extends Partial<Omit<DefaultTextInputProps, 'onChange'>> {

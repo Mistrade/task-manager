@@ -1,10 +1,10 @@
 import { useAppSelector } from '@redux/hooks/hooks';
-import { selectUserInfo } from '@redux/reducers/session/session-selectors';
+import { selectUserInfo } from '@selectors/session-selectors';
 import React, { FC, lazy } from 'react';
 import { Route } from 'react-router';
 import { Routes } from 'react-router-dom';
 
-import { SERVICES_NAMES } from '@src/common/constants';
+import { LOADER_TITLES, SERVICES_NAMES } from '@src/common/constants/enums';
 import { disableReRender } from '@src/common/utils/react-utils';
 
 import { SessionInterceptor } from '@components/AppRoutes/Interceptors/SessionInterceptor';
@@ -32,7 +32,7 @@ export const AppRoutes: FC = React.memo(() => {
         path={`${SERVICES_NAMES.PLANNER}/*`}
         element={
           <SessionInterceptor userInfo={userInfo}>
-            <LayoutSuspense>
+            <LayoutSuspense title={LOADER_TITLES.SERVICE_SUSPENSE}>
               <Planner />
             </LayoutSuspense>
           </SessionInterceptor>
@@ -44,7 +44,7 @@ export const AppRoutes: FC = React.memo(() => {
         path={`${SERVICES_NAMES.FRIENDS}/*`}
         element={
           <SessionInterceptor userInfo={userInfo}>
-            <LayoutSuspense title={'Загрузка сервиса...'}>
+            <LayoutSuspense title={LOADER_TITLES.SERVICE_SUSPENSE}>
               <FriendsPage />
             </LayoutSuspense>
           </SessionInterceptor>

@@ -6,7 +6,6 @@ import {
   FlexBlockProps,
 } from '@components/LayoutComponents/FlexBlock';
 
-
 export const TwitchLogoIcon: FC<IconProps & FlexBlockProps> = ({
   size = 24,
   color = '#5A3E85',

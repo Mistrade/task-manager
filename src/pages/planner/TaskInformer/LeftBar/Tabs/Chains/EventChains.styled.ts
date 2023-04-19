@@ -1,6 +1,6 @@
 import styled from 'styled-components';
 
-import { darkColor, hoverColor } from '@src/common/constants';
+import { darkColor, hoverColor } from '@src/common/constants/constants';
 
 import { Badge } from '@components/Badge/Badge';
 

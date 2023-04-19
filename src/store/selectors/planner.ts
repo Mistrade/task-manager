@@ -1,8 +1,19 @@
-import { IPlannerReducer } from '@planner-reducer/types';
+import {
+  CreateEventInitialState,
+  IPlannerReducer,
+} from '@planner-reducer/types';
 import { createSelector } from '@reduxjs/toolkit';
+import dayjs from 'dayjs';
 
-import { PLANNER_LAYOUTS, SERVICES_NAMES } from '@src/common/constants';
+import {
+  DEFAULT_CHECKLIST_TITLE,
+  DEFAULT_EVENT_PRIORITY,
+  DEFAULT_EVENT_STATUS,
+} from '@src/common/constants/defaultConstants';
+import { PLANNER_LAYOUTS, SERVICES_NAMES } from '@src/common/constants/enums';
 import { CreateSelectorReturnType, RootState } from '@src/store';
+
+import { CreateEventDataObject } from '@planner/planner.types';
 
 const rootSelector: CreateSelectorReturnType<IPlannerReducer> = createSelector(
   (state: RootState) => state,
@@ -96,3 +107,37 @@ export const plannerSelectLastReset = createSelector(
   plannerSelectFilters,
   (state) => state.lastResetTS
 );
+
+export const plannerSelectPrevUrlOfCreateEventForm = createSelector(
+  rootSelector,
+  (state) => state.createEventPrevUrl
+);
+
+export const createEventInitialStateSelector: CreateSelectorReturnType<CreateEventDataObject> =
+  createSelector(rootSelector, (state): CreateEventDataObject => {
+    const initialState: CreateEventInitialState | null =
+      state.createEventInitialState;
+
+    return {
+      description: initialState?.description || '',
+      title: initialState?.title || '',
+      priority: initialState?.priority || DEFAULT_EVENT_PRIORITY,
+      time: initialState?.time
+        ? dayjs(initialState.time).toDate()
+        : dayjs().toDate(),
+      timeEnd: initialState?.timeEnd
+        ? dayjs(initialState.timeEnd).toDate()
+        : dayjs().add(1, 'hour').toDate(),
+      status: initialState?.status || DEFAULT_EVENT_STATUS,
+      members: initialState?.members || {},
+      link: initialState?.link || null,
+      group: initialState?.group || '',
+      parentId: initialState?.parentId,
+      linkedFrom: initialState?.linkedFrom,
+      attachCheckList: initialState?.attachCheckList || false,
+      checkList: {
+        title: initialState?.checkList?.title || DEFAULT_CHECKLIST_TITLE,
+        data: initialState?.checkList?.data || [],
+      },
+    };
+  });

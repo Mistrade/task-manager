@@ -1,9 +1,9 @@
 import { FC } from 'react';
 
-import { currentColor } from '@src/common/constants';
+import { currentColor } from '@src/common/constants/constants';
 
 import { TooltipIcon } from '@components/Icons/TooltipIcon';
-import { FlexBlock } from '@components/LayoutComponents/FlexBlock';
+import { FlexBlock } from '@components/LayoutComponents';
 import { Tooltip } from '@components/Tooltip/Tooltip';
 
 import { ChainsRenderModeProps } from '@planner/TaskInformer/LeftBar/Tabs/Chains/event-chains.types';

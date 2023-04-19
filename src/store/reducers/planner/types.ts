@@ -1,10 +1,15 @@
-import { PLANNER_LAYOUTS } from '@src/common/constants';
+import { PayloadAction } from '@reduxjs/toolkit';
+
+import {
+  EVENT_INFORMER_TAB_NAMES,
+  PLANNER_LAYOUTS,
+} from '@src/common/constants/enums';
 
 import { EventFilterTaskStatuses } from '@pages/planner/RenderModes/FindEventFilter/find-event-filters.types';
 
-import { EVENT_INFORMER_TAB_NAMES } from '@planner/TaskInformer/LeftBar/TaskInformerLeftBar';
 import {
   CalendarPriorityKeys,
+  CreateEventDataObject,
   MonthItem,
   TLayoutItemsScope,
   WeekItem,
@@ -25,6 +30,21 @@ export interface IEventInfoState {
   tabName: EVENT_INFORMER_TAB_NAMES;
 }
 
+type ReplaceType<
+  Object extends object,
+  ReplaceKeys extends keyof Object,
+  PasteType
+> = Omit<Object, ReplaceKeys> & {
+  [key in ReplaceKeys]: PasteType;
+};
+export type CreateEventInitialState = Partial<
+  ReplaceType<CreateEventDataObject, 'time' | 'timeEnd', string>
+>;
+export type SetCreateEventInitialStatePayload = PayloadAction<{
+  data: Partial<CreateEventInitialState> | null;
+  prevUrl: string | null;
+}>;
+
 export interface IPlannerReducer {
   date: Record<PLANNER_LAYOUTS, IPlannerDate>;
   layout: PLANNER_LAYOUTS;
@@ -37,6 +57,8 @@ export interface IPlannerReducer {
     isOpen: boolean;
   };
   eventFilter: IEventFiltersState;
+  createEventInitialState: null | CreateEventInitialState;
+  createEventPrevUrl: string | null;
 }
 
 export interface IPlannerLayoutRenderConfig {

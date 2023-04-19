@@ -1,12 +1,12 @@
 import React, { memo } from 'react';
 import { css } from 'styled-components';
 
-import { borderRadiusSize } from '@src/common/borderRadiusSize';
-import { orangeColor, pageHeaderColor } from '@src/common/constants';
+import { orangeColor, pageHeaderColor } from '@src/common/constants/constants';
+import { borderRadiusSize } from '@src/common/css/mixins';
 import { eventIsDelayed } from '@src/common/functions';
 
 import { TimeBadge } from '@components/Badge/Badge';
-import { FlexBlock } from '@components/LayoutComponents/FlexBlock';
+import { FlexBlock } from '@components/LayoutComponents';
 import { Tooltip } from '@components/Tooltip/Tooltip';
 
 import { EventInformerToggles } from '@planner/TaskInformer/Header/Toggles';
@@ -17,6 +17,7 @@ import { TaskInformerTitle } from '@planner/TaskInformer/SupportsComponent/TaskI
 import { EventInfoUpdateFn } from '@planner/TaskInformer/SupportsComponent/ToggleTaskInformerButtons';
 
 import { EventInfoModel } from '@api/planning-api/types/event-info.types';
+
 
 export interface EventInformerHeaderProps {
   eventInfo: EventInfoModel;

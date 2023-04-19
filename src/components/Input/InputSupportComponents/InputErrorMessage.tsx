@@ -1,8 +1,7 @@
 import { FC, ReactNode } from 'react';
 import { css } from 'styled-components';
 
-import { FlexBlock } from '@components/LayoutComponents/FlexBlock';
-
+import { FlexBlock } from '@components/LayoutComponents';
 
 export interface InputErrorMessageProps {
   isDirty?: boolean;

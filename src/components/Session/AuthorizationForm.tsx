@@ -1,17 +1,18 @@
 import { useSearchNavigate } from '@hooks/useSearchNavigate';
 import { useAppSelector } from '@redux/hooks/hooks';
-import { plannerSelectLayout } from '@selectors/planner';
+import { plannerSelectLayout, plannerSelectStatus } from '@selectors/planner';
 import { useFormik } from 'formik';
 import { FC } from 'react';
 import { toast } from 'react-toastify';
 
-import { defaultColor } from '@src/common/constants';
+import { defaultColor } from '@src/common/constants/constants';
 import { AuthValidationScheme } from '@src/common/validation/session';
 
 import { Button } from '@components/Buttons/Buttons.styled';
+import { Informer } from '@components/Inform/Informer';
 import { PasswordInput } from '@components/Input/PasswordInput/PasswordInput';
 import { TextInput } from '@components/Input/TextInput/TextInput';
-import { FlexBlock } from '@components/LayoutComponents/FlexBlock';
+import { FlexBlock } from '@components/LayoutComponents';
 import { Heading } from '@components/Text/Heading';
 
 import { useLoginMutation } from '@api/session-api';
@@ -28,7 +29,6 @@ export const AuthorizationForm: FC<{ prevUrl?: string }> = ({ prevUrl }) => {
   const navigate = useSearchNavigate();
   const [loginUser] = useLoginMutation();
   const layout = useAppSelector(plannerSelectLayout);
-  const { statuses } = useAppSelector((state) => state.planner);
   const {
     values,
     setFieldValue,
@@ -103,8 +103,10 @@ export const AuthorizationForm: FC<{ prevUrl?: string }> = ({ prevUrl }) => {
         style={{ color: defaultColor }}
         fSize={13}
       >
-        *Выполняя вход в систему вы подтверждаете свое согласие на обработку
-        переданных нам данных во время использования сервиса.
+        <Informer>
+          *Выполняя вход в систему вы подтверждаете свое согласие на обработку
+          переданных нам данных во время использования сервиса.
+        </Informer>
         <br />
         <strong>
           Ваши данные надежно защищены и хранятся в зашифрованном виде.

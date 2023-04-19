@@ -1,10 +1,10 @@
 import dayjs from 'dayjs';
 import { memo, useMemo } from 'react';
 
-import { currentColor, orangeColor } from '@src/common/constants';
+import { currentColor, orangeColor } from '@src/common/constants/constants';
 
 import { Badge } from '@components/Badge/Badge';
-import { FlexBlock } from '@components/LayoutComponents/FlexBlock';
+import { FlexBlock } from '@components/LayoutComponents';
 import { Heading } from '@components/Text/Heading';
 
 import { WeekItem } from '@planner/planner.types';

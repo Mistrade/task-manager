@@ -1,6 +1,6 @@
 import { FC } from 'react';
 
-import { currentColor } from '@src/common/constants';
+import { currentColor } from '@src/common/constants/constants';
 
 import { IconProps } from '@components/Icons/Icons';
 

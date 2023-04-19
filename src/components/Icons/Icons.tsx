@@ -4,7 +4,7 @@ import {
   currentColor,
   defaultColor,
   priorityColors,
-} from '@src/common/constants';
+} from '@src/common/constants/constants';
 
 import {
   FlexBlock,

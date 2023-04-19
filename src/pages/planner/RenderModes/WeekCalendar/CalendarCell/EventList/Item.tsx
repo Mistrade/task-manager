@@ -3,23 +3,23 @@ import dayjs from 'dayjs';
 import React, { FC, useMemo, useState } from 'react';
 import styled, { css, keyframes } from 'styled-components';
 
-import { borderRadiusSize } from '@src/common/borderRadiusSize';
 import {
   DateHelper,
   HumanizeDateValueOptions,
 } from '@src/common/calendarSupport/dateHelper';
 import {
-  DATE_HOURS_FORMAT,
   defaultColor,
   delayedColor,
   hoverColor,
   orangeColor,
-} from '@src/common/constants';
+} from '@src/common/constants/constants';
+import { DATE_HOURS_FORMAT } from '@src/common/constants/defaultConstants';
+import { borderRadiusSize } from '@src/common/css/mixins';
 import { eventIsDelayed } from '@src/common/functions';
 
 import { EventShortHoverCard } from '@components/HoverCard/EventShortHoverCard';
 import { PriorityCalendarIcon } from '@components/Icons/CalendarIcons/PriorityCalendarIcon';
-import { FlexBlock } from '@components/LayoutComponents/FlexBlock';
+import { FlexBlock } from '@components/LayoutComponents';
 import { Tooltip } from '@components/Tooltip/Tooltip';
 
 import { GroupLogo } from '@planner/Groups/GroupList.styled';
@@ -111,10 +111,6 @@ const isEqualEventInfo = (
     prev.priority === next.priority &&
     prev._id === next._id
   );
-};
-
-const memoFn = (prev: TaskTileItemProps, next: TaskTileItemProps) => {
-  return isEqualEventInfo(prev.taskInfo, next.taskInfo);
 };
 
 export const CalendarCellItemContent: FC<

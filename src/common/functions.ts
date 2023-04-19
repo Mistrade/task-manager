@@ -1,5 +1,7 @@
 import dayjs, { Dayjs } from 'dayjs';
 
+import { PLANNER_LAYOUTS } from '@src/common/constants/enums';
+
 import {
   EventItem,
   EventsStorage,
@@ -22,7 +24,7 @@ import {
   ChangeYearCurrentFn,
   ShortChangeCurrentPattern,
 } from './commonTypes';
-import { MonthList, PLANNER_LAYOUTS } from './constants';
+import { MonthList } from './constants/constants';
 
 
 export const addNull = (value: number): string =>
@@ -373,3 +375,9 @@ export const eventIsDelayed = (
     eventStatus !== 'archive'
   );
 };
+
+export function getFromLocalStorage<T>(key: string): T | null {
+  const value = localStorage.getItem(key);
+  if (value) return JSON.parse(value) as T;
+  return null;
+}

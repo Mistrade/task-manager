@@ -1,12 +1,16 @@
 import React, { FC } from 'react';
 
-import { currentColor, defaultColor, orangeColor } from '@src/common/constants';
+import {
+  currentColor,
+  defaultColor,
+  orangeColor,
+} from '@src/common/constants/constants';
 
 import { WhiteButton } from '@components/Buttons/Buttons.styled';
 import { CopyToClipboardButton } from '@components/Buttons/CopyToClipboardButton';
 import { AnswerIcon } from '@components/Icons/CalendarIcons/AnswerIcon';
 import { PencilIcon, StarIcon, TrashIcon } from '@components/Icons/Icons';
-import { FlexBlock } from '@components/LayoutComponents/FlexBlock';
+import { FlexBlock } from '@components/LayoutComponents';
 import { Tooltip } from '@components/Tooltip/Tooltip';
 
 import { useToggleIsImportantCommentStateMutation } from '@api/planning-api';

@@ -1,21 +1,16 @@
 import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/dist/query/react';
 
+import {
+  FRIEND_REQUESTS_TYPES,
+  FRIEND_REQUEST_ACCEPT_STATUSES,
+} from '@src/common/constants/enums';
+
 import { UserModel } from '@api/session-api/session-api.types';
 
 import { baseServerUrl } from '../config';
 import { MyServerResponse, ObjectId } from '../rtk-api.types';
 import { TFriendsModelList } from './friends-api.types';
 
-export enum FRIEND_REQUESTS_TYPES {
-  'INCOMING' = 'incoming',
-  'OUTGOING' = 'outgoing',
-}
-
-export enum ContactAcceptStatuses {
-  'CREATED' = 'created',
-  'ACCEPTED' = 'accepted',
-  'DECLINE' = 'decline',
-}
 
 export const contactsApi = createApi({
   reducerPath: 'contactsApi',
@@ -51,7 +46,7 @@ export const contactsApi = createApi({
     }),
     responseOnFriendRequest: mutation<
       MyServerResponse,
-      { acceptedStatus: ContactAcceptStatuses; _id: ObjectId }
+      { acceptedStatus: FRIEND_REQUEST_ACCEPT_STATUSES; _id: ObjectId }
     >({
       query: (arg) => ({
         url: '/accept_or_decline',

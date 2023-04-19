@@ -2,11 +2,11 @@ import { plannerDateToDate } from '@planner-reducer/utils';
 import dayjs from 'dayjs';
 import React, { memo, useState } from 'react';
 
-import { MonthList, WeekDaysShortList } from '@src/common/constants';
+import { MonthList, WeekDaysShortList } from '@src/common/constants/constants';
 import { addNull } from '@src/common/functions';
 
 import { Badge } from '@components/Badge/Badge';
-import { FlexBlock } from '@components/LayoutComponents/FlexBlock';
+import { FlexBlock } from '@components/LayoutComponents';
 
 import { CellDateButtons } from '@planner/RenderModes/WeekCalendar/CalendarCell/CellDateButtons';
 import { CalendarItem } from '@planner/planner.types';

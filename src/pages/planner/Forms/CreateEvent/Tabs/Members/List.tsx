@@ -8,6 +8,7 @@ import { CreateEventDataObject } from '@planner/planner.types';
 import { useGetFriendsListQuery } from '@api/friends-api';
 import { UserModel } from '@api/session-api/session-api.types';
 
+
 export interface CreateFormMembersList {
   selected: CreateEventDataObject['members'];
 }

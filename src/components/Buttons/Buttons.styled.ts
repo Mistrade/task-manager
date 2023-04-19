@@ -1,8 +1,7 @@
 import styled, { css } from 'styled-components';
 
-import { borderRadiusSize } from '@src/common/borderRadiusSize';
-import { currentColor, defaultColor } from '@src/common/constants';
-
+import { currentColor, defaultColor } from '@src/common/constants/constants';
+import { borderRadiusSize } from '@src/common/css/mixins';
 
 export const StyledButton = styled('button')<{
   fillColor?: string;

@@ -1,6 +1,9 @@
 import { FC, useMemo } from 'react';
 
-import { TaskStatusesList, TaskStatusesTitles } from '@src/common/constants';
+import {
+  TaskStatusesList,
+  TaskStatusesTitles,
+} from '@src/common/constants/signatures';
 
 import { EventIcon } from '@components/Icons/EventIcon';
 import { SelectInput } from '@components/Input/SelectInput/SelectInput';
@@ -10,7 +13,6 @@ import { DefaultTextInputProps } from '@components/Input/TextInput/TextInput';
 import { FlexBlockProps } from '@components/LayoutComponents/FlexBlock';
 
 import { EventFilterTaskStatuses } from '@planner/RenderModes/FindEventFilter/find-event-filters.types';
-
 
 interface SelectStatusInputProps
   extends Partial<Omit<DefaultTextInputProps, 'onChange'>> {
