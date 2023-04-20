@@ -5,7 +5,6 @@ import {
   currentColor,
   darkColor,
   defaultColor,
-  disabledColor,
   hoverColor,
 } from '@src/common/constants/constants';
 import { borderRadiusSize } from '@src/common/css/mixins';
@@ -60,7 +59,8 @@ export const SwitchCalendarMode = styled('button')<{ isSelected?: boolean }>`
     margin-right: 4px;
   }
 `;
-export const SwitchCalendarModeTab = styled('button')<{ isSelected?: boolean }>`
+
+const SwitchMainStyles = css`
   & {
     outline: none;
     text-decoration: none;
@@ -73,7 +73,7 @@ export const SwitchCalendarModeTab = styled('button')<{ isSelected?: boolean }>`
     background-color: transparent;
     border: none;
     cursor: pointer;
-    transition: all 0.3s ease-in-out;
+    transition: all 0.5s ease-in-out;
     color: ${defaultColor};
     width: fit-content;
     min-width: 30px;
@@ -87,69 +87,45 @@ export const SwitchCalendarModeTab = styled('button')<{ isSelected?: boolean }>`
     align-items: center;
   }
 
-  ${(props) => {
-    if (props.isSelected) {
-      return css`
-        &:after {
-          content: '';
-          position: absolute;
-          bottom: 0px;
-          left: 0;
-          width: 100%;
-          height: 3px;
-          border-radius: ${borderRadiusSize.xl};
-          background-color: ${currentColor};
-        }
-      `;
-    }
-  }}
+  &:after {
+    content: '';
+    position: absolute;
+    bottom: -5px;
+    left: 0;
+    width: 100%;
+    height: 3px;
+    border-radius: ${borderRadiusSize.xl};
+    background-color: transparent;
+    transition: all 0.3s ease-in;
+  }
+
   &:hover {
     background-color: ${hoverColor};
     border-radius: ${borderRadiusSize.xs} ${borderRadiusSize.xs} 0px 0px;
   }
 `;
 
+export const SwitchCalendarModeTab = styled('button')<{ isSelected?: boolean }>`
+  ${SwitchMainStyles}
+
+  ${(props) => {
+    if (props.isSelected) {
+      return css`
+        &:after {
+          bottom: 0px;
+          background-color: ${currentColor};
+        }
+      `;
+    }
+  }}
+`;
+
 export const PlannerNavLink = styled(NavLink)`
-  & {
-    outline: none;
-    text-decoration: none;
-    padding: 6px 16px;
-    font-size: 15px;
-    white-space: normal;
-    text-align: center;
-    flex-shrink: 0;
-    vertical-align: middle;
-    background-color: transparent;
-    border: none;
-    cursor: pointer;
-    transition: all 0.3s ease-in-out;
-    color: ${defaultColor};
-    width: fit-content;
-    min-width: 30px;
-    max-width: 300px;
-    position: relative;
-    border-radius: ${borderRadiusSize.sm};
-    height: 40px;
-    display: flex;
-    flex-direction: row;
-    gap: 6px;
-    align-items: center;
-  }
+  ${SwitchMainStyles}
 
   &.active:after {
-    content: '';
-    position: absolute;
     bottom: 0px;
-    left: 0;
-    width: 100%;
-    height: 3px;
-    border-radius: ${borderRadiusSize.xl};
     background-color: ${currentColor};
-  }
-
-  &:hover {
-    background-color: ${hoverColor};
-    border-radius: ${borderRadiusSize.xs} ${borderRadiusSize.xs} 0px 0px;
   }
 `;
 
@@ -175,9 +151,7 @@ export const PlannerOptionPanelContainer = styled('div')`
     width: 260px;
     background-color: ${'#fff'};
     padding: 0px 12px;
-    //flex-basis: 20%;
     flex-shrink: 0;
-    //border-right: 1px solid ${disabledColor};
   }
 `;
 
@@ -191,7 +165,6 @@ export const PlannerContainer = styled('div')`
     height: 100%;
     overflow: hidden;
     padding: 0;
-    //overflow: hidden;
   }
 `;
 
@@ -215,7 +188,6 @@ export const PlannerLayoutContainer = styled('div')`
     flex-grow: 3;
     flex-shrink: 0;
     flex-basis: 80%;
-    //overflow: hidden;
     height: 100%;
     background-color: #fff;
   }

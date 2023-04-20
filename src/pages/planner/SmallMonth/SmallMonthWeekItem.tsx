@@ -1,9 +1,9 @@
 import { plannerDateToDate } from '@planner-reducer/utils';
 import dayjs from 'dayjs';
 import { FC, useCallback, useMemo } from 'react';
+import styled, { CSSProperties } from 'styled-components';
 
 import { EmptyButtonStyled } from '@components/Buttons/EmptyButton.styled';
-import { FlexBlock } from '@components/LayoutComponents';
 
 import { PlannerMonthMode, WeekItem } from '@planner/types';
 
@@ -24,6 +24,16 @@ export interface SmallMonthWeekItemProps
   currentDate?: Date;
   taskScheme?: GetEventsSchemeResponse;
 }
+
+const DaysContainer = styled('div')<{
+  justify: CSSProperties['justifyContent'];
+}>`
+  display: flex;
+  justify-content: ${(_) => _.justify};
+  align-items: center;
+  width: 100%;
+  gap: 4px;
+`;
 
 export const SmallMonthWeekItem: FC<SmallMonthWeekItemProps> = ({
   pourDates,
@@ -57,7 +67,7 @@ export const SmallMonthWeekItem: FC<SmallMonthWeekItemProps> = ({
           {weekItem.weekOfYear}
         </EmptyButtonStyled>
       </SmallMonthWeekCount>
-      <FlexBlock justify={justify} align={'center'} width={'100%'} gap={4}>
+      <DaysContainer justify={justify}>
         {weekItem.days.map((day, index) => {
           const date = plannerDateToDate(day.value);
           const isSelect =
@@ -76,7 +86,7 @@ export const SmallMonthWeekItem: FC<SmallMonthWeekItemProps> = ({
             />
           );
         })}
-      </FlexBlock>
+      </DaysContainer>
     </SmallMonthRow>
   );
 };

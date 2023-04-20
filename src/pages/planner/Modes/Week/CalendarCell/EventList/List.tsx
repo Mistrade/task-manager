@@ -16,7 +16,6 @@ import { ShortEventInfoModel } from '@api/planning-api/types/event-info.types';
 import { CellDate } from '../CellDate';
 import { CalendarCellEventItem } from './Item';
 
-
 const CalendarCellEventsListContainer = styled('div')`
   & {
     display: flex;
@@ -55,7 +54,7 @@ export const CalendarCellEventsList: FC<CalendarCellEventsListProps> = ({
         {events.visible.map((item, index) => (
           <CalendarCellEventItem
             tooltipPlacement={'left'}
-            key={item._id + item.title}
+            key={item._id}
             taskInfo={item}
             date={date}
             onSelect={onSelect}

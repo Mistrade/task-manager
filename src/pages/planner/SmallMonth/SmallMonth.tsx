@@ -1,10 +1,12 @@
-import { FC, ReactNode } from 'react';
+import { FC, ReactNode, memo } from 'react';
+import styled from 'styled-components';
 
 import {
   MonthList,
   WeekDaysShortList,
   defaultColor,
 } from '@src/common/constants/constants';
+import { disableReRender } from '@src/common/utils/react-utils';
 
 import { FlexBlock } from '@components/LayoutComponents';
 
@@ -39,6 +41,48 @@ export interface SmallMonthProps {
   dateComponent?: (props: DateWithTooltipProps) => ReactNode;
 }
 
+const SmallMonthWeekDays = () => {
+  return (
+    <SmallMonthRow>
+      <FlexBlock className={'row--item'} />
+      {WeekDaysShortList.map((item, index, arr) => (
+        <FlexBlock
+          className={'row--item'}
+          key={`weekDay_${item}_short`}
+          borderBottom={`1px solid ${defaultColor}`}
+          style={{ cursor: 'pointer' }}
+        >
+          {item}
+        </FlexBlock>
+      ))}
+    </SmallMonthRow>
+  );
+};
+
+const SmallMonthTitle = memo<{ monthIndex: number }>(({ monthIndex }) => (
+  <h2>{MonthList[monthIndex]}</h2>
+));
+
+const SmallMonthContainer = styled('div')`
+  display: flex;
+  justify-content: center;
+  align-items: center;
+`;
+
+const SmallMonthMainColumn = styled('div')`
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+`;
+
+const SmallMonthTitleContainer = memo(
+  styled('div')`
+    display: flex;
+    flex-direction: row;
+  `,
+  disableReRender
+);
+
 export const SmallMonth: FC<SmallMonthProps> = ({
   current,
   onSelectDate,
@@ -52,25 +96,13 @@ export const SmallMonth: FC<SmallMonthProps> = ({
   dateComponent,
 }) => {
   return (
-    <FlexBlock justify={'center'} align={'center'}>
-      <FlexBlock direction={'column'} gap={4}>
-        <FlexBlock>
-          {title || <h2>{MonthList[monthItem?.monthOfYear || 1]}</h2>}
-        </FlexBlock>
-        <SmallMonthRow>
-          <FlexBlock className={'row--item'} />
-          {WeekDaysShortList.map((item, index, arr) => (
-            <FlexBlock
-              className={'row--item'}
-              key={`weekDay_${item}_short`}
-              borderBottom={`1px solid ${defaultColor}`}
-              style={{ cursor: 'pointer' }}
-            >
-              {item}
-            </FlexBlock>
-          ))}
-        </SmallMonthRow>
-        {monthItem?.weeks.map((weekItem) => (
+    <SmallMonthContainer>
+      <SmallMonthMainColumn>
+        <SmallMonthTitleContainer>
+          {title || <SmallMonthTitle monthIndex={monthItem.monthOfYear} />}
+        </SmallMonthTitleContainer>
+        <SmallMonthWeekDays key={`weekdays_${monthItem.monthOfYear}`} />
+        {monthItem.weeks.map((weekItem) => (
           <SmallMonthWeekItem
             dateComponent={dateComponent}
             current={current}
@@ -84,7 +116,7 @@ export const SmallMonth: FC<SmallMonthProps> = ({
             taskScheme={includesTasks}
           />
         ))}
-      </FlexBlock>
-    </FlexBlock>
+      </SmallMonthMainColumn>
+    </SmallMonthContainer>
   );
 };
