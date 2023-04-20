@@ -48,7 +48,6 @@ const FavoriteEventsLayout = React.lazy(() =>
 export const LayoutSelector = memo(() => {
   return (
     <VerticalScroll
-      useShadow={true}
       staticContent={<FindEventFilter />}
       placementStatic={'top'}
       renderPattern={'top-bottom'}

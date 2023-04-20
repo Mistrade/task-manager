@@ -1,11 +1,17 @@
 import { useEventStorageQueryArgs } from '@hooks/useEventStorageQueryArgs';
 import { useSearchNavigate } from '@hooks/useSearchNavigate';
-import { setPlannerDateAndLayout } from '@planner-reducer/index';
+import {
+  setPlannerDateAndLayout,
+  setPlannerLayout,
+} from '@planner-reducer/index';
 import { dateToPlannerDate } from '@planner-reducer/utils';
 import { useAppDispatch, useAppSelector } from '@redux/hooks/hooks';
-import { plannerSelectYearConfig } from '@selectors/planner';
+import {
+  plannerSelectLayout,
+  plannerSelectYearConfig,
+} from '@selectors/planner';
 import dayjs from 'dayjs';
-import { FC, memo } from 'react';
+import { FC, memo, useLayoutEffect } from 'react';
 import { Helmet } from 'react-helmet';
 import styled from 'styled-components';
 
@@ -21,7 +27,6 @@ import { SmallMonth } from '@planner/SmallMonth/SmallMonth';
 import { YearCalendarProps } from '@planner/types';
 
 import { useGetEventsSchemeQuery } from '@api/planning-api';
-
 
 const MonthItemContainer = styled('div')`
   padding: 4px;
@@ -45,9 +50,15 @@ export const YearCalendar: FC<YearCalendarProps> = memo(() => {
   const config = useAppSelector(plannerSelectYearConfig);
   const dispatch = useAppDispatch();
   const navigate = useSearchNavigate();
-
+  const layout = useAppSelector(plannerSelectLayout);
   const args = useEventStorageQueryArgs();
   const { data: taskScheme, isLoading } = useGetEventsSchemeQuery(args);
+
+  useLayoutEffect(() => {
+    if (layout !== PLANNER_LAYOUTS.YEAR) {
+      dispatch(setPlannerLayout(PLANNER_LAYOUTS.YEAR));
+    }
+  }, []);
 
   return (
     <>

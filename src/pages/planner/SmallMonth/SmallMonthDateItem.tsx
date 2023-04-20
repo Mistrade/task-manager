@@ -10,17 +10,12 @@ import { CalendarItem, PlannerMonthMode } from '@planner/types';
 import { GetEventsSchemeResponse } from '@api/planning-api/types/event-info.types';
 
 import { SmallMonthRowItem } from './SmallMonth.styled';
-import {
-  CheckPourMonthResult,
-  SmallMonthWeekItemProps,
-} from './SmallMonthWeekItem';
-
+import { SmallMonthWeekItemProps } from './SmallMonthWeekItem';
 
 interface SmallMonthDateItemProps {
   date: CalendarItem;
   currentDate?: Date;
   taskScheme?: GetEventsSchemeResponse;
-  pour: CheckPourMonthResult | null;
   onSelectDate?: SmallMonthWeekItemProps['onSelectDate'];
   isSelect?: boolean;
   current: PlannerMonthMode;
@@ -30,7 +25,6 @@ interface SmallMonthDateItemProps {
 export const SmallMonthDateItem: FC<SmallMonthDateItemProps> = ({
   date,
   currentDate,
-  pour,
   taskScheme,
   onSelectDate,
   isSelect,
@@ -41,24 +35,6 @@ export const SmallMonthDateItem: FC<SmallMonthDateItemProps> = ({
     return (
       <SmallMonthRowItem
         onClick={() => onSelectDate && onSelectDate(date)}
-        isFirstPoured={
-          pour?.firstPour &&
-          dayjs(plannerDateToDate(date.value)).isSame(pour?.firstPour, 'day')
-        }
-        isPoured={
-          pour?.firstPour &&
-          pour?.lastPour &&
-          dayjs(plannerDateToDate(date.value)).isBetween(
-            pour?.firstPour,
-            pour?.lastPour,
-            'day',
-            '()'
-          )
-        }
-        isLastPoured={
-          pour?.lastPour &&
-          dayjs(plannerDateToDate(date.value)).isSame(pour?.lastPour, 'day')
-        }
         isDisabled={date.value.month !== current.month}
         isToday={date.meta.isToday}
         isSelect={isSelect}

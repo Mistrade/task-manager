@@ -52,11 +52,7 @@ export const SmallMonth: FC<SmallMonthProps> = ({
   dateComponent,
 }) => {
   return (
-    <FlexBlock
-      justify={'center'}
-      align={'center'}
-      // style={{zIndex: 0}}
-    >
+    <FlexBlock justify={'center'} align={'center'}>
       <FlexBlock direction={'column'} gap={4}>
         <FlexBlock>
           {title || <h2>{MonthList[monthItem?.monthOfYear || 1]}</h2>}
@@ -77,7 +73,7 @@ export const SmallMonth: FC<SmallMonthProps> = ({
         {monthItem?.weeks.map((weekItem) => (
           <SmallMonthWeekItem
             dateComponent={dateComponent}
-            current={current} //TODO поизбавлять в проекте от легаси CURRENT
+            current={current}
             useTooltips={useTooltips}
             key={`short-week-${weekItem.weekOfYear}`}
             onSelectWeek={onSelectWeek}

@@ -139,11 +139,6 @@ export interface CalendarDisabledOptions {
   disableDates?: Array<Date>;
 }
 
-export interface CalendarCellDateProps {
-  selected?: boolean;
-  isToday?: boolean;
-}
-
 export type CalendarPriorityKeys =
   | 'veryLow'
   | 'low'
@@ -324,8 +319,4 @@ export interface DateSettingPanelOptions {
   monthCurrent: PlannerMonthMode;
 }
 
-export type OnAddTaskFnType = (
-  date: Date,
-  initialValues?: Partial<EventInfoModel>
-) => void;
 export type OnSelectTaskFnType = (taskId: string) => any;

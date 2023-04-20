@@ -1,14 +1,15 @@
-import { plannerDateToDate } from '@planner-reducer/utils';
-import { useAppSelector } from '@redux/hooks/hooks';
+import { useEventStorageQueryArgs } from '@hooks/useEventStorageQueryArgs';
+import { setPlannerLayout } from '@planner-reducer/index';
+import { useAppDispatch, useAppSelector } from '@redux/hooks/hooks';
 import {
-  plannerSelectFilters,
+  plannerSelectLayout,
   plannerSelectMonthConfig,
 } from '@selectors/planner';
-import React, { FC, useMemo } from 'react';
+import React, { FC, useLayoutEffect } from 'react';
 import { Helmet } from 'react-helmet';
 
 import { MonthList } from '@src/common/constants/constants';
-import { UTC_OFFSET } from '@src/common/constants/defaultConstants';
+import { PLANNER_LAYOUTS } from '@src/common/constants/enums';
 import { disableReRender } from '@src/common/utils/react-utils';
 
 import { WeeKCalendar } from '@planner/Modes/Week/WeekCalendar';
@@ -16,27 +17,21 @@ import { CalendarDateListContainer } from '@planner/styled';
 import { MonthCalendarProps } from '@planner/types';
 
 import { useGetEventsStorageQuery } from '@api/planning-api';
-import { GetEventsFiltersRequestProps } from '@api/planning-api/types/event-info.types';
 
 export const MonthCalendar: FC<MonthCalendarProps> = React.memo(
   ({ renderTaskCount }) => {
     const config = useAppSelector(plannerSelectMonthConfig);
-    const filters = useAppSelector(plannerSelectFilters);
+    const args = useEventStorageQueryArgs();
 
-    const queryArg: GetEventsFiltersRequestProps = useMemo(() => {
-      return {
-        utcOffset: UTC_OFFSET,
-        fromDate: plannerDateToDate(config.scope.startDate).toString(),
-        toDate: plannerDateToDate(config.scope.endDate).toString(),
-        taskStatus: filters.taskStatus,
-        onlyFavorites: false,
-        title: filters.title,
-        findOnlyInSelectedGroups: true,
-        priority: filters.priority,
-      };
-    }, [filters, config.scope]);
+    const { data: eventStorage } = useGetEventsStorageQuery(args);
 
-    const { data: eventStorage } = useGetEventsStorageQuery(queryArg);
+    const layout = useAppSelector(plannerSelectLayout);
+    const dispatch = useAppDispatch();
+    useLayoutEffect(() => {
+      if (layout !== PLANNER_LAYOUTS.MONTH) {
+        dispatch(setPlannerLayout(PLANNER_LAYOUTS.MONTH));
+      }
+    }, []);
 
     return (
       <>

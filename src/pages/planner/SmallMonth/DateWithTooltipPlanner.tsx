@@ -22,7 +22,6 @@ import {
 
 import { GetEventsSchemeResponse } from '@api/planning-api/types/event-info.types';
 
-
 export interface DateWithTooltipProps {
   date: CalendarItem;
   taskScheme?: GetEventsSchemeResponse;
@@ -115,7 +114,6 @@ export const DateWithTooltipPlanner: FC<DateWithTooltipProps> = ({
           currentDate={plannerDateToDate(date.value)}
           taskScheme={taskScheme}
           onSelectDate={() => setIsOpen(false)}
-          pour={null}
           isSelect={isOpen}
         />
       </Tooltip>
@@ -130,7 +128,6 @@ export const DateWithTooltipPlanner: FC<DateWithTooltipProps> = ({
       currentDate={plannerDateToDate(date.value)}
       taskScheme={taskScheme}
       onSelectDate={() => setIsOpen(true)}
-      pour={null}
     />
   );
 };
