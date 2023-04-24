@@ -44,37 +44,33 @@ export const DateWithTooltipActions: FC<
     [date.value]
   );
 
+  const createEventClickHandle = () => {
+    onClose(false);
+    const value = dayjs(plannerDateToDate(date.value)).set('hour', 9);
+    openModal(
+      {
+        time: value.toString(),
+        timeEnd: value.add(1, 'hour').toString(),
+      },
+      {
+        useReturnBackOnDecline: true,
+        modalPath: getPath(SERVICES_NAMES.PLANNER, layout, 'event/create'),
+      }
+    );
+  };
+
+  const toDayLayoutClickHandler = () => {
+    onClose(false);
+    onSelectDate && onSelectDate(date);
+  };
+
   return (
     <SelectListContainer>
-      <SelectItemContainer
-        onClick={() => {
-          onClose(false);
-          const value = dayjs(plannerDateToDate(date.value)).set('hour', 9);
-          openModal(
-            {
-              time: value.toString(),
-              timeEnd: value.add(1, 'hour').toString(),
-            },
-            {
-              useReturnBackOnDecline: true,
-              modalPath: getPath(
-                SERVICES_NAMES.PLANNER,
-                layout,
-                'event/create'
-              ),
-            }
-          );
-        }}
-      >
+      <SelectItemContainer onClick={createEventClickHandle}>
         Создать событие{' ' + dateText}
       </SelectItemContainer>
-      <SelectItemContainer
-        onClick={() => {
-          onClose(false);
-          onSelectDate && onSelectDate(date);
-        }}
-      >
-        Перейти в {' ' + dateText}
+      <SelectItemContainer onClick={toDayLayoutClickHandler}>
+        Смотреть события{' ' + dateText}
       </SelectItemContainer>
     </SelectListContainer>
   );
@@ -113,7 +109,7 @@ export const DateWithTooltipPlanner: FC<DateWithTooltipProps> = ({
           date={date}
           currentDate={plannerDateToDate(date.value)}
           taskScheme={taskScheme}
-          onSelectDate={() => setIsOpen(false)}
+          onSelectDate={() => setIsOpen(true)}
           isSelect={isOpen}
         />
       </Tooltip>
@@ -128,6 +124,7 @@ export const DateWithTooltipPlanner: FC<DateWithTooltipProps> = ({
       currentDate={plannerDateToDate(date.value)}
       taskScheme={taskScheme}
       onSelectDate={() => setIsOpen(true)}
+      isSelect={isOpen}
     />
   );
 };

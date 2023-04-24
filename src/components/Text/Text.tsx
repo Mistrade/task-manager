@@ -77,26 +77,27 @@ export const CutText = styled('p')<PreviewDescriptionProps>`
     max-height: ${(_) => {
       const { fontSize, rows, isOpen, lineHeight } = _;
       if (isOpen) return 'fit-content';
-      if (lineHeight) return pxToCssValue(lineHeight * (rows || 3));
-      if (fontSize) return pxToCssValue((fontSize + 2) * (rows || 3));
-      if (rows) return pxToCssValue(16 * (rows || 3));
-      return pxToCssValue(16 * 3);
+      if (lineHeight) return pxToCssValue(lineHeight * (rows || 1));
+      if (fontSize) return pxToCssValue((fontSize + 2) * (rows || 1));
+      if (rows) return pxToCssValue(16 * (rows || 1));
+      return pxToCssValue(16);
     }};
     overflow: hidden;
     white-space: break-spaces;
+    word-break: break-all;
     word-wrap: anywhere;
     display: -webkit-box;
     -webkit-line-clamp: ${(_) => {
       const { isOpen, rows } = _;
       if (isOpen) return 'none';
       if (rows) return rows;
-      return 3;
+      return 1;
     }};
     -webkit-box-orient: vertical;
-    color: ${(_) => (_.color ? _.color : defaultColor)};
+    color: ${(_) => (_.color ? _.color : 'inherit')};
   }
 `;
 
 CutText.defaultProps = {
-  rows: 3,
+  rows: 1,
 };

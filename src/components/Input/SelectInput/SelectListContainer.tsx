@@ -23,11 +23,7 @@ export const SelectListContainer: FCWithChildren<FlexBlockProps> = ({
         {...flexBlockProps}
         direction={'column'}
       >
-        <FlexBlock
-          // additionalCss={css`z-index: 2`}
-          direction={'column'}
-          gap={4}
-        >
+        <FlexBlock direction={'column'} gap={4}>
           {children}
         </FlexBlock>
       </FlexBlock>

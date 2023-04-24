@@ -29,28 +29,6 @@ import { Tooltip } from '@components/Tooltip/Tooltip';
 
 import { ICheckListItem } from '@planner/types';
 
-const CheckListContainerAnimation = keyframes`
-  from {
-    height: 0;
-    opacity: .5;
-  }
-  to {
-    height: fit-content;
-    opacity: 1;
-  }
-`;
-
-const CheckListContainer = styled('div')`
-  & {
-    display: flex;
-    flex-direction: column;
-    animation: ${CheckListContainerAnimation} 0.3s ease-in-out forwards;
-    width: 100%;
-    height: 100%;
-    overflow: hidden;
-  }
-`;
-
 const CheckListUL = styled('ul')`
   & {
     display: flex;
@@ -171,7 +149,7 @@ export const CheckListItem: FC<CheckListItemProps> = ({
       placement={'bottom-start'}
       content={
         <CheckListAddInput
-          containerProps={{ p: 8 }}
+          containerProps={{ p: 8, minWidth: 500 }}
           initialValue={item.title}
           onSave={changeTitleHandler}
           label={'Новое название элемента списка'}
@@ -180,9 +158,8 @@ export const CheckListItem: FC<CheckListItemProps> = ({
       }
       onClickOutside={() => setIsEditMode(false)}
       trigger={'none'}
-      // hideOnClick={true}
       arrow={false}
-      maxWidth={500}
+      maxWidth={600}
       theme={'light'}
       delay={[200, 500]}
       offset={[30, -5]}
@@ -191,7 +168,12 @@ export const CheckListItem: FC<CheckListItemProps> = ({
       visible={isEditMode}
     >
       <StyledCheckListItem key={item.title}>
-        <FlexBlock grow={3} direction={'row'} height={'100%'}>
+        <FlexBlock
+          grow={3}
+          direction={'row'}
+          height={'100%'}
+          onClick={() => setIsEditMode((prev) => !prev)}
+        >
           <Checkbox
             type={'checkbox'}
             title={item.title}
@@ -199,11 +181,9 @@ export const CheckListItem: FC<CheckListItemProps> = ({
             onChange={changeStateHandler}
           />
         </FlexBlock>
+
         <CheckListItemButtons>
           <CopyToClipboardButton content={item.title} />
-          <EmptyButtonStyled onClick={() => setIsEditMode((prev) => !prev)}>
-            <PencilIcon size={16} color={currentColor} />
-          </EmptyButtonStyled>
           <EmptyButtonStyled onClick={removeHandler}>
             <TrashIcon size={16} color={defaultColor} />
           </EmptyButtonStyled>
@@ -332,10 +312,11 @@ export const CheckList: FC<CheckListProps> = ({
             {title}
             {progress}
             <Tooltip
+              maxWidth={600}
               content={
                 isEditTitle ? (
                   <CheckListAddInput
-                    containerProps={{ p: 8 }}
+                    containerProps={{ p: 8, minWidth: 500 }}
                     initialValue={title}
                     label={'Название чек-листа'}
                     onSave={changeTitleHandler}
@@ -352,7 +333,7 @@ export const CheckList: FC<CheckListProps> = ({
               arrow={false}
               trigger={'none'}
               theme={'light'}
-              placement={'bottom-start'}
+              placement={'bottom'}
               offset={[0, 0]}
             >
               <EmptyButtonStyled onClick={() => setIsEditTitle(true)}>

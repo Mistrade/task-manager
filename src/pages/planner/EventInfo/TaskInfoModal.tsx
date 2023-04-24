@@ -17,10 +17,7 @@ const EventInfo = React.lazy(() =>
   }))
 );
 
-export const TaskInfoModal: FC<EventInfoModalProps> = ({
-  onCloneEvent,
-  onOpenClonedEvent,
-}) => {
+export const TaskInfoModal: FC<EventInfoModalProps> = () => {
   const { taskId } = useParams<{ taskId: string }>();
   const backgroundUrl = useAppSelector(plannerSelectCurrentMode);
   const {
@@ -53,9 +50,8 @@ export const TaskInfoModal: FC<EventInfoModalProps> = ({
               }
             >
               <EventInfo
+                onClose={closeHandler}
                 eventInfo={taskInfo?.data || null}
-                onOpenClonedEvent={onOpenClonedEvent}
-                onCloneEvent={onCloneEvent}
                 eventErrorInfo={
                   (error && 'data' in error && error.data.info?.message) || ''
                 }

@@ -31,14 +31,8 @@ export const EventEssenceTitle = styled('h4')`
   text-align: left;
   flex-grow: 3;
   overflow-x: hidden;
-  text-overflow: ellipsis;
   font-size: 16px;
   color: ${darkColor};
-  white-space: break-spaces;
-  word-wrap: anywhere;
-  display: -webkit-box;
-  -webkit-line-clamp: 1;
-  -webkit-box-orient: vertical;
 `;
 
 export const ReplyContent = styled(FlexBlock)`

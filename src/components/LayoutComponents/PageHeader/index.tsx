@@ -17,7 +17,7 @@ export const MainHeader: FC = React.memo(() => {
       bgColor={'#fff'}
       additionalCss={css`
         box-shadow: 0px -5px 30px 2px ${disabledColor};
-        z-index: 1;
+        z-index: 10;
       `}
       minHeight={70}
       basis={'70px'}

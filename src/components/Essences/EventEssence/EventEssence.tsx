@@ -2,6 +2,7 @@ import dayjs, { Dayjs } from 'dayjs';
 import React, { FC, useCallback, useMemo, useState } from 'react';
 
 import { DateHelper } from '@src/common/calendarSupport/dateHelper';
+import { darkColor } from '@src/common/constants/constants';
 import { getPath } from '@src/common/functions';
 
 import { TimeBadge } from '@components/Badge/Badge';
@@ -9,6 +10,7 @@ import { EmptyButtonStyled } from '@components/Buttons/EmptyButton.styled';
 import { LinkStyled } from '@components/Buttons/Link.styled';
 import { Arrow } from '@components/Icons/Icons';
 import { FlexBlock } from '@components/LayoutComponents';
+import { CutText } from '@components/Text/Text';
 import { Tooltip } from '@components/Tooltip/Tooltip';
 
 import { HistoryDescriptionField } from '@pages/planner/EventInfo/LeftBar/Tabs/TaskHistory/Fields/HistoryDescriptionField';
@@ -93,7 +95,9 @@ export const EventEssence: FC<EventEssenceProps> = ({
           </>
         )}
         <EventEssenceTitle onClick={titleClickHandler}>
-          {title}
+          <CutText color={darkColor} title={title} rows={1} fontSize={16}>
+            {title}
+          </CutText>
         </EventEssenceTitle>
         {isSnapshot && (
           <Tooltip

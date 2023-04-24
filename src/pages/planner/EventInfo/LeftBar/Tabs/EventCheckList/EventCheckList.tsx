@@ -51,8 +51,6 @@ export const EventCheckList: FC<EventCheckListProps> = ({ eventInfo }) => {
     [eventInfo._id, checkListItem?.data?._id]
   );
 
-  // const itemChangeHandler = useCallback(() => {}, []);
-
   if (checkListItem?.data) {
     return (
       <CheckList

@@ -1,5 +1,3 @@
-import { plannerDateToDate } from '@planner-reducer/utils';
-import dayjs from 'dayjs';
 import { FC } from 'react';
 
 import { addNull } from '@src/common/functions';
@@ -42,7 +40,9 @@ export const SmallMonthDateItem: FC<SmallMonthDateItemProps> = ({
           current.month === date.value.month &&
           taskScheme &&
           !!taskScheme[
-            dayjs(plannerDateToDate(date.value)).format('DD-MM-YYYY')
+            `${addNull(date.value.day)}-${addNull(date.value.month + 1)}-${
+              date.value.year
+            }`
           ]
         }
       >

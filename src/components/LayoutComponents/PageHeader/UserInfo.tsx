@@ -1,20 +1,18 @@
 import { useAppSelector } from '@redux/hooks/hooks';
 import { selectUserInfo } from '@selectors/session-selectors';
-import { FC } from 'react';
-import { css } from 'styled-components';
+import { FC, useState } from 'react';
 
 import { EmptyButtonStyled } from '@components/Buttons/EmptyButton.styled';
-import { LogoutIcon } from '@components/Icons/Session/LogoutIcon';
 import { FlexBlock } from '@components/LayoutComponents';
-
-import { useLogoutMutation } from '@api/session-api';
-import { CatchHandleForToast, thenHandleForToast } from '@api/tools';
+import { PageHeaderUserActions } from '@components/LayoutComponents/PageHeader/UserActions';
+import { Tooltip } from '@components/Tooltip/Tooltip';
+import { UserAvatar } from '@components/Users/UserAvatar';
 
 import { HeaderDefaultLink } from './Link.styled.';
 
 export const MainHeaderUserInfo: FC = () => {
-  const [logoutUser] = useLogoutMutation();
   const userInfo = useAppSelector(selectUserInfo);
+  const [isOpen, setIsOpen] = useState(false);
 
   return (
     <FlexBlock width={'100%'} justify={'flex-end'}>
@@ -29,25 +27,25 @@ export const MainHeaderUserInfo: FC = () => {
         </FlexBlock>
       ) : (
         <FlexBlock align={'center'} gap={12}>
-          <FlexBlock>
-            {userInfo.name + ' ' + (userInfo.surname || '')}
-          </FlexBlock>
-          <EmptyButtonStyled>
-            <LogoutIcon
-              size={36}
-              additionalCss={css`
-                cursor: pointer;
-              `}
-              onClick={async () =>
-                await logoutUser()
-                  .unwrap()
-                  .then(thenHandleForToast)
-                  .catch(CatchHandleForToast)
-              }
-            >
-              Выход
-            </LogoutIcon>
-          </EmptyButtonStyled>
+          <Tooltip
+            visible={isOpen}
+            theme={'light'}
+            delay={[100, 200]}
+            interactive={true}
+            interactiveBorder={20}
+            placement={'bottom-end'}
+            arrow={false}
+            content={
+              isOpen && (
+                <PageHeaderUserActions afterSelect={() => setIsOpen(false)} />
+              )
+            }
+            onClickOutside={() => setIsOpen(false)}
+          >
+            <EmptyButtonStyled onClick={() => setIsOpen((prev) => !prev)}>
+              <UserAvatar user={userInfo} size={42} />
+            </EmptyButtonStyled>
+          </Tooltip>
         </FlexBlock>
       )}
     </FlexBlock>

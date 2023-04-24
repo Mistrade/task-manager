@@ -27,9 +27,9 @@ const Container = styled('div')<Pick<ScrollVerticalViewProps, 'renderPattern'>>`
   width: 100%;
   flex-grow: 0;
   display: flex;
-  margin-left: -6px;
-  margin-right: -6px;
-  padding: 10px 6px;
+  //margin-left: -6px;
+  //margin-right: -6px;
+  padding: 10px 0px;
   flex-direction: ${(_) =>
     _.renderPattern === 'top-bottom' ? 'column' : 'column-reverse'};
   overflow-x: hidden;

@@ -1,5 +1,5 @@
 import { useFormik } from 'formik';
-import { FC, useState } from 'react';
+import { FC, ReactNode, useState } from 'react';
 import * as yup from 'yup';
 
 import {
@@ -10,6 +10,7 @@ import { EmptyButtonStyled } from '@components/Buttons/EmptyButton.styled';
 import { PencilIcon, TrashIcon } from '@components/Icons/Icons';
 import { SelectLinks } from '@components/Input/SelectInput/CalendarSelectInputs/SelectLinks';
 import { FlexBlock } from '@components/LayoutComponents';
+import { Tooltip } from '@components/Tooltip/Tooltip';
 
 import { LinkValidationSchema } from '@planner/Forms/CreateEvent/CreateEventForm';
 import { EventItem, EventLinkItem } from '@planner/types';
@@ -36,7 +37,9 @@ const TaskInformerLinkInput: FC<InformerTaskAddLinkProps> = ({
       link: LinkValidationSchema,
     }),
     async onSubmit(values, formikHelpers) {
+      console.log(values);
       if (values.link && link?.value !== values.link?.value) {
+        console.log(123);
         setLoading(true);
         await onSave('link', values.link)
           .then(() => onDecline())
@@ -67,6 +70,45 @@ interface TaskInformerLinkButtonProps {
   updateFn: EventInfoUpdateFn;
 }
 
+interface TooltipContentProps {
+  children: ReactNode;
+  onClose: () => void;
+  updateFn: InformerTaskAddLinkProps['onSave'];
+  visible: boolean;
+  linkValue?: EventLinkItem | null;
+}
+
+const TooltipContent: FC<TooltipContentProps> = ({
+  children,
+  linkValue,
+  onClose,
+  updateFn,
+  visible,
+}) => {
+  return (
+    <Tooltip
+      visible={visible}
+      onClickOutside={onClose}
+      theme={'light'}
+      placement={'bottom'}
+      delay={[100, 200]}
+      interactive={true}
+      maxWidth={600}
+      content={
+        <FlexBlock p={8} width={'100%'} minWidth={500}>
+          <TaskInformerLinkInput
+            onDecline={onClose}
+            onSave={updateFn}
+            link={linkValue || null}
+          />
+        </FlexBlock>
+      }
+    >
+      {children}
+    </Tooltip>
+  );
+};
+
 export const TaskInformerLinkButton: FC<TaskInformerLinkButtonProps> = ({
   link,
   updateFn,
@@ -77,30 +119,40 @@ export const TaskInformerLinkButton: FC<TaskInformerLinkButtonProps> = ({
     setEditMode(false);
   };
 
+  const toggle = () => setEditMode((prev) => !prev);
+
   return (
     <FlexBlock justify={'flex-start'} align={'center'} width={'100%'} gap={6}>
-      {editMode ? (
-        <TaskInformerLinkInput
-          link={link}
-          onDecline={declineHandler}
-          onSave={updateFn}
-        />
-      ) : link?.value ? (
+      {link?.value ? (
         <>
           <JoinToEventButton href={link.value} target={'_blank'} rel={''}>
             Подключиться по ссылке
           </JoinToEventButton>
-          <EmptyButtonStyled onClick={() => setEditMode(true)}>
-            <PencilIcon size={22} />
-          </EmptyButtonStyled>
+          <TooltipContent
+            onClose={declineHandler}
+            updateFn={updateFn}
+            visible={editMode}
+            linkValue={link}
+          >
+            <EmptyButtonStyled onClick={toggle}>
+              <PencilIcon size={22} />
+            </EmptyButtonStyled>
+          </TooltipContent>
           <EmptyButtonStyled onClick={() => updateFn('link', null)}>
             <TrashIcon size={22} />
           </EmptyButtonStyled>
         </>
       ) : (
-        <TransparentButton type={'button'} onClick={() => setEditMode(true)}>
-          Добавить ссылку
-        </TransparentButton>
+        <TooltipContent
+          onClose={declineHandler}
+          updateFn={updateFn}
+          visible={editMode}
+          linkValue={link}
+        >
+          <TransparentButton type={'button'} onClick={toggle}>
+            Добавить ссылку
+          </TransparentButton>
+        </TooltipContent>
       )}
     </FlexBlock>
   );

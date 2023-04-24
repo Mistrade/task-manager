@@ -1,14 +1,14 @@
-import { FC, useMemo } from 'react';
+import React, { FC, useMemo } from 'react';
 import styled from 'styled-components';
 
 import { currentColor, darkColor } from '@src/common/constants/constants';
 
 import { UserModel } from '@api/session-api/session-api.types';
 
-
 export interface UserAvatarProps {
   user: Partial<UserModel>;
   size?: number;
+  onClick?: (e: React.MouseEvent<HTMLDivElement>) => void;
 }
 
 const UserAvatarContainer = styled('div')<Pick<UserAvatarProps, 'size'>>`
@@ -36,7 +36,7 @@ const UserAvatarContainer = styled('div')<Pick<UserAvatarProps, 'size'>>`
   }
 `;
 
-export const UserAvatar: FC<UserAvatarProps> = ({ user, size }) => {
+export const UserAvatar: FC<UserAvatarProps> = ({ user, size, onClick }) => {
   const text = useMemo(() => {
     const { name, surname } = user;
     const firstLetterName = name?.substring(0, 1).toUpperCase() || 'П';
@@ -44,5 +44,9 @@ export const UserAvatar: FC<UserAvatarProps> = ({ user, size }) => {
     return `${firstLetterName}${firstLetterSurname}`;
   }, [user]);
 
-  return <UserAvatarContainer size={size}>{text}</UserAvatarContainer>;
+  return (
+    <UserAvatarContainer onClick={onClick} size={size}>
+      {text}
+    </UserAvatarContainer>
+  );
 };

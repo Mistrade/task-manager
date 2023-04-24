@@ -21,9 +21,9 @@ export const TaskListEventFiltersContainer = styled('div')`
   gap: 12px;
   top: 0;
   left: 0;
-  position: sticky;
   width: 100%;
 `;
+
 export const FindEventFilter: FC = memo(() => {
   const status = useAppSelector(plannerSelectStatus);
   const dispatch = useAppDispatch();

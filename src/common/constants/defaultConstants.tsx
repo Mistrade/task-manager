@@ -61,7 +61,7 @@ export const FRIENDS_PAGE_TITLES = {
 export const SERVICES_TITLES: { [key in SERVICES_NAMES]: string } = {
   [SERVICES_NAMES.PLANNER]: 'Мои дела',
   [SERVICES_NAMES.FRIENDS]: 'Мои друзья',
-  [SERVICES_NAMES.FAQ]: 'FAQ',
+  [SERVICES_NAMES.FAQ]: 'База знаний',
   [SERVICES_NAMES.PROFILE]: 'Профиль пользователя',
   [SERVICES_NAMES.SESSION]: 'Сессия',
 };

@@ -261,8 +261,7 @@ export interface EventInfoBaseProps {
 export type MainEventInformerProps = EventInfoBaseProps & EventInfoModalProps;
 
 export interface EventInfoModalProps {
-  onCloneEvent?: (event: Partial<EventInfoModel>) => void;
-  onOpenClonedEvent?: (taskId: ObjectId) => void;
+  onClose?: () => void;
 }
 
 export interface CreateEventModalProps {

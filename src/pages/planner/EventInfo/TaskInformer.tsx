@@ -18,7 +18,10 @@ import { TaskInfoNotFound } from './SupportsComponent/TaskInfoNotFound';
 import { EventInfoUpdateFn } from './SupportsComponent/ToggleTaskInformerButtons';
 import { EventInformerContentContainer } from './TaskInformer.styled';
 
-const TaskInformerMain: FC<MainEventInformerProps> = ({ eventInfo }) => {
+const TaskInformerMain: FC<MainEventInformerProps> = ({
+  eventInfo,
+  onClose,
+}) => {
   const [updateTask] = useUpdateTaskMutation();
 
   const updateTaskHandler: EventInfoUpdateFn = useCallback(
@@ -40,6 +43,7 @@ const TaskInformerMain: FC<MainEventInformerProps> = ({ eventInfo }) => {
       <Helmet title={eventInfo.title} />
       <FlexBlock direction={'column'} width={'100%'} height={'100%'}>
         <EventInformerHeader
+          onClose={onClose}
           eventInfo={eventInfo}
           updateTaskHandler={updateTaskHandler}
         />
@@ -57,18 +61,11 @@ const TaskInformerMain: FC<MainEventInformerProps> = ({ eventInfo }) => {
 
 export const TaskInformer: FC<EventInformerProps> = ({
   eventInfo,
-  onCloneEvent,
-  onOpenClonedEvent,
   eventErrorInfo,
+  onClose,
 }) => {
   if (eventInfo) {
-    return (
-      <TaskInformerMain
-        eventInfo={eventInfo}
-        onOpenClonedEvent={onOpenClonedEvent}
-        onCloneEvent={onCloneEvent}
-      />
-    );
+    return <TaskInformerMain eventInfo={eventInfo} onClose={onClose} />;
   }
 
   return <TaskInfoNotFound message={eventErrorInfo} />;

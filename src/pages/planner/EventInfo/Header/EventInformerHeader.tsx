@@ -5,6 +5,7 @@ import { pageHeaderColor } from '@src/common/constants/constants';
 import { borderRadiusSize } from '@src/common/css/mixins';
 import { eventIsDelayed } from '@src/common/functions';
 
+import { EmptyButtonStyled } from '@components/Buttons/EmptyButton.styled';
 import { FlexBlock } from '@components/LayoutComponents';
 
 import { IsDelayedEvent } from '@planner/EventInfo/Header/IsDelayedEvent';
@@ -20,6 +21,7 @@ import { EventInfoModel } from '@api/planning-api/types/event-info.types';
 export interface EventInformerHeaderProps {
   eventInfo: EventInfoModel;
   updateTaskHandler: EventInfoUpdateFn;
+  onClose?: () => void;
 }
 
 const EventInfoHeaderContainer = styled('header')`
@@ -54,7 +56,7 @@ const ActionsAndLinkContainer = styled('div')`
 `;
 
 export const EventInformerHeader = memo<EventInformerHeaderProps>(
-  ({ eventInfo, updateTaskHandler }) => {
+  ({ eventInfo, updateTaskHandler, onClose }) => {
     const isDelayed = useMemo(
       () => eventIsDelayed(eventInfo.timeEnd, eventInfo.status),
       [eventInfo.timeEnd, eventInfo.status]
@@ -72,6 +74,7 @@ export const EventInformerHeader = memo<EventInformerHeaderProps>(
             }
           />
           <IsDelayedEvent isDelayed={isDelayed} />
+          <EmptyButtonStyled onClick={onClose}>Закрыть</EmptyButtonStyled>
         </TitleContainer>
         <ActionsAndLinkContainer>
           <TaskInformerMoreActions taskItem={eventInfo} />
@@ -96,7 +99,7 @@ export const EventInformerHeader = memo<EventInformerHeaderProps>(
   (prevProps, nextProps) =>
     prevProps.eventInfo._id === nextProps.eventInfo._id &&
     prevProps.eventInfo.title === nextProps.eventInfo.title &&
-    prevProps.eventInfo.link === nextProps.eventInfo.link &&
+    prevProps.eventInfo.link?.value === nextProps.eventInfo.link?.value &&
     prevProps.eventInfo.priority === nextProps.eventInfo.priority &&
     prevProps.eventInfo.status === nextProps.eventInfo.status &&
     prevProps.eventInfo.isLiked === nextProps.eventInfo.isLiked &&
