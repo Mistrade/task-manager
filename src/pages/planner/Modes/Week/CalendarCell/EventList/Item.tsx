@@ -165,6 +165,7 @@ export const CalendarCellEventItem: FC<TaskTileItemProps> = ({
   taskInfo,
   date,
   tooltipPlacement,
+  onSelect,
 }) => {
   const [isHover, setIsHover] = useState(false);
 
@@ -184,7 +185,10 @@ export const CalendarCellEventItem: FC<TaskTileItemProps> = ({
         fillColor={isDelayed ? delayedColor : hoverColor}
         disabled={date.meta.isDisabled}
         isCurrent={date.meta.isCurrent}
-        onClick={() => condition && navigate(`event/info/${taskInfo._id}`)}
+        onClick={() => {
+          onSelect && onSelect(taskInfo._id);
+          condition && navigate(`event/info/${taskInfo._id}`);
+        }}
       >
         <CalendarCellItemContent taskInfo={taskInfo} />
       </EventContainer>

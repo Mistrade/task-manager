@@ -1,4 +1,4 @@
-import React, { FC, useMemo } from 'react';
+import React, { FC, useMemo, useState } from 'react';
 import styled from 'styled-components';
 
 import { EmptyButtonStyled } from '@components/Buttons/EmptyButton.styled';
@@ -48,6 +48,8 @@ export const CalendarCellEventsList: FC<CalendarCellEventsListProps> = ({
     };
   }, [tasks]);
 
+  const [isOpenHiddenEvents, setIsOpenHiddenEvents] = useState(false);
+
   if (!!events.visible?.length) {
     return (
       <CalendarCellEventsListContainer>
@@ -62,11 +64,11 @@ export const CalendarCellEventsList: FC<CalendarCellEventsListProps> = ({
         ))}
         {!!events.hidden.length && (
           <Tooltip
-            trigger={'click'}
             theme={'light'}
-            hideOnClick={true}
-            delay={[0, 200]}
+            delay={[0, 0]}
             maxWidth={320}
+            visible={isOpenHiddenEvents}
+            onClickOutside={() => setIsOpenHiddenEvents(false)}
             placement={'left'}
             interactive={true}
             content={
@@ -89,7 +91,9 @@ export const CalendarCellEventsList: FC<CalendarCellEventsListProps> = ({
                       taskInfo={item}
                       date={date}
                       key={item._id}
-                      onSelect={onSelect}
+                      onSelect={(_id) => {
+                        setIsOpenHiddenEvents(false);
+                      }}
                     />
                   ))}
                 </CalendarCellEventsListContainer>
@@ -102,6 +106,7 @@ export const CalendarCellEventsList: FC<CalendarCellEventsListProps> = ({
                 justifyContent: 'center',
                 width: '100%',
               }}
+              onClick={() => setIsOpenHiddenEvents((prev) => !prev)}
             >
               {`Еще ${events.hidden.length}`}
             </EmptyButtonStyled>
