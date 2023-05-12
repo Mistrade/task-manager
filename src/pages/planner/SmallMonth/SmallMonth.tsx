@@ -6,7 +6,6 @@ import {
   WeekDaysShortList,
   defaultColor,
 } from '@src/common/constants/constants';
-import { disableReRender } from '@src/common/utils/react-utils';
 
 import { FlexBlock } from '@components/LayoutComponents';
 
@@ -75,13 +74,10 @@ const SmallMonthMainColumn = styled('div')`
   gap: 4px;
 `;
 
-const SmallMonthTitleContainer = memo(
-  styled('div')`
-    display: flex;
-    flex-direction: row;
-  `,
-  disableReRender
-);
+const SmallMonthTitleContainer = styled('div')`
+  display: flex;
+  flex-direction: row;
+`;
 
 export const SmallMonth: FC<SmallMonthProps> = ({
   current,

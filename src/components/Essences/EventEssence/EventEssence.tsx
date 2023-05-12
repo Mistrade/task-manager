@@ -5,7 +5,6 @@ import { DateHelper } from '@src/common/calendarSupport/dateHelper';
 import { darkColor } from '@src/common/constants/constants';
 import { getPath } from '@src/common/functions';
 
-import { TimeBadge } from '@components/Badge/Badge';
 import { EmptyButtonStyled } from '@components/Buttons/EmptyButton.styled';
 import { LinkStyled } from '@components/Buttons/Link.styled';
 import { Arrow } from '@components/Icons/Icons';
@@ -23,6 +22,7 @@ import { CalendarPriorityKeys, TaskStatusesType } from '@planner/types';
 import { GroupModelResponse } from '@api/planning-api/types/groups.types';
 import { ObjectId } from '@api/rtk-api.types';
 
+import Badge from '../../Badge';
 import { EssenceContainer, EventEssenceTitle } from './event-essence.styled';
 
 export interface EventEssenceProps {
@@ -105,7 +105,7 @@ export const EventEssence: FC<EventEssenceProps> = ({
               'Snapshot - означает, что данные для этой записи фиксировались в конкретный момент времени и могут отличаться от текущих. Чтобы получить актуальную информацию о событии, разверните его стрелочкой справа и нажмите "Перейти к оригиналу"'
             }
           >
-            <TimeBadge>Snapshot</TimeBadge>
+            <Badge type={'primary'}>Snapshot</Badge>
           </Tooltip>
         )}
         {hasOptionalInfo && (
@@ -135,7 +135,7 @@ export const EventEssence: FC<EventEssenceProps> = ({
               {optionalFields.createdAt && (
                 <FlexBlock style={{ whiteSpace: 'pre-wrap', fontSize: 14 }}>
                   Создано{' '}
-                  <TimeBadge>
+                  <Badge type={'primary'}>
                     {DateHelper.getHumanizeDateValue(
                       dayjs(optionalFields.createdAt).toDate(),
                       {
@@ -143,7 +143,7 @@ export const EventEssence: FC<EventEssenceProps> = ({
                         monthPattern: 'full',
                       }
                     )}
-                  </TimeBadge>
+                  </Badge>
                 </FlexBlock>
               )}
               {optionalFields.time && optionalFields.timeEnd && (
@@ -154,7 +154,7 @@ export const EventEssence: FC<EventEssenceProps> = ({
                 >
                   <FlexBlock fSize={14}>
                     Начало{' '}
-                    <TimeBadge>
+                    <Badge type={'primary'}>
                       {DateHelper.getHumanizeDateValue(
                         dayjs(optionalFields.time).toDate(),
                         {
@@ -162,11 +162,11 @@ export const EventEssence: FC<EventEssenceProps> = ({
                           monthPattern: 'short',
                         }
                       )}
-                    </TimeBadge>
+                    </Badge>
                   </FlexBlock>
                   <FlexBlock fSize={14}>
                     Конец{' '}
-                    <TimeBadge>
+                    <Badge type={'primary'}>
                       {DateHelper.getHumanizeDateValue(
                         dayjs(optionalFields.timeEnd).toDate(),
                         {
@@ -174,7 +174,7 @@ export const EventEssence: FC<EventEssenceProps> = ({
                           monthPattern: 'short',
                         }
                       )}
-                    </TimeBadge>
+                    </Badge>
                   </FlexBlock>
                 </FlexBlock>
               )}

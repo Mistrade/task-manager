@@ -1,6 +1,6 @@
-import { useSearchNavigate } from '@hooks/useSearchNavigate';
 import dayjs from 'dayjs';
 import React, { FC, useMemo, useState } from 'react';
+import { useLocation } from 'react-router';
 import styled, { css, keyframes } from 'styled-components';
 
 import {
@@ -8,6 +8,7 @@ import {
   HumanizeDateValueOptions,
 } from '@src/common/calendarSupport/dateHelper';
 import {
+  darkColor,
   defaultColor,
   delayedColor,
   hoverColor,
@@ -17,6 +18,7 @@ import { DATE_HOURS_FORMAT } from '@src/common/constants/defaultConstants';
 import { borderRadiusSize } from '@src/common/css/mixins';
 import { eventIsDelayed } from '@src/common/functions';
 
+import { LinkStyled } from '@components/Buttons/Link.styled';
 import { EventShortHoverCard } from '@components/HoverCard/EventShortHoverCard';
 import { PriorityCalendarIcon } from '@components/Icons/CalendarIcons/PriorityCalendarIcon';
 import { FlexBlock } from '@components/LayoutComponents';
@@ -51,6 +53,7 @@ const EventAnimation = keyframes`
 const EventContainer = styled('div')<EventContainerProps>`
   & {
     gap: 4px;
+    color: ${darkColor};
     background-color: ${(props) =>
       props.withFill ? props.fillColor || hoverColor : ''};
     width: 100%;
@@ -168,30 +171,32 @@ export const CalendarCellEventItem: FC<TaskTileItemProps> = ({
   onSelect,
 }) => {
   const [isHover, setIsHover] = useState(false);
+  const location = useLocation();
 
   const condition = useMemo(() => {
     return !date.meta.isDisabled;
   }, [date, taskInfo]);
 
-  const navigate = useSearchNavigate();
+  // const navigate = useSearchNavigate();
 
   const Content = useMemo(() => {
     const isDelayed = eventIsDelayed(taskInfo.timeEnd, taskInfo.status);
     return (
-      <EventContainer
-        onMouseEnter={() => condition && setIsHover(true)}
-        onMouseLeave={() => setIsHover(false)}
-        withFill={isDelayed || isHover}
-        fillColor={isDelayed ? delayedColor : hoverColor}
-        disabled={date.meta.isDisabled}
-        isCurrent={date.meta.isCurrent}
-        onClick={() => {
-          onSelect && onSelect(taskInfo._id);
-          condition && navigate(`event/info/${taskInfo._id}`);
-        }}
-      >
-        <CalendarCellItemContent taskInfo={taskInfo} />
-      </EventContainer>
+      <LinkStyled to={`event/info/${taskInfo._id}${location.search}`}>
+        <EventContainer
+          onMouseEnter={() => condition && setIsHover(true)}
+          onMouseLeave={() => setIsHover(false)}
+          withFill={isDelayed || isHover}
+          fillColor={isDelayed ? delayedColor : hoverColor}
+          disabled={date.meta.isDisabled}
+          isCurrent={date.meta.isCurrent}
+          onClick={() => {
+            onSelect && onSelect(taskInfo._id);
+          }}
+        >
+          <CalendarCellItemContent taskInfo={taskInfo} />
+        </EventContainer>
+      </LinkStyled>
     );
   }, [isHover, condition, date.value.day, taskInfo]);
 

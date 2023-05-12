@@ -5,6 +5,7 @@ import styled, { css } from 'styled-components';
 import { currentColor, disabledColor } from '@src/common/constants/constants';
 import { borderRadiusSize } from '@src/common/css/mixins';
 
+import { CopyToClipboardButton } from '@components/Buttons/CopyToClipboardButton';
 import { EmptyButtonStyled } from '@components/Buttons/EmptyButton.styled';
 import { PencilIcon } from '@components/Icons/Icons';
 import { InputLabel } from '@components/Input/InputSupportComponents/InputLabel';
@@ -16,7 +17,6 @@ import { EventInfoBaseProps } from '@planner/types';
 import { StyledTaskInformerLinkForm } from '../TaskInformer.styled';
 import { EditableFieldsButtons } from './EditableFieldsButtons';
 import { EventInfoUpdateFn } from './ToggleTaskInformerButtons';
-
 
 interface TaskInformerDescriptionProps extends EventInfoBaseProps {
   updateFn: EventInfoUpdateFn;
@@ -49,37 +49,30 @@ export const TaskInformerDescriptionText: FC<
     <TaskInformerDescriptionContainer>
       <FlexBlock
         fSize={16}
+        p={'12px 8px'}
         additionalCss={css`
-          max-height: 300px;
-          overflow-y: auto;
-          overflow-x: hidden;
-          -webkit-scroll-snap-type: none;
+          white-space: pre-wrap;
+          padding-right: 42px;
+          word-wrap: anywhere;
         `}
       >
-        <FlexBlock
-          fSize={16}
-          additionalCss={css`
-            white-space: pre-wrap;
-            padding-right: 42px;
-            word-wrap: anywhere;
-          `}
-        >
-          {description || 'Описание отсутствует'}
-        </FlexBlock>
+        {description || 'Описание отсутствует'}
       </FlexBlock>
-      {onEdit && (
-        <FlexBlock
-          position={'absolute'}
-          additionalCss={css`
-            top: 4px;
-            right: 4px;
-          `}
-        >
-          <EmptyButtonStyled onClick={() => onEdit(true)}>
-            <PencilIcon size={22} />
+      <FlexBlock
+        position={'absolute'}
+        additionalCss={css`
+          top: 4px;
+          right: 4px;
+        `}
+        gap={4}
+      >
+        <CopyToClipboardButton content={description} size={20} />
+        {onEdit && (
+          <EmptyButtonStyled onClick={() => onEdit && onEdit(true)}>
+            <PencilIcon size={20} />
           </EmptyButtonStyled>
-        </FlexBlock>
-      )}
+        )}
+      </FlexBlock>
     </TaskInformerDescriptionContainer>
   );
 };
@@ -164,7 +157,6 @@ const TaskInformerDescriptionContainer = styled('div')`
   width: 100%;
   align-items: flex-start;
   position: relative;
-  padding: 12px 8px;
   border-radius: ${borderRadiusSize.sm};
   border: 1px solid ${disabledColor};
 `;

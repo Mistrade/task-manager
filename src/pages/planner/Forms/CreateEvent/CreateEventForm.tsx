@@ -2,6 +2,7 @@ import { useAppSelector } from '@redux/hooks/hooks';
 import { createEventInitialStateSelector } from '@selectors/planner';
 import { useFormik } from 'formik';
 import { FC, useMemo, useState } from 'react';
+import { CreateEventDataObject } from 'src/pages/planner/types';
 import styled from 'styled-components';
 import * as yup from 'yup';
 
@@ -34,7 +35,6 @@ import { GroupModelResponse } from '@api/planning-api/types/groups.types';
 import { MyServerResponse, ObjectId } from '@api/rtk-api.types';
 import { CatchHandleForToast, thenHandleForToast } from '@api/tools';
 
-import { CreateEventDataObject } from 'src/pages/planner/types';
 import { CreateEventFormAdditional } from './Tabs/Additional';
 import { CreateEventInfoTab } from './Tabs/Info';
 
@@ -47,10 +47,7 @@ interface CreateEventFormProps {
 export const LinkValidationSchema = yup
   .object({
     key: yup.string(),
-    value: yup
-      .string()
-      .url('Ссылка должна быть корректным url-адресом')
-      .required(),
+    value: yup.string().url('Ссылка должна быть корректным url-адресом'),
   })
   .nullable()
   .notRequired();
@@ -164,7 +161,9 @@ export const CreateEventForm: FC<CreateEventFormProps> = ({
         width={'100%'}
       >
         <Heading.H2 style={{ fontWeight: 'normal', marginBottom: 8 }}>
-          Создайте новое событие
+          {formik.values.title.length >= 3
+            ? formik.values.title
+            : 'Создайте новое событие'}
         </Heading.H2>
         <FlexBlock
           gap={12}

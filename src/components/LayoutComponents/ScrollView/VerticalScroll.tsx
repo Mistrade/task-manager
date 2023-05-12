@@ -1,4 +1,4 @@
-import { ReactNode, memo, useRef } from 'react';
+import { ReactNode, forwardRef, useRef } from 'react';
 import { useIntersection } from 'react-use';
 import styled, { css } from 'styled-components';
 
@@ -10,30 +10,29 @@ import {
 } from '@components/LayoutComponents/FlexBlock';
 import { hideScrollBar } from '@components/Switcher/Switcher';
 
-import { FCWithChildren } from '@planner/types';
-
 export interface ScrollVerticalViewProps {
+  children: ReactNode;
   placementStatic?: 'top' | 'bottom';
   gap?: number;
   staticContent?: ReactNode;
   renderPattern?: 'bottom-top' | 'top-bottom';
   containerProps?: FlexBlockProps;
   useShadow?: boolean;
+  scrollContainerProps?: FlexBlockProps;
 }
 
-const Container = styled('div')<Pick<ScrollVerticalViewProps, 'renderPattern'>>`
+const Container = styled(FlexBlock)<
+  Pick<ScrollVerticalViewProps, 'renderPattern'>
+>`
   position: relative;
   height: 100%;
   width: 100%;
   flex-grow: 0;
-  display: flex;
-  //margin-left: -6px;
-  //margin-right: -6px;
-  padding: 10px 0px;
   flex-direction: ${(_) =>
     _.renderPattern === 'top-bottom' ? 'column' : 'column-reverse'};
   overflow-x: hidden;
   overflow-y: auto;
+  scroll-snap-type: y mandatory;
   ${hideScrollBar}
 `;
 
@@ -78,16 +77,23 @@ const Shadow = styled('div')<{ placement: 'top' | 'bottom'; visible: boolean }>`
       : `linear-gradient(to top, ${shadowColor}, ${disabledColor})`};
 `;
 
-export const VerticalScroll: FCWithChildren<ScrollVerticalViewProps> = memo(
-  ({
-    children,
-    placementStatic,
-    staticContent,
-    gap,
-    renderPattern = 'bottom-top',
-    containerProps,
-    useShadow = false,
-  }) => {
+export const VerticalScroll = forwardRef<
+  HTMLDivElement,
+  ScrollVerticalViewProps
+>(
+  (
+    {
+      children,
+      placementStatic,
+      staticContent,
+      gap,
+      renderPattern = 'bottom-top',
+      containerProps,
+      useShadow = false,
+      scrollContainerProps,
+    },
+    ref
+  ) => {
     const root = useRef<HTMLDivElement>(null);
     const topRef = useRef<HTMLDivElement>(null);
     const bottomRef = useRef<HTMLDivElement>(null);
@@ -131,7 +137,12 @@ export const VerticalScroll: FCWithChildren<ScrollVerticalViewProps> = memo(
               }
             />
           )}
-          <Container renderPattern={renderPattern || 'bottom-top'}>
+          <Container
+            p={'10px 0px'}
+            {...scrollContainerProps}
+            renderPattern={renderPattern || 'bottom-top'}
+            ref={ref}
+          >
             {useShadow && <div ref={topRef} />}
             {children}
             {useShadow && <div ref={bottomRef} />}

@@ -3,12 +3,11 @@ import { FC } from 'react';
 
 import { DateHelper } from '@src/common/calendarSupport/dateHelper';
 
-import { TimeBadge } from '@components/Badge/Badge';
+import Badge from '@components/Badge';
 import { ReplyContent } from '@components/Essences/EventEssence/event-essence.styled';
 import { Text } from '@components/Text/Text';
 
 import { BaseEventHistoryFieldProps } from '../event-history.types';
-
 
 export const HistoryTimeField: FC<
   BaseEventHistoryFieldProps<Date | null | string | undefined>
@@ -19,12 +18,12 @@ export const HistoryTimeField: FC<
     return (
       <ReplyContent align={'center'} gap={6}>
         <Text htmlTag={'span'}>Обновленное значение</Text>
-        <TimeBadge>
+        <Badge type={'primary'}>
           {DateHelper.getHumanizeDateValue(date.toDate(), {
             withTime: true,
             monthPattern: 'full',
           })}
-        </TimeBadge>
+        </Badge>
       </ReplyContent>
     );
   }

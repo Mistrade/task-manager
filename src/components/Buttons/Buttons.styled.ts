@@ -8,7 +8,7 @@ export const StyledButton = styled('button')<{
   textColor?: string;
 }>`
   & {
-    padding: 6px 24px;
+    padding: 4px 6px;
     font-size: 16px;
     color: ${(props) => props.textColor || '#fff'};
     background-color: ${(props) => props.fillColor || currentColor};
@@ -27,7 +27,7 @@ export const Button = styled('button')`
   & {
     display: flex;
     align-items: center;
-    padding: 6px 24px;
+    padding: 4px 6px;
     font-size: 16px;
     color: #fff;
     background-color: ${currentColor};
@@ -49,7 +49,7 @@ export const Button = styled('button')`
 
 export const LinkButton = styled('a')`
   & {
-    padding: 6px 32px;
+    padding: 4px 6px;
     font-size: 16px;
     color: ${defaultColor};
     background-color: #fff;
@@ -72,7 +72,7 @@ export const LinkButton = styled('a')`
 
 export const WhiteButton = styled('button')<{ withHover?: boolean }>`
   & {
-    padding: 4px 8px;
+    padding: 4px 6px;
     font-size: 16px;
     color: ${defaultColor};
     background-color: #fff;
@@ -113,7 +113,7 @@ export const JoinToEventButton = styled('a')`
   display: inline;
   width: fit-content;
   font-size: 14px;
-  padding: 4px 8px;
+  padding: 4px 6px;
   border-width: 1px;
   border-style: solid;
   border-color: ${defaultColor};

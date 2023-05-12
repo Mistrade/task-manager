@@ -42,7 +42,7 @@ export const SwitchCalendarMode = styled('button')<{ isSelected?: boolean }>`
     outline: none;
     padding: 6px 16px;
     font-size: 16px;
-    border: 1px solid ${defaultColor};
+    border: 1px solid ${currentColor};
     border-radius: ${borderRadiusSize.sm};
     cursor: pointer;
     transition: all 0.3s ease-in-out;
@@ -52,7 +52,8 @@ export const SwitchCalendarMode = styled('button')<{ isSelected?: boolean }>`
   }
 
   &:hover {
-    color: ${darkColor};
+    background-color: ${currentColor} !important;
+    color: #fff;
   }
 
   &:not(:last-child) {
@@ -131,7 +132,7 @@ export const PlannerNavLink = styled(NavLink)`
 
 export const TimeSelectorButton = styled(SwitchCalendarMode)`
   margin: 0;
-  width: 55px;
+  //width: 55px;
   scroll-snap-align: end;
 
   &:not(:last-child) {
@@ -141,6 +142,8 @@ export const TimeSelectorButton = styled(SwitchCalendarMode)`
   &:last-child {
     margin-bottom: 100%;
   }
+
+  scroll-behavior: smooth;
 `;
 
 export const PlannerOptionPanelContainer = styled('div')`
@@ -148,7 +151,7 @@ export const PlannerOptionPanelContainer = styled('div')`
     display: flex;
     flex-direction: column;
     height: 100%;
-    width: 260px;
+    width: 290px;
     background-color: ${'#fff'};
     padding: 0px 12px;
     flex-shrink: 0;

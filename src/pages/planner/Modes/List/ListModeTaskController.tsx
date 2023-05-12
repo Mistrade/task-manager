@@ -1,6 +1,6 @@
+import { useSearchNavigate } from '@hooks/useSearchNavigate';
 import dayjs from 'dayjs';
 import { FC, Fragment, useMemo } from 'react';
-import { useNavigate } from 'react-router-dom';
 
 import { DeclinationMonthList } from '@src/common/constants/constants';
 import { getTaskListOfDay } from '@src/common/functions';
@@ -42,7 +42,7 @@ export const ListModeTaskController: FC<ListModeTaskController> = ({
     return generator(fromDate, toDate);
   }, [fromDate, toDate]);
 
-  const navigate = useNavigate();
+  const navigate = useSearchNavigate();
 
   if (eventStorage) {
     return (

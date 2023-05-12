@@ -187,7 +187,7 @@ const getMonthCalendarTitle = (
     withTodayMonth && today.year() === year && month === today.month()
       ? '( Сегодня )'
       : '';
-  return `${m} ${year} г. ${todayTitle}`.trim();
+  return `${m} ${todayTitle}`.trim();
 };
 
 const getWeekCalendarTitle = (currentDate: Date): string => {
@@ -199,7 +199,7 @@ const getWeekCalendarTitle = (currentDate: Date): string => {
     year: d.year(),
     month: d.month(),
   };
-  return `Неделя ${w} ${m.year}г.`;
+  return `Неделя ${w}`;
 };
 
 const getYearCalendarTitle = (currentDate: Date) => {
@@ -209,6 +209,7 @@ const getYearCalendarTitle = (currentDate: Date) => {
 const getDayCalendarTitle = (currentDate: Date) => {
   return DateHelper.getHumanizeDateValue(currentDate, {
     withTime: false,
+    withYear: false,
     monthPattern: 'full',
   });
 };
@@ -379,4 +380,31 @@ export function getFromLocalStorage<T>(key: string): T | null {
   const value = localStorage.getItem(key);
   if (value) return JSON.parse(value) as T;
   return null;
+}
+
+export function getSearchParams(): { [key: string]: string } {
+  const search = window.location.search;
+
+  if (!search) {
+    return {};
+  }
+
+  const initialEntries = search.split('?').join('').split('&');
+  if (initialEntries.length) {
+    const entries: Array<[string, string]> = initialEntries
+      .map((item: string) => {
+        const value: [string, string] = item.split('=') as [string, string];
+
+        if (value.length === 2) {
+          return value;
+        }
+
+        return null;
+      })
+      .filter(Boolean) as Array<[string, string]>;
+
+    return Object.fromEntries(entries);
+  }
+
+  return {};
 }

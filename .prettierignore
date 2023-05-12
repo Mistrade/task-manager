@@ -6,4 +6,3 @@ package.json
 tsconfig.json
 .gitignore
 README.md
-/src/components/LayoutComponents/ScrollView/ScrollVerticalView.tsx

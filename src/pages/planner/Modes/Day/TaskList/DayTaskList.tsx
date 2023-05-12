@@ -1,13 +1,13 @@
 import { useEventStorageQueryArgs } from '@hooks/useEventStorageQueryArgs';
+import { useSearchNavigate } from '@hooks/useSearchNavigate';
 import { setOpenEventId } from '@planner-reducer/index';
 import { useAppDispatch } from '@redux/hooks/hooks';
 import React, { FC, memo, useCallback } from 'react';
-import { useNavigate } from 'react-router-dom';
 
 import { currentColor, defaultColor } from '@src/common/constants/constants';
 
 import { Accordion } from '@components/Accordion/Accordion';
-import { Badge } from '@components/Badge/Badge';
+import { StyledBadge } from '@components/Badge/styled';
 import { EventEssence } from '@components/Essences/EventEssence/EventEssence';
 import { FlexBlock } from '@components/LayoutComponents';
 
@@ -17,7 +17,7 @@ import { ObjectId } from '@api/rtk-api.types';
 
 export const DayTaskList: FC = memo(() => {
   const dispatch = useAppDispatch();
-  const navigate = useNavigate();
+  const navigate = useSearchNavigate();
 
   const selectEventHandler = useCallback((_id: ObjectId | null | undefined) => {
     if (_id) {
@@ -51,9 +51,9 @@ export const DayTaskList: FC = memo(() => {
             >
               <span style={{ fontSize: 22 }}>
                 Внутри дня{' '}
-                <Badge style={{ fontSize: 18, color: defaultColor }}>
+                <StyledBadge style={{ fontSize: 18, color: defaultColor }}>
                   {events.baseEvents.length}
-                </Badge>
+                </StyledBadge>
               </span>
             </FlexBlock>
           }
@@ -92,9 +92,9 @@ export const DayTaskList: FC = memo(() => {
             >
               <span style={{ fontSize: 22 }}>
                 Сквозные события{' '}
-                <Badge style={{ fontSize: 18, color: defaultColor }}>
+                <StyledBadge style={{ fontSize: 18, color: defaultColor }}>
                   {events.throughEvents.length}
-                </Badge>
+                </StyledBadge>
               </span>
             </FlexBlock>
           }

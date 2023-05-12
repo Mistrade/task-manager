@@ -7,6 +7,7 @@ import { disabledColor } from '@src/common/constants/constants';
 import { EVENT_INFORMER_TAB_NAMES } from '@src/common/constants/enums';
 
 import { FlexBlock } from '@components/LayoutComponents';
+import Votes, { VOTE_STATUSES, VoteObject } from '@components/Votes';
 
 import { EventInfoBaseProps } from '@planner/types';
 
@@ -39,6 +40,37 @@ export const TaskInformerLeftBar: FC<TaskInformerLeftBarProps> = ({
 }) => {
   const tabName = useAppSelector(plannerSelectEventInfoTabName);
 
+  const voteItem: VoteObject = useMemo(
+    () => ({
+      title: 'Голосование за пидора',
+      elements: [
+        {
+          name: 'Андрей Черников',
+          _id: 'andrey_chernikov',
+          statusByCurrentUser: VOTE_STATUSES.DISLIKE,
+          likes: [],
+          dislikes: [],
+        },
+        {
+          name: 'Ильдар Усманов',
+          _id: 'ildar_usmanov',
+          statusByCurrentUser: VOTE_STATUSES.DISLIKE,
+          likes: [],
+          dislikes: [],
+        },
+        {
+          name: 'Влад Валеев',
+          _id: 'vlad_valeev',
+          statusByCurrentUser: VOTE_STATUSES.LIKE,
+          likes: [],
+          dislikes: [],
+        },
+      ],
+      selected: {},
+    }),
+    []
+  );
+
   const content = useMemo(() => {
     switch (tabName) {
       case EVENT_INFORMER_TAB_NAMES.ABOUT:
@@ -53,6 +85,8 @@ export const TaskInformerLeftBar: FC<TaskInformerLeftBarProps> = ({
         return <TaskMembers taskItem={eventInfo} />;
       case EVENT_INFORMER_TAB_NAMES.CHAINS:
         return <EventChainsTab taskItem={eventInfo} />;
+      case EVENT_INFORMER_TAB_NAMES.VOTES:
+        return <Votes item={voteItem} />;
       default:
         return <></>;
     }

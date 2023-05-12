@@ -1,3 +1,6 @@
+import { useCreateEventModal } from '@hooks/useCreateEventModal';
+import { useAppSelector } from '@redux/hooks/hooks';
+import { plannerSelectLayout } from '@selectors/planner';
 import { FC, useCallback } from 'react';
 
 import { CenteredContainer } from '@src/routes/Interceptors/SessionInterceptor';
@@ -12,6 +15,9 @@ import {
 import { EventInfoModel } from '@api/planning-api/types/event-info.types';
 import { CatchHandleForToast, thenHandleForToast } from '@api/tools';
 
+import { SERVICES_NAMES } from '../../../../../../common/constants/enums';
+import { getPath } from '../../../../../../common/functions';
+import { ICheckListItem } from '../../../../types';
 import { CreateEventCheckList } from './CreateEventCheckList';
 
 export interface EventCheckListProps {
@@ -28,6 +34,8 @@ export const EventCheckList: FC<EventCheckListProps> = ({ eventInfo }) => {
     { eventId: eventInfo._id },
     { skip: !eventInfo._id }
   );
+  const { openModal } = useCreateEventModal();
+  const layout = useAppSelector(plannerSelectLayout);
   const [update, { isLoading: isMutationLoading }] =
     useUpdateCheckListMutation();
 
@@ -51,9 +59,27 @@ export const EventCheckList: FC<EventCheckListProps> = ({ eventInfo }) => {
     [eventInfo._id, checkListItem?.data?._id]
   );
 
+  const onCreateEventHandler = useCallback(
+    (item: ICheckListItem) => {
+      openModal(
+        {
+          title: item.title,
+          parentId: eventInfo._id,
+          group: eventInfo.group?._id,
+        },
+        {
+          useReturnBackOnDecline: true,
+          modalPath: getPath(SERVICES_NAMES.PLANNER, layout, 'event/create'),
+        }
+      );
+    },
+    [layout]
+  );
+
   if (checkListItem?.data) {
     return (
       <CheckList
+        onCreateEventOfCheckListItem={onCreateEventHandler}
         isLoading={isLoading || isMutationLoading}
         checkList={checkListItem.data.data || []}
         title={checkListItem.data.title}

@@ -3,7 +3,7 @@ import { BaseCreateEventTabProps } from 'src/pages/planner/Forms/CreateEvent/Tab
 
 import { SERVICES_NAMES } from '@src/common/constants/enums';
 
-import { TimeBadge } from '@components/Badge/Badge';
+import Badge from '@components/Badge';
 import { LinkStyled } from '@components/Buttons/Link.styled';
 import { ErrorScreen } from '@components/Errors/ErrorScreen';
 import { Checkbox } from '@components/Input/Checkbox/Checkbox';
@@ -36,7 +36,7 @@ export const CreateEventMembersTab: FC<CreateEventMembersTabProps> = ({
             <CutText rows={1} fontSize={18}>
               Выбрано участников
             </CutText>
-            <TimeBadge>{Object.keys(values.members).length}</TimeBadge>
+            <Badge type={'primary'}>{Object.keys(values.members).length}</Badge>
           </FlexBlock>
         </Heading.H2>
       }

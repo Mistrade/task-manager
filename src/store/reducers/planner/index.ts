@@ -1,5 +1,6 @@
 import {
   dateToPlannerDate,
+  getInitialPlannerDate,
   getPlannerMetaData,
   isEqualPlannerDate,
   plannerDateToDate,
@@ -32,37 +33,46 @@ import { CalendarPriorityKeys } from '@planner/types';
 
 import { ObjectId } from '@api/rtk-api.types';
 
+import { getSearchParams } from '../../../common/functions';
+
 const plannerSlice = createSlice({
   name: 'planner',
   initialState: (): IPlannerReducer => {
     const observer = new PlannerObserver();
 
+    const search = getSearchParams();
+
+    console.log(search);
+
     const today = dayjs();
 
-    const todayPlannerDate: IPlannerDate = {
-      month: dayjs().month(),
-      day: dayjs().date(),
-      year: dayjs().year(),
-      week: dayjs().week(),
-    };
+    const initialDate: IPlannerDate = getInitialPlannerDate();
 
     const { status, layout, eventInfoId } = getPlannerMetaData(
       window.location.pathname
     );
+
     const todayDate = dayjs().toDate();
     const todayMonthItem = observer.getMonthItem(todayDate);
-    const todayWeekItem = observer.getWeekItem(todayDate);
-    const todayYearItem = observer.getYearItem(todayDate);
+    const initialMonthItem = observer.getMonthItem(
+      plannerDateToDate(initialDate)
+    );
+    const initialWeekItem = observer.getWeekItem(
+      plannerDateToDate(initialDate)
+    );
+    const initialYearItem = observer.getYearItem(
+      plannerDateToDate(initialDate)
+    );
     const currentLayout = layout || DEFAULT_PLANNER_LAYOUT;
     const currentStatus = status || DEFAULT_PLANNER_STATUS;
     return {
       date: {
-        day: todayPlannerDate,
-        week: todayPlannerDate,
-        month: todayPlannerDate,
-        year: todayPlannerDate,
-        list: todayPlannerDate,
-        favorites: todayPlannerDate,
+        day: initialDate,
+        week: initialDate,
+        month: initialDate,
+        year: initialDate,
+        list: initialDate,
+        favorites: initialDate,
       },
       selectedEventGroup: null,
       createEventInitialState: null,
@@ -80,9 +90,9 @@ const plannerSlice = createSlice({
       },
       config: {
         layouts: {
-          month: todayMonthItem,
-          week: todayWeekItem,
-          year: todayYearItem,
+          month: initialMonthItem,
+          week: initialWeekItem,
+          year: initialYearItem,
           day: {
             scope: {
               startDate: dateToPlannerDate(today.startOf('day').toDate()),

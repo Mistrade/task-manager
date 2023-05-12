@@ -1,10 +1,9 @@
 import React from 'react';
 
-import { TimeBadge } from '@components/Badge/Badge';
-
+import Badge from '../Badge';
 import { BreadCrumbsContainer } from './BreadCrumbs.styled';
 
-interface BreadCrumbsItem<T> {
+export interface BreadCrumbsItem<T> {
   title: string;
   value: T;
 }
@@ -20,12 +19,13 @@ export function BreadCrumbs<T>({ data, onClick }: BreadCrumbsProps<T>) {
     <BreadCrumbsContainer>
       {data.map((item, index) => (
         <React.Fragment key={item.title}>
-          <TimeBadge
+          <Badge
+            type={'primary'}
             style={{ cursor: 'pointer' }}
             onClick={() => onClick(item.value)}
           >
             {item.title}
-          </TimeBadge>
+          </Badge>
           {index !== data.length - 1 && '/'}
         </React.Fragment>
       ))}

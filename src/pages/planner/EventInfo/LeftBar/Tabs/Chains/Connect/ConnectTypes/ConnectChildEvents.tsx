@@ -1,7 +1,7 @@
 import { useConnectChainsOfTree } from '@hooks/useConnectChainsOfTree';
 import { FC, useEffect } from 'react';
 
-import { Badge } from '@components/Badge/Badge';
+import { StyledBadge } from '@components/Badge/styled';
 import { ButtonWithLoading } from '@components/Buttons/ButtonWithLoading';
 import { EmptyButtonStyled } from '@components/Buttons/EmptyButton.styled';
 import { FlexBlock } from '@components/LayoutComponents';
@@ -36,7 +36,8 @@ export const ConnectChildEvents: FC<ConnectChildEventsProps> = ({
       <PreviewEventsList
         title={
           <Heading.H3>
-            События, которые вы выбрали <Badge>{eventsList.length}</Badge>
+            События, которые вы выбрали{' '}
+            <StyledBadge>{eventsList.length}</StyledBadge>
           </Heading.H3>
         }
         selectedEvents={eventsList || []}
@@ -89,7 +90,7 @@ export const ConnectChildEvents: FC<ConnectChildEventsProps> = ({
           <FlexBlock direction={'row'} grow={3} gap={6}>
             {eventsList.length > 0 && (
               <Heading.H3>
-                Выбранные события <Badge>{eventsList.length}</Badge>
+                Выбранные события <StyledBadge>{eventsList.length}</StyledBadge>
               </Heading.H3>
             )}
           </FlexBlock>

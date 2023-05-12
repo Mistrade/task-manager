@@ -10,7 +10,6 @@ import { FlexBlock } from '@components/LayoutComponents';
 
 import { CalendarTitle } from '@planner/styled';
 
-
 export const PanelDateHeader = React.memo(() => {
   const date = useAppSelector(plannerSelectDate);
   const layout = useAppSelector(plannerSelectLayout);
@@ -21,7 +20,7 @@ export const PanelDateHeader = React.memo(() => {
   );
 
   return (
-    <FlexBlock justify={'center'} width={'100%'} p={`3px 12px`} fSize={20}>
+    <FlexBlock justify={'center'} fSize={20}>
       <CalendarTitle>{title}</CalendarTitle>
     </FlexBlock>
   );

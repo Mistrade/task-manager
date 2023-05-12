@@ -25,6 +25,7 @@ export const taskInformerSwitcherList: Array<TaskInformerSwitchersItem> = [
   { title: 'Комментарии', key: EVENT_INFORMER_TAB_NAMES.COMMENTS },
   { title: 'Участники', key: EVENT_INFORMER_TAB_NAMES.MEMBERS },
   { title: 'Связи', key: EVENT_INFORMER_TAB_NAMES.CHAINS },
+  { title: 'Голосования', key: EVENT_INFORMER_TAB_NAMES.VOTES },
 ];
 
 const Container = styled('div')`

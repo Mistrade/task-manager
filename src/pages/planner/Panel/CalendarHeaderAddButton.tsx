@@ -14,7 +14,6 @@ import { SelectItemContainer } from '@components/Input/SelectInput/SelectItemCon
 import { SelectListContainer } from '@components/Input/SelectInput/SelectListContainer';
 import { Tooltip } from '@components/Tooltip/Tooltip';
 
-
 export const CalendarHeaderAddButton: FC = React.memo(() => {
   const navigate = useSearchNavigate();
   const layout = useAppSelector(plannerSelectLayout);
@@ -71,10 +70,7 @@ export const CalendarHeaderAddButton: FC = React.memo(() => {
         </SelectListContainer>
       }
     >
-      <EmptyButtonStyled
-        onClick={() => setIsOpen((prev) => !prev)}
-        style={{ width: '100%', display: 'flex', justifyContent: 'center' }}
-      >
+      <EmptyButtonStyled onClick={() => setIsOpen((prev) => !prev)}>
         <PlusIcon size={30} />
       </EmptyButtonStyled>
     </Tooltip>

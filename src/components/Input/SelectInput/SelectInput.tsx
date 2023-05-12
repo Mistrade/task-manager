@@ -10,8 +10,7 @@ import {
   FlexBlock,
   FlexBlockProps,
 } from '@components/LayoutComponents/FlexBlock';
-import { Tooltip, TooltipProps } from '@components/Tooltip/Tooltip';
-
+import { Tooltip, TooltipDefaultProps } from '@components/Tooltip/Tooltip';
 
 type ExtendableFromTextInput = Omit<DefaultTextInputProps, 'children'>;
 
@@ -23,7 +22,7 @@ export interface SelectInputProps<T> extends ExtendableFromTextInput {
   ) => ReactNode;
   multiple?: boolean;
   containerProps?: FlexBlockProps;
-  selectContainerPlacement?: TooltipProps['placement'];
+  selectContainerPlacement?: TooltipDefaultProps['placement'];
   selectContainerViewCondition?: boolean;
 }
 
@@ -60,7 +59,7 @@ export function SelectInput<T>({
         onClickOutside={() => setIsOpen(false)}
         interactive={true}
         interactiveBorder={20}
-        content={renderData(data, setIsOpen)}
+        content={isOpen ? renderData(data, setIsOpen) : <></>}
       >
         <TextInput
           readOnly={readOnly}

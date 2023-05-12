@@ -2,6 +2,7 @@ import { setPlannerLayout } from '@planner-reducer/index';
 import { useAppDispatch, useAppSelector } from '@redux/hooks/hooks';
 import { plannerSelectLayout } from '@selectors/planner';
 import { useMemo, useState } from 'react';
+import { useLocation } from 'react-router';
 
 import { defaultColor } from '@src/common/constants/constants';
 import { SERVICES_NAMES } from '@src/common/constants/enums';
@@ -30,6 +31,7 @@ export const PlannerSelectLayout = () => {
   }, [layout]);
 
   const [isOpen, setIsOpen] = useState(false);
+  const location = useLocation();
 
   return (
     <Tooltip
@@ -47,7 +49,10 @@ export const PlannerSelectLayout = () => {
           <SelectListContainer>
             {filteredArr.map((item) => (
               <LinkSolid
-                to={getPath(SERVICES_NAMES.PLANNER, item.layout)}
+                to={[
+                  getPath(SERVICES_NAMES.PLANNER, item.layout),
+                  location.search,
+                ].join('')}
                 style={{ width: '100%' }}
                 key={item.layout}
                 title={item.title}

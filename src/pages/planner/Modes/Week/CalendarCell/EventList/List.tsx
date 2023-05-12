@@ -21,7 +21,6 @@ const CalendarCellEventsListContainer = styled('div')`
     display: flex;
     flex-direction: column;
     width: 100%;
-    //max-height: 30vh;
     overflow-y: auto;
     overflow-x: hidden;
     scroll-behavior: unset;

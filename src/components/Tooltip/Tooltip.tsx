@@ -1,10 +1,11 @@
 import Tippy, { TippyProps } from '@tippyjs/react';
 import { FC, ReactNode, useCallback } from 'react';
+import { CSSProperties } from 'styled-components';
 
 import { IconProps } from '@components/Icons/Icons';
 import { TooltipIcon } from '@components/Icons/TooltipIcon';
 
-export interface TooltipProps {
+export interface TooltipDefaultProps {
   children?: ReactNode;
   content: ReactNode;
   placement?: TippyProps['placement'];
@@ -24,14 +25,24 @@ export interface TooltipProps {
   onClickOutside?: (event: Event) => void;
 }
 
+export interface TooltipContainerProps {
+  containerClassName?: string;
+  containerStyles?: CSSProperties;
+  containerId?: string;
+}
+
 export interface OptionsTooltip {
   state: boolean;
   top: number | string;
   left: string | number;
-  placement: TooltipProps['placement'];
+  placement: TooltipDefaultProps['placement'];
 }
 
-export const Tooltip: FC<TooltipProps & IconProps> = ({
+export type TooltipProps = TooltipContainerProps &
+  TooltipDefaultProps &
+  IconProps;
+
+export const Tooltip: FC<TooltipProps> = ({
   children,
   content,
   placement = 'top',
@@ -49,6 +60,9 @@ export const Tooltip: FC<TooltipProps & IconProps> = ({
   arrow = true,
   visible,
   onClickOutside,
+  containerStyles,
+  containerClassName,
+  containerId,
   ...iconProps
 }) => {
   const outsideHandler = useCallback(
@@ -80,7 +94,13 @@ export const Tooltip: FC<TooltipProps & IconProps> = ({
         strategy: 'absolute',
       }}
     >
-      <span>{children ? children : <TooltipIcon {...iconProps} />}</span>
+      <span
+        className={containerClassName}
+        style={containerStyles}
+        id={containerId}
+      >
+        {children ? children : <TooltipIcon {...iconProps} />}
+      </span>
     </Tippy>
   );
 };

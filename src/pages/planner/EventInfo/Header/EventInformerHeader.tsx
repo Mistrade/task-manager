@@ -9,7 +9,6 @@ import { EmptyButtonStyled } from '@components/Buttons/EmptyButton.styled';
 import { FlexBlock } from '@components/LayoutComponents';
 
 import { IsDelayedEvent } from '@planner/EventInfo/Header/IsDelayedEvent';
-import { EventInformerToggles } from '@planner/EventInfo/Header/Toggles';
 import { TaskInformerLinkButton } from '@planner/EventInfo/SupportsComponent/TaskInformerLinkButton';
 import { TaskInformerMoreActions } from '@planner/EventInfo/SupportsComponent/TaskInformerMoreActions';
 import { TaskInformerSwitchers } from '@planner/EventInfo/SupportsComponent/TaskInformerSwitchers';
@@ -17,6 +16,8 @@ import { TaskInformerTitle } from '@planner/EventInfo/SupportsComponent/TaskInfo
 import { EventInfoUpdateFn } from '@planner/EventInfo/SupportsComponent/ToggleTaskInformerButtons';
 
 import { EventInfoModel } from '@api/planning-api/types/event-info.types';
+
+import { EventInformerToggles } from './TogglesBar';
 
 export interface EventInformerHeaderProps {
   eventInfo: EventInfoModel;

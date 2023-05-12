@@ -10,7 +10,7 @@ import {
 } from '@src/common/constants/constants';
 import { CenteredContainer } from '@src/routes/Interceptors/SessionInterceptor';
 
-import { Badge } from '@components/Badge/Badge';
+import { StyledBadge } from '@components/Badge/styled';
 import { LinkStyled } from '@components/Buttons/Link.styled';
 import { ErrorScreen } from '@components/Errors/ErrorScreen';
 import { FlexBlock } from '@components/LayoutComponents';
@@ -135,7 +135,7 @@ export const TaskHistory: FC<TaskHistoryProps> = memo(
                               </FlexBlock>
                             }
                           >
-                            <Badge
+                            <StyledBadge
                               style={{
                                 backgroundColor: orangeColor,
                                 fontSize: 14,
@@ -143,7 +143,7 @@ export const TaskHistory: FC<TaskHistoryProps> = memo(
                               }}
                             >
                               Приватная запись
-                            </Badge>
+                            </StyledBadge>
                           </Tooltip>
                         )}
                       </FlexBlock>

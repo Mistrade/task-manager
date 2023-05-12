@@ -9,10 +9,9 @@ import {
 } from '@src/common/constants/constants';
 import { borderRadiusSize } from '@src/common/css/mixins';
 
-import { TimeBadge } from '@components/Badge/Badge';
 import { CopyToClipboardButton } from '@components/Buttons/CopyToClipboardButton';
 import { EmptyButtonStyled } from '@components/Buttons/EmptyButton.styled';
-import { PencilIcon, TrashIcon } from '@components/Icons/Icons';
+import { PencilIcon, PlusIcon, TrashIcon } from '@components/Icons/Icons';
 import { TooltipIcon } from '@components/Icons/TooltipIcon';
 import { Checkbox } from '@components/Input/Checkbox/Checkbox';
 import {
@@ -29,7 +28,9 @@ import { Tooltip } from '@components/Tooltip/Tooltip';
 
 import { ICheckListItem } from '@planner/types';
 
-const CheckListUL = styled('ul')`
+import Badge from '../Badge';
+
+export const CheckListUL = styled('ul')`
   & {
     display: flex;
     flex-direction: column;
@@ -52,7 +53,7 @@ const CheckListItemAnimation = keyframes`
   }
 `;
 
-const StyledCheckListItem = styled('li')`
+export const StyledCheckListItem = styled('li')`
   & {
     display: flex;
     width: 100%;
@@ -71,6 +72,7 @@ const CheckListItemButtons = styled('div')`
   & {
     display: flex;
     gap: 8px;
+    align-items: center;
   }
 `;
 
@@ -84,9 +86,11 @@ export interface CheckListProps {
   //Если нужно очистить поля ввода onAddItem должна вернуть true
   onSaveNewElement?: (title: string) => Promise<boolean>;
   onRemoveItem?: (item: ICheckListItem) => Promise<boolean>;
+  onCreateEventOfCheckListItem?: (data: ICheckListItem) => void;
 }
 
 export interface CheckListItemProps {
+  onCreateEventOfCheckListItem?: (data: ICheckListItem) => void;
   item: ICheckListItem;
   onChange?: (
     item: ICheckListItem,
@@ -99,6 +103,7 @@ export const CheckListItem: FC<CheckListItemProps> = ({
   item,
   onChange,
   onRemove,
+  onCreateEventOfCheckListItem,
 }) => {
   const [isEditMode, setIsEditMode] = useState<boolean>(false);
   const [isLoading, setIsLoading] = useState(false);
@@ -183,6 +188,23 @@ export const CheckListItem: FC<CheckListItemProps> = ({
         </FlexBlock>
 
         <CheckListItemButtons>
+          {onCreateEventOfCheckListItem && (
+            <Tooltip
+              content={'Создать событие на основе этого элемента чек-листа'}
+              placement={'top'}
+              delay={[0, 100]}
+              theme={'current'}
+              containerStyles={{
+                height: 'fit-content',
+              }}
+            >
+              <EmptyButtonStyled
+                onClick={() => onCreateEventOfCheckListItem(item)}
+              >
+                <PlusIcon size={16} color={currentColor} />
+              </EmptyButtonStyled>
+            </Tooltip>
+          )}
           <CopyToClipboardButton content={item.title} />
           <EmptyButtonStyled onClick={removeHandler}>
             <TrashIcon size={16} color={defaultColor} />
@@ -253,6 +275,7 @@ export const CheckList: FC<CheckListProps> = ({
   title,
   onChangeTitle,
   isLoading,
+  onCreateEventOfCheckListItem,
 }) => {
   const [isEditTitle, setIsEditTitle] = useState(false);
 
@@ -282,9 +305,9 @@ export const CheckList: FC<CheckListProps> = ({
 
     if (checkList.length) {
       return (
-        <TimeBadge>
+        <Badge type={'primary'}>
           {result.completedCount} / {result.count} ({result.percent}%)
-        </TimeBadge>
+        </Badge>
       );
     }
     return <></>;
@@ -379,6 +402,7 @@ export const CheckList: FC<CheckListProps> = ({
       <CheckListUL>
         {checkList.map((item) => (
           <CheckListItem
+            onCreateEventOfCheckListItem={onCreateEventOfCheckListItem}
             key={item._id}
             item={item}
             onChange={onItemChange}

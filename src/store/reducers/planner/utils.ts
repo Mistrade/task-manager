@@ -13,6 +13,7 @@ import { EventFilterTaskStatuses } from '@pages/planner/Filters/find-event-filte
 
 import { ObjectId } from '@api/rtk-api.types';
 
+import { getSearchParams } from '../../../common/functions';
 
 export const isEqualPlannerDate = (
   prev: IPlannerDate,
@@ -39,6 +40,16 @@ export const dateToPlannerDate = (
     month: value.month(),
     year: value.year(),
     week: value.week(),
+  };
+};
+
+export const plannerDateToSearchParams = (
+  date: IPlannerDate
+): Record<keyof Omit<IPlannerDate, 'week'>, string> => {
+  return {
+    day: date.day.toString(),
+    month: date.month.toString(),
+    year: date.year.toString(),
   };
 };
 
@@ -169,3 +180,23 @@ export const setLayoutConfig = <T extends PLANNER_LAYOUTS>(
     }
   }
 };
+
+export function getInitialPlannerDate(): IPlannerDate {
+  const searchParams = getSearchParams();
+
+  const d = dayjs()
+    .set('year', +searchParams.year)
+    .set('month', +searchParams.month)
+    .set('date', +searchParams.day);
+
+  if (d.isValid()) {
+    return dateToPlannerDate(d);
+  }
+
+  return {
+    month: dayjs().month(),
+    day: dayjs().date(),
+    year: dayjs().year(),
+    week: dayjs().week(),
+  };
+}

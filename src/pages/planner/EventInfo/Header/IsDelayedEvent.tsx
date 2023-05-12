@@ -1,8 +1,6 @@
 import React, { FC, memo } from 'react';
 
-import { orangeColor } from '@src/common/constants/constants';
-
-import { TimeBadge } from '@components/Badge/Badge';
+import Badge from '@components/Badge';
 import { Tooltip } from '@components/Tooltip/Tooltip';
 
 export interface IIsDelayedEventProps {
@@ -24,9 +22,9 @@ export const IsDelayedEvent: FC<IIsDelayedEventProps> = memo(
         delay={[100, 200]}
         placement={'bottom'}
       >
-        <TimeBadge style={{ backgroundColor: orangeColor }}>
+        <Badge type={'delayed'} isInteractive={true}>
           Просрочено
-        </TimeBadge>
+        </Badge>
       </Tooltip>
     );
   },

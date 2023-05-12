@@ -30,13 +30,15 @@ export const SmallMonthDateItem: FC<SmallMonthDateItemProps> = ({
   dateComponent,
 }) => {
   if (!dateComponent) {
+    const isDisabled = date.meta.isDisabled;
     return (
       <SmallMonthRowItem
-        onClick={() => onSelectDate && onSelectDate(date)}
-        isDisabled={date.value.month !== current.month}
+        onClick={() => !isDisabled && onSelectDate && onSelectDate(date)}
+        isDisabled={isDisabled || current.month !== date.value.month}
         isToday={date.meta.isToday}
         isSelect={isSelect}
         hasTasks={
+          !isDisabled &&
           current.month === date.value.month &&
           taskScheme &&
           !!taskScheme[

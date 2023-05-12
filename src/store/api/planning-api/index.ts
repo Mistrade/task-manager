@@ -53,6 +53,7 @@ import {
   GroupIdObject,
   GroupModelResponse,
 } from './types/groups.types';
+import { UserInviteItem } from './types/invites.types';
 
 export const PlanningApiTagTypes = [
   'Events',
@@ -65,6 +66,7 @@ export const PlanningApiTagTypes = [
   'EventHistory',
   'Comments',
   'CheckList',
+  'InvitesList',
 ];
 
 export const planningApi = createApi({
@@ -440,6 +442,16 @@ export const planningApi = createApi({
         }),
         invalidatesTags: (result, error) => (error ? [] : ['CheckList']),
       }),
+      getEventInvitesList: query<
+        MyServerResponse<Array<UserInviteItem>>,
+        ObjectId
+      >({
+        query: (eventId: ObjectId) => ({
+          url: `/info/invites/${eventId}`,
+          method: 'GET',
+        }),
+        providesTags: ['InvitesList'],
+      }),
       refetchPlanningApi: mutation<null, void>({
         queryFn: () => ({ data: null }),
         invalidatesTags: PlanningApiTagTypes,
@@ -477,4 +489,5 @@ export const {
   useGetCheckListQuery,
   useGetEventListQuery,
   useUpdateCheckListMutation,
+  useGetEventInvitesListQuery,
 } = planningApi;

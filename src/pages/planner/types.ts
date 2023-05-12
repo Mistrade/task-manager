@@ -6,7 +6,7 @@ import { EVENT_ACCESS_RIGHTS } from '@src/common/constants/enums';
 
 import { DefaultTextInputProps } from '@components/Input/TextInput/TextInput';
 import { FlexBlockProps } from '@components/LayoutComponents/FlexBlock';
-import { TooltipProps } from '@components/Tooltip/Tooltip';
+import { TooltipDefaultProps } from '@components/Tooltip/Tooltip';
 
 import {
   EventInfoModel,
@@ -20,6 +20,7 @@ import { CalendarCellEventsListProps } from './Modes/Week/CalendarCell/EventList
 export type FCWithChildren<T = any> = FC<{ children?: ReactNode } & T>;
 
 export interface DatePickerProps {
+  useOtherDays?: boolean;
   onFocus?: (e: React.FocusEvent<HTMLInputElement>) => void;
   onChange?: (date: Date | null) => void;
   currentDate: Date | null;
@@ -69,7 +70,7 @@ export interface TaskTileItemProps {
   taskInfo: ShortEventInfoModel;
   date: CalendarItem;
   onSelect?: CalendarCellEventsListProps['onSelect'];
-  tooltipPlacement: TooltipProps['placement'] | null;
+  tooltipPlacement: TooltipDefaultProps['placement'] | null;
 }
 
 export type OnSelectDateFromCalendarFn = (data: CalendarItem) => void;

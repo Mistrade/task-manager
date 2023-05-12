@@ -3,7 +3,7 @@ import { memo, useMemo } from 'react';
 
 import { currentColor, orangeColor } from '@src/common/constants/constants';
 
-import { Badge } from '@components/Badge/Badge';
+import { StyledBadge } from '@components/Badge/styled';
 import { FlexBlock } from '@components/LayoutComponents';
 import { Heading } from '@components/Text/Heading';
 
@@ -21,7 +21,7 @@ export const WeekHeader = memo<{ config: WeekItem }>(
         <FlexBlock direction={'row'} gap={6}>
           Неделя {config.weekOfYear}
           {isCurrent ? (
-            <Badge
+            <StyledBadge
               style={{
                 fontWeight: 'normal',
                 backgroundColor: orangeColor,
@@ -29,7 +29,7 @@ export const WeekHeader = memo<{ config: WeekItem }>(
               }}
             >
               сегодня
-            </Badge>
+            </StyledBadge>
           ) : (
             <></>
           )}

@@ -1,7 +1,9 @@
 import { setPlannerStatus } from '@planner-reducer/index';
+import { plannerDateToSearchParams } from '@planner-reducer/utils';
 import { useAppDispatch, useAppSelector } from '@redux/hooks/hooks';
-import { plannerSelectStatus } from '@selectors/planner';
-import React, { FC, memo } from 'react';
+import { plannerSelectDate, plannerSelectStatus } from '@selectors/planner';
+import React, { FC, memo, useEffect } from 'react';
+import { useSearchParams } from 'react-router-dom';
 import styled from 'styled-components';
 
 import { TaskStatusesList } from '@src/common/constants/signatures';
@@ -27,6 +29,13 @@ export const TaskListEventFiltersContainer = styled('div')`
 export const FindEventFilter: FC = memo(() => {
   const status = useAppSelector(plannerSelectStatus);
   const dispatch = useAppDispatch();
+  const date = useAppSelector(plannerSelectDate);
+  const [searchParams, setSearchParams] = useSearchParams();
+
+  useEffect(() => {
+    setSearchParams(plannerDateToSearchParams(date));
+  }, [date]);
+
   return (
     <TaskListEventFiltersContainer>
       <FlexBlock width={'100%'} gap={2} position={'relative'} direction={'row'}>

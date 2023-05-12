@@ -8,17 +8,26 @@ import { FlexBlock } from '@components/LayoutComponents';
 
 import { SwitchCalendarMode } from '@planner/styled';
 
+import { currentColor } from '../../common/constants/constants';
 
 const SwitchArr: Array<{
   title: ReactNode;
   pattern: ShortChangeCurrentPattern;
 }> = [
   {
-    title: <DoubleArrow size={16} transform={'rotate(180deg)'} />,
+    title: (
+      <DoubleArrow
+        size={20}
+        transform={'rotate(180deg)'}
+        color={currentColor}
+      />
+    ),
     pattern: '--',
   },
   {
-    title: <Arrow size={16} transform={'rotate(180deg)'} />,
+    title: (
+      <Arrow size={20} transform={'rotate(180deg)'} color={currentColor} />
+    ),
     pattern: '-',
   },
   {
@@ -26,11 +35,11 @@ const SwitchArr: Array<{
     pattern: 'today',
   },
   {
-    title: <Arrow size={16} />,
+    title: <Arrow size={20} color={currentColor} />,
     pattern: '+',
   },
   {
-    title: <DoubleArrow size={16} />,
+    title: <DoubleArrow size={20} color={currentColor} />,
     pattern: '++',
   },
 ];

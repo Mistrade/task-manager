@@ -8,7 +8,7 @@ import { FlexBlock } from '@components/LayoutComponents';
 import { PanelDateHeader } from '@planner/Panel/PanelDateHeader';
 
 import { CalendarHeaderAddButton } from './CalendarHeaderAddButton';
-import { CalendarTodaySwitchers } from './CalendarTodaySwitchers';
+import { PlannerBreadCrumbs } from './PlannerBreadCrumbs';
 
 export const CalendarCurrentTitle: FC = React.memo(
   () => {
@@ -22,12 +22,12 @@ export const CalendarCurrentTitle: FC = React.memo(
         pt={6}
         pb={6}
       >
-        <FlexBlock justify={'center'} width={'100%'} p={`3px 12px`}>
-          <CalendarHeaderAddButton />
-        </FlexBlock>
-        <PanelDateHeader />
-        <FlexBlock justify={'center'} width={'100%'} p={`3px 12px`}>
-          <CalendarTodaySwitchers />
+        <FlexBlock direction={'column'} gap={6} p={`3px 12px`}>
+          <FlexBlock align={'center'} justify={'space-between'} width={'100%'}>
+            <PanelDateHeader />
+            <CalendarHeaderAddButton />
+          </FlexBlock>
+          <PlannerBreadCrumbs />
         </FlexBlock>
       </FlexBlock>
     );

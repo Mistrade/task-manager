@@ -5,7 +5,7 @@ import React, { memo, useState } from 'react';
 import { MonthList, WeekDaysShortList } from '@src/common/constants/constants';
 import { addNull } from '@src/common/functions';
 
-import { Badge } from '@components/Badge/Badge';
+import { StyledBadge } from '@components/Badge/styled';
 import { FlexBlock } from '@components/LayoutComponents';
 
 import { CellDateButtons } from '@planner/Modes/Week/CalendarCell/CellDateButtons';
@@ -51,13 +51,13 @@ export const CellDate = memo<CellDateProps>(
             <FlexBlock grow={3} pl={4}>
               {renderMonth && MonthList[date.value.month]}
             </FlexBlock>
-            <Badge>
+            <StyledBadge>
               {
                 WeekDaysShortList[
                   dayjs(plannerDateToDate(date.value)).weekday()
                 ]
               }
-            </Badge>
+            </StyledBadge>
             <CalendarDate
               isToday={date.meta.isToday}
               disabled={date.meta.isDisabled}

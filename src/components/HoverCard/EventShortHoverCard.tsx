@@ -7,7 +7,6 @@ import {
 import { PRIORITY_TITLES } from '@src/common/constants/constants';
 import { convertEventStatus } from '@src/common/functions';
 
-import { Badge } from '@components/Badge/Badge';
 import { JoinToEventButton } from '@components/Buttons/Buttons.styled';
 import { PriorityCalendarIcon } from '@components/Icons/CalendarIcons/PriorityCalendarIcon';
 import { TreeIcon } from '@components/Icons/CalendarIcons/TreeIcon';
@@ -20,6 +19,8 @@ import { UserAvatar } from '@components/Users/UserAvatar';
 import { GroupLogo } from '@planner/Groups/styled';
 
 import { ShortEventInfoModel } from '@api/planning-api/types/event-info.types';
+
+import { StyledBadge } from '../Badge/styled';
 
 export interface EventShortHoverCardProps {
   event: ShortEventInfoModel;
@@ -62,7 +63,7 @@ export const EventShortHoverCard: FC<EventShortHoverCardProps> = ({
           {event.title}
         </FlexBlock>
       </FlexBlock>
-      <Badge
+      <StyledBadge
         style={{
           padding: 6,
           whiteSpace: 'pre-wrap',
@@ -71,7 +72,7 @@ export const EventShortHoverCard: FC<EventShortHoverCardProps> = ({
         }}
       >
         {time}
-      </Badge>
+      </StyledBadge>
       <FlexBlock gap={4} align={'center'}>
         <EventIcon status={event.status} size={16} />
         {convertEventStatus(event.status)}
