@@ -3,31 +3,20 @@ import styled, { css } from 'styled-components';
 
 import { disableReRender } from '@src/common/utils/react-utils';
 
-import { EmptyButtonStyled } from '@components/Buttons/EmptyButton.styled';
-import { DoubleArrow, SettingsIcon } from '@components/Icons/Icons';
+import { DoubleArrow } from '@components/Icons/Icons';
 import { FlexBlock } from '@components/LayoutComponents';
-import { Tooltip } from '@components/Tooltip/Tooltip';
 
-import { OptionPanelCalendar } from '@planner/Panel/Calendar';
-import { CalendarCurrentTitle } from '@planner/Panel/CalendarCurrentTitle';
-import { PlannerSelectLayout } from '@planner/Panel/SelectLayout';
 import { PlannerOptionPanelContainer } from '@planner/styled';
 import { DaySettingsPanelProps } from '@planner/types';
 
-import {
-  currentColor,
-  darkColor,
-  disabledColor,
-} from '../../../common/constants/constants';
+import { darkColor, disabledColor } from '../../../common/constants/constants';
 import {
   Delay,
   getFromLocalStorage,
   setToLocalStorage,
 } from '../../../common/functions';
-import { GroupList } from '../Groups';
-import { GroupListShort } from '../Groups/GroupListShort';
-import { CalendarHeaderAddButton } from './CalendarHeaderAddButton';
-import { CalendarTodaySwitchers } from './CalendarTodaySwitchers';
+import { FullPanelContent } from './Full';
+import { ShortPanelContent } from './Short';
 
 const ToggleIsOpenButtonContainer = styled('div')`
   position: absolute;
@@ -101,67 +90,16 @@ export const PlannerOptionsPanel: FC<DaySettingsPanelProps> = React.memo(() => {
     }
   }, [animationIsOpen]);
 
-  const [tooltipIsOpen, setTooltipIsOpen] = useState(false);
-
-  const toggleContent = (
-    <>
-      <CalendarCurrentTitle />
-      <FlexBlock
-        mt={12}
-        justify={'center'}
-        width={'100%'}
-        p={`3px 12px`}
-        shrink={0}
-      >
-        <CalendarTodaySwitchers />
-      </FlexBlock>
-      <OptionPanelCalendar />
-    </>
-  );
-
   return (
     <PlannerOptionPanelContainer
       state={animationIsOpen}
       style={{ paddingBottom: 12 }}
     >
-      <FlexBlock
-        direction={'column'}
-        gap={isOpen ? 12 : 24}
-        height={'100%'}
-        minWidth={'100%'}
-      >
-        <PlannerSelectLayout pattern={isOpen ? 'full' : 'short'} />
-        {isOpen ? (
-          toggleContent
-        ) : (
-          <FlexBlock
-            width={'100%'}
-            justify={'center'}
-            align={'center'}
-            direction={'column'}
-            gap={24}
-          >
-            <CalendarHeaderAddButton />
-            <Tooltip
-              content={toggleContent}
-              theme={'light'}
-              placement={'right-start'}
-              delay={100}
-              visible={tooltipIsOpen}
-              onClickOutside={() => setTooltipIsOpen(false)}
-              interactive={true}
-              interactiveBorder={20}
-            >
-              <EmptyButtonStyled
-                onClick={() => setTooltipIsOpen((prev) => !prev)}
-              >
-                <SettingsIcon size={30} color={currentColor} />
-              </EmptyButtonStyled>
-            </Tooltip>
-          </FlexBlock>
-        )}
-        {isOpen ? <GroupList /> : <GroupListShort />}
-      </FlexBlock>
+      {isOpen ? (
+        <FullPanelContent canDestroy={!animationIsOpen} />
+      ) : (
+        <ShortPanelContent />
+      )}
       <FlexBlock>
         <ToggleIsOpenButton
           state={isOpen}

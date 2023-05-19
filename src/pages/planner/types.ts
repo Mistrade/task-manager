@@ -81,6 +81,7 @@ export interface SmallCalendarMonthTitleProps {
   monthItem: MonthItem;
   onClick?: (monthItem: MonthItem) => void;
   renderYear?: boolean;
+  isCurrentMonth?: boolean;
 }
 
 export type CalendarList = Array<CalendarItem>;

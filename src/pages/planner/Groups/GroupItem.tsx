@@ -1,51 +1,89 @@
-import { useCreateEventModal } from '@hooks/useCreateEventModal';
-import { useAppSelector } from '@redux/hooks/hooks';
-import { plannerSelectLayout } from '@selectors/planner';
 import { FC, useState } from 'react';
+import styled, { css, keyframes } from 'styled-components';
 
 import { darkColor, defaultColor } from '@src/common/constants/constants';
-import { SERVICES_NAMES } from '@src/common/constants/enums';
-import { Delay, getPath } from '@src/common/functions';
+import { Delay } from '@src/common/functions';
 import { GroupItemProps } from '@src/pages/planner/Groups/types';
 
 import { EmptyButtonStyled } from '@components/Buttons/EmptyButton.styled';
 import { PencilIcon, PlusIcon, TrashIcon } from '@components/Icons/Icons';
 import { Checkbox } from '@components/Input/Checkbox/Checkbox';
+import { fromRightToLeftAnimation } from '@components/Input/TextInput/TextInput';
 import { FlexBlock } from '@components/LayoutComponents';
 import { CutText } from '@components/Text/Text';
+
+const shortKeyFrame = keyframes`
+  0% {
+    transform: scale(0.5);
+    opacity: .7;
+  }
+  70% {
+    transform: scale(1.2);
+    opacity: .9;
+  }
+  100% {
+    transform: scale(1);
+    opacity: 1;
+  }
+`;
+
+export const bubbleAnimation = css`
+  transform: scale(0);
+  animation: ${shortKeyFrame} 0.5s ease-in-out forwards;
+`;
+
+const CustomContainer = styled('li')<{
+  delay: number;
+  pattern: 'full' | 'short';
+}>`
+  ${(_) =>
+    _.pattern === 'short' ? bubbleAnimation : fromRightToLeftAnimation};
+  animation-delay: ${(_) => _.delay || 0}ms;
+`;
 
 export const GroupItem: FC<GroupItemProps> = ({
   onChange,
   item,
   onDelete,
   onEdit,
-  renderPattern,
+  renderPattern = 'full',
+  index = 0,
+  onContextMenu,
+  onCreateEvent,
+  isFetching,
+  replaceChangeHandler,
 }) => {
   const [isHover, setIsHover] = useState(false);
   const [isLoading, setIsLoading] = useState<boolean>(false);
 
-  const layout = useAppSelector(plannerSelectLayout);
-
-  const { openModal } = useCreateEventModal();
-
   const changeHandler = async (isChecked: boolean) => {
     if (onChange) {
-      setIsLoading(true);
-      await onChange({
-        groupId: item._id,
-        state: isChecked,
-      })
-        .catch(() => setIsLoading(false))
-        .then(async () => {
-          Delay(1000).then(() => setIsLoading(false));
+      if (replaceChangeHandler) {
+        await onChange({
+          groupId: item._id,
+          state: isChecked,
         });
+      } else {
+        setIsLoading(true);
+        await onChange({
+          groupId: item._id,
+          state: isChecked,
+        })
+          .catch(() => setIsLoading(false))
+          .then(async () => {
+            Delay(1000).then(() => setIsLoading(false));
+          });
+      }
     }
   };
 
   return (
-    <li
+    <CustomContainer
+      pattern={renderPattern}
+      delay={index * 50}
       onMouseEnter={() => renderPattern !== 'short' && setIsHover(true)}
       onMouseLeave={() => renderPattern !== 'short' && setIsHover(false)}
+      onContextMenu={onContextMenu}
     >
       <FlexBlock
         width={'100%'}
@@ -60,7 +98,7 @@ export const GroupItem: FC<GroupItemProps> = ({
               color: item.color,
               size: renderPattern === 'short' ? 30 : 20,
             }}
-            isLoading={isLoading}
+            isLoading={isLoading || isFetching}
             onChange={(e) => changeHandler(e.target.checked)}
             isChecked={item.isSelected}
             id={item._id}
@@ -87,21 +125,7 @@ export const GroupItem: FC<GroupItemProps> = ({
             {item.type !== 'Invite' && (
               <EmptyButtonStyled
                 style={{ padding: 2 }}
-                onClick={() =>
-                  openModal(
-                    {
-                      group: item._id,
-                    },
-                    {
-                      useReturnBackOnDecline: true,
-                      modalPath: getPath(
-                        SERVICES_NAMES.PLANNER,
-                        layout,
-                        'event/create'
-                      ),
-                    }
-                  )
-                }
+                onClick={() => onCreateEvent && onCreateEvent(item)}
               >
                 <PlusIcon size={14} color={defaultColor} />
               </EmptyButtonStyled>
@@ -126,6 +150,6 @@ export const GroupItem: FC<GroupItemProps> = ({
           </FlexBlock>
         )}
       </FlexBlock>
-    </li>
+    </CustomContainer>
   );
 };

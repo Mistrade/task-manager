@@ -11,9 +11,11 @@ import { ObjectId } from '@api/rtk-api.types';
 
 import { SERVICES_NAMES } from '../common/constants/enums';
 import { getPath } from '../common/functions';
+import { useCreateEventModal } from './useCreateEventModal';
 import { useSearchNavigate } from './useSearchNavigate';
 
 export const useGroupList = () => {
+  const { openModal } = useCreateEventModal();
   const { currentData } = useGetGroupsListQuery({});
   const [changeSelect] = useChangeSelectGroupMutation();
   const navigate = useSearchNavigate();
@@ -47,10 +49,23 @@ export const useGroupList = () => {
     }).unwrap();
   };
 
+  const onCreateEvent = (item: GroupModelResponse) => {
+    openModal(
+      {
+        group: item._id,
+      },
+      {
+        useReturnBackOnDecline: true,
+        modalPath: getPath(SERVICES_NAMES.PLANNER, layout, 'event/create'),
+      }
+    );
+  };
+
   return {
     changeHandler,
     onEdit,
     onDelete,
     currentData,
+    onCreateEvent,
   };
 };

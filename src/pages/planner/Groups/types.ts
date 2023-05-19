@@ -1,3 +1,5 @@
+import React from 'react';
+
 import { GroupModelResponse } from '@api/planning-api/types/groups.types';
 import { ObjectId } from '@api/rtk-api.types';
 
@@ -22,7 +24,7 @@ export interface UpdateGroupInfoMiddlewareProps extends UpdateGroupModalProps {
   groupId: ObjectId;
 }
 
-export interface GroupItemProps {
+export interface BaseGroupItemProps {
   onChange?: (data: { groupId: ObjectId; state: boolean }) => Promise<any>;
   item: GroupModelResponse;
   isChecked: boolean;
@@ -31,4 +33,12 @@ export interface GroupItemProps {
   onSuccessChangeSelect?: () => Promise<void>;
   onEdit?: (_id: ObjectId) => void;
   renderPattern?: 'full' | 'short';
+  index?: number;
+  onCreateEvent?: (item: GroupModelResponse) => void;
+}
+
+export interface GroupItemProps extends BaseGroupItemProps {
+  onContextMenu?: (event: React.MouseEvent<HTMLLIElement>) => void;
+  isFetching?: boolean;
+  replaceChangeHandler?: boolean;
 }

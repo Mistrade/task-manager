@@ -133,7 +133,7 @@ export const PlannerNavLink = styled(NavLink)`
 export const TimeSelectorButton = styled(SwitchCalendarMode)`
   margin: 0;
   //width: 55px;
-  scroll-snap-align: end;
+  scroll-snap-align: center;
 
   &:not(:last-child) {
     margin-bottom: 4px;

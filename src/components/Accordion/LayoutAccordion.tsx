@@ -39,12 +39,11 @@ export const LayoutAccordion: FC<LayoutAccordionProps> = ({
       {...props}
       iconProps={{ color: defaultColor, size: 16 }}
       containerProps={{
-        pl: 4,
-        pr: 4,
         pt: 8,
         pb: 8,
         bgColor: bgColors[type],
         borderRadius: borderRadiusSize.sm,
+        ...props.containerProps,
       }}
     />
   );

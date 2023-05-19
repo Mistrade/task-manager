@@ -9,7 +9,7 @@ import { useCallback, useMemo } from 'react';
 
 import { useSearchNavigate } from './useSearchNavigate';
 
-interface UseCreateEventReturned {
+export interface UseCreateEventReturned {
   openModal(
     initialValues: Partial<CreateEventInitialState>,
     options: { modalPath?: string; useReturnBackOnDecline?: boolean }

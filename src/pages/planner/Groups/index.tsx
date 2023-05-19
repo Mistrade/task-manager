@@ -12,9 +12,11 @@ import { GroupItem } from './GroupItem';
 import { GroupListScrollContainer } from './ScrollContainer';
 
 export const GroupList = memo(() => {
-  const { currentData, onDelete, onEdit, changeHandler } = useGroupList();
+  const { currentData, onDelete, onEdit, changeHandler, onCreateEvent } =
+    useGroupList();
   return (
     <LayoutAccordion
+      containerProps={{ pl: 0, pr: 0 }}
       initialState={true}
       type={'info'}
       title={
@@ -30,9 +32,10 @@ export const GroupList = memo(() => {
     >
       <GroupListScrollContainer>
         <GroupListStyled>
-          {currentData?.data?.map((item) => {
+          {currentData?.data?.map((item, index) => {
             return (
               <GroupItem
+                onCreateEvent={onCreateEvent}
                 renderPattern={'full'}
                 item={item}
                 key={item._id}

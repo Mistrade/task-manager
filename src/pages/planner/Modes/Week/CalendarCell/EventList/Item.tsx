@@ -23,7 +23,9 @@ import { borderRadiusSize } from '@src/common/css/mixins';
 import { LinkStyled } from '@components/Buttons/Link.styled';
 import { EventShortHoverCard } from '@components/HoverCard/EventShortHoverCard';
 import { PriorityCalendarIcon } from '@components/Icons/CalendarIcons/PriorityCalendarIcon';
+import { EventIcon } from '@components/Icons/EventIcon';
 import { FlexBlock } from '@components/LayoutComponents';
+import { CutText } from '@components/Text/Text';
 import { Tooltip } from '@components/Tooltip/Tooltip';
 
 import { GroupLogo } from '@planner/Groups/styled';
@@ -148,19 +150,18 @@ export const CalendarCellItemContent: FC<
 
   return (
     <FlexBlock direction={'column'} gap={4} width={'100%'}>
-      <FlexBlock direction={'row'} gap={4} align={'center'}>
-        <GroupLogo color={taskInfo.group?.color || ''} size={16} />
-        <FlexBlock width={'calc(100% - 16px)'}>
-          <EventText isCompleted={taskInfo.status === 'completed'}>
-            {taskInfo.title}
-          </EventText>
-        </FlexBlock>
+      <FlexBlock width={'100%'}>
+        <CutText lang={'ru'} rows={2} fontSize={15}>
+          {taskInfo.title}
+        </CutText>
       </FlexBlock>
-      <FlexBlock direction={'row'} gap={4} align={'center'}>
-        <PriorityCalendarIcon priorityKey={taskInfo.priority} size={16} />
-        <FlexBlock width={'calc(100% - 16px)'}>
-          <EventTimeValue>{timeValue}</EventTimeValue>
-        </FlexBlock>
+      <FlexBlock width={'100%'}>
+        <EventTimeValue>{timeValue}</EventTimeValue>
+      </FlexBlock>
+      <FlexBlock width={'100%'} gap={12} wrap={'wrap'}>
+        <GroupLogo color={taskInfo.group?.color || ''} size={18} />
+        <PriorityCalendarIcon priorityKey={taskInfo.priority} size={18} />
+        <EventIcon status={taskInfo.status} size={18} />
       </FlexBlock>
     </FlexBlock>
   );

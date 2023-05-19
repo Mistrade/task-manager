@@ -16,7 +16,6 @@ import { SmallCalendarMonthTitle } from '@planner/SmallMonth/SmallCalendarMonthT
 import { SmallMonth } from '@planner/SmallMonth/SmallMonth';
 import { PlannerMonthMode } from '@planner/types';
 
-
 export const OptionPanelCalendar: FC = () => {
   const currentDate = useAppSelector(plannerSelectDate);
   const config = useAppSelector(plannerSelectPanelConfig);
@@ -37,6 +36,7 @@ export const OptionPanelCalendar: FC = () => {
       monthItem={config}
       title={
         <SmallCalendarMonthTitle
+          isCurrentMonth={true}
           monthItem={config}
           onClick={(data) => {
             dispatch(

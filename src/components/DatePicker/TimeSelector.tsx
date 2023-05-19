@@ -93,33 +93,43 @@ export const TimeSelector: FC<TimeSelectorProps> = ({
 
   return (
     <FlexBlock height={'100%'} gap={4}>
-      <VerticalScroll renderPattern={'top-bottom'}>
-        {hours.map((value, index, array) => {
-          const isSelected = currentDate.getHours() === value;
-          return (
-            <TimeButton
-              key={`hour_${value}`}
-              isSelected={isSelected}
-              value={value}
-              handler={handler}
-              unitType={'hour'}
-            />
-          );
-        })}
+      <VerticalScroll
+        renderPattern={'top-bottom'}
+        containerProps={{ position: 'relative' }}
+      >
+        <FlexBlock direction={'column'} gap={4} pt={'50vh'} pb={'50vh'}>
+          {hours.map((value, index, array) => {
+            const isSelected = currentDate.getHours() === value;
+            return (
+              <TimeButton
+                key={`hour_${value}`}
+                isSelected={isSelected}
+                value={value}
+                handler={handler}
+                unitType={'hour'}
+              />
+            );
+          })}
+        </FlexBlock>
       </VerticalScroll>
-      <VerticalScroll renderPattern={'top-bottom'}>
-        {minutes.map((value, index, array) => {
-          const isSelected = currentDate.getMinutes() === value;
-          return (
-            <TimeButton
-              key={`minute_${value}`}
-              isSelected={isSelected}
-              value={value}
-              handler={handler}
-              unitType={'minute'}
-            />
-          );
-        })}
+      <VerticalScroll
+        renderPattern={'top-bottom'}
+        containerProps={{ position: 'relative' }}
+      >
+        <FlexBlock direction={'column'} gap={4} pt={'50vh'} pb={'50vh'}>
+          {minutes.map((value, index, array) => {
+            const isSelected = currentDate.getMinutes() === value;
+            return (
+              <TimeButton
+                key={`minute_${value}`}
+                isSelected={isSelected}
+                value={value}
+                handler={handler}
+                unitType={'minute'}
+              />
+            );
+          })}
+        </FlexBlock>
       </VerticalScroll>
     </FlexBlock>
   );

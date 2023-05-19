@@ -38,7 +38,7 @@ export const PlannerSelectLayout: FC<{ pattern: 'short' | 'full' }> = ({
   return (
     <Tooltip
       theme={'light'}
-      placement={'bottom'}
+      placement={pattern === 'short' ? 'right-start' : 'bottom'}
       arrow={false}
       visible={isOpen}
       onClickOutside={() => setIsOpen(false)}
@@ -46,6 +46,9 @@ export const PlannerSelectLayout: FC<{ pattern: 'short' | 'full' }> = ({
       interactive={true}
       interactiveBorder={20}
       maxWidth={285}
+      containerStyles={{
+        width: 'inherit',
+      }}
       content={
         isOpen && (
           <SelectListContainer>

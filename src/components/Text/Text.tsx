@@ -84,7 +84,7 @@ export const CutText = styled('p')<PreviewDescriptionProps>`
     }};
     overflow: hidden;
     white-space: break-spaces;
-    word-break: break-all;
+    word-break: break-word;
     word-wrap: anywhere;
     display: -webkit-box;
     -webkit-line-clamp: ${(_) => {

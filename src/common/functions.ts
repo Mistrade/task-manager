@@ -319,12 +319,12 @@ export const convertEventStatus = (status: EventItem['status']) => {
   }
 };
 
-export async function Delay(delayCountMs: number = 500): Promise<void> {
-  return new Promise((resolve, reject) =>
+export function Delay(delayCountMs: number = 500): Promise<void> {
+  return new Promise((resolve, reject) => {
     setTimeout(() => {
       resolve();
-    }, delayCountMs)
-  );
+    }, delayCountMs);
+  });
 }
 
 export interface MergedObject<
