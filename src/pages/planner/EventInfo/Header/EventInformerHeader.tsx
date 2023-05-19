@@ -1,9 +1,8 @@
-import React, { memo, useMemo } from 'react';
+import React, { memo } from 'react';
 import styled from 'styled-components';
 
 import { pageHeaderColor } from '@src/common/constants/constants';
 import { borderRadiusSize } from '@src/common/css/mixins';
-import { eventIsDelayed } from '@src/common/functions';
 
 import { EmptyButtonStyled } from '@components/Buttons/EmptyButton.styled';
 import { FlexBlock } from '@components/LayoutComponents';
@@ -58,11 +57,6 @@ const ActionsAndLinkContainer = styled('div')`
 
 export const EventInformerHeader = memo<EventInformerHeaderProps>(
   ({ eventInfo, updateTaskHandler, onClose }) => {
-    const isDelayed = useMemo(
-      () => eventIsDelayed(eventInfo.timeEnd, eventInfo.status),
-      [eventInfo.timeEnd, eventInfo.status]
-    );
-
     return (
       <EventInfoHeaderContainer>
         <TitleContainer>
@@ -74,7 +68,7 @@ export const EventInformerHeader = memo<EventInformerHeaderProps>(
               await updateTaskHandler('isLiked', value)
             }
           />
-          <IsDelayedEvent isDelayed={isDelayed} />
+          <IsDelayedEvent isDelayed={!!eventInfo.isDelayed} />
           <EmptyButtonStyled onClick={onClose}>Закрыть</EmptyButtonStyled>
         </TitleContainer>
         <ActionsAndLinkContainer>

@@ -1,4 +1,4 @@
-import { ReactNode, forwardRef, useRef } from 'react';
+import { ReactNode, forwardRef, useEffect, useRef } from 'react';
 import { useIntersection } from 'react-use';
 import styled, { css } from 'styled-components';
 
@@ -98,16 +98,20 @@ export const VerticalScroll = forwardRef<
     const topRef = useRef<HTMLDivElement>(null);
     const bottomRef = useRef<HTMLDivElement>(null);
     const topIntersection = useIntersection(topRef, {
-      root: root.current,
-      rootMargin: '50px',
+      // root: root.current,
+      rootMargin: '0px',
       threshold: 0,
     });
 
     const bottomIntersection = useIntersection(bottomRef, {
-      root: root.current,
-      rootMargin: '50px',
+      // root: root.current,
+      rootMargin: '0px',
       threshold: 0,
     });
+
+    useEffect(() => {
+      console.log(topIntersection, topRef, bottomRef);
+    }, [topIntersection]);
 
     return (
       <FlexBlock

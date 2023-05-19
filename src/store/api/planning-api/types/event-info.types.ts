@@ -39,6 +39,7 @@ export interface EventInfoModel {
   acceptedStatus?: EventInviteAcceptedStatuses;
   treeId?: ObjectId | null;
   checkList?: ObjectId | null;
+  isDelayed?: boolean;
 }
 
 export type ShortEventItemWithoutUserId = Pick<
@@ -54,6 +55,7 @@ export type ShortEventItemWithoutUserId = Pick<
   | 'group'
   | 'isLiked'
   | 'treeId'
+  | 'isDelayed'
 >;
 
 export interface ShortEventInfoModel extends ShortEventItemWithoutUserId {

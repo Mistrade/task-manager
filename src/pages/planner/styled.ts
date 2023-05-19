@@ -5,6 +5,7 @@ import {
   currentColor,
   darkColor,
   defaultColor,
+  disabledColor,
   hoverColor,
 } from '@src/common/constants/constants';
 import { borderRadiusSize } from '@src/common/css/mixins';
@@ -123,7 +124,6 @@ export const SwitchCalendarModeTab = styled('button')<{ isSelected?: boolean }>`
 
 export const PlannerNavLink = styled(NavLink)`
   ${SwitchMainStyles}
-
   &.active:after {
     bottom: 0px;
     background-color: ${currentColor};
@@ -146,17 +146,29 @@ export const TimeSelectorButton = styled(SwitchCalendarMode)`
   scroll-behavior: smooth;
 `;
 
-export const PlannerOptionPanelContainer = styled('div')`
-  & {
-    display: flex;
-    flex-direction: column;
-    height: 100%;
-    width: 290px;
-    background-color: ${'#fff'};
-    padding: 0px 12px;
-    flex-shrink: 0;
-  }
+export const PlannerOptionPanelContainer = styled('div')<{ state?: boolean }>`
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  width: 290px;
+  background-color: ${'#fff'};
+  padding: 0px 12px;
+  flex-shrink: 0;
+  border-right: 1px solid ${disabledColor};
+  transition: all 0.6s ease-in-out;
+
+  ${(_) =>
+    _.state === false
+      ? css`
+          width: 75px !important;
+        `
+      : ''}
 `;
+
+PlannerOptionPanelContainer.defaultProps = {
+  state: true,
+};
 
 export const PlannerContainer = styled('div')`
   & {

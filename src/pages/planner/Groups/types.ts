@@ -23,11 +23,12 @@ export interface UpdateGroupInfoMiddlewareProps extends UpdateGroupModalProps {
 }
 
 export interface GroupItemProps {
-  onChange?: (checked: boolean) => void;
+  onChange?: (data: { groupId: ObjectId; state: boolean }) => Promise<any>;
   item: GroupModelResponse;
   isChecked: boolean;
   isDisabled?: boolean;
   onDelete?: (item: GroupModelResponse) => void;
   onSuccessChangeSelect?: () => Promise<void>;
   onEdit?: (_id: ObjectId) => void;
+  renderPattern?: 'full' | 'short';
 }

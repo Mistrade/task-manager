@@ -24,7 +24,7 @@ import {
   ChangeYearCurrentFn,
   ShortChangeCurrentPattern,
 } from './commonTypes';
-import { MonthList } from './constants/constants';
+import { MonthList, WeekDaysShortList } from './constants/constants';
 
 export const addNull = (value: number): string =>
   value < 10 ? `0${value}` : value.toString();
@@ -207,11 +207,11 @@ const getYearCalendarTitle = (currentDate: Date) => {
 };
 
 const getDayCalendarTitle = (currentDate: Date) => {
-  return DateHelper.getHumanizeDateValue(currentDate, {
+  return `${DateHelper.getHumanizeDateValue(currentDate, {
     withTime: false,
     withYear: false,
     monthPattern: 'full',
-  });
+  })} (${WeekDaysShortList[dayjs(currentDate).weekday()]})`;
 };
 
 const getListCalendarTitle = (currentDate: Date) => {
@@ -377,9 +377,17 @@ export const eventIsDelayed = (
 };
 
 export function getFromLocalStorage<T>(key: string): T | null {
-  const value = localStorage.getItem(key);
-  if (value) return JSON.parse(value) as T;
-  return null;
+  try {
+    const value = localStorage.getItem(key);
+    if (value) return JSON.parse(value) as T;
+    return null;
+  } catch (e) {
+    return null;
+  }
+}
+
+export function setToLocalStorage<T>(key: string, value: T): void {
+  localStorage.setItem(key, JSON.stringify(value));
 }
 
 export function getSearchParams(): { [key: string]: string } {

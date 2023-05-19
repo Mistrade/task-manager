@@ -10,6 +10,7 @@ module.exports = {
   importOrderSeparation: true,
   importOrderSortSpecifiers: true,
   importOrder: [
+    '^@core/(.*)$',
     '^@src/(.*)$',
     '^@components/(.*)$',
     '^@pages/(.*)$',

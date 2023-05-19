@@ -1,7 +1,7 @@
 import { setPlannerLayout } from '@planner-reducer/index';
 import { useAppDispatch, useAppSelector } from '@redux/hooks/hooks';
 import { plannerSelectLayout } from '@selectors/planner';
-import { useMemo, useState } from 'react';
+import { FC, useMemo, useState } from 'react';
 import { useLocation } from 'react-router';
 
 import { defaultColor } from '@src/common/constants/constants';
@@ -17,7 +17,9 @@ import { LinkSolid } from '@planner/Panel/ModeSwitch/Item';
 import { PlannerHeaderSwitch } from '@planner/Panel/ModeSwitch/List';
 import { SwitchCalendarModeTab } from '@planner/styled';
 
-export const PlannerSelectLayout = () => {
+export const PlannerSelectLayout: FC<{ pattern: 'short' | 'full' }> = ({
+  pattern,
+}) => {
   const dispatch = useAppDispatch();
   const layout = useAppSelector(plannerSelectLayout);
   const selected = useMemo(() => {
@@ -69,14 +71,27 @@ export const PlannerSelectLayout = () => {
     >
       <SwitchCalendarModeTab
         isSelected={true}
-        style={{ width: '100%', height: 40 }}
-        onClick={() => setIsOpen(true)}
+        style={{
+          width: '100%',
+          height: 40,
+          padding: pattern === 'short' ? 0 : undefined,
+        }}
+        onClick={() => setIsOpen((prev) => !prev)}
       >
-        <FlexBlock direction={'row'} wrap={'nowrap'} gap={6} align={'center'}>
+        <FlexBlock
+          direction={'row'}
+          wrap={'nowrap'}
+          gap={6}
+          align={'center'}
+          width={'100%'}
+          justify={pattern === 'short' ? 'center' : 'flex-start'}
+        >
           {selected.icon}
-          <CutText rows={1} color={defaultColor} fontSize={15}>
-            {selected.title}
-          </CutText>
+          {pattern === 'full' && (
+            <CutText rows={1} color={defaultColor} fontSize={15}>
+              {selected.title}
+            </CutText>
+          )}
         </FlexBlock>
       </SwitchCalendarModeTab>
     </Tooltip>

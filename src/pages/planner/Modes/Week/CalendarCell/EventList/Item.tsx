@@ -1,6 +1,9 @@
+import {
+  getSearchStringFromEntries,
+  plannerDateToSearchParams,
+} from '@planner-reducer/utils';
 import dayjs from 'dayjs';
 import React, { FC, useMemo, useState } from 'react';
-import { useLocation } from 'react-router';
 import styled, { css, keyframes } from 'styled-components';
 
 import {
@@ -16,7 +19,6 @@ import {
 } from '@src/common/constants/constants';
 import { DATE_HOURS_FORMAT } from '@src/common/constants/defaultConstants';
 import { borderRadiusSize } from '@src/common/css/mixins';
-import { eventIsDelayed } from '@src/common/functions';
 
 import { LinkStyled } from '@components/Buttons/Link.styled';
 import { EventShortHoverCard } from '@components/HoverCard/EventShortHoverCard';
@@ -171,23 +173,22 @@ export const CalendarCellEventItem: FC<TaskTileItemProps> = ({
   onSelect,
 }) => {
   const [isHover, setIsHover] = useState(false);
-  const location = useLocation();
-
   const condition = useMemo(() => {
     return !date.meta.isDisabled;
   }, [date, taskInfo]);
 
-  // const navigate = useSearchNavigate();
-
   const Content = useMemo(() => {
-    const isDelayed = eventIsDelayed(taskInfo.timeEnd, taskInfo.status);
+    const defaultPath = `event/info/${taskInfo._id}`;
+    const searchParams = plannerDateToSearchParams(date.value);
+    const to = defaultPath + getSearchStringFromEntries(searchParams);
+
     return (
-      <LinkStyled to={`event/info/${taskInfo._id}${location.search}`}>
+      <LinkStyled to={to}>
         <EventContainer
           onMouseEnter={() => condition && setIsHover(true)}
           onMouseLeave={() => setIsHover(false)}
-          withFill={isDelayed || isHover}
-          fillColor={isDelayed ? delayedColor : hoverColor}
+          withFill={taskInfo.isDelayed || isHover}
+          fillColor={taskInfo.isDelayed ? delayedColor : hoverColor}
           disabled={date.meta.isDisabled}
           isCurrent={date.meta.isCurrent}
           onClick={() => {

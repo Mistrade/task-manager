@@ -21,6 +21,8 @@ export const CalendarCurrentTitle: FC = React.memo(
         borderRadius={borderRadiusSize.sm}
         pt={6}
         pb={6}
+        shrink={0}
+        overflow={'hidden'}
       >
         <FlexBlock direction={'column'} gap={6} p={`3px 12px`}>
           <FlexBlock align={'center'} justify={'space-between'} width={'100%'}>

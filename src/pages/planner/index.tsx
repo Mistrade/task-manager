@@ -8,7 +8,6 @@ import {
   PlannerContainer,
   PlannerContentContainer,
   PlannerLayoutContainer,
-  PlannerOptionPanelContainer,
 } from '@src/pages/planner/styled';
 
 export const PlannerPage: FC = React.memo(() => {
@@ -31,9 +30,7 @@ export const PlannerPage: FC = React.memo(() => {
       />
       <PlannerContainer>
         <PlannerContentContainer>
-          <PlannerOptionPanelContainer>
-            <PlannerOptionsPanel />
-          </PlannerOptionPanelContainer>
+          <PlannerOptionsPanel />
           <PlannerLayoutContainer>
             <LayoutSelector />
           </PlannerLayoutContainer>

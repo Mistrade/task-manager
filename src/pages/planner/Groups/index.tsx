@@ -1,52 +1,51 @@
-import { useSearchNavigate } from '@hooks/useSearchNavigate';
-import { useAppSelector } from '@redux/hooks/hooks';
-import { plannerSelectLayout } from '@selectors/planner';
-import { memo, useCallback } from 'react';
+import { useGroupList } from '@hooks/useGroupList';
+import React, { memo } from 'react';
 
-import { SERVICES_NAMES } from '@src/common/constants/enums';
-import { Delay, getPath } from '@src/common/functions';
+import { Delay } from '@src/common/functions';
 import { GroupListStyled } from '@src/pages/planner/Groups/styled';
 
-import { useGetGroupsListQuery } from '@api/planning-api';
-import { GroupModelResponse } from '@api/planning-api/types/groups.types';
-import { ObjectId } from '@api/rtk-api.types';
+import { LayoutAccordion } from '@components/Accordion/LayoutAccordion';
+import Badge from '@components/Badge';
+import { CutText } from '@components/Text/Text';
 
 import { GroupItem } from './GroupItem';
+import { GroupListScrollContainer } from './ScrollContainer';
 
 export const GroupList = memo(() => {
-  const { currentData } = useGetGroupsListQuery({});
-  const navigate = useSearchNavigate();
-  const layout = useAppSelector(plannerSelectLayout);
-  const onDelete = useCallback(
-    (item: GroupModelResponse) => {
-      navigate(
-        getPath(SERVICES_NAMES.PLANNER, layout, `group/remove/${item._id}`)
-      );
-    },
-    [layout]
-  );
-
-  const onEdit = useCallback(
-    (_id: ObjectId) => {
-      navigate(getPath(SERVICES_NAMES.PLANNER, layout, `group/update/${_id}`));
-    },
-    [layout]
-  );
-
+  const { currentData, onDelete, onEdit, changeHandler } = useGroupList();
   return (
-    <GroupListStyled>
-      {currentData?.data?.map((item) => {
-        return (
-          <GroupItem
-            item={item}
-            key={item._id}
-            onDelete={onDelete}
-            isChecked={item.isSelected}
-            onEdit={onEdit}
-            onSuccessChangeSelect={async () => await Delay(1000)}
-          />
-        );
-      })}
-    </GroupListStyled>
+    <LayoutAccordion
+      initialState={true}
+      type={'info'}
+      title={
+        <CutText rows={1} fontSize={16}>
+          {currentData?.data?.length ? (
+            <Badge type={'primary'}>{currentData.data.length}</Badge>
+          ) : (
+            0
+          )}{' '}
+          Групп событий
+        </CutText>
+      }
+    >
+      <GroupListScrollContainer>
+        <GroupListStyled>
+          {currentData?.data?.map((item) => {
+            return (
+              <GroupItem
+                renderPattern={'full'}
+                item={item}
+                key={item._id}
+                onDelete={onDelete}
+                isChecked={item.isSelected}
+                onEdit={onEdit}
+                onSuccessChangeSelect={async () => await Delay(1000)}
+                onChange={changeHandler}
+              />
+            );
+          })}
+        </GroupListStyled>
+      </GroupListScrollContainer>
+    </LayoutAccordion>
   );
 });

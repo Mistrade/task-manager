@@ -5,7 +5,6 @@ import { borderRadiusSize } from '@src/common/css/mixins';
 
 import { pxToCssValue } from '@components/LayoutComponents/FlexBlock';
 
-
 export const GroupListStyled = styled('ul')`
   margin: 0;
   display: flex;
@@ -13,15 +12,14 @@ export const GroupListStyled = styled('ul')`
   flex-direction: column;
   background-color: transparent;
   width: 100%;
-  max-height: 300px;
-  overflow-y: auto;
-  overflow-x: hidden;
+  //overflow-y: auto;
+  //overflow-x: hidden;
   gap: 8px;
 
   & li {
     width: 100%;
     background-color: transparent;
-    padding: 4px;
+    padding: 2px 4px;
     border-radius: ${borderRadiusSize.xs};
     transition: all 0.3s ease-in;
   }
@@ -31,7 +29,10 @@ export const GroupListStyled = styled('ul')`
   }
 `;
 
-export const GroupItemCheckbox = styled('input')<{ color: string }>`
+export const GroupItemCheckbox = styled('input')<{
+  color: string;
+  size?: number;
+}>`
   & {
     position: absolute;
     z-index: -1;
@@ -48,8 +49,8 @@ export const GroupItemCheckbox = styled('input')<{ color: string }>`
   & + label::before {
     content: '';
     display: inline-block;
-    width: 16px;
-    height: 16px;
+    width: ${(_) => (_.size ? pxToCssValue(_.size) : '16px')};
+    height: ${(_) => (_.size ? pxToCssValue(_.size) : '16px')};
     flex-shrink: 0;
     flex-grow: 0;
     border: 1px solid #adb5bd;

@@ -37,7 +37,9 @@ export const TaskInfoModal: FC<EventInfoModalProps> = () => {
     <Modal style={{ width: '90%' }} isView={!!taskId} onClose={closeHandler}>
       <ModalBody>
         <ErrorBoundary
-          title={'Произошла ошибка при отрисовке, мы уже работаем над этим'}
+          title={
+            'Произошла ошибка во время отображения данных, мы уже работаем над этим'
+          }
           errorType={'SYSTEM_ERROR'}
         >
           <Loader title={'Загрузка информации...'} isActive={isLoading}>

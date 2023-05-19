@@ -1,23 +1,15 @@
 import React from 'react';
 import { Helmet } from 'react-helmet';
-import { Provider } from 'react-redux';
-import { BrowserRouter } from 'react-router-dom';
-import { ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
-import styled, { createGlobalStyle, css } from 'styled-components';
+import { createGlobalStyle, css } from 'styled-components';
 import 'tippy.js/animations/perspective.css';
 import 'tippy.js/animations/shift-away.css';
 import 'tippy.js/dist/tippy.css';
 
-import { AppRoutes } from '@src/routes';
-
-import { UserInfoProvider } from '@components/ContextProviders/UserInfoProvider';
-import { FlexBlock } from '@components/LayoutComponents';
-import { MainHeader } from '@components/LayoutComponents/PageHeader';
 import { TooltipStyled } from '@components/Tooltip/Tooltip.styled';
+import ToastController from '@components/hocks/Toast';
 
-import './common/dayjs';
-import { store } from './store';
+import { AppEntryPoint } from '@pages/index';
 
 const GlobalStyled = createGlobalStyle(
   {},
@@ -35,51 +27,26 @@ const GlobalStyled = createGlobalStyle(
       padding: 0;
       font-family: 'Helvetica Neue', sans-serif;
     }
+
+    *::-webkit-scrollbar {
+      display: none;
+    }
+
+    * {
+      -ms-overflow-style: none; /* IE и Edge */
+      scrollbar-width: none; /* Firefox */
+    }
   `
 );
-
-const AppContainer = styled('main')`
-  display: flex;
-  height: 100%;
-  background-color: #fff;
-  flex-direction: column;
-`;
 
 function App() {
   return (
     <>
       <Helmet title={'White Planner - современный сервис планирования.'} />
       <GlobalStyled />
+      <AppEntryPoint />
       <TooltipStyled />
-      <Provider store={store}>
-        <UserInfoProvider>
-          <BrowserRouter>
-            <AppContainer>
-              <MainHeader />
-              <FlexBlock
-                direction={'column'}
-                basis={'100%'}
-                overflow={'hidden'}
-              >
-                <FlexBlock
-                  direction={'column'}
-                  height={'100%'}
-                  overflow={'hidden'}
-                >
-                  <AppRoutes />
-                </FlexBlock>
-              </FlexBlock>
-            </AppContainer>
-          </BrowserRouter>
-        </UserInfoProvider>
-      </Provider>
-      <ToastContainer
-        pauseOnHover={true}
-        position={'top-right'}
-        autoClose={3500}
-        limit={5}
-        newestOnTop={true}
-      />
+      <ToastController />
     </>
   );
 }

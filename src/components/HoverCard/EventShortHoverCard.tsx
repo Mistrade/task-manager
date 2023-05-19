@@ -20,6 +20,7 @@ import { GroupLogo } from '@planner/Groups/styled';
 
 import { ShortEventInfoModel } from '@api/planning-api/types/event-info.types';
 
+import Badge from '../Badge';
 import { StyledBadge } from '../Badge/styled';
 
 export interface EventShortHoverCardProps {
@@ -73,6 +74,7 @@ export const EventShortHoverCard: FC<EventShortHoverCardProps> = ({
       >
         {time}
       </StyledBadge>
+      {event.isDelayed && <Badge type={'delayed'}>Просрочено</Badge>}
       <FlexBlock gap={4} align={'center'}>
         <EventIcon status={event.status} size={16} />
         {convertEventStatus(event.status)}

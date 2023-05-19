@@ -66,6 +66,7 @@ const SmallMonthContainer = styled('div')`
   display: flex;
   justify-content: center;
   align-items: center;
+  overflow: hidden;
 `;
 
 const SmallMonthMainColumn = styled('div')`

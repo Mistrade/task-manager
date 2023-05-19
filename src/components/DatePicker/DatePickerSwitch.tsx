@@ -50,13 +50,19 @@ export interface DatePickerSwitchProps {
 
 export const DatePickerSwitch: FC<DatePickerSwitchProps> = ({ onClick }) => {
   return (
-    <FlexBlock width={'100%'} justify={'center'} align={'center'} gap={2}>
+    <FlexBlock
+      width={'100%'}
+      justify={'center'}
+      align={'center'}
+      gap={2}
+      overflow={'hidden'}
+    >
       {SwitchArr.map((item) => {
         if (item.pattern === 'today') {
           return (
             <SwitchCalendarMode
               key={item.pattern}
-              style={{ background: 'transparent' }}
+              style={{ background: 'transparent', flexShrink: 0 }}
               type={'button'}
               onClick={() => onClick(item.pattern)}
             >

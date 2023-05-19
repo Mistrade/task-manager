@@ -5,90 +5,82 @@ import { FC, useState } from 'react';
 
 import { darkColor, defaultColor } from '@src/common/constants/constants';
 import { SERVICES_NAMES } from '@src/common/constants/enums';
-import { getPath } from '@src/common/functions';
-import {
-  CalendarItemLabel,
-  GroupItemCheckbox,
-} from '@src/pages/planner/Groups/styled';
+import { Delay, getPath } from '@src/common/functions';
 import { GroupItemProps } from '@src/pages/planner/Groups/types';
 
 import { EmptyButtonStyled } from '@components/Buttons/EmptyButton.styled';
-import {
-  LoaderIcon,
-  PencilIcon,
-  PlusIcon,
-  TrashIcon,
-} from '@components/Icons/Icons';
+import { PencilIcon, PlusIcon, TrashIcon } from '@components/Icons/Icons';
+import { Checkbox } from '@components/Input/Checkbox/Checkbox';
 import { FlexBlock } from '@components/LayoutComponents';
 import { CutText } from '@components/Text/Text';
 
-import { useChangeSelectGroupMutation } from '@api/planning-api';
-
 export const GroupItem: FC<GroupItemProps> = ({
   onChange,
-  isChecked,
   item,
-  isDisabled,
   onDelete,
-  onSuccessChangeSelect,
   onEdit,
+  renderPattern,
 }) => {
   const [isHover, setIsHover] = useState(false);
   const [isLoading, setIsLoading] = useState<boolean>(false);
-  const [changeSelect] = useChangeSelectGroupMutation();
+
   const layout = useAppSelector(plannerSelectLayout);
 
   const { openModal } = useCreateEventModal();
 
   const changeHandler = async (isChecked: boolean) => {
-    setIsLoading(true);
-    await changeSelect({
-      groupId: item._id,
-      state: isChecked,
-    })
-      .unwrap()
-      .catch(() => setIsLoading(false))
-      .then(async () => {
-        if (onSuccessChangeSelect) {
-          await onSuccessChangeSelect().then(() => setIsLoading(false));
-        } else {
-          setIsLoading(false);
-        }
-      });
+    if (onChange) {
+      setIsLoading(true);
+      await onChange({
+        groupId: item._id,
+        state: isChecked,
+      })
+        .catch(() => setIsLoading(false))
+        .then(async () => {
+          Delay(1000).then(() => setIsLoading(false));
+        });
+    }
   };
 
   return (
     <li
-      onMouseEnter={() => setIsHover(true)}
-      onMouseLeave={() => setIsHover(false)}
+      onMouseEnter={() => renderPattern !== 'short' && setIsHover(true)}
+      onMouseLeave={() => renderPattern !== 'short' && setIsHover(false)}
     >
       <FlexBlock
         width={'100%'}
         overflow={'hidden'}
         gap={2}
-        justify={'space-between'}
+        justify={renderPattern !== 'short' ? 'space-between' : 'center'}
       >
         <FlexBlock shrink={1} grow={0} gap={6}>
-          {isLoading ? (
-            <LoaderIcon size={18} color={item.color} />
-          ) : (
-            <GroupItemCheckbox
-              type={'checkbox'}
-              id={item._id}
-              color={item.color}
-              disabled={isDisabled}
-              checked={isChecked}
-              onChange={(e) => changeHandler(e.target.checked)}
-            />
-          )}
-          <CalendarItemLabel htmlFor={item._id}>
-            <CutText
-              rows={1}
-              style={{ maxWidth: '100%', color: darkColor, fontSize: 15 }}
-            >
-              {item.title}
-            </CutText>
-          </CalendarItemLabel>
+          <Checkbox
+            type={'checkbox'}
+            iconProps={{
+              color: item.color,
+              size: renderPattern === 'short' ? 30 : 20,
+            }}
+            isLoading={isLoading}
+            onChange={(e) => changeHandler(e.target.checked)}
+            isChecked={item.isSelected}
+            id={item._id}
+            title={
+              renderPattern !== 'short' ? (
+                <CutText
+                  rows={1}
+                  style={{
+                    maxWidth: '100%',
+                    color: darkColor,
+                    fontSize: 15,
+                  }}
+                >
+                  {item.title}
+                </CutText>
+              ) : (
+                <></>
+              )
+            }
+          />
         </FlexBlock>
         {isHover && (
           <FlexBlock shrink={0} grow={0}>

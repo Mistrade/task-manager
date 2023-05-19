@@ -91,7 +91,7 @@ export const Tooltip: FC<TooltipProps> = ({
       triggerTarget={triggerTarget}
       placement={placement || 'top'}
       popperOptions={{
-        strategy: 'absolute',
+        strategy: 'fixed',
       }}
     >
       <span

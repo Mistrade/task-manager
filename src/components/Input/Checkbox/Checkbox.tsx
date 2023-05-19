@@ -3,7 +3,7 @@ import { ChangeEvent, FC, ReactNode, useRef } from 'react';
 import { darkColor } from '@src/common/constants/constants';
 
 import { EmptyButtonStyled } from '@components/Buttons/EmptyButton.styled';
-import { IconProps } from '@components/Icons/Icons';
+import { IconProps, LoaderIcon } from '@components/Icons/Icons';
 import {
   EmptyCheckboxIcon,
   FillCheckboxIcon,
@@ -20,6 +20,7 @@ export interface CheckboxProps {
   isChecked?: boolean;
   iconProps?: Omit<IconProps, 'onClick'>;
   id?: string;
+  isLoading?: boolean;
 }
 
 export const Checkbox: FC<CheckboxProps> = ({
@@ -29,6 +30,7 @@ export const Checkbox: FC<CheckboxProps> = ({
   title,
   isChecked,
   iconProps,
+  isLoading,
 }) => {
   const ref = useRef<HTMLInputElement>(null);
   return (
@@ -48,10 +50,13 @@ export const Checkbox: FC<CheckboxProps> = ({
         checked={isChecked}
       />
       <EmptyButtonStyled
+        style={{ padding: 2 }}
         onClick={() => ref.current?.click() && console.log('click')}
       >
         {isChecked ? (
           <FillCheckboxIcon {...iconProps} />
+        ) : isLoading ? (
+          <LoaderIcon {...iconProps} />
         ) : (
           <EmptyCheckboxIcon {...iconProps} />
         )}

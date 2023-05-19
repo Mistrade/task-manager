@@ -53,6 +53,17 @@ export const plannerDateToSearchParams = (
   };
 };
 
+export const getSearchStringFromEntries = (obj: Record<string, string>) => {
+  const arr = [];
+
+  for (let key in obj) {
+    const value = obj[key];
+    arr.push(`${key}=${value}`);
+  }
+
+  return `?${arr.join('&')}`;
+};
+
 export const isCorrectLayout = (value: string): boolean => {
   const arrOfLayouts: Array<string> = Object.values(PLANNER_LAYOUTS);
   return arrOfLayouts.includes(value);
