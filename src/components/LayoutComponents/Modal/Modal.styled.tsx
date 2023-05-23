@@ -1,14 +1,20 @@
-import styled, { keyframes } from 'styled-components';
+import styled, { css } from 'styled-components';
 
 import { defaultColor } from '@src/common/constants/constants';
 import { borderRadiusSize } from '@src/common/css/mixins';
 
-export const ModalLayout = styled('div')`
+import { DefaultAnimationTimingFn } from '../../../common/constants/styles';
+
+export interface ModalAnimationProps {
+  animationPhase?: TModalAnimationPhases;
+  animationDuration?: number;
+}
+
+export const ModalLayout = styled('div')<ModalAnimationProps>`
   & {
     position: fixed;
     width: 100vw;
     height: 100vh;
-    background-color: rgba(95, 95, 95, 0.35);
     padding: 30px;
     top: 0;
     left: 0;
@@ -16,26 +22,34 @@ export const ModalLayout = styled('div')`
     display: flex;
     justify-content: center;
     align-items: flex-start;
+    background-color: rgba(255, 255, 255, 0.1);
+    transition: background-color ${(_) => _.animationDuration || 300}ms
+      ${DefaultAnimationTimingFn};
+
+    ${({ animationPhase }) => {
+      switch (animationPhase) {
+        case 'open':
+          return css`
+            background-color: rgba(95, 95, 95, 0.35);
+          `;
+        case 'close':
+          return css`
+            background-color: rgba(255, 255, 255, 0.1);
+          `;
+      }
+    }}
   }
 `;
 
-const animation = keyframes({
-  '0%': {
-    transform: `scale(0.2)`,
-  },
-  '100%': {
-    transform: 'scale(1)',
-  },
-});
+export type TModalAnimationPhases = 'open' | 'close';
 
-export const ModalContainer = styled('div')`
+export const ModalContainer = styled('div')<ModalAnimationProps>`
   & {
     position: relative;
     background-color: #fff;
     max-width: 90%;
     height: 100%;
     min-width: 400px;
-    opacity: 1;
     border: 1px solid ${defaultColor};
     box-shadow: 0px 20px 30px 10px ${defaultColor};
     display: flex;
@@ -43,7 +57,26 @@ export const ModalContainer = styled('div')`
     justify-content: space-between;
     flex-direction: column;
     border-radius: ${borderRadiusSize.xl};
-    animation: 0.25s ${animation} forwards ease-in-out;
+    overflow: unset;
+    transition: all ${(_) => _.animationDuration || 300}ms
+      ${DefaultAnimationTimingFn};
+    opacity: 0;
+    transform: translateY(60vh) scale(0.8);
+
+    ${({ animationPhase }) => {
+      switch (animationPhase) {
+        case 'open':
+          return css`
+            opacity: 1;
+            transform: translateY(0) scale(1);
+          `;
+        case 'close':
+          return css`
+            opacity: 0;
+            transform: translateY(80vh) scale(0.7);
+          `;
+      }
+    }}
   }
 `;
 

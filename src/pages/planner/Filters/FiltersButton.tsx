@@ -5,7 +5,7 @@ import {
 } from '@selectors/planner';
 import React, { memo, useState } from 'react';
 
-import { delayedColor } from '@src/common/constants/constants';
+import { darkColor, delayedColor } from '@src/common/constants/constants';
 
 import { EmptyButtonStyled } from '@components/Buttons/EmptyButton.styled';
 import { FiltersIcon } from '@components/Icons/Icons';
@@ -44,7 +44,9 @@ export const FiltersButton = memo(() => {
           onClick={() => setIsOpen((prev) => !prev)}
         >
           <FlexBlock gap={6} align={'center'}>
-            <CutText fontSize={15}>Фильтры</CutText>
+            <CutText fontSize={15} color={darkColor}>
+              Фильтры
+            </CutText>
             <FiltersIcon size={24} />
           </FlexBlock>
         </EmptyButtonStyled>

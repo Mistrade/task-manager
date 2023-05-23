@@ -3,6 +3,7 @@ import { css, keyframes } from 'styled-components';
 
 import { FlexBlock } from '@components/LayoutComponents';
 
+import { DefaultAnimationTimingFn } from '../../../common/constants/styles';
 import { GroupList } from '../Groups';
 import { OptionPanelCalendar } from './Calendar';
 import { CalendarCurrentTitle } from './CalendarCurrentTitle';
@@ -12,12 +13,11 @@ import { PlannerSelectLayout } from './SelectLayout';
 const keyframe = keyframes`
   from {
     max-height: 450px;
-    scale: 1;
+    transform: scale(1);
   }
   
   to {
-    scale: .2;
-    transform: translateY(-70%);
+    transform: translateY(-50%) scale(.2);
     opacity: .2;
     max-height: 130px;
   }
@@ -26,23 +26,22 @@ const keyframe = keyframes`
 const reverseKeyframe = keyframes`
   from {
     max-height: 130px;
-    scale: .2;
-    transform: translateY(-70%);
+    transform: translateY(-50%) scale(.2);
     opacity: .2;
   }
   
   to {
-    scale: 1;
+    transform: scale(1);
     max-height: 450px;
   }
 `;
 
 const baseAnimation = css`
-  animation: ${keyframe} 0.6s ease-in-out forwards;
+  animation: ${keyframe} 0.25s ${DefaultAnimationTimingFn} forwards;
 `;
 
 const reverseAnimation = css`
-  animation: ${reverseKeyframe} 0.6s ease-in-out forwards;
+  animation: ${reverseKeyframe} 0.25s ${DefaultAnimationTimingFn} forwards;
   transform: scale(1);
   z-index: 1;
 `;

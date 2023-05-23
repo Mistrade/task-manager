@@ -6,6 +6,7 @@ import {
 } from '@planner-reducer/index';
 import { useAppDispatch, useAppSelector } from '@redux/hooks/hooks';
 import {
+  plannerSelectBackgroundUrl,
   plannerSelectLayout,
   plannerSelectPrevUrlOfCreateEventForm,
 } from '@selectors/planner';
@@ -28,6 +29,7 @@ export const CreateEventFromPlanner: FC = ({}) => {
   const layout = useAppSelector(plannerSelectLayout);
   const prevUrl = useAppSelector(plannerSelectPrevUrlOfCreateEventForm);
   const dispatch = useAppDispatch();
+  const backgroundUrl = useAppSelector(plannerSelectBackgroundUrl);
   const successHandler = useCallback(
     (eventId: ObjectId) => {
       clearState();
@@ -44,7 +46,9 @@ export const CreateEventFromPlanner: FC = ({}) => {
   }, []);
 
   const closeHandler = useCallback(() => {
-    declineModal(prevUrl || getPath(SERVICES_NAMES.PLANNER, layout));
+    declineModal(
+      prevUrl || backgroundUrl || getPath(SERVICES_NAMES.PLANNER, layout)
+    );
   }, [declineModal, prevUrl, layout]);
 
   return <CreateEventModal onSuccess={successHandler} onClose={closeHandler} />;

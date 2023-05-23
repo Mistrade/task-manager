@@ -12,11 +12,15 @@ import { borderRadiusSize } from '@src/common/css/mixins';
 
 import { FlexBlock } from '@components/LayoutComponents';
 
+import { DefaultAnimationTimingFn } from '../../../common/constants/styles';
+
 export const SmallMonthWeekCount = styled(FlexBlock)`
   justify-content: center;
   align-items: center;
   width: 25px;
-  //height: 25px;
+  height: 25px;
+  flex-shrink: 0;
+  flex-grow: 0;
   border-right: 1px solid ${defaultColor};
   background-color: transparent;
 `;
@@ -60,6 +64,7 @@ export const hasTasksRowItem = css`
 
 export const SmallMonthRowItem = styled('div')<SmallMonthRowItemProps>`
   & {
+    background-color: transparent;
     z-index: 1;
     position: relative;
     font-size: 15px;
@@ -71,7 +76,10 @@ export const SmallMonthRowItem = styled('div')<SmallMonthRowItemProps>`
     width: 25px;
     height: 25px;
     cursor: pointer;
+    flex-shrink: 0;
+    flex-grow: 0;
     color: ${(_) => (_.isDisabled ? disabledColor : darkColor)};
+    transition: all 0.25s ${DefaultAnimationTimingFn};
   }
 
   ${(_) => _.hasTasks && hasTasksRowItem}

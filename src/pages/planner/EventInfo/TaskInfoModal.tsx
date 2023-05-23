@@ -1,6 +1,6 @@
 import { useSearchNavigate } from '@hooks/useSearchNavigate';
 import { useAppSelector } from '@redux/hooks/hooks';
-import { plannerSelectCurrentMode } from '@selectors/planner';
+import { plannerSelectBackgroundUrl } from '@selectors/planner';
 import React, { FC, useCallback } from 'react';
 import { useParams } from 'react-router';
 import { EventInfoModalProps } from 'src/pages/planner/types';
@@ -19,7 +19,7 @@ const EventInfo = React.lazy(() =>
 
 export const TaskInfoModal: FC<EventInfoModalProps> = () => {
   const { taskId } = useParams<{ taskId: string }>();
-  const backgroundUrl = useAppSelector(plannerSelectCurrentMode);
+  const backgroundUrl = useAppSelector(plannerSelectBackgroundUrl);
   const {
     data: taskInfo,
     isLoading,

@@ -1,3 +1,4 @@
+import { PositioningStrategy } from '@popperjs/core/lib/types';
 import Tippy, { TippyProps } from '@tippyjs/react';
 import { FC, ReactNode, useCallback } from 'react';
 import { CSSProperties } from 'styled-components';
@@ -23,6 +24,8 @@ export interface TooltipDefaultProps {
   arrow?: TippyProps['arrow'];
   visible?: boolean;
   onClickOutside?: (event: Event) => void;
+  zIndex?: number;
+  strategy?: PositioningStrategy;
 }
 
 export interface TooltipContainerProps {
@@ -63,6 +66,9 @@ export const Tooltip: FC<TooltipProps> = ({
   containerStyles,
   containerClassName,
   containerId,
+  zIndex,
+  size,
+  strategy = 'fixed',
   ...iconProps
 }) => {
   const outsideHandler = useCallback(
@@ -90,8 +96,9 @@ export const Tooltip: FC<TooltipProps> = ({
       trigger={trigger}
       triggerTarget={triggerTarget}
       placement={placement || 'top'}
+      zIndex={zIndex}
       popperOptions={{
-        strategy: 'fixed',
+        strategy,
       }}
     >
       <span

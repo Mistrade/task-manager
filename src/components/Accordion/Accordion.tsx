@@ -57,6 +57,7 @@ const IsOpenContainer = styled('div')`
   width: 100%;
   height: fit-content;
   padding: 6px 0px;
+  z-index: 0;
 `;
 
 export const Accordion: FC<AccordionProps> = ({
@@ -77,6 +78,7 @@ export const Accordion: FC<AccordionProps> = ({
       direction={'column'}
       additionalCss={css`
         transition: 0.6s ease-in-out;
+        z-index: 0;
       `}
     >
       <ContentContainer>

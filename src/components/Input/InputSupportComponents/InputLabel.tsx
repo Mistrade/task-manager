@@ -26,7 +26,12 @@ export const InputLabel: FC<InputLabelProps> = ({
         pr={6}
         gap={6}
       >
-        <StyledLabel htmlFor={inputId}>{label}</StyledLabel>
+        <StyledLabel
+          title={typeof label === 'string' ? label : ''}
+          htmlFor={inputId}
+        >
+          {label}
+        </StyledLabel>
         {tooltip || ''}
       </FlexBlock>
     );

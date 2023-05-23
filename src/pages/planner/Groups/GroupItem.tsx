@@ -14,11 +14,11 @@ import { CutText } from '@components/Text/Text';
 
 const shortKeyFrame = keyframes`
   0% {
-    transform: scale(0.5);
+    transform: scale(0.7);
     opacity: .7;
   }
   70% {
-    transform: scale(1.2);
+    transform: scale(1.1);
     opacity: .9;
   }
   100% {
@@ -29,7 +29,7 @@ const shortKeyFrame = keyframes`
 
 export const bubbleAnimation = css`
   transform: scale(0);
-  animation: ${shortKeyFrame} 0.5s ease-in-out forwards;
+  animation: ${shortKeyFrame} 0.3s ease-in-out forwards;
 `;
 
 const CustomContainer = styled('li')<{

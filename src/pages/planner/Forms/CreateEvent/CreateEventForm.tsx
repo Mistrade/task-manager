@@ -1,7 +1,7 @@
 import { useAppSelector } from '@redux/hooks/hooks';
 import { createEventInitialStateSelector } from '@selectors/planner';
 import { useFormik } from 'formik';
-import { FC, useMemo, useState } from 'react';
+import { FC, useContext, useMemo, useState } from 'react';
 import { CreateEventDataObject } from 'src/pages/planner/types';
 import styled from 'styled-components';
 import * as yup from 'yup';
@@ -19,6 +19,7 @@ import { CreateEventMembersTab } from '@src/pages/planner/Forms/CreateEvent/Tabs
 
 import { Button, StyledButton } from '@components/Buttons/Buttons.styled';
 import { FlexBlock } from '@components/LayoutComponents';
+import { ModalContext } from '@components/LayoutComponents/Modal/Modal';
 import { Switcher } from '@components/Switcher/Switcher';
 import { Heading } from '@components/Text/Heading';
 
@@ -109,6 +110,8 @@ export const CreateEventForm: FC<CreateEventFormProps> = ({
     CREATE_EVENT_FORM_TABS.INFO
   );
 
+  const modalContext = useContext(ModalContext);
+
   const formik = useFormik<CreateEventDataObject>({
     async onSubmit(values) {
       const data = { ...values, members: Object.values(values.members) };
@@ -117,9 +120,11 @@ export const CreateEventForm: FC<CreateEventFormProps> = ({
         .unwrap()
         .then((response: MyServerResponse<EventIdObject>) => {
           thenHandleForToast(response);
-          response.data?.eventId &&
-            onSuccess &&
-            onSuccess(response.data?.eventId);
+          modalContext?.closeModalAnimation().then(() => {
+            response.data?.eventId &&
+              onSuccess &&
+              onSuccess(response.data?.eventId);
+          });
         })
         .catch(CatchHandleForToast);
     },
@@ -279,7 +284,13 @@ export const CreateEventForm: FC<CreateEventFormProps> = ({
         </Button>
         <StyledButton
           disabled={isLoading}
-          onClick={onClose}
+          onClick={() => {
+            if (modalContext?.closeModalAnimation) {
+              modalContext.closeModalAnimation().then(onClose);
+            } else {
+              onClose && onClose();
+            }
+          }}
           fillColor={'#fff'}
           textColor={defaultColor}
         >

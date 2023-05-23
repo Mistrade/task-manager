@@ -6,17 +6,21 @@ import {
   plannerSelectDate,
   plannerSelectPanelConfig,
 } from '@selectors/planner';
-import React, { FC, useMemo } from 'react';
+import React, { FC, useContext, useMemo } from 'react';
 
 import { PLANNER_LAYOUTS, SERVICES_NAMES } from '@src/common/constants/enums';
 import { getPath } from '@src/common/functions';
+
+import { ModalContext } from '@components/LayoutComponents/Modal/Modal';
 
 import { DateWithTooltipPlanner } from '@planner/SmallMonth/DateWithTooltipPlanner';
 import { SmallCalendarMonthTitle } from '@planner/SmallMonth/SmallCalendarMonthTitle';
 import { SmallMonth } from '@planner/SmallMonth/SmallMonth';
 import { PlannerMonthMode } from '@planner/types';
 
-export const OptionPanelCalendar: FC = () => {
+export const OptionPanelCalendar: FC<{ onSelectAction?: () => void }> = ({
+  onSelectAction,
+}) => {
   const currentDate = useAppSelector(plannerSelectDate);
   const config = useAppSelector(plannerSelectPanelConfig);
   const dispatch = useAppDispatch();
@@ -29,6 +33,8 @@ export const OptionPanelCalendar: FC = () => {
     }),
     []
   );
+
+  const modalContext = useContext(ModalContext);
 
   return (
     <SmallMonth
@@ -46,19 +52,31 @@ export const OptionPanelCalendar: FC = () => {
               })
             );
             navigate(getPath(SERVICES_NAMES.PLANNER, PLANNER_LAYOUTS.MONTH));
+            onSelectAction && onSelectAction();
           }}
         />
       }
       current={MonthCurrent}
       value={plannerDateToDate(currentDate)}
       onSelectDate={(date) => {
-        dispatch(
-          setPlannerDateAndLayout({
-            date: date.value,
-            layout: PLANNER_LAYOUTS.DAY,
-          })
-        );
-        navigate(getPath(SERVICES_NAMES.PLANNER, PLANNER_LAYOUTS.DAY));
+        const action = () => {
+          dispatch(
+            setPlannerDateAndLayout({
+              date: date.value,
+              layout: PLANNER_LAYOUTS.DAY,
+            })
+          );
+          navigate(getPath(SERVICES_NAMES.PLANNER, PLANNER_LAYOUTS.DAY));
+          onSelectAction && onSelectAction();
+        };
+
+        if (modalContext?.closeModalAnimation) {
+          console.log('context has been found');
+          modalContext.closeModalAnimation().then(() => action());
+        } else {
+          console.log('context not found');
+          action();
+        }
       }}
       onSelectWeek={(date) => {
         dispatch(
@@ -68,6 +86,7 @@ export const OptionPanelCalendar: FC = () => {
           })
         );
         navigate(getPath(SERVICES_NAMES.PLANNER, PLANNER_LAYOUTS.WEEK));
+        onSelectAction && onSelectAction();
       }}
     />
   );

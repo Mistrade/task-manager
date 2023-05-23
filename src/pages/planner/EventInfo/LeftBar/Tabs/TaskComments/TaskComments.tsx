@@ -22,7 +22,6 @@ import { CommentForm } from './SupportComponents/CommentForm';
 import { CommentsList } from './SupportComponents/CommentsList';
 import { TaskCommentsProps } from './comments.types';
 
-
 const keyframe = [
   { backgroundColor: 'transparent' },
   { backgroundColor: hoverColor },
@@ -163,7 +162,11 @@ export const TaskComments: FC<TaskCommentsProps> = ({ taskInfo }) => {
   return (
     <VerticalScroll
       placementStatic={'bottom'}
+      containerProps={{
+        height: '100%',
+      }}
       gap={0}
+      useShadow={true}
       staticContent={
         <CommentForm
           onClear={clearUpdAndReply}

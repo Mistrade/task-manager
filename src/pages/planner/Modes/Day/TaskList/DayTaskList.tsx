@@ -59,8 +59,9 @@ export const DayTaskList: FC = memo(() => {
           }
         >
           <FlexBlock direction={'column'} gap={6}>
-            {events.baseEvents.map((task) => (
+            {events.baseEvents.map((task, index) => (
               <EventEssence
+                animationIndex={index}
                 key={task._id}
                 status={task.status}
                 priority={task.priority}
@@ -102,6 +103,7 @@ export const DayTaskList: FC = memo(() => {
           <FlexBlock direction={'column'} gap={6}>
             {events.throughEvents.map((task: ShortEventInfoModel, index) => (
               <EventEssence
+                animationIndex={index}
                 key={task._id}
                 status={task.status}
                 priority={task.priority}

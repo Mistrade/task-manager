@@ -36,13 +36,13 @@ export const FRIENDS_ROUTES_PAGE_NAMES: {
   };
 } = {
   my_friends: {
-    title: 'Список друзей',
+    title: 'Мои друзья',
     icon: <TwoPeopleIcon size={24} />,
     path: `/${SERVICES_NAMES.FRIENDS}`,
     matchEndPath: true,
   },
   outgoing: {
-    title: 'Исходящие заявки',
+    title: 'Заявки',
     icon: <TelegramLogoIcon size={24} color={currentColor} />,
     path: `/${SERVICES_NAMES.FRIENDS}/${FRIENDS_ROUTES.OUTGOING_REQUESTS}`,
     matchEndPath: false,

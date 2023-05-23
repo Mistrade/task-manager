@@ -20,7 +20,7 @@ const DayLayout = React.lazy(() =>
   )
 );
 const WeekLayout = React.lazy(() =>
-  import('@src/pages/planner/Modes/Week/WeekLayout').then(({ WeekLayout }) => ({
+  import('../Modes/Week').then(({ WeekLayout }) => ({
     default: WeekLayout,
   }))
 );
@@ -65,7 +65,7 @@ export const LayoutSelector = memo(() => {
           path={`${PLANNER_LAYOUTS.WEEK}/*`}
           element={
             <LayoutSuspense>
-              <WeekLayout />
+              <WeekLayout renderTaskCount={'all'} />
             </LayoutSuspense>
           }
         />
@@ -73,7 +73,7 @@ export const LayoutSelector = memo(() => {
           path={`${PLANNER_LAYOUTS.MONTH}/*`}
           element={
             <LayoutSuspense>
-              <MonthLayout />
+              <MonthLayout renderTaskCount={5} />
             </LayoutSuspense>
           }
         />

@@ -1,7 +1,7 @@
 import { useSearchNavigate } from '@hooks/useSearchNavigate';
 import { useAppSelector } from '@redux/hooks/hooks';
 import { plannerSelectLayout } from '@selectors/planner';
-import { FC } from 'react';
+import { FC, useContext } from 'react';
 import { useParams } from 'react-router';
 
 import { SERVICES_NAMES } from '@src/common/constants/enums';
@@ -13,6 +13,7 @@ import { FlexBlock } from '@components/LayoutComponents';
 import {
   Modal,
   ModalBody,
+  ModalContext,
   ModalFooter,
   ModalHeader,
 } from '@components/LayoutComponents/Modal/Modal';
@@ -40,6 +41,16 @@ const RemoveGroupModalContent: FC<RemoveGroupModalContentProps> = ({
   } = useGetGroupInfoQuery(groupId || '', {
     skip: !groupId,
   });
+
+  const modalContext = useContext(ModalContext);
+
+  const closeHandler = (action: () => any) => {
+    if (modalContext?.closeModalAnimation) {
+      modalContext.closeModalAnimation().then(action);
+    } else {
+      action();
+    }
+  };
 
   if (isFetching) {
     return <Loader isActive={true} title={'Загрузка данных'} />;
@@ -83,7 +94,7 @@ const RemoveGroupModalContent: FC<RemoveGroupModalContentProps> = ({
                     .unwrap()
                     .then((data) => {
                       thenHandleForToast(data);
-                      onClose();
+                      closeHandler(onClose);
                     })
                     .catch(CatchHandleForToast);
                 }
@@ -91,7 +102,9 @@ const RemoveGroupModalContent: FC<RemoveGroupModalContentProps> = ({
             >
               Удалить
             </Button>
-            <WhiteButton onClick={onClose}>Отмена</WhiteButton>
+            <WhiteButton onClick={() => closeHandler(onClose)}>
+              Отмена
+            </WhiteButton>
           </FlexBlock>
         </ModalFooter>
       </>

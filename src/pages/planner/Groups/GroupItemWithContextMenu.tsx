@@ -105,7 +105,7 @@ export const GroupItemWithContextMenu: FC<BaseGroupItemProps> = ({
         replaceChangeHandler={true}
         isFetching={isFetching}
         onChange={async () => {
-          setIsOpen(true);
+          setIsOpen((prev) => !prev);
         }}
       />
     </Tooltip>

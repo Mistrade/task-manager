@@ -126,6 +126,9 @@ export const EventListFromArray: FC<EventListFromArrayProps> = ({
           placementStatic={'top'}
           renderPattern={'top-bottom'}
           gap={6}
+          containerProps={{
+            height: '100%',
+          }}
         >
           <FlexBlock direction={'column'} gap={6} mt={8}>
             {eventsArray?.throughEvents.length > 0 && (

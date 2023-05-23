@@ -65,7 +65,7 @@ export const plannerSelectedEventInfo = createSelector(
   (state: IPlannerReducer) => state.eventInfo?._id || null
 );
 
-export const plannerSelectCurrentMode = createSelector(
+export const plannerSelectBackgroundUrl = createSelector(
   rootSelector,
   (state: IPlannerReducer) => `/${SERVICES_NAMES.PLANNER}/${state.layout}`
 );

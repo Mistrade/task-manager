@@ -4,28 +4,31 @@ import { plannerSelectEventInfoTabName } from '@selectors/planner';
 import { FC, memo, useCallback } from 'react';
 import styled from 'styled-components';
 
-import { disabledColor } from '@src/common/constants/constants';
+import {
+  disabledColor,
+  pageHeaderColor,
+} from '@src/common/constants/constants';
 import { EVENT_INFORMER_TAB_NAMES } from '@src/common/constants/enums';
 import { disableReRender } from '@src/common/utils/react-utils';
 
-import { SwitchCalendarModeTab } from '@planner/styled';
+import { Switcher } from '@components/Switcher/Switcher';
 
 export interface TaskInformerSwitchersItem {
   title: string;
-  key: EVENT_INFORMER_TAB_NAMES;
+  type: EVENT_INFORMER_TAB_NAMES;
   badgeCount?: number;
 }
 
 interface TaskInformerSwitchers {}
 
 export const taskInformerSwitcherList: Array<TaskInformerSwitchersItem> = [
-  { title: 'Инфо', key: EVENT_INFORMER_TAB_NAMES.ABOUT },
-  { title: 'Чек-лист', key: EVENT_INFORMER_TAB_NAMES.CHECK_LIST },
-  { title: 'История', key: EVENT_INFORMER_TAB_NAMES.HISTORY },
-  { title: 'Комментарии', key: EVENT_INFORMER_TAB_NAMES.COMMENTS },
-  { title: 'Участники', key: EVENT_INFORMER_TAB_NAMES.MEMBERS },
-  { title: 'Связи', key: EVENT_INFORMER_TAB_NAMES.CHAINS },
-  { title: 'Голосования', key: EVENT_INFORMER_TAB_NAMES.VOTES },
+  { title: 'Инфо', type: EVENT_INFORMER_TAB_NAMES.ABOUT },
+  { title: 'Чек-лист', type: EVENT_INFORMER_TAB_NAMES.CHECK_LIST },
+  { title: 'История', type: EVENT_INFORMER_TAB_NAMES.HISTORY },
+  { title: 'Комментарии', type: EVENT_INFORMER_TAB_NAMES.COMMENTS },
+  { title: 'Участники', type: EVENT_INFORMER_TAB_NAMES.MEMBERS },
+  { title: 'Связи', type: EVENT_INFORMER_TAB_NAMES.CHAINS },
+  { title: 'Голосования', type: EVENT_INFORMER_TAB_NAMES.VOTES },
 ];
 
 const Container = styled('div')`
@@ -47,15 +50,12 @@ export const TaskInformerSwitchers: FC<TaskInformerSwitchers> = memo(() => {
   );
   return (
     <Container>
-      {taskInformerSwitcherList.map((item) => (
-        <SwitchCalendarModeTab
-          key={item.key}
-          isSelected={item.key === tabName}
-          onClick={() => changeTabNameHandle(item.key)}
-        >
-          {item.title}
-        </SwitchCalendarModeTab>
-      ))}
+      <Switcher
+        scrollOptions={{ buttonColor: pageHeaderColor }}
+        switchersList={taskInformerSwitcherList}
+        selected={tabName}
+        onClick={(item) => changeTabNameHandle(item.type)}
+      />
     </Container>
   );
 }, disableReRender);

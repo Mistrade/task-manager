@@ -6,7 +6,6 @@ import { EVENT_ACCESS_RIGHTS } from '@src/common/constants/enums';
 
 import { DefaultTextInputProps } from '@components/Input/TextInput/TextInput';
 import { FlexBlockProps } from '@components/LayoutComponents/FlexBlock';
-import { TooltipDefaultProps } from '@components/Tooltip/Tooltip';
 
 import {
   EventInfoModel,
@@ -15,7 +14,7 @@ import {
 import { ObjectId } from '@api/rtk-api.types';
 import { UserModel } from '@api/session-api/session-api.types';
 
-import { CalendarCellEventsListProps } from './Modes/Week/CalendarCell/EventList/List';
+import { TWeekDayEventListRenderModes } from './Modes/Week/components/types';
 
 export type FCWithChildren<T = any> = FC<{ children?: ReactNode } & T>;
 
@@ -50,11 +49,11 @@ export interface ListCalendarModeProps {}
 
 export interface FavoritesCalendarModeProps {}
 
-export interface WeekCalendarProps
-  extends Omit<MonthCalendarProps, 'monthItem'> {
+export interface WeekItemProps extends Omit<MonthCalendarProps, 'monthItem'> {
   config: WeekItem;
   taskStorage: EventsStorage;
   animationIndex?: number;
+  renderMode: TWeekDayEventListRenderModes;
 }
 export type RenderTaskCountType = number | 'all';
 
@@ -64,13 +63,6 @@ export interface CalendarCellProps extends GlobalTaskListProps {
   tasks?: Array<ShortEventInfoModel>;
   onSelectTask?: OnSelectTaskFnType;
   onClickToDate?: (date: CalendarItem) => void;
-}
-
-export interface TaskTileItemProps {
-  taskInfo: ShortEventInfoModel;
-  date: CalendarItem;
-  onSelect?: CalendarCellEventsListProps['onSelect'];
-  tooltipPlacement: TooltipDefaultProps['placement'] | null;
 }
 
 export type OnSelectDateFromCalendarFn = (data: CalendarItem) => void;

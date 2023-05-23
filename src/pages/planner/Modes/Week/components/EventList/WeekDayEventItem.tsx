@@ -4,21 +4,6 @@ import {
 } from '@planner-reducer/utils';
 import dayjs from 'dayjs';
 import React, { FC, useMemo, useState } from 'react';
-import styled, { css, keyframes } from 'styled-components';
-
-import {
-  DateHelper,
-  HumanizeDateValueOptions,
-} from '@src/common/calendarSupport/dateHelper';
-import {
-  darkColor,
-  defaultColor,
-  delayedColor,
-  hoverColor,
-  orangeColor,
-} from '@src/common/constants/constants';
-import { DATE_HOURS_FORMAT } from '@src/common/constants/defaultConstants';
-import { borderRadiusSize } from '@src/common/css/mixins';
 
 import { LinkStyled } from '@components/Buttons/Link.styled';
 import { EventShortHoverCard } from '@components/HoverCard/EventShortHoverCard';
@@ -28,100 +13,22 @@ import { FlexBlock } from '@components/LayoutComponents';
 import { CutText } from '@components/Text/Text';
 import { Tooltip } from '@components/Tooltip/Tooltip';
 
-import { GroupLogo } from '@planner/Groups/styled';
-import { TaskTileItemProps } from '@planner/types';
+import {
+  DateHelper,
+  HumanizeDateValueOptions,
+} from '../../../../../../common/calendarSupport/dateHelper';
+import {
+  defaultColor,
+  delayedColor,
+  hoverColor,
+} from '../../../../../../common/constants/constants';
+import { DATE_HOURS_FORMAT } from '../../../../../../common/constants/defaultConstants';
+import { GroupLogo } from '../../../../Groups/styled';
+import { EventContainer } from '../styled';
+import { IWeekDayEventItemProps } from '../types';
 
-import { CalendarCellStyledComponentProps } from '../Cell';
-
-interface EventContainerProps extends CalendarCellStyledComponentProps {
-  withFill?: boolean;
-  fillColor?: string;
-}
-
-interface EventTextProps {
-  isCompleted?: boolean;
-  fs?: string;
-}
-
-const EventAnimation = keyframes`
-  from {
-    opacity: .3;
-    transform: translateY(20px);
-  }
-  to {
-    opacity: 1;
-    transform: translateY(0px);
-  }
-`;
-
-const EventContainer = styled('div')<EventContainerProps>`
-  & {
-    gap: 4px;
-    color: ${darkColor};
-    background-color: ${(props) =>
-      props.withFill ? props.fillColor || hoverColor : ''};
-    width: 100%;
-    padding: 5px 7px;
-    text-align: center;
-    border-radius: ${borderRadiusSize.sm};
-    margin-top: 4px;
-    opacity: ${(props) => (props.disabled ? 0.2 : 1)};
-    display: flex;
-    flex-wrap: nowrap;
-    cursor: pointer;
-    flex-direction: column;
-    animation: ${EventAnimation} 0.3s ease-in;
-    transition: background-color 0.3s ease-in;
-  }
-`;
-
-const EllipsisMixin = css`
-  display: block;
-  line-height: 1;
-  width: 100%;
-  flex: 1 1 auto;
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
-  text-align: left;
-`;
-
-export const EventText = styled('span')<EventTextProps>`
-  & {
-    ${EllipsisMixin};
-    font-size: ${(props) => props.fs || '14px'};
-    text-decoration: ${(props) =>
-      props.isCompleted ? 'line-through' : 'none'};
-    text-decoration-color: ${(props) =>
-      props.isCompleted ? orangeColor : '#000'};
-    text-decoration-thickness: 2px;
-    font-weight: 500;
-  }
-`;
-
-const EventTimeValue = styled('span')`
-  & {
-    ${EllipsisMixin};
-    font-size: 12px;
-    color: ${defaultColor};
-  }
-`;
-
-const isEqualEventInfo = (
-  prev: TaskTileItemProps['taskInfo'],
-  next: TaskTileItemProps['taskInfo']
-) => {
-  return (
-    prev.title === next.title &&
-    prev.group === next.group &&
-    prev.time === next.timeEnd &&
-    prev.priority === next.priority &&
-    prev._id === next._id
-  );
-};
-
-export const CalendarCellItemContent: FC<
-  Pick<TaskTileItemProps, 'taskInfo'>
+export const WeekDayEventItemContent: FC<
+  Pick<IWeekDayEventItemProps, 'taskInfo'>
 > = ({ taskInfo }) => {
   const timeValue = useMemo(() => {
     const start = dayjs(taskInfo.time);
@@ -151,12 +58,19 @@ export const CalendarCellItemContent: FC<
   return (
     <FlexBlock direction={'column'} gap={4} width={'100%'}>
       <FlexBlock width={'100%'}>
-        <CutText lang={'ru'} rows={2} fontSize={15}>
+        <CutText
+          lang={'ru'}
+          rows={2}
+          fontSize={15}
+          style={{ fontWeight: 'bold' }}
+        >
           {taskInfo.title}
         </CutText>
       </FlexBlock>
       <FlexBlock width={'100%'}>
-        <EventTimeValue>{timeValue}</EventTimeValue>
+        <CutText rows={1} fontSize={12} color={defaultColor}>
+          {timeValue}
+        </CutText>
       </FlexBlock>
       <FlexBlock width={'100%'} gap={12} wrap={'wrap'}>
         <GroupLogo color={taskInfo.group?.color || ''} size={18} />
@@ -167,7 +81,7 @@ export const CalendarCellItemContent: FC<
   );
 };
 
-export const CalendarCellEventItem: FC<TaskTileItemProps> = ({
+export const WeekDayEventItem: FC<IWeekDayEventItemProps> = ({
   taskInfo,
   date,
   tooltipPlacement,
@@ -196,7 +110,7 @@ export const CalendarCellEventItem: FC<TaskTileItemProps> = ({
             onSelect && onSelect(taskInfo._id);
           }}
         >
-          <CalendarCellItemContent taskInfo={taskInfo} />
+          <WeekDayEventItemContent taskInfo={taskInfo} />
         </EventContainer>
       </LinkStyled>
     );
@@ -213,7 +127,7 @@ export const CalendarCellEventItem: FC<TaskTileItemProps> = ({
       theme={'light'}
       placement={tooltipPlacement}
       offset={[0, 15]}
-      delay={[1000, 500]}
+      delay={[1500, 150]}
     >
       {Content}
     </Tooltip>

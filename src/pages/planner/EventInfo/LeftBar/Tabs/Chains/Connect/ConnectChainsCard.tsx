@@ -1,4 +1,5 @@
-import { FC, ReactNode, useMemo } from 'react';
+import { FC, ReactNode, useRef } from 'react';
+import { useIntersection } from 'react-use';
 import styled from 'styled-components';
 
 import {
@@ -12,6 +13,7 @@ import { borderRadiusSize } from '@src/common/css/mixins';
 import { FlexBlockProps } from '@components/LayoutComponents/FlexBlock';
 import { Heading } from '@components/Text/Heading';
 
+import { DefaultAnimationTimingFn } from '../../../../../../../common/constants/styles';
 import { ConnectChainsType } from '../event-chains.types';
 
 export interface ConnectChainsCardObject {
@@ -21,9 +23,11 @@ export interface ConnectChainsCardObject {
   description: ReactNode;
 }
 
-export interface ConnectChainsCardProps extends ConnectChainsCardObject {}
+export interface ConnectChainsCardProps extends ConnectChainsCardObject {
+  animationIndex?: number;
+}
 
-const Container = styled('div')`
+const Container = styled('div')<{ animationIndex?: number }>`
   display: flex;
   width: 100%;
   height: 100%;
@@ -34,6 +38,22 @@ const Container = styled('div')`
   align-items: center;
   border-radius: ${borderRadiusSize.sm};
   transition: all 0.2s ease-in;
+  transform: scale(0.7);
+
+  //@media (prefers-reduced-motion: no-preference) {
+  //  .animation {
+  //    animation: none;
+  //    -webkit-animation: none;
+  //  }
+  //}
+
+  &.bubble--animation {
+    opacity: 1;
+    transform: scale(1);
+    transition: transform 0.3s ${DefaultAnimationTimingFn},
+      opacity 0.3s ${DefaultAnimationTimingFn};
+    transition-delay: ${(props) => (props.animationIndex || 0) * 60}ms;
+  }
 
   &:hover {
     border: 2px solid ${currentColor};
@@ -89,12 +109,24 @@ export const ConnectChainsCard: FC<ConnectChainsCardProps> = ({
   title,
   description,
   type,
+  animationIndex,
 }) => {
-  const iconNode = useMemo(() => icon({ width: 180, height: 180 }), [icon]);
+  const ref = useRef<HTMLDivElement>(null);
+  const view = useIntersection(ref, {
+    rootMargin: '0px',
+    threshold: 0,
+  });
 
+  console.log(view);
   return (
-    <Container>
-      <IconContainer>{iconNode}</IconContainer>
+    <Container
+      ref={ref}
+      className={
+        view?.isIntersecting && view?.target ? `bubble--animation` : ''
+      }
+      animationIndex={animationIndex ? animationIndex % 4 : 0}
+    >
+      <IconContainer>{icon({ width: 180, height: 180 })}</IconContainer>
       <TitleContainer>
         <Title>{title}</Title>
         <DescriptionContainer>{description}</DescriptionContainer>

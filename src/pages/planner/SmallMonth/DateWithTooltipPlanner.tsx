@@ -3,7 +3,7 @@ import { plannerDateToDate } from '@planner-reducer/utils';
 import { useAppSelector } from '@redux/hooks/hooks';
 import { plannerSelectLayout } from '@selectors/planner';
 import dayjs from 'dayjs';
-import { FC, useMemo, useState } from 'react';
+import { FC, useContext, useMemo, useState } from 'react';
 
 import { DateHelper } from '@src/common/calendarSupport/dateHelper';
 import { SERVICES_NAMES } from '@src/common/constants/enums';
@@ -11,6 +11,7 @@ import { getPath } from '@src/common/functions';
 
 import { SelectItemContainer } from '@components/Input/SelectInput/SelectItemContainer';
 import { SelectListContainer } from '@components/Input/SelectInput/SelectListContainer';
+import { ModalContext } from '@components/LayoutComponents/Modal/Modal';
 import { Tooltip } from '@components/Tooltip/Tooltip';
 
 import { SmallMonthDateItem } from '@planner/SmallMonth/SmallMonthDateItem';
@@ -44,6 +45,8 @@ export const DateWithTooltipActions: FC<
     [date.value]
   );
 
+  const modalContext = useContext(ModalContext);
+
   const createEventClickHandle = () => {
     onClose(false);
     const value = dayjs(plannerDateToDate(date.value)).set('hour', 9);
@@ -59,17 +62,33 @@ export const DateWithTooltipActions: FC<
     );
   };
 
+  const createEventWithModalAnimation = () => {
+    if (modalContext?.closeModalAnimation) {
+      modalContext.closeModalAnimation().then(createEventClickHandle);
+    } else {
+      createEventClickHandle();
+    }
+  };
+
   const toDayLayoutClickHandler = () => {
     onClose(false);
     onSelectDate && onSelectDate(date);
   };
 
+  const toDayWithModalAnimation = () => {
+    if (modalContext?.closeModalAnimation) {
+      modalContext.closeModalAnimation().then(toDayLayoutClickHandler);
+    } else {
+      toDayLayoutClickHandler();
+    }
+  };
+
   return (
     <SelectListContainer>
-      <SelectItemContainer onClick={createEventClickHandle}>
+      <SelectItemContainer onClick={createEventWithModalAnimation}>
         Создать событие{' ' + dateText}
       </SelectItemContainer>
-      <SelectItemContainer onClick={toDayLayoutClickHandler}>
+      <SelectItemContainer onClick={toDayWithModalAnimation}>
         Смотреть события{' ' + dateText}
       </SelectItemContainer>
     </SelectListContainer>
@@ -109,7 +128,7 @@ export const DateWithTooltipPlanner: FC<DateWithTooltipProps> = ({
           date={date}
           currentDate={plannerDateToDate(date.value)}
           taskScheme={taskScheme}
-          onSelectDate={() => setIsOpen(true)}
+          onSelectDate={() => setIsOpen((prev) => !prev)}
           isSelect={isOpen}
         />
       </Tooltip>
@@ -123,7 +142,7 @@ export const DateWithTooltipPlanner: FC<DateWithTooltipProps> = ({
       date={date}
       currentDate={plannerDateToDate(date.value)}
       taskScheme={taskScheme}
-      onSelectDate={() => setIsOpen(true)}
+      onSelectDate={() => setIsOpen((prev) => !prev)}
       isSelect={isOpen}
     />
   );

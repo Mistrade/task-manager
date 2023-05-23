@@ -10,7 +10,12 @@ import { borderRadiusSize } from '@src/common/css/mixins';
 
 import { FlexBlock } from '@components/LayoutComponents';
 
-export const EssenceContainer = styled(FlexBlock)`
+import {
+  StepByStepAnimationProps,
+  stepByStepAnimation,
+} from '@planner/Modes/Week/components/styled';
+
+export const EssenceContainer = styled(FlexBlock)<StepByStepAnimationProps>`
   display: flex;
   width: 100%;
   padding: 8px;
@@ -25,6 +30,7 @@ export const EssenceContainer = styled(FlexBlock)`
   height: fit-content;
   transition: height 0.3s ease-in;
   text-align: left;
+  ${stepByStepAnimation};
 `;
 
 export const EventEssenceTitle = styled('h4')`

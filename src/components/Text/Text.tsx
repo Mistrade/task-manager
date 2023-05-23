@@ -1,5 +1,8 @@
 import React, { FC, createElement, forwardRef } from 'react';
-import styled, { FlattenSimpleInterpolation } from 'styled-components';
+import styled, {
+  CSSProperties,
+  FlattenSimpleInterpolation,
+} from 'styled-components';
 
 import { darkColor, defaultColor } from '@src/common/constants/constants';
 
@@ -63,11 +66,12 @@ export interface PreviewDescriptionProps {
   rows?: number;
   color?: string;
   lineHeight?: number;
+  textAlign?: CSSProperties['textAlign'];
 }
 
 export const CutText = styled('p')<PreviewDescriptionProps>`
   & {
-    text-align: left;
+    text-align: ${(_) => _.textAlign || 'left'};
     margin: 0;
     padding: 0;
     max-width: 100%;

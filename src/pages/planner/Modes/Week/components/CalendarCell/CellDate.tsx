@@ -2,17 +2,17 @@ import { plannerDateToDate } from '@planner-reducer/utils';
 import dayjs from 'dayjs';
 import React, { memo, useState } from 'react';
 
-import { MonthList, WeekDaysShortList } from '@src/common/constants/constants';
-import { addNull } from '@src/common/functions';
-
 import { StyledBadge } from '@components/Badge/styled';
 import { FlexBlock } from '@components/LayoutComponents';
 
-import { CellDateButtons } from '@planner/Modes/Week/CalendarCell/CellDateButtons';
-import { CalendarItem } from '@planner/types';
-
-import { CalendarDate } from './Cell';
-import { CellDateStyledContainer } from './Cell.styled';
+import {
+  MonthList,
+  WeekDaysShortList,
+} from '../../../../../../common/constants/constants';
+import { addNull } from '../../../../../../common/functions';
+import { CalendarItem } from '../../../../types';
+import { CalendarDate, CellDateStyledContainer } from './Cell.styled';
+import { CellDateButtons } from './CellDateButtons';
 
 export interface CellDateProps {
   date: CalendarItem;

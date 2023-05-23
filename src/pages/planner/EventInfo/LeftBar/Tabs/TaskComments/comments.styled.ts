@@ -12,17 +12,19 @@ import { borderRadiusSize } from '@src/common/css/mixins';
 
 import { EmptyButtonStyled } from '@components/Buttons/EmptyButton.styled';
 
+import { stepByStepAnimation } from '../../../../Modes/Week/components/styled';
+
 export const CreateCommentContainer = styled('div')`
   display: flex;
   justify-content: flex-start;
   align-items: flex-start;
   flex-direction: column;
   gap: 8px;
-  background-color: ${pageHeaderColor};
-  padding: 12px 16px;
+  padding: 12px 0px;
   width: 100%;
-  border-top: 2px solid ${disabledColor};
+  border-top: 1px solid ${disabledColor};
   border-radius: 0px 0px ${borderRadiusSize.sm} ${borderRadiusSize.sm};
+  ${stepByStepAnimation}
 `;
 export const StyledCommentContainer = styled('ul')`
   & {

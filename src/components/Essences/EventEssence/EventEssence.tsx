@@ -17,6 +17,7 @@ import { EventGroupButton } from '@pages/planner/EventInfo/SupportsComponent/Eve
 import { EventPriorityButton } from '@pages/planner/EventInfo/SupportsComponent/EventPriorityButton';
 import { EventStatusButton } from '@pages/planner/EventInfo/SupportsComponent/EventStatusButton';
 
+import { StepByStepAnimationProps } from '@planner/Modes/Week/components/styled';
 import { CalendarPriorityKeys, TaskStatusesType } from '@planner/types';
 
 import { GroupModelResponse } from '@api/planning-api/types/groups.types';
@@ -25,7 +26,7 @@ import { ObjectId } from '@api/rtk-api.types';
 import Badge from '../../Badge';
 import { EssenceContainer, EventEssenceTitle } from './event-essence.styled';
 
-export interface EventEssenceProps {
+export interface EventEssenceProps extends StepByStepAnimationProps {
   status: TaskStatusesType | null;
   priority: CalendarPriorityKeys | null;
   title: string;
@@ -47,6 +48,8 @@ export const EventEssence: FC<EventEssenceProps> = ({
   isSnapshot,
   containerProps,
   onTitleClick,
+  animationIndex,
+  delayByStepMs = 20,
   ...optionalFields
 }) => {
   const [isOpen, setIsOpen] = useState(false);
@@ -61,7 +64,11 @@ export const EventEssence: FC<EventEssenceProps> = ({
 
   //TODO раздробить верстку на мелкие компоненты
   return (
-    <EssenceContainer {...containerProps}>
+    <EssenceContainer
+      animationIndex={animationIndex}
+      delayByStepMs={delayByStepMs}
+      {...containerProps}
+    >
       <FlexBlock gap={6} align={'center'} direction={'row'}>
         {!isOpen && (
           <>

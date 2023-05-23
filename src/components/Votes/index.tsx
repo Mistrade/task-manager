@@ -1,18 +1,9 @@
-import { FC } from 'react';
-
-import { Button } from '@components/Buttons/Buttons.styled';
-import { Heading } from '@components/Text/Heading';
-import { CutText } from '@components/Text/Text';
+import { FC, useState } from 'react';
 
 import { ObjectId } from '@api/rtk-api.types';
 
-import {
-  CheckListAddInput,
-  CheckListUL,
-  StyledCheckListItem,
-} from '../CheckList';
+import { CheckListUL, StyledCheckListItem } from '../CheckList';
 import { FlexBlock } from '../LayoutComponents';
-import { Tooltip } from '../Tooltip/Tooltip';
 
 interface VoteItem {
   _id: ObjectId;
@@ -53,33 +44,13 @@ const VoteItem: FC<VoteItemProps> = ({ data, status, likes, dislikes }) => {
 };
 
 const Votes: FC<VoteProps> = ({ item }) => {
+  //onSave(item: VoteObject): Promise<any>
+  //on
+  const [addElementTooltipState, setAddElementTooltipState] = useState(false);
+
   return (
     <FlexBlock direction={'column'} gap={12}>
-      <FlexBlock direction={'row'} gap={6} width={'100%'} wrap={'nowrap'}>
-        <FlexBlock grow={1}>
-          <Heading.H2>
-            <CutText fontSize={18} rows={1}>
-              {item.title}
-            </CutText>
-          </Heading.H2>
-        </FlexBlock>
-        <Tooltip
-          content={
-            <CheckListAddInput
-              onSave={async (value) => {
-                return true;
-              }}
-            />
-          }
-          placement={'bottom-end'}
-          delay={[100, 200]}
-          arrow={false}
-          theme={'light'}
-        >
-          <Button>Добавить элемент</Button>
-        </Tooltip>
-      </FlexBlock>
-      <FlexBlock direction={'column'} width={'100%'}>
+      <FlexBlock direction={'column'} width={'100%'} gap={8}>
         <CheckListUL>
           {item.elements.map((voteItem) => (
             <VoteItem

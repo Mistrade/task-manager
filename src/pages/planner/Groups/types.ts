@@ -4,7 +4,7 @@ import { GroupModelResponse } from '@api/planning-api/types/groups.types';
 import { ObjectId } from '@api/rtk-api.types';
 
 export interface UpdateGroupModalProps {
-  onClose?: () => void;
+  onClose?: () => Promise<void>;
 }
 
 export interface ChangeGroupModalProps extends UpdateGroupModalProps {

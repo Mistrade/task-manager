@@ -44,6 +44,62 @@ export const ConnectTypesArray: Array<ConnectChainsCardObject> = [
       'Установите условие, которое не позволит выполнить текущее событие, пока не будут выполнены все события в этом типе связи',
     icon: (attr) => <ApprovedAfterIcon {...attr} />,
   },
+  {
+    type: 'parentOf',
+    title: 'ParentOf (dev)',
+    description:
+      'Свяжите текущее событие, с другим, которое станет родителем для текущего',
+    icon: (attr) => <ParentOfIcon {...attr} />,
+  },
+  {
+    type: 'childOf',
+    title: 'ChildOf (dev)',
+    description:
+      'Добавьте вложенные события, за прогрессом которых сможете следить из раздела "Связи"',
+    icon: (attr) => <ChildOfIcon {...attr} />,
+  },
+  {
+    type: 'completed-after',
+    title: 'CompletedAfter (dev)',
+    description:
+      'Установите автоматическое выполнение текущего события, как только будут выполнены все выбранные события для этого типа связи',
+    icon: (attr) => <CompletedAfterIcon {...attr} />,
+  },
+  {
+    type: 'approved-after',
+    title: 'ApprovedAfter (dev)',
+    description:
+      'Установите условие, которое не позволит выполнить текущее событие, пока не будут выполнены все события в этом типе связи',
+    icon: (attr) => <ApprovedAfterIcon {...attr} />,
+  },
+  {
+    type: 'parentOf',
+    title: 'ParentOf (dev)',
+    description:
+      'Свяжите текущее событие, с другим, которое станет родителем для текущего',
+    icon: (attr) => <ParentOfIcon {...attr} />,
+  },
+  {
+    type: 'childOf',
+    title: 'ChildOf (dev)',
+    description:
+      'Добавьте вложенные события, за прогрессом которых сможете следить из раздела "Связи"',
+    icon: (attr) => <ChildOfIcon {...attr} />,
+  },
+  {
+    type: 'completed-after',
+    title: 'CompletedAfter (dev)',
+    description:
+      'Установите автоматическое выполнение текущего события, как только будут выполнены все выбранные события для этого типа связи',
+    icon: (attr) => <CompletedAfterIcon {...attr} />,
+  },
+  {
+    type: 'approved-after',
+    title: 'ApprovedAfter (dev)',
+    description:
+      'Установите условие, которое не позволит выполнить текущее событие, пока не будут выполнены все события в этом типе связи',
+    icon: (attr) => <ApprovedAfterIcon {...attr} />,
+  },
 ];
 
 export interface ChainsShowcaseProps {
@@ -65,9 +121,12 @@ const ShowcaseContainer = styled('div')`
 
 export const ChainsShowcase: FC<ChainsShowcaseProps> = ({ onSelect }) => {
   return (
-    <VerticalScroll renderPattern={'top-bottom'}>
+    <VerticalScroll
+      renderPattern={'top-bottom'}
+      containerProps={{ height: '100%' }}
+    >
       <ShowcaseContainer>
-        {ConnectTypesArray.map((item) => (
+        {ConnectTypesArray.map((item, index) => (
           <DontHoveredButton
             key={item.type}
             onClick={(event) => {
@@ -75,7 +134,7 @@ export const ChainsShowcase: FC<ChainsShowcaseProps> = ({ onSelect }) => {
               onSelect && onSelect(item);
             }}
           >
-            <ConnectChainsCard {...item} />
+            <ConnectChainsCard {...item} animationIndex={index} />
           </DontHoveredButton>
         ))}
       </ShowcaseContainer>

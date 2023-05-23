@@ -1,4 +1,4 @@
-import React, { memo } from 'react';
+import React, { memo, useContext } from 'react';
 import styled from 'styled-components';
 
 import { pageHeaderColor } from '@src/common/constants/constants';
@@ -6,6 +6,7 @@ import { borderRadiusSize } from '@src/common/css/mixins';
 
 import { EmptyButtonStyled } from '@components/Buttons/EmptyButton.styled';
 import { FlexBlock } from '@components/LayoutComponents';
+import { ModalContext } from '@components/LayoutComponents/Modal/Modal';
 
 import { IsDelayedEvent } from '@planner/EventInfo/Header/IsDelayedEvent';
 import { TaskInformerLinkButton } from '@planner/EventInfo/SupportsComponent/TaskInformerLinkButton';
@@ -57,6 +58,7 @@ const ActionsAndLinkContainer = styled('div')`
 
 export const EventInformerHeader = memo<EventInformerHeaderProps>(
   ({ eventInfo, updateTaskHandler, onClose }) => {
+    const modalContext = useContext(ModalContext);
     return (
       <EventInfoHeaderContainer>
         <TitleContainer>
@@ -69,7 +71,13 @@ export const EventInformerHeader = memo<EventInformerHeaderProps>(
             }
           />
           <IsDelayedEvent isDelayed={!!eventInfo.isDelayed} />
-          <EmptyButtonStyled onClick={onClose}>Закрыть</EmptyButtonStyled>
+          <EmptyButtonStyled
+            onClick={() => {
+              modalContext?.closeModalAnimation()?.then(onClose);
+            }}
+          >
+            Закрыть
+          </EmptyButtonStyled>
         </TitleContainer>
         <ActionsAndLinkContainer>
           <TaskInformerMoreActions taskItem={eventInfo} />

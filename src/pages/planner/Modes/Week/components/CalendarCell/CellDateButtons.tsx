@@ -7,15 +7,17 @@ import { useAppDispatch } from '@redux/hooks/hooks';
 import dayjs from 'dayjs';
 import React, { memo } from 'react';
 
-import { currentColor } from '@src/common/constants/constants';
-import { PLANNER_LAYOUTS, SERVICES_NAMES } from '@src/common/constants/enums';
-import { getPath } from '@src/common/functions';
-
 import { EmptyButtonStyled } from '@components/Buttons/EmptyButton.styled';
 import { CalendarIcon } from '@components/Icons/AppIcon/CalendarIcon';
 import { PlusIcon } from '@components/Icons/Icons';
 
-import { CellDateHoverContainer } from '@planner/Modes/Week/CalendarCell/Cell.styled';
+import { currentColor } from '../../../../../../common/constants/constants';
+import {
+  PLANNER_LAYOUTS,
+  SERVICES_NAMES,
+} from '../../../../../../common/constants/enums';
+import { getPath } from '../../../../../../common/functions';
+import { CellDateHoverContainer } from './Cell.styled';
 
 export const CellDateButtons = memo<{ date: IPlannerDate }>(
   ({ date }) => {

@@ -279,7 +279,9 @@ const formalization: CustomMixin<FormalizationProps> = (_) => css`
     : ''}
   ${_.borderRadius
     ? css`
-        border-radius: ${pxToCssValue(_.borderRadius)};
+        border-radius: ${typeof _.borderRadius === 'string'
+          ? _.borderRadius
+          : pxToCssValue(_.borderRadius)};
       `
     : ''}
   ${_.overflow

@@ -3,7 +3,7 @@ import { useSearchNavigate } from '@hooks/useSearchNavigate';
 import { useAppSelector } from '@redux/hooks/hooks';
 import { plannerSelectLayout } from '@selectors/planner';
 import dayjs from 'dayjs';
-import React, { FC, useCallback } from 'react';
+import React, { FC, useCallback, useContext } from 'react';
 
 import { SERVICES_NAMES } from '@src/common/constants/enums';
 import { TASK_STATUSES } from '@src/common/constants/signatures';
@@ -12,6 +12,7 @@ import { getPath } from '@src/common/functions';
 import { TransparentButton } from '@components/Buttons/Buttons.styled';
 import { SelectItemContainer } from '@components/Input/SelectInput/SelectItemContainer';
 import { SelectListContainer } from '@components/Input/SelectInput/SelectListContainer';
+import { ModalContext } from '@components/LayoutComponents/Modal/Modal';
 import { Tooltip } from '@components/Tooltip/Tooltip';
 
 import { EventInfoModalProps } from '@planner/types';
@@ -22,7 +23,6 @@ import {
 } from '@api/planning-api';
 import { EventInfoModel } from '@api/planning-api/types/event-info.types';
 import { CatchHandleForToast, thenHandleForToast } from '@api/tools';
-
 
 export interface TaskInformerMoreActionsProps extends EventInfoModalProps {
   taskItem: EventInfoModel;
@@ -37,6 +37,7 @@ export const TaskInformerMoreActions: FC<TaskInformerMoreActionsProps> = ({
   const navigate = useSearchNavigate();
 
   const { openModal: openCreateEventModal } = useCreateEventModal();
+  const modalContext = useContext(ModalContext);
 
   const cloneEventHandler = useCallback(
     (e: React.MouseEvent) => {
@@ -44,24 +45,36 @@ export const TaskInformerMoreActions: FC<TaskInformerMoreActionsProps> = ({
       const time = dayjs(taskItem.time);
       const timeEnd = dayjs(taskItem.timeEnd);
 
-      taskItem &&
-        openCreateEventModal(
-          {
-            title: `Clone: ${taskItem.title}`,
-            linkedFrom: taskItem._id,
-            description: `Событие было клонировано от события: "${taskItem.title}".\n`,
-            time: time.isValid() ? time.format() : undefined,
-            timeEnd: timeEnd.isValid() ? timeEnd.format() : undefined,
-            parentId: taskItem.parentId,
-            status: taskItem.status,
-            link: taskItem.link,
-            priority: taskItem.priority,
-          },
-          {
-            modalPath: getPath(SERVICES_NAMES.PLANNER, layout, 'event/create'),
-            useReturnBackOnDecline: true,
-          }
-        );
+      const action = () => {
+        taskItem &&
+          openCreateEventModal(
+            {
+              title: `Clone: ${taskItem.title}`,
+              linkedFrom: taskItem._id,
+              description: `Событие было клонировано от события: "${taskItem.title}".\n`,
+              time: time.isValid() ? time.format() : undefined,
+              timeEnd: timeEnd.isValid() ? timeEnd.format() : undefined,
+              parentId: taskItem.parentId,
+              status: taskItem.status,
+              link: taskItem.link,
+              priority: taskItem.priority,
+            },
+            {
+              modalPath: getPath(
+                SERVICES_NAMES.PLANNER,
+                layout,
+                'event/create'
+              ),
+              useReturnBackOnDecline: true,
+            }
+          );
+      };
+
+      if (modalContext?.closeModalAnimation) {
+        modalContext.closeModalAnimation().then(action);
+      } else {
+        action();
+      }
     },
     [taskItem, openCreateEventModal, layout]
   );
@@ -69,19 +82,31 @@ export const TaskInformerMoreActions: FC<TaskInformerMoreActionsProps> = ({
   const createChildEventHandler = useCallback(
     (e: React.MouseEvent) => {
       e.stopPropagation();
-      taskItem &&
-        openCreateEventModal(
-          {
-            group: taskItem.group?._id || '',
-            title: 'Child Event: ',
-            parentId: taskItem._id,
-            description: `Событие было создано как дочернее для: "${taskItem.title}".\n`,
-          },
-          {
-            useReturnBackOnDecline: true,
-            modalPath: getPath(SERVICES_NAMES.PLANNER, layout, 'event/create'),
-          }
-        );
+      const action = () => {
+        taskItem &&
+          openCreateEventModal(
+            {
+              group: taskItem.group?._id || '',
+              title: 'Child Event: ',
+              parentId: taskItem._id,
+              description: `Событие было создано как дочернее для: "${taskItem.title}".\n`,
+            },
+            {
+              useReturnBackOnDecline: true,
+              modalPath: getPath(
+                SERVICES_NAMES.PLANNER,
+                layout,
+                'event/create'
+              ),
+            }
+          );
+      };
+
+      if (modalContext?.closeModalAnimation) {
+        modalContext.closeModalAnimation().then(action);
+      } else {
+        action();
+      }
     },
     [taskItem, openCreateEventModal, layout]
   );
@@ -106,12 +131,18 @@ export const TaskInformerMoreActions: FC<TaskInformerMoreActionsProps> = ({
         removeEvent({ eventId: taskItem._id })
           .unwrap()
           .then((r) => {
-            thenHandleForToast(
-              r,
-              () =>
-                r?.info?.type === 'success' &&
-                navigate(`/${SERVICES_NAMES.PLANNER}/${layout}`)
-            );
+            thenHandleForToast(r, () => {
+              const action = () =>
+                navigate(`/${SERVICES_NAMES.PLANNER}/${layout}`);
+
+              if (r?.info?.type === 'success') {
+                if (modalContext?.closeModalAnimation) {
+                  modalContext.closeModalAnimation().then(action);
+                } else {
+                  action();
+                }
+              }
+            });
           })
           .catch(CatchHandleForToast);
     },

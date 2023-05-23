@@ -7,7 +7,6 @@ import { disabledColor } from '@src/common/constants/constants';
 import { EVENT_INFORMER_TAB_NAMES } from '@src/common/constants/enums';
 
 import { FlexBlock } from '@components/LayoutComponents';
-import Votes, { VOTE_STATUSES, VoteObject } from '@components/Votes';
 
 import { EventInfoBaseProps } from '@planner/types';
 
@@ -15,6 +14,7 @@ import { EventInfoUpdateFn } from '../SupportsComponent/ToggleTaskInformerButton
 import { EventInfoAboutTab } from './Tabs/About/EventInfoAboutTab';
 import { EventChainsTab } from './Tabs/Chains/EventChainsTab';
 import { EventCheckList } from './Tabs/EventCheckList/EventCheckList';
+import { EventVotes } from './Tabs/EventVotes';
 import { TaskComments } from './Tabs/TaskComments/TaskComments';
 import { TaskHistory } from './Tabs/TaskHistory/TaskHistory';
 import { TaskMembers } from './Tabs/TaskMembers/TaskMembers';
@@ -34,42 +34,17 @@ const Container = styled('div')`
   gap: 12px;
 `;
 
+const AnimationContainer = styled('div')`
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+`;
+
 export const TaskInformerLeftBar: FC<TaskInformerLeftBarProps> = ({
   eventInfo,
   updateFn,
 }) => {
   const tabName = useAppSelector(plannerSelectEventInfoTabName);
-
-  const voteItem: VoteObject = useMemo(
-    () => ({
-      title: 'Голосование за пидора',
-      elements: [
-        {
-          name: 'Андрей Черников',
-          _id: 'andrey_chernikov',
-          statusByCurrentUser: VOTE_STATUSES.DISLIKE,
-          likes: [],
-          dislikes: [],
-        },
-        {
-          name: 'Ильдар Усманов',
-          _id: 'ildar_usmanov',
-          statusByCurrentUser: VOTE_STATUSES.DISLIKE,
-          likes: [],
-          dislikes: [],
-        },
-        {
-          name: 'Влад Валеев',
-          _id: 'vlad_valeev',
-          statusByCurrentUser: VOTE_STATUSES.LIKE,
-          likes: [],
-          dislikes: [],
-        },
-      ],
-      selected: {},
-    }),
-    []
-  );
 
   const content = useMemo(() => {
     switch (tabName) {
@@ -86,7 +61,7 @@ export const TaskInformerLeftBar: FC<TaskInformerLeftBarProps> = ({
       case EVENT_INFORMER_TAB_NAMES.CHAINS:
         return <EventChainsTab taskItem={eventInfo} />;
       case EVENT_INFORMER_TAB_NAMES.VOTES:
-        return <Votes item={voteItem} />;
+        return <EventVotes />;
       default:
         return <></>;
     }

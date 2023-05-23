@@ -34,7 +34,7 @@ const ToggleButton = styled('button')<{ state: boolean }>`
   height: 35px;
   border-radius: 50%;
   border: 1px solid ${disabledColor};
-  transition: all 0.3s ease-in-out;
+  transition: all 0.25s ease-in-out;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -84,7 +84,7 @@ export const PlannerOptionsPanel: FC<DaySettingsPanelProps> = React.memo(() => {
     if (animationIsOpen) {
       setIsOpen(animationIsOpen);
     } else {
-      Delay(500).then(() => {
+      Delay(250).then(() => {
         setIsOpen(animationIsOpen);
       });
     }

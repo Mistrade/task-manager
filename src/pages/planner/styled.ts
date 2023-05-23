@@ -10,15 +10,19 @@ import {
 } from '@src/common/constants/constants';
 import { borderRadiusSize } from '@src/common/css/mixins';
 
+import {
+  StepByStepAnimationProps,
+  stepByStepAnimation,
+} from './Modes/Week/components/styled';
+
 export const CalendarDateListContainer = styled('div')<{ rowsCount?: number }>`
   & {
     width: 100%;
     height: fit-content;
-    display: grid;
-    grid-template-rows: repeat(${(_) => _.rowsCount || 1}, minmax(1fr, 12fr));
-    grid-template-columns: repeat(7, minmax(80px, 1fr));
-    grid-column-gap: 4px;
-    grid-row-gap: 8px;
+    display: flex;
+    gap: 6px;
+    flex-direction: column;
+    z-index: 0;
   }
 `;
 
@@ -107,8 +111,13 @@ const SwitchMainStyles = css`
   }
 `;
 
-export const SwitchCalendarModeTab = styled('button')<{ isSelected?: boolean }>`
-  ${SwitchMainStyles}
+export const SwitchCalendarModeTab = styled('button')<
+  {
+    isSelected?: boolean;
+  } & StepByStepAnimationProps
+>`
+  ${SwitchMainStyles};
+  ${stepByStepAnimation};
 
   ${(props) => {
     if (props.isSelected) {
@@ -156,7 +165,7 @@ export const PlannerOptionPanelContainer = styled('div')<{ state?: boolean }>`
   padding: 0px 12px;
   flex-shrink: 0;
   border-right: 1px solid ${disabledColor};
-  transition: all 0.6s ease-in-out;
+  transition: all 0.25s ease-in-out;
 
   ${(_) =>
     _.state === false

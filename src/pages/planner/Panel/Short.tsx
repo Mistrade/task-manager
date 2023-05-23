@@ -51,7 +51,9 @@ export const ShortPanelContent = () => {
               >
                 <CalendarTodaySwitchers />
               </FlexBlock>
-              <OptionPanelCalendar />
+              <OptionPanelCalendar
+                onSelectAction={() => setTooltipIsOpen(false)}
+              />
             </FlexBlock>
           }
           theme={'light'}

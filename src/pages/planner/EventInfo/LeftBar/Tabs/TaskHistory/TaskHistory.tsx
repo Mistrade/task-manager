@@ -88,7 +88,11 @@ export const TaskHistory: FC<TaskHistoryProps> = memo(
     }
 
     return (
-      <VerticalScroll renderPattern={'top-bottom'}>
+      <VerticalScroll
+        useShadow={true}
+        renderPattern={'top-bottom'}
+        containerProps={{ height: '100%' }}
+      >
         <FlexBlock width={'100%'} gap={12} direction={'column'}>
           {history?.arr.map((item) => (
             <MergedNote

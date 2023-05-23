@@ -1,5 +1,14 @@
-import React, { FC, ReactNode, useCallback, useEffect, useRef } from 'react';
+import React, {
+  FC,
+  ReactNode,
+  createContext,
+  useCallback,
+  useEffect,
+  useRef,
+  useState,
+} from 'react';
 
+import { Delay } from '../../../common/functions';
 import {
   ModalContainer,
   ModalLayout,
@@ -9,47 +18,85 @@ import {
 } from './Modal.styled';
 import { ModalProps } from './types';
 
-export const Modal: FC<ModalProps> = ({
-  modalBody,
-  modalFooter,
-  modalHeader,
-  isView,
-  onClose,
-  children,
-  style,
-}) => {
-  const ref = useRef<HTMLDivElement>(null);
+export const ModalContext = createContext<{
+  closeModalAnimation: () => Promise<void>;
+} | null>(null);
 
-  const escHandler = useCallback((e: KeyboardEvent) => {
+const defaultAnimationDuration = 250;
+
+export const Modal: FC<ModalProps> = ({ isView, onClose, children, style }) => {
+  const ref = useRef<HTMLDivElement>(null);
+  const layoutRef = useRef<HTMLDivElement>(null);
+
+  const [animationPhase, setAnimationPhase] = useState<
+    'open' | 'close' | undefined
+  >(undefined);
+
+  const escHandler = useCallback(async (e: KeyboardEvent) => {
     if (e.key.toLowerCase() === 'escape') {
-      onClose && onClose();
+      await closeAnimation();
     }
   }, []);
 
   useEffect(() => {
     window.addEventListener('keyup', escHandler);
-    return () => window.removeEventListener('keyup', escHandler);
+    return () => {
+      window.removeEventListener('keyup', escHandler);
+    };
   }, []);
+
+  useEffect(() => {
+    console.log('isView', isView);
+    if (isView) {
+      openAnimation();
+    } else {
+      closeAnimation();
+    }
+  }, [isView]);
+
+  const openAnimation = () => {
+    console.log('open--animation');
+    setAnimationPhase('open');
+  };
+
+  const closeAnimation = useCallback(async () => {
+    setAnimationPhase('close');
+    console.log('close--animation');
+
+    return Delay(defaultAnimationDuration - 50);
+  }, []);
+
+  const closeHandler = (event?: React.MouseEvent<HTMLDivElement>) => {
+    if (onClose) {
+      if (event && ref.current) {
+        !ref.current.contains(event.target as HTMLElement) &&
+          closeAnimation().then(() => onClose());
+      }
+    }
+  };
 
   if (isView) {
     return (
       <ModalLayout
+        id={'modal--layout'}
+        animationDuration={defaultAnimationDuration}
+        animationPhase={animationPhase}
+        ref={layoutRef}
         tabIndex={1}
-        onClick={(e) =>
-          onClose &&
-          ref.current &&
-          !ref.current.contains(e.target as HTMLElement) &&
-          onClose()
-        }
+        onClick={closeHandler}
       >
-        <ModalContainer ref={ref} style={style}>
-          {children || (
-            <>
-              {modalHeader}
-              {modalBody}
-              {modalFooter}
-            </>
-          )}
+        <ModalContainer
+          id={'modal--container'}
+          animationDuration={defaultAnimationDuration}
+          animationPhase={animationPhase}
+          ref={ref}
+          style={style}
+        >
+          <ModalContext.Provider
+            value={{ closeModalAnimation: closeAnimation }}
+          >
+            {children}
+          </ModalContext.Provider>
         </ModalContainer>
       </ModalLayout>
     );

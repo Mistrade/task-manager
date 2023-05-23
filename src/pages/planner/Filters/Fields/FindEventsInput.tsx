@@ -8,8 +8,6 @@ import { memo, useState } from 'react';
 
 import { currentColor } from '@src/common/constants/constants';
 import { UTC_OFFSET } from '@src/common/constants/defaultConstants';
-import { SERVICES_NAMES } from '@src/common/constants/enums';
-import { getPath } from '@src/common/functions';
 
 import { ListIcon } from '@components/Icons/AppIcon/ListIcon';
 import { PriorityCalendarIcon } from '@components/Icons/CalendarIcons/PriorityCalendarIcon';
@@ -17,11 +15,30 @@ import { EventIcon } from '@components/Icons/EventIcon';
 import { SelectInput } from '@components/Input/SelectInput/SelectInput';
 import { SelectItemContainer } from '@components/Input/SelectInput/SelectItemContainer';
 import { SelectListContainer } from '@components/Input/SelectInput/SelectListContainer';
-import { FlexBlock } from '@components/LayoutComponents';
-import { VerticalScroll } from '@components/LayoutComponents/ScrollView/VerticalScroll';
+import { FlexBlock, VerticalScroll } from '@components/LayoutComponents';
 import { CutText } from '@components/Text/Text';
 
 import { useGetEventListQuery } from '@api/planning-api';
+
+import { SERVICES_NAMES } from '../../../../common/constants/enums';
+import { getPath } from '../../../../common/functions';
+
+// const TooltipButton = () => {
+// 	const [isOpen, setIsOpen] = useState(false)
+//
+// 	return (
+// 		<Tooltip
+// 			content={}
+// 		>
+// 			<EmptyButtonStyled style={{display: 'flex', gap: 4, flexShrink: 0}}>
+// 				<CutText rows={1} color={darkColor} fontSize={15}>
+// 					Поиск событий
+// 				</CutText>
+// 				<ListIcon size={20} color={currentColor}/>
+// 			</EmptyButtonStyled>
+// 		</Tooltip>
+// 	)
+// }
 
 export const FindEventsInput = memo(() => {
   const [value, setValue] = useState('');

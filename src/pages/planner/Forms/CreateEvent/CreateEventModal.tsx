@@ -2,6 +2,7 @@ import { useAppSelector } from '@redux/hooks/hooks';
 import { selectCreateEventModalIsOpen } from '@selectors/planner';
 import React, { FC } from 'react';
 import { Helmet } from 'react-helmet';
+import { CreateEventModalProps } from 'src/pages/planner/types';
 
 import { ERROR_DESCRIPTIONS, ERROR_TITLES } from '@src/common/constants/enums';
 
@@ -11,9 +12,6 @@ import { Modal, ModalBody } from '@components/LayoutComponents/Modal/Modal';
 import { Loader } from '@components/Loaders/Loader';
 
 import { useGetGroupsListQuery } from '@api/planning-api';
-
-import { CreateEventModalProps } from 'src/pages/planner/types';
-
 
 const CreateEventForm = React.lazy(() =>
   import('./CreateEventForm').then(({ CreateEventForm }) => ({

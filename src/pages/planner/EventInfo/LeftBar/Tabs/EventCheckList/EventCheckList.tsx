@@ -1,11 +1,12 @@
 import { useCreateEventModal } from '@hooks/useCreateEventModal';
 import { useAppSelector } from '@redux/hooks/hooks';
 import { plannerSelectLayout } from '@selectors/planner';
-import { FC, useCallback } from 'react';
+import { FC, useCallback, useContext } from 'react';
 
 import { CenteredContainer } from '@src/routes/Interceptors/SessionInterceptor';
 
 import { CheckList } from '@components/CheckList';
+import { ModalContext } from '@components/LayoutComponents/Modal/Modal';
 import { Loader } from '@components/Loaders/Loader';
 
 import {
@@ -35,6 +36,7 @@ export const EventCheckList: FC<EventCheckListProps> = ({ eventInfo }) => {
     { skip: !eventInfo._id }
   );
   const { openModal } = useCreateEventModal();
+  const modalContext = useContext(ModalContext);
   const layout = useAppSelector(plannerSelectLayout);
   const [update, { isLoading: isMutationLoading }] =
     useUpdateCheckListMutation();
@@ -61,17 +63,25 @@ export const EventCheckList: FC<EventCheckListProps> = ({ eventInfo }) => {
 
   const onCreateEventHandler = useCallback(
     (item: ICheckListItem) => {
-      openModal(
-        {
-          title: item.title,
-          parentId: eventInfo._id,
-          group: eventInfo.group?._id,
-        },
-        {
-          useReturnBackOnDecline: true,
-          modalPath: getPath(SERVICES_NAMES.PLANNER, layout, 'event/create'),
-        }
-      );
+      const action = () => {
+        openModal(
+          {
+            title: item.title,
+            parentId: eventInfo._id,
+            group: eventInfo.group?._id,
+          },
+          {
+            useReturnBackOnDecline: true,
+            modalPath: getPath(SERVICES_NAMES.PLANNER, layout, 'event/create'),
+          }
+        );
+      };
+
+      if (modalContext?.closeModalAnimation) {
+        modalContext.closeModalAnimation().then(action);
+      } else {
+        action();
+      }
     },
     [layout]
   );

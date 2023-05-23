@@ -111,6 +111,7 @@ export const EventChainsTab: FC<EventChainsTabProps> = memo(
     return (
       <VerticalScroll
         placementStatic={'top'}
+        containerProps={{ height: '100%' }}
         staticContent={
           <FlexBlock width={'100%'} align={'center'}>
             <Switcher

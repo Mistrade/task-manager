@@ -39,7 +39,6 @@ export const PlannerSelectLayout: FC<{ pattern: 'short' | 'full' }> = ({
     <Tooltip
       theme={'light'}
       placement={pattern === 'short' ? 'right-start' : 'bottom'}
-      arrow={false}
       visible={isOpen}
       onClickOutside={() => setIsOpen(false)}
       delay={[100, 200]}
@@ -50,26 +49,24 @@ export const PlannerSelectLayout: FC<{ pattern: 'short' | 'full' }> = ({
         width: 'inherit',
       }}
       content={
-        isOpen && (
-          <SelectListContainer>
-            {filteredArr.map((item) => (
-              <LinkSolid
-                to={[
-                  getPath(SERVICES_NAMES.PLANNER, item.layout),
-                  location.search,
-                ].join('')}
-                style={{ width: '100%' }}
-                key={item.layout}
-                title={item.title}
-                icon={item.icon}
-                onClick={() => {
-                  setIsOpen(false);
-                  dispatch(setPlannerLayout(item.layout));
-                }}
-              />
-            ))}
-          </SelectListContainer>
-        )
+        <SelectListContainer>
+          {filteredArr.map((item) => (
+            <LinkSolid
+              to={[
+                getPath(SERVICES_NAMES.PLANNER, item.layout),
+                location.search,
+              ].join('')}
+              style={{ width: '100%' }}
+              key={item.layout}
+              title={item.title}
+              icon={item.icon}
+              onClick={() => {
+                setIsOpen(false);
+                dispatch(setPlannerLayout(item.layout));
+              }}
+            />
+          ))}
+        </SelectListContainer>
       }
     >
       <SwitchCalendarModeTab
