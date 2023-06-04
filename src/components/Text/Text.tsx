@@ -1,12 +1,10 @@
-import React, { FC, createElement, forwardRef } from 'react';
+import { pxToCssValue } from '@components/LayoutComponents/FlexBlock';
+import { darkColor, defaultColor } from '@src/common/constants/constants';
+import React, { createElement, FC, forwardRef } from 'react';
 import styled, {
   CSSProperties,
   FlattenSimpleInterpolation,
 } from 'styled-components';
-
-import { darkColor, defaultColor } from '@src/common/constants/constants';
-
-import { pxToCssValue } from '@components/LayoutComponents/FlexBlock';
 
 interface ReactTextComponentProps
   extends Omit<React.HTMLProps<HTMLParagraphElement | HTMLSpanElement>, 'ref'> {
@@ -60,22 +58,28 @@ Text.defaultProps = {
   translate: 'yes',
 };
 
-export interface PreviewDescriptionProps {
+export interface CutTextProps {
   isOpen?: boolean;
   fontSize?: number;
   rows?: number;
   color?: string;
   lineHeight?: number;
   textAlign?: CSSProperties['textAlign'];
+  verticalAlign?: CSSProperties['verticalAlign'];
+  maxWidth?: number;
+  weight?: CSSProperties['fontWeight'];
 }
 
-export const CutText = styled('p')<PreviewDescriptionProps>`
+export const CutText = styled('p')<CutTextProps>`
   & {
     text-align: ${(_) => _.textAlign || 'left'};
+    vertical-align: ${(_) => _.verticalAlign || 'top'};
     margin: 0;
     padding: 0;
-    max-width: 100%;
     font-size: ${(_) => pxToCssValue(_.fontSize || 14)};
+    max-width: ${(_) => (_.maxWidth ? pxToCssValue(_.maxWidth || 14) : '100%')};
+    font-weight: ${(_) => _.weight || 'normal'};
+    font-family: 'Helvetica Neue', sans-serif;
     line-height: ${(_) =>
       pxToCssValue(_.lineHeight || (_.fontSize ? _.fontSize + 2 : 16))};
     max-height: ${(_) => {

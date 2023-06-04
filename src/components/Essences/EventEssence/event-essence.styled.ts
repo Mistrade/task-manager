@@ -1,26 +1,24 @@
-import styled from 'styled-components';
-
+import { FlexBlock } from '@components/LayoutComponents';
 import {
-  currentColor,
+  stepByStepAnimation,
+  StepByStepAnimationProps,
+} from '@planner/Modes/Week/components/styled';
+import {
   darkColor,
   disabledColor,
   pageHeaderColor,
 } from '@src/common/constants/constants';
 import { borderRadiusSize } from '@src/common/css/mixins';
+import { kitColors } from 'chernikov-kit';
+import styled from 'styled-components';
 
-import { FlexBlock } from '@components/LayoutComponents';
-
-import {
-  StepByStepAnimationProps,
-  stepByStepAnimation,
-} from '@planner/Modes/Week/components/styled';
 
 export const EssenceContainer = styled(FlexBlock)<StepByStepAnimationProps>`
   display: flex;
   width: 100%;
   padding: 8px;
   border-radius: 4px ${borderRadiusSize.sm} ${borderRadiusSize.sm} 4px;
-  border-left: 4px solid ${currentColor};
+  border-left: 4px solid ${kitColors.primary};
   border-top: 1px solid ${disabledColor};
   border-right: 1px solid ${disabledColor};
   border-bottom: 1px solid ${disabledColor};
@@ -45,5 +43,5 @@ export const ReplyContent = styled(FlexBlock)`
   padding-left: 20px;
   border-left-width: 4px;
   border-left-style: solid;
-  border-left-color: ${currentColor};
+  border-left-color: ${kitColors.primary};
 `;

@@ -1,14 +1,9 @@
-import { useCreateEventModal } from '@hooks/useCreateEventModal';
-import { useDebounce } from '@hooks/useDebounce';
-import { useSearchNavigate } from '@hooks/useSearchNavigate';
-import { useAppSelector } from '@redux/hooks/hooks';
-import { plannerSelectLayout } from '@selectors/planner';
-import dayjs from 'dayjs';
-import { memo, useState } from 'react';
-
-import { currentColor } from '@src/common/constants/constants';
-import { UTC_OFFSET } from '@src/common/constants/defaultConstants';
-
+import {
+  EVENT_INFORMER_TAB_NAMES,
+  SERVICES_NAMES,
+} from '../../../../common/constants/enums';
+import { getPath } from '../../../../common/functions';
+import { useGetEventListQuery } from '@api/planning-api';
 import { ListIcon } from '@components/Icons/AppIcon/ListIcon';
 import { PriorityCalendarIcon } from '@components/Icons/CalendarIcons/PriorityCalendarIcon';
 import { EventIcon } from '@components/Icons/EventIcon';
@@ -17,11 +12,16 @@ import { SelectItemContainer } from '@components/Input/SelectInput/SelectItemCon
 import { SelectListContainer } from '@components/Input/SelectInput/SelectListContainer';
 import { FlexBlock, VerticalScroll } from '@components/LayoutComponents';
 import { CutText } from '@components/Text/Text';
+import { useCreateEventModal } from '@hooks/useCreateEventModal';
+import { useDebounce } from '@hooks/useDebounce';
+import { useSearchNavigate } from '@hooks/useSearchNavigate';
+import { useAppSelector } from '@redux/hooks/hooks';
+import { plannerSelectLayout } from '@selectors/planner';
+import { currentColor } from '@src/common/constants/constants';
+import { UTC_OFFSET } from '@src/common/constants/defaultConstants';
+import dayjs from 'dayjs';
+import { memo, useState } from 'react';
 
-import { useGetEventListQuery } from '@api/planning-api';
-
-import { SERVICES_NAMES } from '../../../../common/constants/enums';
-import { getPath } from '../../../../common/functions';
 
 // const TooltipButton = () => {
 // 	const [isOpen, setIsOpen] = useState(false)
@@ -84,7 +84,8 @@ export const FindEventsInput = memo(() => {
                       SERVICES_NAMES.PLANNER,
                       layout,
                       'event/info',
-                      item._id
+                      item._id,
+                      EVENT_INFORMER_TAB_NAMES.ABOUT
                     )
                   );
                 }}

@@ -1,9 +1,12 @@
+import {IFinanceOperation} from "@api/finance-api/types";
 import { IPlannerDate } from '@planner-reducer/types';
-import React, { FC, ReactNode } from 'react';
+import { TooltipProps } from 'chernikov-kit';
+import React, { CSSProperties, FC, ReactNode } from 'react';
 
 import { DateScopeInterface } from '@src/common/calendarSupport/scopes';
 import { EVENT_ACCESS_RIGHTS } from '@src/common/constants/enums';
 
+import { DatePickerSwitchProps } from '@components/DatePicker/DatePickerSwitch';
 import { DefaultTextInputProps } from '@components/Input/TextInput/TextInput';
 import { FlexBlockProps } from '@components/LayoutComponents/FlexBlock';
 
@@ -19,6 +22,7 @@ import { TWeekDayEventListRenderModes } from './Modes/Week/components/types';
 export type FCWithChildren<T = any> = FC<{ children?: ReactNode } & T>;
 
 export interface DatePickerProps {
+  onClear?: () => void;
   useOtherDays?: boolean;
   onFocus?: (e: React.FocusEvent<HTMLInputElement>) => void;
   onChange?: (date: Date | null) => void;
@@ -34,6 +38,12 @@ export interface DatePickerProps {
   disabledOptions?: CalendarDisabledOptions;
   useForceUpdateValue?: boolean;
   onDecline?: () => void;
+  placeholder?: string;
+  placement?: TooltipProps['placement'];
+  inputId?: string;
+  isDisabled?: boolean;
+  style?: CSSProperties;
+  withArrow?: boolean;
 }
 
 export interface GlobalTaskListProps {
@@ -69,7 +79,8 @@ export type OnSelectDateFromCalendarFn = (data: CalendarItem) => void;
 
 export interface DaySettingsPanelProps {}
 
-export interface SmallCalendarMonthTitleProps {
+export interface SmallCalendarMonthTitleProps
+  extends Partial<DatePickerSwitchProps> {
   monthItem: MonthItem;
   onClick?: (monthItem: MonthItem) => void;
   renderYear?: boolean;
@@ -160,6 +171,22 @@ export type CreateEventRequestData = Omit<CreateEventDataObject, 'members'> & {
   members: Array<UserModel>;
 };
 
+export interface IEventSystemDescriptionBase {
+  message?: string;
+  title?: string;
+  modelId: ObjectId;
+}
+
+export interface IEventSystemDescriptionByFinanceOperation
+  extends IEventSystemDescriptionBase {
+  model: 'FinanceOperation';
+  modelId: ObjectId;
+  data: IFinanceOperation
+  fromEvent: ObjectId;
+}
+
+export type TEventSystemDescription = IEventSystemDescriptionByFinanceOperation;
+
 export interface CreateEventDataObject {
   linkedFrom?: UUID;
   parentId?: UUID;
@@ -177,6 +204,7 @@ export interface CreateEventDataObject {
     title: string;
     data: Array<ICheckListItem>;
   };
+  systemDescription?: TEventSystemDescription;
 }
 
 export type CalendarPriorityList = Array<{

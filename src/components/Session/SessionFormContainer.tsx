@@ -1,11 +1,11 @@
+import { FlexBlock } from '@components/LayoutComponents';
+import { defaultColor } from '@src/common/constants/constants';
+import { borderRadiusSize } from '@src/common/css/mixins';
+import { kitColors } from 'chernikov-kit';
 import * as React from 'react';
 import { FC, ReactNode } from 'react';
 import { css } from 'styled-components';
 
-import { currentColor, defaultColor } from '@src/common/constants/constants';
-import { borderRadiusSize } from '@src/common/css/mixins';
-
-import { FlexBlock } from '@components/LayoutComponents';
 
 interface SessionFormContainerProps {
   children: ReactNode;
@@ -27,7 +27,7 @@ export const SessionFormContainer: FC<SessionFormContainerProps> = ({
           minWidth={'30rem'}
           p={'24px 16px'}
           bgColor={'#fff'}
-          border={`1px solid ${currentColor}`}
+          border={`1px solid ${kitColors.primary}`}
           borderRadius={borderRadiusSize.xs}
           additionalCss={css`
             box-shadow: 0px 2px 5px ${defaultColor};

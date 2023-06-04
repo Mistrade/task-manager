@@ -1,11 +1,3 @@
-import { FC, useState } from 'react';
-
-import { SelectItemContainer } from '@components/Input/SelectInput/SelectItemContainer';
-import { SelectListContainer } from '@components/Input/SelectInput/SelectListContainer';
-import { FlexBlock } from '@components/LayoutComponents';
-import { CutText } from '@components/Text/Text';
-import { Tooltip } from '@components/Tooltip/Tooltip';
-
 import {
   darkColor,
   defaultColor,
@@ -14,6 +6,13 @@ import {
 import { GroupItem } from './GroupItem';
 import { GroupLogo } from './styled';
 import { BaseGroupItemProps } from './types';
+import { SelectItemContainer } from '@components/Input/SelectInput/SelectItemContainer';
+import { SelectListContainer } from '@components/Input/SelectInput/SelectListContainer';
+import { FlexBlock } from '@components/LayoutComponents';
+import { CutText } from '@components/Text/Text';
+import { Tooltip } from 'chernikov-kit';
+import { FC, useState } from 'react';
+
 
 export const GroupItemWithContextMenu: FC<BaseGroupItemProps> = ({
   onChange,

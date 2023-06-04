@@ -1,14 +1,13 @@
-import { FC, ReactNode, useState } from 'react';
-import styled, { css } from 'styled-components';
-
-import { currentColor } from '@src/common/constants/constants';
-
 import { EmptyButtonStyled } from '@components/Buttons/EmptyButton.styled';
 import { Arrow, IconProps, PlusIcon } from '@components/Icons/Icons';
 import {
   FlexBlock,
   FlexBlockProps,
 } from '@components/LayoutComponents/FlexBlock';
+import { kitColors } from 'chernikov-kit';
+import { FC, ReactNode, useState } from 'react';
+import styled, { css } from 'styled-components';
+
 
 export interface AccordionProps {
   containerProps?: FlexBlockProps;
@@ -91,7 +90,7 @@ export const Accordion: FC<AccordionProps> = ({
               transform: `rotate(${isOpen ? '90deg' : '0deg'})`,
             }}
           >
-            <Arrow color={currentColor} {...iconProps} />
+            <Arrow color={kitColors.primary} {...iconProps} />
           </EmptyButtonStyled>
         </ArrowContainer>
         <TitleContainer>{title}</TitleContainer>

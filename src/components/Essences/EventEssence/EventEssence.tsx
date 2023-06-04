@@ -1,30 +1,25 @@
-import dayjs, { Dayjs } from 'dayjs';
-import React, { FC, useCallback, useMemo, useState } from 'react';
-
-import { DateHelper } from '@src/common/calendarSupport/dateHelper';
-import { darkColor } from '@src/common/constants/constants';
-import { getPath } from '@src/common/functions';
-
+import { EVENT_INFORMER_TAB_NAMES } from '../../../common/constants/enums';
+import Badge from '../../Badge';
+import { EssenceContainer, EventEssenceTitle } from './event-essence.styled';
+import { GroupModelResponse } from '@api/planning-api/types/groups.types';
+import { ObjectId } from '@api/rtk-api.types';
 import { EmptyButtonStyled } from '@components/Buttons/EmptyButton.styled';
 import { LinkStyled } from '@components/Buttons/Link.styled';
 import { Arrow } from '@components/Icons/Icons';
 import { FlexBlock } from '@components/LayoutComponents';
 import { CutText } from '@components/Text/Text';
-import { Tooltip } from '@components/Tooltip/Tooltip';
-
-import { HistoryDescriptionField } from '@pages/planner/EventInfo/LeftBar/Tabs/TaskHistory/Fields/HistoryDescriptionField';
 import { EventGroupButton } from '@pages/planner/EventInfo/SupportsComponent/EventGroupButton';
 import { EventPriorityButton } from '@pages/planner/EventInfo/SupportsComponent/EventPriorityButton';
 import { EventStatusButton } from '@pages/planner/EventInfo/SupportsComponent/EventStatusButton';
-
 import { StepByStepAnimationProps } from '@planner/Modes/Week/components/styled';
 import { CalendarPriorityKeys, TaskStatusesType } from '@planner/types';
+import { DateHelper } from '@src/common/calendarSupport/dateHelper';
+import { darkColor } from '@src/common/constants/constants';
+import { getPath } from '@src/common/functions';
+import { HiddenText, Tooltip } from 'chernikov-kit';
+import dayjs, { Dayjs } from 'dayjs';
+import React, { FC, useCallback, useMemo, useState } from 'react';
 
-import { GroupModelResponse } from '@api/planning-api/types/groups.types';
-import { ObjectId } from '@api/rtk-api.types';
-
-import Badge from '../../Badge';
-import { EssenceContainer, EventEssenceTitle } from './event-essence.styled';
 
 export interface EventEssenceProps extends StepByStepAnimationProps {
   status: TaskStatusesType | null;
@@ -190,7 +185,8 @@ export const EventEssence: FC<EventEssenceProps> = ({
                   <LinkStyled
                     to={getPath(
                       'planner/day/event/info',
-                      optionalFields.eventId
+                      optionalFields.eventId,
+                      EVENT_INFORMER_TAB_NAMES.ABOUT
                     )}
                     target={'_blank'}
                   >
@@ -235,10 +231,14 @@ export const EventEssence: FC<EventEssenceProps> = ({
           </FlexBlock>
           {optionalFields.description && (
             <FlexBlock width={'100%'}>
-              <HistoryDescriptionField
-                useCopied={false}
-                value={optionalFields.description}
-              />
+              <HiddenText
+                buttonText={{
+                  hide: 'Скрыть описание',
+                  show: 'Показать полностью',
+                }}
+              >
+                {optionalFields.description}
+              </HiddenText>
             </FlexBlock>
           )}
         </FlexBlock>

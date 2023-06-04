@@ -1,15 +1,11 @@
-import dayjs from 'dayjs';
-import React, { FC, memo } from 'react';
-import { v4 } from 'uuid';
-
-import {
-  darkColor,
-  defaultColor,
-  hoverColor,
-  orangeColor,
-} from '@src/common/constants/constants';
-import { CenteredContainer } from '@src/routes/Interceptors/SessionInterceptor';
-
+import { CommentDate } from '../TaskComments/SupportComponents/CommentDate';
+import { ChatItem } from '../TaskComments/comments.styled';
+import { MergedNote } from './EventHistoryMergedItem';
+import { EventHistoryItemController } from './Fields';
+import { StyledHistoryList } from './event-history.styled';
+import { useGetEventHistoryQuery } from '@api/planning-api';
+import { EventHistoryQueryResult } from '@api/planning-api/types/event-history.types';
+import { EventInfoModel } from '@api/planning-api/types/event-info.types';
 import { StyledBadge } from '@components/Badge/styled';
 import { LinkStyled } from '@components/Buttons/Link.styled';
 import { ErrorScreen } from '@components/Errors/ErrorScreen';
@@ -17,17 +13,18 @@ import { FlexBlock } from '@components/LayoutComponents';
 import { VerticalScroll } from '@components/LayoutComponents/ScrollView/VerticalScroll';
 import { Loader } from '@components/Loaders/Loader';
 import { Heading } from '@components/Text/Heading';
-import { Tooltip } from '@components/Tooltip/Tooltip';
+import {
+  darkColor,
+  defaultColor,
+  hoverColor,
+  orangeColor,
+} from '@src/common/constants/constants';
+import { CenteredContainer } from '@src/routes/Interceptors/SessionInterceptor';
+import { Tooltip } from 'chernikov-kit';
+import dayjs from 'dayjs';
+import React, { FC, memo } from 'react';
+import { v4 } from 'uuid';
 
-import { useGetEventHistoryQuery } from '@api/planning-api';
-import { EventHistoryQueryResult } from '@api/planning-api/types/event-history.types';
-import { EventInfoModel } from '@api/planning-api/types/event-info.types';
-
-import { CommentDate } from '../TaskComments/SupportComponents/CommentDate';
-import { ChatItem } from '../TaskComments/comments.styled';
-import { MergedNote } from './EventHistoryMergedItem';
-import { EventHistoryItemController } from './Fields';
-import { StyledHistoryList } from './event-history.styled';
 
 export interface TaskHistoryProps {
   taskInfo: EventInfoModel;

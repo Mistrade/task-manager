@@ -1,8 +1,8 @@
-import React, { ReactNode } from 'react';
-
 import { SelectItemContainer } from '@components/Input/SelectInput/SelectItemContainer';
 import { SelectListContainer } from '@components/Input/SelectInput/SelectListContainer';
-import { Tooltip } from '@components/Tooltip/Tooltip';
+import { Tooltip } from 'chernikov-kit';
+import React, { ReactNode } from 'react';
+
 
 interface DefaultDataElement {
   title: string;
@@ -28,7 +28,7 @@ export function DropDownButton<T extends DefaultDataElement>({
   return (
     <Tooltip
       placement={'bottom'}
-      offset={[0, 10]}
+      // offset={[0, 10]}
       interactive={true}
       interactiveBorder={20}
       hideOnClick={true}

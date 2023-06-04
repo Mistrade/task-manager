@@ -1,15 +1,15 @@
+import { useGetEventInfoQuery } from '@api/planning-api';
+import { ErrorBoundary } from '@components/Errors/ErrorBoundary';
+import { Modal, ModalBody } from '@components/LayoutComponents/Modal/Modal';
+import { Loader } from '@components/Loaders/Loader';
 import { useSearchNavigate } from '@hooks/useSearchNavigate';
 import { useAppSelector } from '@redux/hooks/hooks';
+import { isDisableModalStateSelector } from '@selectors/global';
 import { plannerSelectBackgroundUrl } from '@selectors/planner';
 import React, { FC, useCallback } from 'react';
 import { useParams } from 'react-router';
 import { EventInfoModalProps } from 'src/pages/planner/types';
 
-import { ErrorBoundary } from '@components/Errors/ErrorBoundary';
-import { Modal, ModalBody } from '@components/LayoutComponents/Modal/Modal';
-import { Loader } from '@components/Loaders/Loader';
-
-import { useGetEventInfoQuery } from '@api/planning-api';
 
 const EventInfo = React.lazy(() =>
   import('./TaskInformer').then(({ TaskInformer }) => ({
@@ -33,8 +33,15 @@ export const TaskInfoModal: FC<EventInfoModalProps> = () => {
     navigate(backgroundUrl);
   }, [backgroundUrl]);
 
+  const isDisableClose = useAppSelector(isDisableModalStateSelector);
+
   return (
-    <Modal style={{ width: '90%' }} isView={!!taskId} onClose={closeHandler}>
+    <Modal
+      style={{ width: '90%', height: '100%' }}
+      enableCloseOnOutsideClick={!isDisableClose}
+      isView={!!taskId}
+      onClose={closeHandler}
+    >
       <ModalBody>
         <ErrorBoundary
           title={

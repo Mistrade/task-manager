@@ -1,4 +1,4 @@
-import { TooltipDefaultProps } from '@components/Tooltip/Tooltip';
+import { TooltipProps } from 'chernikov-kit';
 
 import { ShortEventInfoModel } from '@api/planning-api/types/event-info.types';
 
@@ -46,5 +46,5 @@ export interface IWeekDayEventItemProps {
   taskInfo: ShortEventInfoModel;
   date: CalendarItem;
   onSelect?: OnSelectTaskFnType;
-  tooltipPlacement: TooltipDefaultProps['placement'] | null;
+  tooltipPlacement: TooltipProps['placement'] | null;
 }

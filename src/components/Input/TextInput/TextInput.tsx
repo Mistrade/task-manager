@@ -1,6 +1,3 @@
-import React, { ReactNode, forwardRef } from 'react';
-import { css, keyframes } from 'styled-components';
-
 import { StyledInput } from '@components/Input/Input.styled';
 import {
   InputActions,
@@ -22,6 +19,9 @@ import {
   FlexBlock,
   FlexBlockProps,
 } from '@components/LayoutComponents/FlexBlock';
+import React, { CSSProperties, forwardRef, ReactNode } from 'react';
+import { css, keyframes } from 'styled-components';
+
 
 export interface DefaultTextInputProps
   extends InputErrorMessageProps,
@@ -37,6 +37,9 @@ export interface DefaultTextInputProps
   readOnly?: boolean;
   type?: HTMLInputElement['type'];
   buttons?: ReactNode;
+  style?: CSSProperties;
+  isDisabled?: boolean;
+  disableAnimation?: boolean;
 }
 
 export interface TextInputProps extends DefaultTextInputProps {
@@ -88,13 +91,16 @@ export const TextInput = forwardRef<HTMLInputElement, TextInputProps>(
       buttons,
       onKeyUp,
       onKeyDown,
+      style,
+      isDisabled,
+      disableAnimation = true,
     },
     ref
   ) => {
     return (
       <FlexBlock
         {...containerProps}
-        additionalCss={fromRightToLeftAnimation}
+        additionalCss={!disableAnimation ? fromRightToLeftAnimation : undefined}
         width={'100%'}
         position={'relative'}
         direction={'column'}
@@ -109,6 +115,8 @@ export const TextInput = forwardRef<HTMLInputElement, TextInputProps>(
         >
           <FlexBlock position={'relative'} width={'100%'} align={'center'}>
             <StyledInput
+              disabled={isDisabled}
+              style={style}
               type={type}
               hasIcon={!!icon}
               id={inputId}

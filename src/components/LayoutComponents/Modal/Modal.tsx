@@ -1,13 +1,3 @@
-import React, {
-  FC,
-  ReactNode,
-  createContext,
-  useCallback,
-  useEffect,
-  useRef,
-  useState,
-} from 'react';
-
 import { Delay } from '../../../common/functions';
 import {
   ModalContainer,
@@ -17,6 +7,15 @@ import {
   StyledModalHeaderContainer,
 } from './Modal.styled';
 import { ModalProps } from './types';
+import React, {
+  createContext,
+  FC,
+  ReactNode,
+  useCallback,
+  useEffect,
+  useRef,
+  useState,
+} from 'react';
 
 export const ModalContext = createContext<{
   closeModalAnimation: () => Promise<void>;
@@ -24,7 +23,14 @@ export const ModalContext = createContext<{
 
 const defaultAnimationDuration = 250;
 
-export const Modal: FC<ModalProps> = ({ isView, onClose, children, style }) => {
+export const Modal: FC<ModalProps> = ({
+  isView,
+  onClose,
+  children,
+  style,
+  enableCloseOnOutsideClick = true,
+  verticalPlacement = 'start',
+}) => {
   const ref = useRef<HTMLDivElement>(null);
   const layoutRef = useRef<HTMLDivElement>(null);
 
@@ -78,12 +84,13 @@ export const Modal: FC<ModalProps> = ({ isView, onClose, children, style }) => {
   if (isView) {
     return (
       <ModalLayout
+        verticalPlacement={verticalPlacement}
         id={'modal--layout'}
         animationDuration={defaultAnimationDuration}
         animationPhase={animationPhase}
         ref={layoutRef}
         tabIndex={1}
-        onClick={closeHandler}
+        onClick={enableCloseOnOutsideClick ? closeHandler : undefined}
       >
         <ModalContainer
           id={'modal--container'}

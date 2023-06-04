@@ -1,6 +1,5 @@
+import { kitColors } from 'chernikov-kit';
 import React, { FC } from 'react';
-
-import { currentColor } from '@src/common/constants/constants';
 
 import { IconProps } from '@components/Icons/Icons';
 import {
@@ -10,7 +9,7 @@ import {
 
 export const WhatsAppLogoIcon: FC<IconProps & FlexBlockProps> = ({
   size = 24,
-  color = currentColor,
+  color = kitColors.primary,
   ...props
 }) => {
   return (

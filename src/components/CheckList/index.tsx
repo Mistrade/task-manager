@@ -1,14 +1,4 @@
-import React, { FC, useCallback, useMemo, useState } from 'react';
-import { ColorRing } from 'react-loader-spinner';
-import styled, { keyframes } from 'styled-components';
-
-import {
-  currentColor,
-  defaultColor,
-  disabledColor,
-} from '@src/common/constants/constants';
-import { borderRadiusSize } from '@src/common/css/mixins';
-
+import Badge from '../Badge';
 import { CopyToClipboardButton } from '@components/Buttons/CopyToClipboardButton';
 import { EmptyButtonStyled } from '@components/Buttons/EmptyButton.styled';
 import { PencilIcon, PlusIcon, TrashIcon } from '@components/Icons/Icons';
@@ -24,11 +14,14 @@ import {
 } from '@components/LayoutComponents/FlexBlock';
 import { VerticalScroll } from '@components/LayoutComponents/ScrollView/VerticalScroll';
 import { Heading } from '@components/Text/Heading';
-import { Tooltip } from '@components/Tooltip/Tooltip';
-
 import { ICheckListItem } from '@planner/types';
+import { defaultColor, disabledColor } from '@src/common/constants/constants';
+import { borderRadiusSize } from '@src/common/css/mixins';
+import { kitColors, Tooltip } from 'chernikov-kit';
+import React, { FC, useCallback, useMemo, useState } from 'react';
+import { ColorRing } from 'react-loader-spinner';
+import styled, { keyframes } from 'styled-components';
 
-import Badge from '../Badge';
 
 export const CheckListUL = styled('ul')`
   & {
@@ -58,7 +51,7 @@ export const StyledCheckListItem = styled('li')`
     display: flex;
     width: 100%;
     flex-direction: row;
-    border-left: 4px solid ${currentColor};
+    border-left: 4px solid ${kitColors.primary};
     border-top: 1px solid ${disabledColor};
     border-right: 1px solid ${disabledColor};
     border-bottom: 1px solid ${disabledColor};
@@ -167,7 +160,7 @@ export const CheckListItem: FC<CheckListItemProps> = ({
       maxWidth={600}
       theme={'light'}
       delay={[200, 500]}
-      offset={[30, -5]}
+      // offset={[30, -5]}
       interactive={true}
       interactiveBorder={20}
       visible={isEditMode}
@@ -201,7 +194,7 @@ export const CheckListItem: FC<CheckListItemProps> = ({
               <EmptyButtonStyled
                 onClick={() => onCreateEventOfCheckListItem(item)}
               >
-                <PlusIcon size={16} color={currentColor} />
+                <PlusIcon size={16} color={kitColors.primary} />
               </EmptyButtonStyled>
             </Tooltip>
           )}
@@ -257,7 +250,7 @@ export const CheckListAddInput: FC<CheckListAddInputProps> = ({
             'Нажмите Enter, когда фокус установлен на поле ввода (поле ввода обведено синей рамкой), чтобы добавить элемент'
           }
         >
-          <TooltipIcon size={20} color={currentColor} />
+          <TooltipIcon size={20} color={kitColors.primary} />
         </Tooltip>
       }
       onChange={({ target: { value } }) => setValue(value)}
@@ -357,10 +350,10 @@ export const CheckList: FC<CheckListProps> = ({
               trigger={'none'}
               theme={'light'}
               placement={'bottom'}
-              offset={[0, 0]}
+              // offset={[0, 0]}
             >
               <EmptyButtonStyled onClick={() => setIsEditTitle(true)}>
-                <PencilIcon color={currentColor} size={20} />
+                <PencilIcon color={kitColors.primary} size={20} />
               </EmptyButtonStyled>
             </Tooltip>
             <Tooltip
@@ -379,11 +372,11 @@ export const CheckList: FC<CheckListProps> = ({
                 wrapperStyle={{}}
                 wrapperClass='blocks-wrapper'
                 colors={[
-                  currentColor,
-                  currentColor,
-                  currentColor,
-                  currentColor,
-                  currentColor,
+                  kitColors.primary,
+                  kitColors.primary,
+                  kitColors.primary,
+                  kitColors.primary,
+                  kitColors.primary,
                 ]}
               />
             )}

@@ -1,14 +1,12 @@
-import { FC, useRef, useState } from 'react';
-import { useIntersection } from 'react-use';
-
-import { currentColor } from '@src/common/constants/constants';
-
+import { BaseEventHistoryFieldProps } from '../event-history.types';
 import { CopyToClipboardButton } from '@components/Buttons/CopyToClipboardButton';
 import { DontHoveredButton } from '@components/Buttons/EmptyButton.styled';
 import { FlexBlock } from '@components/LayoutComponents';
 import { CutText } from '@components/Text/Text';
+import { kitColors } from 'chernikov-kit';
+import { FC, useRef, useState } from 'react';
+import { useIntersection } from 'react-use';
 
-import { BaseEventHistoryFieldProps } from '../event-history.types';
 
 export interface HistoryDescriptionFieldProps
   extends BaseEventHistoryFieldProps<string> {
@@ -52,7 +50,7 @@ export const HistoryDescriptionField: FC<HistoryDescriptionFieldProps> = ({
           style={{
             width: 'fit-content',
             fontSize: 14,
-            color: currentColor,
+            color: kitColors.primary,
             padding: 0,
           }}
           onClick={(e) => {

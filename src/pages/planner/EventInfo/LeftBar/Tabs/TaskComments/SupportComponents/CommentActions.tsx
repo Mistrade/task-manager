@@ -1,25 +1,17 @@
-import React, { FC } from 'react';
-
-import {
-  currentColor,
-  defaultColor,
-  orangeColor,
-} from '@src/common/constants/constants';
-
-import { WhiteButton } from '@components/Buttons/Buttons.styled';
-import { CopyToClipboardButton } from '@components/Buttons/CopyToClipboardButton';
-import { AnswerIcon } from '@components/Icons/CalendarIcons/AnswerIcon';
-import { PencilIcon, StarIcon, TrashIcon } from '@components/Icons/Icons';
-import { FlexBlock } from '@components/LayoutComponents';
-import { Tooltip } from '@components/Tooltip/Tooltip';
-
-import { useToggleIsImportantCommentStateMutation } from '@api/planning-api';
-
 import {
   CommentActionButton,
   CommentActionsContainer,
 } from '../comments.styled';
 import { CommentActionsProps } from '../comments.types';
+import { useToggleIsImportantCommentStateMutation } from '@api/planning-api';
+import { WhiteButton } from '@components/Buttons/Buttons.styled';
+import { CopyToClipboardButton } from '@components/Buttons/CopyToClipboardButton';
+import { AnswerIcon } from '@components/Icons/CalendarIcons/AnswerIcon';
+import { PencilIcon, StarIcon, TrashIcon } from '@components/Icons/Icons';
+import { FlexBlock } from '@components/LayoutComponents';
+import { defaultColor, orangeColor } from '@src/common/constants/constants';
+import { kitColors, Tooltip } from 'chernikov-kit';
+import React, { FC } from 'react';
 
 
 export const RemoveAction: FC<
@@ -45,7 +37,7 @@ export const RemoveAction: FC<
         delay={200}
       >
         <CommentActionButton>
-          <TrashIcon size={16} color={currentColor} />
+          <TrashIcon size={16} color={kitColors.primary} />
         </CommentActionButton>
       </Tooltip>
     );

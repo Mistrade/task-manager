@@ -2,6 +2,7 @@ import { useEventStorageQueryArgs } from '@hooks/useEventStorageQueryArgs';
 import { useSearchNavigate } from '@hooks/useSearchNavigate';
 import { setOpenEventId } from '@planner-reducer/index';
 import { useAppDispatch } from '@redux/hooks/hooks';
+import { kitColors } from 'chernikov-kit';
 import React, { FC, memo, useCallback } from 'react';
 
 import { currentColor, defaultColor } from '@src/common/constants/constants';
@@ -15,6 +16,8 @@ import { useGetShortEventsArrayQuery } from '@api/planning-api';
 import { ShortEventInfoModel } from '@api/planning-api/types/event-info.types';
 import { ObjectId } from '@api/rtk-api.types';
 
+import { EVENT_INFORMER_TAB_NAMES } from '../../../../../common/constants/enums';
+
 export const DayTaskList: FC = memo(() => {
   const dispatch = useAppDispatch();
   const navigate = useSearchNavigate();
@@ -22,7 +25,9 @@ export const DayTaskList: FC = memo(() => {
   const selectEventHandler = useCallback((_id: ObjectId | null | undefined) => {
     if (_id) {
       dispatch(setOpenEventId(_id));
-      navigate(`event/info/${_id}`, { relative: 'route' });
+      navigate(`event/info/${_id}/${EVENT_INFORMER_TAB_NAMES.ABOUT}`, {
+        relative: 'route',
+      });
     }
   }, []);
 
@@ -46,12 +51,12 @@ export const DayTaskList: FC = memo(() => {
               align={'center'}
               justify={'flex-start'}
               fSize={22}
-              style={{ color: currentColor }}
+              style={{ color: kitColors.primary }}
               fWeight={'bold'}
             >
               <span style={{ fontSize: 22 }}>
                 Внутри дня{' '}
-                <StyledBadge style={{ fontSize: 18, color: defaultColor }}>
+                <StyledBadge style={{ fontSize: 18, color: kitColors.default }}>
                   {events.baseEvents.length}
                 </StyledBadge>
               </span>
@@ -88,7 +93,7 @@ export const DayTaskList: FC = memo(() => {
               align={'center'}
               justify={'flex-start'}
               fSize={22}
-              style={{ color: currentColor }}
+              style={{ color: kitColors.primary }}
               fWeight={'bold'}
             >
               <span style={{ fontSize: 22 }}>

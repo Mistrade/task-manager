@@ -1,26 +1,24 @@
-import { FC, ReactNode, useRef } from 'react';
-import { useIntersection } from 'react-use';
-import styled from 'styled-components';
-
+import { DefaultAnimationTimingFn } from '../../../../../../../common/constants/styles';
+import { EVENT_DEPENDENCIES_MAP } from '../event-chains.types';
+import { FlexBlockProps } from '@components/LayoutComponents/FlexBlock';
+import { Heading } from '@components/Text/Heading';
 import {
-  currentColor,
   darkColor,
   disabledColor,
   pageHeaderColor,
 } from '@src/common/constants/constants';
 import { borderRadiusSize } from '@src/common/css/mixins';
+import { kitColors } from 'chernikov-kit';
+import { FC, ReactNode, useRef } from 'react';
+import { useIntersection } from 'react-use';
+import styled from 'styled-components';
 
-import { FlexBlockProps } from '@components/LayoutComponents/FlexBlock';
-import { Heading } from '@components/Text/Heading';
-
-import { DefaultAnimationTimingFn } from '../../../../../../../common/constants/styles';
-import { ConnectChainsType } from '../event-chains.types';
 
 export interface ConnectChainsCardObject {
-  type: ConnectChainsType;
-  icon: (attr: FlexBlockProps) => ReactNode;
-  title: ReactNode;
-  description: ReactNode;
+  type: EVENT_DEPENDENCIES_MAP;
+  icon?: (attr: FlexBlockProps) => ReactNode;
+  title: string;
+  description?: ReactNode;
 }
 
 export interface ConnectChainsCardProps extends ConnectChainsCardObject {
@@ -56,7 +54,7 @@ const Container = styled('div')<{ animationIndex?: number }>`
   }
 
   &:hover {
-    border: 2px solid ${currentColor};
+    border: 2px solid ${kitColors.primary};
     cursor: pointer;
   }
 
@@ -100,7 +98,7 @@ const DescriptionContainer = styled('p')`
 `;
 
 const Title = styled(Heading.H3)`
-  color: ${currentColor};
+  color: ${kitColors.primary};
   text-align: center;
 `;
 
@@ -126,7 +124,9 @@ export const ConnectChainsCard: FC<ConnectChainsCardProps> = ({
       }
       animationIndex={animationIndex ? animationIndex % 4 : 0}
     >
-      <IconContainer>{icon({ width: 180, height: 180 })}</IconContainer>
+      {icon && (
+        <IconContainer>{icon({ width: 180, height: 180 })}</IconContainer>
+      )}
       <TitleContainer>
         <Title>{title}</Title>
         <DescriptionContainer>{description}</DescriptionContainer>

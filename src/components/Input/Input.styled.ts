@@ -1,26 +1,26 @@
-import styled, { css } from 'styled-components';
-
+import { DefaultTextInputProps } from './TextInput/TextInput';
 import {
-  currentColor,
   darkColor,
   defaultColor,
   disabledColor,
   errorColor,
+  pageHeaderColor,
 } from '@src/common/constants/constants';
 import { borderRadiusSize } from '@src/common/css/mixins';
+import { kitColors } from 'chernikov-kit';
+import styled, { css } from 'styled-components';
 
-import { DefaultTextInputProps } from './TextInput/TextInput';
 
 const LeftIconPadding = css`
-  padding: 8px 12px 8px 46px;
+  padding: 6px 4px 6px 36px;
 `;
 
 const RightIconPadding = css`
-  padding: 8px 46px 8px 12px;
+  padding: 6px 46px 6px 4px;
 `;
 
 const DefaultPadding = css`
-  padding: 8px 12px;
+  padding: 6px 4px;
 `;
 
 const IconPlacement = {
@@ -43,11 +43,18 @@ export const StyledInput = styled('input')<InputStyledProps>`
   cursor: pointer;
   font-size: 16px;
   font-family: Helvetica, sans-serif;
+  color: ${darkColor};
 
   ${(_) =>
     _.hasIcon ? IconPlacement[_.iconPlacement || 'right'] : DefaultPadding}
   &:focus {
-    border: 2px solid ${currentColor};
+    border: 2px solid ${kitColors.primary};
+  }
+
+  &:disabled {
+    background-color: ${pageHeaderColor};
+    border: 2px solid ${disabledColor};
+    cursor: not-allowed;
   }
 
   &::placeholder {
@@ -62,7 +69,7 @@ export const StyledLabel = styled('label')`
     padding-left: 4px;
     font-family: 'Helvetica Neue', sans-serif;
     font-weight: normal;
-    color: ${currentColor};
+    color: ${kitColors.primary};
     line-height: 1;
     cursor: pointer;
     overflow: hidden;
@@ -92,10 +99,16 @@ export const StyledTextAreaInput = styled('textarea')`
   ${DefaultPadding};
 
   &:focus {
-    border: 2px solid ${currentColor};
+    border: 2px solid ${kitColors.primary};
   }
 
   &::placeholder {
     color: ${defaultColor};
+  }
+
+  &:disabled {
+    background-color: ${pageHeaderColor};
+    border: 2px solid ${disabledColor};
+    cursor: not-allowed;
   }
 `;

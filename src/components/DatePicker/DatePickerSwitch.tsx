@@ -6,8 +6,6 @@ import { EmptyButtonStyled } from '@components/Buttons/EmptyButton.styled';
 import { Arrow, DoubleArrow } from '@components/Icons/Icons';
 import { FlexBlock } from '@components/LayoutComponents';
 
-import { SwitchCalendarMode } from '@planner/styled';
-
 import { currentColor } from '../../common/constants/constants';
 
 const SwitchArr: Array<{
@@ -45,37 +43,26 @@ const SwitchArr: Array<{
 ];
 
 export interface DatePickerSwitchProps {
-  onClick(pattern: ShortChangeCurrentPattern): void;
+  onChange(pattern: ShortChangeCurrentPattern): void;
 }
 
-export const DatePickerSwitch: FC<DatePickerSwitchProps> = ({ onClick }) => {
+interface Props extends DatePickerSwitchProps {
+  centerElement?: ReactNode;
+}
+
+export const DatePickerSwitch: FC<Props> = ({ onChange, centerElement }) => {
   return (
-    <FlexBlock
-      width={'100%'}
-      justify={'center'}
-      align={'center'}
-      gap={2}
-      overflow={'hidden'}
-    >
+    <FlexBlock align={'center'} gap={2} overflow={'hidden'}>
       {SwitchArr.map((item) => {
         if (item.pattern === 'today') {
-          return (
-            <SwitchCalendarMode
-              key={item.pattern}
-              style={{ background: 'transparent', flexShrink: 0 }}
-              type={'button'}
-              onClick={() => onClick(item.pattern)}
-            >
-              Сегодня
-            </SwitchCalendarMode>
-          );
+          return centerElement || <></>;
         }
 
         return (
           <EmptyButtonStyled
             key={item.pattern}
             style={{ padding: '4px' }}
-            onClick={() => onClick(item.pattern)}
+            onClick={() => onChange(item.pattern)}
           >
             {item.title}
           </EmptyButtonStyled>

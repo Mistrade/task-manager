@@ -1,14 +1,3 @@
-import dayjs from 'dayjs';
-import React, { FC } from 'react';
-
-import { currentColor } from '@src/common/constants/constants';
-
-import { LinkStyled } from '@components/Buttons/Link.styled';
-import { TrashIcon } from '@components/Icons/Icons';
-import { FlexBlock } from '@components/LayoutComponents';
-import { CutText } from '@components/Text/Text';
-import { Tooltip } from '@components/Tooltip/Tooltip';
-
 import {
   CommentActionButton,
   StyledReplyComment,
@@ -16,6 +5,14 @@ import {
 } from '../comments.styled';
 import { ReplyCommentProps } from '../comments.types';
 import { CommentDate } from './CommentDate';
+import { LinkStyled } from '@components/Buttons/Link.styled';
+import { TrashIcon } from '@components/Icons/Icons';
+import { FlexBlock } from '@components/LayoutComponents';
+import { CutText } from '@components/Text/Text';
+import { kitColors, Tooltip } from 'chernikov-kit';
+import dayjs from 'dayjs';
+import React, { FC } from 'react';
+
 
 export const ReplyComment: FC<ReplyCommentProps> = ({
   scrollToAnsweredCommentFn,
@@ -36,7 +33,7 @@ export const ReplyComment: FC<ReplyCommentProps> = ({
     >
       <FlexBlock direction={'row'} gap={4} align={'flex-end'}>
         <LinkStyled
-          style={{ color: currentColor, fontSize: 15 }}
+          style={{ color: kitColors.primary, fontSize: 15 }}
           to={`/profile/${replyComment.userId._id}`}
           target={'_blank'}
         >

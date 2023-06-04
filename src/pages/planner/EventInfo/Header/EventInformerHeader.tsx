@@ -1,23 +1,15 @@
-import React, { memo, useContext } from 'react';
-import styled from 'styled-components';
-
-import { pageHeaderColor } from '@src/common/constants/constants';
-import { borderRadiusSize } from '@src/common/css/mixins';
-
+import { EventInfoModel } from '@api/planning-api/types/event-info.types';
 import { EmptyButtonStyled } from '@components/Buttons/EmptyButton.styled';
-import { FlexBlock } from '@components/LayoutComponents';
 import { ModalContext } from '@components/LayoutComponents/Modal/Modal';
-
 import { IsDelayedEvent } from '@planner/EventInfo/Header/IsDelayedEvent';
-import { TaskInformerLinkButton } from '@planner/EventInfo/SupportsComponent/TaskInformerLinkButton';
-import { TaskInformerMoreActions } from '@planner/EventInfo/SupportsComponent/TaskInformerMoreActions';
 import { TaskInformerSwitchers } from '@planner/EventInfo/SupportsComponent/TaskInformerSwitchers';
 import { TaskInformerTitle } from '@planner/EventInfo/SupportsComponent/TaskInformerTitle';
 import { EventInfoUpdateFn } from '@planner/EventInfo/SupportsComponent/ToggleTaskInformerButtons';
+import { pageHeaderColor } from '@src/common/constants/constants';
+import { borderRadiusSize } from '@src/common/css/mixins';
+import React, { memo, useContext } from 'react';
+import styled from 'styled-components';
 
-import { EventInfoModel } from '@api/planning-api/types/event-info.types';
-
-import { EventInformerToggles } from './TogglesBar';
 
 export interface EventInformerHeaderProps {
   eventInfo: EventInfoModel;
@@ -32,7 +24,7 @@ const EventInfoHeaderContainer = styled('header')`
   border-radius: ${borderRadiusSize.xl} ${borderRadiusSize.xl} 0px 0px;
   gap: 8px;
   margin-bottom: 12px;
-  padding: 24px 20px 0px 20px;
+  padding: 16px 20px 0px 20px;
   background-color: ${pageHeaderColor};
 `;
 
@@ -42,18 +34,7 @@ const TitleContainer = styled('div')`
   justify-content: flex-start;
   align-items: center;
   gap: 12px;
-  margin-bottom: 12px;
   flex-wrap: nowrap;
-`;
-
-const ActionsAndLinkContainer = styled('div')`
-  display: flex;
-  justify-content: flex-start;
-  gap: 8px;
-  flex-direction: row;
-  max-width: 100%;
-  flex-wrap: nowrap;
-  z-index: 1;
 `;
 
 export const EventInformerHeader = memo<EventInformerHeaderProps>(
@@ -63,7 +44,7 @@ export const EventInformerHeader = memo<EventInformerHeaderProps>(
       <EventInfoHeaderContainer>
         <TitleContainer>
           <TaskInformerTitle
-            title={eventInfo.title}
+            eventInfo={eventInfo}
             onChange={async (value) => await updateTaskHandler('title', value)}
             isLiked={eventInfo.isLiked}
             onChangeLiked={async (value) =>
@@ -79,23 +60,7 @@ export const EventInformerHeader = memo<EventInformerHeaderProps>(
             Закрыть
           </EmptyButtonStyled>
         </TitleContainer>
-        <ActionsAndLinkContainer>
-          <TaskInformerMoreActions taskItem={eventInfo} />
-          <FlexBlock maxWidth={600} width={'100%'}>
-            <TaskInformerLinkButton
-              link={eventInfo.link}
-              updateFn={updateTaskHandler}
-            />
-          </FlexBlock>
-        </ActionsAndLinkContainer>
-        <EventInformerToggles
-          _id={eventInfo._id}
-          updateTaskHandler={updateTaskHandler}
-          status={eventInfo.status}
-          group={eventInfo.group}
-          priority={eventInfo.priority}
-        />
-        <TaskInformerSwitchers />
+        <TaskInformerSwitchers key={'switchers'} />
       </EventInfoHeaderContainer>
     );
   },

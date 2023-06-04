@@ -21,4 +21,5 @@ export const EventInformerContentContainer = styled('div')`
   padding: 0px 20px 12px 20px;
   overflow: hidden;
   z-index: 0;
+  flex-wrap: nowrap;
 `;

@@ -1,15 +1,11 @@
+import ToastController from '@components/hocks/Toast';
+import { AppEntryPoint } from '@pages/index';
+import { GlobalTooltipStyled } from 'chernikov-kit';
 import React from 'react';
 import { Helmet } from 'react-helmet';
 import 'react-toastify/dist/ReactToastify.css';
 import { createGlobalStyle, css } from 'styled-components';
-import 'tippy.js/animations/perspective.css';
-import 'tippy.js/animations/shift-away.css';
-import 'tippy.js/dist/tippy.css';
 
-import { TooltipStyled } from '@components/Tooltip/Tooltip.styled';
-import ToastController from '@components/hocks/Toast';
-
-import { AppEntryPoint } from '@pages/index';
 
 const GlobalStyled = createGlobalStyle(
   {},
@@ -35,6 +31,8 @@ const GlobalStyled = createGlobalStyle(
     * {
       -ms-overflow-style: none; /* IE и Edge */
       scrollbar-width: none; /* Firefox */
+      overscroll-behavior: contain;
+      -ms-scroll-chaining: none;
     }
   `
 );
@@ -45,7 +43,7 @@ function App() {
       <Helmet title={'White Planner - современный сервис планирования.'} />
       <GlobalStyled />
       <AppEntryPoint />
-      <TooltipStyled />
+      <GlobalTooltipStyled />
       <ToastController />
     </>
   );

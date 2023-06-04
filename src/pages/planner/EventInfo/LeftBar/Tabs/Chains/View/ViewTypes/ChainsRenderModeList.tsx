@@ -1,14 +1,9 @@
+import { ChildrenEventList } from './ChildrenEventList';
+import { Accordion } from '@components/Accordion/Accordion';
+import { FlexBlock } from '@components/LayoutComponents';
+import { ChainsRenderModeProps } from '@planner/EventInfo/LeftBar/Tabs/Chains/event-chains.types';
 import { FC } from 'react';
 
-import { currentColor } from '@src/common/constants/constants';
-
-import { TooltipIcon } from '@components/Icons/TooltipIcon';
-import { FlexBlock } from '@components/LayoutComponents';
-import { Tooltip } from '@components/Tooltip/Tooltip';
-
-import { ChainsRenderModeProps } from '@planner/EventInfo/LeftBar/Tabs/Chains/event-chains.types';
-
-import { ChildrenEventList } from './ChildrenEventList';
 
 export const ChainsRenderModeList: FC<ChainsRenderModeProps> = ({
   eventItem,
@@ -23,54 +18,21 @@ export const ChainsRenderModeList: FC<ChainsRenderModeProps> = ({
       align={'flex-start'}
       pb={20}
     >
-      <ChildrenEventList
-        onConnectClick={onConnectChains}
-        childrenEvents={chains.childrenEvents || []}
-        title={
-          <FlexBlock gap={6} align={'center'} direction={'row'}>
-            Child - события
-            <Tooltip
-              theme={'current'}
-              placement={'right'}
-              content={
-                <div
-                  style={{
-                    textAlign: 'center',
-                    width: '100%',
-                    whiteSpace: 'pre-wrap',
-                  }}
-                >
-                  <span style={{ fontWeight: 'bold', display: 'inline' }}>
-                    ChildOf
-                  </span>{' '}
-                  - это вложенные события.
-                  <br />
-                  Чаще всего эта связь используется для осуществления
-                  вложенности и дробления события. <br />
-                  Например одно большое событие может состоять из нескольких
-                  маленьких. <br />
-                  Эти маленькие события и есть -{' '}
-                  <span style={{ fontWeight: 'bold', display: 'inline' }}>
-                    ChildOf
-                  </span>
-                </div>
-              }
-            >
-              <TooltipIcon size={20} color={currentColor} />
-            </Tooltip>
-          </FlexBlock>
-        }
-      />
-      <ChildrenEventList
-        onConnectClick={onConnectChains}
-        title={'Parent - события'}
-        childrenEvents={chains.parentEvent ? [chains.parentEvent] : []}
-      />
-      <ChildrenEventList
-        onConnectClick={onConnectChains}
-        title={'Донор событие'}
-        childrenEvents={chains.linkedFromEvent ? [chains.linkedFromEvent] : []}
-      />
+      <Accordion title={'Дочерние события'}>
+        <ChildrenEventList childrenEvents={chains.childrenEvents || []} />
+      </Accordion>
+      <Accordion title={'Родительские события'}>
+        <ChildrenEventList
+          childrenEvents={chains.parentEvent ? [chains.parentEvent] : []}
+        />
+      </Accordion>
+      <Accordion title={'События доноры'}>
+        <ChildrenEventList
+          childrenEvents={
+            chains.linkedFromEvent ? [chains.linkedFromEvent] : []
+          }
+        />
+      </Accordion>
     </FlexBlock>
   );
 };

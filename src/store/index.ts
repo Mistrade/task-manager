@@ -1,12 +1,12 @@
+import { GlobalReducer } from './reducers/global';
+import { financeApi } from '@api/finance-api';
+import { contactsApi } from '@api/friends-api';
+import { planningApi } from '@api/planning-api';
+import { sessionApi } from '@api/session-api';
 import plannerReducer from '@redux/reducers/planner';
 import { combineReducers, configureStore } from '@reduxjs/toolkit';
 import { setupListeners } from '@reduxjs/toolkit/query';
 
-import { contactsApi } from '@api/friends-api';
-import { planningApi } from '@api/planning-api';
-import { sessionApi } from '@api/session-api';
-
-import { GlobalReducer } from './reducers/global';
 
 const rootReducer = combineReducers({
   global: GlobalReducer,
@@ -14,6 +14,7 @@ const rootReducer = combineReducers({
   [planningApi.reducerPath]: planningApi.reducer,
   [sessionApi.reducerPath]: sessionApi.reducer,
   [contactsApi.reducerPath]: contactsApi.reducer,
+  [financeApi.reducerPath]: financeApi.reducer,
 });
 
 export const createAppStore = (preloadedState?: RootState) => {
@@ -23,7 +24,8 @@ export const createAppStore = (preloadedState?: RootState) => {
       getDefaultMiddleware().concat(
         planningApi.middleware,
         sessionApi.middleware,
-        contactsApi.middleware
+        contactsApi.middleware,
+        financeApi.middleware
       ),
     preloadedState,
   });

@@ -1,104 +1,29 @@
-import { FC } from 'react';
-import styled from 'styled-components';
-
-import { DontHoveredButton } from '@components/Buttons/EmptyButton.styled';
-import {
-  ApprovedAfterIcon,
-  ChildOfIcon,
-  CompletedAfterIcon,
-  ParentOfIcon,
-} from '@components/Icons/Icons';
-import { VerticalScroll } from '@components/LayoutComponents';
-
+import { EVENT_DEPENDENCIES_MAP } from '../event-chains.types';
 import {
   ConnectChainsCard,
   ConnectChainsCardObject,
 } from './ConnectChainsCard';
+import { DontHoveredButton } from '@components/Buttons/EmptyButton.styled';
+import { ChildOfIcon, ParentOfIcon } from '@components/Icons/Icons';
+import { VerticalScroll } from '@components/LayoutComponents';
+import { FC } from 'react';
+import styled from 'styled-components';
+
 
 export const ConnectTypesArray: Array<ConnectChainsCardObject> = [
   {
-    type: 'parentOf',
-    title: 'ParentOf (dev)',
-    description:
-      'Свяжите текущее событие, с другим, которое станет родителем для текущего',
-    icon: (attr) => <ParentOfIcon {...attr} />,
-  },
-  {
-    type: 'childOf',
-    title: 'ChildOf (dev)',
+    type: EVENT_DEPENDENCIES_MAP.CHILD_OF,
+    title: 'Дочерние',
     description:
       'Добавьте вложенные события, за прогрессом которых сможете следить из раздела "Связи"',
     icon: (attr) => <ChildOfIcon {...attr} />,
   },
   {
-    type: 'completed-after',
-    title: 'CompletedAfter (dev)',
-    description:
-      'Установите автоматическое выполнение текущего события, как только будут выполнены все выбранные события для этого типа связи',
-    icon: (attr) => <CompletedAfterIcon {...attr} />,
-  },
-  {
-    type: 'approved-after',
-    title: 'ApprovedAfter (dev)',
-    description:
-      'Установите условие, которое не позволит выполнить текущее событие, пока не будут выполнены все события в этом типе связи',
-    icon: (attr) => <ApprovedAfterIcon {...attr} />,
-  },
-  {
-    type: 'parentOf',
-    title: 'ParentOf (dev)',
+    type: EVENT_DEPENDENCIES_MAP.PARENT_OF,
+    title: 'Родители',
     description:
       'Свяжите текущее событие, с другим, которое станет родителем для текущего',
     icon: (attr) => <ParentOfIcon {...attr} />,
-  },
-  {
-    type: 'childOf',
-    title: 'ChildOf (dev)',
-    description:
-      'Добавьте вложенные события, за прогрессом которых сможете следить из раздела "Связи"',
-    icon: (attr) => <ChildOfIcon {...attr} />,
-  },
-  {
-    type: 'completed-after',
-    title: 'CompletedAfter (dev)',
-    description:
-      'Установите автоматическое выполнение текущего события, как только будут выполнены все выбранные события для этого типа связи',
-    icon: (attr) => <CompletedAfterIcon {...attr} />,
-  },
-  {
-    type: 'approved-after',
-    title: 'ApprovedAfter (dev)',
-    description:
-      'Установите условие, которое не позволит выполнить текущее событие, пока не будут выполнены все события в этом типе связи',
-    icon: (attr) => <ApprovedAfterIcon {...attr} />,
-  },
-  {
-    type: 'parentOf',
-    title: 'ParentOf (dev)',
-    description:
-      'Свяжите текущее событие, с другим, которое станет родителем для текущего',
-    icon: (attr) => <ParentOfIcon {...attr} />,
-  },
-  {
-    type: 'childOf',
-    title: 'ChildOf (dev)',
-    description:
-      'Добавьте вложенные события, за прогрессом которых сможете следить из раздела "Связи"',
-    icon: (attr) => <ChildOfIcon {...attr} />,
-  },
-  {
-    type: 'completed-after',
-    title: 'CompletedAfter (dev)',
-    description:
-      'Установите автоматическое выполнение текущего события, как только будут выполнены все выбранные события для этого типа связи',
-    icon: (attr) => <CompletedAfterIcon {...attr} />,
-  },
-  {
-    type: 'approved-after',
-    title: 'ApprovedAfter (dev)',
-    description:
-      'Установите условие, которое не позволит выполнить текущее событие, пока не будут выполнены все события в этом типе связи',
-    icon: (attr) => <ApprovedAfterIcon {...attr} />,
   },
 ];
 

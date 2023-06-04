@@ -1,8 +1,8 @@
+import { Tooltip } from 'chernikov-kit';
 import React, { FC, useState } from 'react';
 
 import { EmptyButtonStyled } from '@components/Buttons/EmptyButton.styled';
 import { VerticalScroll } from '@components/LayoutComponents';
-import { Tooltip } from '@components/Tooltip/Tooltip';
 
 import { CellDate } from '../CalendarCell/CellDate';
 import { ITemplateWeekDayEventListProps } from '../types';
@@ -22,13 +22,14 @@ export const WeekDayHiddenEvents: FC<ITemplateWeekDayEventListProps> = ({
       theme={'light'}
       delay={[150, 150]}
       maxWidth={320}
-      offset={({ placement, popper, reference }) => [0, 4]}
+      // offset={({ placement, popper, reference }) => [0, 4]}
       arrow={false}
       placement={'top'}
       interactive={true}
       interactiveBorder={20}
       zIndex={9999}
       strategy={'absolute'}
+      disableFlip={true}
       content={
         <VerticalScroll
           useShadow={true}

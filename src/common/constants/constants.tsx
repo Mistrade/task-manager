@@ -1,15 +1,14 @@
+import { ErrorImagesType } from '../types';
 import { ErrorBadRequestImg } from '@components/Icons/Errors/ErrorBadRequest';
 import { ErrorForbiddenImg } from '@components/Icons/Errors/ErrorForbidden';
+import { OnlyPremiumIcon } from '@components/Icons/Errors/OnlyPremium';
 import { SystemErrorImg } from '@components/Icons/Errors/SystemError';
-
 import { EventFilterTaskStatuses } from '@planner/Filters/find-event-filters.types';
 import {
   CalendarPriorityKeys,
   CalendarPriorityList,
   TaskStatusesType,
 } from '@planner/types';
-
-import { ErrorImagesType } from '../types';
 
 
 export const MonthList = [
@@ -83,6 +82,8 @@ export const delayedColor = 'rgba(255,117,66, .15)';
 export const lightHoverColor = 'rgba(220, 220, 220, .4)';
 export const errorColor = '#FF6666';
 export const completeColor = '#c6fcda';
+export const greenColor = 'rgba(127, 255, 0, .33)';
+export const redColor = 'rgba(233, 150, 122, .7)';
 
 export const colorRegExpDefault = /#[a-fA-F0-9]{3,6}$/gi;
 export const colorRegExpRGBA =
@@ -167,6 +168,7 @@ export const ERROR_IMAGES: ErrorImagesType = {
   BAD_REQUEST: <ErrorBadRequestImg />,
   ERR_FORBIDDEN: <ErrorForbiddenImg />,
   ERR_NOT_VALID_RESPONSE: <SystemErrorImg />,
+  ONLY_PREMIUM: <OnlyPremiumIcon />,
 };
 
 export const colorPalette = [

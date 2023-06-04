@@ -1,17 +1,15 @@
-import { FC } from 'react';
-
-import { EmptyButtonStyled } from '@components/Buttons/EmptyButton.styled';
-import { PlusIcon } from '@components/Icons/Icons';
-import { FlexBlock } from '@components/LayoutComponents';
-import { Switcher } from '@components/Switcher/Switcher';
-import { Tooltip } from '@components/Tooltip/Tooltip';
-
-import { ObjectId } from '@api/rtk-api.types';
-
 import {
   currentColor,
   disabledColor,
 } from '../../../../../../common/constants/constants';
+import { ObjectId } from '@api/rtk-api.types';
+import { EmptyButtonStyled } from '@components/Buttons/EmptyButton.styled';
+import { PlusIcon } from '@components/Icons/Icons';
+import { FlexBlock } from '@components/LayoutComponents';
+import { Switcher } from '@components/Switcher/Switcher';
+import { Tooltip } from 'chernikov-kit';
+import { FC } from 'react';
+
 
 interface IEventVotesHeaderProps {
   selected: ObjectId;

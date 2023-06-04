@@ -1,7 +1,3 @@
-import React, { FC } from 'react';
-
-import { currentColor, priorityColors } from '@src/common/constants/constants';
-
 import {
   Arrow,
   BurgerIcon,
@@ -11,8 +7,10 @@ import {
   SadSmile,
 } from '@components/Icons/Icons';
 import { FlexBlockProps } from '@components/LayoutComponents/FlexBlock';
-
 import { CalendarPriorityKeys } from '@planner/types';
+import { priorityColors } from '@src/common/constants/constants';
+import { kitColors } from 'chernikov-kit';
+import React, { FC } from 'react';
 
 
 interface PriorityCalendarIconProps extends IconProps, FlexBlockProps {
@@ -69,7 +67,7 @@ export const PriorityCalendarIcon: FC<PriorityCalendarIconProps> = ({
         />
       );
     case 'not_selected':
-      return <SadSmile size={20} color={currentColor} {...props} />;
+      return <SadSmile size={20} color={kitColors.primary} {...props} />;
   }
 
   return <></>;

@@ -1,23 +1,22 @@
-import { useCreateEventModal } from '@hooks/useCreateEventModal';
-import { useSearchNavigate } from '@hooks/useSearchNavigate';
-import { setPlannerDateAndLayout } from '@planner-reducer/index';
-import { IPlannerDate } from '@planner-reducer/types';
-import { plannerDateToDate } from '@planner-reducer/utils';
-import { useAppDispatch } from '@redux/hooks/hooks';
-import dayjs from 'dayjs';
-import React, { memo } from 'react';
-
-import { EmptyButtonStyled } from '@components/Buttons/EmptyButton.styled';
-import { CalendarIcon } from '@components/Icons/AppIcon/CalendarIcon';
-import { PlusIcon } from '@components/Icons/Icons';
-
-import { currentColor } from '../../../../../../common/constants/constants';
 import {
   PLANNER_LAYOUTS,
   SERVICES_NAMES,
 } from '../../../../../../common/constants/enums';
 import { getPath } from '../../../../../../common/functions';
 import { CellDateHoverContainer } from './Cell.styled';
+import { EmptyButtonStyled } from '@components/Buttons/EmptyButton.styled';
+import { CalendarIcon } from '@components/Icons/AppIcon/CalendarIcon';
+import { PlusIcon } from '@components/Icons/Icons';
+import { useCreateEventModal } from '@hooks/useCreateEventModal';
+import { useSearchNavigate } from '@hooks/useSearchNavigate';
+import { setPlannerDateAndLayout } from '@planner-reducer/index';
+import { IPlannerDate } from '@planner-reducer/types';
+import { plannerDateToDate } from '@planner-reducer/utils';
+import { useAppDispatch } from '@redux/hooks/hooks';
+import { kitColors } from 'chernikov-kit';
+import dayjs from 'dayjs';
+import React, { memo } from 'react';
+
 
 export const CellDateButtons = memo<{ date: IPlannerDate }>(
   ({ date }) => {
@@ -55,10 +54,10 @@ export const CellDateButtons = memo<{ date: IPlannerDate }>(
     return (
       <CellDateHoverContainer>
         <EmptyButtonStyled onClick={onCalendarAction}>
-          <CalendarIcon size={30} color={currentColor} />
+          <CalendarIcon size={30} color={kitColors.primary} />
         </EmptyButtonStyled>
         <EmptyButtonStyled onClick={onPlusAction}>
-          <PlusIcon size={30} color={currentColor} />
+          <PlusIcon size={30} color={kitColors.primary} />
         </EmptyButtonStyled>
       </CellDateHoverContainer>
     );

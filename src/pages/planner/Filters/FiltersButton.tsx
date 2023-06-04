@@ -1,19 +1,17 @@
+import { EmptyButtonStyled } from '@components/Buttons/EmptyButton.styled';
+import { FiltersIcon } from '@components/Icons/Icons';
+import { FlexBlock } from '@components/LayoutComponents';
+import { CutText } from '@components/Text/Text';
+import { FilterForm } from '@planner/Filters/FilterForm';
 import { useAppSelector } from '@redux/hooks/hooks';
 import {
   plannerSelectEventFilterPriority,
   plannerSelectEventFilterTitle,
 } from '@selectors/planner';
+import { darkColor, delayedColor } from '@src/common/constants/constants';
+import { Tooltip } from 'chernikov-kit';
 import React, { memo, useState } from 'react';
 
-import { darkColor, delayedColor } from '@src/common/constants/constants';
-
-import { EmptyButtonStyled } from '@components/Buttons/EmptyButton.styled';
-import { FiltersIcon } from '@components/Icons/Icons';
-import { FlexBlock } from '@components/LayoutComponents';
-import { CutText } from '@components/Text/Text';
-import { Tooltip } from '@components/Tooltip/Tooltip';
-
-import { FilterForm } from '@planner/Filters/FilterForm';
 
 export const FiltersButton = memo(() => {
   const [isOpen, setIsOpen] = useState(false);

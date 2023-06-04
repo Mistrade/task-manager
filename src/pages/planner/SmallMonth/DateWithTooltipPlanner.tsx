@@ -2,6 +2,7 @@ import { useCreateEventModal } from '@hooks/useCreateEventModal';
 import { plannerDateToDate } from '@planner-reducer/utils';
 import { useAppSelector } from '@redux/hooks/hooks';
 import { plannerSelectLayout } from '@selectors/planner';
+import { Tooltip } from 'chernikov-kit';
 import dayjs from 'dayjs';
 import { FC, useContext, useMemo, useState } from 'react';
 
@@ -12,7 +13,6 @@ import { getPath } from '@src/common/functions';
 import { SelectItemContainer } from '@components/Input/SelectInput/SelectItemContainer';
 import { SelectListContainer } from '@components/Input/SelectInput/SelectListContainer';
 import { ModalContext } from '@components/LayoutComponents/Modal/Modal';
-import { Tooltip } from '@components/Tooltip/Tooltip';
 
 import { SmallMonthDateItem } from '@planner/SmallMonth/SmallMonthDateItem';
 import {

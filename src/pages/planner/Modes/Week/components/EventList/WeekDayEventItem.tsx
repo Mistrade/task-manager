@@ -2,6 +2,7 @@ import {
   getSearchStringFromEntries,
   plannerDateToSearchParams,
 } from '@planner-reducer/utils';
+import { Tooltip } from 'chernikov-kit';
 import dayjs from 'dayjs';
 import React, { FC, useMemo, useState } from 'react';
 
@@ -11,7 +12,6 @@ import { PriorityCalendarIcon } from '@components/Icons/CalendarIcons/PriorityCa
 import { EventIcon } from '@components/Icons/EventIcon';
 import { FlexBlock } from '@components/LayoutComponents';
 import { CutText } from '@components/Text/Text';
-import { Tooltip } from '@components/Tooltip/Tooltip';
 
 import {
   DateHelper,
@@ -23,6 +23,7 @@ import {
   hoverColor,
 } from '../../../../../../common/constants/constants';
 import { DATE_HOURS_FORMAT } from '../../../../../../common/constants/defaultConstants';
+import { EVENT_INFORMER_TAB_NAMES } from '../../../../../../common/constants/enums';
 import { GroupLogo } from '../../../../Groups/styled';
 import { EventContainer } from '../styled';
 import { IWeekDayEventItemProps } from '../types';
@@ -93,7 +94,7 @@ export const WeekDayEventItem: FC<IWeekDayEventItemProps> = ({
   }, [date, taskInfo]);
 
   const Content = useMemo(() => {
-    const defaultPath = `event/info/${taskInfo._id}`;
+    const defaultPath = `event/info/${taskInfo._id}/${EVENT_INFORMER_TAB_NAMES.ABOUT}`;
     const searchParams = plannerDateToSearchParams(date.value);
     const to = defaultPath + getSearchStringFromEntries(searchParams);
 
@@ -126,7 +127,7 @@ export const WeekDayEventItem: FC<IWeekDayEventItemProps> = ({
       content={<EventShortHoverCard event={taskInfo} />}
       theme={'light'}
       placement={tooltipPlacement}
-      offset={[0, 15]}
+      // offset={[0, 15]}
       delay={[1500, 150]}
     >
       {Content}

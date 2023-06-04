@@ -1,18 +1,13 @@
+import { UserModel } from '@api/session-api/session-api.types';
+import { FlexBlock } from '@components/LayoutComponents';
+import { CalendarUserIndicator } from '@components/Users/UserIndicator';
+import { getDateDescription } from '@src/common/calendarSupport/dateHelper';
+import { darkColor, disabledColor } from '@src/common/constants/constants';
+import { borderRadiusSize } from '@src/common/css/mixins';
+import { kitColors } from 'chernikov-kit';
 import { FC, ReactNode } from 'react';
 import { css } from 'styled-components';
 
-import { getDateDescription } from '@src/common/calendarSupport/dateHelper';
-import {
-  currentColor,
-  darkColor,
-  disabledColor,
-} from '@src/common/constants/constants';
-import { borderRadiusSize } from '@src/common/css/mixins';
-
-import { FlexBlock } from '@components/LayoutComponents';
-import { CalendarUserIndicator } from '@components/Users/UserIndicator';
-
-import { UserModel } from '@api/session-api/session-api.types';
 
 export interface TaskHistoryItemProps {
   user: UserModel | null;
@@ -35,7 +30,7 @@ export const TaskHistoryItem: FC<TaskHistoryItemProps> = ({
       gap={6}
     >
       <FlexBlock
-        style={{ color: currentColor }}
+        style={{ color: kitColors.primary }}
         fSize={18}
         position={'sticky'}
         pb={4}

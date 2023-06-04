@@ -1,10 +1,10 @@
-import React, { FC, useEffect, useRef } from 'react';
-
 import { StyledTextAreaInput } from '@components/Input/Input.styled';
 import { InputErrorMessage } from '@components/Input/InputSupportComponents/InputErrorMessage';
 import { InputLabel } from '@components/Input/InputSupportComponents/InputLabel';
 import { TextInputProps } from '@components/Input/TextInput/TextInput';
 import { FlexBlock } from '@components/LayoutComponents';
+import React, { FC, useEffect, useRef } from 'react';
+
 
 type ExtendableTextInputKeys =
   | 'actions'
@@ -44,6 +44,7 @@ export const TextAreaInput: FC<TextAreaInputProps> = ({
   onChange,
   rows,
   maxHeight = 300,
+  isDisabled,
 }) => {
   const ref = useRef<HTMLTextAreaElement>(null);
 
@@ -91,7 +92,7 @@ export const TextAreaInput: FC<TextAreaInputProps> = ({
           id={inputId}
           readOnly={readOnly}
           rows={rows || 4}
-          disabled={isLoading}
+          disabled={isLoading || isDisabled}
         />
       </FlexBlock>
       <InputErrorMessage errorMessage={errorMessage} isDirty={isDirty} />

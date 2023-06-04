@@ -1,11 +1,11 @@
+import { DatePickerSwitch } from '@components/DatePicker/DatePickerSwitch';
 import { changeDateOfPattern } from '@planner-reducer/index';
+import { TimeSelectorButton } from '@planner/styled';
 import { useAppDispatch } from '@redux/hooks/hooks';
-import React, { FC, useCallback } from 'react';
-
 import { ShortChangeCurrentPattern } from '@src/common/commonTypes';
 import { disableReRender } from '@src/common/utils/react-utils';
+import React, { FC, useCallback } from 'react';
 
-import { DatePickerSwitch } from '@components/DatePicker/DatePickerSwitch';
 
 export const CalendarTodaySwitchers: FC = React.memo(() => {
   const dispatch = useAppDispatch();
@@ -14,5 +14,14 @@ export const CalendarTodaySwitchers: FC = React.memo(() => {
     dispatch(changeDateOfPattern({ pattern }));
   }, []);
 
-  return <DatePickerSwitch onClick={changeHandler} />;
+  return (
+    <DatePickerSwitch
+      centerElement={
+        <TimeSelectorButton onClick={() => changeHandler('today')}>
+          Сегодня
+        </TimeSelectorButton>
+      }
+      onChange={changeHandler}
+    />
+  );
 }, disableReRender);

@@ -19,6 +19,7 @@ export interface ScrollVerticalViewProps {
   containerProps?: FlexBlockProps;
   useShadow?: boolean;
   scrollContainerProps?: FlexBlockProps;
+  intersectionProps?: { topMargin?: string; bottomMargin?: string };
 }
 
 const Container = styled(FlexBlock)<
@@ -63,6 +64,7 @@ export const VerticalScroll = forwardRef<
       containerProps,
       useShadow = false,
       scrollContainerProps,
+      intersectionProps,
     },
     ref
   ) => {
@@ -71,13 +73,13 @@ export const VerticalScroll = forwardRef<
     const bottomRef = useRef<HTMLDivElement>(null);
     const topIntersection = useIntersection(topRef, {
       root: root.current,
-      rootMargin: '0px',
+      rootMargin: intersectionProps?.topMargin || '0px',
       threshold: 0,
     });
 
     const bottomIntersection = useIntersection(bottomRef, {
       root: root.current,
-      rootMargin: '100px',
+      rootMargin: intersectionProps?.bottomMargin || '0px',
       threshold: 0,
     });
 

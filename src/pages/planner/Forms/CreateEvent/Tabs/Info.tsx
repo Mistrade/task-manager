@@ -1,15 +1,15 @@
-import dayjs from 'dayjs';
-import { FormikErrors, FormikTouched, useFormik } from 'formik';
-import { FC } from 'react';
-
 import { DatePicker } from '@components/DatePicker/DatePicker';
+import { EventSystemDescription } from '@components/EventSystemDescription';
 import { CompleteIcon, CreatedIcon } from '@components/Icons/Icons';
 import { SelectLinks } from '@components/Input/SelectInput/CalendarSelectInputs/SelectLinks';
 import { TextAreaInput } from '@components/Input/TextAreaInput/TextAreaInput';
 import { TextInput } from '@components/Input/TextInput/TextInput';
 import { FlexBlock } from '@components/LayoutComponents';
-
 import { CreateEventDataObject } from '@planner/types';
+import dayjs from 'dayjs';
+import { FormikErrors, FormikTouched, useFormik } from 'formik';
+import { FC } from 'react';
+
 
 export interface BaseCreateEventTabProps {
   values: CreateEventDataObject;
@@ -97,6 +97,9 @@ export const CreateEventInfoTab: FC<BaseCreateEventTabProps> = ({
           placeholder={'Произвольный текст, на заметку...'}
         />
       </FlexBlock>
+      {values.systemDescription && (
+        <EventSystemDescription data={values.systemDescription} />
+      )}
       {/*<FlexBlock direction={'row'} width={'calc(50% - 6px)'}>*/}
       {/*  <TagInput*/}
       {/*    label={'Добавьте теги к событию'}*/}

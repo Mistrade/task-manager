@@ -1,28 +1,27 @@
-import { useCreateEventModal } from '@hooks/useCreateEventModal';
-import { useSearchNavigate } from '@hooks/useSearchNavigate';
-import { useAppSelector } from '@redux/hooks/hooks';
-import { plannerSelectLayout } from '@selectors/planner';
-import dayjs from 'dayjs';
-import React, { FC, useCallback, useContext } from 'react';
-
-import { SERVICES_NAMES } from '@src/common/constants/enums';
-import { TASK_STATUSES } from '@src/common/constants/signatures';
-import { getPath } from '@src/common/functions';
-
-import { TransparentButton } from '@components/Buttons/Buttons.styled';
-import { SelectItemContainer } from '@components/Input/SelectInput/SelectItemContainer';
-import { SelectListContainer } from '@components/Input/SelectInput/SelectListContainer';
-import { ModalContext } from '@components/LayoutComponents/Modal/Modal';
-import { Tooltip } from '@components/Tooltip/Tooltip';
-
-import { EventInfoModalProps } from '@planner/types';
-
+import { defaultColor } from '../../../../common/constants/constants';
 import {
   useRemoveEventMutation,
   useUpdateTaskMutation,
 } from '@api/planning-api';
 import { EventInfoModel } from '@api/planning-api/types/event-info.types';
 import { CatchHandleForToast, thenHandleForToast } from '@api/tools';
+import { EmptyButtonStyled } from '@components/Buttons/EmptyButton.styled';
+import { BurgerIcon } from '@components/Icons/Icons';
+import { SelectItemContainer } from '@components/Input/SelectInput/SelectItemContainer';
+import { SelectListContainer } from '@components/Input/SelectInput/SelectListContainer';
+import { ModalContext } from '@components/LayoutComponents/Modal/Modal';
+import { useCreateEventModal } from '@hooks/useCreateEventModal';
+import { useSearchNavigate } from '@hooks/useSearchNavigate';
+import { EventInfoModalProps } from '@planner/types';
+import { useAppSelector } from '@redux/hooks/hooks';
+import { plannerSelectLayout } from '@selectors/planner';
+import { SERVICES_NAMES } from '@src/common/constants/enums';
+import { TASK_STATUSES } from '@src/common/constants/signatures';
+import { getPath } from '@src/common/functions';
+import { Tooltip } from 'chernikov-kit';
+import dayjs from 'dayjs';
+import React, { FC, useCallback, useContext } from 'react';
+
 
 export interface TaskInformerMoreActionsProps extends EventInfoModalProps {
   taskItem: EventInfoModel;
@@ -154,7 +153,7 @@ export const TaskInformerMoreActions: FC<TaskInformerMoreActionsProps> = ({
       theme={'light'}
       trigger={'click'}
       placement={'bottom'}
-      offset={[0, 10]}
+      // offset={[0, 10]}
       interactive={true}
       interactiveBorder={20}
       hideOnClick={true}
@@ -176,13 +175,13 @@ export const TaskInformerMoreActions: FC<TaskInformerMoreActionsProps> = ({
         </SelectListContainer>
       }
     >
-      <TransparentButton
+      <EmptyButtonStyled
         id={'123'}
         onClick={(e) => e.stopPropagation()}
         type={'button'}
       >
-        Скрытые действия
-      </TransparentButton>
+        <BurgerIcon size={20} color={defaultColor} />
+      </EmptyButtonStyled>
     </Tooltip>
   );
 };

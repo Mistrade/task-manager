@@ -1,17 +1,15 @@
+import { EVENT_INFORMER_TAB_NAMES } from '../../../../common/constants/enums';
+import { ShortEventInfoModel } from '@api/planning-api/types/event-info.types';
+import { EventEssence } from '@components/Essences/EventEssence/EventEssence';
+import { FlexBlock } from '@components/LayoutComponents';
 import { useSearchNavigate } from '@hooks/useSearchNavigate';
+import { CalendarTitle } from '@planner/styled';
+import { EventsStorage } from '@planner/types';
+import { DeclinationMonthList } from '@src/common/constants/constants';
+import { getTaskListOfDay } from '@src/common/functions';
 import dayjs from 'dayjs';
 import { FC, Fragment, useMemo } from 'react';
 
-import { DeclinationMonthList } from '@src/common/constants/constants';
-import { getTaskListOfDay } from '@src/common/functions';
-
-import { EventEssence } from '@components/Essences/EventEssence/EventEssence';
-import { FlexBlock } from '@components/LayoutComponents';
-
-import { CalendarTitle } from '@planner/styled';
-import { EventsStorage } from '@planner/types';
-
-import { ShortEventInfoModel } from '@api/planning-api/types/event-info.types';
 
 export interface ListModeTaskController {
   eventStorage?: EventsStorage<ShortEventInfoModel>;
@@ -85,9 +83,12 @@ export const ListModeTaskController: FC<ListModeTaskController> = ({
                       timeEnd={taskInfo.timeEnd}
                       eventId={taskInfo._id}
                       onTitleClick={(eventId) => {
-                        navigate(`event/info/${eventId}`, {
-                          relative: 'route',
-                        });
+                        navigate(
+                          `event/info/${eventId}/${EVENT_INFORMER_TAB_NAMES.ABOUT}`,
+                          {
+                            relative: 'route',
+                          }
+                        );
                       }}
                       description={taskInfo.description}
                     />

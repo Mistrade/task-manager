@@ -1,7 +1,8 @@
+import { defaultColor } from '@src/common/constants/constants';
+import { borderRadiusSize } from '@src/common/css/mixins';
+import { kitColors } from 'chernikov-kit';
 import styled, { css } from 'styled-components';
 
-import { currentColor, defaultColor } from '@src/common/constants/constants';
-import { borderRadiusSize } from '@src/common/css/mixins';
 
 export const StyledButton = styled('button')<{
   fillColor?: string;
@@ -11,7 +12,7 @@ export const StyledButton = styled('button')<{
     padding: 4px 6px;
     font-size: 16px;
     color: ${(props) => props.textColor || '#fff'};
-    background-color: ${(props) => props.fillColor || currentColor};
+    background-color: ${(props) => props.fillColor || kitColors.primary};
     border: none;
     border-radius: ${borderRadiusSize.sm};
     outline: none;
@@ -23,14 +24,21 @@ export const StyledButton = styled('button')<{
   }
 `;
 
-export const Button = styled('button')`
+const ButtonHoverMixin = css`
+  color: ${kitColors.primary} !important;
+  background-color: #fff !important;
+  border: 1px solid ${kitColors.primary} !important;
+  box-shadow: 0 0 8px 0px ${kitColors.primary} !important;
+`;
+
+export const Button = styled('button')<{ isLoading?: boolean }>`
   & {
     display: flex;
     align-items: center;
-    padding: 4px 6px;
+    padding: 8px 12px;
     font-size: 16px;
     color: #fff;
-    background-color: ${currentColor};
+    background-color: ${kitColors.primary};
     outline: none;
     border: 1px solid #fff;
     border-radius: ${borderRadiusSize.sm};
@@ -40,11 +48,17 @@ export const Button = styled('button')`
   }
 
   &:hover {
-    color: ${currentColor};
-    background-color: #fff;
-    border: 1px solid ${currentColor};
-    box-shadow: 0 0 8px 0px ${currentColor};
+    ${ButtonHoverMixin};
   }
+
+  ${(_) =>
+    _.isLoading
+      ? css`
+          ${ButtonHoverMixin};
+          padding-left: 30px !important;
+          padding-right: 30px !important;
+        `
+      : ''};
 `;
 
 export const LinkButton = styled('a')`
@@ -63,16 +77,16 @@ export const LinkButton = styled('a')`
   }
 
   &:hover {
-    color: ${currentColor};
+    color: ${kitColors.primary};
     background-color: #fff;
-    border: 1px solid ${currentColor};
-    box-shadow: 0 0 8px 0px ${currentColor};
+    border: 1px solid ${kitColors.primary};
+    box-shadow: 0 0 8px 0px ${kitColors.primary};
   }
 `;
 
 export const WhiteButton = styled('button')<{ withHover?: boolean }>`
   & {
-    padding: 4px 6px;
+    padding: 4px 4px;
     font-size: 16px;
     color: ${defaultColor};
     background-color: #fff;
@@ -89,9 +103,9 @@ export const WhiteButton = styled('button')<{ withHover?: boolean }>`
     _.withHover &&
     css`
       &:hover {
-        color: ${currentColor};
+        color: ${kitColors.primary};
         background-color: #fff;
-        border: 1px solid ${currentColor};
+        border: 1px solid ${kitColors.primary};
       }
     `}
 `;
@@ -127,7 +141,7 @@ export const JoinToEventButton = styled('a')`
 
   &:hover {
     background-color: #fff;
-    border-color: ${currentColor};
-    color: ${currentColor};
+    border-color: ${kitColors.primary};
+    color: ${kitColors.primary};
   }
 `;

@@ -1,19 +1,18 @@
-import { NavLink } from 'react-router-dom';
-import styled, { css } from 'styled-components';
-
 import {
-  currentColor,
+  stepByStepAnimation,
+  StepByStepAnimationProps,
+} from './Modes/Week/components/styled';
+import {
   darkColor,
   defaultColor,
   disabledColor,
   hoverColor,
 } from '@src/common/constants/constants';
 import { borderRadiusSize } from '@src/common/css/mixins';
+import { kitColors } from 'chernikov-kit';
+import { NavLink } from 'react-router-dom';
+import styled, { css } from 'styled-components';
 
-import {
-  StepByStepAnimationProps,
-  stepByStepAnimation,
-} from './Modes/Week/components/styled';
 
 export const CalendarDateListContainer = styled('div')<{ rowsCount?: number }>`
   & {
@@ -47,22 +46,19 @@ export const SwitchCalendarMode = styled('button')<{ isSelected?: boolean }>`
     outline: none;
     padding: 6px 16px;
     font-size: 16px;
-    border: 1px solid ${currentColor};
+    border: 1px solid ${kitColors.primary};
     border-radius: ${borderRadiusSize.sm};
     cursor: pointer;
     transition: all 0.3s ease-in-out;
-    background-color: ${(props) => (props.isSelected ? currentColor : '#fff')};
+    background-color: ${(props) =>
+      props.isSelected ? kitColors.primary : '#fff'};
     color: ${(props) => (props.isSelected ? '#fff' : defaultColor)};
     min-width: 50px;
   }
 
   &:hover {
-    background-color: ${currentColor} !important;
+    background-color: ${kitColors.primary} !important;
     color: #fff;
-  }
-
-  &:not(:last-child) {
-    margin-right: 4px;
   }
 `;
 
@@ -124,7 +120,7 @@ export const SwitchCalendarModeTab = styled('button')<
       return css`
         &:after {
           bottom: 0px;
-          background-color: ${currentColor};
+          background-color: ${kitColors.primary};
         }
       `;
     }
@@ -135,23 +131,13 @@ export const PlannerNavLink = styled(NavLink)`
   ${SwitchMainStyles}
   &.active:after {
     bottom: 0px;
-    background-color: ${currentColor};
+    background-color: ${kitColors.primary};
   }
 `;
 
 export const TimeSelectorButton = styled(SwitchCalendarMode)`
   margin: 0;
-  //width: 55px;
   scroll-snap-align: center;
-
-  &:not(:last-child) {
-    margin-bottom: 4px;
-  }
-
-  &:last-child {
-    margin-bottom: 100%;
-  }
-
   scroll-behavior: smooth;
 `;
 

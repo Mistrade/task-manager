@@ -1,16 +1,27 @@
-import styled, { css } from 'styled-components';
-
+import { DefaultAnimationTimingFn } from '../../../common/constants/styles';
 import { defaultColor } from '@src/common/constants/constants';
 import { borderRadiusSize } from '@src/common/css/mixins';
+import styled, { css } from 'styled-components';
 
-import { DefaultAnimationTimingFn } from '../../../common/constants/styles';
 
 export interface ModalAnimationProps {
   animationPhase?: TModalAnimationPhases;
   animationDuration?: number;
 }
 
-export const ModalLayout = styled('div')<ModalAnimationProps>`
+export interface ModalLayoutProps {
+  verticalPlacement?: 'start' | 'center' | 'end';
+}
+
+const placementValue = {
+  start: 'flex-start',
+  center: 'center',
+  end: 'flex-end',
+};
+
+export const ModalLayout = styled('div')<
+  ModalLayoutProps & ModalAnimationProps
+>`
   & {
     position: fixed;
     width: 100vw;
@@ -21,7 +32,7 @@ export const ModalLayout = styled('div')<ModalAnimationProps>`
     z-index: 10;
     display: flex;
     justify-content: center;
-    align-items: flex-start;
+    align-items: ${(_) => placementValue[_.verticalPlacement || 'start']};
     background-color: rgba(255, 255, 255, 0.1);
     transition: background-color ${(_) => _.animationDuration || 300}ms
       ${DefaultAnimationTimingFn};
@@ -41,6 +52,10 @@ export const ModalLayout = styled('div')<ModalAnimationProps>`
   }
 `;
 
+ModalLayout.defaultProps = {
+  verticalPlacement: 'start',
+};
+
 export type TModalAnimationPhases = 'open' | 'close';
 
 export const ModalContainer = styled('div')<ModalAnimationProps>`
@@ -48,7 +63,7 @@ export const ModalContainer = styled('div')<ModalAnimationProps>`
     position: relative;
     background-color: #fff;
     max-width: 90%;
-    height: 100%;
+    max-height: 100%;
     min-width: 400px;
     border: 1px solid ${defaultColor};
     box-shadow: 0px 20px 30px 10px ${defaultColor};
@@ -57,12 +72,10 @@ export const ModalContainer = styled('div')<ModalAnimationProps>`
     justify-content: space-between;
     flex-direction: column;
     border-radius: ${borderRadiusSize.xl};
-    overflow: unset;
     transition: all ${(_) => _.animationDuration || 300}ms
       ${DefaultAnimationTimingFn};
     opacity: 0;
     transform: translateY(60vh) scale(0.8);
-
     ${({ animationPhase }) => {
       switch (animationPhase) {
         case 'open':
@@ -77,6 +90,12 @@ export const ModalContainer = styled('div')<ModalAnimationProps>`
           `;
       }
     }}
+  }
+
+  @media screen and (min-width: 1440px) {
+    & {
+      max-width: 1440px;
+    }
   }
 `;
 

@@ -1,14 +1,13 @@
-import React, { FC } from 'react';
-import { css, keyframes } from 'styled-components';
-
-import { FlexBlock } from '@components/LayoutComponents';
-
 import { DefaultAnimationTimingFn } from '../../../common/constants/styles';
 import { GroupList } from '../Groups';
 import { OptionPanelCalendar } from './Calendar';
 import { CalendarCurrentTitle } from './CalendarCurrentTitle';
 import { CalendarTodaySwitchers } from './CalendarTodaySwitchers';
 import { PlannerSelectLayout } from './SelectLayout';
+import { FlexBlock } from '@components/LayoutComponents';
+import React, { FC } from 'react';
+import { css, keyframes } from 'styled-components';
+
 
 const keyframe = keyframes`
   from {
@@ -67,16 +66,11 @@ export const FullPanelContent: FC<{ canDestroy: boolean }> = ({
         gap={12}
         additionalCss={canDestroy ? baseAnimation : reverseAnimation}
       >
-        <CalendarCurrentTitle pattern={'full'} />
-        <FlexBlock
-          justify={'flex-start'}
-          width={'100%'}
-          p={`3px 12px`}
-          shrink={0}
-        >
+        <FlexBlock justify={'center'} width={'100%'} p={`3px 12px`} shrink={0}>
           <CalendarTodaySwitchers />
         </FlexBlock>
-        <FlexBlock overflow={'hidden'} width={'100%'}>
+        <CalendarCurrentTitle pattern={'full'} />
+        <FlexBlock overflow={'hidden'} width={'100%'} mt={32}>
           <OptionPanelCalendar />
         </FlexBlock>
       </FlexBlock>

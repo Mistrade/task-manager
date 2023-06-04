@@ -1,11 +1,9 @@
-import React, { FC, useMemo } from 'react';
-import { ThreeDots } from 'react-loader-spinner';
-import { StyledComponentProps } from 'styled-components';
-
-import { currentColor } from '@src/common/constants/constants';
-
+import { LoaderIcon } from '../Icons/Icons';
 import { Button, TransparentButton, WhiteButton } from './Buttons.styled';
 import { EmptyButtonStyled } from './EmptyButton.styled';
+import React, { FC, useMemo } from 'react';
+import { StyledComponentProps } from 'styled-components';
+
 
 export interface ButtonWithLoadingProps
   extends Partial<StyledComponentProps<'button', {}, {}, ''>> {
@@ -20,23 +18,17 @@ export const ButtonWithLoading: FC<ButtonWithLoadingProps> = ({
   ...buttonProps
 }) => {
   const content = useMemo(() => {
-    return isLoading ? (
-      <ThreeDots
-        height={24}
-        width={24}
-        radius='9'
-        color={currentColor}
-        ariaLabel='three-dots-loading'
-        visible={true}
-      />
-    ) : (
-      children
-    );
+    return isLoading ? <LoaderIcon size={24} /> : children;
   }, [isLoading, children]);
 
   if (buttonType === 'primary') {
     return (
-      <Button type={'button'} disabled={isLoading} {...buttonProps}>
+      <Button
+        type={'button'}
+        isLoading={isLoading}
+        disabled={isLoading}
+        {...buttonProps}
+      >
         {content}
       </Button>
     );

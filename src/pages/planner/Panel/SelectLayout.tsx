@@ -1,21 +1,19 @@
-import { setPlannerLayout } from '@planner-reducer/index';
-import { useAppDispatch, useAppSelector } from '@redux/hooks/hooks';
-import { plannerSelectLayout } from '@selectors/planner';
-import { FC, useMemo, useState } from 'react';
-import { useLocation } from 'react-router';
-
-import { defaultColor } from '@src/common/constants/constants';
-import { SERVICES_NAMES } from '@src/common/constants/enums';
-import { getPath } from '@src/common/functions';
-
 import { SelectListContainer } from '@components/Input/SelectInput/SelectListContainer';
 import { FlexBlock } from '@components/LayoutComponents';
 import { CutText } from '@components/Text/Text';
-import { Tooltip } from '@components/Tooltip/Tooltip';
-
+import { setPlannerLayout } from '@planner-reducer/index';
 import { LinkSolid } from '@planner/Panel/ModeSwitch/Item';
 import { PlannerHeaderSwitch } from '@planner/Panel/ModeSwitch/List';
 import { SwitchCalendarModeTab } from '@planner/styled';
+import { useAppDispatch, useAppSelector } from '@redux/hooks/hooks';
+import { plannerSelectLayout } from '@selectors/planner';
+import { defaultColor } from '@src/common/constants/constants';
+import { SERVICES_NAMES } from '@src/common/constants/enums';
+import { getPath } from '@src/common/functions';
+import { Tooltip } from 'chernikov-kit';
+import { FC, useMemo, useState } from 'react';
+import { useLocation } from 'react-router';
+
 
 export const PlannerSelectLayout: FC<{ pattern: 'short' | 'full' }> = ({
   pattern,

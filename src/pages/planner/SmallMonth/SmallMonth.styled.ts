@@ -1,7 +1,6 @@
-import styled, { css } from 'styled-components';
-
+import { DefaultAnimationTimingFn } from '../../../common/constants/styles';
+import { FlexBlock } from '@components/LayoutComponents';
 import {
-  currentColor,
   darkColor,
   defaultColor,
   disabledColor,
@@ -9,10 +8,9 @@ import {
   orangeColor,
 } from '@src/common/constants/constants';
 import { borderRadiusSize } from '@src/common/css/mixins';
+import { kitColors } from 'chernikov-kit';
+import styled, { css } from 'styled-components';
 
-import { FlexBlock } from '@components/LayoutComponents';
-
-import { DefaultAnimationTimingFn } from '../../../common/constants/styles';
 
 export const SmallMonthWeekCount = styled(FlexBlock)`
   justify-content: center;
@@ -43,7 +41,7 @@ export const isSelectRowItem = css`
   & {
     border-radius: ${borderRadiusSize.xs};
     color: #fff;
-    background-color: ${currentColor};
+    background-color: ${kitColors.primary};
   }
 `;
 

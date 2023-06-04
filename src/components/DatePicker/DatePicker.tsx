@@ -12,6 +12,9 @@ import { FlexBlock } from '@components/LayoutComponents';
 
 import { DatePickerProps } from '@planner/types';
 
+import { defaultColor } from '../../common/constants/constants';
+import { CancelIcon } from '../Icons/Icons';
+
 export const DatePicker: FC<DatePickerProps> = ({
   useOtherDays = false,
   onFocus,
@@ -28,6 +31,13 @@ export const DatePicker: FC<DatePickerProps> = ({
   disabledOptions,
   useForceUpdateValue = true,
   onDecline,
+  placeholder,
+  placement,
+  inputId,
+  isDisabled,
+  style,
+  withArrow,
+  onClear,
 }) => {
   const [stateValue, setStateValue] = useState<Date | null>(currentDate);
 
@@ -41,21 +51,21 @@ export const DatePicker: FC<DatePickerProps> = ({
   };
 
   useEffect(() => {
-    const d = dayjs(currentDate);
-    if (d.isValid()) {
-      const isSame = d.isSame(stateValue, 'minute');
-      if (currentDate && useForceUpdateValue && !isSame) {
-        console.log('123');
-        setStateValue(currentDate);
-      }
+    if (useForceUpdateValue) {
+      setStateValue(currentDate);
     }
   }, [currentDate?.toString(), useForceUpdateValue]);
 
   return (
     <SelectInput
-      placeholder={'Выберите дату'}
+      withArrow={withArrow}
+      isDisabled={isDisabled}
+      inputId={inputId}
+      placeholder={placeholder || 'Выберите дату'}
       onFocus={onFocus}
+      style={style}
       data={[]}
+      selectContainerPlacement={placement || 'bottom-start'}
       renderData={(data, setIsOpenState) => (
         <SelectListContainer maxHeight={500} width={'100%'}>
           <FlexBlock direction={'column'} width={'100%'} pb={4}>
@@ -75,6 +85,7 @@ export const DatePicker: FC<DatePickerProps> = ({
               gap={8}
             >
               <Button
+                type={'button'}
                 onClick={(e) => {
                   e.stopPropagation();
                   clickSaveHandler();
@@ -84,6 +95,7 @@ export const DatePicker: FC<DatePickerProps> = ({
                 Подтвердить
               </Button>
               <EmptyButtonStyled
+                type={'button'}
                 onClick={(e) => {
                   e.stopPropagation();
                   clickDeclineHandler();
@@ -103,7 +115,15 @@ export const DatePicker: FC<DatePickerProps> = ({
       errorMessage={`${errorMessage || ''}`}
       actionHandler={actionHandler}
       readOnly={true}
-      icon={icon}
+      icon={
+        onClear ? (
+          <EmptyButtonStyled onClick={onClear}>
+            <CancelIcon size={16} color={defaultColor} />
+          </EmptyButtonStyled>
+        ) : (
+          icon
+        )
+      }
       iconPlacement={iconPlacement}
       actions={actions}
     />

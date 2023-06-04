@@ -1,7 +1,6 @@
-import styled, { keyframes } from 'styled-components';
-
+import { stepByStepAnimation } from '../../../../Modes/Week/components/styled';
+import { EmptyButtonStyled } from '@components/Buttons/EmptyButton.styled';
 import {
-  currentColor,
   darkColor,
   defaultColor,
   disabledColor,
@@ -9,10 +8,9 @@ import {
   pageHeaderColor,
 } from '@src/common/constants/constants';
 import { borderRadiusSize } from '@src/common/css/mixins';
+import { kitColors } from 'chernikov-kit';
+import styled, { keyframes } from 'styled-components';
 
-import { EmptyButtonStyled } from '@components/Buttons/EmptyButton.styled';
-
-import { stepByStepAnimation } from '../../../../Modes/Week/components/styled';
 
 export const CreateCommentContainer = styled('div')`
   display: flex;
@@ -20,7 +18,7 @@ export const CreateCommentContainer = styled('div')`
   align-items: flex-start;
   flex-direction: column;
   gap: 8px;
-  padding: 12px 0px;
+  padding-top: 12px;
   width: 100%;
   border-top: 1px solid ${disabledColor};
   border-radius: 0px 0px ${borderRadiusSize.sm} ${borderRadiusSize.sm};
@@ -89,7 +87,7 @@ export const StyledReplyComment = styled('div')`
   }
 
   &:hover {
-    border-left-color: ${currentColor};
+    border-left-color: ${kitColors.primary};
   }
 `;
 export const StyledReplyCommentActionContainer = styled('div')`

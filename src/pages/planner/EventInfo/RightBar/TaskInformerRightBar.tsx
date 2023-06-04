@@ -1,16 +1,12 @@
+import { TaskCreatedMessage } from '../SupportsComponent/TaskCreatedMessage';
+import { EventInfoModel } from '@api/planning-api/types/event-info.types';
+import { FlexBlock } from '@components/LayoutComponents';
+import { Heading } from '@components/Text/Heading';
+import { OptionPanelCalendar } from '@planner/Panel/Calendar';
+import { disableReRender } from '@src/common/utils/react-utils';
 import { FC, memo } from 'react';
 import styled from 'styled-components';
 
-import { disableReRender } from '@src/common/utils/react-utils';
-
-import { FlexBlock } from '@components/LayoutComponents';
-import { Heading } from '@components/Text/Heading';
-
-import { OptionPanelCalendar } from '@planner/Panel/Calendar';
-
-import { EventInfoModel } from '@api/planning-api/types/event-info.types';
-
-import { TaskCreatedMessage } from '../SupportsComponent/TaskCreatedMessage';
 
 interface TaskInformerRightBarProps {
   eventInfo: EventInfoModel;
@@ -18,13 +14,14 @@ interface TaskInformerRightBarProps {
 
 const Container = styled('div')`
   display: flex;
-  flex: 0 0 300px;
   width: fit-content;
   justify-content: flex-start;
   align-items: flex-start;
   flex-direction: column;
   gap: 12px;
   padding-left: 8px;
+  flex-shrink: 0;
+  flex-grow: 0;
 `;
 
 export const TaskInformerRightBar: FC<TaskInformerRightBarProps> = memo(

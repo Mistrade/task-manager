@@ -1,13 +1,11 @@
+import { kitColors } from 'chernikov-kit';
 import { FC } from 'react';
-
-import { currentColor } from '@src/common/constants/constants';
 
 import { IconProps } from '@components/Icons/Icons';
 
-
 export const TwoPeopleIcon: FC<Omit<IconProps, 'onClick'>> = ({
   size,
-  color = currentColor,
+  color = kitColors.primary,
 }) => {
   return (
     <svg

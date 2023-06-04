@@ -1,18 +1,19 @@
-import { FC, useCallback, useState } from 'react';
-
-import { darkColor } from '@src/common/constants/constants';
-import { CenteredContainer } from '@src/routes/Interceptors/SessionInterceptor';
-
+import {
+  ConnectChainsProps,
+  EVENT_DEPENDENCIES_MAP,
+} from '../event-chains.types';
+import { ChainsShowcase } from './ChainsShowcase';
+import { ConnectChildEvents } from './ConnectTypes/ConnectChildEvents';
 import { EmptyButtonStyled } from '@components/Buttons/EmptyButton.styled';
 import { ErrorScreen } from '@components/Errors/ErrorScreen';
 import { Arrow } from '@components/Icons/Icons';
 import { FlexBlock } from '@components/LayoutComponents';
 import { Heading } from '@components/Text/Heading';
-import { Tooltip } from '@components/Tooltip/Tooltip';
+import { darkColor } from '@src/common/constants/constants';
+import { CenteredContainer } from '@src/routes/Interceptors/SessionInterceptor';
+import { Tooltip } from 'chernikov-kit';
+import { FC, useCallback, useState } from 'react';
 
-import { ConnectChainsProps, ConnectChainsType } from '../event-chains.types';
-import { ChainsShowcase } from './ChainsShowcase';
-import { ConnectChildEvents } from './ConnectTypes/ConnectChildEvents';
 
 export const ConnectChains: FC<ConnectChainsProps> = ({
   taskInfo,
@@ -21,7 +22,7 @@ export const ConnectChains: FC<ConnectChainsProps> = ({
   onGoBack,
   excludeEventId,
 }) => {
-  const [type, setType] = useState<ConnectChainsType | null>(
+  const [type, setType] = useState<EVENT_DEPENDENCIES_MAP | null>(
     initialState || null
   );
 
@@ -31,10 +32,6 @@ export const ConnectChains: FC<ConnectChainsProps> = ({
         return 'Добавьте дочерние события';
       case 'parentOf':
         return 'Укажите родительское событие';
-      case 'completed-after':
-        return 'Выберите события для условия completed-after';
-      case 'approved-after':
-        return 'Выберите события для условия approved-after';
       default:
         return 'Выберите тип связи';
     }

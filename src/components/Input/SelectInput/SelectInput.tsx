@@ -1,5 +1,3 @@
-import React, { ReactNode, useState } from 'react';
-
 import { InputActions } from '@components/Input/InputSupportComponents/InputActions';
 import { InputErrorMessage } from '@components/Input/InputSupportComponents/InputErrorMessage';
 import {
@@ -10,7 +8,9 @@ import {
   FlexBlock,
   FlexBlockProps,
 } from '@components/LayoutComponents/FlexBlock';
-import { Tooltip, TooltipDefaultProps } from '@components/Tooltip/Tooltip';
+import { Tooltip, TooltipProps } from 'chernikov-kit';
+import React, { ReactNode, useState } from 'react';
+
 
 type ExtendableFromTextInput = Omit<DefaultTextInputProps, 'children'>;
 
@@ -22,8 +22,9 @@ export interface SelectInputProps<T> extends ExtendableFromTextInput {
   ) => ReactNode;
   multiple?: boolean;
   containerProps?: FlexBlockProps;
-  selectContainerPlacement?: TooltipDefaultProps['placement'];
+  selectContainerPlacement?: TooltipProps['placement'];
   selectContainerViewCondition?: boolean;
+  withArrow?: boolean;
 }
 
 export function SelectInput<T>({
@@ -41,6 +42,7 @@ export function SelectInput<T>({
   errorMessage,
   selectContainerPlacement,
   selectContainerViewCondition = true,
+  withArrow,
   ...textInputProps
 }: SelectInputProps<T>): JSX.Element {
   const [isOpen, setIsOpen] = useState(false);
@@ -50,16 +52,15 @@ export function SelectInput<T>({
       <Tooltip
         theme={'light'}
         delay={100}
-        offset={[0, 5]}
+        // offset={[0, 10]}
         maxWidth={500}
-        hideOnClick={true}
         placement={selectContainerPlacement || 'bottom-start'}
-        arrow={false}
+        arrow={withArrow}
         visible={isOpen && selectContainerViewCondition}
         onClickOutside={() => setIsOpen(false)}
         interactive={true}
         interactiveBorder={20}
-        content={isOpen ? renderData(data, setIsOpen) : <></>}
+        content={isOpen && renderData(data, setIsOpen)}
       >
         <TextInput
           readOnly={readOnly}

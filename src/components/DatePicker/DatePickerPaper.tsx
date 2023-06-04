@@ -5,7 +5,6 @@ import { FC, useCallback, useMemo, useState } from 'react';
 import { DateListGenerator } from '@src/common/calendarSupport/generators';
 import { changeMonthCurrentHandler } from '@src/common/functions';
 
-import { DatePickerSwitch } from '@components/DatePicker/DatePickerSwitch';
 import { FlexBlock } from '@components/LayoutComponents';
 
 import { SmallCalendarMonthTitle } from '@pages/planner/SmallMonth/SmallCalendarMonthTitle';
@@ -32,7 +31,7 @@ export const DatePickerPaper: FC<DatePickerPaperProps> = ({
   disabledOptions,
   currentDate,
   onChange,
-  useOtherDays = false,
+  useOtherDays = true,
 }) => {
   const [current, setCurrent] = useState<PlannerMonthMode>({
     layout: 'month',
@@ -42,7 +41,7 @@ export const DatePickerPaper: FC<DatePickerPaperProps> = ({
 
   const monthItem: MonthItem = useMemo(() => {
     return new DateListGenerator({
-      useOtherDays,
+      useOtherDays: true,
       disabled: disabledOptions,
     }).getMonthItem(new Date(current.year, current.month));
   }, [current, disabledOptions, useOtherDays]);
@@ -112,9 +111,6 @@ export const DatePickerPaper: FC<DatePickerPaperProps> = ({
 
   return (
     <FlexBlock width={'100%'} direction={'column'} align={'center'} p={8}>
-      <FlexBlock mb={24}>
-        <DatePickerSwitch onClick={switchHandler} />
-      </FlexBlock>
       <FlexBlock
         direction={'row'}
         width={'100%'}
@@ -126,7 +122,11 @@ export const DatePickerPaper: FC<DatePickerPaperProps> = ({
       >
         <SmallMonth
           title={
-            <SmallCalendarMonthTitle monthItem={monthItem} renderYear={true} />
+            <SmallCalendarMonthTitle
+              monthItem={monthItem}
+              renderYear={true}
+              onChange={switchHandler}
+            />
           }
           onSelectDate={selectDateHandler}
           current={current}

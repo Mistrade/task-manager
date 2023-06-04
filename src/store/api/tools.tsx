@@ -1,3 +1,4 @@
+import { kitColors } from 'chernikov-kit';
 import { toast } from 'react-toastify';
 
 import { currentColor } from '@src/common/constants/constants';
@@ -5,7 +6,6 @@ import { currentColor } from '@src/common/constants/constants';
 import { CancelIcon, CompleteIcon } from '@components/Icons/Icons';
 
 import { CustomRtkError, MyServerResponse } from './rtk-api.types';
-
 
 export function CatchHandleForToast<T>(reason: any | CustomRtkError<T>) {
   console.error(reason);
@@ -35,7 +35,7 @@ export const thenHandleForToast = (
       type: data.info.type,
       pauseOnHover: true,
       theme: 'light',
-      icon: <CompleteIcon color={currentColor} size={20} />,
+      icon: <CompleteIcon color={kitColors.primary} size={20} />,
     });
   }
 

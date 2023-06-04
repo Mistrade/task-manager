@@ -1,15 +1,12 @@
-import { FC, forwardRef, useMemo } from 'react';
-
-import { PRIORITY_TITLES, darkColor } from '@src/common/constants/constants';
-
+import { EventToggleButtonProps } from './EventStatusButton';
 import { EmptyButtonStyled } from '@components/Buttons/EmptyButton.styled';
 import { PriorityCalendarIcon } from '@components/Icons/CalendarIcons/PriorityCalendarIcon';
 import { FlexBlock } from '@components/LayoutComponents';
-import { Tooltip } from '@components/Tooltip/Tooltip';
-
 import { CalendarPriorityKeys } from '@planner/types';
+import { darkColor, PRIORITY_TITLES } from '@src/common/constants/constants';
+import { Tooltip } from 'chernikov-kit';
+import { FC, forwardRef, useMemo } from 'react';
 
-import { EventToggleButtonProps } from './EventStatusButton';
 
 export interface EventPriorityButtonProps extends EventToggleButtonProps {
   priority: CalendarPriorityKeys | null;

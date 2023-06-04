@@ -1,27 +1,30 @@
-import { setEventInfoTabName } from '@planner-reducer/index';
-import { useAppDispatch, useAppSelector } from '@redux/hooks/hooks';
+import { Switcher, SwitcherItem } from '@components/Switcher/Switcher';
+import { useSearchNavigate } from '@hooks/useSearchNavigate';
+import { PlannerNavLink } from '@planner/styled';
+import { useAppSelector } from '@redux/hooks/hooks';
 import { plannerSelectEventInfoTabName } from '@selectors/planner';
-import { FC, memo, useCallback } from 'react';
-import styled from 'styled-components';
-
 import {
   disabledColor,
   pageHeaderColor,
 } from '@src/common/constants/constants';
 import { EVENT_INFORMER_TAB_NAMES } from '@src/common/constants/enums';
 import { disableReRender } from '@src/common/utils/react-utils';
+import { FC, memo } from 'react';
+import { useLocation } from 'react-router';
+import styled from 'styled-components';
 
-import { Switcher } from '@components/Switcher/Switcher';
 
 export interface TaskInformerSwitchersItem {
   title: string;
-  type: EVENT_INFORMER_TAB_NAMES;
+  type: string;
   badgeCount?: number;
 }
 
 interface TaskInformerSwitchers {}
 
-export const taskInformerSwitcherList: Array<TaskInformerSwitchersItem> = [
+export const taskInformerSwitcherList: Array<
+  SwitcherItem<EVENT_INFORMER_TAB_NAMES>
+> = [
   { title: 'Инфо', type: EVENT_INFORMER_TAB_NAMES.ABOUT },
   { title: 'Чек-лист', type: EVENT_INFORMER_TAB_NAMES.CHECK_LIST },
   { title: 'История', type: EVENT_INFORMER_TAB_NAMES.HISTORY },
@@ -29,6 +32,9 @@ export const taskInformerSwitcherList: Array<TaskInformerSwitchersItem> = [
   { title: 'Участники', type: EVENT_INFORMER_TAB_NAMES.MEMBERS },
   { title: 'Связи', type: EVENT_INFORMER_TAB_NAMES.CHAINS },
   { title: 'Голосования', type: EVENT_INFORMER_TAB_NAMES.VOTES },
+  { title: 'Финансы', type: EVENT_INFORMER_TAB_NAMES.FINANCE },
+  { title: 'Уведомления', type: EVENT_INFORMER_TAB_NAMES.NOTIFICATIONS },
+  { title: 'Интеграции', type: EVENT_INFORMER_TAB_NAMES.INTEGRATIONS },
 ];
 
 const Container = styled('div')`
@@ -40,21 +46,27 @@ const Container = styled('div')`
 
 export const TaskInformerSwitchers: FC<TaskInformerSwitchers> = memo(() => {
   const tabName = useAppSelector(plannerSelectEventInfoTabName);
-  const dispatch = useAppDispatch();
+  const navigate = useSearchNavigate();
+  const location = useLocation();
 
-  const changeTabNameHandle = useCallback(
-    (tabName: EVENT_INFORMER_TAB_NAMES) => {
-      dispatch(setEventInfoTabName(tabName));
-    },
-    []
-  );
   return (
     <Container>
       <Switcher
         scrollOptions={{ buttonColor: pageHeaderColor }}
         switchersList={taskInformerSwitcherList}
         selected={tabName}
-        onClick={(item) => changeTabNameHandle(item.type)}
+        onClick={(item) => navigate(item.type)}
+        component={({ item }) => (
+          <PlannerNavLink
+            to={{
+              pathname: item.type,
+              search: location.search,
+            }}
+            relative={'route'}
+          >
+            {item.title}
+          </PlannerNavLink>
+        )}
       />
     </Container>
   );

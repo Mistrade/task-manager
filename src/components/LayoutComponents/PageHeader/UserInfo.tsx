@@ -1,11 +1,11 @@
 import { useAppSelector } from '@redux/hooks/hooks';
 import { selectUserInfo } from '@selectors/session-selectors';
+import { Tooltip } from 'chernikov-kit';
 import { FC, useState } from 'react';
 
 import { EmptyButtonStyled } from '@components/Buttons/EmptyButton.styled';
 import { FlexBlock } from '@components/LayoutComponents';
 import { PageHeaderUserActions } from '@components/LayoutComponents/PageHeader/UserActions';
-import { Tooltip } from '@components/Tooltip/Tooltip';
 import { UserAvatar } from '@components/Users/UserAvatar';
 
 import { HeaderDefaultLink } from './Link.styled.';

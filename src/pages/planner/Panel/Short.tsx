@@ -1,10 +1,3 @@
-import React, { useState } from 'react';
-
-import { EmptyButtonStyled } from '@components/Buttons/EmptyButton.styled';
-import { SettingsIcon } from '@components/Icons/Icons';
-import { FlexBlock } from '@components/LayoutComponents';
-import { Tooltip } from '@components/Tooltip/Tooltip';
-
 import { currentColor } from '../../../common/constants/constants';
 import { bubbleAnimation } from '../Groups/GroupItem';
 import { GroupListShort } from '../Groups/GroupListShort';
@@ -13,6 +6,12 @@ import { CalendarCurrentTitle } from './CalendarCurrentTitle';
 import { CalendarHeaderAddButton } from './CalendarHeaderAddButton';
 import { CalendarTodaySwitchers } from './CalendarTodaySwitchers';
 import { PlannerSelectLayout } from './SelectLayout';
+import { EmptyButtonStyled } from '@components/Buttons/EmptyButton.styled';
+import { SettingsIcon } from '@components/Icons/Icons';
+import { FlexBlock } from '@components/LayoutComponents';
+import { Tooltip } from 'chernikov-kit';
+import React, { useState } from 'react';
+
 
 export const ShortPanelContent = () => {
   const [tooltipIsOpen, setTooltipIsOpen] = useState(false);
@@ -41,8 +40,7 @@ export const ShortPanelContent = () => {
         </FlexBlock>
         <Tooltip
           content={
-            <FlexBlock direction={'column'} gap={12}>
-              <CalendarCurrentTitle pattern={'short'} />
+            <FlexBlock direction={'column'} align={'center'} gap={12}>
               <FlexBlock
                 justify={'flex-start'}
                 width={'100%'}
@@ -51,9 +49,13 @@ export const ShortPanelContent = () => {
               >
                 <CalendarTodaySwitchers />
               </FlexBlock>
-              <OptionPanelCalendar
-                onSelectAction={() => setTooltipIsOpen(false)}
-              />
+
+              <CalendarCurrentTitle pattern={'short'} />
+              <FlexBlock mt={32}>
+                <OptionPanelCalendar
+                  onSelectAction={() => setTooltipIsOpen(false)}
+                />
+              </FlexBlock>
             </FlexBlock>
           }
           theme={'light'}

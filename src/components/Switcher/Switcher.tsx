@@ -1,18 +1,16 @@
+import Badge, { BadgeProps } from '../Badge';
+import { EmptyButtonStyled } from '../Buttons/EmptyButton.styled';
+import { Arrow } from '../Icons/Icons';
+import Shadow from '../Shadow/Inline';
+import { CutText, CutTextProps } from '../Text/Text';
+import { FlexBlock } from '@components/LayoutComponents';
+import { SwitchCalendarModeTab } from '@planner/styled';
+import { kitColors } from 'chernikov-kit';
 import React, { ReactNode, useRef } from 'react';
 import { ColorRing } from 'react-loader-spinner';
 import { useIntersection } from 'react-use';
 import { css } from 'styled-components';
 
-import { currentColor } from '@src/common/constants/constants';
-
-import { FlexBlock } from '@components/LayoutComponents';
-
-import { SwitchCalendarModeTab } from '@planner/styled';
-
-import { EmptyButtonStyled } from '../Buttons/EmptyButton.styled';
-import { Arrow } from '../Icons/Icons';
-import Shadow from '../Shadow/Inline';
-import { CutText, PreviewDescriptionProps } from '../Text/Text';
 
 export interface SwitcherItem<KEY> {
   title: string;
@@ -20,22 +18,30 @@ export interface SwitcherItem<KEY> {
 }
 
 export type SwitcherBadges<KEY extends string = string> = {
-  [key in KEY]?: number;
+  [key in KEY]?: number | string;
 };
 
-export interface SwitcherProps<T extends string = string> {
+export interface SwitcherProps<
+  T extends string = string,
+  Data extends SwitcherItem<T> = SwitcherItem<T>
+> {
   useShadow?: boolean;
-  switchersList: Array<SwitcherItem<T>>;
-  onClick: (item: SwitcherItem<T>) => void;
-  selected?: T;
+  switchersList: Array<Data>;
+  onClick?: (item: Data) => void;
+  selected?: T | string;
   badges?: SwitcherBadges<T> | null;
+  badgeProps?: BadgeProps;
   isLoading?: boolean;
   children?: ReactNode;
-  component?: (props: {
-    item: SwitcherItem<T>;
-    onClick: SwitcherProps<T>['onClick'];
-  }) => ReactNode;
-  tabProps?: PreviewDescriptionProps;
+  component?: (
+    props: {
+      item: Data;
+      onClick: SwitcherProps<T, Data>['onClick'];
+      badge: ReactNode;
+      index: number;
+    } & SwitcherProps<T, Data>
+  ) => ReactNode;
+  tabProps?: CutTextProps;
   scrollOptions?: {
     scrollStepInPx?: number;
     buttonColor?: string;
@@ -53,7 +59,10 @@ export const hideScrollBar = css`
   }
 `;
 
-export function Switcher<T extends string = string>(props: SwitcherProps<T>) {
+export function Switcher<
+  T extends string = string,
+  Data extends SwitcherItem<T> = SwitcherItem<T>
+>(props: SwitcherProps<T, Data>) {
   const scrollContainerRef = useRef<HTMLDivElement>(null);
   const nonRightViewRef = useRef<HTMLDivElement>(null);
   const observerRight = useIntersection(nonRightViewRef, {
@@ -68,6 +77,8 @@ export function Switcher<T extends string = string>(props: SwitcherProps<T>) {
     root: scrollContainerRef.current,
   });
 
+  const containerRef = useRef<HTMLDivElement>(null);
+
   return (
     <FlexBlock
       justify={'space-between'}
@@ -76,7 +87,12 @@ export function Switcher<T extends string = string>(props: SwitcherProps<T>) {
       width={'100%'}
       shrink={0}
     >
-      <FlexBlock grow={3} overflow={'hidden'} position={'relative'}>
+      <FlexBlock
+        grow={3}
+        overflow={'hidden'}
+        position={'relative'}
+        ref={containerRef}
+      >
         {!observerLeft?.isIntersecting && observerLeft?.target && (
           <>
             <FlexBlock
@@ -97,7 +113,9 @@ export function Switcher<T extends string = string>(props: SwitcherProps<T>) {
                 onClick={() => {
                   if (scrollContainerRef.current) {
                     scrollContainerRef.current.scrollLeft -=
-                      props.scrollOptions?.scrollStepInPx || 150;
+                      (containerRef?.current?.offsetWidth || 0) * 0.5 ||
+                      props.scrollOptions?.scrollStepInPx ||
+                      150;
                   }
                 }}
               >
@@ -114,6 +132,7 @@ export function Switcher<T extends string = string>(props: SwitcherProps<T>) {
           additionalCss={css`
             scroll-behavior: smooth;
             scroll-snap-type: x mandatory;
+            overscroll-behavior: none;
             ${hideScrollBar};
           `}
         >
@@ -124,39 +143,43 @@ export function Switcher<T extends string = string>(props: SwitcherProps<T>) {
             )}
           <FlexBlock width={'fit-content'}>
             <div style={{ width: 0, height: 0 }} ref={nonViewLeftRef} />
-            {props.switchersList.map((item, index) =>
-              props.component ? (
-                props.component({
-                  item,
-                  onClick: props.onClick,
-                })
+            {props.switchersList.map((item, index) => {
+              const badge = props.badges && props.badges[item.type] && (
+                <Badge type={'primary'} {...props.badgeProps}>
+                  {props.badges[item.type]}
+                </Badge>
+              );
+
+              return props.component ? (
+                <React.Fragment key={index}>
+                  {props.component({
+                    item,
+                    onClick: props.onClick,
+                    badge,
+                    index,
+                    ...props,
+                  })}
+                </React.Fragment>
               ) : (
                 <SwitchCalendarModeTab
                   delayByStepMs={50}
                   animationIndex={index}
                   data-number={index}
                   type={'button'}
-                  key={item.type}
+                  key={index}
                   title={item.title}
                   onClick={(event: React.MouseEvent<HTMLButtonElement>) => {
-                    props.onClick(item);
-
-                    const target = event.target as HTMLButtonElement;
-
-                    target.scrollIntoView({
-                      inline: 'center',
-                      block: 'nearest',
-                      behavior: 'smooth',
-                    });
+                    props.onClick && props.onClick(item);
                   }}
                   isSelected={item.type === props.selected}
                 >
                   <CutText rows={1} fontSize={15} {...props.tabProps}>
                     {item.title}
                   </CutText>
+                  {badge}
                 </SwitchCalendarModeTab>
-              )
-            )}
+              );
+            })}
             <div style={{ width: 0, height: 0 }} ref={nonRightViewRef} />
           </FlexBlock>
           {props.useShadow &&
@@ -183,7 +206,9 @@ export function Switcher<T extends string = string>(props: SwitcherProps<T>) {
                 );
                 if (scrollContainerRef.current) {
                   scrollContainerRef.current.scrollLeft +=
-                    props.scrollOptions?.scrollStepInPx || 150;
+                    (containerRef?.current?.offsetWidth || 0) * 0.5 ||
+                    props.scrollOptions?.scrollStepInPx ||
+                    150;
                 }
                 console.log(
                   scrollContainerRef.current?.scrollWidth,
@@ -208,11 +233,11 @@ export function Switcher<T extends string = string>(props: SwitcherProps<T>) {
             wrapperStyle={{}}
             wrapperClass='blocks-wrapper'
             colors={[
-              currentColor,
-              currentColor,
-              currentColor,
-              currentColor,
-              currentColor,
+              kitColors.primary,
+              kitColors.primary,
+              kitColors.primary,
+              kitColors.primary,
+              kitColors.primary,
             ]}
           />
         )}

@@ -68,6 +68,10 @@ export enum EVENT_INFORMER_TAB_NAMES {
   'COMMENTS' = 'comments',
   'CHECK_LIST' = 'checkList',
   'VOTES' = 'votes',
+  'FINANCE' = 'finance',
+  'MATERIALS' = 'materials',
+  'NOTIFICATIONS' = 'notifications',
+  'INTEGRATIONS' = 'integrations',
 }
 
 export enum FRIEND_REQUESTS_TYPES {

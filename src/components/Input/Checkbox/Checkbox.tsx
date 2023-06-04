@@ -1,7 +1,3 @@
-import { ChangeEvent, FC, ReactNode, useRef } from 'react';
-
-import { darkColor } from '@src/common/constants/constants';
-
 import { EmptyButtonStyled } from '@components/Buttons/EmptyButton.styled';
 import { IconProps, LoaderIcon } from '@components/Icons/Icons';
 import {
@@ -12,6 +8,9 @@ import { CheckboxStyledInput } from '@components/Input/Checkbox/Checkbox.styled'
 import { StyledLabel } from '@components/Input/Input.styled';
 import { FlexBlock } from '@components/LayoutComponents';
 import { CutText } from '@components/Text/Text';
+import { darkColor } from '@src/common/constants/constants';
+import { ChangeEvent, FC, ReactNode, useRef } from 'react';
+
 
 export interface CheckboxProps {
   type: 'checkbox' | 'radio';
@@ -50,7 +49,7 @@ export const Checkbox: FC<CheckboxProps> = ({
         checked={isChecked}
       />
       <EmptyButtonStyled
-        style={{ padding: 2 }}
+        style={{ padding: 0 }}
         onClick={() => ref.current?.click() && console.log('click')}
       >
         {isChecked ? (

@@ -1,9 +1,9 @@
+import { FlexBlock } from '@components/LayoutComponents';
+import { CutText } from '@components/Text/Text';
+import { Tooltip } from 'chernikov-kit';
 import dayjs from 'dayjs';
 import React from 'react';
 
-import { FlexBlock } from '@components/LayoutComponents';
-import { CutText } from '@components/Text/Text';
-import { Tooltip } from '@components/Tooltip/Tooltip';
 
 export const TimeZone = () => {
   return (

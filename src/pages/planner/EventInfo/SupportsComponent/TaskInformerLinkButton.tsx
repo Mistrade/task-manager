@@ -1,7 +1,6 @@
-import { useFormik } from 'formik';
-import { FC, ReactNode, useState } from 'react';
-import * as yup from 'yup';
-
+import { StyledTaskInformerLinkForm } from '../TaskInformer.styled';
+import { EditableFieldsButtons } from './EditableFieldsButtons';
+import { EventInfoUpdateFn } from './ToggleTaskInformerButtons';
 import {
   JoinToEventButton,
   TransparentButton,
@@ -10,14 +9,13 @@ import { EmptyButtonStyled } from '@components/Buttons/EmptyButton.styled';
 import { PencilIcon, TrashIcon } from '@components/Icons/Icons';
 import { SelectLinks } from '@components/Input/SelectInput/CalendarSelectInputs/SelectLinks';
 import { FlexBlock } from '@components/LayoutComponents';
-import { Tooltip } from '@components/Tooltip/Tooltip';
-
 import { LinkValidationSchema } from '@planner/Forms/CreateEvent/CreateEventForm';
 import { EventItem, EventLinkItem } from '@planner/types';
+import { Tooltip } from 'chernikov-kit';
+import { useFormik } from 'formik';
+import React, { FC, ReactNode, useState } from 'react';
+import * as yup from 'yup';
 
-import { StyledTaskInformerLinkForm } from '../TaskInformer.styled';
-import { EditableFieldsButtons } from './EditableFieldsButtons';
-import { EventInfoUpdateFn } from './ToggleTaskInformerButtons';
 
 interface InformerTaskAddLinkProps {
   onDecline: () => void;

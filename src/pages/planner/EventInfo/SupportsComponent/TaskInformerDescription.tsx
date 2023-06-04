@@ -1,22 +1,20 @@
-import { useFormik } from 'formik';
-import { FC, useEffect, useState } from 'react';
-import styled, { css } from 'styled-components';
-
-import { currentColor, disabledColor } from '@src/common/constants/constants';
-import { borderRadiusSize } from '@src/common/css/mixins';
-
+import { StyledTaskInformerLinkForm } from '../TaskInformer.styled';
+import { EditableFieldsButtons } from './EditableFieldsButtons';
+import { EventInfoUpdateFn } from './ToggleTaskInformerButtons';
 import { CopyToClipboardButton } from '@components/Buttons/CopyToClipboardButton';
 import { EmptyButtonStyled } from '@components/Buttons/EmptyButton.styled';
 import { PencilIcon } from '@components/Icons/Icons';
 import { InputLabel } from '@components/Input/InputSupportComponents/InputLabel';
 import { TextAreaInput } from '@components/Input/TextAreaInput/TextAreaInput';
 import { FlexBlock } from '@components/LayoutComponents';
-
 import { EventInfoBaseProps } from '@planner/types';
+import { disabledColor } from '@src/common/constants/constants';
+import { borderRadiusSize } from '@src/common/css/mixins';
+import { kitColors } from 'chernikov-kit';
+import { useFormik } from 'formik';
+import { FC, useEffect, useState } from 'react';
+import styled, { css } from 'styled-components';
 
-import { StyledTaskInformerLinkForm } from '../TaskInformer.styled';
-import { EditableFieldsButtons } from './EditableFieldsButtons';
-import { EventInfoUpdateFn } from './ToggleTaskInformerButtons';
 
 interface TaskInformerDescriptionProps extends EventInfoBaseProps {
   updateFn: EventInfoUpdateFn;
@@ -185,7 +183,7 @@ export const TaskInformerDescription: FC<TaskInformerDescriptionProps> = ({
             gap={6}
             pl={8}
             additionalCss={css`
-              color: ${currentColor};
+              color: ${kitColors.primary};
             `}
           >
             Описание

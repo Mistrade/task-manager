@@ -1,20 +1,3 @@
-import dayjs, { Dayjs } from 'dayjs';
-
-import { PLANNER_LAYOUTS } from '@src/common/constants/enums';
-
-import {
-  EventItem,
-  EventsStorage,
-  PlannerMode,
-  PlannerMonthMode,
-} from '@planner/types';
-
-import {
-  EventInfoModel,
-  ShortEventInfoModel,
-} from '@api/planning-api/types/event-info.types';
-import { UserModel } from '@api/session-api/session-api.types';
-
 import { DateHelper } from './calendarSupport/dateHelper';
 import {
   ChangeDayCurrentFn,
@@ -25,6 +8,19 @@ import {
   ShortChangeCurrentPattern,
 } from './commonTypes';
 import { MonthList, WeekDaysShortList } from './constants/constants';
+import {
+  EventInfoModel,
+  ShortEventInfoModel,
+} from '@api/planning-api/types/event-info.types';
+import { UserModel } from '@api/session-api/session-api.types';
+import {
+  EventItem,
+  EventsStorage,
+  PlannerMode,
+  PlannerMonthMode,
+} from '@planner/types';
+import { PLANNER_LAYOUTS } from '@src/common/constants/enums';
+import dayjs, { Dayjs } from 'dayjs';
 
 export const addNull = (value: number): string =>
   value < 10 ? `0${value}` : value.toString();
@@ -361,7 +357,7 @@ export const mergeArrayWithUserId = <
   return arr;
 };
 
-export const getPath = (...arr: Array<string>) => {
+export const getPath = (...arr: Array<string>): string => {
   return '/' + arr.join('/');
 };
 

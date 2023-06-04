@@ -1,14 +1,12 @@
-import { useFormik } from 'formik';
-import * as yup from 'yup';
-
+import { useAddContactMutation } from '@api/friends-api';
+import { CatchHandleForToast, thenHandleForToast } from '@api/tools';
 import { Button } from '@components/Buttons/Buttons.styled';
 import { PhoneIcon } from '@components/Icons/Session/LogoutIcon';
 import { TextInput } from '@components/Input/TextInput/TextInput';
 import { FlexBlock } from '@components/LayoutComponents';
-import { Tooltip } from '@components/Tooltip/Tooltip';
-
-import { useAddContactMutation } from '@api/friends-api';
-import { CatchHandleForToast, thenHandleForToast } from '@api/tools';
+import { Tooltip } from 'chernikov-kit';
+import { useFormik } from 'formik';
+import * as yup from 'yup';
 
 
 const phonePattern = new RegExp(

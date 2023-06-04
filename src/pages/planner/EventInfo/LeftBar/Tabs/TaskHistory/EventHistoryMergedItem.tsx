@@ -1,20 +1,3 @@
-import { useCreateEventModal } from '@hooks/useCreateEventModal';
-import { useAppSelector } from '@redux/hooks/hooks';
-import { plannerSelectLayout } from '@selectors/planner';
-import { selectUserInfo } from '@selectors/session-selectors';
-import React, { ReactNode } from 'react';
-
-import { currentColor } from '@src/common/constants/constants';
-import { SERVICES_NAMES } from '@src/common/constants/enums';
-import { MergedObject, getPath } from '@src/common/functions';
-
-import { LinkStyled } from '@components/Buttons/Link.styled';
-import { UserHoverCard } from '@components/HoverCard/UserHoverCard';
-import { Tooltip } from '@components/Tooltip/Tooltip';
-import { UserAvatar } from '@components/Users/UserAvatar';
-
-import { UserModel } from '@api/session-api/session-api.types';
-
 import {
   CommentStickyAvatar,
   MergedCommentContainer,
@@ -22,6 +5,19 @@ import {
   MergedCommentDataUserName,
   MergedCommentUserInfo,
 } from '../TaskComments/SupportComponents/MergedCommentItem';
+import { UserModel } from '@api/session-api/session-api.types';
+import { LinkStyled } from '@components/Buttons/Link.styled';
+import { UserHoverCard } from '@components/HoverCard/UserHoverCard';
+import { UserAvatar } from '@components/Users/UserAvatar';
+import { useCreateEventModal } from '@hooks/useCreateEventModal';
+import { useAppSelector } from '@redux/hooks/hooks';
+import { plannerSelectLayout } from '@selectors/planner';
+import { selectUserInfo } from '@selectors/session-selectors';
+import { SERVICES_NAMES } from '@src/common/constants/enums';
+import { getPath, MergedObject } from '@src/common/functions';
+import { kitColors, Tooltip } from 'chernikov-kit';
+import React, { ReactNode } from 'react';
+
 
 export interface EventHistoryMergedItemProps<
   Type,
@@ -41,6 +37,7 @@ export function MergedNote<
   const { openModal } = useCreateEventModal();
   const currentUser = useAppSelector(selectUserInfo);
   const layout = useAppSelector(plannerSelectLayout);
+
   return (
     <MergedCommentContainer>
       <MergedCommentUserInfo>
@@ -72,9 +69,9 @@ export function MergedNote<
             }
             theme={'light'}
             delay={[500, 100]}
-            placement={'right'}
+            placement={'right-start'}
             animation={'shift-away'}
-            offset={[0, 15]}
+            // offset={[0, 15]}
             interactive={true}
             interactiveBorder={4}
           >
@@ -85,7 +82,7 @@ export function MergedNote<
       <MergedCommentDataContainer>
         <MergedCommentDataUserName>
           <LinkStyled
-            style={{ color: currentColor, fontSize: 16 }}
+            style={{ color: kitColors.primary, fontSize: 16 }}
             to={`/profile/${mergeItem.user._id}`}
             target={'_blank'}
           >

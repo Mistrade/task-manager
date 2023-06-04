@@ -1,5 +1,8 @@
-import { useMemo, useState } from 'react';
-
+import {
+  darkColor,
+  defaultColor,
+} from '../../../../../../common/constants/constants';
+import { EventVotesHeader } from './Header';
 import { CopyToClipboardButton } from '@components/Buttons/CopyToClipboardButton';
 import { EmptyButtonStyled } from '@components/Buttons/EmptyButton.styled';
 import { CheckListAddInput } from '@components/CheckList';
@@ -8,340 +11,40 @@ import { TooltipIcon } from '@components/Icons/TooltipIcon';
 import { FlexBlock, VerticalScroll } from '@components/LayoutComponents';
 import { CutText } from '@components/Text/Text';
 import Votes, { VOTE_STATUSES, VoteObject } from '@components/Votes';
+import { useState } from 'react';
 
-import {
-  darkColor,
-  defaultColor,
-} from '../../../../../../common/constants/constants';
-import { EventVotesHeader } from './Header';
 
 export const EventVotes = () => {
   const [selectedKey, setSelectedKey] = useState('react-developer');
 
-  const voteItem: VoteObject = useMemo(
-    () => ({
-      title: 'Голосование за пидора',
-      elements: [
-        {
-          name: 'Андрей Черников',
-          _id: 'andrey_chernikov',
-          statusByCurrentUser: VOTE_STATUSES.DISLIKE,
-          likes: [],
-          dislikes: [],
-        },
-        {
-          name: 'Ильдар Усманов',
-          _id: 'ildar_usmanov',
-          statusByCurrentUser: VOTE_STATUSES.DISLIKE,
-          likes: [],
-          dislikes: [],
-        },
-        {
-          name: 'Влад Валеев',
-          _id: 'vlad_valeev',
-          statusByCurrentUser: VOTE_STATUSES.LIKE,
-          likes: [],
-          dislikes: [],
-        },
-        {
-          name: 'Андрей Черников',
-          _id: 'andrey_chernikov',
-          statusByCurrentUser: VOTE_STATUSES.DISLIKE,
-          likes: [],
-          dislikes: [],
-        },
-        {
-          name: 'Ильдар Усманов',
-          _id: 'ildar_usmanov',
-          statusByCurrentUser: VOTE_STATUSES.DISLIKE,
-          likes: [],
-          dislikes: [],
-        },
-        {
-          name: 'Влад Валеев',
-          _id: 'vlad_valeev',
-          statusByCurrentUser: VOTE_STATUSES.LIKE,
-          likes: [],
-          dislikes: [],
-        },
-        {
-          name: 'Андрей Черников',
-          _id: 'andrey_chernikov',
-          statusByCurrentUser: VOTE_STATUSES.DISLIKE,
-          likes: [],
-          dislikes: [],
-        },
-        {
-          name: 'Ильдар Усманов',
-          _id: 'ildar_usmanov',
-          statusByCurrentUser: VOTE_STATUSES.DISLIKE,
-          likes: [],
-          dislikes: [],
-        },
-        {
-          name: 'Влад Валеев',
-          _id: 'vlad_valeev',
-          statusByCurrentUser: VOTE_STATUSES.LIKE,
-          likes: [],
-          dislikes: [],
-        },
-        {
-          name: 'Андрей Черников',
-          _id: 'andrey_chernikov',
-          statusByCurrentUser: VOTE_STATUSES.DISLIKE,
-          likes: [],
-          dislikes: [],
-        },
-        {
-          name: 'Ильдар Усманов',
-          _id: 'ildar_usmanov',
-          statusByCurrentUser: VOTE_STATUSES.DISLIKE,
-          likes: [],
-          dislikes: [],
-        },
-        {
-          name: 'Влад Валеев',
-          _id: 'vlad_valeev',
-          statusByCurrentUser: VOTE_STATUSES.LIKE,
-          likes: [],
-          dislikes: [],
-        },
-        {
-          name: 'Андрей Черников',
-          _id: 'andrey_chernikov',
-          statusByCurrentUser: VOTE_STATUSES.DISLIKE,
-          likes: [],
-          dislikes: [],
-        },
-        {
-          name: 'Ильдар Усманов',
-          _id: 'ildar_usmanov',
-          statusByCurrentUser: VOTE_STATUSES.DISLIKE,
-          likes: [],
-          dislikes: [],
-        },
-        {
-          name: 'Влад Валеев',
-          _id: 'vlad_valeev',
-          statusByCurrentUser: VOTE_STATUSES.LIKE,
-          likes: [],
-          dislikes: [],
-        },
-        {
-          name: 'Андрей Черников',
-          _id: 'andrey_chernikov',
-          statusByCurrentUser: VOTE_STATUSES.DISLIKE,
-          likes: [],
-          dislikes: [],
-        },
-        {
-          name: 'Ильдар Усманов',
-          _id: 'ildar_usmanov',
-          statusByCurrentUser: VOTE_STATUSES.DISLIKE,
-          likes: [],
-          dislikes: [],
-        },
-        {
-          name: 'Влад Валеев',
-          _id: 'vlad_valeev',
-          statusByCurrentUser: VOTE_STATUSES.LIKE,
-          likes: [],
-          dislikes: [],
-        },
-        {
-          name: 'Андрей Черников',
-          _id: 'andrey_chernikov',
-          statusByCurrentUser: VOTE_STATUSES.DISLIKE,
-          likes: [],
-          dislikes: [],
-        },
-        {
-          name: 'Ильдар Усманов',
-          _id: 'ildar_usmanov',
-          statusByCurrentUser: VOTE_STATUSES.DISLIKE,
-          likes: [],
-          dislikes: [],
-        },
-        {
-          name: 'Влад Валеев',
-          _id: 'vlad_valeev',
-          statusByCurrentUser: VOTE_STATUSES.LIKE,
-          likes: [],
-          dislikes: [],
-        },
-        {
-          name: 'Андрей Черников',
-          _id: 'andrey_chernikov',
-          statusByCurrentUser: VOTE_STATUSES.DISLIKE,
-          likes: [],
-          dislikes: [],
-        },
-        {
-          name: 'Ильдар Усманов',
-          _id: 'ildar_usmanov',
-          statusByCurrentUser: VOTE_STATUSES.DISLIKE,
-          likes: [],
-          dislikes: [],
-        },
-        {
-          name: 'Влад Валеев',
-          _id: 'vlad_valeev',
-          statusByCurrentUser: VOTE_STATUSES.LIKE,
-          likes: [],
-          dislikes: [],
-        },
-        {
-          name: 'Андрей Черников',
-          _id: 'andrey_chernikov',
-          statusByCurrentUser: VOTE_STATUSES.DISLIKE,
-          likes: [],
-          dislikes: [],
-        },
-        {
-          name: 'Ильдар Усманов',
-          _id: 'ildar_usmanov',
-          statusByCurrentUser: VOTE_STATUSES.DISLIKE,
-          likes: [],
-          dislikes: [],
-        },
-        {
-          name: 'Влад Валеев',
-          _id: 'vlad_valeev',
-          statusByCurrentUser: VOTE_STATUSES.LIKE,
-          likes: [],
-          dislikes: [],
-        },
-        {
-          name: 'Андрей Черников',
-          _id: 'andrey_chernikov',
-          statusByCurrentUser: VOTE_STATUSES.DISLIKE,
-          likes: [],
-          dislikes: [],
-        },
-        {
-          name: 'Ильдар Усманов',
-          _id: 'ildar_usmanov',
-          statusByCurrentUser: VOTE_STATUSES.DISLIKE,
-          likes: [],
-          dislikes: [],
-        },
-        {
-          name: 'Влад Валеев',
-          _id: 'vlad_valeev',
-          statusByCurrentUser: VOTE_STATUSES.LIKE,
-          likes: [],
-          dislikes: [],
-        },
-        {
-          name: 'Андрей Черников',
-          _id: 'andrey_chernikov',
-          statusByCurrentUser: VOTE_STATUSES.DISLIKE,
-          likes: [],
-          dislikes: [],
-        },
-        {
-          name: 'Ильдар Усманов',
-          _id: 'ildar_usmanov',
-          statusByCurrentUser: VOTE_STATUSES.DISLIKE,
-          likes: [],
-          dislikes: [],
-        },
-        {
-          name: 'Влад Валеев',
-          _id: 'vlad_valeev',
-          statusByCurrentUser: VOTE_STATUSES.LIKE,
-          likes: [],
-          dislikes: [],
-        },
-        {
-          name: 'Андрей Черников',
-          _id: 'andrey_chernikov',
-          statusByCurrentUser: VOTE_STATUSES.DISLIKE,
-          likes: [],
-          dislikes: [],
-        },
-        {
-          name: 'Ильдар Усманов',
-          _id: 'ildar_usmanov',
-          statusByCurrentUser: VOTE_STATUSES.DISLIKE,
-          likes: [],
-          dislikes: [],
-        },
-        {
-          name: 'Влад Валеев',
-          _id: 'vlad_valeev',
-          statusByCurrentUser: VOTE_STATUSES.LIKE,
-          likes: [],
-          dislikes: [],
-        },
-        {
-          name: 'Андрей Черников',
-          _id: 'andrey_chernikov',
-          statusByCurrentUser: VOTE_STATUSES.DISLIKE,
-          likes: [],
-          dislikes: [],
-        },
-        {
-          name: 'Ильдар Усманов',
-          _id: 'ildar_usmanov',
-          statusByCurrentUser: VOTE_STATUSES.DISLIKE,
-          likes: [],
-          dislikes: [],
-        },
-        {
-          name: 'Влад Валеев',
-          _id: 'vlad_valeev',
-          statusByCurrentUser: VOTE_STATUSES.LIKE,
-          likes: [],
-          dislikes: [],
-        },
-        {
-          name: 'Андрей Черников',
-          _id: 'andrey_chernikov',
-          statusByCurrentUser: VOTE_STATUSES.DISLIKE,
-          likes: [],
-          dislikes: [],
-        },
-        {
-          name: 'Ильдар Усманов',
-          _id: 'ildar_usmanov',
-          statusByCurrentUser: VOTE_STATUSES.DISLIKE,
-          likes: [],
-          dislikes: [],
-        },
-        {
-          name: 'Влад Валеев',
-          _id: 'vlad_valeev',
-          statusByCurrentUser: VOTE_STATUSES.LIKE,
-          likes: [],
-          dislikes: [],
-        },
-        {
-          name: 'Андрей Черников',
-          _id: 'andrey_chernikov',
-          statusByCurrentUser: VOTE_STATUSES.DISLIKE,
-          likes: [],
-          dislikes: [],
-        },
-        {
-          name: 'Ильдар Усманов',
-          _id: 'ildar_usmanov',
-          statusByCurrentUser: VOTE_STATUSES.DISLIKE,
-          likes: [],
-          dislikes: [],
-        },
-        {
-          name: 'Влад Валеев',
-          _id: 'vlad_valeev',
-          statusByCurrentUser: VOTE_STATUSES.LIKE,
-          likes: [],
-          dislikes: [],
-        },
-      ],
-      selected: {},
-    }),
-    []
-  );
+  const [voteItem, setVoteItem] = useState<VoteObject>(() => ({
+    title: 'Голосование за пидора',
+    elements: [
+      {
+        name: 'Андрей Черников',
+        _id: 'andrey_chernikov',
+        statusByCurrentUser: VOTE_STATUSES.DISLIKE,
+        likes: [],
+        dislikes: [],
+      },
+      {
+        name: 'Ильдар Усманов',
+        _id: 'ildar_usmanov',
+        statusByCurrentUser: VOTE_STATUSES.DISLIKE,
+        likes: [],
+        dislikes: [],
+      },
+      {
+        name: 'Влад Валеев',
+        _id: 'vlad_valeev',
+        statusByCurrentUser: VOTE_STATUSES.LIKE,
+        likes: [],
+        dislikes: [],
+      },
+    ],
+    selected: {},
+  }));
+
   return (
     <FlexBlock height={'100%'} direction={'column'} width={'100%'} gap={12}>
       <EventVotesHeader selected={selectedKey} setSelected={setSelectedKey} />
@@ -350,7 +53,7 @@ export const EventVotes = () => {
           placementStatic={'top'}
           gap={12}
           staticContent={
-            <FlexBlock direction={'column'} gap={12}>
+            <FlexBlock direction={'column'} gap={18}>
               <FlexBlock
                 width={'100%'}
                 pl={8}
@@ -379,7 +82,6 @@ export const EventVotes = () => {
               <CheckListAddInput
                 label={'Добавьте объекты для голосования'}
                 onSave={async (value) => {
-                  // setAddElementTooltipState(false);
                   return true;
                 }}
               />

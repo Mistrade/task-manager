@@ -1,21 +1,12 @@
-import { FC, forwardRef, useMemo } from 'react';
-
-import {
-  currentColor,
-  darkColor,
-  defaultColor,
-} from '@src/common/constants/constants';
-
+import { EventToggleButtonProps } from './EventStatusButton';
+import { GroupModelResponse } from '@api/planning-api/types/groups.types';
 import { EmptyButtonStyled } from '@components/Buttons/EmptyButton.styled';
 import { LoaderIcon } from '@components/Icons/Icons';
 import { FlexBlock } from '@components/LayoutComponents';
-import { Tooltip } from '@components/Tooltip/Tooltip';
-
 import { GroupLogo } from '@planner/Groups/styled';
+import { kitColors, Tooltip } from 'chernikov-kit';
+import { FC, forwardRef, useMemo } from 'react';
 
-import { GroupModelResponse } from '@api/planning-api/types/groups.types';
-
-import { EventToggleButtonProps } from './EventStatusButton';
 
 export interface EventGroupButtonProps extends EventToggleButtonProps {
   group: GroupModelResponse | null;
@@ -36,13 +27,17 @@ export const EventGroupButton: FC<EventGroupButtonProps> = forwardRef<
           gap={6}
           align={'center'}
           fSize={15}
-          style={{ color: darkColor }}
+          style={{ color: kitColors.dark }}
         >
           {props.isLoading ? (
-            <LoaderIcon size={20} {...props.iconProps} color={currentColor} />
+            <LoaderIcon
+              size={20}
+              {...props.iconProps}
+              color={kitColors.primary}
+            />
           ) : (
             <GroupLogo
-              color={props.group?.color || defaultColor}
+              color={props.group?.color || kitColors.divider}
               {...props.iconProps}
             />
           )}

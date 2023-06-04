@@ -1,7 +1,10 @@
-import { FC, memo, useState } from 'react';
-
-import { CenteredContainer } from '@src/routes/Interceptors/SessionInterceptor';
-
+import { ConnectTypesArray } from './Connect/ChainsShowcase';
+import { ConnectChains } from './Connect/ConnectChains';
+import { ChainsRenderModeList } from './View/ViewTypes/ChainsRenderModeList';
+import { ChildrenEventList } from './View/ViewTypes/ChildrenEventList';
+import { EVENT_DEPENDENCIES_MAP } from './event-chains.types';
+import { useGetEventChainsQuery } from '@api/planning-api';
+import { EventInfoModel } from '@api/planning-api/types/event-info.types';
 import { EmptyButtonStyled } from '@components/Buttons/EmptyButton.styled';
 import { LinkStyled } from '@components/Buttons/Link.styled';
 import { ErrorScreen } from '@components/Errors/ErrorScreen';
@@ -10,14 +13,18 @@ import { FlexBlock } from '@components/LayoutComponents';
 import { VerticalScroll } from '@components/LayoutComponents/ScrollView/VerticalScroll';
 import { Loader } from '@components/Loaders/Loader';
 import { Switcher } from '@components/Switcher/Switcher';
-import { Tooltip } from '@components/Tooltip/Tooltip';
+import {
+  dateToPlannerDate,
+  getSearchStringFromEntries,
+  plannerDateToSearchParams,
+} from '@planner-reducer/utils';
+import { PlannerNavLink } from '@planner/styled';
+import { CenteredContainer } from '@src/routes/Interceptors/SessionInterceptor';
+import { Tooltip } from 'chernikov-kit';
+import { FC, memo, useState } from 'react';
+import { Route } from 'react-router';
+import { Routes } from 'react-router-dom';
 
-import { useGetEventChainsQuery } from '@api/planning-api';
-import { EventInfoModel } from '@api/planning-api/types/event-info.types';
-
-import { ConnectChains } from './Connect/ConnectChains';
-import { ChainsRenderModeList } from './View/ViewTypes/ChainsRenderModeList';
-import { ConnectChainsType } from './event-chains.types';
 
 interface EventChainsTabProps {
   taskItem: EventInfoModel;
@@ -26,10 +33,8 @@ interface EventChainsTabProps {
 export const EventChainsTab: FC<EventChainsTabProps> = memo(
   ({ taskItem }) => {
     const [addChains, setAddChains] = useState(false);
-    const [initialType, setInitialType] = useState<ConnectChainsType | null>(
-      null
-    );
-    const [renderMode, setRenderMode] = useState<'list' | 'tree'>('list');
+    const [initialType, setInitialType] =
+      useState<EVENT_DEPENDENCIES_MAP | null>(null);
 
     const {
       data: chainsObject,
@@ -115,12 +120,44 @@ export const EventChainsTab: FC<EventChainsTabProps> = memo(
         staticContent={
           <FlexBlock width={'100%'} align={'center'}>
             <Switcher
+              badges={{
+                [EVENT_DEPENDENCIES_MAP.CHILD_OF]:
+                  chainsObject.data.childrenEvents?.length || 0,
+                [EVENT_DEPENDENCIES_MAP.PARENT_OF]: chainsObject.data
+                  .parentEvent
+                  ? 1
+                  : 0,
+                [EVENT_DEPENDENCIES_MAP.LINKED_FROM]: chainsObject.data
+                  .linkedFromEvent
+                  ? 1
+                  : 0,
+                [EVENT_DEPENDENCIES_MAP.ALL]: 0,
+              }}
               switchersList={[
-                { title: 'Список', type: 'list' },
-                { title: 'Древовидная структура', type: 'tree' },
+                { title: 'Все', type: EVENT_DEPENDENCIES_MAP.ALL },
+                {
+                  title: 'Клонировано от',
+                  type: EVENT_DEPENDENCIES_MAP.LINKED_FROM,
+                },
+                ...ConnectTypesArray,
               ]}
-              onClick={(item) => setRenderMode(item.type)}
-              selected={renderMode}
+              component={({ item, badge }) => (
+                <PlannerNavLink
+                  to={{
+                    pathname: item.type,
+                    search: getSearchStringFromEntries(
+                      plannerDateToSearchParams(
+                        dateToPlannerDate(taskItem.time)
+                      )
+                    ),
+                  }}
+                  relative={'route'}
+                  end
+                >
+                  {item.title}
+                  {badge || ''}
+                </PlannerNavLink>
+              )}
             >
               <FlexBlock
                 pb={4}
@@ -130,7 +167,7 @@ export const EventChainsTab: FC<EventChainsTabProps> = memo(
                 justify={'flex-end'}
               >
                 <EmptyButtonStyled onClick={() => setAddChains(true)}>
-                  Создать связи
+                  Добавить
                 </EmptyButtonStyled>
                 <Tooltip
                   interactiveBorder={4}
@@ -155,24 +192,100 @@ export const EventChainsTab: FC<EventChainsTabProps> = memo(
         renderPattern={'top-bottom'}
         gap={12}
       >
-        {renderMode === 'list' && (
-          <ChainsRenderModeList
-            onConnectChains={() => setAddChains(true)}
-            eventItem={taskItem}
-            chains={chainsObject?.data}
+        <Routes>
+          <Route
+            index={true}
+            element={
+              <ChainsRenderModeList
+                eventItem={taskItem}
+                chains={chainsObject.data}
+                onConnectChains={() => {}}
+              />
+            }
           />
-        )}
-        {renderMode === 'tree' && (
-          <CenteredContainer>
-            <ErrorScreen
-              title={'Раздел в разработке'}
-              errorType={'BAD_REQUEST'}
-              description={
-                'Этот раздел находится в разработке и скоро им можно будет пользоваться.'
-              }
-            />
-          </CenteredContainer>
-        )}
+          <Route
+            path={EVENT_DEPENDENCIES_MAP.CHILD_OF}
+            element={
+              <ChildrenEventList
+                childrenEvents={chainsObject.data.childrenEvents}
+                emptyComponent={
+                  <CenteredContainer>
+                    <ErrorScreen
+                      title={'Дочерние зависимости не найдены'}
+                      errorType={'BAD_REQUEST'}
+                      action={{
+                        title: 'Добавить',
+                        onClick() {},
+                      }}
+                    />
+                  </CenteredContainer>
+                }
+              />
+            }
+          />
+          <Route
+            path={EVENT_DEPENDENCIES_MAP.PARENT_OF}
+            element={
+              <ChildrenEventList
+                childrenEvents={
+                  chainsObject.data.parentEvent
+                    ? [chainsObject.data.parentEvent]
+                    : []
+                }
+                emptyComponent={
+                  <CenteredContainer>
+                    <ErrorScreen
+                      title={'Родительские зависимости не найдены'}
+                      errorType={'BAD_REQUEST'}
+                      action={{
+                        title: 'Добавить',
+                        onClick() {},
+                      }}
+                    />
+                  </CenteredContainer>
+                }
+              />
+            }
+          />
+          <Route
+            path={EVENT_DEPENDENCIES_MAP.LINKED_FROM}
+            element={
+              <ChildrenEventList
+                childrenEvents={
+                  chainsObject.data.linkedFromEvent
+                    ? [chainsObject.data.linkedFromEvent]
+                    : []
+                }
+                emptyComponent={
+                  <CenteredContainer>
+                    <ErrorScreen
+                      title={'Данное событие не является клоном'}
+                      errorType={'BAD_REQUEST'}
+                    />
+                  </CenteredContainer>
+                }
+              />
+            }
+          />
+        </Routes>
+        {/*{renderMode === 'list' && (*/}
+        {/*	<ChainsRenderModeList*/}
+        {/*		onConnectChains={() => setAddChains(true)}*/}
+        {/*		eventItem={taskItem}*/}
+        {/*		chains={chainsObject?.data}*/}
+        {/*	/>*/}
+        {/*)}*/}
+        {/*{renderMode === 'tree' && (*/}
+        {/*	<CenteredContainer>*/}
+        {/*		<ErrorScreen*/}
+        {/*			title={'Раздел в разработке'}*/}
+        {/*			errorType={'BAD_REQUEST'}*/}
+        {/*			description={*/}
+        {/*				'Этот раздел находится в разработке и скоро им можно будет пользоваться.'*/}
+        {/*			}*/}
+        {/*		/>*/}
+        {/*	</CenteredContainer>*/}
+        {/*)}*/}
       </VerticalScroll>
     );
   },

@@ -1,14 +1,12 @@
-import { FC, useCallback, useEffect, useState } from 'react';
-import { toast } from 'react-toastify';
-
-import { currentColor } from '@src/common/constants/constants';
-
+import { Button } from './Buttons.styled';
+import { EmptyButtonStyled } from './EmptyButton.styled';
 import { CopyIcon } from '@components/Icons/AppIcon/CopyIcon';
 import { CompleteIcon, IconProps } from '@components/Icons/Icons';
 import { FlexBlockProps } from '@components/LayoutComponents/FlexBlock';
+import { kitColors } from 'chernikov-kit';
+import { FC, useCallback, useEffect, useState } from 'react';
+import { toast } from 'react-toastify';
 
-import { Button } from './Buttons.styled';
-import { EmptyButtonStyled } from './EmptyButton.styled';
 
 export interface CopyToClipboardButtonProps extends Omit<IconProps, 'onClick'> {
   iconContainerProps?: FlexBlockProps;
@@ -20,7 +18,7 @@ export interface CopyToClipboardButtonProps extends Omit<IconProps, 'onClick'> {
 export const CopyToClipboardButton: FC<CopyToClipboardButtonProps> = ({
   size = 16,
   iconContainerProps,
-  color = currentColor,
+  color = kitColors.primary,
   content,
   renderText = '',
   style = 'empty',
@@ -79,7 +77,7 @@ export const CopyToClipboardButton: FC<CopyToClipboardButtonProps> = ({
   return (
     <EmptyButtonStyled onClick={copiedHandler}>
       {isCopied ? (
-        <CompleteIcon size={16} color={currentColor} />
+        <CompleteIcon size={16} color={kitColors.primary} />
       ) : (
         <CopyIcon {...iconContainerProps} size={size} color={color} />
       )}

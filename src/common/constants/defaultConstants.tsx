@@ -1,20 +1,18 @@
-import dayjs from 'dayjs';
-import { ReactNode } from 'react';
-
-import { currentColor } from '@src/common/constants/constants';
-import {
-  FRIENDS_ROUTES,
-  FRIEND_REQUESTS_TYPES,
-  PLANNER_LAYOUTS,
-  SERVICES_NAMES,
-} from '@src/common/constants/enums';
-
 import { CompleteIcon } from '@components/Icons/Icons';
 import { TelegramLogoIcon } from '@components/Icons/SocialNetworkIcons/Telegram';
 import { TwoPeopleIcon } from '@components/Icons/UserIcons/UserIcons';
-
 import { EventFilterTaskStatuses } from '@planner/Filters/find-event-filters.types';
 import { CalendarPriorityKeys, TaskStatusesType } from '@planner/types';
+import {
+  FRIEND_REQUESTS_TYPES,
+  FRIENDS_ROUTES,
+  PLANNER_LAYOUTS,
+  SERVICES_NAMES,
+} from '@src/common/constants/enums';
+import { kitColors } from 'chernikov-kit';
+import dayjs from 'dayjs';
+import { ReactNode } from 'react';
+
 
 export const DATE_RENDER_FORMAT = 'DD-MM-YYYY HH:mm';
 export const DATE_RENDER_FORMAT_WITH_SEC = 'DD-MM-YYYY HH:mm:ss';
@@ -43,13 +41,13 @@ export const FRIENDS_ROUTES_PAGE_NAMES: {
   },
   outgoing: {
     title: 'Заявки',
-    icon: <TelegramLogoIcon size={24} color={currentColor} />,
+    icon: <TelegramLogoIcon size={24} color={kitColors.primary} />,
     path: `/${SERVICES_NAMES.FRIENDS}/${FRIENDS_ROUTES.OUTGOING_REQUESTS}`,
     matchEndPath: false,
   },
   incoming: {
     title: 'Входящие заявки',
-    icon: <CompleteIcon size={24} color={currentColor} />,
+    icon: <CompleteIcon size={24} color={kitColors.primary} />,
     path: `/${SERVICES_NAMES.FRIENDS}/${FRIENDS_ROUTES.INCOMING_REQUESTS}`,
     matchEndPath: false,
   },

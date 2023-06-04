@@ -1,43 +1,39 @@
-import { useAppSelector } from '@redux/hooks/hooks';
-import { createEventInitialStateSelector } from '@selectors/planner';
-import { useFormik } from 'formik';
-import { FC, useContext, useMemo, useState } from 'react';
-import { CreateEventDataObject } from 'src/pages/planner/types';
-import styled from 'styled-components';
-import * as yup from 'yup';
-
-import {
-  PRIORITY_TITLES,
-  defaultColor,
-  disabledColor,
-  pageHeaderColor,
-} from '@src/common/constants/constants';
-import { CREATE_EVENT_FORM_TABS } from '@src/common/constants/enums';
-import { TASK_STATUSES } from '@src/common/constants/signatures';
-import { borderRadiusSize } from '@src/common/css/mixins';
-import { CreateEventMembersTab } from '@src/pages/planner/Forms/CreateEvent/Tabs/Members/Members';
-
+import { CreateEventFormAdditional } from './Tabs/Additional';
+import { CreateEventInfoTab } from './Tabs/Info';
+import { useCreateEventMutation } from '@api/planning-api';
+import { EventIdObject } from '@api/planning-api/types/event-info.types';
+import { GroupModelResponse } from '@api/planning-api/types/groups.types';
+import { MyServerResponse, ObjectId } from '@api/rtk-api.types';
+import { CatchHandleForToast, thenHandleForToast } from '@api/tools';
 import { Button, StyledButton } from '@components/Buttons/Buttons.styled';
 import { FlexBlock } from '@components/LayoutComponents';
 import { ModalContext } from '@components/LayoutComponents/Modal/Modal';
 import { Switcher } from '@components/Switcher/Switcher';
 import { Heading } from '@components/Text/Heading';
-
 import { ChainsShowcase } from '@planner/EventInfo/LeftBar/Tabs/Chains/Connect/ChainsShowcase';
 import {
   ToggleEventCalendar,
   ToggleEventPriority,
   ToggleEventStatus,
 } from '@planner/EventInfo/SupportsComponent/ToggleTaskInformerButtons';
+import { useAppSelector } from '@redux/hooks/hooks';
+import { createEventInitialStateSelector } from '@selectors/planner';
+import {
+  defaultColor,
+  disabledColor,
+  pageHeaderColor,
+  PRIORITY_TITLES,
+} from '@src/common/constants/constants';
+import { CREATE_EVENT_FORM_TABS } from '@src/common/constants/enums';
+import { TASK_STATUSES } from '@src/common/constants/signatures';
+import { borderRadiusSize } from '@src/common/css/mixins';
+import { CreateEventMembersTab } from '@src/pages/planner/Forms/CreateEvent/Tabs/Members/Members';
+import { useFormik } from 'formik';
+import { FC, useContext, useMemo, useState } from 'react';
+import { CreateEventDataObject } from 'src/pages/planner/types';
+import styled from 'styled-components';
+import * as yup from 'yup';
 
-import { useCreateEventMutation } from '@api/planning-api';
-import { EventIdObject } from '@api/planning-api/types/event-info.types';
-import { GroupModelResponse } from '@api/planning-api/types/groups.types';
-import { MyServerResponse, ObjectId } from '@api/rtk-api.types';
-import { CatchHandleForToast, thenHandleForToast } from '@api/tools';
-
-import { CreateEventFormAdditional } from './Tabs/Additional';
-import { CreateEventInfoTab } from './Tabs/Info';
 
 interface CreateEventFormProps {
   onClose?: () => void;
@@ -144,7 +140,7 @@ export const CreateEventForm: FC<CreateEventFormProps> = ({
     }
     return groupsList?.find((item) => item.type === 'Main');
   }, [formik.values.group, groupsList]);
-
+  
   return (
     <FlexBlock
       direction={'column'}

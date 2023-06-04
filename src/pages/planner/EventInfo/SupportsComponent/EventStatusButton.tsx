@@ -1,15 +1,13 @@
-import { FC, forwardRef, useMemo } from 'react';
-
-import { darkColor } from '@src/common/constants/constants';
-import { TASK_STATUSES } from '@src/common/constants/signatures';
-
 import { EmptyButtonStyled } from '@components/Buttons/EmptyButton.styled';
 import { EventIcon } from '@components/Icons/EventIcon';
 import { IconProps } from '@components/Icons/Icons';
 import { FlexBlock } from '@components/LayoutComponents';
-import { Tooltip } from '@components/Tooltip/Tooltip';
-
 import { TaskStatusesType } from '@planner/types';
+import { darkColor } from '@src/common/constants/constants';
+import { TASK_STATUSES } from '@src/common/constants/signatures';
+import { Tooltip } from 'chernikov-kit';
+import { FC, forwardRef, useMemo } from 'react';
+
 
 export interface EventToggleButtonProps {
   buttonId?: string;

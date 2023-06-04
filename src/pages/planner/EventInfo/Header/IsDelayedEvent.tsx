@@ -1,7 +1,6 @@
-import React, { FC, memo } from 'react';
-
 import Badge from '@components/Badge';
-import { Tooltip } from '@components/Tooltip/Tooltip';
+import { Tooltip } from 'chernikov-kit';
+import React, { FC, memo } from 'react';
 
 export interface IIsDelayedEventProps {
   isDelayed: boolean;
