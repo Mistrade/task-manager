@@ -1,12 +1,13 @@
+import { kitColors } from 'chernikov-kit';
+import { FC, ReactNode, useRef, useState } from 'react';
+import styled, { css } from 'styled-components';
+
 import { EmptyButtonStyled } from '@components/Buttons/EmptyButton.styled';
 import { Arrow, IconProps, PlusIcon } from '@components/Icons/Icons';
 import {
   FlexBlock,
   FlexBlockProps,
 } from '@components/LayoutComponents/FlexBlock';
-import { kitColors } from 'chernikov-kit';
-import { FC, ReactNode, useState } from 'react';
-import styled, { css } from 'styled-components';
 
 
 export interface AccordionProps {
@@ -51,12 +52,13 @@ const ArrowContainer = styled('div')`
 `;
 
 const IsOpenContainer = styled('div')`
-  display: flex;
   flex-direction: column;
   width: 100%;
+  overflow: hidden;
   height: fit-content;
   padding: 6px 0px;
   z-index: 0;
+  display: flex;
 `;
 
 export const Accordion: FC<AccordionProps> = ({
@@ -69,6 +71,8 @@ export const Accordion: FC<AccordionProps> = ({
   containerProps,
 }) => {
   const [isOpen, setIsOpen] = useState(initialState);
+  const ref = useRef<HTMLDivElement>(null);
+  const titleContainerRef = useRef<HTMLDivElement>(null);
 
   return (
     <FlexBlock
@@ -76,11 +80,16 @@ export const Accordion: FC<AccordionProps> = ({
       width={'100%'}
       direction={'column'}
       additionalCss={css`
-        transition: 0.6s ease-in-out;
+        transition: all 0.6s ease-in-out;
         z-index: 0;
+        height: fit-content;
+        // max-height:
+        //   ? pxToCssValue(ref.current ? ref.current.offsetHeight + 50 : 'none')
+        //   : pxToCssValue(titleContainerRef.current?.offsetHeight || 'none')};
+        //overflow: hidden;
       `}
     >
-      <ContentContainer>
+      <ContentContainer ref={titleContainerRef}>
         <ArrowContainer>
           <EmptyButtonStyled
             onClick={() => setIsOpen((prev) => !prev)}
@@ -102,7 +111,7 @@ export const Accordion: FC<AccordionProps> = ({
           </ActionContainer>
         )}
       </ContentContainer>
-      {isOpen && <IsOpenContainer>{children}</IsOpenContainer>}
+      {isOpen && <IsOpenContainer ref={ref}>{children}</IsOpenContainer>}
     </FlexBlock>
   );
 };

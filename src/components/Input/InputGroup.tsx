@@ -1,15 +1,17 @@
+import React, { FC, ReactElement, cloneElement, memo } from 'react';
+
+import { FlexBlock } from '@components/LayoutComponents';
+
 import { borderRadiusSize } from '../../common/css/mixins';
 import { FlexBlockProps } from '../LayoutComponents/FlexBlock';
 import { DefaultTextInputProps } from './TextInput/TextInput';
-import { FlexBlock } from '@components/LayoutComponents';
-import React, { cloneElement, FC, ReactElement } from 'react';
 
 
 interface InputGroupProps extends Omit<FlexBlockProps, 'children'> {
   children: Array<ReactElement<Required<DefaultTextInputProps>>>;
 }
 
-export const InputGroup: FC<InputGroupProps> = ({
+export const InputGroup: FC<InputGroupProps> = memo(({
   children,
   ...flexBlockProps
 }) => {
@@ -25,7 +27,7 @@ export const InputGroup: FC<InputGroupProps> = ({
         } else if (isLast) {
           borderRadius = `0px ${borderRadiusSize.sm} ${borderRadiusSize.sm} 0px`;
         }
-        console.log({ style: { borderRadius, ...child.props.style } });
+        
         if (borderRadius) {
           return cloneElement(child, {
             ...child.props,
@@ -37,4 +39,4 @@ export const InputGroup: FC<InputGroupProps> = ({
       })}
     </FlexBlock>
   );
-};
+})

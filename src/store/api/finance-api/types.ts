@@ -5,6 +5,7 @@ import { SwitcherItem } from '@components/Switcher/Switcher';
 
 import { MyServerResponse, ObjectId, UtcDate } from '../rtk-api.types';
 
+
 export enum FINANCE_SOURCE_MODELS {
   'EVENT' = 'Event',
 }
@@ -33,8 +34,8 @@ export interface IFinanceAnalytic {
   operationsCount: number; //Кол-во операций
   incomesOperationCount: number; //Кол-во доходных операций
   consumptionOperationCount: number; //Кол-во расходных операций
-  bestIncomeOperation: ObjectId | null; //Наиболее доходная операция
-  bestConsumptionOperation: ObjectId | null; //Наиболее расходная операция
+  bestIncomeOperation: IFinanceOperation | null; //Наиболее доходная операция
+  bestConsumptionOperation: IFinanceOperation | null; //Наиболее расходная операция
   profit: number; // профит
   profitPercent: number; //профит в процентах
   updatedAt: UtcDate; //Дата последнего обновления
@@ -65,6 +66,7 @@ export interface IFinanceOperation {
   updatedAt: UtcDate;
   description?: string;
   state: boolean;
+  events: Array<ObjectId>
 }
 
 export type TFinanceOperationWithDate = Omit<IFinanceOperation, 'date'> & {

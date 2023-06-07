@@ -1,20 +1,24 @@
-import { EventInformerToggles } from '../../../Header/TogglesBar';
-import { TaskInformerLinkButton } from '../../../SupportsComponent/TaskInformerLinkButton';
-import { DatePicker } from '@components/DatePicker/DatePicker';
-import { FlexBlock } from '@components/LayoutComponents';
-import { VerticalScroll } from '@components/LayoutComponents/ScrollView/VerticalScroll';
-import { TaskInformerDescription } from '@planner/EventInfo/SupportsComponent/TaskInformerDescription';
-import { EventInfoUpdateFn } from '@planner/EventInfo/SupportsComponent/ToggleTaskInformerButtons';
-import { EventInfoBaseProps } from '@planner/types';
-import { CancelIcon, TooltipIcon } from 'chernikov-icons-kit';
-import { Select } from 'chernikov-kit';
 import dayjs from 'dayjs';
 import React, { FC } from 'react';
 import styled from 'styled-components';
 
+import { DatePicker } from '@components/DatePicker/DatePicker';
+import { EventSystemWidget } from '@components/EventSystemDescription';
+import { FlexBlock } from '@components/LayoutComponents';
+import { VerticalScroll } from '@components/LayoutComponents/ScrollView/VerticalScroll';
 
-export interface EventInfoAboutTabProps extends EventInfoBaseProps {
+import { TaskInformerDescription } from '@planner/EventInfo/SupportsComponent/TaskInformerDescription';
+import { EventInfoUpdateFn } from '@planner/EventInfo/SupportsComponent/ToggleTaskInformerButtons';
+
+import { IGetEventInfoResponse } from '@api/planning-api/types/event-info.types';
+
+import { EventInformerToggles } from '../../../Header/TogglesBar';
+import { TaskInformerLinkButton } from '../../../SupportsComponent/TaskInformerLinkButton';
+
+
+export interface EventInfoAboutTabProps {
   updateFn: EventInfoUpdateFn;
+  eventInfo: IGetEventInfoResponse;
 }
 
 const ActionsAndLinkContainer = styled('div')`
@@ -36,20 +40,23 @@ export const EventInfoAboutTab: FC<EventInfoAboutTabProps> = ({
       <FlexBlock direction={'column'} gap={12} pb={40} width={'100%'}>
         <ActionsAndLinkContainer>
           <FlexBlock maxWidth={600} width={'100%'}>
-            <TaskInformerLinkButton link={eventInfo.link} updateFn={updateFn} />
+            <TaskInformerLinkButton
+              link={eventInfo.base.link}
+              updateFn={updateFn}
+            />
           </FlexBlock>
         </ActionsAndLinkContainer>
         <EventInformerToggles
-          _id={eventInfo._id}
+          _id={eventInfo.base._id}
           updateTaskHandler={updateFn}
-          status={eventInfo.status}
-          group={eventInfo.group}
-          priority={eventInfo.priority}
+          status={eventInfo.base.status}
+          group={eventInfo.base.group}
+          priority={eventInfo.base.priority}
         />
         <FlexBlock direction={'row'} gap={12} width={'100%'}>
           <DatePicker
             label={'Дата начала'}
-            currentDate={dayjs(eventInfo.time).toDate()}
+            currentDate={dayjs(eventInfo.base.time).toDate()}
             onChange={async (date) => {
               await updateFn('time', dayjs(date).toString());
             }}
@@ -57,29 +64,29 @@ export const EventInfoAboutTab: FC<EventInfoAboutTabProps> = ({
           />
           <DatePicker
             label={'Дата завершения'}
-            currentDate={dayjs(eventInfo.timeEnd).toDate()}
+            currentDate={dayjs(eventInfo.base.timeEnd).toDate()}
             onChange={async (date) => {
               await updateFn('timeEnd', dayjs(date).toString());
             }}
             useForceUpdateValue={true}
           />
         </FlexBlock>
-        <TaskInformerDescription eventInfo={eventInfo} updateFn={updateFn} />
-        <Select
-          label={'label'}
-          placeholder={'placeholder'}
-          popupOpenTrigger={'click'}
-          renderSelectItemIcon={() => [
-            <CancelIcon size={16} />,
-            <TooltipIcon size={16} />,
-          ]}
-          selectItemIconPlacement={'right'}
-          data={[
-            { title: '123', _id: '123' },
-            { title: 'hello', _id: 'hello' },
-            { title: 'Элемент', _id: 'el' },
-          ]}
+        <TaskInformerDescription
+          eventInfo={eventInfo.base}
+          updateFn={updateFn}
         />
+        {eventInfo.widget?.model && (
+          <EventSystemWidget
+            data={{
+              title: eventInfo.widget.title,
+              fromEvent: eventInfo.widget.fromEvent,
+              model: eventInfo.widget.modelName,
+              modelId: eventInfo.widget.model._id,
+              data: eventInfo.widget.model,
+              message: eventInfo.widget.message,
+            }}
+          />
+        )}
       </FlexBlock>
     </VerticalScroll>
   );

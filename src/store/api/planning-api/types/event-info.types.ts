@@ -2,6 +2,7 @@ import { EventFilterTaskStatuses } from '@planner/Filters/find-event-filters.typ
 import {
   CalendarPriorityKeys,
   EventLinkItem,
+  IPopulatedEventWidget,
   TaskStatusesType,
 } from '@planner/types';
 
@@ -9,6 +10,7 @@ import { ObjectId, UtcDate } from '@api/rtk-api.types';
 import { UserModel } from '@api/session-api/session-api.types';
 
 import { GroupModelResponse } from './groups.types';
+
 
 export type EventInviteAcceptedStatuses =
   | 'not_accepted'
@@ -109,3 +111,8 @@ export interface SortedEventsObject<
 }
 
 export type ShortEventsArray = Array<ShortEventInfoModel>;
+
+export interface IGetEventInfoResponse {
+  base: EventInfoModel;
+  widget: IPopulatedEventWidget | null;
+}

@@ -1,9 +1,10 @@
-import { FlexBlock } from '@components/LayoutComponents';
-import { FlexBlockProps } from '@components/LayoutComponents/FlexBlock';
-import { hoverColor } from '@src/common/constants/constants';
-import { borderRadiusSize } from '@src/common/css/mixins';
 import { kitColors } from 'chernikov-kit';
 import { FC, ReactNode } from 'react';
+
+import { borderRadiusSize } from '@src/common/css/mixins';
+
+import { FlexBlock } from '@components/LayoutComponents';
+import { FlexBlockProps } from '@components/LayoutComponents/FlexBlock';
 
 
 export const Informer: FC<{ children: ReactNode } & FlexBlockProps> = ({
@@ -19,7 +20,7 @@ export const Informer: FC<{ children: ReactNode } & FlexBlockProps> = ({
       borderRadius={borderRadiusSize.xs}
       p={16}
       border={`1px solid ${kitColors.primary}`}
-      bgColor={hoverColor}
+      bgColor={kitColors.primaryGhost}
       {...flexBlockProps}
     >
       {children}

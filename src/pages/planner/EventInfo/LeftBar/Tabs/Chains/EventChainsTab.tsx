@@ -1,10 +1,15 @@
-import { ConnectTypesArray } from './Connect/ChainsShowcase';
-import { ConnectChains } from './Connect/ConnectChains';
-import { ChainsRenderModeList } from './View/ViewTypes/ChainsRenderModeList';
-import { ChildrenEventList } from './View/ViewTypes/ChildrenEventList';
-import { EVENT_DEPENDENCIES_MAP } from './event-chains.types';
-import { useGetEventChainsQuery } from '@api/planning-api';
-import { EventInfoModel } from '@api/planning-api/types/event-info.types';
+import {
+  dateToPlannerDate,
+  getSearchStringFromEntries,
+  plannerDateToSearchParams,
+} from '@planner-reducer/utils';
+import { Tooltip } from 'chernikov-kit';
+import { FC, memo, useState } from 'react';
+import { Route } from 'react-router';
+import { Routes } from 'react-router-dom';
+
+import { CenteredContainer } from '@src/routes/Interceptors/SessionInterceptor';
+
 import { EmptyButtonStyled } from '@components/Buttons/EmptyButton.styled';
 import { LinkStyled } from '@components/Buttons/Link.styled';
 import { ErrorScreen } from '@components/Errors/ErrorScreen';
@@ -13,17 +18,17 @@ import { FlexBlock } from '@components/LayoutComponents';
 import { VerticalScroll } from '@components/LayoutComponents/ScrollView/VerticalScroll';
 import { Loader } from '@components/Loaders/Loader';
 import { Switcher } from '@components/Switcher/Switcher';
-import {
-  dateToPlannerDate,
-  getSearchStringFromEntries,
-  plannerDateToSearchParams,
-} from '@planner-reducer/utils';
+
 import { PlannerNavLink } from '@planner/styled';
-import { CenteredContainer } from '@src/routes/Interceptors/SessionInterceptor';
-import { Tooltip } from 'chernikov-kit';
-import { FC, memo, useState } from 'react';
-import { Route } from 'react-router';
-import { Routes } from 'react-router-dom';
+
+import { useGetEventChainsQuery } from '@api/planning-api';
+import { EventInfoModel } from '@api/planning-api/types/event-info.types';
+
+import { ConnectTypesArray } from './Connect/ChainsShowcase';
+import { ConnectChains } from './Connect/ConnectChains';
+import { ChainsRenderModeList } from './View/ViewTypes/ChainsRenderModeList';
+import { ChildrenEventList } from './View/ViewTypes/ChildrenEventList';
+import { EVENT_DEPENDENCIES_MAP } from './event-chains.types';
 
 
 interface EventChainsTabProps {
@@ -195,6 +200,16 @@ export const EventChainsTab: FC<EventChainsTabProps> = memo(
         <Routes>
           <Route
             index={true}
+            element={
+              <ChainsRenderModeList
+                eventItem={taskItem}
+                chains={chainsObject.data}
+                onConnectChains={() => {}}
+              />
+            }
+          />
+          <Route
+            path={'all'}
             element={
               <ChainsRenderModeList
                 eventItem={taskItem}

@@ -7,7 +7,7 @@ const ToastController = () => {
       pauseOnHover={true}
       position={'top-right'}
       autoClose={3500}
-      limit={5}
+      limit={10}
       newestOnTop={true}
     />
   );

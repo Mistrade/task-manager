@@ -1,22 +1,25 @@
-import { DateHelper } from '../common/calendarSupport/dateHelper';
-import { currentColor, disabledColor } from '../common/constants/constants';
-import { SERVICES_NAMES } from '../common/constants/enums';
-import { getPath } from '../common/functions';
-import { useCreateEventModal } from './useCreateEventModal';
-import { useRemoveFinanceOperationMutation } from '@api/finance-api';
+import { useAppSelector } from '@redux/hooks/hooks';
 import {
-  FINANCE_OPERATION_TYPES,
-  FINANCE_SOURCE_MODELS,
-  IFinanceModel,
-  TFinanceOperationWithDate,
-} from '@api/finance-api/types';
-import { EventInfoModel } from '@api/planning-api/types/event-info.types';
-import { UtcDate } from '@api/rtk-api.types';
+  plannerSelectBackgroundUrl,
+  plannerSelectLayout,
+} from '@selectors/planner';
+import dayjs from 'dayjs';
+import { MRT_ColumnDef } from 'material-react-table';
+import React, {
+  Dispatch,
+  SetStateAction,
+  useCallback,
+  useContext,
+  useMemo,
+  useState,
+} from 'react';
+
 import Badge from '@components/Badge';
 import { EmptyButtonStyled } from '@components/Buttons/EmptyButton.styled';
 import { PencilIcon, PlusIcon, TrashIcon } from '@components/Icons/Icons';
 import { FlexBlock } from '@components/LayoutComponents';
 import { ModalContext } from '@components/LayoutComponents/Modal/Modal';
+
 import {
   FINANCE_OPERATION_TITLES,
   TFinanceOperationFormType,
@@ -43,18 +46,24 @@ import {
   TColumnFilterValuesMap,
   TColumnsFilterFnsMap,
 } from '@planner/EventInfo/LeftBar/Tabs/Finance/utils/types';
-import { useAppSelector } from '@redux/hooks/hooks';
-import { plannerSelectLayout } from '@selectors/planner';
-import dayjs from 'dayjs';
-import { MRT_ColumnDef } from 'material-react-table';
-import React, {
-  Dispatch,
-  SetStateAction,
-  useCallback,
-  useContext,
-  useMemo,
-  useState,
-} from 'react';
+import { EVENT_WIDGET_MODEL_MAP } from '@planner/types';
+
+import { useRemoveFinanceOperationMutation } from '@api/finance-api';
+import {
+  FINANCE_OPERATION_TYPES,
+  FINANCE_SOURCE_MODELS,
+  IFinanceModel,
+  TFinanceOperationWithDate,
+} from '@api/finance-api/types';
+import { EventInfoModel } from '@api/planning-api/types/event-info.types';
+import { UtcDate } from '@api/rtk-api.types';
+
+import { DateHelper } from '../common/calendarSupport/dateHelper';
+import { currentColor, disabledColor } from '../common/constants/constants';
+import { SERVICES_NAMES } from '../common/constants/enums';
+import { getPath } from '../common/functions';
+import { useCreateEventModal } from './useCreateEventModal';
+
 
 export interface UseFinanceOperationTableReturn {
   onCreateEventFromOperation: TOnCreateEventFromFinanceOperationFn;
@@ -121,6 +130,7 @@ export function useFinanceOperationTable(
   const layout = useAppSelector(plannerSelectLayout);
   const [modalState, setModalState] =
     useState<IFinanceOperationModalState>(null);
+  const backgroundUrl = useAppSelector(plannerSelectBackgroundUrl);
 
   const [removeOperation] = useRemoveFinanceOperationMutation();
 
@@ -173,16 +183,16 @@ export function useFinanceOperationTable(
             time: time.toString(),
             timeEnd: dayjs(time).add(1, 'hour').toDate().toString(),
             title: financeOperationItem.name,
-            description: buildEventDescriptionFromOperation(
-              financeOperationItem,
-              props.eventInfo
-            ),
+            description: '',
             parentId: props.eventInfo._id,
             group: props.eventInfo.group?._id,
-            systemDescription: {
+            widget: {
               title: 'Событие создано на основе фин. операции',
-              message: `Событие было создано от финансовой операции "${financeOperationItem.name}", закрепленной за событием "${props.eventInfo.title}".`,
-              model: 'FinanceOperation',
+              message: buildEventDescriptionFromOperation(
+                financeOperationItem,
+                props.eventInfo
+              ),
+              model: EVENT_WIDGET_MODEL_MAP.FINANCE,
               modelId: financeOperationItem._id,
               data: {
                 ...financeOperationItem,
@@ -323,9 +333,9 @@ export function useFinanceOperationTable(
             cellNameProps={{ maxWidth: 200 }}
           />
         ),
-        Cell: ({ cell }) => (
-          <OperationTableCellText value={cell.getValue<string>()} />
-        ),
+        Cell: ({ cell, row }) => {
+          return <OperationTableCellText value={cell.getValue<string>()} />;
+        },
       },
       {
         header: 'Дата',
@@ -570,7 +580,7 @@ export function useFinanceOperationTable(
         },
       },
     ],
-    []
+    [backgroundUrl]
   );
 
   return {

@@ -38,9 +38,9 @@ import {
 } from './types/event-history.types';
 import {
   EventIdObject,
-  EventInfoModel,
   GetEventsFiltersRequestProps,
   GetEventsSchemeResponse,
+  IGetEventInfoResponse,
   ShortEventInfoModel,
   ShortEventsArray,
   SortedEventsObject,
@@ -54,6 +54,7 @@ import {
   GroupModelResponse,
 } from './types/groups.types';
 import { UserInviteItem } from './types/invites.types';
+
 
 export const PlanningApiTagTypes = [
   'Events',
@@ -120,7 +121,7 @@ export const planningApi = createApi({
         invalidatesTags: (result, error, arg, meta) =>
           !error ? ['Events', 'Groups', 'EventsCount', 'EventsScheme'] : [],
       }),
-      getEventInfo: query<MyServerResponse<EventInfoModel>, ObjectId>({
+      getEventInfo: query<MyServerResponse<IGetEventInfoResponse>, ObjectId>({
         async onQueryStarted(args, { queryFulfilled }) {
           console.log('args', args);
           if (args) {

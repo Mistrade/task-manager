@@ -1,4 +1,3 @@
-import {IFinanceOperation} from "@api/finance-api/types";
 import { IPlannerDate } from '@planner-reducer/types';
 import { TooltipProps } from 'chernikov-kit';
 import React, { CSSProperties, FC, ReactNode } from 'react';
@@ -10,14 +9,16 @@ import { DatePickerSwitchProps } from '@components/DatePicker/DatePickerSwitch';
 import { DefaultTextInputProps } from '@components/Input/TextInput/TextInput';
 import { FlexBlockProps } from '@components/LayoutComponents/FlexBlock';
 
+import { IFinanceOperation } from '@api/finance-api/types';
 import {
-  EventInfoModel,
+  IGetEventInfoResponse,
   ShortEventInfoModel,
 } from '@api/planning-api/types/event-info.types';
 import { ObjectId } from '@api/rtk-api.types';
 import { UserModel } from '@api/session-api/session-api.types';
 
 import { TWeekDayEventListRenderModes } from './Modes/Week/components/types';
+
 
 export type FCWithChildren<T = any> = FC<{ children?: ReactNode } & T>;
 
@@ -167,20 +168,54 @@ export interface ICheckListItem {
   eventLink: ObjectId | null;
 }
 
-export type CreateEventRequestData = Omit<CreateEventDataObject, 'members'> & {
+export enum EVENT_WIDGET_MODEL_MAP {
+  'FINANCE' = 'FinanceOperation',
+}
+
+export interface IEventFinanceWidget {
+  modelName: EVENT_WIDGET_MODEL_MAP.FINANCE;
+  model: ObjectId;
+  fromEvent: ObjectId;
+}
+
+export interface IPopulatedEventFinanceWidget {
+  modelName: EVENT_WIDGET_MODEL_MAP.FINANCE;
+  model: IFinanceOperation | null;
+  fromEvent: ObjectId;
+}
+
+export type TEventWidgetSources = IEventFinanceWidget;
+
+export type TPopulatedEventWidgetSource = IPopulatedEventFinanceWidget;
+
+export interface IEventWidgetModelBase  extends  TEventWidgetSources{
+  title: string;
+  message?: string;
+}
+
+export interface IEventWidget extends IEventWidgetModelBase {
+  eventId: ObjectId;
+  createdAt: Date;
+  _id: ObjectId;
+}
+
+export interface IPopulatedEventWidget extends Omit<IEventWidget, keyof TEventWidgetSources>, TPopulatedEventWidgetSource {
+}
+
+export type CreateEventRequestData = Omit<CreateEventDataObject, 'members' | 'widget'> & {
   members: Array<UserModel>;
+  widget?: IEventWidgetModelBase
 };
 
 export interface IEventSystemDescriptionBase {
   message?: string;
-  title?: string;
+  title: string;
   modelId: ObjectId;
 }
 
 export interface IEventSystemDescriptionByFinanceOperation
   extends IEventSystemDescriptionBase {
-  model: 'FinanceOperation';
-  modelId: ObjectId;
+  model: EVENT_WIDGET_MODEL_MAP.FINANCE;
   data: IFinanceOperation
   fromEvent: ObjectId;
 }
@@ -204,7 +239,7 @@ export interface CreateEventDataObject {
     title: string;
     data: Array<ICheckListItem>;
   };
-  systemDescription?: TEventSystemDescription;
+  widget?: TEventSystemDescription;
 }
 
 export type CalendarPriorityList = Array<{
@@ -255,6 +290,7 @@ export interface ICreateEventMemberItem {
   accessRight: EVENT_ACCESS_RIGHTS;
   user: UserModel;
 }
+
 //TODO
 export type TaskMembersListType = { [key in ObjectId]: UserModel };
 
@@ -272,12 +308,12 @@ export type EventsStorageMonth<EVENT = ShortEventInfoModel> = CustomObject<
 export type EventsStorageDate<EVENT = ShortEventInfoModel> = Array<EVENT>;
 
 export interface EventInformerProps extends EventInfoModalProps {
-  eventInfo: EventInfoModel | null;
+  eventInfo: IGetEventInfoResponse | null;
   eventErrorInfo?: string;
 }
 
 export interface EventInfoBaseProps {
-  eventInfo: EventInfoModel;
+  eventInfo: IGetEventInfoResponse;
 }
 
 export type MainEventInformerProps = EventInfoBaseProps & EventInfoModalProps;

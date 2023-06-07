@@ -1,3 +1,25 @@
+import { useFinanceOperationTable } from '@hooks/useFinanceOperationTable';
+import { LoaderIcon, RefreshIcon } from 'chernikov-icons-kit';
+import { Tooltip } from 'chernikov-kit';
+import dayjs from 'dayjs';
+import MaterialReactTable from 'material-react-table';
+import { MRT_Localization_RU } from 'material-react-table/locales/ru';
+import React, { FC, useMemo } from 'react';
+
+import { EmptyButtonStyled } from '@components/Buttons/EmptyButton.styled';
+import { ErrorScreen } from '@components/Errors/ErrorScreen';
+import { CancelIcon, FiltersIcon, PlusIcon } from '@components/Icons/Icons';
+import { FlexBlock } from '@components/LayoutComponents';
+import { CutText } from '@components/Text/Text';
+
+import { useLazyForceRefreshFinanceModelQuery } from '@api/finance-api';
+import {
+  IFinanceModel,
+  IFinanceOperation,
+  IGetFinanceModelsReturned,
+} from '@api/finance-api/types';
+import { EventInfoModel } from '@api/planning-api/types/event-info.types';
+
 import {
   currentColor,
   darkColor,
@@ -9,23 +31,6 @@ import { borderRadiusSize } from '../../../../../../../../common/css/mixins';
 import { CenteredContainer } from '../../../../../../../../routes/Interceptors/SessionInterceptor';
 import { FinanceOperationModal } from '../Forms/UpdateModal';
 import { OperationTableFooter } from './Footer';
-import {
-  IFinanceModel,
-  IFinanceOperation,
-  IGetFinanceModelsReturned,
-} from '@api/finance-api/types';
-import { EventInfoModel } from '@api/planning-api/types/event-info.types';
-import { EmptyButtonStyled } from '@components/Buttons/EmptyButton.styled';
-import { ErrorScreen } from '@components/Errors/ErrorScreen';
-import { CancelIcon, FiltersIcon, PlusIcon } from '@components/Icons/Icons';
-import { FlexBlock } from '@components/LayoutComponents';
-import { CutText } from '@components/Text/Text';
-import { useFinanceOperationTable } from '@hooks/useFinanceOperationTable';
-import { Tooltip } from 'chernikov-kit';
-import dayjs from 'dayjs';
-import MaterialReactTable from 'material-react-table';
-import { MRT_Localization_RU } from 'material-react-table/locales/ru';
-import React, { FC, useMemo } from 'react';
 
 
 interface OperationsTableProps {
@@ -44,6 +49,9 @@ export const OperationsTable: FC<OperationsTableProps> = ({
   eventInfo,
   isLoading,
 }) => {
+  const [refreshModel, { isFetching: isRefreshLoading }] =
+    useLazyForceRefreshFinanceModelQuery();
+
   const {
     onCreateEvent,
     setModalState,
@@ -93,7 +101,28 @@ export const OperationsTable: FC<OperationsTableProps> = ({
         enableRowActions={false}
         renderTopToolbarCustomActions={({ table }) => {
           return (
-            <FlexBlock height={'100%'} align={'center'}>
+            <FlexBlock height={'100%'} align={'center'} gap={6}>
+              <Tooltip
+                content={
+                  'Обновить аналитику по всем операциям. Чаще всего аналитика обновляется в фоновом режиме, но бывают ситуации, когда из-за какой-либо произошедшей ошибки может понадобиться принудительное обновление. Функция доступна не чаще, чем раз в 15 секунд.'
+                }
+                theme={'light'}
+                placement={'top'}
+                delay={100}
+              >
+                <EmptyButtonStyled
+                  // disabled={isRefreshLoading}
+                  onClick={() => {
+                    refreshModel(model._id).unwrap();
+                  }}
+                >
+                  {isRefreshLoading ? (
+                    <LoaderIcon size={24} />
+                  ) : (
+                    <RefreshIcon size={24} />
+                  )}
+                </EmptyButtonStyled>
+              </Tooltip>
               <CutText rows={1} color={darkColor} fontSize={22}>
                 Список операций: {model.title}
               </CutText>
@@ -107,21 +136,21 @@ export const OperationsTable: FC<OperationsTableProps> = ({
           return (
             <FlexBlock gap={6} align={'center'}>
               <Tooltip
-                content={'Добавить операцию'}
+                content={'Добавить новую операцию в текущую фин. модель.'}
                 theme={'light'}
                 delay={100}
                 strategy={'fixed'}
-                placement={'bottom'}
+                placement={'top'}
               >
                 <EmptyButtonStyled onClick={onCreateEvent}>
                   <PlusIcon size={24} color={currentColor} />
                 </EmptyButtonStyled>
               </Tooltip>
               <Tooltip
-                content={'Скрыть/Показать фильтры'}
+                content={'Скрыть/Показать панель с фильтрами. При скрытии фильтры не сбрасываются.'}
                 theme={'light'}
                 delay={100}
-                placement={'bottom'}
+                placement={'top'}
                 strategy={'fixed'}
               >
                 <EmptyButtonStyled
@@ -138,8 +167,8 @@ export const OperationsTable: FC<OperationsTableProps> = ({
                 </EmptyButtonStyled>
               </Tooltip>
               <Tooltip
-                content={'Сбросить состояние фильтров'}
-                placement={'bottom'}
+                content={'Сбросить состояние всех фильтров и закрыть их.'}
+                placement={'top'}
                 theme={'light'}
                 delay={100}
                 strategy={'fixed'}
@@ -156,7 +185,9 @@ export const OperationsTable: FC<OperationsTableProps> = ({
             </FlexBlock>
           );
         }}
-        renderBottomToolbarCustomActions={OperationTableFooter}
+        renderBottomToolbarCustomActions={({ table }) => (
+          <OperationTableFooter model={model} table={table} />
+        )}
         enableDensityToggle={false}
         enableBottomToolbar={true}
         enableStickyHeader={true}
@@ -227,13 +258,12 @@ export const OperationsTable: FC<OperationsTableProps> = ({
         )}
         enablePagination={false}
         columns={columns}
-        rowVirtualizerProps={{
-          estimateSize: () => 42,
-          overscan: 8,
-        }}
         data={data}
         localization={MRT_Localization_RU}
         memoMode={'rows'}
+        rowVirtualizerProps={{
+          estimateSize: () => 42,
+        }}
       />
       {!!modalState && (
         <FinanceOperationModal

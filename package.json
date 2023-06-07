@@ -16,7 +16,7 @@
     "@types/react-grid-layout": "^1.3.2",
     "@types/uuid": "^9.0.1",
     "axios": "^0.27.2",
-    "chernikov-icons-kit": "^1.0.5",
+    "chernikov-icons-kit": "^1.0.8",
     "chernikov-kit": "^1.0.38",
     "cross-env": "^7.0.3",
     "dayjs": "^1.11.2",

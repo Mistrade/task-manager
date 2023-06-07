@@ -2,8 +2,9 @@ import {
   CreateEventInitialState,
   IPlannerReducer,
 } from '@planner-reducer/types';
-import { CreateEventDataObject } from '@planner/types';
 import { createSelector } from '@reduxjs/toolkit';
+import dayjs from 'dayjs';
+
 import {
   DEFAULT_CHECKLIST_TITLE,
   DEFAULT_EVENT_PRIORITY,
@@ -11,7 +12,9 @@ import {
 } from '@src/common/constants/defaultConstants';
 import { PLANNER_LAYOUTS, SERVICES_NAMES } from '@src/common/constants/enums';
 import { CreateSelectorReturnType, RootState } from '@src/store';
-import dayjs from 'dayjs';
+
+import { CreateEventDataObject } from '@planner/types';
+
 
 const rootSelector: CreateSelectorReturnType<IPlannerReducer> = createSelector(
   (state: RootState) => state,
@@ -137,7 +140,7 @@ export const createEventInitialStateSelector: CreateSelectorReturnType<CreateEve
         title: initialState?.checkList?.title || DEFAULT_CHECKLIST_TITLE,
         data: initialState?.checkList?.data || [],
       },
-      systemDescription: initialState?.systemDescription
+      widget: initialState?.widget
     };
   });
 

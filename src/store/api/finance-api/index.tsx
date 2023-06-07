@@ -1,3 +1,18 @@
+import { Api, ApiModules } from '@reduxjs/toolkit/dist/query/apiTypes';
+import { MaybeDrafted } from '@reduxjs/toolkit/dist/query/core/buildThunks';
+import {
+  MutationDefinition,
+  QueryDefinition,
+} from '@reduxjs/toolkit/dist/query/endpointDefinitions';
+import {
+  BaseQueryFn,
+  createApi,
+  fetchBaseQuery,
+} from '@reduxjs/toolkit/query/react';
+import { EndpointDefinitions } from '@reduxjs/toolkit/src/query/endpointDefinitions';
+
+import { TFinanceOperationFormType } from '@planner/EventInfo/LeftBar/Tabs/Finance/components';
+
 import { baseServerUrl } from '../config';
 import { CustomRtkError, MyServerResponse, ObjectId } from '../rtk-api.types';
 import { CatchHandleForToast, thenHandleForToast } from '../tools';
@@ -21,19 +36,6 @@ import {
   TUpdateFinanceOperationArgs,
 } from './types';
 import { updateGetFinanceModelsData } from './utils';
-import { TFinanceOperationFormType } from '@planner/EventInfo/LeftBar/Tabs/Finance/components';
-import { Api, ApiModules } from '@reduxjs/toolkit/dist/query/apiTypes';
-import { MaybeDrafted } from '@reduxjs/toolkit/dist/query/core/buildThunks';
-import {
-  MutationDefinition,
-  QueryDefinition,
-} from '@reduxjs/toolkit/dist/query/endpointDefinitions';
-import {
-  BaseQueryFn,
-  createApi,
-  fetchBaseQuery,
-} from '@reduxjs/toolkit/query/react';
-import { EndpointDefinitions } from '@reduxjs/toolkit/src/query/endpointDefinitions';
 
 export enum FINANCE_API_TAG_TYPES {
   'FINANCE_MODEL_LIST' = 'FINANCE_MODEL_LIST',
@@ -116,6 +118,7 @@ export const financeApi = createApi({
     cache: 'no-cache',
   }) as CustomApiBaseQuery,
   refetchOnReconnect: true,
+  
   endpoints({query, mutation}) {
     return {
       /**
@@ -166,7 +169,7 @@ export const financeApi = createApi({
               }
             })
             .catch((reason) => {
-              CatchHandleForToast(reason)
+              CatchHandleForToast(reason);
             });
         },
       }),
@@ -216,17 +219,22 @@ export const financeApi = createApi({
             const {data} = await queryFulfilled;
             thenHandleForToast(data);
             
-            dispatch(addFinanceOperationToStateThunk({
-              operation: data.data?.operation,
-              modelId: arg.model,
-            }))
-            
-            dispatch(updateFinanceModelStateThunk({
-                newModel: data.data?.financeModel,
-                sourceModelType: arg.sourceModel,
-                sourceModelId: arg.sourceModel
+            dispatch(
+              addFinanceOperationToStateThunk({
+                operation: data.data?.operation,
+                modelId: arg.model,
               })
-            )
+            );
+            
+            if (data.data?.financeModel) {
+              dispatch(
+                updateFinanceModelStateThunk({
+                  newModel: data.data?.financeModel,
+                  sourceModelType: data.data.financeModel.modelPath,
+                  sourceModelId: data.data.financeModel.model,
+                })
+              );
+            }
           } catch (e) {
             CatchHandleForToast(e);
           }
@@ -256,24 +264,30 @@ export const financeApi = createApi({
             const {data} = await queryFulfilled;
             thenHandleForToast(data);
             
-            dispatch(updateOperationsListThunk({
-              operation: data.data?.operation,
-              modelId: arg.model,
-              index: arg.index,
-            }))
+            dispatch(
+              updateOperationsListThunk({
+                operation: data.data?.operation,
+                modelId: arg.model,
+                index: arg.index,
+              })
+            );
             
-            dispatch(updateFinanceModelStateThunk({
-              newModel: data.data?.financeModel,
-              sourceModelType: arg.sourceModel,
-              sourceModelId: arg.sourceModelId
-            }))
-            
+            if (data.data?.financeModel) {
+              dispatch(
+                updateFinanceModelStateThunk({
+                  newModel: data.data?.financeModel,
+                  sourceModelType: data.data.financeModel.modelPath,
+                  sourceModelId: data.data.financeModel.model,
+                })
+              );
+            }
           } catch (e) {
             CatchHandleForToast(e);
           }
         },
       }),
-      updateFinanceOperationState: mutation<MyServerResponse<IFinanceOperation>, ISetOperationStateProps>({
+      updateFinanceOperationState: mutation<MyServerResponse<IFinanceOperation>,
+        ISetOperationStateProps>({
         query: (arg) => ({
           url: '/operation/state',
           body: arg,
@@ -284,12 +298,13 @@ export const financeApi = createApi({
             const {data} = await queryFulfilled;
             thenHandleForToast(data);
             
-            dispatch(updateOperationsListThunk({
-              operation: data.data,
-              modelId: arg.modelId,
-              index: arg.index,
-            }))
-            
+            dispatch(
+              updateOperationsListThunk({
+                operation: data.data,
+                modelId: arg.modelId,
+                index: arg.index,
+              })
+            );
           } catch (e) {
             CatchHandleForToast(e);
           }
@@ -311,18 +326,48 @@ export const financeApi = createApi({
           try {
             const {data} = await queryFulfilled;
             
-            dispatch(removeFinanceOperationFromStateThunk({
-              operationId: arg._id,
-              modelId: arg.model,
-            }))
+            dispatch(
+              removeFinanceOperationFromStateThunk({
+                operationId: arg._id,
+                modelId: arg.model,
+              })
+            );
             
-            dispatch(updateFinanceModelStateThunk({
-              newModel: data.data,
-              sourceModelId: arg.sourceModelId,
-              sourceModelType: arg.sourceModel,
-            }));
-            
+            dispatch(
+              updateFinanceModelStateThunk({
+                newModel: data.data,
+                sourceModelId: arg.sourceModelId,
+                sourceModelType: arg.sourceModel,
+              })
+            );
           } catch (e) {
+            CatchHandleForToast(e);
+          }
+        },
+      }),
+      forceRefreshFinanceModel: query<MyServerResponse<IFinanceModel>,
+        ObjectId>({
+        query: (modelId) => ({
+          url: `/model/${modelId}`,
+          method: 'GET',
+        }),
+        async onQueryStarted(modelId, {queryFulfilled, dispatch}) {
+          try {
+            const {data} = await queryFulfilled;
+            
+            if (data.data) {
+              dispatch(
+                updateFinanceModelStateThunk({
+                  sourceModelId: data.data.model,
+                  sourceModelType: data.data.modelPath,
+                  newModel: data.data,
+                })
+              );
+            }
+            
+            thenHandleForToast(data);
+          } catch (e) {
+            console.log('catch error: ', e);
             CatchHandleForToast(e);
           }
         },
@@ -338,5 +383,6 @@ export const {
   useCreateFinanceOperationMutation,
   useRemoveFinanceOperationMutation,
   useUpdateFinanceOperationMutation,
-  useUpdateFinanceOperationStateMutation
+  useUpdateFinanceOperationStateMutation,
+  useLazyForceRefreshFinanceModelQuery,
 } = financeApi;

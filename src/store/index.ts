@@ -1,11 +1,13 @@
-import { GlobalReducer } from './reducers/global';
+import plannerReducer from '@redux/reducers/planner';
+import { combineReducers, configureStore } from '@reduxjs/toolkit';
+import { setupListeners } from '@reduxjs/toolkit/query';
+
 import { financeApi } from '@api/finance-api';
 import { contactsApi } from '@api/friends-api';
 import { planningApi } from '@api/planning-api';
 import { sessionApi } from '@api/session-api';
-import plannerReducer from '@redux/reducers/planner';
-import { combineReducers, configureStore } from '@reduxjs/toolkit';
-import { setupListeners } from '@reduxjs/toolkit/query';
+
+import { GlobalReducer } from './reducers/global';
 
 
 const rootReducer = combineReducers({

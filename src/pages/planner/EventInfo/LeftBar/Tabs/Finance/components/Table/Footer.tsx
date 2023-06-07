@@ -1,36 +1,23 @@
-import {
-  getBottomToolbarAnalytic,
-  getFinanceOperationValue,
-} from '../../utils/table.config';
-import {
-  FINANCE_OPERATION_TYPES,
-  TFinanceOperationWithDate,
-} from '@api/finance-api/types';
+import { MRT_TableInstance } from 'material-react-table';
+import React, { FC } from 'react';
+
 import Badge from '@components/Badge';
 import { FlexBlock } from '@components/LayoutComponents';
 import { CutText } from '@components/Text/Text';
-import { MRT_TableInstance } from 'material-react-table';
-import React, { FC, useMemo } from 'react';
+
+import {
+  FINANCE_OPERATION_TYPES,
+  IFinanceModel,
+  TFinanceOperationWithDate,
+} from '@api/finance-api/types';
+
+import { getFinanceOperationValue } from '../../utils/table.config';
 
 
 export const OperationTableFooter: FC<{
   table: MRT_TableInstance<TFinanceOperationWithDate>;
-}> = ({ table }) => {
-  const {
-    allCount,
-    incomeCount,
-    consumptionCount,
-    consumption,
-    income,
-    maxIncome,
-    isPositiveResult,
-    maxConsumption,
-    profit,
-  } = useMemo(() => {
-    const rows = table.getGlobalFacetedRowModel().rows;
-    return getBottomToolbarAnalytic(rows);
-  }, [table.getGlobalFacetedRowModel().rows]);
-
+  model: IFinanceModel;
+}> = ({ table, model: { analytic } }) => {
   return (
     <FlexBlock justify={'space-between'} width={'100%'}>
       <FlexBlock direction={'column'} align={'center'} gap={6} pl={12} pr={12}>
@@ -39,7 +26,7 @@ export const OperationTableFooter: FC<{
         </CutText>
         <FlexBlock width={'fit-content'}>
           <CutText fontSize={14} rows={1}>
-            {allCount} шт.
+            {analytic.operationsCount} шт.
           </CutText>
         </FlexBlock>
       </FlexBlock>
@@ -49,7 +36,7 @@ export const OperationTableFooter: FC<{
         </CutText>
         <FlexBlock width={'fit-content'}>
           <CutText fontSize={14} rows={1}>
-            {incomeCount} шт.
+            {analytic.incomesOperationCount} шт.
           </CutText>
         </FlexBlock>
       </FlexBlock>
@@ -59,7 +46,7 @@ export const OperationTableFooter: FC<{
         </CutText>
         <FlexBlock width={'fit-content'}>
           <CutText fontSize={14} rows={1}>
-            {consumptionCount} шт.
+            {analytic.consumptionOperationCount} шт.
           </CutText>
         </FlexBlock>
       </FlexBlock>
@@ -70,7 +57,9 @@ export const OperationTableFooter: FC<{
         <FlexBlock width={'fit-content'}>
           <Badge type={FINANCE_OPERATION_TYPES.INCOME}>
             <CutText fontSize={14} rows={1}>
-              {getFinanceOperationValue(maxIncome?.result || 0)}
+              {getFinanceOperationValue(
+                analytic.bestIncomeOperation?.result || 0
+              )}
             </CutText>
           </Badge>
         </FlexBlock>
@@ -82,7 +71,9 @@ export const OperationTableFooter: FC<{
         <FlexBlock width={'fit-content'}>
           <Badge type={FINANCE_OPERATION_TYPES.CONSUMPTION}>
             <CutText fontSize={14} rows={1}>
-              {getFinanceOperationValue(maxConsumption?.result || 0)}
+              {getFinanceOperationValue(
+                analytic.bestConsumptionOperation?.result || 0
+              )}
             </CutText>
           </Badge>
         </FlexBlock>
@@ -94,7 +85,7 @@ export const OperationTableFooter: FC<{
         <FlexBlock width={'fit-content'}>
           <Badge type={FINANCE_OPERATION_TYPES.CONSUMPTION}>
             <CutText fontSize={14} rows={1}>
-              {getFinanceOperationValue(consumption)}
+              {getFinanceOperationValue(analytic.consumption)}
             </CutText>
           </Badge>
         </FlexBlock>
@@ -106,7 +97,7 @@ export const OperationTableFooter: FC<{
         <FlexBlock width={'fit-content'}>
           <Badge type={FINANCE_OPERATION_TYPES.INCOME}>
             <CutText fontSize={14} rows={1}>
-              {getFinanceOperationValue(income)}
+              {getFinanceOperationValue(analytic.income)}
             </CutText>
           </Badge>
         </FlexBlock>
@@ -118,13 +109,13 @@ export const OperationTableFooter: FC<{
         <FlexBlock width={'fit-content'}>
           <Badge
             type={
-              isPositiveResult
+              analytic.profit >= 0
                 ? FINANCE_OPERATION_TYPES.INCOME
                 : FINANCE_OPERATION_TYPES.CONSUMPTION
             }
           >
             <CutText fontSize={14} rows={1}>
-              {getFinanceOperationValue(profit)}
+              {getFinanceOperationValue(analytic.profit)}
             </CutText>
           </Badge>
         </FlexBlock>

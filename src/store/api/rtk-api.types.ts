@@ -10,6 +10,12 @@ interface ServerErrorType {
   type: ErrorTypes;
 }
 
+export interface RtkErrorObject<T> {
+  error: CustomRtkError<T>,
+  isUnhandledError: boolean,
+  meta: Record<string, any>
+}
+
 export interface CustomRtkError<T = null> {
   data: MyServerResponse<T>;
   status: number;

@@ -1,7 +1,20 @@
-import { darkColor } from '../../../../../../common/constants/constants';
-import { UserInfoContext } from '../../../../../../context/userInfo.context';
-import { OperationsTable } from './components/Table';
-import { getFinanceOperationValue } from './utils/table.config';
+import { useSearchNavigate } from '@hooks/useSearchNavigate';
+import { kitColors } from 'chernikov-kit';
+import React, { FC, useContext, useRef, useState } from 'react';
+import { Route, useParams } from 'react-router';
+import { Routes } from 'react-router-dom';
+
+import { CenteredContainer } from '@src/routes/Interceptors/SessionInterceptor';
+
+import Badge from '@components/Badge';
+import { ErrorScreen } from '@components/Errors/ErrorScreen';
+import { FlexBlock } from '@components/LayoutComponents';
+import { Loader } from '@components/Loaders/Loader';
+import { Switcher } from '@components/Switcher/Switcher';
+import { CutText } from '@components/Text/Text';
+
+import { PlannerNavLink } from '@planner/styled';
+
 import {
   useCreateFinanceModelMutation,
   useGetFinanceModelsQuery,
@@ -14,18 +27,11 @@ import {
 } from '@api/finance-api/types';
 import { EventInfoModel } from '@api/planning-api/types/event-info.types';
 import { ObjectId } from '@api/rtk-api.types';
-import Badge from '@components/Badge';
-import { ErrorScreen } from '@components/Errors/ErrorScreen';
-import { FlexBlock } from '@components/LayoutComponents';
-import { Loader } from '@components/Loaders/Loader';
-import { Switcher } from '@components/Switcher/Switcher';
-import { CutText } from '@components/Text/Text';
-import { useSearchNavigate } from '@hooks/useSearchNavigate';
-import { PlannerNavLink } from '@planner/styled';
-import { CenteredContainer } from '@src/routes/Interceptors/SessionInterceptor';
-import React, { FC, useContext, useRef, useState } from 'react';
-import { Navigate, Route, useParams } from 'react-router';
-import { Routes } from 'react-router-dom';
+
+import { darkColor } from '../../../../../../common/constants/constants';
+import { UserInfoContext } from '../../../../../../context/userInfo.context';
+import { OperationsTable } from './components/Table';
+import { getFinanceOperationValue } from './utils/table.config';
 
 
 export const OnlyPremiumModuleAccessScreen = () => {
@@ -69,8 +75,6 @@ export const FinanceCore: FC<{ eventInfo: EventInfoModel }> = ({
   const [create, { isLoading: isCreateLoading }] =
     useCreateFinanceModelMutation();
 
-  const [selected, setSelected] = useState<ObjectId | undefined>();
-
   if (isLoading) {
     return (
       <CenteredContainer>
@@ -88,7 +92,7 @@ export const FinanceCore: FC<{ eventInfo: EventInfoModel }> = ({
         width={'100%'}
         overflow={'hidden'}
       >
-        <FlexBlock>
+        <FlexBlock width={'100%'} borderBottom={`1px solid ${kitColors.disabled}`}>
           <Switcher
             switchersList={currentData.switcherData}
             badgeProps={{ type: 'primary' }}
@@ -116,13 +120,12 @@ export const FinanceCore: FC<{ eventInfo: EventInfoModel }> = ({
           <Route
             index={true}
             element={
-              currentData?.switcherData.length ? (
-                <Navigate
-                  to={currentData.switcherData[0].type}
-                  relative={'path'}
-                  replace={true}
+              <CenteredContainer>
+                <ErrorScreen
+                  title={'Выберите фин.модель сверху'}
+                  errorType={'SYSTEM_ERROR'}
                 />
-              ) : null
+              </CenteredContainer>
             }
           />
           <Route

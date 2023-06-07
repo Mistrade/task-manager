@@ -1,16 +1,5 @@
-import { EVENT_INFORMER_TAB_NAMES } from '../../../common/constants/enums';
-import { TaskInformerLeftBar } from './LeftBar/TaskInformerLeftBar';
-import { TaskInfoNotFound } from './SupportsComponent/TaskInfoNotFound';
-import { EventInfoUpdateFn } from './SupportsComponent/ToggleTaskInformerButtons';
-import { EventInformerContentContainer } from './TaskInformer.styled';
-import { useUpdateTaskMutation } from '@api/planning-api';
-import { CatchHandleForToast, thenHandleForToast } from '@api/tools';
-import { ErrorScreen } from '@components/Errors/ErrorScreen';
-import { FlexBlock } from '@components/LayoutComponents';
 import { setEventInfoTabName } from '@planner-reducer/index';
-import { EventInformerHeader } from '@planner/EventInfo/Header/EventInformerHeader';
 import { useAppDispatch } from '@redux/hooks/hooks';
-import { CenteredContainer } from '@src/routes/Interceptors/SessionInterceptor';
 import React, { FC, useCallback, useEffect } from 'react';
 import { Helmet } from 'react-helmet';
 import { Route } from 'react-router';
@@ -19,6 +8,22 @@ import {
   EventInformerProps,
   MainEventInformerProps,
 } from 'src/pages/planner/types';
+
+import { CenteredContainer } from '@src/routes/Interceptors/SessionInterceptor';
+
+import { ErrorScreen } from '@components/Errors/ErrorScreen';
+import { FlexBlock } from '@components/LayoutComponents';
+
+import { EventInformerHeader } from '@planner/EventInfo/Header/EventInformerHeader';
+
+import { useUpdateTaskMutation } from '@api/planning-api';
+import { CatchHandleForToast, thenHandleForToast } from '@api/tools';
+
+import { EVENT_INFORMER_TAB_NAMES } from '../../../common/constants/enums';
+import { TaskInformerLeftBar } from './LeftBar/TaskInformerLeftBar';
+import { TaskInfoNotFound } from './SupportsComponent/TaskInfoNotFound';
+import { EventInfoUpdateFn } from './SupportsComponent/ToggleTaskInformerButtons';
+import { EventInformerContentContainer } from './TaskInformer.styled';
 
 
 const TaskInformerMain: FC<MainEventInformerProps> = ({
@@ -37,7 +42,7 @@ const TaskInformerMain: FC<MainEventInformerProps> = ({
   const updateTaskHandler: EventInfoUpdateFn = useCallback(
     async (field, data, taskId) => {
       return await updateTask({
-        id: taskId || eventInfo._id,
+        id: taskId || eventInfo.base._id,
         field,
         data,
       })
@@ -45,12 +50,12 @@ const TaskInformerMain: FC<MainEventInformerProps> = ({
         .then(thenHandleForToast)
         .catch(CatchHandleForToast);
     },
-    [eventInfo._id]
+    [eventInfo.base._id]
   );
 
   return (
     <>
-      <Helmet title={eventInfo.title} />
+      <Helmet title={eventInfo.base.title} />
       <FlexBlock
         direction={'column'}
         width={'100%'}
@@ -59,7 +64,7 @@ const TaskInformerMain: FC<MainEventInformerProps> = ({
       >
         <EventInformerHeader
           onClose={onClose}
-          eventInfo={eventInfo}
+          eventInfo={eventInfo.base}
           updateTaskHandler={updateTaskHandler}
         />
         <EventInformerContentContainer>

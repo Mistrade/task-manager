@@ -1,3 +1,15 @@
+import { useDebounce } from '@hooks/useDebounce';
+import { FC, ReactNode, useEffect, useMemo, useRef, useState } from 'react';
+import { useParams } from 'react-router';
+import styled from 'styled-components';
+
+import { EVENT_INFORMER_TAB_NAMES } from '@src/common/constants/enums';
+
+import { ErrorScreen } from '@components/Errors/ErrorScreen';
+import { FlexBlock } from '@components/LayoutComponents';
+
+import { EventInfoBaseProps } from '@planner/types';
+
 import { DefaultAnimationTimingFn } from '../../../../common/constants/styles';
 import { CenteredContainer } from '../../../../routes/Interceptors/SessionInterceptor';
 import { EventInfoUpdateFn } from '../SupportsComponent/ToggleTaskInformerButtons';
@@ -9,14 +21,6 @@ import { FinanceCore, OnlyPremiumModuleAccessScreen } from './Tabs/Finance';
 import { TaskComments } from './Tabs/TaskComments/TaskComments';
 import { TaskHistory } from './Tabs/TaskHistory/TaskHistory';
 import { TaskMembers } from './Tabs/TaskMembers/TaskMembers';
-import { ErrorScreen } from '@components/Errors/ErrorScreen';
-import { FlexBlock } from '@components/LayoutComponents';
-import { useDebounce } from '@hooks/useDebounce';
-import { EventInfoBaseProps } from '@planner/types';
-import { EVENT_INFORMER_TAB_NAMES } from '@src/common/constants/enums';
-import { FC, ReactNode, useEffect, useMemo, useRef, useState } from 'react';
-import { useParams } from 'react-router';
-import styled from 'styled-components';
 
 
 interface TaskInformerLeftBarProps extends EventInfoBaseProps {
@@ -98,7 +102,7 @@ export function VirtualAnimationGroup<T extends string>({
     return hash;
   }, [nodes]);
 
-  const debounceSelected = useDebounce(selectedKey, 200);
+  const debounceSelected = useDebounce(selectedKey, 100);
 
   useEffect(() => {
     setViewportWidth(ref.current?.offsetWidth || 0);
@@ -143,7 +147,7 @@ export function VirtualAnimationGroup<T extends string>({
             style={{ width: viewportWidth }}
             key={item.key}
           >
-            {item.key === debounceSelected ? item.render : ''}
+            {item.key === debounceSelected ? item.render : <></>}
           </AnimationItemContainer>
         ))}
       </FlexBlock>
@@ -157,59 +161,87 @@ export const TaskInformerLeftBar: FC<TaskInformerLeftBarProps> = ({
 }) => {
   const { tabName } = useParams<{ tabName: EVENT_INFORMER_TAB_NAMES }>();
 
-  const nodesArr: AnimationGroupProps<EVENT_INFORMER_TAB_NAMES>['nodes'] =
-    useMemo(() => {
-      return [
-        {
-          key: EVENT_INFORMER_TAB_NAMES.ABOUT,
-          render: (
-            <EventInfoAboutTab eventInfo={eventInfo} updateFn={updateFn} />
-          ),
-        },
-        {
-          key: EVENT_INFORMER_TAB_NAMES.CHECK_LIST,
-          render: <EventCheckList eventInfo={eventInfo} />,
-        },
-        {
-          key: EVENT_INFORMER_TAB_NAMES.HISTORY,
-          render: <TaskHistory taskInfo={eventInfo} />,
-        },
-        {
-          key: EVENT_INFORMER_TAB_NAMES.COMMENTS,
-          render: <TaskComments taskInfo={eventInfo} />,
-        },
-        {
-          key: EVENT_INFORMER_TAB_NAMES.MEMBERS,
-          render: <TaskMembers taskItem={eventInfo} />,
-        },
-        {
-          key: EVENT_INFORMER_TAB_NAMES.CHAINS,
-          render: <EventChainsTab taskItem={eventInfo} />,
-        },
-        {
-          key: EVENT_INFORMER_TAB_NAMES.VOTES,
-          render: <EventVotes />,
-        },
-        {
-          key: EVENT_INFORMER_TAB_NAMES.FINANCE,
-          render: <FinanceCore eventInfo={eventInfo} />,
-        },
-        {
-          key: EVENT_INFORMER_TAB_NAMES.NOTIFICATIONS,
-          render: <OnlyPremiumModuleAccessScreen />,
-        },
-        {
-          key: EVENT_INFORMER_TAB_NAMES.INTEGRATIONS,
-          render: <OnlyPremiumModuleAccessScreen />,
-        },
-      ];
-    }, [tabName, eventInfo]);
+  // const nodesArr: AnimationGroupProps<EVENT_INFORMER_TAB_NAMES>['nodes'] =
+  //   useMemo(() => {
+  //     return [
+  //       {
+  //         key: EVENT_INFORMER_TAB_NAMES.ABOUT,
+  //         render: (
+  //           <EventInfoAboutTab eventInfo={eventInfo} updateFn={updateFn} />
+  //         ),
+  //       },
+  //       {
+  //         key: EVENT_INFORMER_TAB_NAMES.CHECK_LIST,
+  //         render: <EventCheckList eventInfo={eventInfo.base} />,
+  //       },
+  //       {
+  //         key: EVENT_INFORMER_TAB_NAMES.HISTORY,
+  //         render: <TaskHistory taskInfo={eventInfo.base} />,
+  //       },
+  //       {
+  //         key: EVENT_INFORMER_TAB_NAMES.COMMENTS,
+  //         render: <TaskComments taskInfo={eventInfo.base} />,
+  //       },
+  //       {
+  //         key: EVENT_INFORMER_TAB_NAMES.MEMBERS,
+  //         render: <TaskMembers taskItem={eventInfo.base} />,
+  //       },
+  //       {
+  //         key: EVENT_INFORMER_TAB_NAMES.CHAINS,
+  //         render: <EventChainsTab taskItem={eventInfo.base} />,
+  //       },
+  //       {
+  //         key: EVENT_INFORMER_TAB_NAMES.VOTES,
+  //         render: <EventVotes />,
+  //       },
+  //       {
+  //         key: EVENT_INFORMER_TAB_NAMES.FINANCE,
+  //         render: <FinanceCore eventInfo={eventInfo.base} />,
+  //       },
+  //       {
+  //         key: EVENT_INFORMER_TAB_NAMES.NOTIFICATIONS,
+  //         render: <OnlyPremiumModuleAccessScreen />,
+  //       },
+  //       {
+  //         key: EVENT_INFORMER_TAB_NAMES.INTEGRATIONS,
+  //         render: <OnlyPremiumModuleAccessScreen />,
+  //       },
+  //     ];
+  //   }, [tabName, eventInfo]);
 
-  const isCorrectTabName = useMemo(() => {
-    return tabName
-      ? Object.values(EVENT_INFORMER_TAB_NAMES).includes(tabName)
-      : false;
-  }, [tabName]);
+  const page = useMemo(() => {
+    switch (tabName) {
+      case EVENT_INFORMER_TAB_NAMES.ABOUT:
+        return <EventInfoAboutTab eventInfo={eventInfo} updateFn={updateFn} />;
+      case EVENT_INFORMER_TAB_NAMES.CHECK_LIST:
+        return <EventCheckList eventInfo={eventInfo.base} />;
+      case EVENT_INFORMER_TAB_NAMES.HISTORY:
+        return <TaskHistory taskInfo={eventInfo.base} />;
+      case EVENT_INFORMER_TAB_NAMES.COMMENTS:
+        return <TaskComments taskInfo={eventInfo.base} />;
+      case EVENT_INFORMER_TAB_NAMES.MEMBERS:
+        return <TaskMembers taskItem={eventInfo.base} />;
+      case EVENT_INFORMER_TAB_NAMES.CHAINS:
+        return <EventChainsTab taskItem={eventInfo.base} />;
+      case EVENT_INFORMER_TAB_NAMES.VOTES:
+        return <EventVotes />;
+      case EVENT_INFORMER_TAB_NAMES.FINANCE:
+        return <FinanceCore eventInfo={eventInfo.base} />;
+      case EVENT_INFORMER_TAB_NAMES.NOTIFICATIONS:
+        return <OnlyPremiumModuleAccessScreen />;
+      case EVENT_INFORMER_TAB_NAMES.INTEGRATIONS:
+        return <OnlyPremiumModuleAccessScreen />;
+      default:
+        return (
+          <CenteredContainer>
+            <ErrorScreen
+              title={'Раздел не найден'}
+              errorType={'ERR_FORBIDDEN'}
+            />
+          </CenteredContainer>
+        );
+    }
+  }, [tabName, eventInfo]);
 
   return (
     <Container>
@@ -222,16 +254,7 @@ export const TaskInformerLeftBar: FC<TaskInformerLeftBarProps> = ({
         direction={'row'}
         overflow={'hidden'}
       >
-        {isCorrectTabName ? (
-          <VirtualAnimationGroup selectedKey={tabName || ''} nodes={nodesArr} />
-        ) : (
-          <CenteredContainer>
-            <ErrorScreen
-              title={'Раздел не найден'}
-              errorType={'ERR_FORBIDDEN'}
-            />
-          </CenteredContainer>
-        )}
+        {page}
       </FlexBlock>
     </Container>
   );

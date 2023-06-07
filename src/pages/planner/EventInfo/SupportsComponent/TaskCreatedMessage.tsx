@@ -9,7 +9,8 @@ import { FlexBlock } from '@components/LayoutComponents';
 import { Heading } from '@components/Text/Heading';
 import { CalendarUserIndicator } from '@components/Users/UserIndicator';
 
-import { EventInfoBaseProps } from '@planner/types';
+import { EventInfoModel } from '@api/planning-api/types/event-info.types';
+
 
 const Container = styled('div')`
   display: flex;
@@ -18,7 +19,7 @@ const Container = styled('div')`
   gap: 12px;
   width: 100%;
 `;
-export const TaskCreatedMessage: FC<EventInfoBaseProps> = ({ eventInfo }) => {
+export const TaskCreatedMessage: FC<{ eventInfo: EventInfoModel }> = ({ eventInfo }) => {
   return (
     <Container>
       <Heading.H2 style={{ textAlign: 'left', fontSize: 16 }}>
