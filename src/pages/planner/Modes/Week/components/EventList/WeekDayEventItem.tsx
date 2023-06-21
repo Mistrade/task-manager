@@ -2,16 +2,19 @@ import {
   getSearchStringFromEntries,
   plannerDateToSearchParams,
 } from '@planner-reducer/utils';
-import { Tooltip } from 'chernikov-kit';
+import { Flex, Text, Tooltip, kitColors } from 'chernikov-kit';
 import dayjs from 'dayjs';
 import React, { FC, useMemo, useState } from 'react';
 
+import Badge from '@components/Badge';
 import { LinkStyled } from '@components/Buttons/Link.styled';
 import { EventShortHoverCard } from '@components/HoverCard/EventShortHoverCard';
 import { PriorityCalendarIcon } from '@components/Icons/CalendarIcons/PriorityCalendarIcon';
 import { EventIcon } from '@components/Icons/EventIcon';
 import { FlexBlock } from '@components/LayoutComponents';
 import { CutText } from '@components/Text/Text';
+
+import { FINANCE_OPERATION_TYPES } from '@api/finance-api/types';
 
 import {
   DateHelper,
@@ -24,13 +27,15 @@ import {
 } from '../../../../../../common/constants/constants';
 import { DATE_HOURS_FORMAT } from '../../../../../../common/constants/defaultConstants';
 import { EVENT_INFORMER_TAB_NAMES } from '../../../../../../common/constants/enums';
+import { getFinanceOperationValue } from '../../../../EventInfo/LeftBar/Tabs/Finance/utils/table.config';
 import { GroupLogo } from '../../../../Groups/styled';
 import { EventContainer } from '../styled';
 import { IWeekDayEventItemProps } from '../types';
 
+
 export const WeekDayEventItemContent: FC<
-  Pick<IWeekDayEventItemProps, 'taskInfo'>
-> = ({ taskInfo }) => {
+  Pick<IWeekDayEventItemProps, 'taskInfo' | 'eventSample'>
+> = ({ taskInfo, eventSample }) => {
   const timeValue = useMemo(() => {
     const start = dayjs(taskInfo.time);
     const end = dayjs(taskInfo.timeEnd);
@@ -78,6 +83,21 @@ export const WeekDayEventItemContent: FC<
         <PriorityCalendarIcon priorityKey={taskInfo.priority} size={18} />
         <EventIcon status={taskInfo.status} size={18} />
       </FlexBlock>
+      {eventSample && (
+        <Flex>
+          <Badge
+            type={
+              eventSample.profit >= 0
+                ? FINANCE_OPERATION_TYPES.INCOME
+                : FINANCE_OPERATION_TYPES.CONSUMPTION
+            }
+          >
+            <Text rows={1} fontSize={15} color={kitColors.dark}>
+              {(eventSample.profit > 0 ? '+' : "") + getFinanceOperationValue(eventSample.profit)}
+            </Text>
+          </Badge>
+        </Flex>
+      )}
     </FlexBlock>
   );
 };
@@ -87,18 +107,25 @@ export const WeekDayEventItem: FC<IWeekDayEventItemProps> = ({
   date,
   tooltipPlacement,
   onSelect,
+  eventSample,
 }) => {
   const [isHover, setIsHover] = useState(false);
   const condition = useMemo(() => {
     return !date.meta.isDisabled;
   }, [date, taskInfo]);
 
-  const Content = useMemo(() => {
-    const defaultPath = `event/info/${taskInfo._id}/${EVENT_INFORMER_TAB_NAMES.ABOUT}`;
-    const searchParams = plannerDateToSearchParams(date.value);
-    const to = defaultPath + getSearchStringFromEntries(searchParams);
+  const defaultPath = `event/info/${taskInfo._id}/${EVENT_INFORMER_TAB_NAMES.ABOUT}`;
+  const searchParams = plannerDateToSearchParams(date.value);
+  const to = defaultPath + getSearchStringFromEntries(searchParams);
 
-    return (
+  return (
+    <Tooltip
+      animation={'shift-away'}
+      content={<EventShortHoverCard event={taskInfo} />}
+      theme={'light'}
+      placement={tooltipPlacement || 'left'}
+      delay={[1500, 150]}
+    >
       <LinkStyled to={to}>
         <EventContainer
           onMouseEnter={() => condition && setIsHover(true)}
@@ -111,26 +138,12 @@ export const WeekDayEventItem: FC<IWeekDayEventItemProps> = ({
             onSelect && onSelect(taskInfo._id);
           }}
         >
-          <WeekDayEventItemContent taskInfo={taskInfo} />
+          <WeekDayEventItemContent
+            eventSample={eventSample}
+            taskInfo={taskInfo}
+          />
         </EventContainer>
       </LinkStyled>
-    );
-  }, [isHover, condition, date.value.day, taskInfo]);
-
-  if (tooltipPlacement === null) {
-    return Content;
-  }
-
-  return (
-    <Tooltip
-      animation={'shift-away'}
-      content={<EventShortHoverCard event={taskInfo} />}
-      theme={'light'}
-      placement={tooltipPlacement}
-      // offset={[0, 15]}
-      delay={[1500, 150]}
-    >
-      {Content}
     </Tooltip>
   );
 };

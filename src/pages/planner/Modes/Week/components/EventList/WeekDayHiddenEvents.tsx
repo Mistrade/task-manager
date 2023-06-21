@@ -8,10 +8,12 @@ import { CellDate } from '../CalendarCell/CellDate';
 import { ITemplateWeekDayEventListProps } from '../types';
 import { TemplateWeekDayEventList } from './TemplateWeekDayEventList';
 
+
 export const WeekDayHiddenEvents: FC<ITemplateWeekDayEventListProps> = ({
   date,
   events,
   onSelectTask,
+  byEventsSample
 }) => {
   const [isOpen, setIsOpen] = useState(false);
 
@@ -53,6 +55,7 @@ export const WeekDayHiddenEvents: FC<ITemplateWeekDayEventListProps> = ({
           placementStatic={'top'}
         >
           <TemplateWeekDayEventList
+            byEventsSample={byEventsSample}
             events={events}
             date={date}
             onSelectTask={(taskId) => {

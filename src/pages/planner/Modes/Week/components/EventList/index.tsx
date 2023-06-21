@@ -4,12 +4,14 @@ import { IWeekDayEventListProps } from '../types';
 import { WeekDayBaseEventList } from './WeekDayBaseEventList';
 import { WeekDayScrollableEventList } from './WeekDayScrollableEventList';
 
+
 export const WeekDayEventList: FC<IWeekDayEventListProps> = ({
   renderEventCount,
   events,
   date,
   renderMode,
   onSelectTask,
+  byEventsSample
 }) => {
   if (!events.length) {
     return <></>;
@@ -19,6 +21,7 @@ export const WeekDayEventList: FC<IWeekDayEventListProps> = ({
     case 'scrollable':
       return (
         <WeekDayScrollableEventList
+          byEventsSample={byEventsSample}
           events={events}
           date={date}
           onSelectTask={onSelectTask}
@@ -27,6 +30,7 @@ export const WeekDayEventList: FC<IWeekDayEventListProps> = ({
     case 'base':
       return (
         <WeekDayBaseEventList
+          byEventsSample={byEventsSample}
           events={events}
           date={date}
           onSelectTask={onSelectTask}

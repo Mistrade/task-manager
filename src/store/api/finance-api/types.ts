@@ -148,3 +148,19 @@ export interface IRemoveFinanceOperationFromStateThunkProps {
   operationId: ObjectId,
   modelId: ObjectId,
 }
+
+export interface IFinanceSampleObject {
+  income: number,
+  consumption: number,
+  profit: number,
+}
+
+export interface IGetTotalSampleReturn {
+  // byEvents: {
+  //   [key: ObjectId]: IFinanceSampleObject
+  // },
+  // byDate: {
+    [key: ObjectId]: IFinanceSampleObject
+  // },
+  // total: IFinanceSampleObject
+}

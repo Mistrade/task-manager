@@ -6,10 +6,12 @@ import { borderRadiusSize } from '../../../../../../common/css/mixins';
 import { ITemplateWeekDayEventListProps } from '../types';
 import { TemplateWeekDayEventList } from './TemplateWeekDayEventList';
 
+
 export const WeekDayScrollableEventList: FC<ITemplateWeekDayEventListProps> = ({
   onSelectTask,
   events,
   date,
+  byEventsSample
 }) => {
   return (
     <FlexBlock grow={3} maxHeight={'100%'} width={'100%'} overflow={'hidden'}>
@@ -25,6 +27,7 @@ export const WeekDayScrollableEventList: FC<ITemplateWeekDayEventListProps> = ({
         }}
       >
         <TemplateWeekDayEventList
+          byEventsSample={byEventsSample}
           events={events}
           date={date}
           onSelectTask={onSelectTask}

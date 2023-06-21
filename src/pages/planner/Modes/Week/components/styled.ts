@@ -8,12 +8,14 @@ import {
   currentColor,
   darkColor,
   defaultColor,
+  disabledColor,
   hoverColor,
 } from '../../../../../common/constants/constants';
 import { DefaultAnimationTimingFn } from '../../../../../common/constants/styles';
 import { borderRadiusSize } from '../../../../../common/css/mixins';
 import { CalendarCellStyledComponentProps } from './CalendarCell/Cell.styled';
 import { IStyledWeekDayTileProps } from './types';
+
 
 const isCurrentTileFn = (): FlattenSimpleInterpolation => {
   return css`
@@ -61,7 +63,8 @@ export const stepByStepAnimation = (props: StepByStepAnimationProps) => css`
 export const StyledWeekDayTile = styled('div')<IStyledWeekDayTileProps>`
   width: 100%;
   display: flex;
-  padding: 4px;
+  padding-top: 4px;
+  padding-bottom: 4px;
   justify-content: flex-start;
   flex-direction: column;
   align-items: flex-start;
@@ -115,8 +118,7 @@ export const EventContainer = styled('div')<EventContainerProps>`
     width: 100%;
     padding: 5px 7px;
     text-align: center;
-    border-radius: ${borderRadiusSize.sm};
-    margin-top: 4px;
+    //border-radius: ${borderRadiusSize.sm};
     opacity: ${(props) => (props.disabled ? 0.2 : 1)};
     display: flex;
     flex-wrap: nowrap;
@@ -124,9 +126,10 @@ export const EventContainer = styled('div')<EventContainerProps>`
     flex-direction: column;
     animation: ${EventAnimation} 0.3s ${DefaultAnimationTimingFn} forwards;
     transition: all 0.3s ease-in;
-    //scroll-snap-align: end;
     max-height: fit-content;
     height: auto;
+    border-top: 1px solid ${disabledColor};
+    border-bottom: 1px solid ${disabledColor};
   }
 `;
 export const BaseWeekContainer = styled('div')`

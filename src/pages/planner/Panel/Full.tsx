@@ -1,12 +1,16 @@
+import React, { FC } from 'react';
+import { css, keyframes } from 'styled-components';
+
+import { FlexBlock } from '@components/LayoutComponents';
+
+import { IGetTotalSampleReturn } from '@api/finance-api/types';
+
 import { DefaultAnimationTimingFn } from '../../../common/constants/styles';
 import { GroupList } from '../Groups';
 import { OptionPanelCalendar } from './Calendar';
 import { CalendarCurrentTitle } from './CalendarCurrentTitle';
 import { CalendarTodaySwitchers } from './CalendarTodaySwitchers';
 import { PlannerSelectLayout } from './SelectLayout';
-import { FlexBlock } from '@components/LayoutComponents';
-import React, { FC } from 'react';
-import { css, keyframes } from 'styled-components';
 
 
 const keyframe = keyframes`
@@ -45,9 +49,10 @@ const reverseAnimation = css`
   z-index: 1;
 `;
 
-export const FullPanelContent: FC<{ canDestroy: boolean }> = ({
-  canDestroy,
-}) => {
+export const FullPanelContent: FC<{
+  canDestroy: boolean;
+  sample?: IGetTotalSampleReturn;
+}> = ({ canDestroy, sample }) => {
   return (
     <FlexBlock
       direction={'column'}

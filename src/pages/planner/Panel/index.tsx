@@ -18,6 +18,7 @@ import {
 import { FullPanelContent } from './Full';
 import { ShortPanelContent } from './Short';
 
+
 const ToggleIsOpenButtonContainer = styled('div')`
   position: absolute;
   bottom: 30px;

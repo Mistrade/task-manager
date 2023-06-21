@@ -14,7 +14,12 @@ import { EndpointDefinitions } from '@reduxjs/toolkit/src/query/endpointDefiniti
 import { TFinanceOperationFormType } from '@planner/EventInfo/LeftBar/Tabs/Finance/components';
 
 import { baseServerUrl } from '../config';
-import { CustomRtkError, MyServerResponse, ObjectId } from '../rtk-api.types';
+import {
+  CustomRtkError,
+  MyServerResponse,
+  ObjectId,
+  UtcDate,
+} from '../rtk-api.types';
 import { CatchHandleForToast, thenHandleForToast } from '../tools';
 import {
   addFinanceOperationToStateThunk,
@@ -30,6 +35,7 @@ import {
   IFinanceOperation,
   IGetFinanceModelsArgs,
   IGetFinanceModelsReturned,
+  IGetTotalSampleReturn,
   ISetOperationStateProps,
   IUpdateOperationResult,
   TInitialFinanceOperationArgs,
@@ -322,7 +328,7 @@ export const financeApi = createApi({
           body: arg,
           method: 'DELETE',
         }),
-        async onQueryStarted(arg, {queryFulfilled, dispatch}) {
+        async onQueryStarted(arg, {queryFulfilled, dispatch, getState}) {
           try {
             const {data} = await queryFulfilled;
             
@@ -332,7 +338,7 @@ export const financeApi = createApi({
                 modelId: arg.model,
               })
             );
-            
+
             dispatch(
               updateFinanceModelStateThunk({
                 newModel: data.data,
@@ -372,6 +378,23 @@ export const financeApi = createApi({
           }
         },
       }),
+      getTotalSample: query<MyServerResponse<IGetTotalSampleReturn>, {fromDate: UtcDate, toDate: UtcDate}>({
+        query: (arg) => ({
+          url: "/total",
+          body: arg,
+          method: "POST"
+        }),
+        async onQueryStarted(arg, {queryFulfilled}){
+          try {
+            const {data} = await queryFulfilled;
+            
+            console.log(data)
+            
+          } catch(e){
+            CatchHandleForToast(e)
+          }
+        }
+      })
     };
   },
 });
@@ -385,4 +408,5 @@ export const {
   useUpdateFinanceOperationMutation,
   useUpdateFinanceOperationStateMutation,
   useLazyForceRefreshFinanceModelQuery,
+  useGetTotalSampleQuery
 } = financeApi;

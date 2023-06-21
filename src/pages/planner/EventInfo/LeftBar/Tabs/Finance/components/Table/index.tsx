@@ -1,4 +1,5 @@
 import { useFinanceOperationTable } from '@hooks/useFinanceOperationTable';
+import { useSearchNavigate } from '@hooks/useSearchNavigate';
 import { LoaderIcon, RefreshIcon } from 'chernikov-icons-kit';
 import { Tooltip } from 'chernikov-kit';
 import dayjs from 'dayjs';
@@ -8,7 +9,12 @@ import React, { FC, useMemo } from 'react';
 
 import { EmptyButtonStyled } from '@components/Buttons/EmptyButton.styled';
 import { ErrorScreen } from '@components/Errors/ErrorScreen';
-import { CancelIcon, FiltersIcon, PlusIcon } from '@components/Icons/Icons';
+import {
+  Arrow,
+  CancelIcon,
+  FiltersIcon,
+  PlusIcon,
+} from '@components/Icons/Icons';
 import { FlexBlock } from '@components/LayoutComponents';
 import { CutText } from '@components/Text/Text';
 
@@ -74,6 +80,8 @@ export const OperationsTable: FC<OperationsTableProps> = ({
     [operationsList]
   );
 
+  const navigate = useSearchNavigate();
+
   return (
     <>
       <MaterialReactTable
@@ -103,6 +111,19 @@ export const OperationsTable: FC<OperationsTableProps> = ({
           return (
             <FlexBlock height={'100%'} align={'center'} gap={6}>
               <Tooltip
+                content={'Вернуться назад'}
+                theme={'light'}
+                placement={'top'}
+              >
+                <EmptyButtonStyled
+                  onClick={() => {
+                    navigate('../', { relative: 'route' });
+                  }}
+                >
+                  <Arrow size={24} transform={'rotate(180deg)'} />
+                </EmptyButtonStyled>
+              </Tooltip>
+              <Tooltip
                 content={
                   'Обновить аналитику по всем операциям. Чаще всего аналитика обновляется в фоновом режиме, но бывают ситуации, когда из-за какой-либо произошедшей ошибки может понадобиться принудительное обновление. Функция доступна не чаще, чем раз в 15 секунд.'
                 }
@@ -111,7 +132,6 @@ export const OperationsTable: FC<OperationsTableProps> = ({
                 delay={100}
               >
                 <EmptyButtonStyled
-                  // disabled={isRefreshLoading}
                   onClick={() => {
                     refreshModel(model._id).unwrap();
                   }}
@@ -147,7 +167,9 @@ export const OperationsTable: FC<OperationsTableProps> = ({
                 </EmptyButtonStyled>
               </Tooltip>
               <Tooltip
-                content={'Скрыть/Показать панель с фильтрами. При скрытии фильтры не сбрасываются.'}
+                content={
+                  'Скрыть/Показать панель с фильтрами. При скрытии фильтры не сбрасываются.'
+                }
                 theme={'light'}
                 delay={100}
                 placement={'top'}

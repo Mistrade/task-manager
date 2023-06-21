@@ -9,7 +9,10 @@ import { DatePickerSwitchProps } from '@components/DatePicker/DatePickerSwitch';
 import { DefaultTextInputProps } from '@components/Input/TextInput/TextInput';
 import { FlexBlockProps } from '@components/LayoutComponents/FlexBlock';
 
-import { IFinanceOperation } from '@api/finance-api/types';
+import {
+  IFinanceOperation,
+  IFinanceSampleObject,
+} from '@api/finance-api/types';
 import {
   IGetEventInfoResponse,
   ShortEventInfoModel,
@@ -65,6 +68,7 @@ export interface WeekItemProps extends Omit<MonthCalendarProps, 'monthItem'> {
   taskStorage: EventsStorage;
   animationIndex?: number;
   renderMode: TWeekDayEventListRenderModes;
+  byEventsSample?: {[key: ObjectId]: IFinanceSampleObject} | null
 }
 export type RenderTaskCountType = number | 'all';
 

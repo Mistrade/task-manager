@@ -1,5 +1,6 @@
 import { useEventStorageQueryArgs } from '@hooks/useEventStorageQueryArgs';
 import { setPlannerLayout } from '@planner-reducer/index';
+import { plannerDateToDate } from '@planner-reducer/utils';
 import { useAppDispatch, useAppSelector } from '@redux/hooks/hooks';
 import {
   plannerSelectLayout,
@@ -17,9 +18,11 @@ import { Loader } from '@components/Loaders/Loader';
 import { CalendarDateListContainer } from '@planner/styled';
 import { MonthCalendarProps } from '@planner/types';
 
+import { useGetTotalSampleQuery } from '@api/finance-api';
 import { useGetEventsStorageQuery } from '@api/planning-api';
 
 import { AccordionWeekItem } from '../Week/AccordionWeekItem';
+
 
 export const MonthCalendar: FC<MonthCalendarProps> = React.memo(
   ({ renderTaskCount }) => {
@@ -35,6 +38,11 @@ export const MonthCalendar: FC<MonthCalendarProps> = React.memo(
         dispatch(setPlannerLayout(PLANNER_LAYOUTS.MONTH));
       }
     }, []);
+  
+    const {currentData, isLoading: isTotalSampleLoading} = useGetTotalSampleQuery({
+      fromDate: plannerDateToDate(config.scope.startDate).toString(),
+      toDate: plannerDateToDate(config.scope.endDate).toString()
+    })
 
     return (
       <>
@@ -45,6 +53,7 @@ export const MonthCalendar: FC<MonthCalendarProps> = React.memo(
           <CalendarDateListContainer rowsCount={6}>
             {config.weeks.map((week, index) => (
               <AccordionWeekItem
+                byEventsSample={currentData?.data}
                 renderMode={'base'}
                 taskStorage={eventStorage?.data || {}}
                 key={index}

@@ -5,6 +5,7 @@ import { WeekDayEventList } from './EventList';
 import { StyledWeekDayTile } from './styled';
 import { IWeekDayTileProps } from './types';
 
+
 export const WeekDay: FC<IWeekDayTileProps> = ({
   tileDate,
   renderTaskCount,
@@ -12,6 +13,7 @@ export const WeekDay: FC<IWeekDayTileProps> = ({
   events,
   renderMode,
   animationIndex,
+  byEventsSample
 }) => {
   return (
     <StyledWeekDayTile
@@ -22,6 +24,7 @@ export const WeekDay: FC<IWeekDayTileProps> = ({
     >
       <CellDate date={tileDate} />
       <WeekDayEventList
+        byEventsSample={byEventsSample}
         renderEventCount={renderTaskCount}
         onSelectTask={onSelectTask}
         events={events}

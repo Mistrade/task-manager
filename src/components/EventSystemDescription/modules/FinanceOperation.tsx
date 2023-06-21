@@ -34,7 +34,7 @@ export const FinanceOperationWidget: FC<
     >
       <Flex>
         <Link
-          to={`${backgroundUrl}/event/info/${fromEventId}/${EVENT_INFORMER_TAB_NAMES.FINANCE}`}
+          to={`${backgroundUrl}/event/info/${fromEventId}/${EVENT_INFORMER_TAB_NAMES.FINANCE}/${data.model}`}
         >
           <Text
             rows={1}
