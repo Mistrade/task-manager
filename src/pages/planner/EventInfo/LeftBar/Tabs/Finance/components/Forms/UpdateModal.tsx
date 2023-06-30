@@ -48,7 +48,7 @@ export const FinanceOperationModal: FC<UpdateOperationModalProps> = (props) => {
   }, []);
 
   return createPortal(
-    <Modal isView={true} onClose={props.onClose} verticalPlacement={'center'}>
+    <Modal isView={true} verticalPlacement={'center'}>
       <ModalBody {...props} />
     </Modal>,
     document.getElementById('root') as HTMLDivElement

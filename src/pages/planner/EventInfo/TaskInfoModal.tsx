@@ -40,7 +40,7 @@ export const TaskInfoModal: FC<EventInfoModalProps> = () => {
       style={{ width: '90%', height: '100%' }}
       enableCloseOnOutsideClick={!isDisableClose}
       isView={!!taskId}
-      onClose={closeHandler}
+      // onClose={closeHandler}
     >
       <ModalBody>
         <ErrorBoundary

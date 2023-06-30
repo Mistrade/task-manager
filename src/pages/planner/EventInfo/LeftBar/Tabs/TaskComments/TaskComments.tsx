@@ -42,7 +42,7 @@ export const TaskComments: FC<TaskCommentsProps> = ({ taskInfo }) => {
     error: commentsError,
     isFetching: commentsIsFetching,
   } = useGetCommentsListQuery(taskInfo._id, {
-    pollingInterval: 5000,
+    skip: !taskInfo._id,
     refetchOnMountOrArgChange: 5,
   });
   const [inResponseToCommentItem, setInResponseToCommentItem] =

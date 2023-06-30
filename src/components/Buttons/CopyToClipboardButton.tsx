@@ -10,7 +10,7 @@ import { toast } from 'react-toastify';
 
 export interface CopyToClipboardButtonProps extends Omit<IconProps, 'onClick'> {
   iconContainerProps?: FlexBlockProps;
-  content: string;
+  content: string | (() => string);
   renderText?: string;
   style?: 'empty' | 'current';
 }
@@ -43,8 +43,10 @@ export const CopyToClipboardButton: FC<CopyToClipboardButtonProps> = ({
   }, [isCopied]);
 
   const copiedHandler = useCallback(() => {
+    const text = typeof content === 'string' ? content : content()
+    
     navigator.clipboard
-      .writeText(content)
+      .writeText(text)
       .then(() => {
         setIsCopied(true);
         toast('Текст скопирован в Буфер обмена', { type: 'success' });
