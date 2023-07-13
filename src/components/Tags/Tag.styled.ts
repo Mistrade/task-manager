@@ -1,9 +1,8 @@
 import styled from 'styled-components';
-import {
-  borderRadiusSize,
-  defaultColor,
-  disabledColor,
-} from '@src/common/constants';
+
+import { defaultColor, disabledColor } from '@src/common/constants/constants';
+import { borderRadiusSize } from '@src/common/css/mixins';
+
 
 export const TagStyled = styled('span')`
   & {

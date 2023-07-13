@@ -1,5 +1,7 @@
 import styled from 'styled-components';
-import { defaultColor } from '@src/common/constants';
+
+import { defaultColor } from '@src/common/constants/constants';
+
 import { DropDownContainerProps } from '@components/Input/Dropdown/types';
 
 export const StyledDropDownContainer = styled('div')<DropDownContainerProps>`

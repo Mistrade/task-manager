@@ -4,7 +4,7 @@ import {
   PlannerMonthMode,
   PlannerWeekMode,
   PlannerYearMode,
-} from '@pages/planner/planner.types';
+} from '@planner/types';
 
 export type ShortChangeCurrentPattern = '--' | '-' | 'today' | '+' | '++';
 export type ChangeMonthCurrentFn = (

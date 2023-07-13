@@ -1,27 +1,28 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
-
-export enum ServicesNames {
-  'PLANNER' = 'planner',
-  'FRIENDS' = 'contacts',
-}
+import { SERVICES_NAMES } from '@src/common/constants/enums';
 
 interface IGlobalReducer {
-  serviceName: ServicesNames | null;
+  serviceName: SERVICES_NAMES | null;
+  disableModalClose: boolean;
 }
 
 const initialState: IGlobalReducer = {
   serviceName: null,
+  disableModalClose: false,
 };
 
 const GlobalSlice = createSlice({
   name: 'global',
   initialState,
   reducers: {
-    setServiceName(state, data: PayloadAction<ServicesNames | null>) {
+    setServiceName(state, data: PayloadAction<SERVICES_NAMES | null>) {
       state.serviceName = data.payload;
+    },
+    setDisableModalState(state, data: PayloadAction<boolean>) {
+      state.disableModalClose = data.payload;
     },
   },
 });
 
 export const GlobalReducer = GlobalSlice.reducer;
-export const { setServiceName } = GlobalSlice.actions;
+export const { setServiceName, setDisableModalState } = GlobalSlice.actions;

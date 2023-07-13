@@ -1,9 +1,11 @@
-import { FCWithChildren } from '@planner/planner.types';
 import { css } from 'styled-components';
+
 import {
   FlexBlock,
   FlexBlockProps,
 } from '@components/LayoutComponents/FlexBlock';
+
+import { FCWithChildren } from '@planner/types';
 
 export const SelectListContainer: FCWithChildren<FlexBlockProps> = ({
   children,
@@ -21,10 +23,7 @@ export const SelectListContainer: FCWithChildren<FlexBlockProps> = ({
         {...flexBlockProps}
         direction={'column'}
       >
-        <FlexBlock
-          // additionalCss={css`z-index: 2`}
-          direction={'column'}
-        >
+        <FlexBlock direction={'column'} gap={4}>
           {children}
         </FlexBlock>
       </FlexBlock>

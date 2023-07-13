@@ -1,5 +1,7 @@
-import { CalendarDisabledOptions } from '@pages/planner/planner.types';
 import dayjs from 'dayjs';
+
+import { CalendarDisabledOptions } from '@planner/types';
+
 import { DateHelper } from './dateHelper';
 
 export interface DateScopeOptions {
@@ -55,6 +57,7 @@ export class DateScopeHelper {
 
   //Приватный метод, возвращающий первый день месяца и последний
   private getDateScopeOnlyInMonth(dateInMonth: Date): DateScopeInterface {
+    console.log('123');
     return {
       startDate: DateHelper.getFirstDayInMonth(dateInMonth).toDate(),
       endDate: DateHelper.getLastDayInMonth(dateInMonth).toDate(),

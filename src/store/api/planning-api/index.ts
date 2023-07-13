@@ -1,15 +1,19 @@
-import { SwitcherBadges } from '@components/Switcher/Switcher';
-import { CreateGroupProps } from '@planner/Groups/groups.types';
-import { CreateEventDataObject, EventsStorage } from '@planner/planner.types';
-import { EventFilterTaskStatuses } from '@planner/RenderModes/FindEventFilter/find-event-filters.types';
 import {
   BaseQueryFn,
-  createApi,
   FetchArgs,
+  createApi,
   fetchBaseQuery,
 } from '@reduxjs/toolkit/dist/query/react';
-import { mergeArrayWithUserId, MergedObject } from '@src/common/functions';
 import dayjs from 'dayjs';
+
+import { mergeArrayWithUserId } from '@src/common/functions';
+
+import { SwitcherBadges } from '@components/Switcher/Switcher';
+
+import { EventFilterTaskStatuses } from '@planner/Filters/find-event-filters.types';
+import { CreateGroupProps } from '@planner/Groups/types';
+import { CreateEventRequestData, EventsStorage } from '@planner/types';
+
 import { baseServerUrl } from '../config';
 import { CustomRtkError, MyServerResponse, ObjectId } from '../rtk-api.types';
 import {
@@ -28,12 +32,15 @@ import {
   ConnectChildResponse,
   EventChainsObject,
 } from './types/event-chains.types';
-import { EventHistoryQueryResult } from './types/event-history.types';
+import {
+  EventHistoryQueryResult,
+  GetHistoryReturned,
+} from './types/event-history.types';
 import {
   EventIdObject,
-  EventInfoModel,
   GetEventsFiltersRequestProps,
   GetEventsSchemeResponse,
+  IGetEventInfoResponse,
   ShortEventInfoModel,
   ShortEventsArray,
   SortedEventsObject,
@@ -46,6 +53,8 @@ import {
   GroupIdObject,
   GroupModelResponse,
 } from './types/groups.types';
+import { UserInviteItem } from './types/invites.types';
+
 
 export const PlanningApiTagTypes = [
   'Events',
@@ -58,6 +67,7 @@ export const PlanningApiTagTypes = [
   'EventHistory',
   'Comments',
   'CheckList',
+  'InvitesList',
 ];
 
 export const planningApi = createApi({
@@ -111,7 +121,7 @@ export const planningApi = createApi({
         invalidatesTags: (result, error, arg, meta) =>
           !error ? ['Events', 'Groups', 'EventsCount', 'EventsScheme'] : [],
       }),
-      getEventInfo: query<MyServerResponse<EventInfoModel>, ObjectId>({
+      getEventInfo: query<MyServerResponse<IGetEventInfoResponse>, ObjectId>({
         async onQueryStarted(args, { queryFulfilled }) {
           console.log('args', args);
           if (args) {
@@ -125,6 +135,22 @@ export const planningApi = createApi({
         }),
         providesTags: ['EventInfo'],
       }),
+      getEventList: query<
+        MyServerResponse<Array<ShortEventInfoModel>>,
+        GetEventsFiltersRequestProps
+      >({
+        query: (props: GetEventsFiltersRequestProps) => ({
+          url: '/info/get_short_events_array',
+          method: 'POST',
+          body: props,
+          keepUnusedDataFor: 30,
+        }),
+        transformResponse(value: MyServerResponse<Array<ShortEventInfoModel>>) {
+          return {
+            data: value?.data?.slice(0, 20) || [],
+          };
+        },
+      }),
       getShortEventsArray: query<
         SortedEventsObject,
         GetEventsFiltersRequestProps
@@ -133,6 +159,7 @@ export const planningApi = createApi({
           url: `/info/get_short_events_array`,
           method: 'POST',
           body: props,
+          keepUnusedDataFor: 30,
         }),
         providesTags: ['Events'],
         transformResponse(
@@ -167,12 +194,13 @@ export const planningApi = createApi({
           url: `/info/get_events_storage`,
           method: 'POST',
           body: props,
+          keepUnusedDataFor: 30,
         }),
         providesTags: ['Events'],
       }),
       createEvent: mutation<
         MyServerResponse<EventIdObject>,
-        CreateEventDataObject
+        CreateEventRequestData
       >({
         query: (body) => ({
           url: `/create`,
@@ -232,16 +260,7 @@ export const planningApi = createApi({
         },
         providesTags: ['EventsScheme'],
       }),
-      getEventHistory: query<
-        Array<
-          MergedObject<
-            EventHistoryQueryResult,
-            'changeUserId',
-            EventHistoryQueryResult
-          >
-        >,
-        ObjectId
-      >({
+      getEventHistory: query<GetHistoryReturned, ObjectId>({
         query: (taskId) => ({
           url: `/history/${taskId}`,
           method: 'GET',
@@ -250,18 +269,18 @@ export const planningApi = createApi({
           value: MyServerResponse<Array<EventHistoryQueryResult>>,
           meta,
           arg: ObjectId
-        ): Array<
-          MergedObject<
-            EventHistoryQueryResult,
-            'changeUserId',
-            EventHistoryQueryResult
-          >
-        > {
+        ): GetHistoryReturned {
           if (!value.data) {
-            return [];
+            return {
+              arr: [],
+              count: 0,
+            };
           }
 
-          return mergeArrayWithUserId(value.data || [], 'changeUserId');
+          return {
+            arr: mergeArrayWithUserId(value.data || [], 'changeUserId'),
+            count: value.data.length,
+          };
         },
         providesTags: ['EventHistory'],
       }),
@@ -424,7 +443,17 @@ export const planningApi = createApi({
         }),
         invalidatesTags: (result, error) => (error ? [] : ['CheckList']),
       }),
-      refetchPlanningApi: mutation({
+      getEventInvitesList: query<
+        MyServerResponse<Array<UserInviteItem>>,
+        ObjectId
+      >({
+        query: (eventId: ObjectId) => ({
+          url: `/info/invites/${eventId}`,
+          method: 'GET',
+        }),
+        providesTags: ['InvitesList'],
+      }),
+      refetchPlanningApi: mutation<null, void>({
         queryFn: () => ({ data: null }),
         invalidatesTags: PlanningApiTagTypes,
       }),
@@ -459,5 +488,7 @@ export const {
   useUpdateCommentMutation,
   useCreateCheckListMutation,
   useGetCheckListQuery,
+  useGetEventListQuery,
   useUpdateCheckListMutation,
+  useGetEventInvitesListQuery,
 } = planningApi;

@@ -1,13 +1,11 @@
 import { useCallback, useMemo, useState } from 'react';
-import { useDebounce } from './useDebounce';
-import { PlannerMode } from '@planner/planner.types';
-import dayjs from 'dayjs';
-import { useAppDispatch } from '@redux/hooks/hooks';
-import { changeEventStatuses } from '@redux/reducers/planner-reducer';
-import { useSearchNavigate } from './useSearchNavigate';
+
+import { EventFilterOnChangeHandle } from '@planner/Filters/find-event-filters.types';
+import { PlannerMode } from '@planner/types';
+
 import { GetEventsFiltersRequestProps } from '@api/planning-api/types/event-info.types';
-import { EventFilterOnChangeHandle } from '@planner/RenderModes/FindEventFilter/find-event-filters.types';
-import { ServicesNames } from '@redux/reducers/global';
+
+import { useDebounce } from './useDebounce';
 
 export interface EventFiltersProps
   extends Omit<GetEventsFiltersRequestProps, 'fromDate' | 'toDate'> {
@@ -33,29 +31,15 @@ export type UseEventFiltersType = (
   options: UseEventFiltersProps
 ) => UseEventFiltersReturned;
 
-export const initialFiltersValues: (
-  day: Date,
-  taskStatus: EventFiltersProps['taskStatus']
-) => EventFiltersProps = (day, taskStatus) => ({
-  title: null,
-  priority: null,
-  start: dayjs(day).startOf('day').toDate(),
-  end: dayjs(day).endOf('day').toDate(),
-  taskStatus,
-  utcOffset: dayjs().utcOffset(),
-});
-
 export const useEventFilters: UseEventFiltersType = ({
   initialValues,
   layout,
   useNavigate = true,
-  debounceTimeout,
+  debounceTimeout = 1250,
 }) => {
-  const navigate = useSearchNavigate();
-  const dispatch = useAppDispatch();
   const [filters, setFilters] = useState<EventFiltersProps>(initialValues);
 
-  const debounceValue = useDebounce(filters, debounceTimeout || 300);
+  const debounceValue = useDebounce(filters, debounceTimeout || 1250);
 
   const changeFiltersStateHandler = <T extends keyof EventFiltersProps>(
     fieldName: T,
@@ -80,10 +64,6 @@ export const useEventFilters: UseEventFiltersType = ({
           key === 'not_selected' ? null : key
         ),
       taskStatus: (newStatus) => {
-        if (useNavigate) {
-          navigate(`/${ServicesNames.PLANNER}/${layout}/${newStatus}`);
-          dispatch(changeEventStatuses(newStatus || 'all'));
-        }
         changeFiltersStateHandler('taskStatus', newStatus);
       },
     }),

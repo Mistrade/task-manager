@@ -1,6 +1,7 @@
 import React, { FC, ReactNode } from 'react';
+
 import { StyledLabel } from '@components/Input/Input.styled';
-import { FlexBlock } from '@components/LayoutComponents/FlexBlock';
+import { FlexBlock } from '@components/LayoutComponents';
 
 export interface InputLabelProps {
   inputId?: string;
@@ -25,7 +26,12 @@ export const InputLabel: FC<InputLabelProps> = ({
         pr={6}
         gap={6}
       >
-        <StyledLabel htmlFor={inputId}>{label}</StyledLabel>
+        <StyledLabel
+          title={typeof label === 'string' ? label : ''}
+          htmlFor={inputId}
+        >
+          {label}
+        </StyledLabel>
         {tooltip || ''}
       </FlexBlock>
     );

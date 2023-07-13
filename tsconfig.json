@@ -20,19 +20,42 @@
     "jsx": "react-jsx",
     "baseUrl": "./",
     "paths": {
+      "@core/*": [
+        "./src/core/*"
+      ],
       "@planner/*": [
         "./src/pages/planner/*"
       ],
-      "@api/*": ["./src/store/api/*"],
-      "@redux-hooks/*": ["./src/store/hooks"],
-      "@redux/*": ["./src/store/*"],
-      "@selectors/*": ["./src/store/selectors/*"],
-      "@contacts/*": ["./src/pages/Contacts/*"],
-      "@hooks/*": ["./src/hooks/*"],
-      "@pages/*": ["./src/pages/*"],
-      "@components/*": ["./src/components/*"],
-      "@planner-reducer/*": ["./src/store/reducers/planner/*"],
-      "@src/*": ["./src/*"]
+      "@api/*": [
+        "./src/store/api/*"
+      ],
+      "@redux-hooks/*": [
+        "./src/store/hooks"
+      ],
+      "@redux/*": [
+        "./src/store/*"
+      ],
+      "@selectors/*": [
+        "./src/store/selectors/*"
+      ],
+      "@contacts/*": [
+        "./src/pages/Contacts/*"
+      ],
+      "@hooks/*": [
+        "./src/hooks/*"
+      ],
+      "@pages/*": [
+        "./src/pages/*"
+      ],
+      "@components/*": [
+        "./src/components/*"
+      ],
+      "@planner-reducer/*": [
+        "./src/store/reducers/planner/*"
+      ],
+      "@src/*": [
+        "./src/*"
+      ]
     },
     "rootDirs": []
   },

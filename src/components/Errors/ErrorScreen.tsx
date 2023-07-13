@@ -1,10 +1,11 @@
-import { FC } from 'react';
-import { defaultColor, ERROR_IMAGES } from '@src/common/constants';
-import { DocumentErrorTypes } from '@src/common/types';
-import { scaleAnimation } from '@src/common/cssMixins';
-import { FlexBlock } from '@components/LayoutComponents/FlexBlock';
-import { Heading } from '@components/Text/Heading';
 import { ButtonWithLoading } from '@components/Buttons/ButtonWithLoading';
+import { FlexBlock } from '@components/LayoutComponents';
+import { Heading } from '@components/Text/Heading';
+import { defaultColor, ERROR_IMAGES } from '@src/common/constants/constants';
+import { scaleAnimation } from '@src/common/css/mixins';
+import { DocumentErrorTypes } from '@src/common/types';
+import { FC } from 'react';
+
 
 export interface ActionItemProps {
   title: string;
@@ -12,10 +13,12 @@ export interface ActionItemProps {
   isLoading?: boolean;
 }
 
+export type ErrorScreenTypes = DocumentErrorTypes | 'ONLY_PREMIUM';
+
 export interface ErrorScreenProps {
   description?: string;
   title: string;
-  errorType: DocumentErrorTypes;
+  errorType: ErrorScreenTypes;
   action?: ActionItemProps;
 }
 

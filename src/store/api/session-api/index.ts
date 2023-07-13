@@ -1,11 +1,14 @@
-import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/dist/query/react';
 import { baseServerUrl } from '../config';
+import { MyServerResponse } from '../rtk-api.types';
 import {
   AuthUserRequestProps,
   RegUserRequestProps,
   UserModel,
 } from './session-api.types';
-import { MyServerResponse } from '../rtk-api.types';
+import { contactsApi } from '@api/friends-api';
+import { planningApi } from '@api/planning-api';
+import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/dist/query/react';
+
 
 export const sessionApi = createApi({
   reducerPath: 'sessionApi',
@@ -33,9 +36,9 @@ export const sessionApi = createApi({
     }),
     confirmSession: build.query<MyServerResponse<UserModel>, void>({
       query: () => ({
-        url: '/confirm',
         method: 'POST',
         credentials: 'include',
+        url: '/confirm',
       }),
       providesTags: ['Session'],
     }),
@@ -44,7 +47,29 @@ export const sessionApi = createApi({
         url: '/logout',
         method: 'POST',
       }),
-      invalidatesTags: ['Session'],
+      onQueryStarted(args, { dispatch, queryFulfilled }) {
+        console.log('1243214124281684521974512468210568');
+        queryFulfilled.then((data) => {
+          dispatch(
+            sessionApi.util.updateQueryData(
+              'confirmSession',
+              undefined,
+              (draft) => {
+                Object.assign(draft, {
+                  data: null,
+                  info: {
+                    type: 'success',
+                    message: 'Сессия завершена',
+                  },
+                });
+              }
+            )
+          );
+
+          dispatch(contactsApi.endpoints.resetState.initiate());
+          dispatch(planningApi.endpoints.refetchPlanningApi.initiate());
+        });
+      },
     }),
   }),
 });

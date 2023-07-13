@@ -1,9 +1,9 @@
+import { ReactNode } from 'react';
 import styled, {
-  css,
   CSSProperties,
   FlattenSimpleInterpolation,
+  css,
 } from 'styled-components';
-import { ReactNode } from 'react';
 
 export type FlexBlockProps = MarginProps &
   PaddingProps &
@@ -20,10 +20,6 @@ export type UnitsType = string | number;
 
 interface ChildrenProps {
   children?: ReactNode;
-}
-
-interface EventsMap {
-  onClick?: <T>(data: T) => void;
 }
 
 export interface WidthProps {
@@ -283,7 +279,9 @@ const formalization: CustomMixin<FormalizationProps> = (_) => css`
     : ''}
   ${_.borderRadius
     ? css`
-        border-radius: ${pxToCssValue(_.borderRadius)};
+        border-radius: ${typeof _.borderRadius === 'string'
+          ? _.borderRadius
+          : pxToCssValue(_.borderRadius)};
       `
     : ''}
   ${_.overflow

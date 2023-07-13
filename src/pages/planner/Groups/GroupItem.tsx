@@ -1,94 +1,131 @@
-import { FlexBlock } from '@components/LayoutComponents/FlexBlock';
-import { CalendarItemLabel, GroupItemCheckbox } from './GroupList.styled';
 import { FC, useState } from 'react';
-import {
-  LoaderIcon,
-  PencilIcon,
-  PlusIcon,
-  TrashIcon,
-} from '@components/Icons/Icons';
-import { darkColor, defaultColor } from '@src/common/constants';
+import styled, { css, keyframes } from 'styled-components';
+
+import { darkColor, defaultColor } from '@src/common/constants/constants';
+import { Delay } from '@src/common/functions';
+import { GroupItemProps } from '@src/pages/planner/Groups/types';
+
 import { EmptyButtonStyled } from '@components/Buttons/EmptyButton.styled';
-import { useChangeSelectGroupMutation } from '@api/planning-api';
-import { GroupItemProps } from './groups.types';
-import { useCreateEventModal } from '@hooks/useCreateEventModal';
-import { CutText } from '@planner/RenderModes/DayCalendar/TaskList/TaskList.styled';
+import { PencilIcon, PlusIcon, TrashIcon } from '@components/Icons/Icons';
+import { Checkbox } from '@components/Input/Checkbox/Checkbox';
+import { fromRightToLeftAnimation } from '@components/Input/TextInput/TextInput';
+import { FlexBlock } from '@components/LayoutComponents';
+import { CutText } from '@components/Text/Text';
+
+const shortKeyFrame = keyframes`
+  0% {
+    transform: scale(0.7);
+    opacity: .7;
+  }
+  70% {
+    transform: scale(1.1);
+    opacity: .9;
+  }
+  100% {
+    transform: scale(1);
+    opacity: 1;
+  }
+`;
+
+export const bubbleAnimation = css`
+  transform: scale(0);
+  animation: ${shortKeyFrame} 0.3s ease-in-out forwards;
+`;
+
+const CustomContainer = styled('li')<{
+  delay: number;
+  pattern: 'full' | 'short';
+}>`
+  ${(_) =>
+    _.pattern === 'short' ? bubbleAnimation : fromRightToLeftAnimation};
+  animation-delay: ${(_) => _.delay || 0}ms;
+`;
 
 export const GroupItem: FC<GroupItemProps> = ({
   onChange,
-  isChecked,
   item,
-  isDisabled,
   onDelete,
-  onSuccessChangeSelect,
   onEdit,
+  renderPattern = 'full',
+  index = 0,
+  onContextMenu,
+  onCreateEvent,
+  isFetching,
+  replaceChangeHandler,
 }) => {
   const [isHover, setIsHover] = useState(false);
   const [isLoading, setIsLoading] = useState<boolean>(false);
-  const [changeSelect] = useChangeSelectGroupMutation();
-
-  const { openModal } = useCreateEventModal({});
 
   const changeHandler = async (isChecked: boolean) => {
-    setIsLoading(true);
-    await changeSelect({
-      groupId: item._id,
-      state: isChecked,
-    })
-      .unwrap()
-      .catch(() => setIsLoading(false))
-      .then(async () => {
-        if (onSuccessChangeSelect) {
-          await onSuccessChangeSelect().then(() => setIsLoading(false));
-        } else {
-          setIsLoading(false);
-        }
-      });
+    if (onChange) {
+      if (replaceChangeHandler) {
+        await onChange({
+          groupId: item._id,
+          state: isChecked,
+        });
+      } else {
+        setIsLoading(true);
+        await onChange({
+          groupId: item._id,
+          state: isChecked,
+        })
+          .catch(() => setIsLoading(false))
+          .then(async () => {
+            Delay(1000).then(() => setIsLoading(false));
+          });
+      }
+    }
   };
 
   return (
-    <li
-      onMouseEnter={() => onDelete && setIsHover(true)}
-      onMouseLeave={() => onDelete && setIsHover(false)}
+    <CustomContainer
+      pattern={renderPattern}
+      delay={index * 50}
+      onMouseEnter={() => renderPattern !== 'short' && setIsHover(true)}
+      onMouseLeave={() => renderPattern !== 'short' && setIsHover(false)}
+      onContextMenu={onContextMenu}
     >
       <FlexBlock
         width={'100%'}
         overflow={'hidden'}
         gap={2}
-        justify={'space-between'}
+        justify={renderPattern !== 'short' ? 'space-between' : 'center'}
       >
         <FlexBlock shrink={1} grow={0} gap={6}>
-          {isLoading ? (
-            <LoaderIcon size={18} color={item.color} />
-          ) : (
-            <GroupItemCheckbox
-              type={'checkbox'}
-              id={item._id}
-              color={item.color}
-              disabled={isDisabled}
-              checked={isChecked}
-              onChange={(e) => changeHandler(e.target.checked)}
-            />
-          )}
-          <CalendarItemLabel htmlFor={item._id}>
-            <CutText
-              rows={1}
-              style={{ maxWidth: '100%', color: darkColor, fontSize: 15 }}
-            >
-              {item.title}
-            </CutText>
-          </CalendarItemLabel>
+          <Checkbox
+            type={'checkbox'}
+            iconProps={{
+              color: item.color,
+              size: renderPattern === 'short' ? 30 : 20,
+            }}
+            isLoading={isLoading || isFetching}
+            onChange={(e) => changeHandler(e.target.checked)}
+            isChecked={item.isSelected}
+            id={item._id}
+            title={
+              renderPattern !== 'short' ? (
+                <CutText
+                  rows={1}
+                  style={{
+                    maxWidth: '100%',
+                    color: darkColor,
+                    fontSize: 15,
+                  }}
+                >
+                  {item.title}
+                </CutText>
+              ) : (
+                <></>
+              )
+            }
+          />
         </FlexBlock>
         {isHover && (
           <FlexBlock shrink={0} grow={0}>
             {item.type !== 'Invite' && (
               <EmptyButtonStyled
                 style={{ padding: 2 }}
-                onClick={() =>
-                  openModal({
-                    group: item._id,
-                  })
-                }
+                onClick={() => onCreateEvent && onCreateEvent(item)}
               >
                 <PlusIcon size={14} color={defaultColor} />
               </EmptyButtonStyled>
@@ -113,6 +150,6 @@ export const GroupItem: FC<GroupItemProps> = ({
           </FlexBlock>
         )}
       </FlexBlock>
-    </li>
+    </CustomContainer>
   );
 };

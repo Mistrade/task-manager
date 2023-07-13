@@ -1,23 +1,25 @@
-import { FlexBlock } from '@components/LayoutComponents/FlexBlock';
-import { CheckboxStyledInput } from '@components/Input/Checkbox/Checkbox.styled';
-import { ChangeEvent, FC, useRef } from 'react';
+import { EmptyButtonStyled } from '@components/Buttons/EmptyButton.styled';
+import { IconProps, LoaderIcon } from '@components/Icons/Icons';
 import {
   EmptyCheckboxIcon,
   FillCheckboxIcon,
 } from '@components/Icons/InputIcons/Checkbox';
-import { IconProps } from '@components/Icons/Icons';
-import { EmptyButtonStyled } from '@components/Buttons/EmptyButton.styled';
+import { CheckboxStyledInput } from '@components/Input/Checkbox/Checkbox.styled';
 import { StyledLabel } from '@components/Input/Input.styled';
-import { darkColor } from '@src/common/constants';
-import { CutText } from '@planner/RenderModes/DayCalendar/TaskList/TaskList.styled';
+import { FlexBlock } from '@components/LayoutComponents';
+import { CutText } from '@components/Text/Text';
+import { darkColor } from '@src/common/constants/constants';
+import { ChangeEvent, FC, ReactNode, useRef } from 'react';
+
 
 export interface CheckboxProps {
   type: 'checkbox' | 'radio';
-  title: string;
+  title: ReactNode;
   onChange?: (e: ChangeEvent<HTMLInputElement>) => void;
   isChecked?: boolean;
   iconProps?: Omit<IconProps, 'onClick'>;
   id?: string;
+  isLoading?: boolean;
 }
 
 export const Checkbox: FC<CheckboxProps> = ({
@@ -27,6 +29,7 @@ export const Checkbox: FC<CheckboxProps> = ({
   title,
   isChecked,
   iconProps,
+  isLoading,
 }) => {
   const ref = useRef<HTMLInputElement>(null);
   return (
@@ -36,6 +39,7 @@ export const Checkbox: FC<CheckboxProps> = ({
       align={'center'}
       width={'100%'}
       overflow={'hidden'}
+      gap={6}
     >
       <CheckboxStyledInput
         type={type}
@@ -45,19 +49,26 @@ export const Checkbox: FC<CheckboxProps> = ({
         checked={isChecked}
       />
       <EmptyButtonStyled
+        style={{ padding: 0 }}
         onClick={() => ref.current?.click() && console.log('click')}
       >
         {isChecked ? (
           <FillCheckboxIcon {...iconProps} />
+        ) : isLoading ? (
+          <LoaderIcon {...iconProps} />
         ) : (
           <EmptyCheckboxIcon {...iconProps} />
         )}
       </EmptyButtonStyled>
-      <StyledLabel>
-        <CutText rows={2} color={darkColor} fontSize={14}>
-          {title}
-        </CutText>
-      </StyledLabel>
+      {typeof title === 'string' ? (
+        <StyledLabel>
+          <CutText rows={2} color={darkColor} fontSize={14}>
+            {title}
+          </CutText>
+        </StyledLabel>
+      ) : (
+        title
+      )}
     </FlexBlock>
   );
 };

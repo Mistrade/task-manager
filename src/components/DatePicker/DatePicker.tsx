@@ -1,108 +1,131 @@
-import React, { FC, memo, useCallback, useEffect, useState } from 'react';
-import { DatePickerProps } from '@pages/planner/planner.types';
 import dayjs from 'dayjs';
+import React, { FC, useEffect, useState } from 'react';
+
 import { DateHelper } from '@src/common/calendarSupport/dateHelper';
+
+import { Button } from '@components/Buttons/Buttons.styled';
+import { EmptyButtonStyled } from '@components/Buttons/EmptyButton.styled';
+import { DatePickerPaper } from '@components/DatePicker/DatePickerPaper';
 import { SelectInput } from '@components/Input/SelectInput/SelectInput';
 import { SelectListContainer } from '@components/Input/SelectInput/SelectListContainer';
-import { FlexBlock } from '@components/LayoutComponents/FlexBlock';
-import { DatePickerPaper } from '@components/DatePicker/DatePickerPaper';
-import { EmptyButtonStyled } from '@components/Buttons/EmptyButton.styled';
-import { Button } from '@components/Buttons/Buttons.styled';
+import { FlexBlock } from '@components/LayoutComponents';
 
-export const DatePicker: FC<DatePickerProps> = memo(
-  ({
-    onFocus,
-    currentDate,
-    label,
-    onChange,
-    containerProps,
-    isDirty,
-    errorMessage,
-    icon,
-    actionHandler,
-    actions,
-    iconPlacement,
-    disabledOptions,
-    useForceUpdateValue = false,
-    onDecline,
-  }) => {
-    const [stateValue, setStateValue] = useState<Date | null>(currentDate);
+import { DatePickerProps } from '@planner/types';
 
-    const clickSaveHandler = useCallback(() => {
-      onChange && onChange(stateValue);
-    }, [stateValue]);
+import { defaultColor } from '../../common/constants/constants';
+import { CancelIcon } from '../Icons/Icons';
 
-    const clickDeclineHandler = useCallback(() => {
-      onDecline && onDecline();
+export const DatePicker: FC<DatePickerProps> = ({
+  useOtherDays = false,
+  onFocus,
+  currentDate,
+  label,
+  onChange,
+  containerProps,
+  isDirty,
+  errorMessage,
+  icon,
+  actionHandler,
+  actions,
+  iconPlacement,
+  disabledOptions,
+  useForceUpdateValue = true,
+  onDecline,
+  placeholder,
+  placement,
+  inputId,
+  isDisabled,
+  style,
+  withArrow,
+  onClear,
+}) => {
+  const [stateValue, setStateValue] = useState<Date | null>(currentDate);
+
+  const clickSaveHandler = () => {
+    onChange && onChange(stateValue);
+  };
+
+  const clickDeclineHandler = () => {
+    onDecline && onDecline();
+    setStateValue(currentDate);
+  };
+
+  useEffect(() => {
+    if (useForceUpdateValue) {
       setStateValue(currentDate);
-    }, []);
+    }
+  }, [currentDate?.toString(), useForceUpdateValue]);
 
-    useEffect(() => {
-      const d = dayjs(currentDate);
-      if (d.isValid()) {
-        const isSame = d.isSame(stateValue, 'minute');
-        if (currentDate && useForceUpdateValue && !isSame) {
-          console.log('123');
-          setStateValue(currentDate);
-        }
-      }
-    }, [currentDate?.toString(), useForceUpdateValue]);
-
-    return (
-      <SelectInput
-        placeholder={'Выберите дату'}
-        onFocus={onFocus}
-        data={[]}
-        renderData={(data) => (
-          <SelectListContainer maxHeight={500} width={'100%'}>
-            <FlexBlock direction={'column'} width={'100%'} pb={4}>
-              <DatePickerPaper
-                disabledOptions={disabledOptions}
-                currentDate={stateValue || dayjs().toDate()}
-                onChange={(date) => {
-                  setStateValue(date);
+  return (
+    <SelectInput
+      withArrow={withArrow}
+      isDisabled={isDisabled}
+      inputId={inputId}
+      placeholder={placeholder || 'Выберите дату'}
+      onFocus={onFocus}
+      style={style}
+      data={[]}
+      selectContainerPlacement={placement || 'bottom-start'}
+      renderData={(data, setIsOpenState) => (
+        <SelectListContainer maxHeight={500} width={'100%'}>
+          <FlexBlock direction={'column'} width={'100%'} pb={4}>
+            <DatePickerPaper
+              useOtherDays={useOtherDays}
+              disabledOptions={disabledOptions}
+              currentDate={stateValue || dayjs().toDate()}
+              onChange={(date) => {
+                setStateValue(date);
+              }}
+            />
+            <FlexBlock
+              direction={'row'}
+              width={'100%'}
+              align={'center'}
+              justify={'flex-end'}
+              gap={8}
+            >
+              <Button
+                type={'button'}
+                onClick={(e) => {
+                  e.stopPropagation();
+                  clickSaveHandler();
+                  setIsOpenState(false);
                 }}
-              />
-              <FlexBlock
-                direction={'row'}
-                width={'100%'}
-                align={'center'}
-                justify={'flex-end'}
-                gap={8}
               >
-                <Button
-                  onClick={(e) => {
-                    e.stopPropagation();
-                    clickSaveHandler();
-                    // methods.focusOut()
-                  }}
-                >
-                  Сохранить
-                </Button>
-                <EmptyButtonStyled
-                  onClick={(e) => {
-                    e.stopPropagation();
-                    clickDeclineHandler();
-                    // methods.focusOut()
-                  }}
-                >
-                  Отменить
-                </EmptyButtonStyled>
-              </FlexBlock>
+                Подтвердить
+              </Button>
+              <EmptyButtonStyled
+                type={'button'}
+                onClick={(e) => {
+                  e.stopPropagation();
+                  clickDeclineHandler();
+                  setIsOpenState(false);
+                }}
+              >
+                Отменить
+              </EmptyButtonStyled>
             </FlexBlock>
-          </SelectListContainer>
-        )}
-        value={stateValue ? DateHelper.getHumanizeDateValue(stateValue) : ''}
-        label={label}
-        containerProps={containerProps}
-        isDirty={!!isDirty}
-        errorMessage={`${errorMessage || ''}`}
-        actionHandler={actionHandler}
-        readOnly={true}
-        icon={icon}
-        iconPlacement={iconPlacement}
-        actions={actions}
-      />
-    );
-  }
-);
+          </FlexBlock>
+        </SelectListContainer>
+      )}
+      value={stateValue ? DateHelper.getHumanizeDateValue(stateValue) : ''}
+      label={label}
+      containerProps={containerProps}
+      isDirty={!!isDirty}
+      errorMessage={`${errorMessage || ''}`}
+      actionHandler={actionHandler}
+      readOnly={true}
+      icon={
+        onClear ? (
+          <EmptyButtonStyled onClick={onClear}>
+            <CancelIcon size={16} color={defaultColor} />
+          </EmptyButtonStyled>
+        ) : (
+          icon
+        )
+      }
+      iconPlacement={iconPlacement}
+      actions={actions}
+    />
+  );
+};

@@ -1,10 +1,4 @@
-import {
-  EventItem,
-  EventsStorage,
-  PlannerMode,
-  PlannerMonthMode,
-} from '@pages/planner/planner.types';
-import dayjs from 'dayjs';
+import { DateHelper } from './calendarSupport/dateHelper';
 import {
   ChangeDayCurrentFn,
   ChangeListCurrentFn,
@@ -13,10 +7,20 @@ import {
   ChangeYearCurrentFn,
   ShortChangeCurrentPattern,
 } from './commonTypes';
-import { MonthList, PLANNER_LAYOUTS } from './constants';
-import { DateHelper } from './calendarSupport/dateHelper';
-import { ShortEventInfoModel } from '@api/planning-api/types/event-info.types';
+import { MonthList, WeekDaysShortList } from './constants/constants';
+import {
+  EventInfoModel,
+  ShortEventInfoModel,
+} from '@api/planning-api/types/event-info.types';
 import { UserModel } from '@api/session-api/session-api.types';
+import {
+  EventItem,
+  EventsStorage,
+  PlannerMode,
+  PlannerMonthMode,
+} from '@planner/types';
+import { PLANNER_LAYOUTS } from '@src/common/constants/enums';
+import dayjs, { Dayjs } from 'dayjs';
 
 export const addNull = (value: number): string =>
   value < 10 ? `0${value}` : value.toString();
@@ -179,7 +183,7 @@ const getMonthCalendarTitle = (
     withTodayMonth && today.year() === year && month === today.month()
       ? '( Сегодня )'
       : '';
-  return `${m}/${year} г. ${todayTitle}`.trim();
+  return `${m} ${todayTitle}`.trim();
 };
 
 const getWeekCalendarTitle = (currentDate: Date): string => {
@@ -191,15 +195,19 @@ const getWeekCalendarTitle = (currentDate: Date): string => {
     year: d.year(),
     month: d.month(),
   };
-  return `Неделя ${w}, ${m.year}г.`;
+  return `Неделя ${w}`;
 };
 
 const getYearCalendarTitle = (currentDate: Date) => {
-  return `Календарь ${currentDate.getFullYear()}г.`;
+  return `${currentDate.getFullYear()}г.`;
 };
 
 const getDayCalendarTitle = (currentDate: Date) => {
-  return DateHelper.getHumanizeDateValue(currentDate, { withTime: false });
+  return `${DateHelper.getHumanizeDateValue(currentDate, {
+    withTime: false,
+    withYear: false,
+    monthPattern: 'full',
+  })} (${WeekDaysShortList[dayjs(currentDate).weekday()]})`;
 };
 
 const getListCalendarTitle = (currentDate: Date) => {
@@ -307,12 +315,12 @@ export const convertEventStatus = (status: EventItem['status']) => {
   }
 };
 
-export async function Delay(delayCountMs: number = 500): Promise<void> {
-  return new Promise((resolve, reject) =>
+export function Delay(delayCountMs: number = 500): Promise<void> {
+  return new Promise((resolve, reject) => {
     setTimeout(() => {
       resolve();
-    }, delayCountMs)
-  );
+    }, delayCountMs);
+  });
 }
 
 export interface MergedObject<
@@ -348,3 +356,59 @@ export const mergeArrayWithUserId = <
 
   return arr;
 };
+
+export const getPath = (...arr: Array<string>): string => {
+  return '/' + arr.join('/');
+};
+
+export const eventIsDelayed = (
+  timeEnd: Dayjs | Date | string,
+  eventStatus: EventInfoModel['status']
+): boolean => {
+  return (
+    dayjs().isAfter(timeEnd, 'minute') &&
+    eventStatus !== 'completed' &&
+    eventStatus !== 'archive'
+  );
+};
+
+export function getFromLocalStorage<T>(key: string): T | null {
+  try {
+    const value = localStorage.getItem(key);
+    if (value) return JSON.parse(value) as T;
+    return null;
+  } catch (e) {
+    return null;
+  }
+}
+
+export function setToLocalStorage<T>(key: string, value: T): void {
+  localStorage.setItem(key, JSON.stringify(value));
+}
+
+export function getSearchParams(): { [key: string]: string } {
+  const search = window.location.search;
+
+  if (!search) {
+    return {};
+  }
+
+  const initialEntries = search.split('?').join('').split('&');
+  if (initialEntries.length) {
+    const entries: Array<[string, string]> = initialEntries
+      .map((item: string) => {
+        const value: [string, string] = item.split('=') as [string, string];
+
+        if (value.length === 2) {
+          return value;
+        }
+
+        return null;
+      })
+      .filter(Boolean) as Array<[string, string]>;
+
+    return Object.fromEntries(entries);
+  }
+
+  return {};
+}

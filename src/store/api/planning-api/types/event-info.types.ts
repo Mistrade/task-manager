@@ -1,13 +1,16 @@
+import { EventFilterTaskStatuses } from '@planner/Filters/find-event-filters.types';
 import {
   CalendarPriorityKeys,
   EventLinkItem,
-  ICheckListItem,
+  IPopulatedEventWidget,
   TaskStatusesType,
-} from '@planner/planner.types';
-import { UserModel } from '@api/session-api/session-api.types';
-import { GroupModelResponse } from './groups.types';
+} from '@planner/types';
+
 import { ObjectId, UtcDate } from '@api/rtk-api.types';
-import { EventFilterTaskStatuses } from '@planner/RenderModes/FindEventFilter/find-event-filters.types';
+import { UserModel } from '@api/session-api/session-api.types';
+
+import { GroupModelResponse } from './groups.types';
+
 
 export type EventInviteAcceptedStatuses =
   | 'not_accepted'
@@ -15,11 +18,6 @@ export type EventInviteAcceptedStatuses =
   | 'decline';
 export type EventInviteAccessRights = 'viewer' | 'editor' | 'admin';
 export type AccessRightsWithOwner = EventInviteAccessRights | 'owner';
-
-export interface CheckListModel {
-  title: string;
-  data: Array<ICheckListItem>;
-}
 
 export interface EventInfoModel {
   _id: ObjectId;
@@ -43,6 +41,7 @@ export interface EventInfoModel {
   acceptedStatus?: EventInviteAcceptedStatuses;
   treeId?: ObjectId | null;
   checkList?: ObjectId | null;
+  isDelayed?: boolean;
 }
 
 export type ShortEventItemWithoutUserId = Pick<
@@ -58,6 +57,7 @@ export type ShortEventItemWithoutUserId = Pick<
   | 'group'
   | 'isLiked'
   | 'treeId'
+  | 'isDelayed'
 >;
 
 export interface ShortEventInfoModel extends ShortEventItemWithoutUserId {
@@ -111,3 +111,8 @@ export interface SortedEventsObject<
 }
 
 export type ShortEventsArray = Array<ShortEventInfoModel>;
+
+export interface IGetEventInfoResponse {
+  base: EventInfoModel;
+  widget: IPopulatedEventWidget | null;
+}

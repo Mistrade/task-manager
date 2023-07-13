@@ -2,6 +2,7 @@ import path from 'path';
 
 export const getWebpackResolve = () => ({
   alias: {
+    '@core': path.resolve(process.cwd(), './src/core'),
     '@planner': path.resolve(process.cwd(), './src/pages/planner'),
     '@api': path.resolve(process.cwd(), './src/store/api'),
     '@redux-hooks': path.resolve(process.cwd(), './src/store/hooks'),

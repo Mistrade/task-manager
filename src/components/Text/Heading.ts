@@ -1,12 +1,12 @@
-import styled, { css } from 'styled-components';
 import {
-  currentColor,
   darkColor,
   defaultColor,
   disabledColor,
   lightHoverColor,
   pageHeaderColor,
-} from '@src/common/constants';
+} from '@src/common/constants/constants';
+import { kitColors } from 'chernikov-kit';
+import styled, { css } from 'styled-components';
 
 const HeadingMixin = (props: HeadingProps) => css`
   font-weight: bold;
@@ -18,7 +18,7 @@ const HeadingMixin = (props: HeadingProps) => css`
 `;
 
 const colors = {
-  current: currentColor,
+  current: kitColors.primary,
   dark: darkColor,
   default: defaultColor,
   disabled: disabledColor,

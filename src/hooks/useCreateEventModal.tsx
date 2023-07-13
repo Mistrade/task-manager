@@ -1,51 +1,33 @@
-import { useAppDispatch, useAppSelector } from '@redux/hooks/hooks';
-import { useCallback, useContext } from 'react';
-import { useLocation } from 'react-router';
 import {
   clearCreateInitialState,
-  CreateEventInitialState,
   setCreateEventInitialState,
-} from '@redux/reducers/planner-reducer';
+  setCreateEventModalIsOpen,
+} from '@planner-reducer/index';
+import { CreateEventInitialState } from '@planner-reducer/types';
+import { useAppDispatch } from '@redux/hooks/hooks';
+import { useCallback, useMemo } from 'react';
+
 import { useSearchNavigate } from './useSearchNavigate';
-import { PlannerContext } from '@src/Context/planner.context';
 
-interface UseCreateEventProps {
-  useReturnBackOnDecline?: boolean;
-}
+export interface UseCreateEventReturned {
+  openModal(
+    initialValues: Partial<CreateEventInitialState>,
+    options: { modalPath?: string; useReturnBackOnDecline?: boolean }
+  ): void;
 
-interface UseCreateEventReturned {
-  openModal(initialValues: Partial<CreateEventInitialState>): void;
-
-  navigateToModal(): void;
-
-  declineModal(): void;
+  declineModal(path?: string | null): void;
 
   clearState(): void;
 }
 
-type UseCreateEventHook = (
-  props: UseCreateEventProps
-) => UseCreateEventReturned;
+type UseCreateEventHook = () => UseCreateEventReturned;
 
-export const useCreateEventModal: UseCreateEventHook = ({
-  useReturnBackOnDecline,
-}) => {
-  const { createEventPrevUrl } = useAppSelector((state) => state.planner);
-
-  const {
-    methods: { plannerNavigate },
-  } = useContext(PlannerContext);
-
-  const location = useLocation();
+export const useCreateEventModal: UseCreateEventHook = () => {
   const dispatch = useAppDispatch();
   const navigate = useSearchNavigate();
 
-  const navigateToModal = useCallback(() => {
-    plannerNavigate('createEventModal').go();
-  }, [plannerNavigate]);
-
   const openModal: UseCreateEventReturned['openModal'] = useCallback(
-    (initialValues) => {
+    (initialValues, { modalPath, useReturnBackOnDecline }) => {
       dispatch(
         setCreateEventInitialState({
           data: initialValues || null,
@@ -53,29 +35,32 @@ export const useCreateEventModal: UseCreateEventHook = ({
         })
       );
 
-      navigateToModal();
+      dispatch(setCreateEventModalIsOpen(true));
+
+      modalPath && navigate(modalPath);
     },
-    [useReturnBackOnDecline, navigate]
+    [navigate]
   );
 
   const clearState = useCallback(() => {
     dispatch(clearCreateInitialState());
   }, []);
 
-  const declineModal: UseCreateEventReturned['declineModal'] =
-    useCallback(() => {
-      if (createEventPrevUrl) {
-        navigate(createEventPrevUrl, { replace: true });
-      } else {
-        plannerNavigate('current').go();
-      }
+  const declineModal: UseCreateEventReturned['declineModal'] = useCallback(
+    (path?: string) => {
+      dispatch(setCreateEventModalIsOpen(false));
       clearState();
-    }, [createEventPrevUrl, plannerNavigate]);
+      path && navigate(path);
+    },
+    []
+  );
 
-  return {
-    openModal,
-    navigateToModal,
-    declineModal,
-    clearState,
-  };
+  return useMemo(
+    () => ({
+      openModal,
+      declineModal,
+      clearState,
+    }),
+    []
+  );
 };

@@ -1,7 +1,8 @@
-import { css } from 'styled-components';
-import { LoaderIcon } from '@components/Icons/Icons';
-import { FlexBlock } from '@components/LayoutComponents/FlexBlock';
 import React, { FC, ReactNode } from 'react';
+import { css } from 'styled-components';
+
+import { LoaderIcon } from '@components/Icons/Icons';
+import { FlexBlock } from '@components/LayoutComponents';
 
 export interface InputIconContainerProps {
   icon?: ReactNode;

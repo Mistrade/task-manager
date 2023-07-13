@@ -1,5 +1,5 @@
 import { FC } from 'react';
-import { VkLogoIcon } from '@components/Icons/SocialNetworkIcons/Vk';
+
 import { IconProps } from '@components/Icons/Icons';
 import { DefaultWebIcon } from '@components/Icons/SocialNetworkIcons/DefaultWeb';
 import { DiscordLogoIcon } from '@components/Icons/SocialNetworkIcons/Discord';
@@ -12,8 +12,10 @@ import { SkypeLogoIcon } from '@components/Icons/SocialNetworkIcons/Skype';
 import { TelegramLogoIcon } from '@components/Icons/SocialNetworkIcons/Telegram';
 import { TwitchLogoIcon } from '@components/Icons/SocialNetworkIcons/Twitch';
 import { ViberLogoIcon } from '@components/Icons/SocialNetworkIcons/Viber';
+import { VkLogoIcon } from '@components/Icons/SocialNetworkIcons/Vk';
 import { WhatsAppLogoIcon } from '@components/Icons/SocialNetworkIcons/WhatsApp';
 import { ZoomLogoIcon } from '@components/Icons/SocialNetworkIcons/Zoom';
+
 
 export const UrlIcon: FC<{ name: string } & IconProps> = ({
   name,

@@ -1,13 +1,16 @@
-import { currentColor, disabledColor } from '../../common/constants';
-import { SwitchCalendarModeTab } from '../../pages/planner/Planner.styled';
-import { FlexBlock } from '../LayoutComponents/FlexBlock';
-import React, { ReactNode, useRef, useState } from 'react';
-import { Badge } from '../Badge/Badge';
+import Badge, { BadgeProps } from '../Badge';
+import { EmptyButtonStyled } from '../Buttons/EmptyButton.styled';
+import { Arrow } from '../Icons/Icons';
+import Shadow from '../Shadow/Inline';
+import { CutText, CutTextProps } from '../Text/Text';
+import { FlexBlock } from '@components/LayoutComponents';
+import { SwitchCalendarModeTab } from '@planner/styled';
+import { kitColors } from 'chernikov-kit';
+import React, { ReactNode, useRef } from 'react';
 import { ColorRing } from 'react-loader-spinner';
 import { useIntersection } from 'react-use';
-import { Arrow } from '../Icons/Icons';
-import { EmptyButtonStyled } from '../Buttons/EmptyButton.styled';
 import { css } from 'styled-components';
+
 
 export interface SwitcherItem<KEY> {
   title: string;
@@ -15,16 +18,34 @@ export interface SwitcherItem<KEY> {
 }
 
 export type SwitcherBadges<KEY extends string = string> = {
-  [key in KEY]?: number;
+  [key in KEY]?: number | string;
 };
 
-export interface SwitcherProps<T extends string = string> {
-  switchersList: Array<SwitcherItem<T>>;
-  onClick: (item: SwitcherItem<T>) => void;
-  selected: T;
+export interface SwitcherProps<
+  T extends string = string,
+  Data extends SwitcherItem<T> = SwitcherItem<T>
+> {
+  useShadow?: boolean;
+  switchersList: Array<Data>;
+  onClick?: (item: Data) => void;
+  selected?: T | string;
   badges?: SwitcherBadges<T> | null;
+  badgeProps?: BadgeProps;
   isLoading?: boolean;
   children?: ReactNode;
+  component?: (
+    props: {
+      item: Data;
+      onClick: SwitcherProps<T, Data>['onClick'];
+      badge: ReactNode;
+      index: number;
+    } & SwitcherProps<T, Data>
+  ) => ReactNode;
+  tabProps?: CutTextProps;
+  scrollOptions?: {
+    scrollStepInPx?: number;
+    buttonColor?: string;
+  };
 }
 
 export const hideScrollBar = css`
@@ -38,7 +59,10 @@ export const hideScrollBar = css`
   }
 `;
 
-export function Switcher<T extends string = string>(props: SwitcherProps<T>) {
+export function Switcher<
+  T extends string = string,
+  Data extends SwitcherItem<T> = SwitcherItem<T>
+>(props: SwitcherProps<T, Data>) {
   const scrollContainerRef = useRef<HTMLDivElement>(null);
   const nonRightViewRef = useRef<HTMLDivElement>(null);
   const observerRight = useIntersection(nonRightViewRef, {
@@ -53,61 +77,116 @@ export function Switcher<T extends string = string>(props: SwitcherProps<T>) {
     root: scrollContainerRef.current,
   });
 
-  const [transformState, setTransformState] = useState<number>(0);
+  const containerRef = useRef<HTMLDivElement>(null);
 
   return (
     <FlexBlock
-      borderBottom={`1px solid ${disabledColor}`}
       justify={'space-between'}
       align={'flex-end'}
-      height={'fit-content'}
+      height={40}
       width={'100%'}
+      shrink={0}
     >
-      <FlexBlock grow={3} overflow={'hidden'} position={'relative'}>
+      <FlexBlock
+        grow={3}
+        overflow={'hidden'}
+        position={'relative'}
+        ref={containerRef}
+      >
         {!observerLeft?.isIntersecting && observerLeft?.target && (
-          <FlexBlock
-            position={'absolute'}
-            style={{ left: 0, top: 0, height: '100%', zIndex: 1 }}
-            justify={'center'}
-            align={'center'}
-            bgColor={'#fff'}
-          >
-            <EmptyButtonStyled onClick={() => {}}>
-              <Arrow size={20} transform={'rotate(180deg)'} />
-            </EmptyButtonStyled>
-          </FlexBlock>
+          <>
+            <FlexBlock
+              position={'absolute'}
+              style={{
+                left: 0,
+                top: 0,
+                bottom: 0,
+                zIndex: 10,
+              }}
+              justify={'center'}
+              align={'center'}
+              bgColor={props.scrollOptions?.buttonColor || '#fff'}
+              pl={4}
+              pr={4}
+            >
+              <EmptyButtonStyled
+                onClick={() => {
+                  if (scrollContainerRef.current) {
+                    scrollContainerRef.current.scrollLeft -=
+                      (containerRef?.current?.offsetWidth || 0) * 0.5 ||
+                      props.scrollOptions?.scrollStepInPx ||
+                      150;
+                  }
+                }}
+              >
+                <Arrow size={20} transform={'rotate(180deg)'} />
+              </EmptyButtonStyled>
+            </FlexBlock>
+          </>
         )}
         <FlexBlock
           width={'100%'}
           overflowX={'scroll'}
           overflowY={'hidden'}
           ref={scrollContainerRef}
-          additionalCss={hideScrollBar}
+          additionalCss={css`
+            scroll-behavior: smooth;
+            scroll-snap-type: x mandatory;
+            overscroll-behavior: none;
+            ${hideScrollBar};
+          `}
         >
+          {props.useShadow &&
+            !observerLeft?.isIntersecting &&
+            observerLeft?.target && (
+              <Shadow visible={true} placement={'left'} offset={25} />
+            )}
           <FlexBlock width={'fit-content'}>
             <div style={{ width: 0, height: 0 }} ref={nonViewLeftRef} />
-            {props.switchersList.map((item, index) => (
-              <SwitchCalendarModeTab
-                data-number={index}
-                type={'button'}
-                key={item.type}
-                onClick={() => props.onClick(item)}
-                isSelected={item.type === props.selected}
-              >
-                {item.title}
-                {props.badges &&
-                props.badges[item.type] &&
-                props.badges[item.type] > 0 ? (
-                  <Badge style={{ marginLeft: 4 }}>
-                    {props.badges[item.type]}
-                  </Badge>
-                ) : (
-                  <></>
-                )}
-              </SwitchCalendarModeTab>
-            ))}
+            {props.switchersList.map((item, index) => {
+              const badge = props.badges && props.badges[item.type] && (
+                <Badge type={'primary'} {...props.badgeProps}>
+                  {props.badges[item.type]}
+                </Badge>
+              );
+
+              return props.component ? (
+                <React.Fragment key={index}>
+                  {props.component({
+                    item,
+                    onClick: props.onClick,
+                    badge,
+                    index,
+                    ...props,
+                  })}
+                </React.Fragment>
+              ) : (
+                <SwitchCalendarModeTab
+                  delayByStepMs={50}
+                  animationIndex={index}
+                  data-number={index}
+                  type={'button'}
+                  key={index}
+                  title={item.title}
+                  onClick={(event: React.MouseEvent<HTMLButtonElement>) => {
+                    props.onClick && props.onClick(item);
+                  }}
+                  isSelected={item.type === props.selected}
+                >
+                  <CutText rows={1} fontSize={15} {...props.tabProps}>
+                    {item.title}
+                  </CutText>
+                  {badge}
+                </SwitchCalendarModeTab>
+              );
+            })}
             <div style={{ width: 0, height: 0 }} ref={nonRightViewRef} />
           </FlexBlock>
+          {props.useShadow &&
+            !observerRight?.isIntersecting &&
+            observerRight?.target && (
+              <Shadow visible={true} placement={'right'} offset={25} />
+            )}
         </FlexBlock>
         {!observerRight?.isIntersecting && observerRight?.target && (
           <FlexBlock
@@ -115,9 +194,29 @@ export function Switcher<T extends string = string>(props: SwitcherProps<T>) {
             style={{ right: 0, top: 0, height: '100%', zIndex: 1 }}
             justify={'center'}
             align={'center'}
-            bgColor={'#fff'}
+            bgColor={props.scrollOptions?.buttonColor || '#fff'}
+            pl={4}
+            pr={4}
           >
-            <EmptyButtonStyled onClick={() => {}}>
+            <EmptyButtonStyled
+              onClick={() => {
+                console.log(
+                  scrollContainerRef.current?.scrollWidth,
+                  scrollContainerRef.current?.scrollLeft
+                );
+                if (scrollContainerRef.current) {
+                  scrollContainerRef.current.scrollLeft +=
+                    (containerRef?.current?.offsetWidth || 0) * 0.5 ||
+                    props.scrollOptions?.scrollStepInPx ||
+                    150;
+                }
+                console.log(
+                  scrollContainerRef.current?.scrollWidth,
+                  scrollContainerRef.current?.scrollLeft
+                );
+                console.log('-----разрыв-----');
+              }}
+            >
               <Arrow size={20} />
             </EmptyButtonStyled>
           </FlexBlock>
@@ -134,11 +233,11 @@ export function Switcher<T extends string = string>(props: SwitcherProps<T>) {
             wrapperStyle={{}}
             wrapperClass='blocks-wrapper'
             colors={[
-              currentColor,
-              currentColor,
-              currentColor,
-              currentColor,
-              currentColor,
+              kitColors.primary,
+              kitColors.primary,
+              kitColors.primary,
+              kitColors.primary,
+              kitColors.primary,
             ]}
           />
         )}

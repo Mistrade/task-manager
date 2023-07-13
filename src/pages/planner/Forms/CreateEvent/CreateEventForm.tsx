@@ -1,54 +1,59 @@
-import { FC, useContext, useMemo, useState } from 'react';
-import { CreateEventDataObject } from '../../planner.types';
+import { useAppSelector } from '@redux/hooks/hooks';
+import { createEventInitialStateSelector } from '@selectors/planner';
 import { useFormik } from 'formik';
-import { FlexBlock } from '@components/LayoutComponents/FlexBlock';
+import { FC, useContext, useMemo, useState } from 'react';
 import {
-  borderRadiusSize,
+  CreateEventDataObject,
+  CreateEventRequestData,
+} from 'src/pages/planner/types';
+import styled from 'styled-components';
+import * as yup from 'yup';
+
+import {
+  PRIORITY_TITLES,
   defaultColor,
   disabledColor,
   pageHeaderColor,
-  PRIORITY_TITLES,
-  TASK_STATUSES,
-} from '@src/common/constants';
-import * as yup from 'yup';
-import { Button, StyledButton } from '@components/Buttons/Buttons.styled';
-import { useCreateEventMutation } from '@api/planning-api';
-import { Heading } from '@components/Text/Heading';
+} from '@src/common/constants/constants';
+import { CREATE_EVENT_FORM_TABS } from '@src/common/constants/enums';
+import { TASK_STATUSES } from '@src/common/constants/signatures';
+import { borderRadiusSize } from '@src/common/css/mixins';
+import { CreateEventMembersTab } from '@src/pages/planner/Forms/CreateEvent/Tabs/Members/Members';
+
+import { ButtonWithLoading } from '@components/Buttons/ButtonWithLoading';
+import { StyledButton } from '@components/Buttons/Buttons.styled';
+import { FlexBlock } from '@components/LayoutComponents';
+import { ModalContext } from '@components/LayoutComponents/Modal/Modal';
 import { Switcher } from '@components/Switcher/Switcher';
+import { Heading } from '@components/Text/Heading';
+
+import { ChainsShowcase } from '@planner/EventInfo/LeftBar/Tabs/Chains/Connect/ChainsShowcase';
 import {
   ToggleEventCalendar,
   ToggleEventPriority,
   ToggleEventStatus,
-} from '@planner/TaskInformer/SupportsComponent/ToggleTaskInformerButtons';
-import { GroupModelResponse } from '@api/planning-api/types/groups.types';
-import { useCreateEventModal } from '@hooks/useCreateEventModal';
-import { CatchHandleForToast } from '@api/tools';
-import { useAppSelector } from '@redux/hooks/hooks';
-import { createEventInitialStateSelector } from '@selectors/calendarItems';
-import { PlannerContext } from '@src/Context/planner.context';
-import { EVENT_INFORMER_TAB_NAMES } from '@planner/TaskInformer/LeftBar/TaskInformerLeftBar';
-import { MyServerResponse } from '@api/rtk-api.types';
+} from '@planner/EventInfo/SupportsComponent/ToggleTaskInformerButtons';
+
+import { useCreateEventMutation } from '@api/planning-api';
 import { EventIdObject } from '@api/planning-api/types/event-info.types';
-import { CreateEventInfoTab } from './Tabs/Info';
-import { CreateEventMembersTab } from './Tabs/Members';
-import { ChainsShowcase } from '@planner/TaskInformer/LeftBar/Tabs/Chains/Connect/ChainsShowcase';
+import { GroupModelResponse } from '@api/planning-api/types/groups.types';
+import { MyServerResponse, ObjectId } from '@api/rtk-api.types';
+import { CatchHandleForToast, thenHandleForToast } from '@api/tools';
+
 import { CreateEventFormAdditional } from './Tabs/Additional';
-import styled from 'styled-components';
+import { CreateEventInfoTab } from './Tabs/Info';
+
 
 interface CreateEventFormProps {
-  // onComplete?: (data: CreateEventDataObject, taskId?: ObjectId) => void;
-  // date: Date | null;
-  onCancel?: (data: CreateEventDataObject) => void;
+  onClose?: () => void;
   groupsList?: Array<GroupModelResponse>;
+  onSuccess?: (eventId: ObjectId) => void;
 }
 
 export const LinkValidationSchema = yup
   .object({
     key: yup.string(),
-    value: yup
-      .string()
-      .url('Ссылка должна быть корректным url-адресом')
-      .required(),
+    value: yup.string().url('Ссылка должна быть корректным url-адресом'),
   })
   .nullable()
   .notRequired();
@@ -80,13 +85,6 @@ const addTaskValidationSchema = yup.object({
     .max(24, 'Выберите элемент из выпадающего списка'),
 });
 
-export enum CREATE_EVENT_FORM_TABS {
-  'INFO' = 'info',
-  'MEMBERS' = 'members',
-  'CHAINS' = 'chains',
-  'ADDITIONAL' = 'additional',
-}
-
 interface SwitcherItem {
   title: string;
   type: CREATE_EVENT_FORM_TABS;
@@ -106,29 +104,44 @@ export const MaxHeightHidden = styled('div')`
   width: 100%;
 `;
 
-export const CreateEventForm: FC<CreateEventFormProps> = ({ groupsList }) => {
-  const { declineModal, clearState } = useCreateEventModal({});
-  const {
-    methods: { plannerNavigate },
-  } = useContext(PlannerContext);
+export const CreateEventForm: FC<CreateEventFormProps> = ({
+  groupsList,
+  onSuccess,
+  onClose,
+}) => {
   const initialState = useAppSelector(createEventInitialStateSelector);
   const [addTask, { isLoading, status }] = useCreateEventMutation();
   const [tab, setTab] = useState<CREATE_EVENT_FORM_TABS>(
     CREATE_EVENT_FORM_TABS.INFO
   );
 
+  const modalContext = useContext(ModalContext);
+
   const formik = useFormik<CreateEventDataObject>({
     async onSubmit(values) {
-      await addTask(values)
+      const data: CreateEventRequestData = {
+        ...values,
+        members: Object.values(values.members),
+        widget: values.widget
+          ? {
+              message: values.widget.message,
+              title: values.widget.title,
+              model: values.widget.data._id,
+              modelName: values.widget.model,
+              fromEvent: values.widget.fromEvent,
+            }
+          : undefined,
+      };
+
+      await addTask(data)
         .unwrap()
         .then((response: MyServerResponse<EventIdObject>) => {
-          clearState();
-          if (response.data) {
-            plannerNavigate('eventInfo').go(
-              response.data?.eventId,
-              EVENT_INFORMER_TAB_NAMES.ABOUT
-            );
-          }
+          thenHandleForToast(response);
+          modalContext?.closeModalAnimation().then(() => {
+            response.data?.eventId &&
+              onSuccess &&
+              onSuccess(response.data?.eventId);
+          });
         })
         .catch(CatchHandleForToast);
     },
@@ -150,12 +163,6 @@ export const CreateEventForm: FC<CreateEventFormProps> = ({ groupsList }) => {
   }, [formik.values.group, groupsList]);
 
   return (
-    // <form
-    //   // onSubmit={formik.handleSubmit}
-    //   onSubmit={(e) => e.preventDefault()}
-    //
-    //   style={{ width: '100%', height: '100%' }}
-    // >
     <FlexBlock
       direction={'column'}
       basis={'100%'}
@@ -176,7 +183,9 @@ export const CreateEventForm: FC<CreateEventFormProps> = ({ groupsList }) => {
         width={'100%'}
       >
         <Heading.H2 style={{ fontWeight: 'normal', marginBottom: 8 }}>
-          Создайте новое событие
+          {formik.values.title.length >= 3
+            ? formik.values.title
+            : 'Создайте новое событие'}
         </Heading.H2>
         <FlexBlock
           gap={12}
@@ -260,7 +269,10 @@ export const CreateEventForm: FC<CreateEventFormProps> = ({ groupsList }) => {
         pb={12}
         gap={12}
       >
-        <Button
+        <ButtonWithLoading
+          buttonType={'primary'}
+          isLoading={isLoading}
+          disabled={isLoading}
           type={'button'}
           onKeyDown={(event) => {
             event.preventDefault();
@@ -288,9 +300,16 @@ export const CreateEventForm: FC<CreateEventFormProps> = ({ groupsList }) => {
           }}
         >
           Создать
-        </Button>
+        </ButtonWithLoading>
         <StyledButton
-          onClick={declineModal}
+          disabled={isLoading}
+          onClick={() => {
+            if (modalContext?.closeModalAnimation) {
+              modalContext.closeModalAnimation().then(onClose);
+            } else {
+              onClose && onClose();
+            }
+          }}
           fillColor={'#fff'}
           textColor={defaultColor}
         >
@@ -298,6 +317,5 @@ export const CreateEventForm: FC<CreateEventFormProps> = ({ groupsList }) => {
         </StyledButton>
       </FlexBlock>
     </FlexBlock>
-    // </form>
   );
 };

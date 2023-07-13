@@ -1,11 +1,11 @@
 import { CSSProperties, ReactNode } from 'react';
 
-export interface ModalProps {
-  children?: ReactNode;
-  modalHeader?: ReactNode;
+import { ModalLayoutProps } from './Modal.styled';
+
+export interface ModalProps extends ModalLayoutProps {
+  children: ReactNode;
   isView: boolean;
-  modalBody?: ReactNode;
-  modalFooter?: ReactNode;
   onClose?: () => any;
   style?: CSSProperties;
+  enableCloseOnOutsideClick?: boolean;
 }

@@ -1,13 +1,67 @@
-import { FC, useCallback, useEffect, useMemo, useRef, useState } from 'react';
+import { disabledColor } from '../../common/constants/constants';
+import { borderRadiusSize } from '../../common/css/mixins';
+import { FlexBlock, VerticalScroll } from '@components/LayoutComponents';
+import { CutText } from '@components/Text/Text';
+import { TimeSelectorButton } from '@planner/styled';
 import {
   addNull,
   generateHoursArray,
   generateMinuteArray,
 } from '@src/common/functions';
-import { TimeSelectorButton } from '@pages/planner/Planner.styled';
+import { kitColors } from 'chernikov-kit';
 import dayjs from 'dayjs';
-import { css } from 'styled-components';
-import { FlexBlock } from '@components/LayoutComponents/FlexBlock';
+import { FC, useCallback, useEffect, useMemo, useRef } from 'react';
+
+
+type TimeButtonUnitTypes = 'hour' | 'minute';
+
+interface TimeButtonProps {
+  isSelected: boolean;
+  value: number;
+  unitType: TimeButtonUnitTypes;
+
+  handler(value: number, type: TimeButtonUnitTypes): void;
+}
+
+const TimeButton: FC<TimeButtonProps> = ({
+  isSelected,
+  value,
+  handler,
+  unitType,
+}) => {
+  const ref = useRef<HTMLButtonElement>(null);
+
+  useEffect(() => {
+    let timeoutId: NodeJS.Timeout;
+    if (isSelected && ref.current) {
+      timeoutId = setTimeout(() => {
+        ref.current?.scrollIntoView({ block: 'center' });
+      }, 0);
+    }
+
+    return () => {
+      if (timeoutId && ref.current) {
+        clearTimeout(timeoutId);
+      }
+    };
+  }, [isSelected]);
+
+  return (
+    <TimeSelectorButton
+      autoFocus={isSelected}
+      key={value}
+      ref={isSelected ? ref : undefined}
+      data-title={`hour_${value}`}
+      isSelected={isSelected}
+      type={'button'}
+      onClick={(event) => {
+        handler(value, unitType);
+      }}
+    >
+      {addNull(value)}
+    </TimeSelectorButton>
+  );
+};
 
 interface TimeSelectorProps {
   currentDate: Date;
@@ -17,7 +71,7 @@ interface TimeSelectorProps {
 
 export const TimeSelector: FC<TimeSelectorProps> = ({
   currentDate,
-  minuteStep = 5,
+  minuteStep = 1,
   onChange,
 }) => {
   const hours = useMemo(() => {
@@ -25,7 +79,7 @@ export const TimeSelector: FC<TimeSelectorProps> = ({
   }, []);
 
   const minutes = useMemo(() => {
-    return generateMinuteArray({ step: 1 });
+    return generateMinuteArray({ step: minuteStep });
   }, [minuteStep]);
 
   const handler = useCallback(
@@ -33,103 +87,89 @@ export const TimeSelector: FC<TimeSelectorProps> = ({
       if (onChange) {
         const d = dayjs(currentDate);
         const r = d.set(type, value);
-        console.log(d.toDate(), r.toDate());
         onChange(r.toDate());
-        setLastModify((prev) => ({
-          hour: type === 'hour' ? value : prev.hour,
-          minute: type === 'minute' ? value : prev.minute,
-        }));
       }
     },
     [onChange, currentDate]
   );
 
-  const hourRef = useRef<HTMLDivElement>(null);
-  const minuteRef = useRef<HTMLDivElement>(null);
-
-  const [lastModify, setLastModify] = useState({
-    minute: currentDate.getMinutes(),
-    hour: currentDate.getHours(),
-  });
-
-  const autoFocus = () => {
-    const { minute, hour } = lastModify;
-
-    const minuteButton: HTMLButtonElement | undefined =
-      minuteRef.current?.querySelector(`[data-title="minute_${minute}"]`) as
-        | HTMLButtonElement
-        | undefined;
-    if (minuteButton) {
-      setTimeout(() => {
-        minuteButton.scrollIntoView({ block: 'center' });
-      }, 0);
-    }
-
-    const hourButton: HTMLButtonElement | undefined =
-      hourRef.current?.querySelector(`[data-title="hour_${hour}"]`) as
-        | HTMLButtonElement
-        | undefined;
-    if (hourButton) {
-      setTimeout(() => {
-        hourButton.scrollIntoView({ block: 'center' });
-      }, 0);
-    }
-  };
-  useEffect(() => {
-    autoFocus();
-  }, [currentDate]);
-
   return (
-    <FlexBlock maxHeight={'inherit'} gap={4}>
+    <FlexBlock height={'100%'} direction={'column'} overflow={'hidden'} gap={4}>
       <FlexBlock
-        direction={'column'}
-        maxHeight={225}
-        overflowY={'scroll'}
-        ref={hourRef}
-        additionalCss={css`
-          &::-webkit-scrollbar {
-            width: 0;
-          }
-
-          scroll-snap-type: y mandatory;
-        `}
+        justify={'center'}
+        width={'100%'}
+        mb={8}
+        gap={6}
+        shrink={0}
+        basis={'28px'}
+        height={28}
+        align={'center'}
       >
-        {hours.map((value, index, array) => (
-          <TimeSelectorButton
-            key={value}
-            data-title={`hour_${value}`}
-            isSelected={currentDate.getHours() === value}
-            type={'button'}
-            onClick={() => handler(value, 'hour')}
-          >
-            {addNull(value)}
-          </TimeSelectorButton>
-        ))}
+        <CutText
+          rows={1}
+          fontSize={16}
+          color={kitColors.primary}
+          lineHeight={28}
+          textAlign={'center'}
+          verticalAlign={'middle'}
+        >
+          Время
+        </CutText>
       </FlexBlock>
-      <FlexBlock
-        direction={'column'}
-        maxHeight={225}
-        overflowY={'scroll'}
-        ref={minuteRef}
-        additionalCss={css`
-          &::-webkit-scrollbar {
-            width: 0;
-          }
-
-          scroll-snap-type: y mandatory;
-        `}
-      >
-        {minutes.map((value, index, array) => (
-          <TimeSelectorButton
-            key={value}
-            data-title={`minute_${value}`}
-            isSelected={currentDate.getMinutes() === value}
-            type={'button'}
-            onClick={() => handler(value, 'minute')}
-          >
-            {addNull(value)}
-          </TimeSelectorButton>
-        ))}
+      <FlexBlock grow={3} gap={4} direction={'row'} overflow={'hidden'}>
+        <VerticalScroll
+          useShadow={true}
+          renderPattern={'top-bottom'}
+          containerProps={{
+            position: 'relative',
+            border: `1px solid ${disabledColor}`,
+            pl: 6,
+            pr: 6,
+            borderRadius: borderRadiusSize.sm,
+          }}
+        >
+          <FlexBlock direction={'column'} gap={4} pt={'50vh'} pb={'50vh'}>
+            {hours.map((value, index, array) => {
+              const isSelected = currentDate.getHours() === value;
+              return (
+                <TimeButton
+                  key={`hour_${value}`}
+                  isSelected={isSelected}
+                  value={value}
+                  handler={handler}
+                  unitType={'hour'}
+                />
+              );
+            })}
+          </FlexBlock>
+        </VerticalScroll>
+        <VerticalScroll
+          intersectionProps={{ topMargin: '60%' }}
+          useShadow={true}
+          renderPattern={'top-bottom'}
+          containerProps={{
+            position: 'relative',
+            border: `1px solid ${disabledColor}`,
+            pl: 6,
+            pr: 6,
+            borderRadius: borderRadiusSize.sm,
+          }}
+        >
+          <FlexBlock direction={'column'} gap={4} pt={'50vh'} pb={'50vh'}>
+            {minutes.map((value, index, array) => {
+              const isSelected = currentDate.getMinutes() === value;
+              return (
+                <TimeButton
+                  key={`minute_${value}`}
+                  isSelected={isSelected}
+                  value={value}
+                  handler={handler}
+                  unitType={'minute'}
+                />
+              );
+            })}
+          </FlexBlock>
+        </VerticalScroll>
       </FlexBlock>
     </FlexBlock>
   );

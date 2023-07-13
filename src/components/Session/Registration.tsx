@@ -1,19 +1,20 @@
-import { FC, useEffect } from 'react';
-import { useFormik } from 'formik';
-import { FlexBlock } from '@components/LayoutComponents/FlexBlock';
-import { Heading } from '@components/Text/Heading';
-import { defaultColor } from '@src/common/constants';
-import { TextInput } from '@components/Input/TextInput/TextInput';
-import { Tooltip } from '@components/Tooltip/Tooltip';
+import { SessionFormContainer } from './SessionFormContainer';
+import { useRegistrationMutation } from '@api/session-api';
+import { RegUserRequestProps } from '@api/session-api/session-api.types';
 import { Button } from '@components/Buttons/Buttons.styled';
 import { LinkStyled } from '@components/Buttons/Link.styled';
-import { SessionFormContainer } from './SessionFormContainer';
 import { PasswordInput } from '@components/Input/PasswordInput/PasswordInput';
-import { useRegistrationMutation } from '@api/session-api';
-import { toast } from 'react-toastify';
-import { RegistrationValidationScheme } from '@src/common/validation/session';
+import { TextInput } from '@components/Input/TextInput/TextInput';
+import { FlexBlock } from '@components/LayoutComponents';
+import { Heading } from '@components/Text/Heading';
 import { useSearchNavigate } from '@hooks/useSearchNavigate';
-import { RegUserRequestProps } from '@api/session-api/session-api.types';
+import { defaultColor } from '@src/common/constants/constants';
+import { RegistrationValidationScheme } from '@src/common/validation/session';
+import { Tooltip } from 'chernikov-kit';
+import { useFormik } from 'formik';
+import { FC, useEffect } from 'react';
+import { toast } from 'react-toastify';
+
 
 export const Registration: FC = () => {
   const [regUser, { data, isSuccess, isLoading, status, isError }] =

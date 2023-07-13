@@ -1,69 +1,42 @@
-import { FC } from 'react';
-import { Route, Routes, useParams } from 'react-router-dom';
-import { CalendarStatusProxy } from './UrlProxy/CalendarStatusProxy';
-import { ErrorScreen } from '@components/Errors/ErrorScreen';
-import { CenteredContainer } from '@components/AppRoutes/Interceptors/SessionInterceptor';
+import React, { FC } from 'react';
+import Helmet from 'react-helmet';
+
+import { PlannerOptionsPanel } from '@src/pages/planner/Panel';
+import { LayoutSelector } from '@src/pages/planner/Routes/LayoutSelector';
+import { ModalRoutesMemo } from '@src/pages/planner/Routes/ModalRoutes';
 import {
-  DEFAULT_PLANNER_LAYOUT,
-  DEFAULT_PLANNER_STATUS,
-  PLANNER_LAYOUTS,
-} from '@src/common/constants';
-import { useSearchNavigate } from '@hooks/useSearchNavigate';
-import { ServicesNames } from '@redux/reducers/global';
-import { Navigate } from 'react-router';
+  PlannerContainer,
+  PlannerContentContainer,
+  PlannerLayoutContainer,
+} from '@src/pages/planner/styled';
 
-const layouts: Array<PLANNER_LAYOUTS> = [
-  PLANNER_LAYOUTS.DAY,
-  PLANNER_LAYOUTS.WEEK,
-  PLANNER_LAYOUTS.MONTH,
-  PLANNER_LAYOUTS.YEAR,
-  PLANNER_LAYOUTS.LIST,
-  PLANNER_LAYOUTS.FAVORITES,
-];
-
-export const PlannerController: FC = () => {
-  const { layout } = useParams<{ layout: PLANNER_LAYOUTS }>();
-  const navigate = useSearchNavigate();
-  const isCorrectLayout = (l: PLANNER_LAYOUTS | undefined) => {
-    return l && layouts.includes(l);
-  };
-
-  if (isCorrectLayout(layout) && layout) {
-    return (
-      <Routes>
-        <Route
-          index
-          element={
-            <Navigate
-              to={`/${ServicesNames.PLANNER}/${layout}/${DEFAULT_PLANNER_STATUS}`}
-            />
-          }
-        />
-        <Route
-          path={':taskStatus/*'}
-          element={<CalendarStatusProxy layout={layout} />}
-        />
-      </Routes>
-    );
-  }
-
+export const PlannerPage: FC = React.memo(() => {
   return (
-    <CenteredContainer>
-      <ErrorScreen
-        title={'Такого URL не существует'}
-        description={
-          'В адресной строке допущена ошибка относительно режима отображения событий. Нажмите на кнопку ниже, если вы хотели попасть в "Планировщик"'
-        }
-        errorType={'SYSTEM_ERROR'}
-        action={{
-          title: 'Перейти к планировщику',
-          onClick: () => {
-            navigate(
-              `/${ServicesNames.PLANNER}/${DEFAULT_PLANNER_LAYOUT}/${DEFAULT_PLANNER_STATUS}`
-            );
+    <>
+      <Helmet
+        title={'Мои дела'}
+        meta={[
+          {
+            name: 'description',
+            content:
+              'White Planner - сервис для онлайн планирования личных и рабочих дел, задач, событий, ивентов. Разделяйте их на группы, приглашайте друзей к заданиям, планируйте с удовольствием!',
           },
-        }}
+          {
+            property: 'og:title',
+            content:
+              'Сервис удобного и легкого планирования личных и рабочих дел, задач, событий и не только.',
+          },
+        ]}
       />
-    </CenteredContainer>
+      <PlannerContainer>
+        <PlannerContentContainer>
+          <PlannerOptionsPanel />
+          <PlannerLayoutContainer>
+            <LayoutSelector />
+          </PlannerLayoutContainer>
+        </PlannerContentContainer>
+        <ModalRoutesMemo />
+      </PlannerContainer>
+    </>
   );
-};
+});

@@ -1,17 +1,15 @@
+import { borderRadiusSize } from '@src/common/css/mixins';
+import { kitColors } from 'chernikov-kit';
+import { NavLink } from 'react-router-dom';
 import styled from 'styled-components';
-import { Link } from 'react-router-dom';
-import { borderRadiusSize, currentColor } from '@src/common/constants';
 
-export const LinkStyled = styled(Link)`
+
+export const LinkStyled = styled(NavLink)<{ fontSize?: number }>`
   border-radius: ${borderRadiusSize.sm};
-  font-size: 14px;
-  color: ${currentColor};
+  font-size: ${(_) => _.fontSize || 14}px;
+  color: ${kitColors.primary};
   outline: none;
   text-decoration: none;
   font-family: 'Helvetica Neue', sans-serif;
   line-height: 1.2;
-
-  &:hover {
-    text-decoration: ${currentColor} underline;
-  }
 `;

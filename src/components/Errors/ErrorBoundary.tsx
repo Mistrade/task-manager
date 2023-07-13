@@ -1,5 +1,7 @@
-import { FlexBlock } from '@components/LayoutComponents/FlexBlock';
 import { Component, ReactNode } from 'react';
+
+import { FlexBlock } from '@components/LayoutComponents';
+
 import { ErrorScreen, ErrorScreenProps } from './ErrorScreen';
 
 export class ErrorBoundary extends Component<
@@ -22,8 +24,8 @@ export class ErrorBoundary extends Component<
         <FlexBlock
           width={'100%'}
           height={'100%'}
-          justify={'100%'}
-          align={'100%'}
+          justify={'center'}
+          align={'center'}
         >
           <ErrorScreen
             title={this.props.title}

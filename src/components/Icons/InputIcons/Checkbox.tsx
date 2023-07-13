@@ -1,9 +1,10 @@
-import { FC } from 'react';
 import { IconProps } from '@components/Icons/Icons';
-import { currentColor } from '@src/common/constants';
+import { kitColors } from 'chernikov-kit';
+import { FC } from 'react';
+
 
 export const EmptyCheckboxIcon: FC<IconProps> = ({
-  color = currentColor,
+  color = kitColors.primary,
   size = 24,
 }) => (
   <svg
@@ -21,7 +22,7 @@ export const EmptyCheckboxIcon: FC<IconProps> = ({
 
 export const FillCheckboxIcon: FC<IconProps> = ({
   size = 24,
-  color = currentColor,
+  color = kitColors.primary,
 }) => (
   <svg
     xmlns='http://www.w3.org/2000/svg'

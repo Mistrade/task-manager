@@ -1,25 +1,27 @@
-import React, { FC, useCallback, useMemo, useState } from 'react';
-import {
-  CalendarPriorityKeys,
-  TaskStatusesType,
-} from '@pages/planner/planner.types';
-import dayjs, { Dayjs } from 'dayjs';
-import { GroupModelResponse } from '@api/planning-api/types/groups.types';
+import { EVENT_INFORMER_TAB_NAMES } from '../../../common/constants/enums';
+import Badge from '../../Badge';
 import { EssenceContainer, EventEssenceTitle } from './event-essence.styled';
-import { EventStatusButton } from '@pages/planner/TaskInformer/SupportsComponent/EventStatusButton';
-import { EventPriorityButton } from '@pages/planner/TaskInformer/SupportsComponent/EventPriorityButton';
-import { DateHelper } from '@src/common/calendarSupport/dateHelper';
+import { GroupModelResponse } from '@api/planning-api/types/groups.types';
 import { ObjectId } from '@api/rtk-api.types';
-import { HistoryDescriptionField } from '@pages/planner/TaskInformer/LeftBar/Tabs/TaskHistory/Fields/HistoryDescriptionField';
-import { EventGroupButton } from '@pages/planner/TaskInformer/SupportsComponent/EventGroupButton';
-import { FlexBlock } from '@components/LayoutComponents/FlexBlock';
-import { TimeBadge } from '@components/Badge/Badge';
-import { Tooltip } from '@components/Tooltip/Tooltip';
 import { EmptyButtonStyled } from '@components/Buttons/EmptyButton.styled';
-import { Arrow } from '@components/Icons/Icons';
 import { LinkStyled } from '@components/Buttons/Link.styled';
+import { Arrow } from '@components/Icons/Icons';
+import { FlexBlock } from '@components/LayoutComponents';
+import { CutText } from '@components/Text/Text';
+import { EventGroupButton } from '@pages/planner/EventInfo/SupportsComponent/EventGroupButton';
+import { EventPriorityButton } from '@pages/planner/EventInfo/SupportsComponent/EventPriorityButton';
+import { EventStatusButton } from '@pages/planner/EventInfo/SupportsComponent/EventStatusButton';
+import { StepByStepAnimationProps } from '@planner/Modes/Week/components/styled';
+import { CalendarPriorityKeys, TaskStatusesType } from '@planner/types';
+import { DateHelper } from '@src/common/calendarSupport/dateHelper';
+import { darkColor } from '@src/common/constants/constants';
+import { getPath } from '@src/common/functions';
+import { HiddenText, Tooltip } from 'chernikov-kit';
+import dayjs, { Dayjs } from 'dayjs';
+import React, { FC, useCallback, useMemo, useState } from 'react';
 
-export interface EventEssenceProps {
+
+export interface EventEssenceProps extends StepByStepAnimationProps {
   status: TaskStatusesType | null;
   priority: CalendarPriorityKeys | null;
   title: string;
@@ -41,6 +43,8 @@ export const EventEssence: FC<EventEssenceProps> = ({
   isSnapshot,
   containerProps,
   onTitleClick,
+  animationIndex,
+  delayByStepMs = 20,
   ...optionalFields
 }) => {
   const [isOpen, setIsOpen] = useState(false);
@@ -53,8 +57,13 @@ export const EventEssence: FC<EventEssenceProps> = ({
     onTitleClick && onTitleClick(optionalFields.eventId);
   }, [onTitleClick, optionalFields.eventId]);
 
+  //TODO раздробить верстку на мелкие компоненты
   return (
-    <EssenceContainer {...containerProps}>
+    <EssenceContainer
+      animationIndex={animationIndex}
+      delayByStepMs={delayByStepMs}
+      {...containerProps}
+    >
       <FlexBlock gap={6} align={'center'} direction={'row'}>
         {!isOpen && (
           <>
@@ -88,7 +97,9 @@ export const EventEssence: FC<EventEssenceProps> = ({
           </>
         )}
         <EventEssenceTitle onClick={titleClickHandler}>
-          {title}
+          <CutText color={darkColor} title={title} rows={1} fontSize={16}>
+            {title}
+          </CutText>
         </EventEssenceTitle>
         {isSnapshot && (
           <Tooltip
@@ -96,7 +107,7 @@ export const EventEssence: FC<EventEssenceProps> = ({
               'Snapshot - означает, что данные для этой записи фиксировались в конкретный момент времени и могут отличаться от текущих. Чтобы получить актуальную информацию о событии, разверните его стрелочкой справа и нажмите "Перейти к оригиналу"'
             }
           >
-            <TimeBadge>Snapshot</TimeBadge>
+            <Badge type={'primary'}>Snapshot</Badge>
           </Tooltip>
         )}
         {hasOptionalInfo && (
@@ -125,19 +136,16 @@ export const EventEssence: FC<EventEssenceProps> = ({
             <FlexBlock direction={'column'} gap={6} basis={'50%'}>
               {optionalFields.createdAt && (
                 <FlexBlock style={{ whiteSpace: 'pre-wrap', fontSize: 14 }}>
-                  {[
-                    'Создано',
-                    ' ',
-                    <TimeBadge>
-                      {DateHelper.getHumanizeDateValue(
-                        dayjs(optionalFields.createdAt).toDate(),
-                        {
-                          withTime: true,
-                          monthPattern: 'full',
-                        }
-                      )}
-                    </TimeBadge>,
-                  ]}
+                  Создано{' '}
+                  <Badge type={'primary'}>
+                    {DateHelper.getHumanizeDateValue(
+                      dayjs(optionalFields.createdAt).toDate(),
+                      {
+                        withTime: true,
+                        monthPattern: 'full',
+                      }
+                    )}
+                  </Badge>
                 </FlexBlock>
               )}
               {optionalFields.time && optionalFields.timeEnd && (
@@ -147,41 +155,39 @@ export const EventEssence: FC<EventEssenceProps> = ({
                   gap={6}
                 >
                   <FlexBlock fSize={14}>
-                    {[
-                      'Начало',
-                      ' ',
-                      <TimeBadge>
-                        {DateHelper.getHumanizeDateValue(
-                          dayjs(optionalFields.time).toDate(),
-                          {
-                            withTime: true,
-                            monthPattern: 'short',
-                          }
-                        )}
-                      </TimeBadge>,
-                    ]}
+                    Начало{' '}
+                    <Badge type={'primary'}>
+                      {DateHelper.getHumanizeDateValue(
+                        dayjs(optionalFields.time).toDate(),
+                        {
+                          withTime: true,
+                          monthPattern: 'short',
+                        }
+                      )}
+                    </Badge>
                   </FlexBlock>
                   <FlexBlock fSize={14}>
-                    {[
-                      'Конец',
-                      ' ',
-                      <TimeBadge>
-                        {DateHelper.getHumanizeDateValue(
-                          dayjs(optionalFields.timeEnd).toDate(),
-                          {
-                            withTime: true,
-                            monthPattern: 'short',
-                          }
-                        )}
-                      </TimeBadge>,
-                    ]}
+                    Конец{' '}
+                    <Badge type={'primary'}>
+                      {DateHelper.getHumanizeDateValue(
+                        dayjs(optionalFields.timeEnd).toDate(),
+                        {
+                          withTime: true,
+                          monthPattern: 'short',
+                        }
+                      )}
+                    </Badge>
                   </FlexBlock>
                 </FlexBlock>
               )}
               {optionalFields.eventId && (
                 <FlexBlock>
                   <LinkStyled
-                    to={`/planner/day/all/event/info/${optionalFields.eventId}/about`}
+                    to={getPath(
+                      'planner/day/event/info',
+                      optionalFields.eventId,
+                      EVENT_INFORMER_TAB_NAMES.ABOUT
+                    )}
                     target={'_blank'}
                   >
                     Перейти к оригиналу
@@ -225,10 +231,14 @@ export const EventEssence: FC<EventEssenceProps> = ({
           </FlexBlock>
           {optionalFields.description && (
             <FlexBlock width={'100%'}>
-              <HistoryDescriptionField
-                useCopied={false}
-                value={optionalFields.description}
-              />
+              <HiddenText
+                buttonText={{
+                  hide: 'Скрыть описание',
+                  show: 'Показать полностью',
+                }}
+              >
+                {optionalFields.description}
+              </HiddenText>
             </FlexBlock>
           )}
         </FlexBlock>

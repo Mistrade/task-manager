@@ -1,7 +1,8 @@
+import { FlexBlock } from '@components/LayoutComponents';
+import { kitColors } from 'chernikov-kit';
 import { FC, ReactNode } from 'react';
 import { ThreeDots } from 'react-loader-spinner';
-import { currentColor } from '@src/common/constants';
-import { FlexBlock } from '@components/LayoutComponents/FlexBlock';
+
 
 export const Loader: FC<{
   title?: ReactNode;
@@ -22,7 +23,7 @@ export const Loader: FC<{
             height={size || '80'}
             width={size || '80'}
             radius='9'
-            color={currentColor}
+            color={kitColors.primary}
             ariaLabel='three-dots-loading'
             visible={true}
           />

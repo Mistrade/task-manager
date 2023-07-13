@@ -1,3 +1,6 @@
+import { MutationLifecycleApi } from '@reduxjs/toolkit/dist/query/endpointDefinitions';
+import { BaseQueryFn } from '@reduxjs/toolkit/dist/query/react';
+
 export type ObjectId = string;
 export type UtcDate = string;
 export type ErrorTypes = 'info' | 'success' | 'warning' | 'error' | 'default';
@@ -5,6 +8,12 @@ export type ErrorTypes = 'info' | 'success' | 'warning' | 'error' | 'default';
 interface ServerErrorType {
   message: string;
   type: ErrorTypes;
+}
+
+export interface RtkErrorObject<T> {
+  error: CustomRtkError<T>,
+  isUnhandledError: boolean,
+  meta: Record<string, any>
 }
 
 export interface CustomRtkError<T = null> {
@@ -16,3 +25,14 @@ export interface MyServerResponse<T = null> {
   data?: T | null;
   info?: ServerErrorType;
 }
+
+export type TBuildMutationLifecycleApi<
+  TArgs = any,
+  TResult = unknown,
+  ReducerPath extends string = string
+> = MutationLifecycleApi<
+  TArgs,
+  BaseQueryFn<TArgs, TResult>,
+  TResult,
+  ReducerPath
+>;

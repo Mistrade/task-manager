@@ -1,15 +1,16 @@
-import { currentColor } from '@src/common/constants';
+import { Button } from './Buttons.styled';
 import { EmptyButtonStyled } from './EmptyButton.styled';
+import { CopyIcon } from '@components/Icons/AppIcon/CopyIcon';
+import { CompleteIcon, IconProps } from '@components/Icons/Icons';
+import { FlexBlockProps } from '@components/LayoutComponents/FlexBlock';
+import { kitColors } from 'chernikov-kit';
 import { FC, useCallback, useEffect, useState } from 'react';
 import { toast } from 'react-toastify';
-import { Button } from './Buttons.styled';
-import { FlexBlockProps } from '@components/LayoutComponents/FlexBlock';
-import { CompleteIcon, IconProps } from '@components/Icons/Icons';
-import { CopyIcon } from '@components/Icons/AppIcon/CopyIcon';
+
 
 export interface CopyToClipboardButtonProps extends Omit<IconProps, 'onClick'> {
   iconContainerProps?: FlexBlockProps;
-  content: string;
+  content: string | (() => string);
   renderText?: string;
   style?: 'empty' | 'current';
 }
@@ -17,7 +18,7 @@ export interface CopyToClipboardButtonProps extends Omit<IconProps, 'onClick'> {
 export const CopyToClipboardButton: FC<CopyToClipboardButtonProps> = ({
   size = 16,
   iconContainerProps,
-  color = currentColor,
+  color = kitColors.primary,
   content,
   renderText = '',
   style = 'empty',
@@ -42,8 +43,10 @@ export const CopyToClipboardButton: FC<CopyToClipboardButtonProps> = ({
   }, [isCopied]);
 
   const copiedHandler = useCallback(() => {
+    const text = typeof content === 'string' ? content : content()
+    
     navigator.clipboard
-      .writeText(content)
+      .writeText(text)
       .then(() => {
         setIsCopied(true);
         toast('Текст скопирован в Буфер обмена', { type: 'success' });
@@ -76,7 +79,7 @@ export const CopyToClipboardButton: FC<CopyToClipboardButtonProps> = ({
   return (
     <EmptyButtonStyled onClick={copiedHandler}>
       {isCopied ? (
-        <CompleteIcon size={16} color={currentColor} />
+        <CompleteIcon size={16} color={kitColors.primary} />
       ) : (
         <CopyIcon {...iconContainerProps} size={size} color={color} />
       )}

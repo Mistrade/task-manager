@@ -1,23 +1,30 @@
-import React, { ReactNode } from 'react';
-import {
-  FlexBlock,
-  FlexBlockProps,
-} from '@components/LayoutComponents/FlexBlock';
+import { InputActions } from '@components/Input/InputSupportComponents/InputActions';
+import { InputErrorMessage } from '@components/Input/InputSupportComponents/InputErrorMessage';
 import {
   DefaultTextInputProps,
   TextInput,
 } from '@components/Input/TextInput/TextInput';
-import { InputActions } from '@components/Input/InputSupportComponents/InputActions';
-import { InputErrorMessage } from '@components/Input/InputSupportComponents/InputErrorMessage';
-import { Tooltip } from '@components/Tooltip/Tooltip';
+import {
+  FlexBlock,
+  FlexBlockProps,
+} from '@components/LayoutComponents/FlexBlock';
+import { Tooltip, TooltipProps } from 'chernikov-kit';
+import React, { ReactNode, useState } from 'react';
+
 
 type ExtendableFromTextInput = Omit<DefaultTextInputProps, 'children'>;
 
 export interface SelectInputProps<T> extends ExtendableFromTextInput {
-  data: T;
-  renderData: (data: T) => ReactNode;
+  data: Array<T>;
+  renderData: (
+    data: Array<T>,
+    setIsOpenState: (value: boolean) => void
+  ) => ReactNode;
   multiple?: boolean;
   containerProps?: FlexBlockProps;
+  selectContainerPlacement?: TooltipProps['placement'];
+  selectContainerViewCondition?: boolean;
+  withArrow?: boolean;
 }
 
 export function SelectInput<T>({
@@ -33,22 +40,27 @@ export function SelectInput<T>({
   onBlur,
   isDirty,
   errorMessage,
+  selectContainerPlacement,
+  selectContainerViewCondition = true,
+  withArrow,
   ...textInputProps
 }: SelectInputProps<T>): JSX.Element {
+  const [isOpen, setIsOpen] = useState(false);
+
   return (
     <FlexBlock {...containerProps} width={'100%'} direction={'column'} gap={6}>
       <Tooltip
         theme={'light'}
         delay={100}
-        offset={[0, 5]}
+        // offset={[0, 10]}
         maxWidth={500}
-        hideOnClick={true}
-        placement={'bottom-start'}
-        arrow={false}
-        trigger={'click'}
+        placement={selectContainerPlacement || 'bottom-start'}
+        arrow={withArrow}
+        visible={isOpen && selectContainerViewCondition}
+        onClickOutside={() => setIsOpen(false)}
         interactive={true}
         interactiveBorder={20}
-        content={renderData(data)}
+        content={isOpen && renderData(data, setIsOpen)}
       >
         <TextInput
           readOnly={readOnly}
@@ -56,6 +68,7 @@ export function SelectInput<T>({
           {...textInputProps}
           onFocus={(e) => {
             onFocus && onFocus(e);
+            setIsOpen(true);
           }}
           onBlur={(e) => {
             onBlur && onBlur(e);

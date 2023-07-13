@@ -1,14 +1,18 @@
-import { FCWithChildren } from '@planner/planner.types';
-import { FlexBlock } from '@components/LayoutComponents/FlexBlock';
-import { css } from 'styled-components';
-import { HoverElementMixin } from '@src/common/cssMixins';
-import { borderRadiusSize, hoverColor } from '@src/common/constants';
+import { FlexBlockProps } from '../../LayoutComponents/FlexBlock';
+import { FlexBlock } from '@components/LayoutComponents';
+import { FCWithChildren } from '@planner/types';
+import { hoverColor } from '@src/common/constants/constants';
+import { borderRadiusSize, HoverElementMixin } from '@src/common/css/mixins';
 import React from 'react';
+import { css } from 'styled-components';
 
-export const SelectItemContainer: FCWithChildren<{
-  onClick?: (e: React.MouseEvent<HTMLDivElement>) => void;
-  isSelected?: boolean;
-}> = ({ onClick, children, isSelected }) => {
+
+export const SelectItemContainer: FCWithChildren<
+  {
+    onClick?: (e: React.MouseEvent<HTMLDivElement>) => void;
+    isSelected?: boolean;
+  } & FlexBlockProps
+> = ({ onClick, children, isSelected, ...flexBlockProps }) => {
   if (children) {
     return (
       <FlexBlock
@@ -29,6 +33,7 @@ export const SelectItemContainer: FCWithChildren<{
           ${HoverElementMixin}
         `}
         width={'100%'}
+        {...flexBlockProps}
         onClick={onClick}
       >
         <FlexBlock

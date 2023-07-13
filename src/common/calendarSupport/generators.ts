@@ -1,3 +1,6 @@
+import { dateToPlannerDate } from '@planner-reducer/utils';
+import dayjs from 'dayjs';
+
 import {
   CalendarCurrentContext,
   CalendarList,
@@ -6,15 +9,15 @@ import {
   MonthItem,
   WeekItem,
   YearItem,
-} from '@pages/planner/planner.types';
+} from '@planner/types';
+
+import { CalendarDateItem } from './calendarDateItem';
+import { DateHelper } from './dateHelper';
 import {
   DateScopeHelper,
   DateScopeInterface,
   DateScopeOptions,
 } from './scopes';
-import dayjs from 'dayjs';
-import { CalendarDateItem } from './calendarDateItem';
-import { DateHelper } from './dateHelper';
 
 export class DateListGenerator {
   public options?: DateScopeOptions;
@@ -69,10 +72,15 @@ export class DateListGenerator {
     const list = this.getDateList(scope, context);
 
     return {
+      stateDate: dateToPlannerDate(inputDate),
       weekOfYear: inputDate.week(),
       year: inputDate.year(),
       month: inputDate.month(),
       days: list,
+      scope: {
+        startDate: dateToPlannerDate(scope.startDate),
+        endDate: dateToPlannerDate(scope.endDate),
+      },
     };
   }
 
@@ -106,16 +114,21 @@ export class DateListGenerator {
     aroundMonthDate: Date = new Date(),
     context?: CalendarCurrentContext
   ): MonthItem {
-    const inputDate = dayjs(aroundMonthDate);
+    const inputDate = dayjs(aroundMonthDate).startOf('month');
     const scope = new DateScopeHelper(this.options).getDateScopeOfMonth(
       aroundMonthDate
     );
     const listOfWeeks = this.getWeekList(scope, context);
 
     return {
+      stateDate: dateToPlannerDate(inputDate),
       monthOfYear: inputDate.month(),
       year: inputDate.year(),
       weeks: listOfWeeks,
+      scope: {
+        startDate: dateToPlannerDate(scope.startDate),
+        endDate: dateToPlannerDate(scope.endDate),
+      },
     };
   }
 
@@ -149,7 +162,7 @@ export class DateListGenerator {
     aroundYearDate: Date = new Date(),
     context?: CalendarCurrentContext
   ): YearItem {
-    const inputDate = dayjs(aroundYearDate);
+    const inputDate = dayjs(aroundYearDate).startOf('year');
     const scope = new DateScopeHelper(this.options).getDateScopeOfYear(
       aroundYearDate
     );
@@ -157,8 +170,13 @@ export class DateListGenerator {
     const monthList = this.getMonthList(scope, context);
 
     return {
+      stateDate: dateToPlannerDate(inputDate),
       year: inputDate.year(),
       months: monthList,
+      scope: {
+        startDate: dateToPlannerDate(scope.startDate),
+        endDate: dateToPlannerDate(scope.endDate),
+      },
     };
   }
 }

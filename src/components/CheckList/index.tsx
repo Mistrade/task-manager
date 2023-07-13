@@ -1,54 +1,33 @@
-import {
-  borderRadiusSize,
-  currentColor,
-  defaultColor,
-  disabledColor,
-} from '@src/common/constants';
-import styled, { keyframes } from 'styled-components';
+import { Tooltip, kitColors } from 'chernikov-kit';
 import React, { FC, useCallback, useMemo, useState } from 'react';
 import { ColorRing } from 'react-loader-spinner';
-import { ICheckListItem } from '@pages/planner/planner.types';
-import {
-  FlexBlock,
-  FlexBlockProps,
-} from '@components/LayoutComponents/FlexBlock';
-import { Tooltip } from '@components/Tooltip/Tooltip';
-import { Checkbox } from '@components/Input/Checkbox/Checkbox';
+import styled, { keyframes } from 'styled-components';
+
+import { defaultColor, disabledColor } from '@src/common/constants/constants';
+import { borderRadiusSize } from '@src/common/css/mixins';
+
 import { CopyToClipboardButton } from '@components/Buttons/CopyToClipboardButton';
 import { EmptyButtonStyled } from '@components/Buttons/EmptyButton.styled';
-import { PencilIcon, TrashIcon } from '@components/Icons/Icons';
+import { PencilIcon, PlusIcon, TrashIcon } from '@components/Icons/Icons';
+import { TooltipIcon } from '@components/Icons/TooltipIcon';
+import { Checkbox } from '@components/Input/Checkbox/Checkbox';
 import {
   TextInput,
   TextInputProps,
 } from '@components/Input/TextInput/TextInput';
-import { TooltipIcon } from '@components/Icons/TooltipIcon';
-import { TimeBadge } from '@components/Badge/Badge';
-import { ScrollVerticalView } from '@components/LayoutComponents/ScrollView/ScrollVerticalView';
+import {
+  FlexBlock,
+  FlexBlockProps,
+} from '@components/LayoutComponents/FlexBlock';
+import { VerticalScroll } from '@components/LayoutComponents/ScrollView/VerticalScroll';
 import { Heading } from '@components/Text/Heading';
 
-const CheckListContainerAnimation = keyframes`
-  from {
-    height: 0;
-    opacity: .5;
-  }
-  to {
-    height: fit-content;
-    opacity: 1;
-  }
-`;
+import { ICheckListItem } from '@planner/types';
 
-const CheckListContainer = styled('div')`
-  & {
-    display: flex;
-    flex-direction: column;
-    animation: ${CheckListContainerAnimation} 0.3s ease-in-out forwards;
-    width: 100%;
-    height: 100%;
-    overflow: hidden;
-  }
-`;
+import Badge from '../Badge';
+import { generateCheckListCopyContent } from './utils';
 
-const CheckListUL = styled('ul')`
+export const CheckListUL = styled('ul')`
   & {
     display: flex;
     flex-direction: column;
@@ -71,18 +50,18 @@ const CheckListItemAnimation = keyframes`
   }
 `;
 
-const StyledCheckListItem = styled('li')`
+export const StyledCheckListItem = styled('li')`
   & {
     display: flex;
     width: 100%;
     flex-direction: row;
-    border-left: 4px solid ${currentColor};
+    border-left: 4px solid ${kitColors.primary};
     border-top: 1px solid ${disabledColor};
     border-right: 1px solid ${disabledColor};
     border-bottom: 1px solid ${disabledColor};
     padding: 4px;
     border-radius: 0px ${borderRadiusSize.sm} ${borderRadiusSize.sm} 0px;
-    animation: ${CheckListItemAnimation} 0.3s ease-out forwards;
+    // animation: ${CheckListItemAnimation} 0.3s ease-out forwards;
   }
 `;
 
@@ -90,6 +69,7 @@ const CheckListItemButtons = styled('div')`
   & {
     display: flex;
     gap: 8px;
+    align-items: center;
   }
 `;
 
@@ -103,9 +83,11 @@ export interface CheckListProps {
   //Если нужно очистить поля ввода onAddItem должна вернуть true
   onSaveNewElement?: (title: string) => Promise<boolean>;
   onRemoveItem?: (item: ICheckListItem) => Promise<boolean>;
+  onCreateEventOfCheckListItem?: (data: ICheckListItem) => void;
 }
 
 export interface CheckListItemProps {
+  onCreateEventOfCheckListItem?: (data: ICheckListItem) => void;
   item: ICheckListItem;
   onChange?: (
     item: ICheckListItem,
@@ -118,6 +100,7 @@ export const CheckListItem: FC<CheckListItemProps> = ({
   item,
   onChange,
   onRemove,
+  onCreateEventOfCheckListItem,
 }) => {
   const [isEditMode, setIsEditMode] = useState<boolean>(false);
   const [isLoading, setIsLoading] = useState(false);
@@ -168,7 +151,7 @@ export const CheckListItem: FC<CheckListItemProps> = ({
       placement={'bottom-start'}
       content={
         <CheckListAddInput
-          containerProps={{ p: 8 }}
+          containerProps={{ p: 8, minWidth: 500 }}
           initialValue={item.title}
           onSave={changeTitleHandler}
           label={'Новое название элемента списка'}
@@ -176,19 +159,22 @@ export const CheckListItem: FC<CheckListItemProps> = ({
         />
       }
       onClickOutside={() => setIsEditMode(false)}
-      trigger={'none'}
-      // hideOnClick={true}
+      strategy={'fixed'}
       arrow={false}
-      maxWidth={500}
+      maxWidth={600}
       theme={'light'}
       delay={[200, 500]}
-      offset={[30, -5]}
       interactive={true}
       interactiveBorder={20}
       visible={isEditMode}
     >
       <StyledCheckListItem key={item.title}>
-        <FlexBlock grow={3} direction={'row'} height={'100%'}>
+        <FlexBlock
+          grow={3}
+          direction={'row'}
+          height={'100%'}
+          onClick={() => setIsEditMode((prev) => !prev)}
+        >
           <Checkbox
             type={'checkbox'}
             title={item.title}
@@ -196,11 +182,26 @@ export const CheckListItem: FC<CheckListItemProps> = ({
             onChange={changeStateHandler}
           />
         </FlexBlock>
+
         <CheckListItemButtons>
+          {onCreateEventOfCheckListItem && (
+            <Tooltip
+              content={'Создать событие на основе этого элемента чек-листа'}
+              placement={'top'}
+              delay={[0, 100]}
+              theme={'current'}
+              containerStyles={{
+                height: 'fit-content',
+              }}
+            >
+              <EmptyButtonStyled
+                onClick={() => onCreateEventOfCheckListItem(item)}
+              >
+                <PlusIcon size={16} color={kitColors.primary} />
+              </EmptyButtonStyled>
+            </Tooltip>
+          )}
           <CopyToClipboardButton content={item.title} />
-          <EmptyButtonStyled onClick={() => setIsEditMode((prev) => !prev)}>
-            <PencilIcon size={16} color={currentColor} />
-          </EmptyButtonStyled>
           <EmptyButtonStyled onClick={removeHandler}>
             <TrashIcon size={16} color={defaultColor} />
           </EmptyButtonStyled>
@@ -252,7 +253,7 @@ export const CheckListAddInput: FC<CheckListAddInputProps> = ({
             'Нажмите Enter, когда фокус установлен на поле ввода (поле ввода обведено синей рамкой), чтобы добавить элемент'
           }
         >
-          <TooltipIcon size={20} color={currentColor} />
+          <TooltipIcon size={20} color={kitColors.primary} />
         </Tooltip>
       }
       onChange={({ target: { value } }) => setValue(value)}
@@ -270,6 +271,7 @@ export const CheckList: FC<CheckListProps> = ({
   title,
   onChangeTitle,
   isLoading,
+  onCreateEventOfCheckListItem,
 }) => {
   const [isEditTitle, setIsEditTitle] = useState(false);
 
@@ -299,16 +301,16 @@ export const CheckList: FC<CheckListProps> = ({
 
     if (checkList.length) {
       return (
-        <TimeBadge>
+        <Badge type={'primary'}>
           {result.completedCount} / {result.count} ({result.percent}%)
-        </TimeBadge>
+        </Badge>
       );
     }
     return <></>;
   }, [checkList]);
 
   return (
-    <ScrollVerticalView
+    <VerticalScroll
       containerProps={scrollContainerProps}
       renderPattern={'top-bottom'}
       placementStatic={'top'}
@@ -329,10 +331,11 @@ export const CheckList: FC<CheckListProps> = ({
             {title}
             {progress}
             <Tooltip
+              maxWidth={600}
               content={
                 isEditTitle ? (
                   <CheckListAddInput
-                    containerProps={{ p: 8 }}
+                    containerProps={{ p: 8, minWidth: 500 }}
                     initialValue={title}
                     label={'Название чек-листа'}
                     onSave={changeTitleHandler}
@@ -347,13 +350,11 @@ export const CheckList: FC<CheckListProps> = ({
               interactiveBorder={20}
               delay={[200, 500]}
               arrow={false}
-              trigger={'none'}
               theme={'light'}
-              placement={'bottom-start'}
-              offset={[0, 0]}
+              placement={'bottom'}
             >
               <EmptyButtonStyled onClick={() => setIsEditTitle(true)}>
-                <PencilIcon color={currentColor} size={20} />
+                <PencilIcon color={kitColors.primary} size={20} />
               </EmptyButtonStyled>
             </Tooltip>
             <Tooltip
@@ -363,6 +364,9 @@ export const CheckList: FC<CheckListProps> = ({
             >
               <TooltipIcon size={20} color={defaultColor} />
             </Tooltip>
+            <CopyToClipboardButton
+              content={() => generateCheckListCopyContent(title, checkList)}
+            />
             {isLoading && (
               <ColorRing
                 visible={isLoading}
@@ -372,11 +376,11 @@ export const CheckList: FC<CheckListProps> = ({
                 wrapperStyle={{}}
                 wrapperClass='blocks-wrapper'
                 colors={[
-                  currentColor,
-                  currentColor,
-                  currentColor,
-                  currentColor,
-                  currentColor,
+                  kitColors.primary,
+                  kitColors.primary,
+                  kitColors.primary,
+                  kitColors.primary,
+                  kitColors.primary,
                 ]}
               />
             )}
@@ -395,6 +399,7 @@ export const CheckList: FC<CheckListProps> = ({
       <CheckListUL>
         {checkList.map((item) => (
           <CheckListItem
+            onCreateEventOfCheckListItem={onCreateEventOfCheckListItem}
             key={item._id}
             item={item}
             onChange={onItemChange}
@@ -402,6 +407,6 @@ export const CheckList: FC<CheckListProps> = ({
           />
         ))}
       </CheckListUL>
-    </ScrollVerticalView>
+    </VerticalScroll>
   );
 };

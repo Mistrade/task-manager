@@ -1,11 +1,17 @@
-import { FC, ReactNode, useState } from 'react';
-import { Arrow, IconProps, PlusIcon } from '@components/Icons/Icons';
-import { FlexBlock } from '@components/LayoutComponents/FlexBlock';
+import { kitColors } from 'chernikov-kit';
+import { FC, ReactNode, useRef, useState } from 'react';
+import styled, { css } from 'styled-components';
+
 import { EmptyButtonStyled } from '@components/Buttons/EmptyButton.styled';
-import { currentColor } from '@src/common/constants';
-import { css } from 'styled-components';
+import { Arrow, IconProps, PlusIcon } from '@components/Icons/Icons';
+import {
+  FlexBlock,
+  FlexBlockProps,
+} from '@components/LayoutComponents/FlexBlock';
+
 
 export interface AccordionProps {
+  containerProps?: FlexBlockProps;
   title: ReactNode;
   children: ReactNode;
   initialState?: boolean;
@@ -17,6 +23,44 @@ export interface AccordionProps {
   };
 }
 
+const ContentContainer = styled('div')`
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  gap: 6px;
+  align-items: center;
+  background-color: inherit;
+`;
+
+const TitleContainer = styled('div')`
+  display: flex;
+  flex-direction: row;
+  width: 100%;
+`;
+
+const ActionContainer = styled('div')`
+  display: flex;
+  justify-self: flex-end;
+`;
+
+const ArrowContainer = styled('div')`
+  display: flex;
+  flex-direction: row;
+  gap: 6px;
+  align-items: center;
+  justify-content: flex-end;
+`;
+
+const IsOpenContainer = styled('div')`
+  flex-direction: column;
+  width: 100%;
+  overflow: hidden;
+  height: fit-content;
+  padding: 6px 0px;
+  z-index: 0;
+  display: flex;
+`;
+
 export const Accordion: FC<AccordionProps> = ({
   title,
   zIndex,
@@ -24,33 +68,29 @@ export const Accordion: FC<AccordionProps> = ({
   children,
   initialState = true,
   action,
+  containerProps,
 }) => {
   const [isOpen, setIsOpen] = useState(initialState);
+  const ref = useRef<HTMLDivElement>(null);
+  const titleContainerRef = useRef<HTMLDivElement>(null);
 
   return (
     <FlexBlock
+      {...containerProps}
       width={'100%'}
       direction={'column'}
       additionalCss={css`
-        transition: 0.6s ease-in-out;
+        transition: all 0.6s ease-in-out;
+        z-index: 0;
+        height: fit-content;
+        // max-height:
+        //   ? pxToCssValue(ref.current ? ref.current.offsetHeight + 50 : 'none')
+        //   : pxToCssValue(titleContainerRef.current?.offsetHeight || 'none')};
+        //overflow: hidden;
       `}
-      // overflow={'hidden'}
     >
-      <FlexBlock
-        direction={'row'}
-        justify={'space-between'}
-        gap={6}
-        // pl={6}
-        // pr={6}
-        align={'center'}
-        bgColor={'inherit'}
-      >
-        <FlexBlock
-          direction={'row'}
-          gap={6}
-          align={'center'}
-          justify={'flex-end'}
-        >
+      <ContentContainer ref={titleContainerRef}>
+        <ArrowContainer>
           <EmptyButtonStyled
             onClick={() => setIsOpen((prev) => !prev)}
             style={{
@@ -59,36 +99,19 @@ export const Accordion: FC<AccordionProps> = ({
               transform: `rotate(${isOpen ? '90deg' : '0deg'})`,
             }}
           >
-            <Arrow color={currentColor} {...iconProps} />
+            <Arrow color={kitColors.primary} {...iconProps} />
           </EmptyButtonStyled>
-        </FlexBlock>
-        <FlexBlock direction={'row'} width={'100%'}>
-          {title}
-        </FlexBlock>
+        </ArrowContainer>
+        <TitleContainer>{title}</TitleContainer>
         {action && (
-          <FlexBlock
-            additionalCss={css`
-              justify-self: flex-end;
-            `}
-          >
+          <ActionContainer>
             <EmptyButtonStyled onClick={action.onClick}>
               <PlusIcon size={20} />
             </EmptyButtonStyled>
-          </FlexBlock>
+          </ActionContainer>
         )}
-      </FlexBlock>
-      {isOpen && (
-        <FlexBlock
-          direction={'column'}
-          width={'100%'}
-          style={{ height: isOpen ? 'fit-content' : '0px' }}
-          pt={isOpen ? 6 : 0}
-          pb={isOpen ? 6 : 0}
-          overflow={isOpen ? 'unset' : 'hidden'}
-        >
-          {children}
-        </FlexBlock>
-      )}
+      </ContentContainer>
+      {isOpen && <IsOpenContainer ref={ref}>{children}</IsOpenContainer>}
     </FlexBlock>
   );
 };

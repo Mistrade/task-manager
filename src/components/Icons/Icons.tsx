@@ -1,13 +1,11 @@
-import React, { FC } from 'react';
-import {
-  currentColor,
-  defaultColor,
-  priorityColors,
-} from '@src/common/constants';
 import {
   FlexBlock,
   FlexBlockProps,
 } from '@components/LayoutComponents/FlexBlock';
+import { defaultColor, priorityColors } from '@src/common/constants/constants';
+import { kitColors } from 'chernikov-kit';
+import React, { FC } from 'react';
+
 
 export interface IconProps {
   size?: number;
@@ -29,6 +27,24 @@ export const Male: FC<IconProps> = ({ size = 20, color = '#000' }) => {
       <path
         fill={color}
         d='M874 120H622c-3.3 0-6 2.7-6 6v56c0 3.3 2.7 6 6 6h160.4L583.1 387.3c-50-38.5-111-59.3-175.1-59.3c-76.9 0-149.3 30-203.6 84.4S120 539.1 120 616s30 149.3 84.4 203.6C258.7 874 331.1 904 408 904s149.3-30 203.6-84.4C666 765.3 696 692.9 696 616c0-64.1-20.8-124.9-59.2-174.9L836 241.9V402c0 3.3 2.7 6 6 6h56c3.3 0 6-2.7 6-6V150c0-16.5-13.5-30-30-30zM408 828c-116.9 0-212-95.1-212-212s95.1-212 212-212s212 95.1 212 212s-95.1 212-212 212z'
+      />
+    </svg>
+  );
+};
+export const SendIcon: FC<IconProps> = ({
+  size = 20,
+  color = kitColors.primary,
+}) => {
+  return (
+    <svg
+      xmlns='http://www.w3.org/2000/svg'
+      width={size}
+      height={size}
+      viewBox='0 0 28 28'
+    >
+      <path
+        fill={color}
+        d='M3.79 2.625c-.963-.46-2.021.42-1.746 1.451l2.016 7.533a1 1 0 0 0 .824.732l9.884 1.412c.286.04.286.454 0 .495l-9.883 1.411a1 1 0 0 0-.824.732l-2.017 7.537c-.275 1.03.783 1.91 1.746 1.451L25.288 15.13c.949-.452.949-1.804 0-2.257L3.79 2.626Z'
       />
     </svg>
   );
@@ -104,7 +120,7 @@ export const ArrowRightIcon: FC<IconProps & { fillColor?: string }> = ({
 
 export const ArchiveIcon: FC<IconProps> = ({
   size = 20,
-  color = currentColor,
+  color = kitColors.primary,
 }) => {
   return (
     <svg
@@ -202,7 +218,7 @@ export const TrashIcon: FC<IconProps & FlexBlockProps> = ({
 
 export const LoaderIcon: FC<
   IconProps & FlexBlockProps & { strokeWidth?: number }
-> = ({ size = 24, color = currentColor, strokeWidth = 2, ...props }) => {
+> = ({ size = 24, color = kitColors.primary, strokeWidth = 2, ...props }) => {
   return (
     <FlexBlock {...props} align={'center'} justify={'center'}>
       <svg
@@ -285,7 +301,7 @@ export const Arrow: FC<IconProps & FlexBlockProps> = ({
 
 export const CompleteIcon: FC<IconProps & FlexBlockProps> = ({
   size = 24,
-  color = currentColor,
+  color = kitColors.primary,
   ...props
 }) => {
   return (
@@ -314,7 +330,7 @@ export const CompleteIcon: FC<IconProps & FlexBlockProps> = ({
 
 export const PencilIcon: FC<IconProps & FlexBlockProps> = ({
   size = 24,
-  color = currentColor,
+  color = kitColors.primary,
   ...props
 }) => {
   return (
@@ -337,7 +353,7 @@ export const PencilIcon: FC<IconProps & FlexBlockProps> = ({
 
 export const CancelIcon: FC<IconProps & FlexBlockProps> = ({
   size = 24,
-  color = currentColor,
+  color = kitColors.primary,
   ...props
 }) => {
   return (
@@ -360,7 +376,7 @@ export const CancelIcon: FC<IconProps & FlexBlockProps> = ({
 
 export const WaitIcon: FC<IconProps & FlexBlockProps> = ({
   size = 24,
-  color = currentColor,
+  color = kitColors.primary,
   ...props
 }) => {
   return (
@@ -386,7 +402,7 @@ export const WaitIcon: FC<IconProps & FlexBlockProps> = ({
 
 export const ReviewIcon: FC<IconProps & FlexBlockProps> = ({
   size = 24,
-  color = currentColor,
+  color = kitColors.primary,
   ...props
 }) => {
   return (
@@ -410,7 +426,7 @@ export const ReviewIcon: FC<IconProps & FlexBlockProps> = ({
 
 export const FiltersIcon: FC<IconProps & FlexBlockProps> = ({
   size = 24,
-  color = currentColor,
+  color = kitColors.primary,
   ...props
 }) => {
   return (
@@ -431,7 +447,7 @@ export const FiltersIcon: FC<IconProps & FlexBlockProps> = ({
 };
 export const SettingsIcon: FC<IconProps & FlexBlockProps> = ({
   size = 24,
-  color = currentColor,
+  color = kitColors.primary,
   ...props
 }) => {
   return (
@@ -456,7 +472,7 @@ export const SettingsIcon: FC<IconProps & FlexBlockProps> = ({
 };
 export const ProcessIcon: FC<IconProps & FlexBlockProps> = ({
   size = 24,
-  color = currentColor,
+  color = kitColors.primary,
   ...props
 }) => {
   return (
@@ -481,7 +497,7 @@ export const ProcessIcon: FC<IconProps & FlexBlockProps> = ({
 
 export const CreatedIcon: FC<IconProps & FlexBlockProps> = ({
   size = 24,
-  color = currentColor,
+  color = kitColors.primary,
   ...props
 }) => {
   return (
